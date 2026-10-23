@@ -1,0 +1,866 @@
+{
+"id": "zahlen",
+"name": "Zahlen & Codes",
+"untertitel": "Hex, ASCII, Gray, CRC",
+"farbe": "gold",
+"symbol": "optokoppler",
+"reihenfolge": 12,
+"seiten": [
+{
+"id": "zahlen",
+"titel": "Zahlensysteme",
+"kurz": "Bin, Dez, Hex – Bits anklicken",
+"tags": [
+"zahlen",
+"binär",
+"hex",
+"dezimal",
+"oktal",
+"bit",
+"byte",
+"zweierkomplement"
+],
+"bloecke": [
+{
+"t": "spezial",
+"name": "zahlen"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Dez",
+"Bin",
+"Hex",
+"Dez",
+"Bin",
+"Hex"
+],
+"zeilen": [
+[
+"0",
+"0000",
+"0",
+"8",
+"1000",
+"8"
+],
+[
+"1",
+"0001",
+"1",
+"9",
+"1001",
+"9"
+],
+[
+"2",
+"0010",
+"2",
+"10",
+"1010",
+"A"
+],
+[
+"3",
+"0011",
+"3",
+"11",
+"1011",
+"B"
+],
+[
+"4",
+"0100",
+"4",
+"12",
+"1100",
+"C"
+],
+[
+"5",
+"0101",
+"5",
+"13",
+"1101",
+"D"
+],
+[
+"6",
+"0110",
+"6",
+"14",
+"1110",
+"E"
+],
+[
+"7",
+"0111",
+"7",
+"15",
+"1111",
+"F"
+]
+],
+"mono": [
+0,
+1,
+2,
+3,
+4,
+5
+],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "Jede **Hex-Ziffer = 4 Bit (Nibble)**, zwei Hex-Ziffern = 1 Byte. 0xFF = 255, 0x100 = 256."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Schreibweise",
+"Beispiel"
+],
+"zeilen": [
+[
+"Binär",
+"0b1011 (Python/C), 1011₂"
+],
+[
+"Hex",
+"0x2F, #2F, 2Fh"
+],
+[
+"Oktal",
+"0o17, 017 (C!)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Bits",
+"Bereich ohne Vorzeichen",
+"mit Vorzeichen (2er-Komplement)"
+],
+"zeilen": [
+[
+"8",
+"0 … 255",
+"−128 … 127"
+],
+[
+"16",
+"0 … 65 535",
+"−32 768 … 32 767"
+],
+[
+"32",
+"0 … 4 294 967 295",
+"−2 147 483 648 … 2 147 483 647"
+],
+[
+"64",
+"0 … 1,8·10¹⁹",
+"±9,2·10¹⁸"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "**Zweierkomplement:** alle Bits invertieren, +1. 8 Bit: 5 = 00000101 → −5 = 11111011 (0xFB)."
+}
+],
+"siehe": [
+"zahlen:ascii",
+"zahlen:codes"
+],
+"symbol": "led"
+},
+{
+"id": "ascii",
+"titel": "ASCII & Unicode",
+"kurz": "Zeichentabelle anklicken",
+"tags": [
+"ascii",
+"unicode",
+"utf-8",
+"zeichen",
+"codierung",
+"umlaut",
+"zeilenende"
+],
+"bloecke": [
+{
+"t": "spezial",
+"name": "ascii"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Steuerzeichen",
+"Dez",
+"Hex",
+"Bedeutung"
+],
+"zeilen": [
+[
+"NUL",
+"0",
+"00",
+"Nullzeichen (Stringende in C)"
+],
+[
+"BEL",
+"7",
+"07",
+"Klingel"
+],
+[
+"BS",
+"8",
+"08",
+"Backspace"
+],
+[
+"TAB",
+"9",
+"09",
+"Tabulator"
+],
+[
+"LF",
+"10",
+"0A",
+"Zeilenvorschub (Linux)"
+],
+[
+"CR",
+"13",
+"0D",
+"Wagenrücklauf"
+],
+[
+"ESC",
+"27",
+"1B",
+"Escape"
+],
+[
+"DEL",
+"127",
+"7F",
+"Löschen"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Windows",
+"Linux/Mac",
+"Altes Mac"
+],
+"zeilen": [
+[
+"CR LF (\\r\\n)",
+"LF (\\n)",
+"CR (\\r)"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Zeilenende"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Codierung",
+"Bytes pro Zeichen",
+"Hinweis"
+],
+"zeilen": [
+[
+"ASCII",
+"1 (7 Bit)",
+"nur 128 Zeichen"
+],
+[
+"ISO-8859-1 / Latin-1",
+"1",
+"Westeuropa, ä/ö/ü"
+],
+[
+"UTF-8",
+"1–4",
+"Web-Standard, ASCII-kompatibel"
+],
+[
+"UTF-16",
+"2 oder 4",
+"Windows intern, Java"
+],
+[
+"UTF-32",
+"4",
+"fest"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Zeichen",
+"UTF-8 (Hex)"
+],
+"zeilen": [
+[
+"A",
+"41"
+],
+[
+"ä",
+"C3 A4"
+],
+[
+"ö",
+"C3 B6"
+],
+[
+"ü",
+"C3 BC"
+],
+[
+"ß",
+"C3 9F"
+],
+[
+"€",
+"E2 82 AC"
+],
+[
+"Ω",
+"CE A9"
+],
+[
+"µ",
+"C2 B5"
+],
+[
+"😀",
+"F0 9F 98 80"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Großbuchstaben und Kleinbuchstaben unterscheiden sich nur in **Bit 5 (0x20)**: 'A' = 0x41, 'a' = 0x61."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Zeichenmüll wie „Ã¤“ statt „ä“ = UTF-8 wurde als Latin-1 gelesen."
+}
+],
+"siehe": [
+"zahlen:zahlen"
+],
+"symbol": "led"
+},
+{
+"id": "codes",
+"titel": "Codes: BCD, Gray, Parität, CRC",
+"kurz": "Fehlererkennung und Codierungen",
+"tags": [
+"bcd",
+"gray",
+"parität",
+"crc",
+"hamming",
+"fehlererkennung",
+"checksumme",
+"hash"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Dez",
+"BCD",
+"Gray (4 Bit)",
+"Excess-3"
+],
+"zeilen": [
+[
+"0",
+"0000",
+"0000",
+"0011"
+],
+[
+"1",
+"0001",
+"0001",
+"0100"
+],
+[
+"2",
+"0010",
+"0011",
+"0101"
+],
+[
+"3",
+"0011",
+"0010",
+"0110"
+],
+[
+"4",
+"0100",
+"0110",
+"0111"
+],
+[
+"5",
+"0101",
+"0111",
+"1000"
+],
+[
+"6",
+"0110",
+"0101",
+"1001"
+],
+[
+"7",
+"0111",
+"0100",
+"1010"
+],
+[
+"8",
+"1000",
+"1100",
+"1011"
+],
+[
+"9",
+"1001",
+"1101",
+"1100"
+]
+],
+"mono": [
+0,
+1,
+2,
+3
+],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "**Gray-Code:** Von einem Wert zum nächsten ändert sich nur **ein** Bit – ideal für Drehgeber (kein Fehlzustand beim Übergang). Umrechnung: g = b XOR (b >> 1)."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Verfahren",
+"Fehlererkennung"
+],
+"zeilen": [
+[
+"Parität (gerade/ungerade)",
+"erkennt einen Bitfehler"
+],
+[
+"Prüfsumme (Checksum)",
+"einfach, schwach"
+],
+[
+"CRC-8/16/32",
+"erkennt Burstfehler, sehr zuverlässig"
+],
+[
+"Hamming-Code",
+"erkennt 2, korrigiert 1 Bit"
+],
+[
+"Reed-Solomon",
+"korrigiert Fehlerbündel (CD, QR)"
+],
+[
+"SHA-256 / MD5",
+"kryptografische Hash (Integrität)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"CRC",
+"Polynom",
+"Einsatz"
+],
+"zeilen": [
+[
+"CRC-8",
+"0x07",
+"Sensoren (DS18B20: 0x31)"
+],
+[
+"CRC-16 (Modbus)",
+"0xA001 (reflected)",
+"Modbus RTU"
+],
+[
+"CRC-16-CCITT",
+"0x1021",
+"XMODEM, Bluetooth"
+],
+[
+"CRC-32",
+"0x04C11DB7",
+"Ethernet, ZIP, PNG"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Hamming-Abstand d: erkennt d−1 Fehler, korrigiert ⌊(d−1)/2⌋. Parität hat d = 2."
+}
+],
+"siehe": [
+"zahlen:zahlen"
+],
+"symbol": "led"
+},
+{
+"id": "float",
+"titel": "Gleitkommazahlen (IEEE 754)",
+"kurz": "float, double – Aufbau und Rundung",
+"tags": [
+"float",
+"ieee",
+"754",
+"gleitkomma",
+"double",
+"rundung",
+"nan"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Bits",
+"Vorzeichen",
+"Exponent",
+"Mantisse",
+"Genauigkeit"
+],
+"zeilen": [
+[
+"half (float16)",
+"16",
+"1",
+"5",
+"10",
+"≈ 3 Stellen"
+],
+[
+"float (single)",
+"32",
+"1",
+"8",
+"23",
+"≈ 7 Stellen"
+],
+[
+"double",
+"64",
+"1",
+"11",
+"52",
+"≈ 15–16 Stellen"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "formel",
+"name": "Wert",
+"f": "(−1)ˢ · 1,Mantisse · 2^(Exponent − Bias)",
+"text": "Bias: 127 (float), 1023 (double). Spezialwerte: Exponent 0 = 0/subnormal, Exponent max = Inf/NaN."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Beispiel",
+"Hex (float32)"
+],
+"zeilen": [
+[
+"1,0",
+"0x3F800000"
+],
+[
+"−2,0",
+"0xC0000000"
+],
+[
+"0,5",
+"0x3F000000"
+],
+[
+"3,14159",
+"0x40490FD0"
+],
+[
+"Inf",
+"0x7F800000"
+],
+[
+"NaN",
+"0x7FC00000"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "`0,1 + 0,2 != 0,3` – die meisten Dezimalbrüche sind binär nicht exakt darstellbar. **Floats nie mit == vergleichen**, sondern mit Toleranz (abs(a−b) < eps)."
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Für Geld: Ganzzahl in Cent oder `decimal` verwenden – kein float."
+}
+],
+"siehe": [
+"zahlen:zahlen"
+],
+"symbol": "quarz"
+},
+{
+"id": "farben",
+"titel": "Farbcodes & Pixel",
+"kurz": "RGB, Hex, HSV, Farbtiefe",
+"tags": [
+"farbe",
+"rgb",
+"hex",
+"pixel",
+"color",
+"rgb565",
+"auflösung",
+"html"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Name",
+"Hex",
+"RGB"
+],
+"zeilen": [
+[
+"@#000000|Schwarz",
+"#000000",
+"0, 0, 0"
+],
+[
+"@#ffffff|Weiß",
+"#FFFFFF",
+"255, 255, 255"
+],
+[
+"@#ff0000|Rot",
+"#FF0000",
+"255, 0, 0"
+],
+[
+"@#00ff00|Grün",
+"#00FF00",
+"0, 255, 0"
+],
+[
+"@#0000ff|Blau",
+"#0000FF",
+"0, 0, 255"
+],
+[
+"@#ffff00|Gelb",
+"#FFFF00",
+"255, 255, 0"
+],
+[
+"@#00ffff|Cyan",
+"#00FFFF",
+"0, 255, 255"
+],
+[
+"@#ff00ff|Magenta",
+"#FF00FF",
+"255, 0, 255"
+],
+[
+"@#ff8c00|Orange",
+"#FF8C00",
+"255, 140, 0"
+],
+[
+"@#808080|Grau",
+"#808080",
+"128, 128, 128"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Format",
+"Bits pro Pixel",
+"Farben"
+],
+"zeilen": [
+[
+"Monochrom",
+"1",
+"2"
+],
+[
+"Graustufen",
+"8",
+"256"
+],
+[
+"RGB565 (TFT/OLED)",
+"16",
+"65 536"
+],
+[
+"RGB888 (True Color)",
+"24",
+"16,7 Mio."
+],
+[
+"RGBA8888",
+"32",
+"inkl. Alpha"
+],
+[
+"HDR 10 Bit",
+"30",
+"1,07 Mrd."
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "rechner",
+"titel": "RGB → 565",
+"felder": [
+[
+"r",
+"R (0–255)",
+"",
+"255"
+],
+[
+"g",
+"G (0–255)",
+"",
+"140"
+],
+[
+"b",
+"B (0–255)",
+"",
+"0"
+]
+],
+"ergebnis": [
+[
+"v",
+"RGB565-Wert",
+"((int(r)>>3)<<11)|((int(g)>>2)<<5)|(int(b)>>3)",
+"",
+"ganz"
+]
+]
+},
+{
+"t": "rechner",
+"titel": "Bildspeicher",
+"felder": [
+[
+"w",
+"Breite",
+"",
+"1920"
+],
+[
+"h",
+"Höhe",
+"",
+"1080"
+],
+[
+"bpp",
+"Bit pro Pixel",
+"",
+"24"
+]
+],
+"ergebnis": [
+[
+"b",
+"Bytes pro Bild",
+"w*h*bpp/8",
+"B",
+"si"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Hex-Farbe `#RRGGBB`: je 2 Hex-Ziffern pro Kanal. `#FF8C00` → R=0xFF=255, G=0x8C=140, B=0."
+}
+],
+"siehe": [
+"zahlen:zahlen"
+],
+"symbol": "quarz"
+}
+]
+}

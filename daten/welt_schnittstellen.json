@@ -1,0 +1,945 @@
+{
+"id": "schnittstellen",
+"name": "Schnittstellen & Busse",
+"untertitel": "I²C, SPI, UART, USB, CAN",
+"farbe": "pink",
+"symbol": "stromquelle",
+"reihenfolge": 9,
+"seiten": [
+{
+"id": "i2c",
+"titel": "I²C",
+"kurz": "2-Draht-Bus, Adressen, Pull-ups",
+"tags": [
+"i2c",
+"i²c",
+"iic",
+"twi",
+"sda",
+"scl",
+"adresse",
+"bus",
+"i2cdetect"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Signal",
+"Funktion"
+],
+"zeilen": [
+[
+"SDA",
+"Daten (bidirektional)"
+],
+[
+"SCL",
+"Takt (vom Master)"
+],
+[
+"GND",
+"gemeinsame Masse"
+],
+[
+"VCC",
+"3,3 V (oder 5 V je nach Gerät)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Modus",
+"Takt"
+],
+"zeilen": [
+[
+"Standard",
+"100 kHz"
+],
+[
+"Fast",
+"400 kHz"
+],
+[
+"Fast+",
+"1 MHz"
+],
+[
+"High-speed",
+"3,4 MHz"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Gerät",
+"Adresse (7 Bit)"
+],
+"zeilen": [
+[
+"SSD1306 OLED",
+"0x3C / 0x3D"
+],
+[
+"LCD-Backpack PCF8574",
+"0x27 / 0x3F"
+],
+[
+"BME280 / BMP280",
+"0x76 / 0x77"
+],
+[
+"MPU6050",
+"0x68 / 0x69"
+],
+[
+"DS3231 RTC",
+"0x68"
+],
+[
+"ADS1115",
+"0x48–0x4B"
+],
+[
+"INA219",
+"0x40–0x4F"
+],
+[
+"BH1750",
+"0x23 / 0x5C"
+],
+[
+"PCA9685 (Servos)",
+"0x40"
+],
+[
+"MCP23017",
+"0x20–0x27"
+],
+[
+"HMC5883L",
+"0x1E"
+],
+[
+"VL53L0X",
+"0x29"
+],
+[
+"24C32 EEPROM",
+"0x50–0x57"
+],
+[
+"SHT31",
+"0x44 / 0x45"
+],
+[
+"TCA9548A (Mux)",
+"0x70–0x77"
+]
+],
+"mono": [
+1
+],
+"fett": true,
+"titel": "Typische Adressen"
+},
+{
+"t": "formel",
+"name": "Pull-up-Widerstand",
+"f": "R_pull ≈ 1 kΩ … 10 kΩ",
+"text": "Kurze Leitungen: 4,7 kΩ; lange/mehr Geräte: 2,2 kΩ. Der Pi hat 1,8-kΩ-Pull-ups auf den I²C1-Pins."
+},
+{
+"t": "rechner",
+"titel": "Anstiegszeit (RC)",
+"felder": [
+[
+"r",
+"Pull-up",
+"Ω",
+"4k7"
+],
+[
+"c",
+"Busleitung (≈ 10 pF/Gerät + Kabel)",
+"F",
+"100p"
+]
+],
+"ergebnis": [
+[
+"t",
+"Anstiegszeit 30–70 %",
+"0.85*r*c",
+"s"
+],
+[
+"f",
+"max. Takt grob",
+"1/(10*r*c)",
+"Hz"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "pi",
+"text": "Aktivieren: `sudo raspi-config` → Interface Options → I2C. Scannen: `sudo i2cdetect -y 1`. Meldet er nichts: Verkabelung, Spannung, Pull-ups, Adresse."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Zwei Geräte mit **gleicher Adresse** am selben Bus funktionieren nicht – Adressjumper, Multiplexer (TCA9548A) oder zweiten Bus verwenden."
+}
+],
+"siehe": [
+"schnittstellen:spi",
+"mikro:gpio"
+],
+"symbol": "stromquelle"
+},
+{
+"id": "spi",
+"titel": "SPI",
+"kurz": "4-Draht-Bus, Modi, Chip-Select",
+"tags": [
+"spi",
+"mosi",
+"miso",
+"sck",
+"cs",
+"chip select",
+"bus"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Signal",
+"Alt",
+"Funktion"
+],
+"zeilen": [
+[
+"SCLK / SCK",
+"–",
+"Takt vom Master"
+],
+[
+"MOSI",
+"SDO / DIN",
+"Master → Slave"
+],
+[
+"MISO",
+"SDI / DOUT",
+"Slave → Master"
+],
+[
+"CS / SS / CE",
+"–",
+"Slave auswählen (aktiv Low)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Modus",
+"CPOL",
+"CPHA",
+"Takt im Leerlauf",
+"Abtastung"
+],
+"zeilen": [
+[
+"0",
+"0",
+"0",
+"Low",
+"steigende Flanke"
+],
+[
+"1",
+"0",
+"1",
+"Low",
+"fallende Flanke"
+],
+[
+"2",
+"1",
+"0",
+"High",
+"fallende Flanke"
+],
+[
+"3",
+"1",
+"1",
+"High",
+"steigende Flanke"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Merkmal",
+"I²C",
+"SPI",
+"UART"
+],
+"zeilen": [
+[
+"Leitungen",
+"2",
+"3 + CS je Slave",
+"2 (TX/RX)"
+],
+[
+"Geschwindigkeit",
+"0,1–3,4 MHz",
+"bis > 50 MHz",
+"bis ca. 1–3 MBit/s"
+],
+[
+"Topologie",
+"Multi-Master/Slave",
+"1 Master, n Slaves",
+"Punkt zu Punkt"
+],
+[
+"Adressierung",
+"Adresse",
+"CS-Leitung",
+"–"
+],
+[
+"Duplex",
+"Halb",
+"Voll",
+"Voll"
+],
+[
+"Typisch",
+"Sensoren",
+"Displays, SD, Flash, ADC",
+"GPS, Debug, Module"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Vergleich"
+},
+{
+"t": "hinweis",
+"typ": "pi",
+"text": "SPI aktivieren: `sudo raspi-config`. Geräte: `/dev/spidev0.0`, `/dev/spidev0.1`. Typische Takte: MCP3008 1 MHz, Display 20–40 MHz, SD-Karte 25 MHz."
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Funktioniert nichts? **Modus (0–3)** prüfen und **CS** richtig ansteuern. MISO schwebt, wenn kein Slave selektiert ist."
+}
+],
+"siehe": [
+"schnittstellen:i2c",
+"schnittstellen:uart"
+],
+"symbol": "stromquelle"
+},
+{
+"id": "uart",
+"titel": "UART / RS-232 / RS-485",
+"kurz": "Seriell: Pegel, Rahmen, Stecker",
+"tags": [
+"uart",
+"seriell",
+"rs232",
+"rs485",
+"rs-485",
+"rs-232",
+"ttl",
+"baud",
+"tx",
+"rx",
+"usb-seriell"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"**UART** ist ein asynchrones Protokoll: kein Takt, nur TX/RX und gemeinsame Masse. Beide Seiten müssen **Baudrate** und **Rahmen** (z. B. 8N1) kennen."
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Standard",
+"Pegel",
+"Leitungslänge",
+"Topologie"
+],
+"zeilen": [
+[
+"TTL (UART am Pi)",
+"0 / 3,3 V",
+"< 1 m",
+"Punkt zu Punkt"
+],
+[
+"RS-232",
+"−12 V / +12 V (invertiert)",
+"bis 15 m",
+"Punkt zu Punkt"
+],
+[
+"RS-422",
+"differentiell",
+"bis 1200 m",
+"1 Sender, 10 Empfänger"
+],
+[
+"RS-485",
+"differentiell A/B",
+"bis 1200 m",
+"Bus, bis 32 (256) Teilnehmer"
+],
+[
+"USB-Seriell (FTDI/CP2102/CH340)",
+"3,3 oder 5 V TTL",
+"USB-Kabel",
+"Adapter"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Rahmen",
+"Bedeutung"
+],
+"zeilen": [
+[
+"8N1",
+"8 Datenbits, keine Parität, 1 Stopbit (Standard)"
+],
+[
+"7E1",
+"7 Daten, gerade Parität, 1 Stop"
+],
+[
+"8E1",
+"8 Daten, gerade Parität"
+],
+[
+"8N2",
+"2 Stopbits"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"DE-9-Pin",
+"Signal",
+"Richtung"
+],
+"zeilen": [
+[
+"1",
+"DCD",
+"Eingang"
+],
+[
+"2",
+"RxD",
+"Eingang"
+],
+[
+"3",
+"TxD",
+"Ausgang"
+],
+[
+"4",
+"DTR",
+"Ausgang"
+],
+[
+"5",
+"GND",
+"–"
+],
+[
+"6",
+"DSR",
+"Eingang"
+],
+[
+"7",
+"RTS",
+"Ausgang"
+],
+[
+"8",
+"CTS",
+"Eingang"
+],
+[
+"9",
+"RI",
+"Eingang"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "RS-232 (9-polig, DTE)"
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "**Kreuzen:** TX des einen an RX des anderen. Masse immer verbinden. **Kein Strom** über das Datenkabel. Pegel anpassen: TTL ↔ RS-232 mit MAX3232, RS-485 mit MAX485."
+},
+{
+"t": "hinweis",
+"typ": "pi",
+"text": "Serielle Konsole am Pi: `sudo raspi-config` → Interface → Serial Port (Login-Shell nein, Hardware ja). Gerät: `/dev/serial0` oder `/dev/ttyAMA0`. Debug-Anschluss am Pi 5: 3-Pin-UART-Buchse."
+}
+],
+"siehe": [
+"mikro:takt",
+"schnittstellen:spi"
+],
+"symbol": "stromquelle"
+},
+{
+"id": "usb",
+"titel": "USB-Steckverbinder & Spannungen",
+"kurz": "USB-A, -B, Micro, C: Pinbelegung",
+"tags": [
+"usb",
+"usb-c",
+"usb-a",
+"micro-usb",
+"pinout",
+"cc",
+"stecker"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Version",
+"Rate",
+"Name"
+],
+"zeilen": [
+[
+"USB 1.1",
+"12 MBit/s",
+"Full-Speed"
+],
+[
+"USB 2.0",
+"480 MBit/s",
+"High-Speed"
+],
+[
+"USB 3.2 Gen1",
+"5 GBit/s",
+"SuperSpeed (USB 3.0)"
+],
+[
+"USB 3.2 Gen2",
+"10 GBit/s",
+"SuperSpeed+"
+],
+[
+"USB4",
+"20/40 GBit/s",
+"über USB-C"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Pin (USB-A 2.0)",
+"Signal",
+"Ader"
+],
+"zeilen": [
+[
+"1",
+"VBUS +5 V",
+"@#ff4d5e|rot"
+],
+[
+"2",
+"D−",
+"@#ffffff|weiß"
+],
+[
+"3",
+"D+",
+"@#3ddc84|grün"
+],
+[
+"4",
+"GND",
+"@#222222|schwarz"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "USB 2.0 Kabelfarben"
+},
+{
+"t": "tabelle",
+"kopf": [
+"USB-C Pin",
+"Funktion"
+],
+"zeilen": [
+[
+"A1 / B12 / A12 / B1",
+"GND"
+],
+[
+"A4 / B9 / A9 / B4",
+"VBUS"
+],
+[
+"A6 / A7",
+"D+ / D−"
+],
+[
+"A5 / B5",
+"CC1 / CC2 (Orientierung, Strom, PD)"
+],
+[
+"A8 / B8",
+"SBU1 / SBU2"
+],
+[
+"A2.. / B2..",
+"SuperSpeed-Lanes"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "**CC-Widerstände:** 5,1 kΩ von jedem CC-Pin nach GND macht ein USB-C-Gerät (Sink) fähig, 5 V zu ziehen. Fehlen sie, liefert ein C-zu-C-Netzteil nichts."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Billige **Ladekabel** haben oft nur VBUS/GND (keine Datenleitungen) – dann findet der Rechner das Gerät nicht."
+}
+],
+"siehe": [
+"energie:netzteil"
+],
+"symbol": "gleichspannung"
+},
+{
+"id": "can",
+"titel": "CAN-Bus",
+"kurz": "Auto, Industrie, Raspberry Pi",
+"tags": [
+"can",
+"can-bus",
+"obd2",
+"mcp2515",
+"auto"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Eigenschaft",
+"Wert"
+],
+"zeilen": [
+[
+"Leitungen",
+"CAN_H, CAN_L (differentiell)"
+],
+[
+"Abschluss",
+"120 Ω an beiden Enden"
+],
+[
+"Geschwindigkeit",
+"bis 1 MBit/s (40 m), 125 kBit/s (500 m)"
+],
+[
+"Adressierung",
+"Nachrichten-ID (11 Bit / 29 Bit)"
+],
+[
+"Fehlererkennung",
+"CRC, ACK, Bit-Stuffing"
+],
+[
+"Typische Anwendung",
+"KFZ (OBD2), Industrie, Aufzüge"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Chip",
+"Funktion"
+],
+"zeilen": [
+[
+"MCP2515",
+"CAN-Controller (SPI)"
+],
+[
+"MCP2551 / TJA1050 / SN65HVD230",
+"Transceiver (Pegel)"
+],
+[
+"SN65HVD230",
+"3,3-V-tauglich"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Zwischen CAN_H und CAN_L müssen am ausgeschalteten Bus **ca. 60 Ω** zu messen sein (2 × 120 Ω parallel). 120 Ω: nur ein Abschluss fehlt; ∞: keiner."
+},
+{
+"t": "hinweis",
+"typ": "pi",
+"text": "Pi mit MCP2515: `dtoverlay=mcp2515-can0,oscillator=16000000,interrupt=25`, dann `sudo ip link set can0 up type can bitrate 500000`; lesen mit `candump can0`."
+}
+],
+"siehe": [
+"schnittstellen:uart"
+],
+"symbol": "stromquelle"
+},
+{
+"id": "rj45",
+"titel": "Ethernet-Stecker (RJ45)",
+"kurz": "T568A/T568B, Kabelfarben anklickbar",
+"tags": [
+"rj45",
+"ethernet",
+"t568",
+"lan",
+"kabel",
+"cat5",
+"cat6",
+"patchkabel",
+"pinbelegung"
+],
+"bloecke": [
+{
+"t": "spezial",
+"name": "rj45"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Pin",
+"T568A",
+"T568B",
+"10/100-Funktion"
+],
+"zeilen": [
+[
+"1",
+"grün/weiß",
+"orange/weiß",
+"TX+"
+],
+[
+"2",
+"grün",
+"orange",
+"TX−"
+],
+[
+"3",
+"orange/weiß",
+"grün/weiß",
+"RX+"
+],
+[
+"4",
+"blau",
+"blau",
+"(PoE+)"
+],
+[
+"5",
+"blau/weiß",
+"blau/weiß",
+"(PoE+)"
+],
+[
+"6",
+"orange",
+"grün",
+"RX−"
+],
+[
+"7",
+"braun/weiß",
+"braun/weiß",
+"(PoE−)"
+],
+[
+"8",
+"braun",
+"braun",
+"(PoE−)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Ein **Crossover-Kabel** hat auf der einen Seite A, auf der anderen B. Moderne Geräte (Auto-MDI-X) brauchen es nicht mehr."
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "**Kategorie:** Cat5e = 1 GBit/s bis 100 m, Cat6 = 10 GBit/s bis 55 m, Cat6a = 10 GBit/s bis 100 m, Cat7/8 = geschirmt, 25/40 GBit/s kurz."
+}
+],
+"siehe": [
+"netzwerk:osi"
+],
+"symbol": "antenne"
+},
+{
+"id": "onewire",
+"titel": "1-Wire & weitere Busse",
+"kurz": "1-Wire, I²S, JTAG/SWD, PCIe, CSI",
+"tags": [
+"1-wire",
+"i2s",
+"swd",
+"jtag",
+"pcie",
+"csi",
+"dsi",
+"modbus",
+"dmx"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Bus",
+"Leitungen",
+"Anwendung"
+],
+"zeilen": [
+[
+"1-Wire",
+"1 (+GND)",
+"DS18B20, iButton; 4,7 kΩ Pull-up"
+],
+[
+"I²S",
+"BCLK, LRCLK, DIN/DOUT",
+"Digitalaudio (PCM5102, MAX98357)"
+],
+[
+"SWD",
+"SWDIO, SWCLK",
+"ARM Debug (Pico, STM32)"
+],
+[
+"JTAG",
+"TCK, TMS, TDI, TDO",
+"Debug/Boundary-Scan"
+],
+[
+"PCIe",
+"Lanes (x1)",
+"NVMe am Pi 5, Netzwerkkarten"
+],
+[
+"CSI",
+"MIPI differentiell",
+"Kamera am Pi"
+],
+[
+"DSI",
+"MIPI differentiell",
+"Display am Pi"
+],
+[
+"SDIO",
+"CLK, CMD, D0–D3",
+"SD-Karte, WLAN-Chips"
+],
+[
+"DMX512",
+"RS-485",
+"Bühnenlicht"
+],
+[
+"Modbus RTU",
+"RS-485",
+"Industrie, Messgeräte"
+],
+[
+"Wiegand",
+"D0, D1",
+"RFID-Leser"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Schnell in der Praxis: Hast du ein Gerät und kennst die Schnittstelle nicht? Zähle die Pins: 2 → I²C/UART, 3–4 → SPI, 1 + GND → 1-Wire."
+}
+],
+"siehe": [
+"schnittstellen:i2c"
+],
+"symbol": "stromquelle"
+}
+]
+}

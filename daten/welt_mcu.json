@@ -1,0 +1,2522 @@
+{
+ "id": "mcu",
+ "name": "Mikrocontroller-Boards",
+ "untertitel": "Arduino, ESP32, Pico, STM32 – Daten, Vergleiche, Pegel, Flashen",
+ "farbe": "braun",
+ "symbol": "quarz",
+ "reihenfolge": 32,
+ "seiten": [
+  {
+   "id": "v_eigen",
+   "titel": "Eigener Vergleich",
+   "kurz": "2–3 Einträge wählen und nebeneinander vergleichen",
+   "tags": [
+    "vergleich",
+    "eigener vergleich",
+    "nebeneinander",
+    "mikrocontroller"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Tippe auf „Hinzufügen“, um zwei oder drei Einträge zu wählen. Darunter siehst du sofort ihre Technischen Daten nebeneinander. Zeilen mit Unterschieden sind gelb hinterlegt. Mit ✕ entfernst du einen Eintrag wieder."
+     ]
+    },
+    {
+     "t": "vergleich",
+     "welt": "mcu",
+     "n": 3
+    }
+   ],
+   "siehe": [],
+   "symbol": "voltmeter",
+   "gruppe": "Vergleiche & Wissen"
+  },
+  {
+   "id": "v_vergleich",
+   "titel": "Vergleich aller Boards",
+   "kurz": "Takt, Flash, RAM und Funk auf einen Blick",
+   "tags": [
+    "vergleich",
+    "boards",
+    "mikrocontroller",
+    "tabelle"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Eine Übersicht aller Boards dieser Welt. Taktfrequenzen sind nur ein Teil der Wahrheit: 32-Bit-Kerne mit Gleitkomma-Einheit (FPU) rechnen deutlich schneller als 8-Bit-AVR-Kerne bei gleichem Takt."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Board",
+      "Kern",
+      "Takt",
+      "Flash",
+      "RAM",
+      "Funk"
+     ],
+     "zeilen": [
+      [
+       "Arduino Uno R3",
+       "ATmega328P",
+       "16 MHz",
+       "32 KB",
+       "2 KB SRAM",
+       "nein"
+      ],
+      [
+       "Arduino Uno R4 Minima / WiFi",
+       "Renesas RA4M1",
+       "48 MHz",
+       "256 KB",
+       "32 KB SRAM",
+       "ja"
+      ],
+      [
+       "Arduino Nano / Nano Every",
+       "ATmega328P",
+       "16 MHz (Nano) / 20 MHz (Every)",
+       "32 KB / 48 KB",
+       "2 KB / 6 KB",
+       "nein"
+      ],
+      [
+       "Arduino Mega 2560",
+       "ATmega2560",
+       "16 MHz",
+       "256 KB",
+       "8 KB SRAM",
+       "nein"
+      ],
+      [
+       "ESP8266 (NodeMCU / Wemos D1 mini)",
+       "Tensilica L106",
+       "80 / 160 MHz",
+       "bis 4 MB (extern)",
+       "ca. 80 KB Nutzer-RAM",
+       "ja"
+      ],
+      [
+       "ESP32 (WROOM-32)",
+       "Xtensa LX6",
+       "bis 240 MHz",
+       "typisch 4 MB (extern)",
+       "520 KB SRAM",
+       "ja"
+      ],
+      [
+       "ESP32-S3",
+       "Xtensa LX7",
+       "bis 240 MHz",
+       "bis 16 MB",
+       "512 KB SRAM (",
+       "ja"
+      ],
+      [
+       "ESP32-C3",
+       "RISC-V",
+       "bis 160 MHz",
+       "bis 4 MB",
+       "400 KB SRAM",
+       "ja"
+      ],
+      [
+       "ESP32-C6",
+       "RISC-V",
+       "bis 160 MHz",
+       "bis 8 MB",
+       "512 KB SRAM",
+       "ja"
+      ],
+      [
+       "Raspberry Pi Pico (RP2040)",
+       "Zwei Cortex-M0+",
+       "133 MHz",
+       "2 MB (extern, QSPI)",
+       "264 KB SRAM",
+       "nein"
+      ],
+      [
+       "Raspberry Pi Pico W / WH",
+       "Zwei Cortex-M0+",
+       "133 MHz",
+       "2 MB",
+       "264 KB SRAM",
+       "ja"
+      ],
+      [
+       "Raspberry Pi Pico 2 / 2 W (RP2350)",
+       "Zwei Cortex-M33 oder zwei Hazard3",
+       "150 MHz",
+       "4 MB",
+       "520 KB SRAM",
+       "ja"
+      ],
+      [
+       "STM32F103 „Blue Pill“",
+       "Cortex-M3",
+       "72 MHz",
+       "64 KB (oft 128 KB)",
+       "20 KB SRAM",
+       "nein"
+      ],
+      [
+       "STM32 Nucleo-F446RE",
+       "Cortex-M4F",
+       "180 MHz",
+       "512 KB",
+       "128 KB SRAM",
+       "nein"
+      ],
+      [
+       "Teensy 4.1",
+       "NXP i.MX RT1062",
+       "600 MHz (übertaktbar)",
+       "8 MB",
+       "1 MB RAM (",
+       "nein"
+      ],
+      [
+       "BBC micro:bit v2",
+       "nRF52833",
+       "64 MHz",
+       "512 KB",
+       "128 KB RAM",
+       "ja"
+      ],
+      [
+       "ATtiny85",
+       "8-Bit AVR",
+       "bis 20 MHz (intern 8 MHz)",
+       "8 KB",
+       "512 Byte SRAM",
+       "nein"
+      ],
+      [
+       "nRF52840 (z. B. Seeed XIAO / Adafruit Feather)",
+       "Cortex-M4F",
+       "64 MHz",
+       "1 MB",
+       "256 KB RAM",
+       "ja"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Alle Boards"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Bei der Wahl hilft die Seite „Welches Board für welches Projekt?“."
+    }
+   ],
+   "siehe": [
+    "mcu:v_wahl"
+   ],
+   "symbol": "quarz",
+   "gruppe": "Vergleiche & Wissen"
+  },
+  {
+   "id": "v_wahl",
+   "titel": "Welches Board für welches Projekt?",
+   "kurz": "Entscheidungshilfe",
+   "tags": [
+    "wahl",
+    "empfehlung",
+    "auswahl"
+   ],
+   "bloecke": [
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Projekt",
+      "Empfehlung",
+      "Warum"
+     ],
+     "zeilen": [
+      [
+       "Erster Kontakt mit Elektronik",
+       "Arduino Uno R4 Minima",
+       "Viele Anleitungen, robuste 5-V-Pins"
+      ],
+      [
+       "Sensoren mit WLAN, Smart Home",
+       "ESP32-C3 oder ESP32-C6",
+       "Billig, Wi-Fi + Bluetooth, Matter/Thread (C6)"
+      ],
+      [
+       "Display, Kamera, Audio",
+       "ESP32-S3",
+       "Viel RAM, USB, KI-Befehle"
+      ],
+      [
+       "Eigene Protokolle, präzises Timing",
+       "Raspberry Pi Pico 2",
+       "PIO-Zustandsmaschinen"
+      ],
+      [
+       "Batteriebetrieb, Bluetooth-Wearable",
+       "nRF52840",
+       "Sehr sparsam"
+      ],
+      [
+       "Audio, Echtzeit, schnelle Berechnung",
+       "Teensy 4.1",
+       "600 MHz Cortex-M7"
+      ],
+      [
+       "Schule, Kinder",
+       "micro:bit v2",
+       "Alles eingebaut"
+      ],
+      [
+       "Kleiner Schalter, Blinker",
+       "ATtiny85",
+       "1 Euro, winzig"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Entscheidungshilfe"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Wenn du Linux, Netzwerk oder eine Oberfläche brauchst, nimm keinen Mikrocontroller, sondern einen Raspberry Pi (siehe „Mikrocontroller oder Pi?“)."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_vs_sbc"
+   ],
+   "symbol": "quarz",
+   "gruppe": "Vergleiche & Wissen"
+  },
+  {
+   "id": "v_vs_sbc",
+   "titel": "Mikrocontroller oder Pi?",
+   "kurz": "Unterschied zwischen MCU und Einplatinenrechner",
+   "tags": [
+    "mcu",
+    "sbc",
+    "raspberry",
+    "unterschied"
+   ],
+   "bloecke": [
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Merkmal",
+      "Mikrocontroller (Pico, ESP32, Arduino)",
+      "Einplatinenrechner (Raspberry Pi)"
+     ],
+     "zeilen": [
+      [
+       "Betriebssystem",
+       "keins (oder RTOS), ein Programm",
+       "Linux, viele Programme parallel"
+      ],
+      [
+       "Leistung",
+       "MHz, KB bis wenige MB",
+       "GHz, GB"
+      ],
+      [
+       "Start",
+       "Sofort (Millisekunden)",
+       "Boot dauert Sekunden"
+      ],
+      [
+       "Echtzeit",
+       "Sehr gut (exakt, µs)",
+       "Schlecht (Linux ist nicht echtzeitfähig)"
+      ],
+      [
+       "Strom",
+       "µA bis mA",
+       "0,5–10 W"
+      ],
+      [
+       "Preis",
+       "1–30 €",
+       "20–100 €"
+      ],
+      [
+       "Typische Aufgabe",
+       "Sensor lesen, Motor steuern, PWM",
+       "Server, Kamera, Oberfläche, KI"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Gegenüberstellung"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Gute Kombi: Der Pi kümmert sich um Netzwerk und Anzeige, ein Mikrocontroller (per USB-Seriell oder I²C) um das schnelle Timing."
+    }
+   ],
+   "siehe": [
+    "mcu:v_wahl",
+    "mikro:gpio"
+   ],
+   "symbol": "quarz",
+   "gruppe": "Vergleiche & Wissen"
+  },
+  {
+   "id": "v_pegel",
+   "titel": "Pegel: 5 V oder 3,3 V?",
+   "kurz": "Warum die Spannung der Pins wichtig ist",
+   "tags": [
+    "pegel",
+    "level shifter",
+    "5v",
+    "3,3v",
+    "spannungsteiler"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Die meisten modernen Chips arbeiten mit **3,3 V**. Der Arduino Uno R3/Mega und viele Sensor-Module nutzen dagegen **5 V**. Beide direkt zu verbinden kann den 3,3-V-Chip zerstören."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Situation",
+      "Lösung"
+     ],
+     "zeilen": [
+      [
+       "5 V-Ausgang an 3,3 V-Eingang",
+       "Spannungsteiler (z. B. 1 kΩ / 2 kΩ) oder Pegelwandler"
+      ],
+      [
+       "3,3 V-Ausgang an 5 V-Eingang",
+       "Meist ohne Maßnahme möglich (Schwelle ≈ 0,7 × 5 V = 3,5 V – manchmal knapp), sicherer mit Pegelwandler"
+      ],
+      [
+       "I²C zwischen 3,3 V und 5 V",
+       "Bidirektionaler Pegelwandler (z. B. BSS138-Modul)"
+      ],
+      [
+       "Viele Pins schnell",
+       "Pegelwandler-IC (74LVC245)"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Lösungen"
+    },
+    {
+     "t": "formel",
+     "name": "Spannungsteiler",
+     "f": "U_aus = U_ein × R2 / (R1 + R2)",
+     "text": "5 V × 2 kΩ / (1 kΩ + 2 kΩ) ≈ 3,33 V."
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "Auch die Versorgung zählt: Ein 3,3-V-Board nie mit 5 V an den 3V3-Pin versorgen. Den USB- oder VIN-Eingang nutzen, der Spannungsregler ist dann eingebaut."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich"
+   ],
+   "symbol": "quarz",
+   "gruppe": "Vergleiche & Wissen"
+  },
+  {
+   "id": "v_sprachen",
+   "titel": "Programmiersprachen für Mikrocontroller",
+   "kurz": "C/C++, MicroPython, CircuitPython und Rust",
+   "tags": [
+    "micropython",
+    "circuitpython",
+    "c++",
+    "rust",
+    "programmieren"
+   ],
+   "bloecke": [
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Sprache",
+      "Vorteile",
+      "Nachteile",
+      "Passt zu"
+     ],
+     "zeilen": [
+      [
+       "C / C++ (Arduino-IDE, PlatformIO)",
+       "Schnell, wenig Speicher, riesige Auswahl an Bibliotheken",
+       "Übersetzen & Hochladen nötig",
+       "fast alle Boards"
+      ],
+      [
+       "MicroPython",
+       "Interaktive Konsole (REPL), leicht lesbar",
+       "Langsamer, braucht mehr RAM (≥ 256 KB)",
+       "ESP32, Pico, Teensy"
+      ],
+      [
+       "CircuitPython",
+       "Board erscheint als USB-Laufwerk, sehr einsteigerfreundlich",
+       "Wie MicroPython, Adafruit-Bibliotheken",
+       "Pico, ESP32-S3, nRF52"
+      ],
+      [
+       "Rust (Embassy, esp-hal)",
+       "Sicher, modern",
+       "Lernkurve hoch",
+       "ESP32, STM32, nRF"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Vergleich"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Auf dem Pi gibt es in der Welt „Linux & Terminal“ und in der Toolbox fertige Befehle für `esptool`, `mpremote` und `picotool`."
+    }
+   ],
+   "siehe": [
+    "mcu:v_flash"
+   ],
+   "symbol": "quarz",
+   "gruppe": "Vergleiche & Wissen"
+  },
+  {
+   "id": "v_flash",
+   "titel": "Flashen: wie kommt das Programm aufs Board?",
+   "kurz": "Bootloader, UF2, esptool und Programmer",
+   "tags": [
+    "flashen",
+    "bootloader",
+    "uf2",
+    "esptool",
+    "avrdude"
+   ],
+   "bloecke": [
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Board-Familie",
+      "Methode",
+      "Werkzeug"
+     ],
+     "zeilen": [
+      [
+       "Arduino Uno/Nano/Mega",
+       "USB-Seriell-Bootloader",
+       "Arduino-IDE, avrdude"
+      ],
+      [
+       "ESP8266/ESP32",
+       "UART-Bootloader, Boot-Taste halten",
+       "esptool.py, PlatformIO"
+      ],
+      [
+       "Pico / Pico 2",
+       "BOOTSEL halten, als USB-Laufwerk, .uf2 kopieren",
+       "Datei-Manager, picotool"
+      ],
+      [
+       "STM32 (Nucleo)",
+       "ST-LINK (SWD) per USB",
+       "STM32CubeProgrammer, OpenOCD"
+      ],
+      [
+       "ATtiny85",
+       "ISP-Programmer (SPI)",
+       "USBasp, avrdude"
+      ],
+      [
+       "nRF52840",
+       "UF2-Bootloader oder SWD",
+       "adafruit-nrfutil, OpenOCD"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Methoden"
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "Beim ESP32 vor dem Flashen die richtige serielle Schnittstelle wählen (meist `/dev/ttyUSB0` oder `/dev/ttyACM0`). Beim Pico nie den Pin 40 (VBUS) zusammen mit einer anderen Spannung speisen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_sprachen"
+   ],
+   "symbol": "quarz",
+   "gruppe": "Vergleiche & Wissen"
+  },
+  {
+   "id": "m_uno",
+   "titel": "Arduino Uno R3",
+   "kurz": "16 MHz · 32 KB · 5 V",
+   "tags": [
+    "mikrocontroller",
+    "arduino",
+    "arduino uno r3",
+    "board",
+    "arduino",
+    "esp32",
+    "pico"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Der Klassiker für Einsteiger: USB-B-Buchse, Steckleisten für Shields, riesige Community. Der ATmega328P hat nur 2 KB RAM – für Bildschirme oder WLAN ist das zu wenig."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Arduino"
+      ],
+      [
+       "Erschienen",
+       "2010"
+      ],
+      [
+       "Kern",
+       "ATmega328P (8-Bit AVR)"
+      ],
+      [
+       "Takt",
+       "16 MHz"
+      ],
+      [
+       "Flash-Speicher",
+       "32 KB"
+      ],
+      [
+       "Arbeitsspeicher",
+       "2 KB SRAM + 1 KB EEPROM"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "14 digital (6 PWM), 6 analog"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "5 V"
+      ],
+      [
+       "Funk",
+       "keiner"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 25–30 €"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "Alle GPIO-Pins dieses Boards arbeiten mit **5 V**. Vor dem Anschließen an andere Boards oder Sensoren Pegel prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "Arduino"
+  },
+  {
+   "id": "m_unor4",
+   "titel": "Arduino Uno R4 Minima / WiFi",
+   "kurz": "48 MHz · 256 KB · 5 V",
+   "tags": [
+    "mikrocontroller",
+    "arduino",
+    "arduino uno r4 minima / wifi",
+    "board",
+    "arduino",
+    "esp32",
+    "pico"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Gleiche Bauform wie der Uno R3, aber 16-mal mehr Flash, 16-mal mehr RAM, USB-C. Die WiFi-Version bekommt eine 12×8-LED-Matrix."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Arduino"
+      ],
+      [
+       "Erschienen",
+       "2023"
+      ],
+      [
+       "Kern",
+       "Renesas RA4M1 (Cortex-M4F)"
+      ],
+      [
+       "Takt",
+       "48 MHz"
+      ],
+      [
+       "Flash-Speicher",
+       "256 KB"
+      ],
+      [
+       "Arbeitsspeicher",
+       "32 KB SRAM"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "14 digital, 6 analog, 12-Bit-DAC"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "5 V"
+      ],
+      [
+       "Funk",
+       "nur WiFi-Version: ESP32-S3 (WLAN + Bluetooth LE)"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 20–30 €"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "Alle GPIO-Pins dieses Boards arbeiten mit **5 V**. Vor dem Anschließen an andere Boards oder Sensoren Pegel prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "Arduino"
+  },
+  {
+   "id": "m_nano",
+   "titel": "Arduino Nano / Nano Every",
+   "kurz": "16 MHz (Nano) / 20 MHz (Every) · 32 KB / 48 KB · 5 V",
+   "tags": [
+    "mikrocontroller",
+    "arduino",
+    "arduino nano / nano every",
+    "board",
+    "arduino",
+    "esp32",
+    "pico"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Die schmale Variante für Breadboards und eingebaute Geräte. Gibt es auch als Nano ESP32 und Nano 33 BLE."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Arduino"
+      ],
+      [
+       "Erschienen",
+       "2008"
+      ],
+      [
+       "Kern",
+       "ATmega328P (Nano), ATMega4809 (Every)"
+      ],
+      [
+       "Takt",
+       "16 MHz (Nano) / 20 MHz (Every)"
+      ],
+      [
+       "Flash-Speicher",
+       "32 KB / 48 KB"
+      ],
+      [
+       "Arbeitsspeicher",
+       "2 KB / 6 KB"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "14 digital, 8 analog"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "5 V"
+      ],
+      [
+       "Funk",
+       "keiner"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 10–25 €"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "Alle GPIO-Pins dieses Boards arbeiten mit **5 V**. Vor dem Anschließen an andere Boards oder Sensoren Pegel prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "Arduino"
+  },
+  {
+   "id": "m_mega",
+   "titel": "Arduino Mega 2560",
+   "kurz": "16 MHz · 256 KB · 5 V",
+   "tags": [
+    "mikrocontroller",
+    "arduino",
+    "arduino mega 2560",
+    "board",
+    "arduino",
+    "esp32",
+    "pico"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Viel IO für große Projekte (3D-Drucker mit RAMPS, Robotik). Wegen vieler Serienschnittstellen oft für mehrere Module."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Arduino"
+      ],
+      [
+       "Erschienen",
+       "2010"
+      ],
+      [
+       "Kern",
+       "ATmega2560 (8-Bit AVR)"
+      ],
+      [
+       "Takt",
+       "16 MHz"
+      ],
+      [
+       "Flash-Speicher",
+       "256 KB"
+      ],
+      [
+       "Arbeitsspeicher",
+       "8 KB SRAM + 4 KB EEPROM"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "54 digital (15 PWM), 16 analog, 4 UARTs"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "5 V"
+      ],
+      [
+       "Funk",
+       "keiner"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 40 €"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "Alle GPIO-Pins dieses Boards arbeiten mit **5 V**. Vor dem Anschließen an andere Boards oder Sensoren Pegel prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "Arduino"
+  },
+  {
+   "id": "m_esp8266",
+   "titel": "ESP8266 (NodeMCU / Wemos D1 mini)",
+   "kurz": "80 / 160 MHz · bis 4 MB (extern) · 3,3 V",
+   "tags": [
+    "mikrocontroller",
+    "espressif",
+    "esp8266 (nodemcu / wemos d1 mini)",
+    "board",
+    "arduino",
+    "esp32",
+    "pico"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Der Chip, der WLAN in die Bastlerwelt brachte. Heute meist durch ESP32-C3 abgelöst, aber noch in vielen Geräten (Sonoff, Tasmota)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Espressif"
+      ],
+      [
+       "Erschienen",
+       "2014"
+      ],
+      [
+       "Kern",
+       "Tensilica L106 (32 Bit)"
+      ],
+      [
+       "Takt",
+       "80 / 160 MHz"
+      ],
+      [
+       "Flash-Speicher",
+       "bis 4 MB (extern)"
+      ],
+      [
+       "Arbeitsspeicher",
+       "ca. 80 KB Nutzer-RAM"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "bis 17 (11 nutzbar), 1 ADC (10 Bit)"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "3,3 V"
+      ],
+      [
+       "Funk",
+       "WLAN 802.11 b/g/n"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 3–6 €"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Alle GPIO-Pins dieses Boards arbeiten mit **3,3 V (nicht 5-V-tolerant, sofern nicht ausdrücklich angegeben)**. Vor dem Anschließen an andere Boards oder Sensoren Pegel prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "ESP8266 & ESP32"
+  },
+  {
+   "id": "m_esp32",
+   "titel": "ESP32 (WROOM-32)",
+   "kurz": "bis 240 MHz · typisch 4 MB (extern) · 3,3 V",
+   "tags": [
+    "mikrocontroller",
+    "espressif",
+    "esp32 (wroom-32)",
+    "board",
+    "arduino",
+    "esp32",
+    "pico"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Zwei Kerne, WLAN und Bluetooth – der Allrounder für IoT. Viele Peripherien: I2C, SPI, I2S, CAN (TWAI), PWM (LEDC), Touch."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Espressif"
+      ],
+      [
+       "Erschienen",
+       "2016"
+      ],
+      [
+       "Kern",
+       "Xtensa LX6, 2 Kerne"
+      ],
+      [
+       "Takt",
+       "bis 240 MHz"
+      ],
+      [
+       "Flash-Speicher",
+       "typisch 4 MB (extern)"
+      ],
+      [
+       "Arbeitsspeicher",
+       "520 KB SRAM"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "bis 34, ADC 12 Bit, 2 DACs, Touch"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "3,3 V"
+      ],
+      [
+       "Funk",
+       "WLAN b/g/n, Bluetooth 4.2 + BLE"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 4–8 €"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Alle GPIO-Pins dieses Boards arbeiten mit **3,3 V (nicht 5-V-tolerant, sofern nicht ausdrücklich angegeben)**. Vor dem Anschließen an andere Boards oder Sensoren Pegel prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "ESP8266 & ESP32"
+  },
+  {
+   "id": "m_esp32s3",
+   "titel": "ESP32-S3",
+   "kurz": "bis 240 MHz · bis 16 MB · 3,3 V",
+   "tags": [
+    "mikrocontroller",
+    "espressif",
+    "esp32-s3",
+    "board",
+    "arduino",
+    "esp32",
+    "pico"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Natives USB-OTG und KI-Beschleunigung (Vektorbefehle). Beliebt für Kamera- und Display-Projekte (z. B. runde AMOLED-Displays)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Espressif"
+      ],
+      [
+       "Erschienen",
+       "2020"
+      ],
+      [
+       "Kern",
+       "Xtensa LX7, 2 Kerne"
+      ],
+      [
+       "Takt",
+       "bis 240 MHz"
+      ],
+      [
+       "Flash-Speicher",
+       "bis 16 MB"
+      ],
+      [
+       "Arbeitsspeicher",
+       "512 KB SRAM (+ PSRAM bis 8/16 MB)"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "bis 45"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "3,3 V"
+      ],
+      [
+       "Funk",
+       "WLAN b/g/n, Bluetooth 5 (LE)"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 6–12 €"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Alle GPIO-Pins dieses Boards arbeiten mit **3,3 V (nicht 5-V-tolerant, sofern nicht ausdrücklich angegeben)**. Vor dem Anschließen an andere Boards oder Sensoren Pegel prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "ESP8266 & ESP32"
+  },
+  {
+   "id": "m_esp32c3",
+   "titel": "ESP32-C3",
+   "kurz": "bis 160 MHz · bis 4 MB · 3,3 V",
+   "tags": [
+    "mikrocontroller",
+    "espressif",
+    "esp32-c3",
+    "board",
+    "arduino",
+    "esp32",
+    "pico"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Günstiger ESP mit RISC-V statt Xtensa. Ein Kern, daher weniger Leistung, aber sparsam."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Espressif"
+      ],
+      [
+       "Erschienen",
+       "2020"
+      ],
+      [
+       "Kern",
+       "RISC-V (1 Kern)"
+      ],
+      [
+       "Takt",
+       "bis 160 MHz"
+      ],
+      [
+       "Flash-Speicher",
+       "bis 4 MB"
+      ],
+      [
+       "Arbeitsspeicher",
+       "400 KB SRAM"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "bis 22"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "3,3 V"
+      ],
+      [
+       "Funk",
+       "WLAN b/g/n, Bluetooth 5 (LE)"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 3–6 €"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Alle GPIO-Pins dieses Boards arbeiten mit **3,3 V (nicht 5-V-tolerant, sofern nicht ausdrücklich angegeben)**. Vor dem Anschließen an andere Boards oder Sensoren Pegel prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "ESP8266 & ESP32"
+  },
+  {
+   "id": "m_esp32c6",
+   "titel": "ESP32-C6",
+   "kurz": "bis 160 MHz · bis 8 MB · 3,3 V",
+   "tags": [
+    "mikrocontroller",
+    "espressif",
+    "esp32-c6",
+    "board",
+    "arduino",
+    "esp32",
+    "pico"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Erster ESP mit WiFi 6 und Matter/Thread-Funk. Gut für Smart-Home-Projekte."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Espressif"
+      ],
+      [
+       "Erschienen",
+       "2021"
+      ],
+      [
+       "Kern",
+       "RISC-V (HP 160 MHz + LP 20 MHz)"
+      ],
+      [
+       "Takt",
+       "bis 160 MHz"
+      ],
+      [
+       "Flash-Speicher",
+       "bis 8 MB"
+      ],
+      [
+       "Arbeitsspeicher",
+       "512 KB SRAM"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "bis 30"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "3,3 V"
+      ],
+      [
+       "Funk",
+       "WLAN 6 (802.11ax), Bluetooth 5 (LE), Zigbee / Thread (802.15.4)"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 5–10 €"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Alle GPIO-Pins dieses Boards arbeiten mit **3,3 V (nicht 5-V-tolerant, sofern nicht ausdrücklich angegeben)**. Vor dem Anschließen an andere Boards oder Sensoren Pegel prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "ESP8266 & ESP32"
+  },
+  {
+   "id": "m_pico",
+   "titel": "Raspberry Pi Pico (RP2040)",
+   "kurz": "133 MHz · 2 MB (extern, QSPI) · 3,3 V",
+   "tags": [
+    "mikrocontroller",
+    "raspberry pi",
+    "raspberry pi pico (rp2040)",
+    "board",
+    "arduino",
+    "esp32",
+    "pico"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Erster eigener Chip der Raspberry Pi Foundation. Besonderheit: **PIO** (8 programmierbare Zustandsmaschinen) für eigene Protokolle (WS2812, VGA, DVI). Programmieren per MicroPython/C. Flashen: Drag-and-drop einer .uf2-Datei."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Raspberry Pi"
+      ],
+      [
+       "Erschienen",
+       "2021"
+      ],
+      [
+       "Kern",
+       "Zwei Cortex-M0+"
+      ],
+      [
+       "Takt",
+       "133 MHz"
+      ],
+      [
+       "Flash-Speicher",
+       "2 MB (extern, QSPI)"
+      ],
+      [
+       "Arbeitsspeicher",
+       "264 KB SRAM"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "26 (3 ADC 12 Bit)"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "3,3 V"
+      ],
+      [
+       "Funk",
+       "keiner"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 4–5 €"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Alle GPIO-Pins dieses Boards arbeiten mit **3,3 V (nicht 5-V-tolerant, sofern nicht ausdrücklich angegeben)**. Vor dem Anschließen an andere Boards oder Sensoren Pegel prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "Raspberry Pi Pico"
+  },
+  {
+   "id": "m_picow",
+   "titel": "Raspberry Pi Pico W / WH",
+   "kurz": "133 MHz · 2 MB · 3,3 V",
+   "tags": [
+    "mikrocontroller",
+    "raspberry pi",
+    "raspberry pi pico w / wh",
+    "board",
+    "arduino",
+    "esp32",
+    "pico"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Wie der Pico, aber mit Funkchip. Das WH hat bereits Stiftleisten eingelötet."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Raspberry Pi"
+      ],
+      [
+       "Erschienen",
+       "2022"
+      ],
+      [
+       "Kern",
+       "Zwei Cortex-M0+ (RP2040)"
+      ],
+      [
+       "Takt",
+       "133 MHz"
+      ],
+      [
+       "Flash-Speicher",
+       "2 MB"
+      ],
+      [
+       "Arbeitsspeicher",
+       "264 KB SRAM"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "26 (+ 3 über Funkchip)"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "3,3 V"
+      ],
+      [
+       "Funk",
+       "WLAN 802.11n + Bluetooth 5.2 (Infineon CYW43439)"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 6–8 €"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Alle GPIO-Pins dieses Boards arbeiten mit **3,3 V (nicht 5-V-tolerant, sofern nicht ausdrücklich angegeben)**. Vor dem Anschließen an andere Boards oder Sensoren Pegel prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "Raspberry Pi Pico"
+  },
+  {
+   "id": "m_pico2",
+   "titel": "Raspberry Pi Pico 2 / 2 W (RP2350)",
+   "kurz": "150 MHz · 4 MB · 3,3 V",
+   "tags": [
+    "mikrocontroller",
+    "raspberry pi",
+    "raspberry pi pico 2 / 2 w (rp2350)",
+    "board",
+    "arduino",
+    "esp32",
+    "pico"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Nachfolger des Pico: schneller, doppelt so viel RAM, Sicherheit (Arm TrustZone, Secure Boot), Gleitkomma-Einheit."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Raspberry Pi"
+      ],
+      [
+       "Erschienen",
+       "2024"
+      ],
+      [
+       "Kern",
+       "Zwei Cortex-M33 oder zwei Hazard3 (RISC-V), umschaltbar"
+      ],
+      [
+       "Takt",
+       "150 MHz"
+      ],
+      [
+       "Flash-Speicher",
+       "4 MB"
+      ],
+      [
+       "Arbeitsspeicher",
+       "520 KB SRAM"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "30 (RP2350A), 12 PIO-Zustandsmaschinen"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "3,3 V"
+      ],
+      [
+       "Funk",
+       "nur Pico 2 W: WLAN + Bluetooth 5.2"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 5–8 €"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Alle GPIO-Pins dieses Boards arbeiten mit **3,3 V (nicht 5-V-tolerant, sofern nicht ausdrücklich angegeben)**. Vor dem Anschließen an andere Boards oder Sensoren Pegel prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "Raspberry Pi Pico"
+  },
+  {
+   "id": "m_pi5",
+   "titel": "Raspberry Pi 5",
+   "kurz": "4 Kerne · 2,4 GHz · bis 16 GB",
+   "tags": [
+    "raspberry pi",
+    "pi",
+    "einplatinenrechner",
+    "sbc",
+    "board",
+    "raspberry pi 5"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Der aktuelle große Pi: viel schneller als der Pi 4, mit PCIe-Anschluss (z. B. für NVMe-SSD), eigenem Ein/Aus-Taster, Echtzeituhr und Lüfter-Anschluss. Läuft mit Linux (Raspberry Pi OS) – kein Mikrocontroller, sondern ein kompletter kleiner Computer."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Raspberry Pi"
+      ],
+      [
+       "Erschienen",
+       "2023"
+      ],
+      [
+       "Kern",
+       "4× Cortex-A76 (64 Bit), Grafik VideoCore VII"
+      ],
+      [
+       "Takt",
+       "2,4 GHz"
+      ],
+      [
+       "Flash-Speicher",
+       "kein Flash – Start von microSD oder NVMe-SSD (PCIe)"
+      ],
+      [
+       "Arbeitsspeicher",
+       "2 / 4 / 8 / 16 GB LPDDR4X"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "28 an der 40-Pin-Leiste"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "3,3 V (nicht 5-V-tolerant)"
+      ],
+      [
+       "Funk",
+       "WLAN ac, Bluetooth 5.0, Gigabit-LAN"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 50–120 $ (je nach RAM)"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Auch der Pi arbeitet mit **3,3 V an den GPIO-Pins** – 5 V an einem Pin kann ihn zerstören. Pegel vor dem Anschließen prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_eigen",
+    "mcu:v_vs_sbc",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "Raspberry Pi (Einplatinenrechner)"
+  },
+  {
+   "id": "m_pi4",
+   "titel": "Raspberry Pi 4 B",
+   "kurz": "4 Kerne · 1,5 GHz · bis 8 GB",
+   "tags": [
+    "raspberry pi",
+    "pi",
+    "einplatinenrechner",
+    "sbc",
+    "board",
+    "raspberry pi 4 b"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Der weit verbreitete Vorgänger des Pi 5: schnell genug für Desktop, Medien-Server und Retro-Spiele. USB 3 und zwei Micro-HDMI-Ausgänge."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Raspberry Pi"
+      ],
+      [
+       "Erschienen",
+       "2019"
+      ],
+      [
+       "Kern",
+       "4× Cortex-A72 (64 Bit)"
+      ],
+      [
+       "Takt",
+       "1,5 GHz (neuere Version 1,8 GHz)"
+      ],
+      [
+       "Flash-Speicher",
+       "kein Flash – Start von microSD oder USB"
+      ],
+      [
+       "Arbeitsspeicher",
+       "1 / 2 / 4 / 8 GB LPDDR4"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "28 an der 40-Pin-Leiste"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "3,3 V (nicht 5-V-tolerant)"
+      ],
+      [
+       "Funk",
+       "WLAN ac, Bluetooth 5.0, Gigabit-LAN"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 35–75 $ (je nach RAM)"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Auch der Pi arbeitet mit **3,3 V an den GPIO-Pins** – 5 V an einem Pin kann ihn zerstören. Pegel vor dem Anschließen prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_eigen",
+    "mcu:v_vs_sbc",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "Raspberry Pi (Einplatinenrechner)"
+  },
+  {
+   "id": "m_pi3",
+   "titel": "Raspberry Pi 3 B+",
+   "kurz": "4 Kerne · 1,4 GHz · 1 GB",
+   "tags": [
+    "raspberry pi",
+    "pi",
+    "einplatinenrechner",
+    "sbc",
+    "board",
+    "raspberry pi 3 b+"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Beliebter Allrounder: genug Leistung für Heimautomation, kleine Server und Bastelprojekte."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Raspberry Pi"
+      ],
+      [
+       "Erschienen",
+       "2018"
+      ],
+      [
+       "Kern",
+       "4× Cortex-A53 (64 Bit)"
+      ],
+      [
+       "Takt",
+       "1,4 GHz"
+      ],
+      [
+       "Flash-Speicher",
+       "kein Flash – Start von microSD"
+      ],
+      [
+       "Arbeitsspeicher",
+       "1 GB LPDDR2"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "28 an der 40-Pin-Leiste"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "3,3 V (nicht 5-V-tolerant)"
+      ],
+      [
+       "Funk",
+       "WLAN ac (2,4 + 5 GHz), Bluetooth 4.2, LAN (ca. 300 Mbit/s)"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 35 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Auch der Pi arbeitet mit **3,3 V an den GPIO-Pins** – 5 V an einem Pin kann ihn zerstören. Pegel vor dem Anschließen prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_eigen",
+    "mcu:v_vs_sbc",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "Raspberry Pi (Einplatinenrechner)"
+  },
+  {
+   "id": "m_pizero2",
+   "titel": "Raspberry Pi Zero 2 W",
+   "kurz": "4 Kerne · 1 GHz · 512 MB",
+   "tags": [
+    "raspberry pi",
+    "pi",
+    "einplatinenrechner",
+    "sbc",
+    "board",
+    "raspberry pi zero 2 w"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Winzig und günstig, aber ein richtiger Computer mit Linux. Ideal für kleine Gehäuse, Kameras und tragbare Projekte."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Raspberry Pi"
+      ],
+      [
+       "Erschienen",
+       "2021"
+      ],
+      [
+       "Kern",
+       "4× Cortex-A53 (64 Bit)"
+      ],
+      [
+       "Takt",
+       "1 GHz"
+      ],
+      [
+       "Flash-Speicher",
+       "kein Flash – Start von microSD"
+      ],
+      [
+       "Arbeitsspeicher",
+       "512 MB LPDDR2"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "28 (Lötpads, Leiste muss selbst gelötet werden)"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "3,3 V (nicht 5-V-tolerant)"
+      ],
+      [
+       "Funk",
+       "WLAN n, Bluetooth 4.2"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 15 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Auch der Pi arbeitet mit **3,3 V an den GPIO-Pins** – 5 V an einem Pin kann ihn zerstören. Pegel vor dem Anschließen prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_eigen",
+    "mcu:v_vs_sbc",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "Raspberry Pi (Einplatinenrechner)"
+  },
+  {
+   "id": "m_pi500",
+   "titel": "Raspberry Pi 500",
+   "kurz": "Pi 5 im Tastatur-Gehäuse",
+   "tags": [
+    "raspberry pi",
+    "pi",
+    "einplatinenrechner",
+    "sbc",
+    "board",
+    "raspberry pi 500"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Ein Pi 5, eingebaut in eine Tastatur: Bildschirm, Maus und Netzteil anschließen und loslegen. Die 40-Pin-Leiste ist hinten herausgeführt."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Raspberry Pi"
+      ],
+      [
+       "Erschienen",
+       "2024"
+      ],
+      [
+       "Kern",
+       "4× Cortex-A76 (64 Bit), Grafik VideoCore VII"
+      ],
+      [
+       "Takt",
+       "2,4 GHz"
+      ],
+      [
+       "Flash-Speicher",
+       "kein Flash – Start von microSD"
+      ],
+      [
+       "Arbeitsspeicher",
+       "8 GB LPDDR4X"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "28 an der 40-Pin-Leiste (hinten)"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "3,3 V (nicht 5-V-tolerant)"
+      ],
+      [
+       "Funk",
+       "WLAN ac, Bluetooth 5.0, Gigabit-LAN"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 90 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Auch der Pi arbeitet mit **3,3 V an den GPIO-Pins** – 5 V an einem Pin kann ihn zerstören. Pegel vor dem Anschließen prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_eigen",
+    "mcu:v_vs_sbc",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "Raspberry Pi (Einplatinenrechner)"
+  },
+  {
+   "id": "m_stm32f103",
+   "titel": "STM32F103 „Blue Pill“",
+   "kurz": "72 MHz · 64 KB (oft 128 KB) · 3,3 V",
+   "tags": [
+    "mikrocontroller",
+    "stmicroelectronics (bastelplatine aus china)",
+    "stm32f103 „blue pill“",
+    "board",
+    "arduino",
+    "esp32",
+    "pico"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Beliebtes billiges Board. Vorsicht: Viele Klone haben gefälschte Chips (CKS32, GD32) und falsche Widerstände an USB."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "STMicroelectronics (Bastelplatine aus China)"
+      ],
+      [
+       "Erschienen",
+       "2013"
+      ],
+      [
+       "Kern",
+       "Cortex-M3"
+      ],
+      [
+       "Takt",
+       "72 MHz"
+      ],
+      [
+       "Flash-Speicher",
+       "64 KB (oft 128 KB)"
+      ],
+      [
+       "Arbeitsspeicher",
+       "20 KB SRAM"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "37 (ADC 12 Bit)"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "3,3 V"
+      ],
+      [
+       "Funk",
+       "keiner"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 2–5 €"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Alle GPIO-Pins dieses Boards arbeiten mit **3,3 V (nicht 5-V-tolerant, sofern nicht ausdrücklich angegeben)**. Vor dem Anschließen an andere Boards oder Sensoren Pegel prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "STM32, Teensy & mehr"
+  },
+  {
+   "id": "m_nucleo",
+   "titel": "STM32 Nucleo-F446RE",
+   "kurz": "180 MHz · 512 KB · 3,3 V",
+   "tags": [
+    "mikrocontroller",
+    "stmicroelectronics",
+    "stm32 nucleo-f446re",
+    "board",
+    "arduino",
+    "esp32",
+    "pico"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Echtes Entwicklungsboard mit eingebautem ST-LINK-Debugger. Arduino-kompatible Anschlüsse. Gut zum Lernen professioneller Embedded-Entwicklung."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "STMicroelectronics"
+      ],
+      [
+       "Erschienen",
+       "2015"
+      ],
+      [
+       "Kern",
+       "Cortex-M4F (mit FPU)"
+      ],
+      [
+       "Takt",
+       "180 MHz"
+      ],
+      [
+       "Flash-Speicher",
+       "512 KB"
+      ],
+      [
+       "Arbeitsspeicher",
+       "128 KB SRAM"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "bis 50, ADC 12 Bit, DAC"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "3,3 V"
+      ],
+      [
+       "Funk",
+       "keiner"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 15–20 €"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Alle GPIO-Pins dieses Boards arbeiten mit **3,3 V (nicht 5-V-tolerant, sofern nicht ausdrücklich angegeben)**. Vor dem Anschließen an andere Boards oder Sensoren Pegel prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "STM32, Teensy & mehr"
+  },
+  {
+   "id": "m_teensy41",
+   "titel": "Teensy 4.1",
+   "kurz": "600 MHz (übertaktbar) · 8 MB · 3,3 V",
+   "tags": [
+    "mikrocontroller",
+    "pjrc",
+    "teensy 4.1",
+    "board",
+    "arduino",
+    "esp32",
+    "pico"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Der schnellste Arduino-kompatible Mikrocontroller. Für Audio, Echtzeit-Signalverarbeitung, LED-Matrizen."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "PJRC"
+      ],
+      [
+       "Erschienen",
+       "2019"
+      ],
+      [
+       "Kern",
+       "NXP i.MX RT1062 (Cortex-M7)"
+      ],
+      [
+       "Takt",
+       "600 MHz (übertaktbar)"
+      ],
+      [
+       "Flash-Speicher",
+       "8 MB"
+      ],
+      [
+       "Arbeitsspeicher",
+       "1 MB RAM (+ optional PSRAM)"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "55, ADC 12 Bit"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "3,3 V"
+      ],
+      [
+       "Funk",
+       "keiner (Ethernet 100 Mbit eingebaut)"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 35 €"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Alle GPIO-Pins dieses Boards arbeiten mit **3,3 V (nicht 5-V-tolerant, sofern nicht ausdrücklich angegeben)**. Vor dem Anschließen an andere Boards oder Sensoren Pegel prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "STM32, Teensy & mehr"
+  },
+  {
+   "id": "m_microbit",
+   "titel": "BBC micro:bit v2",
+   "kurz": "64 MHz · 512 KB · 3,3 V",
+   "tags": [
+    "mikrocontroller",
+    "micro:bit educational foundation",
+    "bbc micro:bit v2",
+    "board",
+    "arduino",
+    "esp32",
+    "pico"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Für den Schulunterricht: 5×5-LED-Matrix, Beschleunigungssensor, Kompass, Mikrofon, Lautsprecher, Berührungs-Logo. Programmierung blockweise oder per MicroPython."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Micro:bit Educational Foundation"
+      ],
+      [
+       "Erschienen",
+       "2020"
+      ],
+      [
+       "Kern",
+       "nRF52833 (Cortex-M4F)"
+      ],
+      [
+       "Takt",
+       "64 MHz"
+      ],
+      [
+       "Flash-Speicher",
+       "512 KB"
+      ],
+      [
+       "Arbeitsspeicher",
+       "128 KB RAM"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "25-Pin-Randstecker, 3 Ringe"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "3,3 V"
+      ],
+      [
+       "Funk",
+       "Bluetooth 5 (LE), 2,4-GHz-Funk"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 20 €"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Alle GPIO-Pins dieses Boards arbeiten mit **3,3 V (nicht 5-V-tolerant, sofern nicht ausdrücklich angegeben)**. Vor dem Anschließen an andere Boards oder Sensoren Pegel prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "STM32, Teensy & mehr"
+  },
+  {
+   "id": "m_attiny85",
+   "titel": "ATtiny85",
+   "kurz": "bis 20 MHz (intern 8 MHz) · 8 KB · 2,7–5,5 V",
+   "tags": [
+    "mikrocontroller",
+    "microchip (atmel)",
+    "attiny85",
+    "board",
+    "arduino",
+    "esp32",
+    "pico"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Winziger 8-Pin-Chip für kleine, billige Aufgaben (Sensor, Blinker, Schalter). Ohne USB, braucht einen Programmer."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Microchip (Atmel)"
+      ],
+      [
+       "Erschienen",
+       "2005"
+      ],
+      [
+       "Kern",
+       "8-Bit AVR"
+      ],
+      [
+       "Takt",
+       "bis 20 MHz (intern 8 MHz)"
+      ],
+      [
+       "Flash-Speicher",
+       "8 KB"
+      ],
+      [
+       "Arbeitsspeicher",
+       "512 Byte SRAM + 512 Byte EEPROM"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "6 I/O"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "2,7–5,5 V"
+      ],
+      [
+       "Funk",
+       "keiner"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 1–2 €"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "Alle GPIO-Pins dieses Boards arbeiten mit **2,7–5,5 V**. Vor dem Anschließen an andere Boards oder Sensoren Pegel prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "STM32, Teensy & mehr"
+  },
+  {
+   "id": "m_nrf52840",
+   "titel": "nRF52840 (z. B. Seeed XIAO / Adafruit Feather)",
+   "kurz": "64 MHz · 1 MB · 1,7–5,5 V (Board: 3,3 V)",
+   "tags": [
+    "mikrocontroller",
+    "nordic semiconductor",
+    "nrf52840 (z. b. seeed xiao / adafruit feather)",
+    "board",
+    "arduino",
+    "esp32",
+    "pico"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Sehr sparsamer Funk-Mikrocontroller für Wearables und Sensoren mit Batterie. USB eingebaut."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nordic Semiconductor"
+      ],
+      [
+       "Erschienen",
+       "2018"
+      ],
+      [
+       "Kern",
+       "Cortex-M4F"
+      ],
+      [
+       "Takt",
+       "64 MHz"
+      ],
+      [
+       "Flash-Speicher",
+       "1 MB"
+      ],
+      [
+       "Arbeitsspeicher",
+       "256 KB RAM"
+      ],
+      [
+       "Anschlüsse (GPIO)",
+       "48"
+      ],
+      [
+       "Betriebsspannung (IO-Pegel)",
+       "1,7–5,5 V (Board: 3,3 V)"
+      ],
+      [
+       "Funk",
+       "Bluetooth 5 (LE), 802.15.4 (Thread, Zigbee)"
+      ],
+      [
+       "Preis (ca.)",
+       "ca. 10–25 €"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "Alle GPIO-Pins dieses Boards arbeiten mit **1,7–5,5 V (Board: 3,3 V)**. Vor dem Anschließen an andere Boards oder Sensoren Pegel prüfen."
+    }
+   ],
+   "siehe": [
+    "mcu:v_vergleich",
+    "mcu:v_pegel"
+   ],
+   "symbol": "quarz",
+   "gruppe": "STM32, Teensy & mehr"
+  }
+ ]
+}

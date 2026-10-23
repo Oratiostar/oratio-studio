@@ -1,0 +1,713 @@
+{
+"id": "glossar",
+"name": "Glossar",
+"untertitel": "Abkürzungen von A bis Z",
+"farbe": "nacht",
+"symbol": "lampe",
+"reihenfolge": 17,
+"seiten": [
+{
+"id": "abc",
+"titel": "Glossar A–Z",
+"kurz": "135 Begriffe und Abkürzungen aus Elektronik und IT",
+"tags": [
+"ac",
+"adc",
+"alu",
+"api",
+"arp",
+"ascii",
+"bga",
+"bit / byte",
+"bjt",
+"bms",
+"bootloader",
+"bypass",
+"can",
+"ce",
+"cmos",
+"container (docker)",
+"cpu",
+"crc",
+"cs",
+"ctr",
+"dac",
+"daemon",
+"dc",
+"debounce",
+"dhcp",
+"dip",
+"dma",
+"dns",
+"drc / erc",
+"dropout",
+"dsp",
+"duty cycle",
+"eeprom",
+"emv",
+"endianness",
+"esd",
+"esr",
+"fan-out",
+"fet",
+"firmware",
+"flashen",
+"fpga",
+"fuse (bits)",
+"galvanische trennung",
+"gerber",
+"gnd",
+"gpio",
+"güte q",
+"hat",
+"hdmi",
+"hi-z",
+"hysterese",
+"ic",
+"igbt",
+"impedanz",
+"imu",
+"interrupt",
+"ip",
+"isr",
+"i²c",
+"jfet",
+"jitter",
+"jtag",
+"kernel",
+"latch",
+"latenz",
+"lcd",
+"ldo",
+"led",
+"lsb / msb",
+"mac",
+"masseschleife",
+"mcu",
+"mlcc",
+"mosfet",
+"mount",
+"mppt",
+"mqtt",
+"nat",
+"nibble",
+"ntc",
+"nvme",
+"open-drain/-collector",
+"opv",
+"pcb",
+"pd",
+"pe",
+"pid",
+"pio",
+"pll",
+"poe",
+"polling",
+"prellen",
+"ptc",
+"pull-down",
+"pull-up",
+"pwm",
+"ram",
+"rcd / fi",
+"resonanz",
+"rgb",
+"ripple",
+"rms",
+"rom",
+"root",
+"rs-485",
+"rtc",
+"sbc",
+"schmitt-trigger",
+"schutzkleinspannung",
+"sd",
+"skin-effekt",
+"slew rate",
+"smd",
+"soc",
+"spi",
+"sps",
+"ssd",
+"ssr",
+"stack / heap",
+"sudo",
+"swap",
+"swd",
+"thermal pad",
+"totem-pole",
+"ttl",
+"tvs",
+"uart",
+"usv",
+"vdr",
+"via",
+"vpn",
+"wdt",
+"xor",
+"übersprechen"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Fachbegriffe und Abkürzungen kurz erklärt. Nutze oben die **Suche**, um einen Begriff schnell zu finden."
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Begriff",
+"Bedeutung"
+],
+"zeilen": [
+[
+"AC",
+"Wechselstrom/-spannung"
+],
+[
+"ADC",
+"Analog-Digital-Wandler: wandelt Spannung in Zahlenwert"
+],
+[
+"ALU",
+"Arithmetic Logic Unit – Rechenwerk der CPU"
+],
+[
+"API",
+"Programmierschnittstelle"
+],
+[
+"ARP",
+"Address Resolution Protocol: IP → MAC"
+],
+[
+"ASCII",
+"7-Bit-Zeichencode"
+],
+[
+"BGA",
+"Ball Grid Array – IC-Gehäuse mit Lötkugeln"
+],
+[
+"Bit / Byte",
+"1 Bit / 8 Bit"
+],
+[
+"BJT",
+"Bipolar Junction Transistor"
+],
+[
+"BMS",
+"Battery Management System – schützt Akku"
+],
+[
+"Bootloader",
+"Startprogramm, das das System lädt"
+],
+[
+"Bypass",
+"Abblockkondensator am IC"
+],
+[
+"CAN",
+"Controller Area Network – Fahrzeugbus"
+],
+[
+"CE",
+"Chip Enable bzw. Konformitätszeichen"
+],
+[
+"CMOS",
+"Complementary MOS – stromsparende Logik"
+],
+[
+"Container (Docker)",
+"isolierte Anwendungsumgebung"
+],
+[
+"CPU",
+"Zentrale Recheneinheit"
+],
+[
+"CRC",
+"Zyklische Redundanzprüfung"
+],
+[
+"CS",
+"Chip Select bei SPI"
+],
+[
+"CTR",
+"Current Transfer Ratio beim Optokoppler"
+],
+[
+"DAC",
+"Digital-Analog-Wandler"
+],
+[
+"Daemon",
+"Hintergrunddienst unter Linux"
+],
+[
+"DC",
+"Gleichstrom/-spannung"
+],
+[
+"Debounce",
+"Entprellen"
+],
+[
+"DHCP",
+"vergibt IP-Adressen automatisch"
+],
+[
+"DIP",
+"Dual Inline Package – durchsteckbares IC-Gehäuse"
+],
+[
+"DMA",
+"Direct Memory Access – Datentransfer ohne CPU"
+],
+[
+"DNS",
+"Namensauflösung (Name → IP)"
+],
+[
+"DRC / ERC",
+"Design Rule Check / Electrical Rule Check"
+],
+[
+"Dropout",
+"Mindest-Spannungsdifferenz Ein/Aus beim Regler"
+],
+[
+"DSP",
+"Digitaler Signalprozessor"
+],
+[
+"Duty Cycle",
+"Tastverhältnis"
+],
+[
+"EEPROM",
+"elektrisch löschbarer Festspeicher"
+],
+[
+"EMV",
+"Elektromagnetische Verträglichkeit"
+],
+[
+"Endianness",
+"Byte-Reihenfolge (Little/Big Endian)"
+],
+[
+"ESD",
+"Elektrostatische Entladung – killt Bauteile"
+],
+[
+"ESR",
+"Equivalent Series Resistance – Innenwiderstand eines Kondensators"
+],
+[
+"Fan-out",
+"wie viele Eingänge ein Ausgang treiben kann"
+],
+[
+"FET",
+"Feldeffekttransistor"
+],
+[
+"Firmware",
+"Programm im Gerät"
+],
+[
+"Flashen",
+"Programm in den Speicher schreiben"
+],
+[
+"FPGA",
+"frei programmierbare Logik"
+],
+[
+"Fuse (Bits)",
+"Konfigurationsbits eines AVR"
+],
+[
+"Galvanische Trennung",
+"keine leitende Verbindung zwischen Kreisen"
+],
+[
+"Gerber",
+"Fertigungsdatei für Leiterplatten"
+],
+[
+"GND",
+"Masse / Bezugspotenzial"
+],
+[
+"GPIO",
+"General Purpose Input/Output – frei nutzbarer Pin"
+],
+[
+"Güte Q",
+"Maß für die Schärfe einer Resonanz"
+],
+[
+"HAT",
+"Hardware Attached on Top – Aufsteckplatine für den Pi"
+],
+[
+"HDMI",
+"Bild- und Tonschnittstelle"
+],
+[
+"Hi-Z",
+"hochohmiger Zustand"
+],
+[
+"Hysterese",
+"Unterschiedliche Schaltschwellen für Ein/Aus"
+],
+[
+"IC",
+"Integrierter Schaltkreis"
+],
+[
+"IGBT",
+"Insulated Gate Bipolar Transistor"
+],
+[
+"Impedanz",
+"Wechselstromwiderstand"
+],
+[
+"IMU",
+"Inertial Measurement Unit"
+],
+[
+"Interrupt",
+"Unterbrechung des Programms durch ein Ereignis"
+],
+[
+"IP",
+"Internet Protocol bzw. Schutzart"
+],
+[
+"ISR",
+"Interrupt Service Routine"
+],
+[
+"I²C",
+"2-Draht-Bus (SDA/SCL)"
+],
+[
+"JFET",
+"Sperrschicht-Feldeffekttransistor"
+],
+[
+"Jitter",
+"Zeitliche Schwankung eines Taktes"
+],
+[
+"JTAG",
+"Debug-Schnittstelle"
+],
+[
+"Kernel",
+"Systemkern des Betriebssystems"
+],
+[
+"Latch",
+"Zwischenspeicher"
+],
+[
+"Latenz",
+"Verzögerung"
+],
+[
+"LCD",
+"Flüssigkristallanzeige"
+],
+[
+"LDO",
+"Low-Dropout-Regler"
+],
+[
+"LED",
+"Leuchtdiode"
+],
+[
+"LSB / MSB",
+"niedrigstwertiges / höchstwertiges Bit"
+],
+[
+"MAC",
+"Hardwareadresse einer Netzwerkkarte"
+],
+[
+"Masseschleife",
+"Brummquelle durch zwei Massewege"
+],
+[
+"MCU",
+"Mikrocontroller"
+],
+[
+"MLCC",
+"Multi-Layer Ceramic Capacitor (Keramik-SMD-Kondensator)"
+],
+[
+"MOSFET",
+"Metal-Oxide-Semiconductor FET"
+],
+[
+"Mount",
+"Laufwerk ins Dateisystem einhängen"
+],
+[
+"MPPT",
+"Maximum Power Point Tracking – Solarregler"
+],
+[
+"MQTT",
+"leichtes Messaging-Protokoll (IoT)"
+],
+[
+"NAT",
+"Adressumsetzung im Router"
+],
+[
+"Nibble",
+"4 Bit"
+],
+[
+"NTC",
+"Heißleiter, Widerstand fällt mit Temperatur"
+],
+[
+"NVMe",
+"SSD-Schnittstelle über PCIe"
+],
+[
+"Open-Drain/-Collector",
+"Ausgang zieht nur nach Masse, braucht Pull-up"
+],
+[
+"OPV",
+"Operationsverstärker"
+],
+[
+"PCB",
+"Printed Circuit Board – Leiterplatte"
+],
+[
+"PD",
+"Power Delivery bei USB-C"
+],
+[
+"PE",
+"Protective Earth – Schutzleiter"
+],
+[
+"PID",
+"Regler mit P-, I-, D-Anteil"
+],
+[
+"PIO",
+"Programmable IO beim RP2040"
+],
+[
+"PLL",
+"Phasenregelschleife"
+],
+[
+"PoE",
+"Power over Ethernet"
+],
+[
+"Polling",
+"zyklisches Abfragen statt Interrupt"
+],
+[
+"Prellen",
+"Mehrfachkontakt beim Schalten – entprellen!"
+],
+[
+"PTC",
+"Kaltleiter"
+],
+[
+"Pull-down",
+"Widerstand nach GND, hält Leitung auf Low"
+],
+[
+"Pull-up",
+"Widerstand nach V_CC, hält Leitung auf High"
+],
+[
+"PWM",
+"Pulsweitenmodulation"
+],
+[
+"RAM",
+"flüchtiger Arbeitsspeicher"
+],
+[
+"RCD / FI",
+"Fehlerstrom-Schutzschalter"
+],
+[
+"Resonanz",
+"Frequenz, bei der L und C sich aufheben"
+],
+[
+"RGB",
+"Rot-Grün-Blau"
+],
+[
+"Ripple",
+"Restwelligkeit auf Gleichspannung"
+],
+[
+"RMS",
+"Effektivwert"
+],
+[
+"ROM",
+"Festwertspeicher"
+],
+[
+"Root",
+"Administrator unter Linux"
+],
+[
+"RS-485",
+"differentieller serieller Bus"
+],
+[
+"RTC",
+"Echtzeituhr"
+],
+[
+"SBC",
+"Single Board Computer (z. B. Pi)"
+],
+[
+"Schmitt-Trigger",
+"Eingang mit Hysterese"
+],
+[
+"Schutzkleinspannung",
+"< 50 V AC / 120 V DC"
+],
+[
+"SD",
+"Secure Digital – Speicherkarte"
+],
+[
+"Skin-Effekt",
+"Hochfrequenz fließt nur an der Leiteroberfläche"
+],
+[
+"Slew Rate",
+"Maximale Spannungsänderungsrate"
+],
+[
+"SMD",
+"Surface Mounted Device – oberflächenmontiert"
+],
+[
+"SoC",
+"System on Chip"
+],
+[
+"SPI",
+"serieller Bus (MOSI/MISO/SCK/CS)"
+],
+[
+"SPS",
+"Speicherprogrammierbare Steuerung"
+],
+[
+"SSD",
+"Flash-Festplatte"
+],
+[
+"SSR",
+"Solid State Relay"
+],
+[
+"Stack / Heap",
+"Speicherbereiche im Programm"
+],
+[
+"sudo",
+"Befehl mit Root-Rechten ausführen"
+],
+[
+"Swap",
+"Auslagerungsspeicher auf Platte"
+],
+[
+"SWD",
+"Serial Wire Debug"
+],
+[
+"Thermal Pad",
+"Wärmefläche unter einem SMD-IC"
+],
+[
+"Totem-Pole",
+"Gegentaktausgang (zieht nach + und −)"
+],
+[
+"TTL",
+"Transistor-Transistor-Logik (5 V)"
+],
+[
+"TVS",
+"Transient Voltage Suppressor – Schutzdiode"
+],
+[
+"UART",
+"asynchrone serielle Schnittstelle"
+],
+[
+"USV",
+"Unterbrechungsfreie Stromversorgung"
+],
+[
+"VDR",
+"Varistor"
+],
+[
+"Via",
+"Durchkontaktierung in der Leiterplatte"
+],
+[
+"VPN",
+"verschlüsseltes privates Netz"
+],
+[
+"WDT",
+"Watchdog Timer – setzt hängende Systeme zurück"
+],
+[
+"XOR",
+"exklusives Oder"
+],
+[
+"Übersprechen",
+"unerwünschte Kopplung benachbarter Leitungen"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Glossar"
+}
+],
+"symbol": "lampe"
+}
+]
+}

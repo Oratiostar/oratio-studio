@@ -1,0 +1,972 @@
+{
+"id": "messen",
+"name": "Messtechnik & Werkstatt",
+"untertitel": "Multimeter, Oszi, Löten, Kabel",
+"farbe": "orange",
+"symbol": "voltmeter",
+"reihenfolge": 4,
+"seiten": [
+{
+"id": "multimeter",
+"titel": "Multimeter richtig benutzen",
+"kurz": "Spannung, Strom, Widerstand, Durchgang, Diode",
+"tags": [
+"multimeter",
+"messen",
+"spannung",
+"strom",
+"durchgang",
+"cat",
+"true rms"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Messung",
+"Buchse",
+"Schaltung",
+"Merke"
+],
+"zeilen": [
+[
+"Spannung V",
+"COM + V",
+"parallel zum Bauteil",
+"DC ⎓ / AC ~ wählen"
+],
+[
+"Strom A / mA",
+"COM + A/mA",
+"in Reihe (Kreis auftrennen)",
+"Sicherung im Gerät!"
+],
+[
+"Widerstand Ω",
+"COM + Ω",
+"parallel, **spannungsfrei**",
+"Bauteil auslöten für genaue Messung"
+],
+[
+"Durchgang",
+"COM + Ω",
+"Piepton < ca. 30–50 Ω",
+"Kabelbruch, Lötbrücken"
+],
+[
+"Diode",
+"COM + Ω",
+"Flussspannung anzeigen",
+"Si ≈ 0,6 V, LED ≈ 2 V"
+],
+[
+"Kapazität",
+"COM + Ω (CAP)",
+"entladen!",
+"Elko vorher entladen"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Der **Strommessbereich ist ein Kurzschluss!** Niemals in Stellung A parallel zu einer Spannungsquelle messen – Sicherung brennt (oder Schlimmeres). Danach wieder auf V stellen."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Kategorie",
+"Bereich",
+"Beispiel"
+],
+"zeilen": [
+[
+"CAT I",
+"geschützte Elektronik",
+"Geräteinneres"
+],
+[
+"CAT II",
+"Steckdose, Haushaltsgeräte",
+"Wandsteckdose"
+],
+[
+"CAT III",
+"Verteilung, Gebäudeinstallation",
+"Unterverteiler"
+],
+[
+"CAT IV",
+"Einspeisung, Zähler",
+"Hausanschluss"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Messkategorien (IEC 61010)"
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "**True RMS** zeigt bei Nicht-Sinus (Dimmer, Schaltnetzteile) richtig an. Billige Geräte messen nur Mittelwert und liegen dann falsch."
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "Ein Voltmeter hat hohen Innenwiderstand (typ. 10 MΩ). Misst du an einem hochohmigen Teiler (z. B. 1 MΩ), verfälscht das Messgerät das Ergebnis."
+}
+],
+"siehe": [
+"messen:oszi",
+"grund:fehler"
+],
+"symbol": "voltmeter"
+},
+{
+"id": "oszi",
+"titel": "Oszilloskop-Grundlagen",
+"kurz": "Trigger, Tastkopf, Bandbreite, Messungen",
+"tags": [
+"oszilloskop",
+"oszi",
+"scope",
+"trigger",
+"tastkopf",
+"bandbreite"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Einstellung",
+"Wirkung",
+"Typisch"
+],
+"zeilen": [
+[
+"Volt/DIV",
+"vertikale Skalierung",
+"1 V/DIV bei 3,3-V-Logik"
+],
+[
+"Time/DIV",
+"horizontale Zeitbasis",
+"1 ms/DIV für 100 Hz"
+],
+[
+"Trigger-Level",
+"Schwelle, ab der das Bild startet",
+"ca. 50 % der Amplitude"
+],
+[
+"Flanke",
+"steigend oder fallend",
+"steigend"
+],
+[
+"Kopplung",
+"DC, AC, GND",
+"AC für kleine Welligkeit auf DC"
+],
+[
+"Einzelschuss (Single)",
+"einmaliges Ereignis",
+"Einschaltvorgang"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "formel",
+"name": "Frequenz aus Periodendauer",
+"f": "f = 1 / T",
+"text": ""
+},
+{
+"t": "formel",
+"name": "Bandbreite und Anstiegszeit",
+"f": "t_r ≈ 0,35 / B",
+"text": "Das Oszi sollte mind. das 3–5-Fache der Signalfrequenz als Bandbreite haben."
+},
+{
+"t": "rechner",
+"titel": "Oszi-Auswertung",
+"felder": [
+[
+"t",
+"Periode (ms/DIV · DIV)",
+"s",
+"2m"
+],
+[
+"u",
+"Spitze-Spitze (V/DIV · DIV)",
+"V",
+"6,6"
+]
+],
+"ergebnis": [
+[
+"f",
+"Frequenz",
+"1/t",
+"Hz"
+],
+[
+"u1",
+"Amplitude (û)",
+"u/2",
+"V"
+],
+[
+"urms",
+"Effektivwert (Sinus)",
+"u/2/sqrt(2)",
+"V"
+]
+]
+},
+{
+"t": "rechner",
+"titel": "Bandbreite für Flanke",
+"felder": [
+[
+"tr",
+"Anstiegszeit des Signals",
+"s",
+"5n"
+]
+],
+"ergebnis": [
+[
+"b",
+"benötigte Bandbreite (×3 Reserve)",
+"3*0.35/tr",
+"Hz"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "**Tastkopf 1:10** (10× Teiler, 10 MΩ) für fast alles. Vor der Messung mit der Kompensationsspitze (Rechteck 1 kHz) abgleichen. **Masseclip kurz halten**, sonst klingelt die Flanke."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Die Masse des Tastkopfes ist **mit Schutzleiter verbunden**. Ein Netz-Schaltteil am Oszi ohne Trenntrafo kann einen Kurzschluss verursachen!"
+}
+],
+"siehe": [
+"messen:multimeter"
+],
+"symbol": "sinus"
+},
+{
+"id": "loeten",
+"titel": "Löten",
+"kurz": "Temperaturen, Lote, Fehlerbilder",
+"tags": [
+"löten",
+"lot",
+"lötstation",
+"smd",
+"entlöten",
+"flux"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Lot",
+"Schmelzpunkt",
+"Bemerkung"
+],
+"zeilen": [
+[
+"Sn60Pb40",
+"183–190 °C",
+"bleihaltig, leicht zu löten (Hobby; Verkauf/Gewerbe eingeschränkt)"
+],
+[
+"Sn63Pb37",
+"183 °C (eutektisch)",
+"ohne Pastenbereich"
+],
+[
+"SAC305 (Sn96,5/Ag3/Cu0,5)",
+"217–220 °C",
+"bleifrei, RoHS"
+],
+[
+"SnCu0,7",
+"227 °C",
+"bleifrei, günstig"
+],
+[
+"Sn42Bi58",
+"138 °C",
+"Niedertemp., Reparatur"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Anwendung",
+"Spitzentemperatur"
+],
+"zeilen": [
+[
+"bleihaltig",
+"320–350 °C"
+],
+[
+"bleifrei",
+"350–380 °C"
+],
+[
+"große Massefläche",
+"+30 °C oder größere Spitze"
+],
+[
+"SMD fein (0402)",
+"320 °C, kurz"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Fehler",
+"Aussehen",
+"Ursache"
+],
+"zeilen": [
+[
+"Kalte Lötstelle",
+"matt, körnig",
+"zu wenig Wärme oder Bewegung beim Erstarren"
+],
+[
+"Zu viel Lot",
+"Kugel, Bauteil nicht erkennbar",
+"überdosiert"
+],
+[
+"Zu wenig Lot",
+"Pad nicht benetzt",
+"Pad/Pin nicht heiß genug"
+],
+[
+"Lötbrücke",
+"Zinn zwischen Pins",
+"zu viel Lot; mit Entlötlitze entfernen"
+],
+[
+"Tombstone (SMD)",
+"Bauteil steht auf",
+"ungleiche Erwärmung"
+],
+[
+"Vorbereiten",
+"–",
+"Spitze verzinnen, sauber halten"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "liste",
+"punkte": [
+"**Erst Spitze, dann Lot:** Spitze gleichzeitig an Pad und Pin, nach 1–2 s Lot an die Verbindung, nicht an die Spitze.",
+"**Gesamtdauer** pro Lötstelle 2–4 s; bei empfindlichen Bauteilen Kühlklemme.",
+"**Flussmittel** (Flux) verbessert die Benetzung enorm, vor allem bei SMD.",
+"Lötdämpfe absaugen; Hände nach dem Löten (besonders Bleilot) waschen."
+],
+"titel": "Technik"
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Entlöten: **Entlötlitze** + Flux oder **Entlötpumpe** für bedrahtet. Zum Auslöten eines ICs mit vielen Beinen: Heißluft oder Niedrigschmelzlot (Chip Quik)."
+}
+],
+"siehe": [
+"passiv:smd"
+],
+"symbol": "widerstand"
+},
+{
+"id": "awg",
+"titel": "Leitungsquerschnitte & AWG",
+"kurz": "mm², AWG, Strombelastbarkeit, Spannungsabfall",
+"tags": [
+"awg",
+"querschnitt",
+"kabel",
+"leitung",
+"strombelastbarkeit",
+"spannungsabfall"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"AWG",
+"Ø (mm)",
+"Querschnitt (mm²)",
+"Strom (Chassis)",
+"Strom (Bündel)"
+],
+"zeilen": [
+[
+"10",
+"2,59",
+"5,26",
+"55 A",
+"33 A"
+],
+[
+"12",
+"2,05",
+"3,31",
+"41 A",
+"23 A"
+],
+[
+"14",
+"1,63",
+"2,08",
+"32 A",
+"17 A"
+],
+[
+"16",
+"1,29",
+"1,31",
+"22 A",
+"13 A"
+],
+[
+"18",
+"1,02",
+"0,823",
+"16 A",
+"7 A"
+],
+[
+"20",
+"0,812",
+"0,518",
+"11 A",
+"5 A"
+],
+[
+"22",
+"0,644",
+"0,326",
+"7 A",
+"3 A"
+],
+[
+"24",
+"0,511",
+"0,205",
+"3,5 A",
+"2,1 A"
+],
+[
+"26",
+"0,405",
+"0,129",
+"2,2 A",
+"1,3 A"
+],
+[
+"28",
+"0,321",
+"0,081",
+"1,4 A",
+"0,83 A"
+],
+[
+"30",
+"0,255",
+"0,051",
+"0,86 A",
+"0,52 A"
+]
+],
+"mono": [
+0
+],
+"fett": true,
+"titel": "AWG-Tabelle"
+},
+{
+"t": "rechner",
+"titel": "AWG → Durchmesser",
+"felder": [
+[
+"n",
+"AWG",
+"",
+"22"
+]
+],
+"ergebnis": [
+[
+"d",
+"Durchmesser",
+"0.127*92**((36-n)/39)",
+"mm",
+"zahl"
+],
+[
+"a",
+"Querschnitt",
+"3.14159/4*(0.127*92**((36-n)/39))**2",
+"mm²",
+"zahl"
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Querschnitt (mm²)",
+"Strom Verlegeart B2 (Cu)",
+"Typische Absicherung"
+],
+"zeilen": [
+[
+"0,75",
+"ca. 9 A",
+"6 A"
+],
+[
+"1,5",
+"ca. 16,5 A",
+"10/16 A"
+],
+[
+"2,5",
+"ca. 23 A",
+"16 A"
+],
+[
+"4",
+"ca. 30 A",
+"20/25 A"
+],
+[
+"6",
+"ca. 38 A",
+"32 A"
+],
+[
+"10",
+"ca. 52 A",
+"40/50 A"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Richtwerte, Normen (DIN VDE 0298 / 0100-520) beachten"
+},
+{
+"t": "rechner",
+"titel": "Spannungsabfall in Leitung",
+"felder": [
+[
+"i",
+"Strom",
+"A",
+"5"
+],
+[
+"l",
+"einfache Länge",
+"m",
+"10"
+],
+[
+"a",
+"Querschnitt",
+"mm²",
+"1,5"
+],
+[
+"u",
+"Nennspannung",
+"V",
+"12"
+]
+],
+"ergebnis": [
+[
+"r",
+"Leitungswiderstand (hin+zurück)",
+"2*l*0.0178/a",
+"Ω"
+],
+[
+"du",
+"Spannungsabfall",
+"i*2*l*0.0178/a",
+"V"
+],
+[
+"p",
+"Verlust in der Leitung",
+"i*i*2*l*0.0178/a",
+"W"
+],
+[
+"pr",
+"Abfall in %",
+"i*2*l*0.0178/a/u",
+"",
+"proz"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "pi",
+"text": "**Pi-Stromversorgung:** 5 V / 5 A (Pi 5). Kabel <1 m und ≥ 0,75 mm² (AWG 18) verwenden, sonst sackt die Spannung ein → Blitzsymbol/Unterspannung."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Dünne Kabel am Akku sind eine **Brandgefahr**: Immer Sicherung direkt am Pluspol und Leitung passend zur Sicherung wählen."
+}
+],
+"siehe": [
+"grund:leitungen",
+"passiv:sicherung"
+],
+"symbol": "sicherung"
+},
+{
+"id": "ip",
+"titel": "IP-Schutzarten & IK",
+"kurz": "Staub- und Wasserschutz richtig lesen",
+"tags": [
+"ip",
+"schutzart",
+"ip65",
+"wasser",
+"staub",
+"gehäuse",
+"ik"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"**IP XY**: X = Schutz gegen feste Körper/Staub, Y = Schutz gegen Wasser."
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"X",
+"Fremdkörper / Staub"
+],
+"zeilen": [
+[
+"0",
+"kein Schutz"
+],
+[
+"1",
+"> 50 mm (Handrücken)"
+],
+[
+"2",
+"> 12,5 mm (Finger)"
+],
+[
+"3",
+"> 2,5 mm (Werkzeug)"
+],
+[
+"4",
+"> 1 mm (Draht)"
+],
+[
+"5",
+"staubgeschützt"
+],
+[
+"6",
+"staubdicht"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Y",
+"Wasser"
+],
+"zeilen": [
+[
+"0",
+"kein Schutz"
+],
+[
+"1",
+"senkrechtes Tropfwasser"
+],
+[
+"2",
+"Tropfwasser bis 15° geneigt"
+],
+[
+"3",
+"Sprühwasser bis 60°"
+],
+[
+"4",
+"Spritzwasser aus allen Richtungen"
+],
+[
+"5",
+"Strahlwasser (Düse)"
+],
+[
+"6",
+"starkes Strahlwasser"
+],
+[
+"7",
+"zeitweiliges Untertauchen (30 min, 1 m)"
+],
+[
+"8",
+"dauerndes Untertauchen (Herstellerangabe)"
+],
+[
+"9K",
+"Hochdruck / Dampfstrahl"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Beispiel",
+"Bedeutung"
+],
+"zeilen": [
+[
+"IP20",
+"Finger geschützt, kein Wasserschutz (Schaltschrank innen)"
+],
+[
+"IP44",
+"Spritzwasser (Außenleuchte, Badezimmer)"
+],
+[
+"IP54",
+"staubgeschützt + Spritzwasser"
+],
+[
+"IP65",
+"staubdicht + Strahlwasser (Außengehäuse)"
+],
+[
+"IP67",
+"staubdicht + zeitweiliges Untertauchen (Smartphones)"
+],
+[
+"IP68",
+"staubdicht + dauerhaft"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Für den Pi im Freien: Gehäuse **IP65** mit Kabelverschraubungen (PG7/PG9). Kondenswasser vermeiden: Silicagel-Beutel, nicht luftdicht verkleben."
+},
+{
+"t": "tabelle",
+"kopf": [
+"IK-Code",
+"Schlagenergie"
+],
+"zeilen": [
+[
+"IK02",
+"0,2 J"
+],
+[
+"IK06",
+"1 J"
+],
+[
+"IK08",
+"5 J"
+],
+[
+"IK10",
+"20 J"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Mechanischer Schutz"
+}
+],
+"siehe": [
+"passiv:sicherung"
+],
+"symbol": "gehaeuse"
+},
+{
+"id": "vde",
+"titel": "5 Sicherheitsregeln & Sicherheit",
+"kurz": "Freischalten, sichern, prüfen, erden, abdecken",
+"tags": [
+"sicherheit",
+"vde",
+"5 sicherheitsregeln",
+"schutzklasse",
+"freischalten",
+"gefahr"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Die **5 Sicherheitsregeln** (DIN VDE 0105-100) gelten vor jeder Arbeit an elektrischen Anlagen – in dieser Reihenfolge:"
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"",
+"Regel",
+"Praxis"
+],
+"zeilen": [
+[
+"1",
+"Freischalten",
+"Allpolig abschalten, Sicherung ziehen/LS ausschalten"
+],
+[
+"2",
+"Gegen Wiedereinschalten sichern",
+"Schloss, Schild „Nicht schalten!“"
+],
+[
+"3",
+"Spannungsfreiheit feststellen",
+"Zweipoliger Spannungsprüfer, vorher am Prüfpunkt testen"
+],
+[
+"4",
+"Erden und Kurzschließen",
+"Nur bei Hochspannung/Anlagen; bei NS nach Vorgabe"
+],
+[
+"5",
+"Benachbarte spannungsführende Teile abdecken",
+"Abdeckungen, Schutzhauben"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Spannung",
+"Gefahr"
+],
+"zeilen": [
+[
+"< 50 V AC / 120 V DC",
+"Schutzkleinspannung (SELV/PELV) – meist ungefährlich"
+],
+[
+"> 50 V AC",
+"Lebensgefahr bei Berührung"
+],
+[
+"230 V",
+"Herzkammerflimmern ab ca. 50 mA durch den Körper (> 0,5 s)"
+],
+[
+"Kondensatoren",
+"Netzteil-Elkos halten Ladung noch lange nach dem Abschalten"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Schutzklasse",
+"Merkmal",
+"Zeichen"
+],
+"zeilen": [
+[
+"I",
+"Schutzleiter (PE) verbunden",
+"Erde-Symbol"
+],
+[
+"II",
+"Schutzisolierung, kein PE",
+"Doppelquadrat"
+],
+[
+"III",
+"Schutzkleinspannung",
+"Raute mit III"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "**Netzspannung nur mit Ausbildung und nach Regeln.** Diese Seite ersetzt keine Unterweisung. Im Zweifel: Elektrofachkraft. Netzteile erst öffnen, wenn sie **> 5 Minuten** getrennt waren, und Kondensatoren entladen."
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Eine Hand in die Tasche beim Messen an Spannung: keine Strombahn über die Brust."
+}
+],
+"siehe": [
+"messen:ip",
+"passiv:sicherung"
+],
+"symbol": "sicherung"
+}
+]
+}

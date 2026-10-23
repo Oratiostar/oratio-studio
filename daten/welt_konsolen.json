@@ -1,0 +1,4704 @@
+{
+ "id": "konsolen",
+ "name": "Konsolen",
+ "untertitel": "Von Atari 2600 bis Switch 2: Technik, Vergleiche, Controller, E-Sports",
+ "farbe": "lila",
+ "symbol": "taster",
+ "reihenfolge": 30,
+ "seiten": [
+  {
+   "id": "v_eigen",
+   "titel": "Eigener Vergleich",
+   "kurz": "2–3 Einträge wählen und nebeneinander vergleichen",
+   "tags": [
+    "vergleich",
+    "eigener vergleich",
+    "nebeneinander",
+    "konsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Tippe auf „Hinzufügen“, um zwei oder drei Einträge zu wählen. Darunter siehst du sofort ihre Technischen Daten nebeneinander. Zeilen mit Unterschieden sind gelb hinterlegt. Mit ✕ entfernst du einen Eintrag wieder."
+     ]
+    },
+    {
+     "t": "vergleich",
+     "welt": "konsolen",
+     "n": 3
+    }
+   ],
+   "siehe": [],
+   "symbol": "voltmeter",
+   "gruppe": "Vergleiche"
+  },
+  {
+   "id": "v_gen",
+   "titel": "Vergleich: nach Generation",
+   "kurz": "Alle Konsolen nach Generation 1–9 sortiert",
+   "tags": [
+    "generation",
+    "vergleich",
+    "konsolen",
+    "liste"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Eine Konsolengeneration umfasst Geräte, die ungefähr zur gleichen Zeit erschienen und technisch auf einer Stufe stehen. Die Zählung ist nicht offiziell, aber allgemein üblich (1972 bis heute)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Gen.",
+      "Konsole",
+      "Jahr",
+      "Prozessor"
+     ],
+     "zeilen": [
+      [
+       "1",
+       "Magnavox Odyssey",
+       "1972",
+       "Keine CPU: diskrete Transistor-/Dioden-Logik"
+      ],
+      [
+       "2",
+       "Atari 2600",
+       "1977",
+       "MOS 6507"
+      ],
+      [
+       "2",
+       "Intellivision",
+       "1979",
+       "General Instrument CP1610"
+      ],
+      [
+       "2",
+       "ColecoVision",
+       "1982",
+       "Zilog Z80A"
+      ],
+      [
+       "3",
+       "NES / Famicom",
+       "1983",
+       "Ricoh 2A03 (6502-Kern)"
+      ],
+      [
+       "3",
+       "Sega Master System",
+       "1985",
+       "Zilog Z80A"
+      ],
+      [
+       "4",
+       "PC Engine / TurboGrafx-16",
+       "1987",
+       "HuC6280 (6502-Basis)"
+      ],
+      [
+       "4",
+       "Sega Mega Drive / Genesis",
+       "1988",
+       "Motorola 68000"
+      ],
+      [
+       "4",
+       "Game Boy / Game Boy Color",
+       "1989",
+       "Sharp LR35902 (Z80-ähnlich)"
+      ],
+      [
+       "4",
+       "Super Nintendo (SNES)",
+       "1990",
+       "Ricoh 5A22 (65816)"
+      ],
+      [
+       "4",
+       "Sega Game Gear",
+       "1990",
+       "Zilog Z80"
+      ],
+      [
+       "4",
+       "Neo Geo AES",
+       "1990",
+       "Motorola 68000 (12 MHz) + Z80"
+      ],
+      [
+       "5",
+       "Atari Jaguar",
+       "1993",
+       "Motorola 68000 + „Tom“ und „Jerry“ (RISC)"
+      ],
+      [
+       "5",
+       "3DO Interactive Multiplayer",
+       "1993",
+       "ARM60"
+      ],
+      [
+       "5",
+       "PlayStation (PS1)",
+       "1994",
+       "MIPS R3000A"
+      ],
+      [
+       "5",
+       "Sega Saturn",
+       "1994",
+       "2× Hitachi SH-2"
+      ],
+      [
+       "5",
+       "Nintendo 64",
+       "1996",
+       "NEC VR4300"
+      ],
+      [
+       "6",
+       "Sega Dreamcast",
+       "1998",
+       "Hitachi SH-4"
+      ],
+      [
+       "6",
+       "PlayStation 2",
+       "2000",
+       "Emotion Engine"
+      ],
+      [
+       "6",
+       "Nintendo GameCube",
+       "2001",
+       "IBM Gekko (PowerPC)"
+      ],
+      [
+       "6",
+       "Game Boy Advance",
+       "2001",
+       "ARM7TDMI"
+      ],
+      [
+       "6",
+       "Xbox (Original)",
+       "2001",
+       "Intel Pentium III"
+      ],
+      [
+       "7",
+       "PlayStation Portable (PSP)",
+       "2004",
+       "MIPS R4000"
+      ],
+      [
+       "7",
+       "Nintendo DS",
+       "2004",
+       "ARM9 (67 MHz) + ARM7 (33 MHz)"
+      ],
+      [
+       "7",
+       "Xbox 360",
+       "2005",
+       "IBM Xenon"
+      ],
+      [
+       "7",
+       "PlayStation 3",
+       "2006",
+       "Cell"
+      ],
+      [
+       "7",
+       "Nintendo Wii",
+       "2006",
+       "IBM Broadway (PowerPC)"
+      ],
+      [
+       "8",
+       "PlayStation Vita",
+       "2011",
+       "ARM Cortex-A9"
+      ],
+      [
+       "8",
+       "Nintendo 3DS",
+       "2011",
+       "ARM11"
+      ],
+      [
+       "8",
+       "Nintendo Wii U",
+       "2012",
+       "IBM Espresso (PowerPC)"
+      ],
+      [
+       "8",
+       "PlayStation 4",
+       "2013",
+       "AMD Jaguar"
+      ],
+      [
+       "8",
+       "Xbox One",
+       "2013",
+       "AMD Jaguar"
+      ],
+      [
+       "8",
+       "Nintendo Switch",
+       "2017",
+       "NVIDIA Tegra X1 (4× Cortex-A57)"
+      ],
+      [
+       "9",
+       "PlayStation 5",
+       "2020",
+       "AMD Zen 2"
+      ],
+      [
+       "9",
+       "Xbox Series X|S",
+       "2020",
+       "AMD Zen 2"
+      ],
+      [
+       "9",
+       "Steam Deck",
+       "2022",
+       "AMD Aerith (Zen 2"
+      ],
+      [
+       "9",
+       "ASUS ROG Ally",
+       "2023",
+       "AMD Ryzen Z1 Extreme (Zen 4"
+      ],
+      [
+       "9",
+       "Nintendo Switch 2",
+       "2025",
+       "NVIDIA-Custom-SoC (Ampere)"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Alle Geräte der Datenbank"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Handhelds und PC-Handhelds sind eingeordnet nach der Generation, in der sie technisch lagen."
+    }
+   ],
+   "siehe": [
+    "konsolen:v_verkauf",
+    "konsolen:v_leistung"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Vergleiche"
+  },
+  {
+   "id": "v_verkauf",
+   "titel": "Vergleich: Verkaufszahlen",
+   "kurz": "Die meistverkauften Konsolen (ca. Millionen)",
+   "tags": [
+    "verkauf",
+    "verkaufszahlen",
+    "vergleich",
+    "bestseller"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Verkaufszahlen sind Schätzungen oder Herstellerangaben. Bei Familien (Game Boy + Color, DS + Lite/XL, PS4 + Pro) sind die Varianten meist mitgezählt."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Platz",
+      "Konsole",
+      "Hersteller",
+      "Jahr",
+      "Verkauft (Mio.)"
+     ],
+     "zeilen": [
+      [
+       "1",
+       "PlayStation 2",
+       "Sony",
+       "2000",
+       "155"
+      ],
+      [
+       "2",
+       "Nintendo Switch",
+       "Nintendo",
+       "2017",
+       "155"
+      ],
+      [
+       "3",
+       "Nintendo DS",
+       "Nintendo",
+       "2004",
+       "154"
+      ],
+      [
+       "4",
+       "Game Boy / Game Boy Color",
+       "Nintendo",
+       "1989",
+       "118,7"
+      ],
+      [
+       "5",
+       "PlayStation 4",
+       "Sony",
+       "2013",
+       "117"
+      ],
+      [
+       "6",
+       "PlayStation (PS1)",
+       "Sony",
+       "1994",
+       "102,5"
+      ],
+      [
+       "7",
+       "Nintendo Wii",
+       "Nintendo",
+       "2006",
+       "101,6"
+      ],
+      [
+       "8",
+       "PlayStation 5",
+       "Sony",
+       "2020",
+       "92"
+      ],
+      [
+       "9",
+       "PlayStation 3",
+       "Sony",
+       "2006",
+       "87,4"
+      ],
+      [
+       "10",
+       "Xbox 360",
+       "Microsoft",
+       "2005",
+       "84"
+      ],
+      [
+       "11",
+       "Game Boy Advance",
+       "Nintendo",
+       "2001",
+       "81,5"
+      ],
+      [
+       "12",
+       "PlayStation Portable (PSP)",
+       "Sony",
+       "2004",
+       "80"
+      ],
+      [
+       "13",
+       "Nintendo 3DS",
+       "Nintendo",
+       "2011",
+       "75,9"
+      ],
+      [
+       "14",
+       "NES / Famicom",
+       "Nintendo",
+       "1983",
+       "61,9"
+      ],
+      [
+       "15",
+       "Xbox One",
+       "Microsoft",
+       "2013",
+       "58"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Top 15 der Datenbank"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Spitzenreiter ist die PlayStation 2 (ca. 155 Mio.), dicht gefolgt von der Nintendo Switch (ca. 155 Mio. nach den Nintendo-Zahlen von 2025/26) und dem Nintendo DS (ca. 154 Mio.)."
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "Neuere Zahlen (PS5, Xbox Series, Switch 2) ändern sich laufend – bei Bedarf in den aktuellen Geschäftsberichten nachsehen."
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_leistung"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Vergleiche"
+  },
+  {
+   "id": "v_leistung",
+   "titel": "Vergleich: Rechenleistung",
+   "kurz": "Von 1,8 MHz bis 16 TFLOPS – was ist wirklich schneller?",
+   "tags": [
+    "leistung",
+    "tflops",
+    "gpu",
+    "vergleich",
+    "speed"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Taktfrequenzen (MHz/GHz) sagen nur wenig, wenn die Architekturen verschieden sind. Bei modernen Konsolen wird deshalb die Grafikleistung in **TFLOPS** angegeben: Billionen Gleitkomma-Rechnungen pro Sekunde."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Konsole",
+      "Jahr",
+      "GPU-Leistung (TFLOPS)",
+      "Speicher"
+     ],
+     "zeilen": [
+      [
+       "Xbox 360",
+       "2005",
+       "ca. 0,24",
+       "512 MB"
+      ],
+      [
+       "PS3",
+       "2006",
+       "ca. 0,23",
+       "512 MB"
+      ],
+      [
+       "Wii U",
+       "2012",
+       "ca. 0,35",
+       "2 GB"
+      ],
+      [
+       "Switch (Handheld/Dock)",
+       "2017",
+       "0,4 / 0,5",
+       "4 GB"
+      ],
+      [
+       "Xbox One",
+       "2013",
+       "1,31",
+       "8 GB"
+      ],
+      [
+       "PS4",
+       "2013",
+       "1,84",
+       "8 GB"
+      ],
+      [
+       "PS4 Pro",
+       "2016",
+       "4,2",
+       "8 GB"
+      ],
+      [
+       "Xbox One X",
+       "2017",
+       "6,0",
+       "12 GB"
+      ],
+      [
+       "Steam Deck",
+       "2022",
+       "1,6",
+       "16 GB"
+      ],
+      [
+       "Xbox Series S",
+       "2020",
+       "4,0",
+       "10 GB"
+      ],
+      [
+       "PS5",
+       "2020",
+       "10,28",
+       "16 GB"
+      ],
+      [
+       "Xbox Series X",
+       "2020",
+       "12,15",
+       "16 GB"
+      ],
+      [
+       "PS5 Pro",
+       "2024",
+       "ca. 16,7",
+       "16 GB + 2 GB"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "GPU-Leistung (Herstellerangaben)"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "TFLOPS lassen sich nur bei GPUs derselben Familie gut vergleichen: Eine RDNA-2-GPU schafft mit der gleichen Zahl mehr als eine GCN-GPU."
+    },
+    {
+     "t": "formel",
+     "name": "TFLOPS",
+     "f": "Rechenwerke × Takt × 2 (ein Multiply-Add) / 10^12",
+     "text": "Zum Beispiel PS5: 2304 Shader × 2,23 GHz × 2 ≈ 10,28 TFLOPS."
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "speicher:ram"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Vergleiche"
+  },
+  {
+   "id": "v_medien",
+   "titel": "Spielmedien im Vergleich",
+   "kurz": "Steckmodul, CD, DVD, Blu-ray, SSD – wo liegt was?",
+   "tags": [
+    "medien",
+    "cd",
+    "dvd",
+    "blu-ray",
+    "cartridge",
+    "modul"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Das Medium bestimmt Ladezeiten, Preis und Kopierschutz."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Medium",
+      "Zeit",
+      "Kapazität",
+      "Konsolen (Beispiele)",
+      "Besonderheit"
+     ],
+     "zeilen": [
+      [
+       "ROM-Steckmodul",
+       "1972–2005",
+       "bis wenige Hundert MB",
+       "Atari 2600, NES, N64",
+       "Sofort geladen, aber teuer in der Herstellung"
+      ],
+      [
+       "CD-ROM",
+       "1988–2005",
+       "650–700 MB",
+       "PS1, Saturn, Mega-CD",
+       "Große Spiele und Musik möglich"
+      ],
+      [
+       "DVD",
+       "2000–2013",
+       "4,7 GB (Dual Layer 8,5 GB)",
+       "PS2, Xbox, Wii",
+       "Gleichzeitig Film-Player"
+      ],
+      [
+       "Blu-ray",
+       "2006–heute",
+       "25 GB (Dual Layer 50 GB, UHD 100 GB)",
+       "PS3/4/5, Xbox One/Series X",
+       "Hoch aufgelöste Texturen, lange Installation"
+      ],
+      [
+       "Spielkarte/Cartridge (modern)",
+       "2011–heute",
+       "bis 64 GB",
+       "3DS, Switch, Switch 2",
+       "Robust, schnell, teuer"
+      ],
+      [
+       "SSD (eingebaut/Download)",
+       "2020–heute",
+       "825 GB – 2 TB",
+       "PS5, Xbox Series, Switch 2",
+       "Ladezeiten nahezu ohne Wartezeit"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Medienformate"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Auf dem Pi findest du dieselben Prinzipien: SD-Karte (langsam), SSD/NVMe (schnell). Siehe Welt „Speicher & Bandbreiten“."
+    }
+   ],
+   "siehe": [
+    "speicher:ram",
+    "konsolen:v_gen"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Vergleiche"
+  },
+  {
+   "id": "v_hand",
+   "titel": "Handhelds im Vergleich",
+   "kurz": "Game Boy bis Steam Deck",
+   "tags": [
+    "handheld",
+    "tragbar",
+    "akku",
+    "vergleich"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Handhelds mussten immer einen Kompromiss zwischen Leistung, Preis und Akkulaufzeit finden."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Gerät",
+      "Jahr",
+      "Bildschirm",
+      "Akku (ca.)",
+      "Besonderheit"
+     ],
+     "zeilen": [
+      [
+       "Game Boy",
+       "1989",
+       "2,6″ LCD, 160×144, 4 Graustufen",
+       "10–15 h (4 AA)",
+       "Robust, billig"
+      ],
+      [
+       "Game Gear",
+       "1990",
+       "3,2″ Farb-LCD",
+       "3–5 h (6 AA)",
+       "Farbe, aber stromhungrig"
+      ],
+      [
+       "PSP",
+       "2004",
+       "4,3″ LCD, 480×272",
+       "4–6 h",
+       "Multimedia"
+      ],
+      [
+       "Nintendo DS",
+       "2004",
+       "2× 3″ (1× Touch)",
+       "10–14 h",
+       "Touchscreen"
+      ],
+      [
+       "PS Vita",
+       "2011",
+       "5″ OLED, 960×544",
+       "3–5 h",
+       "Hinten Touchpad"
+      ],
+      [
+       "Nintendo Switch",
+       "2017",
+       "6,2″ LCD, 1280×720",
+       "3–7 h",
+       "Hybrid"
+      ],
+      [
+       "Steam Deck",
+       "2022",
+       "7″ LCD 1280×800 (OLED: 7,4″)",
+       "2–8 h",
+       "Offener PC"
+      ],
+      [
+       "Switch 2",
+       "2025",
+       "7,9″ LCD, 1920×1080, bis 120 Hz, HDR",
+       "ca. 2–6,5 h",
+       "Hybrid mit Maus-Funktion"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Handhelds"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Daten gerundet, Herstellerangaben und Messungen weichen bei Akkulaufzeit stark ab (Helligkeit, Spiel, WLAN)."
+    }
+   ],
+   "siehe": [
+    "konsolen:k_switch",
+    "konsolen:k_deck"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Vergleiche"
+  },
+  {
+   "id": "z_ausblick",
+   "titel": "Zukunft: Gerüchte (unbestätigt)",
+   "kurz": "PS6, nächste Xbox, PC-Handhelds – was bekannt ist und was nicht",
+   "tags": [
+    "zukunft",
+    "ps6",
+    "xbox",
+    "gerüchte"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Zu kommenden Konsolen gibt es immer wieder Gerüchte. Hier steht nur, was als **Branchenwissen** gilt – alles andere solltest du selbst prüfen."
+     ]
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Konsolen bauen weiter auf AMD-APUs mit Zen-CPU und Radeon-GPU (PlayStation, Xbox).",
+      "Die Generationen werden länger: Zwischenmodelle (PS5 Pro, Xbox One X) füllen die Lücke.",
+      "KI-Hochskalierung (PSSR, DLSS, FSR) ersetzt rohe GPU-Leistung zunehmend.",
+      "Handhelds nach dem Steam-Deck-Prinzip: Xbox und andere bauen eigene Modelle."
+     ],
+     "titel": "Trends"
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "Konkrete Release-Termine und Leistungsdaten für kommende Konsolen sind nicht bestätigt. Ich habe sie bewusst nicht aufgenommen."
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Vergleiche"
+  },
+  {
+   "id": "k_ps1",
+   "titel": "PlayStation (PS1)",
+   "kurz": "Sony · 1994 · CD-ROM",
+   "tags": [
+    "konsole",
+    "sony",
+    "playstation (ps1)",
+    "heimkonsole",
+    "1994",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Sony stieg nach dem Streit mit Nintendo um ein CD-Laufwerk für das SNES selbst ins Konsolengeschäft ein. Die CD gab Platz für Musik und Videosequenzen und machte 3D-Spiele für alle bezahlbar."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sony"
+      ],
+      [
+       "Erschienen",
+       "1994"
+      ],
+      [
+       "Generation",
+       "5"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "MIPS R3000A, 33,9 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "2 MB RAM + 1 MB VRAM"
+      ],
+      [
+       "Grafik (GPU)",
+       "Sony GPU (2D/3D, ca. 360 000 Polygone/s)"
+      ],
+      [
+       "Spielmedium",
+       "CD-ROM"
+      ],
+      [
+       "Controller",
+       "Digitales Pad, ab 1997 DualShock (Analogsticks + Vibration)"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "102,5 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Final Fantasy VII",
+      "Gran Turismo",
+      "Metal Gear Solid"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Sony PlayStation"
+  },
+  {
+   "id": "k_ps2",
+   "titel": "PlayStation 2",
+   "kurz": "Sony · 2000 · DVD-ROM",
+   "tags": [
+    "konsole",
+    "sony",
+    "playstation 2",
+    "heimkonsole",
+    "2000",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Die meistverkaufte Heimkonsole aller Zeiten. Sie spielte nebenbei DVDs ab und war für viele der erste DVD-Player. Rückwärtskompatibel zur PS1."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sony"
+      ],
+      [
+       "Erschienen",
+       "2000"
+      ],
+      [
+       "Generation",
+       "6"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "Emotion Engine, ca. 295 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "32 MB RDRAM + 4 MB Grafikspeicher"
+      ],
+      [
+       "Grafik (GPU)",
+       "Graphics Synthesizer, 147 MHz"
+      ],
+      [
+       "Spielmedium",
+       "DVD-ROM"
+      ],
+      [
+       "Controller",
+       "DualShock 2"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "155 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Grand Theft Auto: San Andreas",
+      "Gran Turismo 4",
+      "God of War"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Sony PlayStation"
+  },
+  {
+   "id": "k_ps3",
+   "titel": "PlayStation 3",
+   "kurz": "Sony · 2006 · Blu-ray",
+   "tags": [
+    "konsole",
+    "sony",
+    "playstation 3",
+    "heimkonsole",
+    "2006",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Die Cell-Architektur war schwer zu programmieren, brachte aber starke Rechenleistung. Mit Blu-ray gewann Sony den Formatkrieg gegen HD DVD."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sony"
+      ],
+      [
+       "Erschienen",
+       "2006"
+      ],
+      [
+       "Generation",
+       "7"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "Cell, 3,2 GHz (1 PPE + 7 SPE)"
+      ],
+      [
+       "Arbeitsspeicher",
+       "256 MB XDR + 256 MB GDDR3"
+      ],
+      [
+       "Grafik (GPU)",
+       "NVIDIA RSX, 550 MHz"
+      ],
+      [
+       "Spielmedium",
+       "Blu-ray"
+      ],
+      [
+       "Controller",
+       "Sixaxis, ab 2008 DualShock 3"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "87,4 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "The Last of Us",
+      "Uncharted 2",
+      "Demon's Souls"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Sony PlayStation"
+  },
+  {
+   "id": "k_ps4",
+   "titel": "PlayStation 4",
+   "kurz": "Sony · 2013 · Blu-ray",
+   "tags": [
+    "konsole",
+    "sony",
+    "playstation 4",
+    "heimkonsole",
+    "2013",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Erstmals Standard-PC-Architektur (x86). Das machte Spiele für Entwickler leichter portierbar. Die PS4 Pro (2016) hat 4,2 TFLOPS und 4K-Unterstützung."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sony"
+      ],
+      [
+       "Erschienen",
+       "2013"
+      ],
+      [
+       "Generation",
+       "8"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "AMD Jaguar, 8 Kerne, 1,6 GHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "8 GB GDDR5 (176 GB/s)"
+      ],
+      [
+       "Grafik (GPU)",
+       "AMD GCN, 1,84 TFLOPS"
+      ],
+      [
+       "Spielmedium",
+       "Blu-ray, Festplatte"
+      ],
+      [
+       "Controller",
+       "DualShock 4 (Touchpad, Lichtleiste)"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "117 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "God of War (2018)",
+      "Bloodborne",
+      "Spider-Man"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Sony PlayStation"
+  },
+  {
+   "id": "k_ps5",
+   "titel": "PlayStation 5",
+   "kurz": "Sony · 2020 · Ultra-HD-Blu-ray",
+   "tags": [
+    "konsole",
+    "sony",
+    "playstation 5",
+    "heimkonsole",
+    "2020",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Die schnelle SSD (5,5 GB/s) beseitigt Ladezeiten fast vollständig. Die PS5 Pro (2024) hat ca. 16,7 TFLOPS und KI-Hochskalierung (PSSR). Verkaufszahl: rund 90 Mio. Anfang 2026 (Schätzung)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sony"
+      ],
+      [
+       "Erschienen",
+       "2020"
+      ],
+      [
+       "Generation",
+       "9"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "AMD Zen 2, 8 Kerne, bis 3,5 GHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "16 GB GDDR6 (448 GB/s)"
+      ],
+      [
+       "Grafik (GPU)",
+       "AMD RDNA 2, 10,28 TFLOPS"
+      ],
+      [
+       "Spielmedium",
+       "Ultra-HD-Blu-ray, 825-GB-SSD"
+      ],
+      [
+       "Controller",
+       "DualSense (haptisches Feedback, adaptive Trigger)"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "92 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Astro Bot",
+      "Ratchet & Clank: Rift Apart",
+      "Horizon Forbidden West"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Sony PlayStation"
+  },
+  {
+   "id": "k_psp",
+   "titel": "PlayStation Portable (PSP)",
+   "kurz": "Sony · 2004 · UMD",
+   "tags": [
+    "konsole",
+    "sony",
+    "playstation portable (psp)",
+    "handheld",
+    "2004",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Der erste ernsthafte Gegner für Nintendos Handhelds. Multimedia: Filme, Musik, Internet."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sony"
+      ],
+      [
+       "Erschienen",
+       "2004"
+      ],
+      [
+       "Generation",
+       "7"
+      ],
+      [
+       "Art",
+       "Handheld"
+      ],
+      [
+       "Prozessor (CPU)",
+       "MIPS R4000, 333 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "32 MB (ab PSP-2000: 64 MB)"
+      ],
+      [
+       "Grafik (GPU)",
+       "Sony Grafikchip, 166 MHz"
+      ],
+      [
+       "Spielmedium",
+       "UMD (optische Mini-Disc)"
+      ],
+      [
+       "Controller",
+       "Eingebaut: D-Pad, Analog-Nub, Tasten"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "80 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "God of War: Chains of Olympus",
+      "Monster Hunter Freedom Unite",
+      "Crisis Core"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Sony PlayStation"
+  },
+  {
+   "id": "k_vita",
+   "titel": "PlayStation Vita",
+   "kurz": "Sony · 2011 · Vita-Karte",
+   "tags": [
+    "konsole",
+    "sony",
+    "playstation vita",
+    "handheld",
+    "2011",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Technisch beeindruckend, aber teure Speicherkarten und wenig Unterstützung bremsten sie. Heute Kult bei Fans."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sony"
+      ],
+      [
+       "Erschienen",
+       "2011"
+      ],
+      [
+       "Generation",
+       "8"
+      ],
+      [
+       "Art",
+       "Handheld"
+      ],
+      [
+       "Prozessor (CPU)",
+       "ARM Cortex-A9, 4 Kerne, 444 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "512 MB + 128 MB VRAM"
+      ],
+      [
+       "Grafik (GPU)",
+       "PowerVR SGX543MP4+"
+      ],
+      [
+       "Spielmedium",
+       "Vita-Karte"
+      ],
+      [
+       "Controller",
+       "2 Analogsticks, Touchscreen vorn, Touchpad hinten"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "15,5 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Persona 4 Golden",
+      "Gravity Rush",
+      "Uncharted: Golden Abyss"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Sony PlayStation"
+  },
+  {
+   "id": "k_nes",
+   "titel": "NES / Famicom",
+   "kurz": "Nintendo · 1983 · Steckmodul",
+   "tags": [
+    "konsole",
+    "nintendo",
+    "nes / famicom",
+    "heimkonsole",
+    "1983",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Das Steuerkreuz kam von Nintendo (Gunpei Yokoi). Die NES rettete nach dem Videospiel-Crash 1983 den Markt in den USA."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nintendo"
+      ],
+      [
+       "Erschienen",
+       "1983"
+      ],
+      [
+       "Generation",
+       "3"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "Ricoh 2A03 (6502-Kern), 1,79 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "2 KB RAM + 2 KB VRAM"
+      ],
+      [
+       "Grafik (GPU)",
+       "PPU (Bild) mit 256×240 Pixeln"
+      ],
+      [
+       "Spielmedium",
+       "Steckmodul"
+      ],
+      [
+       "Controller",
+       "Pad mit Steuerkreuz (D-Pad) und 2 Tasten"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "61,9 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Super Mario Bros.",
+      "The Legend of Zelda",
+      "Metroid"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Nintendo"
+  },
+  {
+   "id": "k_snes",
+   "titel": "Super Nintendo (SNES)",
+   "kurz": "Nintendo · 1990 · Steckmodul",
+   "tags": [
+    "konsole",
+    "nintendo",
+    "super nintendo (snes)",
+    "heimkonsole",
+    "1990",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Mode 7 erlaubte gedrehte, skalierte Ebenen (z. B. in F-Zero). Das Layout des Pads (A/B/X/Y + L/R) wurde Standard."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nintendo"
+      ],
+      [
+       "Erschienen",
+       "1990"
+      ],
+      [
+       "Generation",
+       "4"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "Ricoh 5A22 (65816), 3,58 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "128 KB RAM + 64 KB VRAM"
+      ],
+      [
+       "Grafik (GPU)",
+       "PPU 1/2, bis 256 Farben aus 32 768"
+      ],
+      [
+       "Spielmedium",
+       "Steckmodul"
+      ],
+      [
+       "Controller",
+       "Pad mit 4 Tasten + 2 Schultertasten"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "49,1 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Super Mario World",
+      "Donkey Kong Country",
+      "Chrono Trigger"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Nintendo"
+  },
+  {
+   "id": "k_n64",
+   "titel": "Nintendo 64",
+   "kurz": "Nintendo · 1996 · Steckmodul",
+   "tags": [
+    "konsole",
+    "nintendo",
+    "nintendo 64",
+    "heimkonsole",
+    "1996",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Als erste Konsole mit Analogstick im Standard-Pad ebnete sie den Weg für 3D-Steuerung. Die teuren Module waren der Hauptnachteil gegenüber CDs."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nintendo"
+      ],
+      [
+       "Erschienen",
+       "1996"
+      ],
+      [
+       "Generation",
+       "5"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "NEC VR4300, 93,75 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "4 MB RDRAM (erweiterbar auf 8 MB)"
+      ],
+      [
+       "Grafik (GPU)",
+       "Reality Co-Processor, 62,5 MHz"
+      ],
+      [
+       "Spielmedium",
+       "Steckmodul (bis 64 MB)"
+      ],
+      [
+       "Controller",
+       "3-Griff-Pad mit Analogstick und Z-Taste"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "32,9 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Super Mario 64",
+      "The Legend of Zelda: Ocarina of Time",
+      "GoldenEye 007"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Nintendo"
+  },
+  {
+   "id": "k_gc",
+   "titel": "Nintendo GameCube",
+   "kurz": "Nintendo · 2001 · Mini-DVD",
+   "tags": [
+    "konsole",
+    "nintendo",
+    "nintendo gamecube",
+    "heimkonsole",
+    "2001",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Kompakt, robust und stark bei Nintendo-Marken. Der Controller gilt bis heute vielen als Referenz für Kämpfer (Smash Bros.)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nintendo"
+      ],
+      [
+       "Erschienen",
+       "2001"
+      ],
+      [
+       "Generation",
+       "6"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "IBM Gekko (PowerPC), 485 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "24 MB 1T-SRAM + 16 MB A-RAM"
+      ],
+      [
+       "Grafik (GPU)",
+       "ATI Flipper, 162 MHz"
+      ],
+      [
+       "Spielmedium",
+       "Mini-DVD (1,5 GB)"
+      ],
+      [
+       "Controller",
+       "Pad mit großem A-Knopf, Analog-Trigger"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "21,7 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Super Smash Bros. Melee",
+      "Metroid Prime",
+      "Wind Waker"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Nintendo"
+  },
+  {
+   "id": "k_wii",
+   "titel": "Nintendo Wii",
+   "kurz": "Nintendo · 2006 · Wii-Disc",
+   "tags": [
+    "konsole",
+    "nintendo",
+    "nintendo wii",
+    "heimkonsole",
+    "2006",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Nintendo konkurrierte nicht über Leistung, sondern über Bedienung: Bewegungssteuerung machte Spiele für Gelegenheitsspieler zugänglich."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nintendo"
+      ],
+      [
+       "Erschienen",
+       "2006"
+      ],
+      [
+       "Generation",
+       "7"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "IBM Broadway (PowerPC), 729 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "88 MB (24 MB + 64 MB)"
+      ],
+      [
+       "Grafik (GPU)",
+       "ATI Hollywood, 243 MHz"
+      ],
+      [
+       "Spielmedium",
+       "Wii-Disc (DVD-Format)"
+      ],
+      [
+       "Controller",
+       "Wii Remote (Bewegungssensor, Zeigefunktion)"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "101,6 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Wii Sports",
+      "Mario Kart Wii",
+      "Super Mario Galaxy"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Nintendo"
+  },
+  {
+   "id": "k_wiiu",
+   "titel": "Nintendo Wii U",
+   "kurz": "Nintendo · 2012 · Optische Disc",
+   "tags": [
+    "konsole",
+    "nintendo",
+    "nintendo wii u",
+    "heimkonsole",
+    "2012",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Die Idee eines zweiten Bildschirms war zu früh und schlecht erklärt. Viele Ideen leben in der Switch weiter."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nintendo"
+      ],
+      [
+       "Erschienen",
+       "2012"
+      ],
+      [
+       "Generation",
+       "8"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "IBM Espresso (PowerPC), 3 Kerne, 1,24 GHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "2 GB DDR3 (1 GB für Spiele)"
+      ],
+      [
+       "Grafik (GPU)",
+       "AMD Latte (Radeon-Klasse)"
+      ],
+      [
+       "Spielmedium",
+       "Optische Disc"
+      ],
+      [
+       "Controller",
+       "GamePad mit Touchscreen"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "13,5 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Mario Kart 8",
+      "Splatoon",
+      "Super Mario 3D World"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Nintendo"
+  },
+  {
+   "id": "k_switch",
+   "titel": "Nintendo Switch",
+   "kurz": "Nintendo · 2017 · Spielkarte",
+   "tags": [
+    "konsole",
+    "nintendo",
+    "nintendo switch",
+    "hybrid",
+    "2017",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Eine Konsole, die zugleich Heim- und Handheld-Gerät ist. Wegen schwächerer Technik laufen viele Spiele mit niedriger Auflösung, aber sie verkaufte sich überragend (ca. 155 Mio. Stück)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nintendo"
+      ],
+      [
+       "Erschienen",
+       "2017"
+      ],
+      [
+       "Generation",
+       "8"
+      ],
+      [
+       "Art",
+       "Hybrid"
+      ],
+      [
+       "Prozessor (CPU)",
+       "NVIDIA Tegra X1 (4× Cortex-A57), bis 1,02 GHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "4 GB LPDDR4"
+      ],
+      [
+       "Grafik (GPU)",
+       "NVIDIA Maxwell, 256 CUDA-Kerne (307–768 MHz)"
+      ],
+      [
+       "Spielmedium",
+       "Spielkarte, 32 GB intern"
+      ],
+      [
+       "Controller",
+       "Joy-Con (abnehmbar) / Pro Controller"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "155 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "The Legend of Zelda: Breath of the Wild",
+      "Mario Kart 8 Deluxe",
+      "Animal Crossing: New Horizons"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Nintendo"
+  },
+  {
+   "id": "k_switch2",
+   "titel": "Nintendo Switch 2",
+   "kurz": "Nintendo · 2025 · Game-Key-Karte / Spielkarte",
+   "tags": [
+    "konsole",
+    "nintendo",
+    "nintendo switch 2",
+    "hybrid",
+    "2025",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Erschien am 5. Juni 2025. Display 7,9 Zoll, 1080p, bis 120 Hz, HDR. Im Dock bis 4K. Verkauft: 5,82 Mio. im ersten Monat, 10,36 Mio. bis Ende September 2025 (Nintendo-Angaben)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nintendo"
+      ],
+      [
+       "Erschienen",
+       "2025"
+      ],
+      [
+       "Generation",
+       "9"
+      ],
+      [
+       "Art",
+       "Hybrid"
+      ],
+      [
+       "Prozessor (CPU)",
+       "NVIDIA-Custom-SoC (Ampere), 8 ARM-Kerne"
+      ],
+      [
+       "Arbeitsspeicher",
+       "12 GB LPDDR5X"
+      ],
+      [
+       "Grafik (GPU)",
+       "NVIDIA Ampere, Raytracing, DLSS"
+      ],
+      [
+       "Spielmedium",
+       "Game-Key-Karte / Spielkarte, 256 GB UFS"
+      ],
+      [
+       "Controller",
+       "Joy-Con 2 (magnetisch, mit Maus-Funktion), Pro Controller 2"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "siehe Beschreibung"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Mario Kart World",
+      "Donkey Kong Bananza",
+      "Pokémon Legends: Z-A"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Nintendo"
+  },
+  {
+   "id": "k_gb",
+   "titel": "Game Boy / Game Boy Color",
+   "kurz": "Nintendo · 1989 · Steckmodul",
+   "tags": [
+    "konsole",
+    "nintendo",
+    "game boy / game boy color",
+    "handheld",
+    "1989",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Schwach, aber sparsam: Tetris, lange Akkulaufzeit und der Preis schlugen farbige Konkurrenz (Lynx, Game Gear)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nintendo"
+      ],
+      [
+       "Erschienen",
+       "1989"
+      ],
+      [
+       "Generation",
+       "4"
+      ],
+      [
+       "Art",
+       "Handheld"
+      ],
+      [
+       "Prozessor (CPU)",
+       "Sharp LR35902 (Z80-ähnlich), 4,19 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "8 KB RAM + 8 KB VRAM"
+      ],
+      [
+       "Grafik (GPU)",
+       "LCD 160×144, 4 Graustufen (Color: 56 Farben)"
+      ],
+      [
+       "Spielmedium",
+       "Steckmodul"
+      ],
+      [
+       "Controller",
+       "D-Pad, A/B, Start/Select"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "118,7 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Tetris",
+      "Pokémon Rot/Blau",
+      "The Legend of Zelda: Link's Awakening"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Nintendo"
+  },
+  {
+   "id": "k_gba",
+   "titel": "Game Boy Advance",
+   "kurz": "Nintendo · 2001 · Steckmodul",
+   "tags": [
+    "konsole",
+    "nintendo",
+    "game boy advance",
+    "handheld",
+    "2001",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Wie ein SNES in der Hosentasche. Hervorragende Ports von SNES-Klassikern."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nintendo"
+      ],
+      [
+       "Erschienen",
+       "2001"
+      ],
+      [
+       "Generation",
+       "6"
+      ],
+      [
+       "Art",
+       "Handheld"
+      ],
+      [
+       "Prozessor (CPU)",
+       "ARM7TDMI, 16,78 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "32 KB + 256 KB RAM"
+      ],
+      [
+       "Grafik (GPU)",
+       "LCD 240×160"
+      ],
+      [
+       "Spielmedium",
+       "Steckmodul"
+      ],
+      [
+       "Controller",
+       "D-Pad, A/B, L/R"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "81,5 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Pokémon Smaragd",
+      "Advance Wars",
+      "Metroid Fusion"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Nintendo"
+  },
+  {
+   "id": "k_ds",
+   "titel": "Nintendo DS",
+   "kurz": "Nintendo · 2004 · Spielkarte",
+   "tags": [
+    "konsole",
+    "nintendo",
+    "nintendo ds",
+    "handheld",
+    "2004",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Der Touchscreen holte neue Spielergruppen (Nintendogs, Brain Training). Die zweitmeistverkaufte Konsole nach der PS2 (inkl. DS Lite)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nintendo"
+      ],
+      [
+       "Erschienen",
+       "2004"
+      ],
+      [
+       "Generation",
+       "7"
+      ],
+      [
+       "Art",
+       "Handheld"
+      ],
+      [
+       "Prozessor (CPU)",
+       "ARM9 (67 MHz) + ARM7 (33 MHz)"
+      ],
+      [
+       "Arbeitsspeicher",
+       "4 MB"
+      ],
+      [
+       "Grafik (GPU)",
+       "2 Bildschirme, 256×192, einer mit Touchscreen"
+      ],
+      [
+       "Spielmedium",
+       "Spielkarte"
+      ],
+      [
+       "Controller",
+       "Touchscreen + Stift, D-Pad, Tasten"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "154 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Pokémon Diamant/Perl",
+      "New Super Mario Bros.",
+      "Professor Layton"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Nintendo"
+  },
+  {
+   "id": "k_3ds",
+   "titel": "Nintendo 3DS",
+   "kurz": "Nintendo · 2011 · Spielkarte",
+   "tags": [
+    "konsole",
+    "nintendo",
+    "nintendo 3ds",
+    "handheld",
+    "2011",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "3D ohne Brille per Parallaxbarriere. Das 3D konnte man herunterregeln, viele ließen es aus."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nintendo"
+      ],
+      [
+       "Erschienen",
+       "2011"
+      ],
+      [
+       "Generation",
+       "8"
+      ],
+      [
+       "Art",
+       "Handheld"
+      ],
+      [
+       "Prozessor (CPU)",
+       "ARM11, 2 Kerne, 268 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "128 MB FCRAM"
+      ],
+      [
+       "Grafik (GPU)",
+       "PICA200, 3D-Display ohne Brille"
+      ],
+      [
+       "Spielmedium",
+       "Spielkarte"
+      ],
+      [
+       "Controller",
+       "Circle Pad, Touchscreen, Tasten"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "75,9 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Pokémon X/Y",
+      "Animal Crossing: New Leaf",
+      "Fire Emblem Awakening"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Nintendo"
+  },
+  {
+   "id": "k_xbox",
+   "titel": "Xbox (Original)",
+   "kurz": "Microsoft · 2001 · DVD",
+   "tags": [
+    "konsole",
+    "microsoft",
+    "xbox (original)",
+    "heimkonsole",
+    "2001",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Erste Konsole mit eingebauter Festplatte und Ethernet. Xbox Live (2002) machte Online-Spielen auf Konsolen alltagstauglich."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Microsoft"
+      ],
+      [
+       "Erschienen",
+       "2001"
+      ],
+      [
+       "Generation",
+       "6"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "Intel Pentium III, 733 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "64 MB DDR"
+      ],
+      [
+       "Grafik (GPU)",
+       "NVIDIA NV2A, 233 MHz"
+      ],
+      [
+       "Spielmedium",
+       "DVD, 8-GB-Festplatte"
+      ],
+      [
+       "Controller",
+       "Duke, später Controller S"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "24 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Halo: Combat Evolved",
+      "Fable",
+      "Ninja Gaiden"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Microsoft Xbox"
+  },
+  {
+   "id": "k_x360",
+   "titel": "Xbox 360",
+   "kurz": "Microsoft · 2005 · DVD",
+   "tags": [
+    "konsole",
+    "microsoft",
+    "xbox 360",
+    "heimkonsole",
+    "2005",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Erschien ein Jahr vor der PS3, fand starke Online-Anbindung. Der Controller wurde auch am PC der Standard."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Microsoft"
+      ],
+      [
+       "Erschienen",
+       "2005"
+      ],
+      [
+       "Generation",
+       "7"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "IBM Xenon, 3 Kerne, 3,2 GHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "512 MB GDDR3"
+      ],
+      [
+       "Grafik (GPU)",
+       "ATI Xenos, 500 MHz"
+      ],
+      [
+       "Spielmedium",
+       "DVD"
+      ],
+      [
+       "Controller",
+       "Xbox-360-Controller (kabellos mit AA-Akku)"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "84 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Halo 3",
+      "Gears of War",
+      "Mass Effect"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Microsoft Xbox"
+  },
+  {
+   "id": "k_xone",
+   "titel": "Xbox One",
+   "kurz": "Microsoft · 2013 · Blu-ray",
+   "tags": [
+    "konsole",
+    "microsoft",
+    "xbox one",
+    "heimkonsole",
+    "2013",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Startete mit Kinect-Zwang und TV-Fokus, wurde später zum Spieleschwerpunkt zurückgebaut. Die One X (2017) hat 6 TFLOPS und 12 GB GDDR5."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Microsoft"
+      ],
+      [
+       "Erschienen",
+       "2013"
+      ],
+      [
+       "Generation",
+       "8"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "AMD Jaguar, 8 Kerne, 1,75 GHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "8 GB DDR3 + 32 MB ESRAM"
+      ],
+      [
+       "Grafik (GPU)",
+       "AMD GCN, 1,31 TFLOPS"
+      ],
+      [
+       "Spielmedium",
+       "Blu-ray, Festplatte"
+      ],
+      [
+       "Controller",
+       "Xbox-One-Controller"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "58 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Forza Horizon 4",
+      "Halo 5",
+      "Sea of Thieves"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Microsoft Xbox"
+  },
+  {
+   "id": "k_xsx",
+   "titel": "Xbox Series X|S",
+   "kurz": "Microsoft · 2020 · Ultra-HD-Blu-ray",
+   "tags": [
+    "konsole",
+    "microsoft",
+    "xbox series x|s",
+    "heimkonsole",
+    "2020",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Zwei Modelle: X für Leistung, S als günstige Variante. Der Game Pass macht Microsoft zum Dienstleister. Verkauf: ca. 35 Mio. (Schätzung, Mitte 2026)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Microsoft"
+      ],
+      [
+       "Erschienen",
+       "2020"
+      ],
+      [
+       "Generation",
+       "9"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "AMD Zen 2, 8 Kerne, 3,8 GHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "16 GB GDDR6 (Series S: 10 GB)"
+      ],
+      [
+       "Grafik (GPU)",
+       "AMD RDNA 2, 12,15 TFLOPS (Series S: 4 TFLOPS)"
+      ],
+      [
+       "Spielmedium",
+       "Ultra-HD-Blu-ray (nur X), 1-TB-NVMe-SSD (S: 512 GB)"
+      ],
+      [
+       "Controller",
+       "Xbox Wireless Controller (Share-Taste)"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "35 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Forza Horizon 5",
+      "Starfield",
+      "Halo Infinite"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Microsoft Xbox"
+  },
+  {
+   "id": "k_sms",
+   "titel": "Sega Master System",
+   "kurz": "Sega · 1985 · Steckmodul / Sega Card",
+   "tags": [
+    "konsole",
+    "sega",
+    "sega master system",
+    "heimkonsole",
+    "1985",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "In Europa und Brasilien erfolgreich, in Japan und den USA im Schatten der NES."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sega"
+      ],
+      [
+       "Erschienen",
+       "1985"
+      ],
+      [
+       "Generation",
+       "3"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "Zilog Z80A, 3,58 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "8 KB RAM + 16 KB VRAM"
+      ],
+      [
+       "Grafik (GPU)",
+       "Sega VDP (TMS9918-basiert)"
+      ],
+      [
+       "Spielmedium",
+       "Steckmodul / Sega Card"
+      ],
+      [
+       "Controller",
+       "Pad mit 2 Tasten"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "13 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Alex Kidd in Miracle World",
+      "Phantasy Star",
+      "Sonic the Hedgehog (SMS)"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Sega"
+  },
+  {
+   "id": "k_md",
+   "titel": "Sega Mega Drive / Genesis",
+   "kurz": "Sega · 1988 · Steckmodul",
+   "tags": [
+    "konsole",
+    "sega",
+    "sega mega drive / genesis",
+    "heimkonsole",
+    "1988",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Sega nutzte „Blast Processing“ als Werbespruch und Sonic als Gegenstück zu Mario. Die Konsolenkriege der 90er begannen hier."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sega"
+      ],
+      [
+       "Erschienen",
+       "1988"
+      ],
+      [
+       "Generation",
+       "4"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "Motorola 68000, 7,6 MHz + Zilog Z80"
+      ],
+      [
+       "Arbeitsspeicher",
+       "64 KB RAM + 64 KB VRAM"
+      ],
+      [
+       "Grafik (GPU)",
+       "Sega VDP, 512 Farben"
+      ],
+      [
+       "Spielmedium",
+       "Steckmodul"
+      ],
+      [
+       "Controller",
+       "3-Tasten-Pad, später 6 Tasten"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "30,8 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Sonic the Hedgehog",
+      "Streets of Rage 2",
+      "Golden Axe"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Sega"
+  },
+  {
+   "id": "k_saturn",
+   "titel": "Sega Saturn",
+   "kurz": "Sega · 1994 · CD-ROM",
+   "tags": [
+    "konsole",
+    "sega",
+    "sega saturn",
+    "heimkonsole",
+    "1994",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Mit 8 Prozessoren schwer zu programmieren. Trotz kleiner Verkäufe bis heute für 2D-Arcade-Spiele geschätzt."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sega"
+      ],
+      [
+       "Erschienen",
+       "1994"
+      ],
+      [
+       "Generation",
+       "5"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "2× Hitachi SH-2, 28,6 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "2 MB RAM + 1,5 MB VRAM"
+      ],
+      [
+       "Grafik (GPU)",
+       "VDP1 + VDP2"
+      ],
+      [
+       "Spielmedium",
+       "CD-ROM"
+      ],
+      [
+       "Controller",
+       "Pad mit 6 Tasten"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "9,5 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Nights into Dreams",
+      "Virtua Fighter 2",
+      "Panzer Dragoon Saga"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Sega"
+  },
+  {
+   "id": "k_dc",
+   "titel": "Sega Dreamcast",
+   "kurz": "Sega · 1998 · GD-ROM",
+   "tags": [
+    "konsole",
+    "sega",
+    "sega dreamcast",
+    "heimkonsole",
+    "1998",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Erste Konsole mit Modem und Online-Spielen. Segas letzte Heimkonsole."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sega"
+      ],
+      [
+       "Erschienen",
+       "1998"
+      ],
+      [
+       "Generation",
+       "6"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "Hitachi SH-4, 200 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "16 MB + 8 MB VRAM + 2 MB Audio"
+      ],
+      [
+       "Grafik (GPU)",
+       "NEC PowerVR2"
+      ],
+      [
+       "Spielmedium",
+       "GD-ROM (1 GB)"
+      ],
+      [
+       "Controller",
+       "Pad mit Memory-Karte (VMU) im Controller"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "9,13 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Shenmue",
+      "Crazy Taxi",
+      "Soul Calibur"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Sega"
+  },
+  {
+   "id": "k_gg",
+   "titel": "Sega Game Gear",
+   "kurz": "Sega · 1990 · Steckmodul",
+   "tags": [
+    "konsole",
+    "sega",
+    "sega game gear",
+    "handheld",
+    "1990",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Farbbildschirm früher als beim Game Boy, aber nur wenige Stunden Akkulaufzeit (6 AA-Batterien)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sega"
+      ],
+      [
+       "Erschienen",
+       "1990"
+      ],
+      [
+       "Generation",
+       "4"
+      ],
+      [
+       "Art",
+       "Handheld"
+      ],
+      [
+       "Prozessor (CPU)",
+       "Zilog Z80, 3,58 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "8 KB RAM + 16 KB VRAM"
+      ],
+      [
+       "Grafik (GPU)",
+       "Farb-LCD 160×144 (4096 Farben)"
+      ],
+      [
+       "Spielmedium",
+       "Steckmodul"
+      ],
+      [
+       "Controller",
+       "D-Pad, 2 Tasten, Start"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "10,6 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Sonic the Hedgehog",
+      "Columns",
+      "Shinobi"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Sega"
+  },
+  {
+   "id": "k_a2600",
+   "titel": "Atari 2600",
+   "kurz": "Atari · 1977 · Steckmodul",
+   "tags": [
+    "konsole",
+    "atari",
+    "atari 2600",
+    "heimkonsole",
+    "1977",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Mit nur 128 Byte RAM mussten Programme das Bild Zeile für Zeile „live“ aufbauen („Racing the Beam“). Der große Pionier der Heimkonsolen, bis zum Crash 1983."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Atari"
+      ],
+      [
+       "Erschienen",
+       "1977"
+      ],
+      [
+       "Generation",
+       "2"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "MOS 6507, 1,19 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "128 Byte RAM (!)"
+      ],
+      [
+       "Grafik (GPU)",
+       "TIA (Television Interface Adaptor)"
+      ],
+      [
+       "Spielmedium",
+       "Steckmodul"
+      ],
+      [
+       "Controller",
+       "Joystick mit einem Knopf"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "30 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Pitfall!",
+      "Space Invaders",
+      "Adventure"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Atari, NEC & Co."
+  },
+  {
+   "id": "k_jaguar",
+   "titel": "Atari Jaguar",
+   "kurz": "Atari · 1993 · Steckmodul",
+   "tags": [
+    "konsole",
+    "atari",
+    "atari jaguar",
+    "heimkonsole",
+    "1993",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Wurde als „64-Bit“ vermarktet, war aber schwer zu programmieren. Der Misserfolg beendete Ataris Hardware-Geschäft."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Atari"
+      ],
+      [
+       "Erschienen",
+       "1993"
+      ],
+      [
+       "Generation",
+       "5"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "Motorola 68000 + „Tom“ und „Jerry“ (RISC)"
+      ],
+      [
+       "Arbeitsspeicher",
+       "2 MB"
+      ],
+      [
+       "Grafik (GPU)",
+       "„Tom“-GPU, 26,6 MHz"
+      ],
+      [
+       "Spielmedium",
+       "Steckmodul"
+      ],
+      [
+       "Controller",
+       "Pad mit Zahlenfeld"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "0,25 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Tempest 2000",
+      "Alien vs Predator",
+      "Iron Soldier"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Atari, NEC & Co."
+  },
+  {
+   "id": "k_odyssey",
+   "titel": "Magnavox Odyssey",
+   "kurz": "Magnavox · 1972 · Steckkarten",
+   "tags": [
+    "konsole",
+    "magnavox",
+    "magnavox odyssey",
+    "heimkonsole",
+    "1972",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Die erste Heimkonsole der Welt (Ralph Baer). Spielelogik steckte in den Steckkarten, nicht in Software."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Magnavox"
+      ],
+      [
+       "Erschienen",
+       "1972"
+      ],
+      [
+       "Generation",
+       "1"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "Keine CPU: diskrete Transistor-/Dioden-Logik"
+      ],
+      [
+       "Arbeitsspeicher",
+       "–"
+      ],
+      [
+       "Grafik (GPU)",
+       "Analoge Schaltung, Bild per Folie auf dem TV"
+      ],
+      [
+       "Spielmedium",
+       "Steckkarten (Schaltungen)"
+      ],
+      [
+       "Controller",
+       "Drehknöpfe"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "0,35 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Tennis",
+      "Hockey",
+      "Haunted House"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Atari, NEC & Co."
+  },
+  {
+   "id": "k_intv",
+   "titel": "Intellivision",
+   "kurz": "Mattel · 1979 · Steckmodul",
+   "tags": [
+    "konsole",
+    "mattel",
+    "intellivision",
+    "heimkonsole",
+    "1979",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "16-Bit-CPU in einer Zeit, in der Atari mit 8 Bit auskam. Sehr gute Sportspiele."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Mattel"
+      ],
+      [
+       "Erschienen",
+       "1979"
+      ],
+      [
+       "Generation",
+       "2"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "General Instrument CP1610, 894 kHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "1 KB + 1 KB"
+      ],
+      [
+       "Grafik (GPU)",
+       "STIC (AY-3-8900)"
+      ],
+      [
+       "Spielmedium",
+       "Steckmodul"
+      ],
+      [
+       "Controller",
+       "Scheibe + 12er-Tastenfeld"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "3 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Astrosmash",
+      "Utopia",
+      "Intellivision Baseball"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Atari, NEC & Co."
+  },
+  {
+   "id": "k_cv",
+   "titel": "ColecoVision",
+   "kurz": "Coleco · 1982 · Steckmodul",
+   "tags": [
+    "konsole",
+    "coleco",
+    "colecovision",
+    "heimkonsole",
+    "1982",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Brachte Arcade-Qualität nach Hause (Donkey Kong lag bei). Erster Absturz im Crash 1983."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Coleco"
+      ],
+      [
+       "Erschienen",
+       "1982"
+      ],
+      [
+       "Generation",
+       "2"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "Zilog Z80A, 3,58 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "1 KB + 16 KB VRAM"
+      ],
+      [
+       "Grafik (GPU)",
+       "TI TMS9928A"
+      ],
+      [
+       "Spielmedium",
+       "Steckmodul"
+      ],
+      [
+       "Controller",
+       "Joystick + Tastenfeld"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "2 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Donkey Kong",
+      "Zaxxon",
+      "Smurf Rescue"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Atari, NEC & Co."
+  },
+  {
+   "id": "k_neogeo",
+   "titel": "Neo Geo AES",
+   "kurz": "SNK · 1990 · Steckmodul",
+   "tags": [
+    "konsole",
+    "snk",
+    "neo geo aes",
+    "heimkonsole",
+    "1990",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Identische Hardware wie der Arcade-Automat (MVS), aber extrem teuer. Kultstatus bei Fans."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "SNK"
+      ],
+      [
+       "Erschienen",
+       "1990"
+      ],
+      [
+       "Generation",
+       "4"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "Motorola 68000 (12 MHz) + Z80"
+      ],
+      [
+       "Arbeitsspeicher",
+       "64 KB RAM + 68 KB VRAM + 2 KB Sound-RAM"
+      ],
+      [
+       "Grafik (GPU)",
+       "Eigene Grafikchips, 4096 Farben"
+      ],
+      [
+       "Spielmedium",
+       "Steckmodul (bis 330 Megabit, ca. 40 MB)"
+      ],
+      [
+       "Controller",
+       "Arcade-Stick"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "1 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Metal Slug",
+      "The King of Fighters '98",
+      "Samurai Shodown"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Atari, NEC & Co."
+  },
+  {
+   "id": "k_pce",
+   "titel": "PC Engine / TurboGrafx-16",
+   "kurz": "NEC · 1987 · HuCard",
+   "tags": [
+    "konsole",
+    "nec",
+    "pc engine / turbografx-16",
+    "heimkonsole",
+    "1987",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Erste Konsole mit CD-Erweiterung (1988). In Japan sehr erfolgreich."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "NEC"
+      ],
+      [
+       "Erschienen",
+       "1987"
+      ],
+      [
+       "Generation",
+       "4"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "HuC6280 (6502-Basis), 7,16 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "8 KB + 64 KB VRAM"
+      ],
+      [
+       "Grafik (GPU)",
+       "HuC6270 VDC"
+      ],
+      [
+       "Spielmedium",
+       "HuCard (Steckkarte), CD-ROM²"
+      ],
+      [
+       "Controller",
+       "Pad mit 2 Tasten"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "10 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Bonk's Adventure",
+      "R-Type",
+      "Castlevania: Rondo of Blood"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Atari, NEC & Co."
+  },
+  {
+   "id": "k_3do",
+   "titel": "3DO Interactive Multiplayer",
+   "kurz": "3DO / Panasonic · 1993 · CD-ROM",
+   "tags": [
+    "konsole",
+    "3do / panasonic",
+    "3do interactive multiplayer",
+    "heimkonsole",
+    "1993",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Mit Lizenzmodell (Hardware von mehreren Herstellern) und einem Startpreis von 699 $ scheiterte sie."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "3DO / Panasonic"
+      ],
+      [
+       "Erschienen",
+       "1993"
+      ],
+      [
+       "Generation",
+       "5"
+      ],
+      [
+       "Art",
+       "Heimkonsole"
+      ],
+      [
+       "Prozessor (CPU)",
+       "ARM60, 12,5 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "2 MB + 1 MB VRAM"
+      ],
+      [
+       "Grafik (GPU)",
+       "Custom Grafik-Chips"
+      ],
+      [
+       "Spielmedium",
+       "CD-ROM"
+      ],
+      [
+       "Controller",
+       "Pad mit Kopfhöreranschluss"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "2 Mio."
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Road Rash",
+      "Gex",
+      "Need for Speed"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Atari, NEC & Co."
+  },
+  {
+   "id": "k_deck",
+   "titel": "Steam Deck",
+   "kurz": "Valve · 2022 · SSD",
+   "tags": [
+    "konsole",
+    "valve",
+    "steam deck",
+    "pc-handheld",
+    "2022",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Ein Linux-PC im Handheld-Format (SteamOS). Die OLED-Version (2023) hat besseren Bildschirm und mehr Akku. Windows-Spiele laufen über Proton."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Valve"
+      ],
+      [
+       "Erschienen",
+       "2022"
+      ],
+      [
+       "Generation",
+       "9"
+      ],
+      [
+       "Art",
+       "PC-Handheld"
+      ],
+      [
+       "Prozessor (CPU)",
+       "AMD Aerith (Zen 2, 4 Kerne / 8 Threads, 2,4–3,5 GHz)"
+      ],
+      [
+       "Arbeitsspeicher",
+       "16 GB LPDDR5"
+      ],
+      [
+       "Grafik (GPU)",
+       "AMD RDNA 2, 8 CUs, 1,6 TFLOPS"
+      ],
+      [
+       "Spielmedium",
+       "SSD (64 GB eMMC bis 1 TB NVMe), microSD"
+      ],
+      [
+       "Controller",
+       "2 Sticks, 2 Trackpads, 4 Rückentasten"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "siehe Beschreibung"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Elden Ring",
+      "Hades",
+      "Portal 2"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "PC-Handhelds"
+  },
+  {
+   "id": "k_ally",
+   "titel": "ASUS ROG Ally",
+   "kurz": "ASUS · 2023 · 512-GB-NVMe-SSD",
+   "tags": [
+    "konsole",
+    "asus",
+    "asus rog ally",
+    "pc-handheld",
+    "2023",
+    "spielkonsole"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Windows-11-Handheld, kein eigenes Betriebssystem für Spiele. Der Nachfolger ROG Xbox Ally (Oktober 2025) mit Xbox-Oberfläche."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "ASUS"
+      ],
+      [
+       "Erschienen",
+       "2023"
+      ],
+      [
+       "Generation",
+       "9"
+      ],
+      [
+       "Art",
+       "PC-Handheld"
+      ],
+      [
+       "Prozessor (CPU)",
+       "AMD Ryzen Z1 Extreme (Zen 4, 8 Kerne)"
+      ],
+      [
+       "Arbeitsspeicher",
+       "16 GB LPDDR5"
+      ],
+      [
+       "Grafik (GPU)",
+       "AMD RDNA 3, 12 CUs"
+      ],
+      [
+       "Spielmedium",
+       "512-GB-NVMe-SSD, microSD"
+      ],
+      [
+       "Controller",
+       "2 Sticks, 4 Rückentasten"
+      ],
+      [
+       "Verkauft (weltweit, ca.)",
+       "siehe Beschreibung"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "liste",
+     "punkte": [
+      "Cyberpunk 2077",
+      "Baldur's Gate 3",
+      "Forza Horizon 5"
+     ],
+     "titel": "Bekannte Spiele"
+    }
+   ],
+   "siehe": [
+    "konsolen:v_gen",
+    "konsolen:v_verkauf"
+   ],
+   "symbol": "schalter",
+   "gruppe": "PC-Handhelds"
+  },
+  {
+   "id": "c_evo",
+   "titel": "Controller: die Entwicklung",
+   "kurz": "Vom Drehknopf bis zum haptischen Pad",
+   "tags": [
+    "controller",
+    "gamepad",
+    "dualsense",
+    "joystick"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Ein Controller verbindet Spieler und Konsole. Jede Generation brachte neue Ideen, die oft später überall zum Standard wurden."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Jahr",
+      "Controller",
+      "Neuerung"
+     ],
+     "zeilen": [
+      [
+       "1972",
+       "Magnavox Odyssey",
+       "Drehknöpfe, analog"
+      ],
+      [
+       "1977",
+       "Atari-Joystick",
+       "Ein Knopf, 4 Richtungen"
+      ],
+      [
+       "1983",
+       "NES-Pad",
+       "Steuerkreuz (D-Pad) + 2 Tasten"
+      ],
+      [
+       "1990",
+       "SNES-Pad",
+       "4 Tasten + 2 Schultertasten"
+      ],
+      [
+       "1996",
+       "N64-Pad",
+       "Analogstick, Z-Taste, Rumble Pak"
+      ],
+      [
+       "1997",
+       "PlayStation DualShock",
+       "2 Analogsticks, eingebaute Vibration"
+      ],
+      [
+       "2006",
+       "Wii Remote",
+       "Bewegungssensor + Zeiger (IR)"
+      ],
+      [
+       "2008",
+       "Xbox-360-Controller",
+       "Kabellos, Standard am PC"
+      ],
+      [
+       "2013",
+       "DualShock 4",
+       "Touchpad, Lichtleiste"
+      ],
+      [
+       "2017",
+       "Nintendo Joy-Con",
+       "Abnehmbar, HD-Rumble, Bewegungssensor"
+      ],
+      [
+       "2020",
+       "PS5 DualSense",
+       "Haptisches Feedback, adaptive Trigger"
+      ],
+      [
+       "2022",
+       "Steam Deck",
+       "Trackpads, Rückentasten"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Zeitleiste"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Das D-Pad stammt von Nintendo (1982), ursprünglich entwickelt für Donkey Kong Game & Watch."
+    }
+   ],
+   "siehe": [
+    "konsolen:c_drift",
+    "konsolen:c_pi"
+   ],
+   "symbol": "taster",
+   "gruppe": "Controller"
+  },
+  {
+   "id": "c_drift",
+   "titel": "Stick-Drift & Sensoren",
+   "kurz": "Warum Analogsticks mit der Zeit „driften“",
+   "tags": [
+    "drift",
+    "stick",
+    "hall",
+    "potentiometer",
+    "tmr"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Analogsticks messen die Position mit **Potentiometern** (zwei Stück pro Stick, X und Y). Durch Abrieb verändert sich der Widerstand: Der Stick meldet dann eine Bewegung, obwohl er in der Mitte steht – das ist die Drift."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Messprinzip",
+      "Funktionsweise",
+      "Vorteil",
+      "Nachteil"
+     ],
+     "zeilen": [
+      [
+       "Potentiometer",
+       "Schleifer auf Widerstandsbahn",
+       "Billig",
+       "Abrieb, Drift"
+      ],
+      [
+       "Hall-Effekt",
+       "Magnet bewegt sich vor Hall-Sensor",
+       "Kein Kontakt, sehr langlebig",
+       "Etwas teurer"
+      ],
+      [
+       "TMR (Tunnel-Magnetwiderstand)",
+       "Magnetwiderstandssensor",
+       "Präzise, sparsam",
+       "Neu, teurer"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Sensoren im Vergleich"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Für Elektroniker: Ein Potentiometer bildet einen Spannungsteiler. Der ADC der Konsole misst die Spannung am Schleifer."
+    }
+   ],
+   "siehe": [
+    "konsolen:c_evo",
+    "konsolen:c_pi"
+   ],
+   "symbol": "poti",
+   "gruppe": "Controller"
+  },
+  {
+   "id": "c_pi",
+   "titel": "Controller am Raspberry Pi",
+   "kurz": "Gamepad per USB oder Bluetooth einrichten",
+   "tags": [
+    "pi",
+    "bluetooth",
+    "controller",
+    "joystick",
+    "evtest"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Fast jeder USB-Controller und viele Bluetooth-Controller laufen am Pi ohne Treiber. Die Eingaben kommen als Linux-Eingabegerät (`/dev/input/js0`, `/dev/input/event*`)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Schritt",
+      "Befehl / Ort"
+     ],
+     "zeilen": [
+      [
+       "Gerät sehen",
+       "`ls /dev/input/`"
+      ],
+      [
+       "Tasten live testen",
+       "`jstest /dev/input/js0` (Paket `joystick`)"
+      ],
+      [
+       "Ereignisse roh",
+       "`evtest` (Paket `evtest`)"
+      ],
+      [
+       "Bluetooth koppeln",
+       "`bluetoothctl`, dann `scan on`, `pair AA:BB:…`, `trust …`, `connect …`"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Anleitung"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "In der Labor-Welt dieser App steht der Eingabe-Monitor der Toolbox bereit. Controller-Eingaben erscheinen dort live."
+    }
+   ],
+   "siehe": [
+    "konsolen:c_evo",
+    "konsolen:r_pi"
+   ],
+   "symbol": "taster",
+   "gruppe": "Controller"
+  },
+  {
+   "id": "e_ueber",
+   "titel": "E-Sports: Überblick",
+   "kurz": "Was ist E-Sports, wie hat es angefangen?",
+   "tags": [
+    "esports",
+    "turnier",
+    "preisgeld",
+    "geschichte"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "E-Sports bedeutet Wettkämpfe in Computer- und Videospielen, oft mit Ligen, Teams, Trainern und großen Preisgeldern."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Jahr",
+      "Ereignis"
+     ],
+     "zeilen": [
+      [
+       "1972",
+       "Erstes bekanntes Videospielturnier („Spacewar“ an der Stanford University)"
+      ],
+      [
+       "1980",
+       "Space-Invaders-Meisterschaft von Atari in den USA, über 10 000 Teilnehmer"
+      ],
+      [
+       "1997",
+       "„Red Annihilation“-Quake-Turnier, Gewinner erhält einen Ferrari"
+      ],
+      [
+       "2000",
+       "Gründung der Electronic Sports League (ESL)"
+      ],
+      [
+       "2010er",
+       "Boom durch Live-Streaming (Twitch)"
+      ],
+      [
+       "2011",
+       "Erstes „The International“ (Dota 2)"
+      ],
+      [
+       "2019",
+       "Fortnite World Cup: 30 Mio. US-Dollar Preisgeld"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Meilensteine"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Die großen Titel wechseln mit der Zeit. Wichtig sind immer: faire Regeln, gleiche Hardware oder erlaubte Settings, und Anti-Cheat."
+    }
+   ],
+   "siehe": [
+    "konsolen:e_titel",
+    "konsolen:e_latenz"
+   ],
+   "symbol": "taster",
+   "gruppe": "E-Sports & Technik"
+  },
+  {
+   "id": "e_titel",
+   "titel": "E-Sports: Genres und Titel",
+   "kurz": "Welche Spiele spielen Profis?",
+   "tags": [
+    "esports",
+    "moba",
+    "shooter",
+    "kampfspiel",
+    "titel"
+   ],
+   "bloecke": [
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Genre",
+      "Beispiele",
+      "Typisch gefragt"
+     ],
+     "zeilen": [
+      [
+       "MOBA",
+       "League of Legends, Dota 2",
+       "Teamspiel, Strategie, schnelle Entscheidungen"
+      ],
+      [
+       "Taktik-Shooter",
+       "Counter-Strike 2, Valorant, Rainbow Six",
+       "Zielgenauigkeit, Absprache"
+      ],
+      [
+       "Battle Royale",
+       "Fortnite, Apex Legends, PUBG",
+       "Überleben, Positionierung"
+      ],
+      [
+       "Kampfspiele",
+       "Street Fighter, Tekken, Super Smash Bros.",
+       "Reaktion, Kombos, Frame-Daten"
+      ],
+      [
+       "Sport & Rennen",
+       "FIFA/EA FC, Rocket League, Gran Turismo",
+       "Teamwork, Präzision"
+      ],
+      [
+       "Strategie",
+       "StarCraft II, Age of Empires",
+       "Aktionen pro Minute, Planung"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Genres"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Kampfspiel-Turniere wie **Evo** gehören seit den 90ern zu den ältesten Turnierszenen – gespielt wird oft auf Konsolen und Arcade-Sticks."
+    }
+   ],
+   "siehe": [
+    "konsolen:e_ueber",
+    "konsolen:e_latenz"
+   ],
+   "symbol": "taster",
+   "gruppe": "E-Sports & Technik"
+  },
+  {
+   "id": "e_latenz",
+   "titel": "Eingabeverzögerung & Hertz",
+   "kurz": "Warum 144 Hz und 1000 Hz Polling wichtig sind",
+   "tags": [
+    "latenz",
+    "input lag",
+    "hertz",
+    "fps",
+    "polling",
+    "ping"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Zwischen Tastendruck und Bild auf dem Schirm vergeht Zeit (**Latenz**). Sie ist die Summe vieler Teile."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Teil der Kette",
+      "Typische Zeit",
+      "Wie man sie verkleinert"
+     ],
+     "zeilen": [
+      [
+       "Controller/Maus (Polling)",
+       "1–8 ms (1000 Hz = 1 ms)",
+       "Kabel oder 1000-Hz-Funk"
+      ],
+      [
+       "Spiel/Engine (Frame)",
+       "6–16 ms (60–144 fps)",
+       "Mehr FPS"
+      ],
+      [
+       "GPU bis Display",
+       "5–15 ms",
+       "Game-Modus des TVs"
+      ],
+      [
+       "Monitor (Reaktion + Scanout)",
+       "1–15 ms",
+       "Hohe Hz, schnelles Panel"
+      ],
+      [
+       "Netzwerk (Ping)",
+       "10–60 ms",
+       "Kabel statt WLAN"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Beispiel-Kette"
+    },
+    {
+     "t": "formel",
+     "name": "Frame-Zeit",
+     "f": "1000 / Hz [ms]",
+     "text": "60 Hz = 16,7 ms, 120 Hz = 8,3 ms, 240 Hz = 4,2 ms."
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Wer einen Monitor mit 144 Hz nur mit 60 Hz betreibt, verschenkt Verzögerung. Immer in den Anzeigeeinstellungen die höchste Rate einstellen."
+    }
+   ],
+   "siehe": [
+    "konsolen:e_ueber",
+    "konsolen:c_evo"
+   ],
+   "symbol": "taster",
+   "gruppe": "E-Sports & Technik"
+  },
+  {
+   "id": "r_pi",
+   "titel": "Retro auf dem Pi: was packt er?",
+   "kurz": "RetroPie, Batocera und Recalbox – welche Konsolen laufen wie gut?",
+   "tags": [
+    "retropie",
+    "batocera",
+    "recalbox",
+    "emulator",
+    "emulation",
+    "pi"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Der Raspberry Pi emuliert alte Konsolen, indem er deren Chips in Software nachbildet. Je jünger die Konsole, desto mehr Rechenleistung braucht das."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Konsole",
+      "Pi 4",
+      "Pi 5",
+      "Anmerkung"
+     ],
+     "zeilen": [
+      [
+       "NES, SNES, Mega Drive, Game Boy, GBA",
+       "sehr gut",
+       "sehr gut",
+       "Läuft ohne Probleme, auch auf dem Pi 3"
+      ],
+      [
+       "PS1",
+       "sehr gut",
+       "sehr gut",
+       "Läuft bei nahezu allen Titeln"
+      ],
+      [
+       "N64",
+       "gut–mittel",
+       "gut",
+       "Manche Spiele brauchen Anpassung"
+      ],
+      [
+       "Dreamcast",
+       "gut",
+       "gut",
+       "Läuft mit Reicast/Flycast"
+      ],
+      [
+       "PSP",
+       "mittel",
+       "gut",
+       "Auflösung meist ×1–×2"
+      ],
+      [
+       "GameCube / Wii",
+       "mittel (Pi 4 wenig)",
+       "mittel–gut",
+       "Nur mit Dolphin, nicht jedes Spiel flüssig"
+      ],
+      [
+       "PS2",
+       "schwach",
+       "mittel (einzelne Titel)",
+       "Nur ausgewählte Spiele nutzbar"
+      ],
+      [
+       "Switch, PS3, Xbox 360",
+       "nein",
+       "nein",
+       "Zu schwach für diese Systeme"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Pi-Eignung (Erfahrungswerte)"
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "Rechtlich: Spiele und BIOS-Dateien nur verwenden, wenn du die Originale besitzt. Die Emulatoren selbst sind legal."
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Beste Basis: Batocera oder RetroPie auf SD-Karte oder SSD. Auf dem Pi 5 hilft ein guter Lüfter, damit der Takt hoch bleibt."
+    }
+   ],
+   "siehe": [
+    "konsolen:c_pi",
+    "konsolen:v_leistung"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Retro auf dem Pi"
+  }
+ ]
+}

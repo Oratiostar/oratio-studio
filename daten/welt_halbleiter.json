@@ -1,0 +1,1519 @@
+{
+"id": "halbleiter",
+"name": "Halbleiter",
+"untertitel": "Diode, LED, Transistor, OPV",
+"farbe": "blau",
+"symbol": "npn",
+"reihenfolge": 3,
+"seiten": [
+{
+"id": "diode",
+"titel": "Dioden im Überblick",
+"kurz": "Si, Schottky, Z, Gleichrichter – Daten und Einsatz",
+"tags": [
+"diode",
+"gleichrichter",
+"schottky",
+"freilauf",
+"1n4148",
+"1n4007"
+],
+"bloecke": [
+{
+"t": "symbol",
+"key": "diode",
+"text": "Diode: Strom fließt in Pfeilrichtung (Anode → Kathode). Der Strich ist die Kathode."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Flussspannung",
+"Sperrspannung",
+"Einsatz"
+],
+"zeilen": [
+[
+"1N4148",
+"0,7 V",
+"100 V",
+"Signaldiode, schnell, 200 mA"
+],
+[
+"1N4001–1N4007",
+"1,0 V",
+"50–1000 V",
+"Netzgleichrichter, 1 A"
+],
+[
+"1N5817–1N5819",
+"0,3–0,45 V",
+"20–40 V",
+"Schottky, 1 A, Verpolschutz"
+],
+[
+"BAT54",
+"0,3 V",
+"30 V",
+"Schottky-Signal (SOT-23)"
+],
+[
+"SS14 / SS34",
+"0,45 V",
+"40 V",
+"Schottky SMD 1 A / 3 A"
+],
+[
+"1N5400",
+"1,0 V",
+"50–1000 V",
+"Gleichrichter 3 A"
+],
+[
+"Germanium (AA119)",
+"0,2–0,3 V",
+"30 V",
+"Alt, HF-Detektor"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "**Silizium ≈ 0,7 V, Schottky ≈ 0,3 V, LED 1,8–3,3 V** Flussspannung. Die Diode wird bei höherem Strom etwas hochohmiger (bis ~1 V)."
+},
+{
+"t": "formel",
+"name": "Verlust in der Diode",
+"f": "P = U_F · I",
+"text": ""
+},
+{
+"t": "rechner",
+"titel": "Gleichrichter-Verlust",
+"felder": [
+[
+"i",
+"Strom",
+"A",
+"2"
+],
+[
+"uf",
+"Flussspannung",
+"V",
+"0,7"
+]
+],
+"ergebnis": [
+[
+"p",
+"Verlustleistung",
+"uf*i",
+"W"
+],
+[
+"p2",
+"Brückengleichrichter (2 Dioden im Pfad)",
+"2*uf*i",
+"W"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "**Freilaufdiode** parallel zu Relais-/Motorspulen (Kathode am Pluspol) leitet die Induktionsspannung ab. **Verpolschutz:** Schottky in Reihe (verliert 0,3 V) oder P-MOSFET (fast verlustfrei)."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Gleichrichtung mit 230 V: Sperrspannung ≥ **1000 V** (1N4007), denn der Scheitelwert beträgt 325 V."
+}
+],
+"siehe": [
+"halbleiter:zdiode",
+"halbleiter:led"
+],
+"symbol": "diode"
+},
+{
+"id": "led",
+"titel": "LEDs & Vorwiderstand",
+"kurz": "Farben, Flussspannung, Strom, Vorwiderstand berechnen",
+"tags": [
+"led",
+"vorwiderstand",
+"leuchtdiode",
+"ws2812",
+"neopixel"
+],
+"bloecke": [
+{
+"t": "symbol",
+"key": "led",
+"text": "LED: wie Diode, mit Lichtpfeilen. Langer Draht = Anode (+)."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Farbe",
+"U_F (typ.)",
+"Material"
+],
+"zeilen": [
+[
+"@#ff4d5e|rot",
+"1,8–2,2 V",
+"AlGaInP"
+],
+[
+"@#ff8c1a|orange",
+"2,0–2,2 V",
+"AlGaInP"
+],
+[
+"@#ffd23f|gelb",
+"2,0–2,2 V",
+"AlGaInP"
+],
+[
+"@#3ddc84|grün",
+"2,0–3,2 V",
+"GaP / InGaN"
+],
+[
+"@#2e86ff|blau",
+"2,8–3,4 V",
+"InGaN"
+],
+[
+"@#ffffff|weiß",
+"2,8–3,4 V",
+"InGaN + Leuchtstoff"
+],
+[
+"@#9b5de5|UV / violett",
+"3,0–3,6 V",
+"InGaN"
+],
+[
+"@#c0c0c0|IR (940 nm)",
+"1,2–1,5 V",
+"GaAs"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "formel",
+"name": "Vorwiderstand",
+"f": "R_V = (U_B − U_F) / I_F",
+"text": "Normaler Betrieb: 5–20 mA. Standard-LED 20 mA max., besser 10 mA."
+},
+{
+"t": "rechner",
+"titel": "LED-Vorwiderstand",
+"felder": [
+[
+"ub",
+"Versorgung",
+"V",
+"5"
+],
+[
+"uf",
+"LED-Spannung",
+"V",
+"2"
+],
+[
+"i",
+"LED-Strom",
+"A",
+"10m"
+],
+[
+"r",
+"Vorwiderstand",
+"Ω",
+""
+]
+],
+"formeln": {
+"r": [
+"(ub-uf)/i"
+],
+"i": [
+"(ub-uf)/r"
+],
+"ub": [
+"uf+i*r"
+],
+"uf": [
+"ub-i*r"
+]
+},
+"text": "Lass ein Feld leer – es wird aus den anderen berechnet. Schreibweise: 4k7, 10u, 2,2M, 100n."
+},
+{
+"t": "rechner",
+"titel": "Passender Normwert",
+"felder": [
+[
+"ub",
+"Versorgung",
+"V",
+"3,3"
+],
+[
+"uf",
+"LED-Spannung",
+"V",
+"2"
+],
+[
+"i",
+"Strom",
+"A",
+"10m"
+]
+],
+"ergebnis": [
+[
+"r",
+"Berechnet",
+"(ub-uf)/i",
+"Ω"
+],
+[
+"e",
+"nächster E24-Wert",
+"E24((ub-uf)/i)",
+"Ω"
+],
+[
+"i2",
+"Strom damit",
+"(ub-uf)/E24((ub-uf)/i)",
+"A"
+],
+[
+"p",
+"Verlust im Widerstand",
+"(ub-uf)**2/E24((ub-uf)/i)",
+"W"
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Versorgung",
+"rote LED 10 mA",
+"blaue/weiße 10 mA"
+],
+"zeilen": [
+[
+"3,3 V",
+"130 Ω → 150 Ω",
+"27 Ω → 47 Ω (hell)"
+],
+[
+"5 V",
+"300 Ω → 330 Ω",
+"180 Ω"
+],
+[
+"12 V",
+"1 kΩ",
+"910 Ω → 1 kΩ"
+],
+[
+"24 V",
+"2,2 kΩ",
+"2 kΩ"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Praxiswerte"
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "**LEDs nie ohne Vorwiderstand** an eine Spannungsquelle. Der Pi-GPIO liefert max. **16 mA** pro Pin (3,3 V!). Für mehr: Transistor oder LED-Treiber."
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Die Helligkeit regelt man per **PWM**, nicht über den Widerstand. Das Auge ist logarithmisch: 10 % Tastverhältnis sieht schon recht hell aus."
+},
+{
+"t": "hinweis",
+"typ": "info",
+"text": "**WS2812/NeoPixel** sind LEDs mit eingebautem Controller: 5 V, ein Datenpin, 60 mA pro Pixel bei Weiß. 144 Pixel ≈ 8,6 A!"
+}
+],
+"siehe": [
+"grund:ohm",
+"halbleiter:diode",
+"passiv:ereihen"
+],
+"symbol": "led"
+},
+{
+"id": "zdiode",
+"titel": "Z-Diode & Spannungsreferenz",
+"kurz": "Stabilisieren, begrenzen, Schutz",
+"tags": [
+"z-diode",
+"zener",
+"referenz",
+"tl431",
+"stabilisierung"
+],
+"bloecke": [
+{
+"t": "symbol",
+"key": "zdiode",
+"text": "Z-Diode: wird in Sperrrichtung bei U_Z leitend."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"U_Z",
+"Leistung"
+],
+"zeilen": [
+[
+"BZX55C3V3",
+"3,3 V",
+"0,5 W"
+],
+[
+"BZX55C5V1",
+"5,1 V",
+"0,5 W"
+],
+[
+"BZX55C12",
+"12 V",
+"0,5 W"
+],
+[
+"1N4733A",
+"5,1 V",
+"1 W"
+],
+[
+"1N4742A",
+"12 V",
+"1 W"
+],
+[
+"TL431",
+"2,5–36 V einstellbar",
+"Referenz mit 2 Widerständen"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "formel",
+"name": "Vorwiderstand",
+"f": "R_V = (U_B − U_Z) / (I_Z + I_L)",
+"text": "I_Z min. etwa 5 mA, damit die Z-Diode sicher stabilisiert."
+},
+{
+"t": "rechner",
+"titel": "Z-Dioden-Stabilisierung",
+"felder": [
+[
+"ub",
+"Eingang",
+"V",
+"12"
+],
+[
+"uz",
+"Z-Spannung",
+"V",
+"5,1"
+],
+[
+"il",
+"Laststrom",
+"A",
+"10m"
+],
+[
+"iz",
+"Z-Strom min.",
+"A",
+"5m"
+],
+[
+"r",
+"Vorwiderstand",
+"Ω",
+""
+]
+],
+"formeln": {
+"r": [
+"(ub-uz)/(iz+il)"
+]
+},
+"text": "Lass ein Feld leer – es wird aus den anderen berechnet. Schreibweise: 4k7, 10u, 2,2M, 100n."
+},
+{
+"t": "rechner",
+"titel": "Verlustleistung",
+"felder": [
+[
+"ub",
+"Eingang",
+"V",
+"12"
+],
+[
+"uz",
+"Z-Spannung",
+"V",
+"5,1"
+],
+[
+"r",
+"Vorwiderstand",
+"Ω",
+"460"
+],
+[
+"il",
+"Laststrom",
+"A",
+"0"
+]
+],
+"ergebnis": [
+[
+"iz",
+"Z-Strom",
+"(ub-uz)/r-il",
+"A"
+],
+[
+"pz",
+"Verlust Z-Diode",
+"uz*((ub-uz)/r-il)",
+"W"
+],
+[
+"pr",
+"Verlust Widerstand",
+"(ub-uz)**2/r",
+"W"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "**Schutz vor Überspannung am GPIO:** 3,3-V-Z-Diode (oder 3V6) nach Masse plus 1-kΩ-Reihenwiderstand. Besser: TVS-Diode oder Pegelwandler."
+}
+],
+"siehe": [
+"halbleiter:regler"
+],
+"symbol": "zdiode"
+},
+{
+"id": "transistor",
+"titel": "Bipolartransistor (BJT)",
+"kurz": "NPN/PNP, Schalter, Basiswiderstand, Typen",
+"tags": [
+"transistor",
+"bjt",
+"npn",
+"pnp",
+"basis",
+"bc547",
+"2n2222",
+"schalten"
+],
+"bloecke": [
+{
+"t": "symbol",
+"key": "npn",
+"text": "NPN: Basis (B), Kollektor (C), Emitter (E). Pfeil am Emitter zeigt die Stromrichtung."
+},
+{
+"t": "symbol",
+"key": "pnp",
+"text": "PNP: Pfeil zeigt zur Basis."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Pol.",
+"I_C max",
+"U_CE max",
+"Gehäuse",
+"Einsatz"
+],
+"zeilen": [
+[
+"BC547 / BC337",
+"NPN",
+"100 / 800 mA",
+"45 V",
+"TO-92",
+"Universal / Last bis 500 mA"
+],
+[
+"BC557 / BC327",
+"PNP",
+"100 / 800 mA",
+"45 V",
+"TO-92",
+"Gegenstück"
+],
+[
+"2N2222 / PN2222",
+"NPN",
+"800 mA",
+"40 V",
+"TO-92",
+"Standard"
+],
+[
+"2N3904 / 2N3906",
+"NPN / PNP",
+"200 mA",
+"40 V",
+"TO-92",
+"Kleinsignal-Paar"
+],
+[
+"BD139 / BD140",
+"NPN / PNP",
+"1,5 A",
+"80 V",
+"TO-126",
+"Treiber"
+],
+[
+"TIP120",
+"NPN Darlington",
+"5 A",
+"60 V",
+"TO-220",
+"Motoren (V_CE ≈ 1,2 V)"
+],
+[
+"2N3055",
+"NPN",
+"15 A",
+"60 V",
+"TO-3",
+"Netzteile (alt)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "formel",
+"name": "Schalter-Basiswiderstand",
+"f": "R_B = (U_Steuer − 0,7 V) / I_B     I_B = I_C / h_FE,min · 2…5",
+"text": "Übersteuern (Faktor 2–5), damit der Transistor sicher sättigt."
+},
+{
+"t": "rechner",
+"titel": "Basiswiderstand (Schalter)",
+"felder": [
+[
+"us",
+"Steuerspannung",
+"V",
+"3,3"
+],
+[
+"ic",
+"Laststrom",
+"A",
+"100m"
+],
+[
+"hfe",
+"Stromverstärkung (sicher)",
+"",
+"100"
+],
+[
+"k",
+"Übersteuerung",
+"",
+"3"
+],
+[
+"rb",
+"Basiswiderstand",
+"Ω",
+""
+]
+],
+"formeln": {
+"rb": [
+"(us-0.7)/(ic/hfe*k)"
+]
+},
+"text": "Lass ein Feld leer – es wird aus den anderen berechnet. Schreibweise: 4k7, 10u, 2,2M, 100n."
+},
+{
+"t": "rechner",
+"titel": "Verlust im Transistor",
+"felder": [
+[
+"ic",
+"Strom",
+"A",
+"0,5"
+],
+[
+"uce",
+"Sättigung U_CE",
+"V",
+"0,2"
+]
+],
+"ergebnis": [
+[
+"p",
+"Verlustleistung",
+"ic*uce",
+"W"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "Bipolar = **stromgesteuert**: ein kleiner Basisstrom steuert den großen Kollektorstrom (I_C = h_FE · I_B). Als Schalter wird er **gesättigt** betrieben (U_CE ≈ 0,1–0,3 V)."
+},
+{
+"t": "hinweis",
+"typ": "pi",
+"text": "NPN **Low-Side-Schalter**: Last zwischen +V und Kollektor, Emitter an Masse, GPIO → 1 kΩ → Basis. Freilaufdiode bei Relais/Motor nicht vergessen."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Pinbelegung: BC547 von **vorne** (flache Seite): C–B–E. 2N2222 (Metall/TO-92 je Hersteller) unterscheidet sich! Prüfe das Datenblatt."
+}
+],
+"siehe": [
+"halbleiter:mosfet",
+"passiv:relais"
+],
+"symbol": "npn"
+},
+{
+"id": "mosfet",
+"titel": "MOSFET",
+"kurz": "N/P-Kanal, Logic-Level, R_DS(on), Schalten",
+"tags": [
+"mosfet",
+"fet",
+"irlz44n",
+"2n7000",
+"logic level",
+"gate",
+"schalten",
+"pwm"
+],
+"bloecke": [
+{
+"t": "symbol",
+"key": "nmos",
+"text": "N-Kanal-MOSFET: Gate (G), Drain (D), Source (S)."
+},
+{
+"t": "symbol",
+"key": "pmos",
+"text": "P-Kanal-MOSFET."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Kanal",
+"U_DS",
+"I_D",
+"R_DS(on)",
+"Logic-Level"
+],
+"zeilen": [
+[
+"IRLZ44N",
+"N",
+"55 V",
+"47 A",
+"22 mΩ",
+"ja (4,5 V)"
+],
+[
+"IRLB8721",
+"N",
+"30 V",
+"62 A",
+"8,7 mΩ",
+"ja"
+],
+[
+"IRF540N",
+"N",
+"100 V",
+"33 A",
+"44 mΩ",
+"nein (10 V)"
+],
+[
+"2N7000",
+"N",
+"60 V",
+"0,2 A",
+"5 Ω",
+"ja (4,5 V)"
+],
+[
+"BS170",
+"N",
+"60 V",
+"0,5 A",
+"5 Ω",
+"bedingt"
+],
+[
+"AO3400",
+"N",
+"30 V",
+"5,7 A",
+"30 mΩ",
+"ja (SOT-23)"
+],
+[
+"IRF9540",
+"P",
+"−100 V",
+"−19 A",
+"117 mΩ",
+"nein"
+],
+[
+"AO3401",
+"P",
+"−30 V",
+"−4 A",
+"50 mΩ",
+"ja (SOT-23)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "formel",
+"name": "Verlust (Durchlass)",
+"f": "P = I² · R_DS(on)",
+"text": ""
+},
+{
+"t": "rechner",
+"titel": "MOSFET-Verlust",
+"felder": [
+[
+"i",
+"Strom",
+"A",
+"10"
+],
+[
+"r",
+"R_DS(on) (bei Betriebstemperatur ≈ 1,5×)",
+"Ω",
+"22m"
+]
+],
+"ergebnis": [
+[
+"p",
+"Verlust kalt",
+"i*i*r",
+"W"
+],
+[
+"p2",
+"Verlust warm",
+"i*i*r*1.5",
+"W"
+],
+[
+"u",
+"Spannungsabfall",
+"i*r",
+"V"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "MOSFET = **spannungsgesteuert**. Das Gate zieht im Ruhezustand keinen Strom, nur beim Umladen der Gate-Kapazität (ns bis µs). Für den Pi (3,3 V) brauchst du **Logic-Level-Typen** (V_GS(th) deutlich unter 3 V)."
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Gate immer mit **10-kΩ-Pulldown** gegen Masse (undefinierter Zustand beim Booten!) und bei schnellem PWM ein **100–220-Ω-Gate-Widerstand**."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Die **Body-Diode** (Source → Drain bei N-Kanal) leitet immer rückwärts. Als Verpolschutz-Schalter muss man deshalb auf die Einbaurichtung achten (P-Kanal im Pluszweig)."
+}
+],
+"siehe": [
+"halbleiter:transistor",
+"mikro:pwm"
+],
+"symbol": "nmos"
+},
+{
+"id": "thyristor",
+"titel": "Thyristor, Triac, Diac",
+"kurz": "Phasenanschnitt, Dimmer, Zündung",
+"tags": [
+"thyristor",
+"triac",
+"diac",
+"dimmer",
+"phasenanschnitt",
+"scr",
+"igbt"
+],
+"bloecke": [
+{
+"t": "symbol",
+"key": "thyristor",
+"text": "Thyristor: zündet über das Gate, löscht beim Strom-Nulldurchgang."
+},
+{
+"t": "symbol",
+"key": "triac",
+"text": "Triac: Wechselstromschalter in beide Richtungen."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Bauteil",
+"Funktion",
+"Anwendung"
+],
+"zeilen": [
+[
+"SCR / Thyristor",
+"einseitig leitend, bleibt an",
+"Gleichrichter, Crowbar"
+],
+[
+"Triac (BT136, BTA16)",
+"AC-Schalter, beide Richtungen",
+"Dimmer, Heizungssteuerung"
+],
+[
+"Diac (DB3)",
+"kippt bei ca. 32 V",
+"Zündimpuls für Triac"
+],
+[
+"Optotriac (MOC3021)",
+"Trennung + Triac-Zündung",
+"Pi → Netzlast"
+],
+[
+"IGBT",
+"wie Transistor für große Leistung",
+"Frequenzumrichter"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "**230 V:** Nur mit sicherer Trennung (Optotriac), berührungssicherem Gehäuse und Sicherung. Nichts davon auf dem Steckbrett! Im Zweifel ein fertiges **SSR-Modul** verwenden."
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Phasenanschnitt braucht einen **Nulldurchgangsdetektor** (z. B. Optokoppler an der Netzspannung über Vorwiderstand), um den Zündwinkel zu timen."
+}
+],
+"siehe": [
+"grund:wechselstrom"
+],
+"symbol": "thyristor"
+},
+{
+"id": "opamp",
+"titel": "Operationsverstärker",
+"kurz": "Grundschaltungen, Verstärkung, Typen",
+"tags": [
+"opv",
+"operationsverstärker",
+"op-amp",
+"lm358",
+"verstärker",
+"komparator",
+"tl072"
+],
+"bloecke": [
+{
+"t": "symbol",
+"key": "opamp",
+"text": "Operationsverstärker mit invertierendem (−) und nichtinvertierendem (+) Eingang."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Schaltung",
+"Verstärkung",
+"Merkmal"
+],
+"zeilen": [
+[
+"Spannungsfolger",
+"1",
+"Impedanzwandler"
+],
+[
+"Nicht-invertierend",
+"1 + R₂/R₁",
+"hoher Eingangswiderstand"
+],
+[
+"Invertierend",
+"−R₂/R₁",
+"Eingangswiderstand = R₁"
+],
+[
+"Differenzverstärker",
+"R₂/R₁",
+"Subtrahiert zwei Signale"
+],
+[
+"Komparator (ohne Rückkopplung)",
+"∞",
+"Ausgang kippt an Versorgungsgrenze"
+],
+[
+"Integrator",
+"−1/(R·C·jω)",
+"Rampe / Tiefpass"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "rechner",
+"titel": "Nicht-invertierender Verstärker",
+"felder": [
+[
+"v",
+"Verstärkung",
+"",
+""
+],
+[
+"r1",
+"R₁ (nach Masse)",
+"Ω",
+"10k"
+],
+[
+"r2",
+"R₂ (Rückkopplung)",
+"Ω",
+"47k"
+]
+],
+"formeln": {
+"v": [
+"1+r2/r1"
+],
+"r2": [
+"(v-1)*r1"
+],
+"r1": [
+"r2/(v-1)"
+]
+},
+"text": "Lass ein Feld leer – es wird aus den anderen berechnet. Schreibweise: 4k7, 10u, 2,2M, 100n."
+},
+{
+"t": "rechner",
+"titel": "Invertierender Verstärker",
+"felder": [
+[
+"v",
+"Verstärkung",
+"",
+""
+],
+[
+"r1",
+"R₁ (Eingang)",
+"Ω",
+"10k"
+],
+[
+"r2",
+"R₂ (Rückkopplung)",
+"Ω",
+"100k"
+]
+],
+"formeln": {
+"v": [
+"-r2/r1"
+],
+"r2": [
+"-v*r1"
+],
+"r1": [
+"-r2/v"
+]
+},
+"text": "Lass ein Feld leer – es wird aus den anderen berechnet. Schreibweise: 4k7, 10u, 2,2M, 100n."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Versorgung",
+"Besonderheit"
+],
+"zeilen": [
+[
+"LM358",
+"3–32 V, Single Supply",
+"Ausgang erreicht ~0 V, nicht V+; billig, langsam (1 MHz)"
+],
+[
+"LM324",
+"wie LM358, 4-fach",
+""
+],
+[
+"TL072 / TL082",
+"±5…±18 V",
+"Audio, JFET-Eingang, rauscharm"
+],
+[
+"NE5532",
+"±3…±20 V",
+"Audio, niederohmig"
+],
+[
+"MCP6002",
+"1,8–6 V",
+"Rail-to-Rail, 3,3-V-tauglich"
+],
+[
+"OPA2134",
+"±2,5…±18 V",
+"Hi-Fi"
+],
+[
+"LM393",
+"2–36 V",
+"Komparator, Open-Collector"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "Zwei goldene Regeln (idealer OPV mit Gegenkopplung): **1)** Beide Eingänge liegen auf gleichem Potenzial. **2)** Die Eingänge ziehen keinen Strom."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Ein LM358 hat am Ausgang oben ca. 1,5 V Abstand zur Versorgung. Willst du bis 3,3 V aussteuern, nimm einen **Rail-to-Rail-Typ**."
+}
+],
+"siehe": [
+"grund:dezibel"
+],
+"symbol": "opamp"
+},
+{
+"id": "optokoppler",
+"titel": "Optokoppler & Trennung",
+"kurz": "PC817, 6N137, galvanische Trennung",
+"tags": [
+"optokoppler",
+"trennung",
+"pc817",
+"galvanisch",
+"isolation"
+],
+"bloecke": [
+{
+"t": "symbol",
+"key": "optokoppler",
+"text": "LED und Fototransistor im gemeinsamen Gehäuse."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Ausgang",
+"Speed",
+"Einsatz"
+],
+"zeilen": [
+[
+"PC817 / EL817",
+"Fototransistor",
+"ca. 4 µs",
+"Standard-Trennung, SPS-Eingänge"
+],
+[
+"4N35",
+"Fototransistor",
+"10 µs",
+"Universal"
+],
+[
+"6N137 / HCPL-2630",
+"Logikgatter",
+"10 MBit/s",
+"Schnelle Signale"
+],
+[
+"MOC3021",
+"Triac",
+"–",
+"Netz schalten"
+],
+[
+"H11AA1",
+"Fototransistor, AC-Eingang",
+"–",
+"Nulldurchgang erkennen"
+],
+[
+"ADuM1201",
+"Digital-Isolator (kapazitiv)",
+"bis 100 MBit/s",
+"SPI/I2C-Trennung"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "formel",
+"name": "Vorwiderstand der LED",
+"f": "R = (U_B − 1,2 V) / I_F",
+"text": "Typisch I_F = 5–10 mA. Stromübertragungsverhältnis (CTR) des PC817: 50–600 %."
+},
+{
+"t": "rechner",
+"titel": "Optokoppler-Eingang",
+"felder": [
+[
+"ub",
+"Steuerspannung",
+"V",
+"5"
+],
+[
+"i",
+"LED-Strom",
+"A",
+"5m"
+]
+],
+"ergebnis": [
+[
+"r",
+"Vorwiderstand",
+"(ub-1.2)/i",
+"Ω"
+],
+[
+"e",
+"E24",
+"E24((ub-1.2)/i)",
+"Ω"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Trennung schützt Pi und Mensch. Die Masse von Pi und Last dürfen **nicht** verbunden sein, sonst bringt der Koppler nichts."
+}
+],
+"siehe": [
+"passiv:relais"
+],
+"symbol": "optokoppler"
+},
+{
+"id": "regler",
+"titel": "Spannungsregler",
+"kurz": "78xx, LDO, Buck, Boost – welcher wofür",
+"tags": [
+"regler",
+"7805",
+"lm317",
+"ldo",
+"buck",
+"boost",
+"spannungsregler",
+"schaltregler",
+"ams1117"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Ausgang",
+"Strom",
+"Dropout",
+"Bemerkung"
+],
+"zeilen": [
+[
+"7805 / 7812",
+"5 V / 12 V",
+"1 A",
+"≈ 2 V",
+"Linear, heizt bei Differenz"
+],
+[
+"7905",
+"−5 V",
+"1 A",
+"≈ 2 V",
+"negativ"
+],
+[
+"LM317",
+"1,25–37 V einstellbar",
+"1,5 A",
+"≈ 2 V",
+"2 Widerstände"
+],
+[
+"AMS1117-3.3",
+"3,3 V",
+"1 A",
+"1,1 V",
+"LDO, Standard-Modul"
+],
+[
+"MCP1700",
+"3,3 V",
+"250 mA",
+"0,2 V",
+"µA-Ruhestrom, Batterie"
+],
+[
+"LM2596",
+"einstellbar",
+"3 A",
+"–",
+"Buck, 150 kHz"
+],
+[
+"MP1584 / XL4015",
+"einstellbar",
+"3 / 5 A",
+"–",
+"Buck, klein"
+],
+[
+"MT3608",
+"bis 28 V",
+"2 A",
+"–",
+"Boost (Aufwärts)"
+],
+[
+"TPS63020",
+"3,3 V aus 1,8–5,5 V",
+"2 A",
+"–",
+"Buck-Boost"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "formel",
+"name": "Verlust im Linearregler",
+"f": "P_V = (U_in − U_out) · I",
+"text": ""
+},
+{
+"t": "formel",
+"name": "LM317 Ausgang",
+"f": "U_out = 1,25 V · (1 + R₂/R₁) + I_Adj · R₂",
+"text": "R₁ typ. 240 Ω, I_Adj ≈ 50 µA (meist vernachlässigbar)."
+},
+{
+"t": "rechner",
+"titel": "LM317",
+"felder": [
+[
+"u",
+"Ausgang",
+"V",
+""
+],
+[
+"r1",
+"R₁ (240 Ω)",
+"Ω",
+"240"
+],
+[
+"r2",
+"R₂",
+"Ω",
+"720"
+]
+],
+"formeln": {
+"u": [
+"1.25*(1+r2/r1)"
+],
+"r2": [
+"(u/1.25-1)*r1"
+]
+},
+"text": "Lass ein Feld leer – es wird aus den anderen berechnet. Schreibweise: 4k7, 10u, 2,2M, 100n."
+},
+{
+"t": "rechner",
+"titel": "Linearregler: Wärme",
+"felder": [
+[
+"ui",
+"Eingang",
+"V",
+"12"
+],
+[
+"uo",
+"Ausgang",
+"V",
+"5"
+],
+[
+"i",
+"Strom",
+"A",
+"0,5"
+]
+],
+"ergebnis": [
+[
+"p",
+"Verlustleistung",
+"(ui-uo)*i",
+"W"
+],
+[
+"w",
+"Wirkungsgrad",
+"uo/ui",
+"",
+"proz"
+],
+[
+"t",
+"Temperaturanstieg ohne Kühlkörper (TO-220, ≈ 50 K/W)",
+"(ui-uo)*i*50",
+"K",
+"zahl"
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"",
+"Linearregler",
+"Schaltregler (Buck/Boost)"
+],
+"zeilen": [
+[
+"Wirkungsgrad",
+"U_out/U_in (schlecht)",
+"85–95 %"
+],
+[
+"Rauschen",
+"sehr gering",
+"Störungen (Ripple)"
+],
+[
+"Bauteile",
+"2 Kondensatoren",
+"Spule, Diode, Kondensatoren"
+],
+[
+"Einsatz",
+"kleine Differenz, Audio, Analog",
+"große Differenz, Akkubetrieb"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Reihenfolge für saubere Analogtechnik: **Schaltregler** erzeugt grob 5 V, dahinter ein **LDO** für 3,3 V Sensor/ADC. So bekommst du Effizienz und Ruhe."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Ein 7805 an 12 V mit 1 A verbrennt **7 W** – das ist ohne Kühlkörper nicht zu halten."
+}
+],
+"siehe": [
+"energie:netzteil"
+],
+"symbol": "diode"
+}
+]
+}

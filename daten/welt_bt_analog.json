@@ -1,0 +1,2758 @@
+{
+"id": "bt_analog",
+"name": "Analog & Schaltungen",
+"untertitel": "Opamps, Regler, Grundschaltungen",
+"farbe": "blau",
+"symbol": "opamp",
+"reihenfolge": 21,
+"seiten": [
+{
+"id": "analog_lm358",
+"titel": "LM358",
+"kurz": "2 × Operationsverstärker (Single-Supply)",
+"tags": [
+"operationsverstärker",
+"opamp",
+"verstärker",
+"lm358",
+"single",
+"supply",
+"Operationsverstärker",
+"DIP-8",
+"LM358",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Der Allrounder für einfache Schaltungen mit nur einer Versorgung (z. B. 5 V). Eingang und Ausgang können bis (fast) GND, deshalb gut für Sensoren und Mikrocontroller."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "lm358",
+"name": "LM358",
+"titel": "2 × Operationsverstärker (Single-Supply)",
+"kurz": "Der Allrounder für einfache Schaltungen mit nur einer Versorgung (z. B. 5 V). Eingang und Ausgang können bis (fast) GND, deshalb gut für Sensoren und Mikrocontroller.",
+"familie": "Operationsverstärker",
+"gehaeuse": "DIP-8",
+"pins": [
+"OUT1:o",
+"IN1−:i",
+"IN1+:i",
+"V−/GND:g",
+"IN2+:i",
+"IN2−:i",
+"OUT2:o",
+"V+:v"
+],
+"spannung": "3–32 V (oder ±1,5…±16 V).",
+"hinweise": [
+"Ausgang erreicht oben nur etwa V+ −1,5 V (nicht Rail-to-Rail). Bei 5 V also max. ca. 3,5 V.",
+"Bandbreite (GBW) ca. 1 MHz, Anstiegsgeschwindigkeit nur ca. 0,3 V/µs: für Audio ok, für schnelle Signale zu langsam.",
+"Übernahmeverzerrung (Crossover) bei kleinen Signalen, wenn der Ausgang nach GND zieht.",
+"Nicht benutzten Verstärker als Spannungsfolger an eine feste Spannung schalten (Ausgang mit −Eingang verbinden, +Eingang an GND), damit er nicht schwingt.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "operationsverstärker opamp verstärker lm358 single supply",
+"kat": "analog",
+"uid": "analog:lm358"
+}
+}
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "analog_lm324",
+"titel": "LM324",
+"kurz": "4 × Operationsverstärker (Single-Supply)",
+"tags": [
+"operationsverstärker",
+"opamp",
+"vierfach",
+"lm324",
+"Operationsverstärker",
+"DIP-14",
+"LM324",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Vier LM358-ähnliche Verstärker in einem Gehäuse. Gleiche Eigenschaften wie der LM358, aber mit anderer Pinbelegung (14 Pins)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "lm324",
+"name": "LM324",
+"titel": "4 × Operationsverstärker (Single-Supply)",
+"kurz": "Vier LM358-ähnliche Verstärker in einem Gehäuse. Gleiche Eigenschaften wie der LM358, aber mit anderer Pinbelegung (14 Pins).",
+"familie": "Operationsverstärker",
+"gehaeuse": "DIP-14",
+"pins": [
+"OUT1:o",
+"IN1−:i",
+"IN1+:i",
+"V+:v",
+"IN2+:i",
+"IN2−:i",
+"OUT2:o",
+"OUT3:o",
+"IN3−:i",
+"IN3+:i",
+"V−/GND:g",
+"IN4+:i",
+"IN4−:i",
+"OUT4:o"
+],
+"spannung": "3–32 V (oder ±1,5…±16 V).",
+"hinweise": [
+"Wie LM358: Ausgang nicht Rail-to-Rail (oben ca. V+ −1,5 V), GBW ca. 1 MHz.",
+"Hier liegt V+ an Pin 4 und GND (V−) an Pin 11, nicht in den Ecken.",
+"Unbenutzte Verstärker als Spannungsfolger beschalten.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "operationsverstärker opamp vierfach lm324",
+"kat": "analog",
+"uid": "analog:lm324"
+}
+}
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "analog_tl072",
+"titel": "TL072",
+"kurz": "2 × Operationsverstärker mit JFET-Eingang, rauscharm",
+"tags": [
+"operationsverstärker",
+"opamp",
+"audio",
+"rauscharm",
+"tl072",
+"jfet",
+"Operationsverstärker",
+"DIP-8",
+"TL072",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Hochohmiger Eingang (JFET) und geringes Rauschen. Beliebt in Audio-Vorverstärkern und Filtern. Braucht in der Regel eine Versorgung von mindestens ±5 V."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "tl072",
+"name": "TL072",
+"titel": "2 × Operationsverstärker mit JFET-Eingang, rauscharm",
+"kurz": "Hochohmiger Eingang (JFET) und geringes Rauschen. Beliebt in Audio-Vorverstärkern und Filtern. Braucht in der Regel eine Versorgung von mindestens ±5 V.",
+"familie": "Operationsverstärker",
+"gehaeuse": "DIP-8",
+"pins": [
+"OUT1:o",
+"IN1−:i",
+"IN1+:i",
+"V−:g",
+"IN2+:i",
+"IN2−:i",
+"OUT2:o",
+"V+:v"
+],
+"spannung": "±5…±18 V (10…36 V).",
+"hinweise": [
+"Nicht gedacht für 3,3-V- oder 5-V-Single-Supply (dafür besser LM358 oder einen Rail-to-Rail-Typ wie MCP6002).",
+"GBW ca. 3 MHz, Anstiegsgeschwindigkeit ca. 13 V/µs.",
+"Pinbelegung wie LM358 und NE5532 (Austausch ist möglich, solange die Versorgung stimmt).",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "operationsverstärker opamp audio rauscharm tl072 jfet",
+"kat": "analog",
+"uid": "analog:tl072"
+}
+}
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "analog_ne5532",
+"titel": "NE5532",
+"kurz": "2 × rauscharmer Audio-Operationsverstärker",
+"tags": [
+"operationsverstärker",
+"opamp",
+"audio",
+"rauscharm",
+"ne5532",
+"Operationsverstärker",
+"DIP-8",
+"NE5532",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Schneller, sehr rauscharmer Doppel-Opamp, der auch niederohmige Lasten (ab 600 Ω) treiben kann. Standard im Audio-Bereich."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "ne5532",
+"name": "NE5532",
+"titel": "2 × rauscharmer Audio-Operationsverstärker",
+"kurz": "Schneller, sehr rauscharmer Doppel-Opamp, der auch niederohmige Lasten (ab 600 Ω) treiben kann. Standard im Audio-Bereich.",
+"familie": "Operationsverstärker",
+"gehaeuse": "DIP-8",
+"pins": [
+"OUT1:o",
+"IN1−:i",
+"IN1+:i",
+"V−:g",
+"IN2+:i",
+"IN2−:i",
+"OUT2:o",
+"V+:v"
+],
+"spannung": "±3 … ±20 V (empfohlen ±5…±15 V).",
+"hinweise": [
+"GBW ca. 10 MHz, rauscharm (ca. 5 nV/√Hz).",
+"Braucht symmetrische oder mindestens 9–10 V Versorgung. Nicht für 5-V-Betrieb.",
+"Pinbelegung wie LM358 / TL072.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "operationsverstärker opamp audio rauscharm ne5532",
+"kat": "analog",
+"uid": "analog:ne5532"
+}
+}
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "analog_lm741",
+"titel": "LM741",
+"kurz": "Operationsverstärker (Klassiker)",
+"tags": [
+"operationsverstärker",
+"opamp",
+"741",
+"klassiker",
+"offset",
+"Operationsverstärker",
+"DIP-8",
+"LM741",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Der alte Standard-Opamp. Einfach zu verstehen, aber langsam und für Neues selten die beste Wahl (kein Single-Supply, hoher Offset)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "lm741",
+"name": "LM741",
+"titel": "Operationsverstärker (Klassiker)",
+"kurz": "Der alte Standard-Opamp. Einfach zu verstehen, aber langsam und für Neues selten die beste Wahl (kein Single-Supply, hoher Offset).",
+"familie": "Operationsverstärker",
+"gehaeuse": "DIP-8",
+"pins": [
+"OFFSET NULL:x",
+"IN−:i",
+"IN+:i",
+"V−:g",
+"OFFSET NULL:x",
+"OUT:o",
+"V+:v",
+"NC:n"
+],
+"spannung": "±5 … ±18 V.",
+"hinweise": [
+"Offset-Abgleich: ein 10-kΩ-Trimmer zwischen den Pins 1 und 5, Schleifer an V−.",
+"GBW ca. 1 MHz. Ausgang erreicht die Versorgung nicht ganz (ca. 2 V Abstand).",
+"Nur mit symmetrischer Versorgung sinnvoll.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "operationsverstärker opamp 741 klassiker offset",
+"kat": "analog",
+"uid": "analog:lm741"
+}
+}
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "analog_lm393",
+"titel": "LM393",
+"kurz": "2 × Komparator (Open-Collector-Ausgang)",
+"tags": [
+"komparator",
+"comparator",
+"schwellwert",
+"pegel",
+"schalter",
+"Komparator",
+"DIP-8",
+"LM393",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Vergleicht zwei Spannungen: Ist der +Eingang höher als der −Eingang, schaltet der Ausgang hochohmig (HIGH über Pull-up), sonst zieht er nach GND. Für Schwellwert-Schalter, Dämmerungsschalter, Nulldurchgang."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "lm393",
+"name": "LM393",
+"titel": "2 × Komparator (Open-Collector-Ausgang)",
+"kurz": "Vergleicht zwei Spannungen: Ist der +Eingang höher als der −Eingang, schaltet der Ausgang hochohmig (HIGH über Pull-up), sonst zieht er nach GND. Für Schwellwert-Schalter, Dämmerungsschalter, Nulldurchgang.",
+"familie": "Komparator",
+"gehaeuse": "DIP-8",
+"pins": [
+"OUT1:o",
+"IN1−:i",
+"IN1+:i",
+"GND:g",
+"IN2+:i",
+"IN2−:i",
+"OUT2:o",
+"VCC:v"
+],
+"spannung": "2–36 V (oder ±1…±18 V).",
+"hinweise": [
+"Der Ausgang ist offen: Pull-up-Widerstand (z. B. 10 kΩ) nach der gewünschten Spannung ist Pflicht (z. B. 3,3 V für den Raspberry Pi).",
+"Für saubere Umschaltung Hysterese durch Mitkopplung (Widerstand vom Ausgang zum +Eingang), siehe Schmitt-Trigger.",
+"Ein normaler Opamp ist als Komparator möglich, aber langsam und ohne definierte Ausgangslogik. Besser einen echten Komparator nehmen.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "komparator comparator schwellwert pegel schalter",
+"kat": "analog",
+"uid": "analog:lm393"
+}
+}
+],
+"familie": "Komparator"
+},
+{
+"id": "analog_lm386",
+"titel": "LM386",
+"kurz": "Niederspannungs-Audio-Leistungsverstärker",
+"tags": [
+"audio",
+"verstärker",
+"lautsprecher",
+"lm386",
+"Audio",
+"DIP-8",
+"LM386",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Kleiner Lautsprecher-Verstärker (ca. 0,25 W). Verstärkung 20-fach (26 dB), mit Kondensator zwischen Pin 1 und 8 bis 200-fach."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "lm386",
+"name": "LM386",
+"titel": "Niederspannungs-Audio-Leistungsverstärker",
+"kurz": "Kleiner Lautsprecher-Verstärker (ca. 0,25 W). Verstärkung 20-fach (26 dB), mit Kondensator zwischen Pin 1 und 8 bis 200-fach.",
+"familie": "Audio",
+"gehaeuse": "DIP-8",
+"pins": [
+"GAIN:x",
+"IN−:i",
+"IN+:i",
+"GND:g",
+"OUT:o",
+"VS:v",
+"BYPASS:x",
+"GAIN:x"
+],
+"spannung": "4–12 V (LM386N-1/-3) oder 5–18 V (LM386N-4).",
+"hinweise": [
+"Ausgang über einen 220-µF-Elko an den Lautsprecher (4–32 Ω).",
+"Ohne Gain-Kondensator = 20-fach. 10 µF zwischen Pin 1 und 8 ergibt 200-fach.",
+"Pin 7 (Bypass) mit 10 µF nach GND verbessert die Brummunterdrückung.",
+"Zobel-Glied am Ausgang (10 Ω + 47 nF nach GND) verhindert Schwingen."
+],
+"tags": "audio verstärker lautsprecher lm386",
+"kat": "analog",
+"uid": "analog:lm386"
+}
+}
+],
+"familie": "Audio"
+},
+{
+"id": "analog_ne555",
+"titel": "NE555",
+"kurz": "Timer (Oszillator, Monoflop)",
+"tags": [
+"555",
+"timer",
+"oszillator",
+"monoflop",
+"multivibrator",
+"takt",
+"rechteck",
+"Timer",
+"DIP-8",
+"NE555",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Der berühmteste Timer-Chip. Als astabiler Multivibrator erzeugt er ein Rechtecksignal, als monostabiler (Monoflop) einen einmaligen Impuls definierter Länge."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "ne555",
+"name": "NE555",
+"titel": "Timer (Oszillator, Monoflop)",
+"kurz": "Der berühmteste Timer-Chip. Als astabiler Multivibrator erzeugt er ein Rechtecksignal, als monostabiler (Monoflop) einen einmaligen Impuls definierter Länge.",
+"familie": "Timer",
+"gehaeuse": "DIP-8",
+"pins": [
+"GND:g",
+"TRIG:i",
+"OUT:o",
+"/RESET:i",
+"CTRL:x",
+"THRES:i",
+"DISCH:x",
+"VCC:v"
+],
+"spannung": "NE555: 4,5–16 V. CMOS-Typen (TLC555, LMC555, 7555) ab ca. 2 V.",
+"hinweise": [
+"Schwellen intern bei 1/3 und 2/3 der Versorgung (mit CTRL offen). CTRL über 10 nF an GND entkoppeln.",
+"/RESET auf VCC, wenn nicht benutzt.",
+"Ausgang liefert/zieht bis ca. 200 mA (NE555). Bei 5 V HIGH ca. 3,3–3,8 V: für den Pi als Eingang passt das nicht immer; CMOS-Typ nehmen oder Pegel anpassen.",
+"Rechner und Schaltung: Reiter Schaltungen → 555 astabil / 555 monostabil.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "555 timer oszillator monoflop multivibrator takt rechteck",
+"kat": "analog",
+"uid": "analog:ne555"
+}
+}
+],
+"familie": "Timer"
+},
+{
+"id": "analog_tl071",
+"titel": "TL071",
+"kurz": "1 × Operationsverstärker, JFET-Eingang",
+"tags": [
+"opamp",
+"jfet",
+"audio",
+"tl071",
+"einzel",
+"Operationsverstärker",
+"DIP-8",
+"TL071",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Einzelversion des TL072: hochohmiger Eingang, wenig Rauschen. Mit Offset-Abgleich-Pins."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "tl071",
+"name": "TL071",
+"titel": "1 × Operationsverstärker, JFET-Eingang",
+"kurz": "Einzelversion des TL072: hochohmiger Eingang, wenig Rauschen. Mit Offset-Abgleich-Pins.",
+"familie": "Operationsverstärker",
+"gehaeuse": "DIP-8",
+"pins": [
+"OFFSET−:x",
+"IN−:i",
+"IN+:i",
+"V−:g",
+"OFFSET+:x",
+"OUT:o",
+"V+:v",
+"NC:n"
+],
+"spannung": "±5 … ±18 V.",
+"hinweise": [
+"Offset-Abgleich: Poti (10 kΩ) zwischen Pin 1 und 5, Schleifer an V−.",
+"Nicht für 3,3-V- oder 5-V-Single-Supply gedacht.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "opamp jfet audio tl071 einzel",
+"kat": "analog",
+"uid": "analog:tl071"
+}
+}
+],
+"siehe": [
+"bt_analog:analog_tl072"
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "analog_tl074",
+"titel": "TL074",
+"kurz": "4 × Operationsverstärker, JFET-Eingang",
+"tags": [
+"opamp",
+"quad",
+"jfet",
+"tl074",
+"Operationsverstärker",
+"DIP-14",
+"TL074",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Vier TL072-Verstärker in einem Gehäuse (DIP-14), gleiche Pinbelegung wie LM324."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "tl074",
+"name": "TL074",
+"titel": "4 × Operationsverstärker, JFET-Eingang",
+"kurz": "Vier TL072-Verstärker in einem Gehäuse (DIP-14), gleiche Pinbelegung wie LM324.",
+"familie": "Operationsverstärker",
+"gehaeuse": "DIP-14",
+"pins": [
+"OUT1:o",
+"IN1−:i",
+"IN1+:i",
+"V+:v",
+"IN2+:i",
+"IN2−:i",
+"OUT2:o",
+"OUT3:o",
+"IN3−:i",
+"IN3+:i",
+"V−:g",
+"IN4+:i",
+"IN4−:i",
+"OUT4:o"
+],
+"spannung": "±5 … ±18 V.",
+"hinweise": [
+"V+ an Pin 4, V− an Pin 11.",
+"Unbenutzte Verstärker als Folger beschalten.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "opamp quad jfet tl074",
+"kat": "analog",
+"uid": "analog:tl074"
+}
+}
+],
+"siehe": [
+"bt_analog:analog_tl072",
+"bt_analog:analog_lm324"
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "analog_mcp6002",
+"titel": "MCP6002",
+"kurz": "2 × Rail-to-Rail-Operationsverstärker (1,8–6 V)",
+"tags": [
+"opamp",
+"rail",
+"to",
+"rail",
+"3,3v",
+"mcp6002",
+"single",
+"supply",
+"Operationsverstärker",
+"DIP-8",
+"MCP6002",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Für 3,3 V und 5 V ideal: Ein- und Ausgang reichen praktisch bis an die Versorgung. Gleiche Pinbelegung wie LM358."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "mcp6002",
+"name": "MCP6002",
+"titel": "2 × Rail-to-Rail-Operationsverstärker (1,8–6 V)",
+"kurz": "Für 3,3 V und 5 V ideal: Ein- und Ausgang reichen praktisch bis an die Versorgung. Gleiche Pinbelegung wie LM358.",
+"familie": "Operationsverstärker",
+"gehaeuse": "DIP-8",
+"pins": [
+"OUTA:o",
+"INA−:i",
+"INA+:i",
+"VSS:g",
+"INB+:i",
+"INB−:i",
+"OUTB:o",
+"VDD:v"
+],
+"spannung": "1,8–6 V.",
+"hinweise": [
+"Ausgang schafft fast die volle Spannung (Rail-to-Rail) – ideal für Mikrocontroller-ADCs.",
+"GBW nur ca. 1 MHz.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "opamp rail to rail 3,3v mcp6002 single supply",
+"kat": "analog",
+"uid": "analog:mcp6002"
+}
+}
+],
+"siehe": [
+"bt_analog:analog_lm358"
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "analog_lm339",
+"titel": "LM339",
+"kurz": "4 × Komparator",
+"tags": [
+"komparator",
+"quad",
+"lm339",
+"open",
+"collector",
+"Komparator",
+"DIP-14",
+"LM339",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Vier Open-Collector-Komparatoren. Wie LM393, nur vier Stück."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "lm339",
+"name": "LM339",
+"titel": "4 × Komparator",
+"kurz": "Vier Open-Collector-Komparatoren. Wie LM393, nur vier Stück.",
+"familie": "Komparator",
+"gehaeuse": "DIP-14",
+"pins": [
+"OUT2:o",
+"OUT1:o",
+"VCC:v",
+"IN1−:i",
+"IN1+:i",
+"IN2−:i",
+"IN2+:i",
+"IN3−:i",
+"IN3+:i",
+"IN4−:i",
+"IN4+:i",
+"GND:g",
+"OUT4:o",
+"OUT3:o"
+],
+"spannung": "2–36 V.",
+"hinweise": [
+"Ausgang ist Open-Collector: Pull-up-Widerstand (z. B. 10 kΩ) nach VCC (oder 3,3 V) nötig.",
+"Kein Opamp! Nicht als Verstärker verwenden.",
+"Für Hysterese Mitkopplung (Widerstand vom Ausgang an +Eingang) einbauen.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "komparator quad lm339 open collector",
+"kat": "analog",
+"uid": "analog:lm339"
+}
+}
+],
+"siehe": [
+"bt_analog:analog_lm393"
+],
+"familie": "Komparator"
+},
+{
+"id": "analog_ne556",
+"titel": "NE556",
+"kurz": "2 × 555 in einem Gehäuse",
+"tags": [
+"timer",
+"556",
+"dual",
+"555",
+"Timer",
+"DIP-14",
+"NE556",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zwei unabhängige 555-Zeitgeber (Dual-Timer). Eignet sich für Taktgeber plus Monoflop in einem Baustein."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "ne556",
+"name": "NE556",
+"titel": "2 × 555 in einem Gehäuse",
+"kurz": "Zwei unabhängige 555-Zeitgeber (Dual-Timer). Eignet sich für Taktgeber plus Monoflop in einem Baustein.",
+"familie": "Timer",
+"gehaeuse": "DIP-14",
+"pins": [
+"DIS1:x",
+"THR1:i",
+"CTL1:x",
+"RST1:i",
+"OUT1:o",
+"TRG1:i",
+"GND:g",
+"TRG2:i",
+"OUT2:o",
+"RST2:i",
+"CTL2:x",
+"THR2:i",
+"DIS2:x",
+"VCC:v"
+],
+"spannung": "4,5–16 V.",
+"hinweise": [
+"Beide Hälften arbeiten wie je ein NE555, Formeln gleich.",
+"CTL (Control) mit 10 nF gegen GND.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "timer 556 dual 555",
+"kat": "analog",
+"uid": "analog:ne556"
+}
+}
+],
+"siehe": [
+"bt_analog:analog_ne555",
+"bt_analog:schaltungen_t555a"
+],
+"familie": "Timer"
+},
+{
+"id": "analog_tda2030",
+"titel": "TDA2030",
+"kurz": "Audio-Endstufe, ca. 14 W",
+"tags": [
+"audio",
+"endstufe",
+"verstärker",
+"tda2030",
+"lautsprecher",
+"Audio",
+"TO-220-5",
+"(5",
+"Pins)",
+"TDA2030",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Einfache Mono-Leistungsendstufe im TO-220-Gehäuse mit 5 Pins. Für kleine Verstärker und Lautsprecher."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "tda2030",
+"name": "TDA2030",
+"titel": "Audio-Endstufe, ca. 14 W",
+"kurz": "Einfache Mono-Leistungsendstufe im TO-220-Gehäuse mit 5 Pins. Für kleine Verstärker und Lautsprecher.",
+"familie": "Audio",
+"gehaeuse": "TO-220-5 (5 Pins)",
+"pins": [
+"+IN:i",
+"−IN:i",
+"−Vs:g",
+"OUT:o",
+"+Vs:v"
+],
+"spannung": "±6 … ±18 V (12…36 V).",
+"hinweise": [
+"Kühlkörper nötig!",
+"Pin-Reihenfolge beim Einbau beachten, Tab (Kühlfläche) ist mit −Vs verbunden.",
+"Pinbelegung bitte mit dem Datenblatt deines Herstellers gegenprüfen."
+],
+"tags": "audio endstufe verstärker tda2030 lautsprecher",
+"kerbe": false,
+"kat": "analog",
+"uid": "analog:tda2030"
+}
+}
+],
+"familie": "Audio"
+},
+{
+"id": "analog_lm35",
+"titel": "LM35",
+"kurz": "Temperatursensor, analog (10 mV/°C)",
+"tags": [
+"temperatur",
+"sensor",
+"analog",
+"lm35",
+"thermometer",
+"Sensoren",
+"TO-92",
+"LM35",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Gibt direkt eine Spannung aus: 10 mV pro °C. Kein Abgleich nötig, einfach an einen ADC-Eingang anschließen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "lm35",
+"name": "LM35",
+"titel": "Temperatursensor, analog (10 mV/°C)",
+"kurz": "Gibt direkt eine Spannung aus: 10 mV pro °C. Kein Abgleich nötig, einfach an einen ADC-Eingang anschließen.",
+"familie": "Sensoren",
+"gehaeuse": "TO-92",
+"pins": [
+"+Vs:v",
+"Vout:o",
+"GND:g"
+],
+"spannung": "4–30 V (LM35D); 5 V typisch.",
+"hinweise": [
+"TO-92, flache Seite zu dir, Pins von links: +Vs, Vout, GND.",
+"Bei 3,3 V Versorgung nur bedingt geeignet (Datenblatt: min. 4 V) – dann lieber TMP36 oder digitalen Sensor.",
+"Messbereich 2…150 °C (LM35D: 0…100 °C).",
+"Lange Leitung → Schwingneigung: 100 nF oder RC-Glied am Ausgang."
+],
+"tags": "temperatur sensor analog lm35 thermometer",
+"kat": "analog",
+"uid": "analog:lm35"
+}
+}
+],
+"familie": "Sensoren"
+},
+{
+"id": "analog_tmp36",
+"titel": "TMP36",
+"kurz": "Temperatursensor, analog (10 mV/°C, 750 mV bei 25 °C)",
+"tags": [
+"temperatur",
+"sensor",
+"analog",
+"tmp36",
+"thermometer",
+"Sensoren",
+"TO-92",
+"TMP36",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie LM35, funktioniert aber ab 2,7 V und misst auch Temperaturen unter 0 °C (Offset 500 mV)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "tmp36",
+"name": "TMP36",
+"titel": "Temperatursensor, analog (10 mV/°C, 750 mV bei 25 °C)",
+"kurz": "Wie LM35, funktioniert aber ab 2,7 V und misst auch Temperaturen unter 0 °C (Offset 500 mV).",
+"familie": "Sensoren",
+"gehaeuse": "TO-92",
+"pins": [
+"+Vs:v",
+"Vout:o",
+"GND:g"
+],
+"spannung": "2,7–5,5 V.",
+"hinweise": [
+"Formel: T (°C) = (Uaus − 0,5 V) · 100.",
+"Bei 3,3 V passt der Sensor direkt an einen 3,3-V-ADC.",
+"TO-92, flache Seite zu dir."
+],
+"tags": "temperatur sensor analog tmp36 thermometer",
+"kat": "analog",
+"uid": "analog:tmp36"
+}
+}
+],
+"familie": "Sensoren"
+},
+{
+"id": "analog_icl7660",
+"titel": "ICL7660",
+"kurz": "Ladungspumpe: Spannung invertieren",
+"tags": [
+"ladungspumpe",
+"negative",
+"spannung",
+"icl7660",
+"invertieren",
+"max1044",
+"Spannungswandler",
+"DIP-8",
+"ICL7660",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Macht aus +5 V ungefähr −5 V. Beliebt, um einen Opamp mit ±5 V zu versorgen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "icl7660",
+"name": "ICL7660",
+"titel": "Ladungspumpe: Spannung invertieren",
+"kurz": "Macht aus +5 V ungefähr −5 V. Beliebt, um einen Opamp mit ±5 V zu versorgen.",
+"familie": "Spannungswandler",
+"gehaeuse": "DIP-8",
+"pins": [
+"NC:n",
+"CAP+:x",
+"GND:g",
+"CAP−:x",
+"VOUT:o",
+"LV:x",
+"OSC:x",
+"V+:v"
+],
+"spannung": "1,5–10 V.",
+"hinweise": [
+"Zwei Kondensatoren (je 10 µF, Elko, Polung beachten): einer zwischen Pin 2 und 4, einer von Pin 5 nach GND.",
+"Der Ausgang liefert nur wenige 10 mA und bricht bei Last ein.",
+"Pin 6 (LV) bei Versorgung unter 3,5 V an GND."
+],
+"tags": "ladungspumpe negative spannung icl7660 invertieren max1044",
+"kat": "analog",
+"uid": "analog:icl7660"
+}
+}
+],
+"familie": "Spannungswandler"
+},
+{
+"id": "analog_ad620",
+"titel": "AD620",
+"kurz": "Instrumentenverstärker",
+"tags": [
+"instrumentenverstärker",
+"messen",
+"dms",
+"differenz",
+"ad620",
+"ina",
+"Operationsverstärker",
+"DIP-8",
+"AD620",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Misst kleine Differenzspannungen (z. B. Dehnungsmessstreifen, EKG) genau. Verstärkung wird mit einem einzigen Widerstand RG eingestellt."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "ad620",
+"name": "AD620",
+"titel": "Instrumentenverstärker",
+"kurz": "Misst kleine Differenzspannungen (z. B. Dehnungsmessstreifen, EKG) genau. Verstärkung wird mit einem einzigen Widerstand RG eingestellt.",
+"familie": "Operationsverstärker",
+"gehaeuse": "DIP-8",
+"pins": [
+"RG:x",
+"−IN:i",
+"+IN:i",
+"−Vs:g",
+"REF:i",
+"OUT:o",
+"+Vs:v",
+"RG:x"
+],
+"spannung": "±2,3 … ±18 V.",
+"hinweise": [
+"Verstärkung: G = 1 + 49,4 kΩ / RG.",
+"Ohne RG ist G = 1.",
+"REF-Pin an die gewünschte Null-Spannung (meist GND oder Mitte)."
+],
+"tags": "instrumentenverstärker messen dms differenz ad620 ina",
+"formeln": [
+"G = 1 + 49,4 kΩ / RG"
+],
+"kat": "analog",
+"uid": "analog:ad620"
+}
+}
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "analog_lm393-vergleich",
+"titel": "Opamp ↔ Komparator",
+"kurz": "Wann Opamp, wann Komparator?",
+"tags": [
+"opamp",
+"komparator",
+"unterschied",
+"wann",
+"hysterese",
+"Grundlagen",
+"Opamp",
+"↔",
+"Komparator",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein Komparator liefert nur „über / unter der Schwelle“. Ein Opamp ist für lineares Verstärken gebaut."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "lm393-vergleich",
+"name": "Opamp ↔ Komparator",
+"titel": "Wann Opamp, wann Komparator?",
+"kurz": "Ein Komparator liefert nur „über / unter der Schwelle“. Ein Opamp ist für lineares Verstärken gebaut.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Opamp als Komparator geht, ist aber langsam und hat oft keine definierten Pegel.",
+"Komparator (LM393 / LM339) hat Open-Collector-Ausgang: Pull-up nötig, dafür kann der Ausgang beliebige Pegel (3,3 V, 5 V, 12 V) schalten.",
+"Hysterese verhindert Flattern bei verrauschten Signalen (Schmitt-Trigger)."
+],
+"tags": "opamp komparator unterschied wann hysterese",
+"tabelle": {
+"kopf": [
+"",
+"Opamp",
+"Komparator"
+],
+"zeilen": [
+[
+"Zweck",
+"Verstärken",
+"Vergleichen"
+],
+[
+"Ausgang",
+"analog",
+"digital (OC)"
+],
+[
+"Rückkopplung",
+"negativ",
+"positiv (Hysterese)"
+],
+[
+"Beispiel",
+"LM358",
+"LM393"
+]
+]
+},
+"kat": "analog",
+"uid": "analog:lm393-vergleich"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "analog_vopamp",
+"titel": "Opamp-Verzeichnis",
+"kurz": "Gängige Operationsverstärker im Vergleich",
+"tags": [
+"opamp",
+"operationsverstärker",
+"lm358",
+"tl072",
+"ne5532",
+"op07",
+"rail",
+"to",
+"rail",
+"verzeichnis",
+"liste",
+"tabelle",
+"vergleich",
+"nachschlagen",
+"Verzeichnis",
+"(Tabelle)",
+"Opamp-Verzeichnis",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Welcher Opamp passt zu welcher Aufgabe? Versorgung, Bandbreite und Besonderheiten."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "vopamp",
+"name": "Opamp-Verzeichnis",
+"titel": "Gängige Operationsverstärker im Vergleich",
+"kurz": "Welcher Opamp passt zu welcher Aufgabe? Versorgung, Bandbreite und Besonderheiten.",
+"familie": "Verzeichnis (Tabelle)",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Rail-to-Rail: Ein-/Ausgang erreichen fast die Versorgungsspannung.",
+"GBW = Verstärkungs-Bandbreite-Produkt: Bandbreite = GBW / Verstärkung.",
+"Werte sind Richtwerte aus gängigen Datenblättern – für die Auslegung immer das Datenblatt des Herstellers prüfen."
+],
+"tags": "opamp operationsverstärker lm358 tl072 ne5532 op07 rail to rail verzeichnis liste tabelle vergleich nachschlagen",
+"tabelle": {
+"kopf": [
+"Typ",
+"Versorgung",
+"GBW",
+"Besonderheit"
+],
+"zeilen": [
+[
+"LM358 / LM2904",
+"3–32 V",
+"1 MHz",
+"Single-Supply, 2 × (Ausgang nicht Rail-to-Rail)"
+],
+[
+"LM324",
+"3–32 V",
+"1 MHz",
+"4 × LM358"
+],
+[
+"LM741",
+"±5…±18 V",
+"1 MHz",
+"Klassiker, Offset hoch"
+],
+[
+"OP07",
+"±3…±18 V",
+"0,6 MHz",
+"sehr kleiner Offset, präzise"
+],
+[
+"TL071 / TL072 / TL074",
+"±5…±18 V",
+"3 MHz",
+"JFET-Eingang, rauscharm"
+],
+[
+"NE5532",
+"±5…±20 V",
+"10 MHz",
+"Audio, niederohmige Lasten"
+],
+[
+"LM833",
+"±5…±18 V",
+"15 MHz",
+"Audio, rauscharm"
+],
+[
+"LM4562",
+"±2,5…±17 V",
+"55 MHz",
+"High-End-Audio"
+],
+[
+"OPA2134",
+"±2,5…±18 V",
+"8 MHz",
+"Audio, JFET"
+],
+[
+"MCP6002",
+"1,8–6 V",
+"1 MHz",
+"Rail-to-Rail, 3,3-V-tauglich"
+],
+[
+"MCP6021",
+"2,5–5,5 V",
+"10 MHz",
+"Rail-to-Rail, schnell"
+],
+[
+"AD8605",
+"2,7–5,5 V",
+"10 MHz",
+"Rail-to-Rail, präzise"
+],
+[
+"LMV358",
+"2,7–5,5 V",
+"1 MHz",
+"Rail-to-Rail-LM358"
+],
+[
+"TLC272",
+"3–16 V",
+"2 MHz",
+"CMOS, Single-Supply"
+],
+[
+"LF356 / LF411",
+"±5…±18 V",
+"4–5 MHz",
+"JFET, niedriger Eingangsstrom"
+],
+[
+"LT1013",
+"2,7–36 V",
+"0,8 MHz",
+"präzise Single-Supply"
+]
+]
+},
+"kat": "analog",
+"uid": "analog:vopamp"
+}
+}
+],
+"familie": "Verzeichnis (Tabelle)"
+},
+{
+"id": "analog_vkomp",
+"titel": "Komparatoren und Referenzen",
+"kurz": "Wichtige Komparatoren, Timer und Spannungsreferenzen",
+"tags": [
+"komparator",
+"referenz",
+"timer",
+"lm393",
+"555",
+"tl431",
+"verzeichnis",
+"liste",
+"tabelle",
+"vergleich",
+"nachschlagen",
+"Verzeichnis",
+"(Tabelle)",
+"Komparatoren",
+"und",
+"Referenzen",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Schwellwertschalter, Zeitgeber und feste Referenzspannungen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "vkomp",
+"name": "Komparatoren und Referenzen",
+"titel": "Wichtige Komparatoren, Timer und Spannungsreferenzen",
+"kurz": "Schwellwertschalter, Zeitgeber und feste Referenzspannungen.",
+"familie": "Verzeichnis (Tabelle)",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Werte sind Richtwerte aus gängigen Datenblättern – für die Auslegung immer das Datenblatt des Herstellers prüfen."
+],
+"tags": "komparator referenz timer lm393 555 tl431 verzeichnis liste tabelle vergleich nachschlagen",
+"tabelle": {
+"kopf": [
+"Typ",
+"Aufgabe",
+"Besonderheit"
+],
+"zeilen": [
+[
+"LM393",
+"2 × Komparator",
+"Open-Collector, 2–36 V"
+],
+[
+"LM339",
+"4 × Komparator",
+"Open-Collector"
+],
+[
+"LM311",
+"Komparator",
+"Open-Collector, Strobe"
+],
+[
+"TLV3201",
+"Komparator",
+"Push-Pull, schnell, 3,3 V"
+],
+[
+"NE555",
+"Timer",
+"4,5–16 V"
+],
+[
+"TLC555 / LMC555",
+"Timer (CMOS)",
+"ab 2 V, sparsam"
+],
+[
+"NE556",
+"2 × 555",
+"Dual-Timer"
+],
+[
+"TL431",
+"Referenz einstellbar",
+"2,5–36 V"
+],
+[
+"LM4040",
+"Referenz",
+"2,5 / 4,1 V fest, ±0,1 %"
+],
+[
+"REF3033",
+"Referenz",
+"3,3 V, präzise"
+]
+]
+},
+"kat": "analog",
+"uid": "analog:vkomp"
+}
+}
+],
+"familie": "Verzeichnis (Tabelle)"
+},
+{
+"id": "schaltungen_inv",
+"titel": "Invertierender Verstärker",
+"kurz": "Verstärkt und kehrt das Vorzeichen um",
+"tags": [
+"opamp",
+"verstärker",
+"invertierend",
+"gain",
+"Operationsverstärker",
+"Invertierender",
+"Verstärker",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Das Eingangssignal geht über R1 an den −Eingang, R2 koppelt vom Ausgang zurück. Der +Eingang liegt auf Masse. Die Verstärkung wird nur von den beiden Widerständen bestimmt."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "inv",
+"name": "Invertierender Verstärker",
+"titel": "Verstärkt und kehrt das Vorzeichen um",
+"kurz": "Das Eingangssignal geht über R1 an den −Eingang, R2 koppelt vom Ausgang zurück. Der +Eingang liegt auf Masse. Die Verstärkung wird nur von den beiden Widerständen bestimmt.",
+"familie": "Operationsverstärker",
+"gehaeuse": "",
+"pins": [],
+"kreis": "inv",
+"rechner": "inv",
+"formeln": [
+"V = − Rf / R1",
+"Uaus = − Uein · Rf / R1",
+"Eingangswiderstand ≈ R1"
+],
+"hinweise": [
+"Der −Eingang ist eine „virtuelle Masse“: er bleibt (fast) auf 0 V, solange der Opamp nicht übersteuert.",
+"Der Eingangswiderstand ist R1, die Signalquelle wird also belastet.",
+"Schaltungen mit Opamp: Versorgung nicht eingezeichnet. Bei einer einzigen Versorgung (z. B. 5 V) muss der Eingang auf eine Hilfsspannung (halbe Versorgung) statt auf GND gelegt werden, wenn auch negative Signale vorkommen.",
+"Ausgang kann höchstens bis kurz vor die Versorgung gehen; bei zu großer Verstärkung wird das Signal abgeschnitten."
+],
+"tags": "opamp verstärker invertierend gain",
+"spannung": "",
+"kat": "schaltungen",
+"uid": "schaltungen:inv"
+}
+}
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "schaltungen_noninv",
+"titel": "Nicht-invertierender Verstärker",
+"kurz": "Verstärkt ohne Vorzeichenumkehr",
+"tags": [
+"opamp",
+"verstärker",
+"nicht",
+"invertierend",
+"gain",
+"Operationsverstärker",
+"Nicht-invertierender",
+"Verstärker",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Das Signal liegt direkt am +Eingang. Ein Spannungsteiler (Rf und Rg) vom Ausgang an den −Eingang bestimmt die Verstärkung. Sehr hoher Eingangswiderstand."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "noninv",
+"name": "Nicht-invertierender Verstärker",
+"titel": "Verstärkt ohne Vorzeichenumkehr",
+"kurz": "Das Signal liegt direkt am +Eingang. Ein Spannungsteiler (Rf und Rg) vom Ausgang an den −Eingang bestimmt die Verstärkung. Sehr hoher Eingangswiderstand.",
+"familie": "Operationsverstärker",
+"gehaeuse": "",
+"pins": [],
+"kreis": "noninv",
+"rechner": "noninv",
+"formeln": [
+"V = 1 + Rf / Rg",
+"Uaus = Uein · (1 + Rf / Rg)",
+"Die Verstärkung ist immer ≥ 1."
+],
+"hinweise": [
+"Eingangswiderstand ist sehr groß (nur der Opamp-Eingang): belastet die Quelle kaum.",
+"Für V = 1 genügt der Spannungsfolger (Rf = 0, Rg weglassen).",
+"Schaltungen mit Opamp: Versorgung nicht eingezeichnet. Bei einer einzigen Versorgung (z. B. 5 V) muss der Eingang auf eine Hilfsspannung (halbe Versorgung) statt auf GND gelegt werden, wenn auch negative Signale vorkommen."
+],
+"tags": "opamp verstärker nicht invertierend gain",
+"spannung": "",
+"kat": "schaltungen",
+"uid": "schaltungen:noninv"
+}
+}
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "schaltungen_folger",
+"titel": "Spannungsfolger (Impedanzwandler)",
+"kurz": "Verstärkung 1, aber niederohmiger Ausgang",
+"tags": [
+"opamp",
+"puffer",
+"buffer",
+"impedanzwandler",
+"follower",
+"Operationsverstärker",
+"Spannungsfolger",
+"(Impedanzwandler)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Der Ausgang ist direkt mit dem −Eingang verbunden. Die Ausgangsspannung folgt der Eingangsspannung, kann aber Strom liefern. Zum Entkoppeln hochohmiger Quellen (Sensoren, Potentiometer, Filter)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "folger",
+"name": "Spannungsfolger (Impedanzwandler)",
+"titel": "Verstärkung 1, aber niederohmiger Ausgang",
+"kurz": "Der Ausgang ist direkt mit dem −Eingang verbunden. Die Ausgangsspannung folgt der Eingangsspannung, kann aber Strom liefern. Zum Entkoppeln hochohmiger Quellen (Sensoren, Potentiometer, Filter).",
+"familie": "Operationsverstärker",
+"gehaeuse": "",
+"pins": [],
+"kreis": "folger",
+"rechner": "folger",
+"formeln": [
+"Uaus = Uein",
+"V = 1"
+],
+"hinweise": [
+"Typische Anwendung: Sensor mit hochohmigem Ausgang vor einen ADC schalten.",
+"Opamp muss für Verstärkung 1 stabil sein (die meisten sind es: LM358, TL072, NE5532).",
+"Schaltungen mit Opamp: Versorgung nicht eingezeichnet. Bei einer einzigen Versorgung (z. B. 5 V) muss der Eingang auf eine Hilfsspannung (halbe Versorgung) statt auf GND gelegt werden, wenn auch negative Signale vorkommen."
+],
+"tags": "opamp puffer buffer impedanzwandler follower",
+"spannung": "",
+"kat": "schaltungen",
+"uid": "schaltungen:folger"
+}
+}
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "schaltungen_add",
+"titel": "Addierer (Summierverstärker)",
+"kurz": "Addiert mehrere Spannungen",
+"tags": [
+"opamp",
+"addierer",
+"summierer",
+"mischer",
+"Operationsverstärker",
+"Addierer",
+"(Summierverstärker)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Mehrere Eingangsspannungen gehen über je einen Widerstand an den −Eingang. Der Ausgang ist die (negative) gewichtete Summe. Basis eines einfachen Mischpults oder DA-Wandlers."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "add",
+"name": "Addierer (Summierverstärker)",
+"titel": "Addiert mehrere Spannungen",
+"kurz": "Mehrere Eingangsspannungen gehen über je einen Widerstand an den −Eingang. Der Ausgang ist die (negative) gewichtete Summe. Basis eines einfachen Mischpults oder DA-Wandlers.",
+"familie": "Operationsverstärker",
+"gehaeuse": "",
+"pins": [],
+"kreis": "add",
+"rechner": "add",
+"formeln": [
+"Uaus = − Rf · (U1/R1 + U2/R2)",
+"Bei R1 = R2 = Rf: Uaus = −(U1 + U2)"
+],
+"hinweise": [
+"Mit einem zweiten invertierenden Verstärker lässt sich das Vorzeichen wieder umkehren.",
+"Mit binär gestaffelten Widerständen (R, 2R, 4R, 8R …) entsteht ein einfacher DA-Wandler.",
+"Schaltungen mit Opamp: Versorgung nicht eingezeichnet. Bei einer einzigen Versorgung (z. B. 5 V) muss der Eingang auf eine Hilfsspannung (halbe Versorgung) statt auf GND gelegt werden, wenn auch negative Signale vorkommen."
+],
+"tags": "opamp addierer summierer mischer",
+"spannung": "",
+"kat": "schaltungen",
+"uid": "schaltungen:add"
+}
+}
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "schaltungen_diff",
+"titel": "Differenzverstärker",
+"kurz": "Verstärkt die Differenz zweier Spannungen",
+"tags": [
+"opamp",
+"differenz",
+"subtrahierer",
+"messverstärker",
+"Operationsverstärker",
+"Differenzverstärker",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Subtrahiert zwei Eingangsspannungen. Wichtig, um kleine Signale vor großem Gleichtaktrauschen zu messen. Bei gleichen Widerstandspaaren (R1 = R2, Rf = R3) gilt die Formel unten."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "diff",
+"name": "Differenzverstärker",
+"titel": "Verstärkt die Differenz zweier Spannungen",
+"kurz": "Subtrahiert zwei Eingangsspannungen. Wichtig, um kleine Signale vor großem Gleichtaktrauschen zu messen. Bei gleichen Widerstandspaaren (R1 = R2, Rf = R3) gilt die Formel unten.",
+"familie": "Operationsverstärker",
+"gehaeuse": "",
+"pins": [],
+"kreis": "diff",
+"rechner": "diff",
+"formeln": [
+"Uaus = (Rf / R1) · (U2 − U1)",
+"Bedingung: Rf/R1 = R3/R2 (Widerstände genau abgleichen)."
+],
+"hinweise": [
+"Die Widerstände müssen gut übereinstimmen (1 % oder besser), sonst wird die Gleichtaktunterdrückung schlecht.",
+"Für präzise Messungen nimmt man einen Instrumentenverstärker (z. B. INA126, AD620).",
+"Schaltungen mit Opamp: Versorgung nicht eingezeichnet. Bei einer einzigen Versorgung (z. B. 5 V) muss der Eingang auf eine Hilfsspannung (halbe Versorgung) statt auf GND gelegt werden, wenn auch negative Signale vorkommen."
+],
+"tags": "opamp differenz subtrahierer messverstärker",
+"spannung": "",
+"kat": "schaltungen",
+"uid": "schaltungen:diff"
+}
+}
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "schaltungen_integr",
+"titel": "Integrator",
+"kurz": "Wandelt Spannung in eine Rampe (Aufintegrieren)",
+"tags": [
+"opamp",
+"integrator",
+"rampe",
+"dreieck",
+"Operationsverstärker",
+"Integrator",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie der invertierende Verstärker, aber mit Kondensator statt Rückkopplungswiderstand. Ausgang steigt oder fällt gleichmäßig, solange am Eingang eine Gleichspannung liegt. Rechteck am Eingang wird zum Dreieck am Ausgang."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "integr",
+"name": "Integrator",
+"titel": "Wandelt Spannung in eine Rampe (Aufintegrieren)",
+"kurz": "Wie der invertierende Verstärker, aber mit Kondensator statt Rückkopplungswiderstand. Ausgang steigt oder fällt gleichmäßig, solange am Eingang eine Gleichspannung liegt. Rechteck am Eingang wird zum Dreieck am Ausgang.",
+"familie": "Operationsverstärker",
+"gehaeuse": "",
+"pins": [],
+"kreis": "integr",
+"rechner": "integr",
+"formeln": [
+"Uaus(t) = − (1 / R·C) · ∫ Uein dt",
+"Bei konstantem Uein: Steigung = − Uein / (R · C)"
+],
+"hinweise": [
+"Ohne Gegenmaßnahme driftet der Ausgang wegen kleiner Offsetspannungen in die Sättigung: einen großen Widerstand (z. B. 10 · R) parallel zum Kondensator schalten.",
+"Mit einem Reset-Schalter (z. B. CD4066) parallel zu C lässt sich der Wert nullen.",
+"Schaltungen mit Opamp: Versorgung nicht eingezeichnet. Bei einer einzigen Versorgung (z. B. 5 V) muss der Eingang auf eine Hilfsspannung (halbe Versorgung) statt auf GND gelegt werden, wenn auch negative Signale vorkommen."
+],
+"tags": "opamp integrator rampe dreieck",
+"spannung": "",
+"kat": "schaltungen",
+"uid": "schaltungen:integr"
+}
+}
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "schaltungen_diffz",
+"titel": "Differenzierer",
+"kurz": "Ausgang ist die Änderungsgeschwindigkeit des Eingangs",
+"tags": [
+"opamp",
+"differenzierer",
+"ableitung",
+"Operationsverstärker",
+"Differenzierer",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Kondensator am Eingang, Widerstand in der Rückkopplung. Dreieck am Eingang wird zum Rechteck am Ausgang. In der Praxis rauschempfindlich und neigt zum Schwingen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "diffz",
+"name": "Differenzierer",
+"titel": "Ausgang ist die Änderungsgeschwindigkeit des Eingangs",
+"kurz": "Kondensator am Eingang, Widerstand in der Rückkopplung. Dreieck am Eingang wird zum Rechteck am Ausgang. In der Praxis rauschempfindlich und neigt zum Schwingen.",
+"familie": "Operationsverstärker",
+"gehaeuse": "",
+"pins": [],
+"kreis": "diffz",
+"rechner": "diffz",
+"formeln": [
+"Uaus(t) = − R · C · dUein/dt"
+],
+"hinweise": [
+"Reine Differenzierer schwingen gerne und verstärken Rauschen: einen kleinen Widerstand in Reihe zu C und einen kleinen Kondensator parallel zu Rf einfügen.",
+"Schaltungen mit Opamp: Versorgung nicht eingezeichnet. Bei einer einzigen Versorgung (z. B. 5 V) muss der Eingang auf eine Hilfsspannung (halbe Versorgung) statt auf GND gelegt werden, wenn auch negative Signale vorkommen."
+],
+"tags": "opamp differenzierer ableitung",
+"spannung": "",
+"kat": "schaltungen",
+"uid": "schaltungen:diffz"
+}
+}
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "schaltungen_komp",
+"titel": "Komparator",
+"kurz": "Vergleicht zwei Spannungen",
+"tags": [
+"komparator",
+"schwellwert",
+"vergleich",
+"comparator",
+"Operationsverstärker",
+"Komparator",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ohne Rückkopplung springt der Ausgang auf (nahezu) die positive oder negative Versorgung, je nachdem, ob der +Eingang höher oder niedriger als der −Eingang ist. Ein Schwellwert-Schalter."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "komp",
+"name": "Komparator",
+"titel": "Vergleicht zwei Spannungen",
+"kurz": "Ohne Rückkopplung springt der Ausgang auf (nahezu) die positive oder negative Versorgung, je nachdem, ob der +Eingang höher oder niedriger als der −Eingang ist. Ein Schwellwert-Schalter.",
+"familie": "Operationsverstärker",
+"gehaeuse": "",
+"pins": [],
+"kreis": "komp",
+"rechner": "komp",
+"formeln": [
+"Uein > Uref → Uaus ≈ positive Sättigung",
+"Uein < Uref → Uaus ≈ negative Sättigung (bzw. GND)"
+],
+"hinweise": [
+"Langsame oder verrauschte Eingangssignale lassen den Ausgang flattern: Hysterese mit Schmitt-Trigger.",
+"Für saubere Digitalpegel besser einen echten Komparator (LM393, LM311) als einen Opamp nehmen.",
+"Bei LM393 braucht der Ausgang einen Pull-up-Widerstand."
+],
+"tags": "komparator schwellwert vergleich comparator",
+"spannung": "",
+"kat": "schaltungen",
+"uid": "schaltungen:komp"
+}
+}
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "schaltungen_schmitt_inv",
+"titel": "Schmitt-Trigger (invertierend)",
+"kurz": "Komparator mit Hysterese",
+"tags": [
+"schmitt",
+"trigger",
+"hysterese",
+"komparator",
+"Operationsverstärker",
+"Schmitt-Trigger",
+"(invertierend)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein Komparator mit Mitkopplung (Rückführung zum +Eingang). Dadurch gibt es zwei verschiedene Schaltschwellen: nach oben und nach unten. Störungen und langsame Flanken führen nicht mehr zu Flattern."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "schmitt_inv",
+"name": "Schmitt-Trigger (invertierend)",
+"titel": "Komparator mit Hysterese",
+"kurz": "Ein Komparator mit Mitkopplung (Rückführung zum +Eingang). Dadurch gibt es zwei verschiedene Schaltschwellen: nach oben und nach unten. Störungen und langsame Flanken führen nicht mehr zu Flattern.",
+"familie": "Operationsverstärker",
+"gehaeuse": "",
+"pins": [],
+"kreis": "schmitt_inv",
+"rechner": "schmitt_inv",
+"formeln": [
+"Obere Schwelle = + Usat · R1 / (R1 + R2)",
+"Untere Schwelle = − Usat · R1 / (R1 + R2)",
+"Hysterese = 2 · Usat · R1 / (R1 + R2)"
+],
+"hinweise": [
+"Usat = Ausgangssättigung (ca. Versorgung minus 1,5 V beim LM358).",
+"Eingang steigt über die obere Schwelle: Ausgang schaltet auf negativ (invertierend).",
+"Fertige Schmitt-Trigger-Gatter: 7414, 74HC14, CD4093.",
+"Bei Single-Supply liegt die Bezugsspannung (statt GND) bei halber Versorgung."
+],
+"tags": "schmitt trigger hysterese komparator",
+"spannung": "",
+"kat": "schaltungen",
+"uid": "schaltungen:schmitt_inv"
+}
+}
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "schaltungen_schmitt_non",
+"titel": "Schmitt-Trigger (nicht-invertierend)",
+"kurz": "Hysterese ohne Signalumkehr",
+"tags": [
+"schmitt",
+"trigger",
+"hysterese",
+"nicht",
+"invertierend",
+"Operationsverstärker",
+"Schmitt-Trigger",
+"(nicht-invertierend)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Eingang über R1 an den +Eingang, Rückführung vom Ausgang über R2 ebenfalls an den +Eingang. Der −Eingang liegt auf GND (oder einer Referenz). Der Ausgang schaltet im gleichen Sinn wie der Eingang."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "schmitt_non",
+"name": "Schmitt-Trigger (nicht-invertierend)",
+"titel": "Hysterese ohne Signalumkehr",
+"kurz": "Eingang über R1 an den +Eingang, Rückführung vom Ausgang über R2 ebenfalls an den +Eingang. Der −Eingang liegt auf GND (oder einer Referenz). Der Ausgang schaltet im gleichen Sinn wie der Eingang.",
+"familie": "Operationsverstärker",
+"gehaeuse": "",
+"pins": [],
+"kreis": "schmitt_non",
+"rechner": "schmitt_non",
+"formeln": [
+"Schwellen = ± Usat · R1 / R2",
+"Hysterese = 2 · Usat · R1 / R2"
+],
+"hinweise": [
+"Der Eingangswiderstand ist ca. R1 (die Quelle wird belastet).",
+"R1 kleiner als R2 wählen, sonst schaltet er nie."
+],
+"tags": "schmitt trigger hysterese nicht invertierend",
+"spannung": "",
+"kat": "schaltungen",
+"uid": "schaltungen:schmitt_non"
+}
+}
+],
+"familie": "Operationsverstärker"
+},
+{
+"id": "schaltungen_rc_tp",
+"titel": "RC-Tiefpass (1. Ordnung)",
+"kurz": "Lässt tiefe Frequenzen durch, dämpft hohe",
+"tags": [
+"tiefpass",
+"lowpass",
+"filter",
+"rc",
+"grenzfrequenz",
+"glätten",
+"Filter",
+"RC-Tiefpass",
+"(1.",
+"Ordnung)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein Widerstand in Reihe, ein Kondensator nach Masse. Oberhalb der Grenzfrequenz fällt der Pegel mit 20 dB pro Dekade ab. Zum Glätten von PWM, Entprellen und Entstören."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "rc_tp",
+"name": "RC-Tiefpass (1. Ordnung)",
+"titel": "Lässt tiefe Frequenzen durch, dämpft hohe",
+"kurz": "Ein Widerstand in Reihe, ein Kondensator nach Masse. Oberhalb der Grenzfrequenz fällt der Pegel mit 20 dB pro Dekade ab. Zum Glätten von PWM, Entprellen und Entstören.",
+"familie": "Filter",
+"gehaeuse": "",
+"pins": [],
+"kreis": "rc_tp",
+"rechner": "rc_tp",
+"formeln": [
+"fg = 1 / (2 · π · R · C)",
+"Dämpfung bei fg: −3 dB (Pegel × 0,707)",
+"Phase bei fg: −45°",
+"Zeitkonstante τ = R · C"
+],
+"hinweise": [
+"PWM zu Gleichspannung glätten: fg deutlich unter der PWM-Frequenz wählen (z. B. 1/20).",
+"Die Last am Ausgang verschiebt die Grenzfrequenz: Ausgang mit einem Opamp (Folger) entkoppeln.",
+"Ein steileres Filter: mehrere Stufen oder aktive Filter (Sallen-Key)."
+],
+"tags": "tiefpass lowpass filter rc grenzfrequenz glätten",
+"spannung": "",
+"kat": "schaltungen",
+"uid": "schaltungen:rc_tp"
+}
+}
+],
+"familie": "Filter"
+},
+{
+"id": "schaltungen_rc_hp",
+"titel": "RC-Hochpass (1. Ordnung)",
+"kurz": "Lässt hohe Frequenzen durch, sperrt Gleichspannung",
+"tags": [
+"hochpass",
+"highpass",
+"filter",
+"rc",
+"koppel",
+"Filter",
+"RC-Hochpass",
+"(1.",
+"Ordnung)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein Kondensator in Reihe, ein Widerstand nach Masse. Gleichanteil wird gesperrt, hohe Frequenzen kommen durch. Typisch: Kopplung von Audiosignalen (Gleichspannung entfernen)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "rc_hp",
+"name": "RC-Hochpass (1. Ordnung)",
+"titel": "Lässt hohe Frequenzen durch, sperrt Gleichspannung",
+"kurz": "Ein Kondensator in Reihe, ein Widerstand nach Masse. Gleichanteil wird gesperrt, hohe Frequenzen kommen durch. Typisch: Kopplung von Audiosignalen (Gleichspannung entfernen).",
+"familie": "Filter",
+"gehaeuse": "",
+"pins": [],
+"kreis": "rc_hp",
+"rechner": "rc_hp",
+"formeln": [
+"fg = 1 / (2 · π · R · C)",
+"Dämpfung bei fg: −3 dB",
+"Phase bei fg: +45°",
+"Zeitkonstante τ = R · C"
+],
+"hinweise": [
+"Als Koppelkondensator: fg deutlich unter der tiefsten Signalfrequenz wählen.",
+"Der Widerstand bestimmt auch den Eingangswiderstand der Stufe."
+],
+"tags": "hochpass highpass filter rc koppel",
+"spannung": "",
+"kat": "schaltungen",
+"uid": "schaltungen:rc_hp"
+}
+}
+],
+"familie": "Filter"
+},
+{
+"id": "schaltungen_rc_bp",
+"titel": "RC-Bandpass",
+"kurz": "Hochpass und Tiefpass hintereinander",
+"tags": [
+"bandpass",
+"filter",
+"rc",
+"Filter",
+"RC-Bandpass",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein Hochpass (C1, R1) legt die untere Grenze fest, ein Tiefpass (R2, C2) die obere. Dazwischen liegt das Durchlassband. Einfach, aber flach (geringe Güte)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "rc_bp",
+"name": "RC-Bandpass",
+"titel": "Hochpass und Tiefpass hintereinander",
+"kurz": "Ein Hochpass (C1, R1) legt die untere Grenze fest, ein Tiefpass (R2, C2) die obere. Dazwischen liegt das Durchlassband. Einfach, aber flach (geringe Güte).",
+"familie": "Filter",
+"gehaeuse": "",
+"pins": [],
+"kreis": "rc_bp",
+"rechner": "bp",
+"formeln": [
+"f unten = 1 / (2 · π · R1 · C1)",
+"f oben = 1 / (2 · π · R2 · C2)",
+"Die Stufen belasten sich: R2 mindestens 10 × R1 wählen."
+],
+"hinweise": [
+"Für ein schmales Band: aktive Filter oder LC-Schwingkreise.",
+"Im Durchlassband ist die Verstärkung wegen der Belastung kleiner als 1."
+],
+"tags": "bandpass filter rc",
+"spannung": "",
+"kat": "schaltungen",
+"uid": "schaltungen:rc_bp"
+}
+}
+],
+"familie": "Filter"
+},
+{
+"id": "schaltungen_teiler",
+"titel": "Spannungsteiler",
+"kurz": "Teilt eine Spannung mit zwei Widerständen",
+"tags": [
+"spannungsteiler",
+"widerstand",
+"teiler",
+"Grundschaltung",
+"Spannungsteiler",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zwei Widerstände in Reihe; an der Verbindung wird die geteilte Spannung abgegriffen. Auch zum Anpassen von 5-V-Signalen an 3,3 V."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "teiler",
+"name": "Spannungsteiler",
+"titel": "Teilt eine Spannung mit zwei Widerständen",
+"kurz": "Zwei Widerstände in Reihe; an der Verbindung wird die geteilte Spannung abgegriffen. Auch zum Anpassen von 5-V-Signalen an 3,3 V.",
+"familie": "Grundschaltung",
+"gehaeuse": "",
+"pins": [],
+"kreis": "teiler",
+"rechner": "teiler",
+"formeln": [
+"Uaus = Uein · R2 / (R1 + R2)",
+"Querstrom I = Uein / (R1 + R2)"
+],
+"hinweise": [
+"Der Abgriff verträgt nur geringe Last (viel größer als R2 wählen), sonst bricht die Spannung ein.",
+"5 V → 3,3 V: R1 = 1,8 kΩ, R2 = 3,3 kΩ ergibt 3,23 V. Besser für Signale: Pegelwandler (74HCT245, 74LVC245).",
+"Für Versorgung nicht geeignet (Spannung hängt vom Strom ab). Dann Spannungsregler."
+],
+"tags": "spannungsteiler widerstand teiler",
+"spannung": "",
+"kat": "schaltungen",
+"uid": "schaltungen:teiler"
+}
+}
+],
+"familie": "Grundschaltung"
+},
+{
+"id": "schaltungen_led_vor",
+"titel": "LED mit Vorwiderstand",
+"kurz": "Strom einer LED begrenzen",
+"tags": [
+"led",
+"vorwiderstand",
+"strom",
+"Grundschaltung",
+"LED",
+"mit",
+"Vorwiderstand",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Die LED braucht einen Widerstand in Reihe, sonst fließt viel zu viel Strom. Der Widerstand nimmt den Spannungsunterschied zwischen Versorgung und LED auf."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "led_vor",
+"name": "LED mit Vorwiderstand",
+"titel": "Strom einer LED begrenzen",
+"kurz": "Die LED braucht einen Widerstand in Reihe, sonst fließt viel zu viel Strom. Der Widerstand nimmt den Spannungsunterschied zwischen Versorgung und LED auf.",
+"familie": "Grundschaltung",
+"gehaeuse": "",
+"pins": [],
+"kreis": "led_vor",
+"rechner": "led",
+"formeln": [
+"R = (UVersorgung − UF) / I",
+"P = (UVersorgung − UF) · I"
+],
+"hinweise": [
+"Typische Flussspannung UF: rot 2,0 V, gelb 2,1 V, grün 2,2 V (hellgrün bis 3 V), blau/weiß 3,0–3,3 V.",
+"Üblicher Strom: 5–20 mA. Pi-GPIO-Pins vertragen nur wenige mA (max. 16 mA je Pin, insgesamt weniger). Bei mehr: Transistor.",
+"Am Pi mit 3,3 V: blaue/weiße LED reicht kaum (UF ≈ 3,2 V): besser 5 V über Transistor."
+],
+"tags": "led vorwiderstand strom",
+"spannung": "",
+"kat": "schaltungen",
+"uid": "schaltungen:led_vor"
+}
+}
+],
+"familie": "Grundschaltung"
+},
+{
+"id": "schaltungen_npn_sw",
+"titel": "Transistor als Schalter (NPN)",
+"kurz": "Kleinen Steuerstrom nutzen, um eine Last zu schalten",
+"tags": [
+"transistor",
+"schalter",
+"npn",
+"basiswiderstand",
+"relais",
+"Grundschaltung",
+"Transistor",
+"als",
+"Schalter",
+"(NPN)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Die Last liegt zwischen +Versorgung und Kollektor. Ein Basiswiderstand begrenzt den Steuerstrom. Der Transistor muss dabei gesättigt sein (Faustregel: Basisstrom ≈ Laststrom / 10)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "npn_sw",
+"name": "Transistor als Schalter (NPN)",
+"titel": "Kleinen Steuerstrom nutzen, um eine Last zu schalten",
+"kurz": "Die Last liegt zwischen +Versorgung und Kollektor. Ein Basiswiderstand begrenzt den Steuerstrom. Der Transistor muss dabei gesättigt sein (Faustregel: Basisstrom ≈ Laststrom / 10).",
+"familie": "Grundschaltung",
+"gehaeuse": "",
+"pins": [],
+"kreis": "npn_sw",
+"rechner": "npn_sw",
+"formeln": [
+"IB ≈ IC / 10 (Übersteuerung)",
+"RB = (USteuer − 0,7 V) / IB",
+"Verlustleistung P ≈ UCE(sat) · IC (ca. 0,2 V)"
+],
+"hinweise": [
+"Bei Relais, Motoren und Spulen IMMER eine Freilaufdiode (1N4007 / 1N4148) antiparallel zur Last.",
+"Für größere Ströme einen MOSFET (z. B. IRLZ44N) verwenden.",
+"Zusätzlich 10 kΩ von der Basis nach Masse, damit der Transistor beim Start sicher aus ist."
+],
+"tags": "transistor schalter npn basiswiderstand relais",
+"spannung": "",
+"kat": "schaltungen",
+"uid": "schaltungen:npn_sw"
+}
+}
+],
+"familie": "Grundschaltung"
+},
+{
+"id": "schaltungen_t555a",
+"titel": "555 astabil (Rechteck-Oszillator)",
+"kurz": "Erzeugt ein Rechtecksignal",
+"tags": [
+"555",
+"timer",
+"astabil",
+"oszillator",
+"frequenz",
+"rechteck",
+"555-Timer",
+"555",
+"astabil",
+"(Rechteck-Oszillator)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Der NE555 schwingt von selbst. Zwei Widerstände (RA, RB) und ein Kondensator (C) bestimmen Frequenz und Tastverhältnis. Das Tastverhältnis ist immer größer als 50 %."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "t555a",
+"name": "555 astabil (Rechteck-Oszillator)",
+"titel": "Erzeugt ein Rechtecksignal",
+"kurz": "Der NE555 schwingt von selbst. Zwei Widerstände (RA, RB) und ein Kondensator (C) bestimmen Frequenz und Tastverhältnis. Das Tastverhältnis ist immer größer als 50 %.",
+"familie": "555-Timer",
+"gehaeuse": "",
+"pins": [],
+"kreis": "t555a",
+"rechner": "t555a",
+"formeln": [
+"f = 1,44 / ((RA + 2 · RB) · C)",
+"t(high) = 0,693 · (RA + RB) · C",
+"t(low) = 0,693 · RB · C",
+"Tastverhältnis = (RA + RB) / (RA + 2 · RB)"
+],
+"hinweise": [
+"Pins: 8 VCC, 1 GND, 4 (/RESET) an VCC, 5 (CTRL) über 10 nF an GND, 2 und 6 miteinander verbinden, 7 (DISCH) zwischen RA und RB.",
+"Für ein Tastverhältnis nahe 50 %: RA klein gegen RB wählen.",
+"Für ein Tastverhältnis unter 50 %: eine Diode parallel zu RB (Anode an Pin 7, Kathode an Pins 2/6). Dann gilt t(high) = 0,693 · RA · C und t(low) = 0,693 · RB · C."
+],
+"tags": "555 timer astabil oszillator frequenz rechteck",
+"spannung": "",
+"kat": "schaltungen",
+"uid": "schaltungen:t555a"
+}
+}
+],
+"familie": "555-Timer"
+},
+{
+"id": "schaltungen_t555m",
+"titel": "555 monostabil (Monoflop)",
+"kurz": "Erzeugt einen Impuls mit einstellbarer Länge",
+"tags": [
+"555",
+"timer",
+"monoflop",
+"monostabil",
+"impuls",
+"verzögerung",
+"555-Timer",
+"555",
+"monostabil",
+"(Monoflop)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein kurzer LOW-Impuls an Pin 2 (Trigger) startet den Ausgang für die Zeit T. Danach fällt er von selbst zurück. Zum Entprellen, Verlängern von Impulsen und für Zeitschalter."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "t555m",
+"name": "555 monostabil (Monoflop)",
+"titel": "Erzeugt einen Impuls mit einstellbarer Länge",
+"kurz": "Ein kurzer LOW-Impuls an Pin 2 (Trigger) startet den Ausgang für die Zeit T. Danach fällt er von selbst zurück. Zum Entprellen, Verlängern von Impulsen und für Zeitschalter.",
+"familie": "555-Timer",
+"gehaeuse": "",
+"pins": [],
+"kreis": "t555m",
+"rechner": "t555m",
+"formeln": [
+"T = 1,1 · R · C"
+],
+"hinweise": [
+"R zwischen VCC und Pins 6/7, C von Pins 6/7 nach GND. Trigger an Pin 2 mit Pull-up nach VCC; Taster nach GND löst aus.",
+"Der Triggerimpuls muss kürzer sein als T, sonst bleibt der Ausgang länger an.",
+"Für lange Zeiten (Minuten) wird ein großer Elko ungenau: lieber einen Mikrocontroller verwenden."
+],
+"tags": "555 timer monoflop monostabil impuls verzögerung",
+"spannung": "",
+"kat": "schaltungen",
+"uid": "schaltungen:t555m"
+}
+}
+],
+"familie": "555-Timer"
+},
+{
+"id": "schaltungen_zener_stab",
+"titel": "Z-Dioden-Stabilisierung",
+"kurz": "Einfache Spannungsstabilisierung mit Zener",
+"tags": [
+"zener",
+"stabilisierung",
+"referenz",
+"spannung",
+"festhalten",
+"Weitere",
+"Schaltungen",
+"Z-Dioden-Stabilisierung",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein Vorwiderstand und eine Z-Diode halten eine Spannung fest. Nur für kleine Ströme – bei größerer Last Spannungsregler nehmen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "zener_stab",
+"name": "Z-Dioden-Stabilisierung",
+"titel": "Einfache Spannungsstabilisierung mit Zener",
+"kurz": "Ein Vorwiderstand und eine Z-Diode halten eine Spannung fest. Nur für kleine Ströme – bei größerer Last Spannungsregler nehmen.",
+"familie": "Weitere Schaltungen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Vorwiderstand: R = (UB − UZ) / (IZ + ILast).",
+"Zener-Strom mindestens 5 mA (bei kleinen Typen 1 mA).",
+"Die Z-Diode wird in SPERRrichtung betrieben: Kathode an +."
+],
+"tags": "zener stabilisierung referenz spannung festhalten",
+"kreis": "zener_stab",
+"rechner": "zvor",
+"kat": "schaltungen",
+"uid": "schaltungen:zener_stab"
+}
+}
+],
+"familie": "Weitere Schaltungen"
+},
+{
+"id": "schaltungen_bruecke_sch",
+"titel": "Netzteil mit Brückengleichrichter",
+"kurz": "Gleichrichter und Siebkondensator",
+"tags": [
+"netzteil",
+"brücke",
+"gleichrichter",
+"siebelko",
+"trafo",
+"Weitere",
+"Schaltungen",
+"Netzteil",
+"mit",
+"Brückengleichrichter",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Trafo → Brückengleichrichter → Siebelko → Regler. Der Elko glättet die pulsierende Gleichspannung."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "bruecke_sch",
+"name": "Netzteil mit Brückengleichrichter",
+"titel": "Gleichrichter und Siebkondensator",
+"kurz": "Trafo → Brückengleichrichter → Siebelko → Regler. Der Elko glättet die pulsierende Gleichspannung.",
+"familie": "Weitere Schaltungen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Netzspannung nur mit Erfahrung und geeigneter Isolierung anfassen! Hier nur die Sekundärseite (nach dem Trafo) gezeigt.",
+"Ripple ΔU ≈ I / (2 · f · C) bei Vollweg und 50-Hz-Netz.",
+"Elko Spannungsfestigkeit: mindestens 1,5 × Effektivspannung · 1,41."
+],
+"tags": "netzteil brücke gleichrichter siebelko trafo",
+"kreis": "bruecke",
+"rechner": "ripple",
+"kat": "schaltungen",
+"uid": "schaltungen:bruecke_sch"
+}
+}
+],
+"familie": "Weitere Schaltungen"
+},
+{
+"id": "schaltungen_mosfet_low",
+"titel": "MOSFET-Schalter (Low-Side)",
+"kurz": "Last mit N-MOSFET gegen GND schalten",
+"tags": [
+"mosfet",
+"schalter",
+"last",
+"low",
+"side",
+"gate",
+"pull-down",
+"Weitere",
+"Schaltungen",
+"MOSFET-Schalter",
+"(Low-Side)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein N-MOSFET schaltet eine Last nach GND. Gate-Widerstand begrenzt Umladestrom, Pull-down hält ihn im Ruhezustand sicher aus."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "mosfet_low",
+"name": "MOSFET-Schalter (Low-Side)",
+"titel": "Last mit N-MOSFET gegen GND schalten",
+"kurz": "Ein N-MOSFET schaltet eine Last nach GND. Gate-Widerstand begrenzt Umladestrom, Pull-down hält ihn im Ruhezustand sicher aus.",
+"familie": "Weitere Schaltungen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Logic-Level-Typ (IRLZ44N, AO3400) nutzen, wenn das Gate mit 3,3 V / 5 V angesteuert wird.",
+"Rg ca. 100 Ω, Pull-down 10 kΩ nach GND.",
+"Induktive Last (Motor, Relais): Freilaufdiode antiparallel zur Last."
+],
+"tags": "mosfet schalter last low side gate pull-down",
+"kreis": "mosfet_low",
+"kat": "schaltungen",
+"uid": "schaltungen:mosfet_low"
+}
+}
+],
+"siehe": [
+"bt_katalog:bauteile_irlz44n",
+"bt_katalog:bauteile_ao3400"
+],
+"familie": "Weitere Schaltungen"
+},
+{
+"id": "schaltungen_lm317_sch",
+"titel": "LM317 als einstellbares Netzteil",
+"kurz": "Regelbare Ausgangsspannung 1,25 … 37 V",
+"tags": [
+"lm317",
+"netzteil",
+"einstellbar",
+"regler",
+"spannung",
+"Weitere",
+"Schaltungen",
+"LM317",
+"als",
+"einstellbares",
+"Netzteil",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"R1 (240 Ω) liegt zwischen OUT und ADJ, R2 zwischen ADJ und GND. Uout = 1,25 V · (1 + R2/R1)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "lm317_sch",
+"name": "LM317 als einstellbares Netzteil",
+"titel": "Regelbare Ausgangsspannung 1,25 … 37 V",
+"kurz": "R1 (240 Ω) liegt zwischen OUT und ADJ, R2 zwischen ADJ und GND. Uout = 1,25 V · (1 + R2/R1).",
+"familie": "Weitere Schaltungen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Eingang mindestens 3 V höher als Ausgang.",
+"C1 (0,1 µF) am Eingang, C2 (1 µF) am Ausgang. Bei Elko am Ausgang Schutzdioden gegen Rückstrom.",
+"Verlustleistung (Uin − Uout) · I abführen: Kühlkörper."
+],
+"tags": "lm317 netzteil einstellbar regler spannung",
+"kreis": "lm317",
+"rechner": "lm317",
+"kat": "schaltungen",
+"uid": "schaltungen:lm317_sch"
+}
+}
+],
+"siehe": [
+"bt_katalog:bauteile_lm317"
+],
+"familie": "Weitere Schaltungen"
+},
+{
+"id": "schaltungen_taster_pullup",
+"titel": "Taster mit Pull-up",
+"kurz": "Taster sicher an einen Mikrocontroller-Eingang",
+"tags": [
+"taster",
+"pullup",
+"eingang",
+"entprellen",
+"button",
+"Weitere",
+"Schaltungen",
+"Taster",
+"mit",
+"Pull-up",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein Pull-up-Widerstand hält den Eingang im Ruhezustand HIGH. Taster nach GND zieht ihn auf LOW."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "taster_pullup",
+"name": "Taster mit Pull-up",
+"titel": "Taster sicher an einen Mikrocontroller-Eingang",
+"kurz": "Ein Pull-up-Widerstand hält den Eingang im Ruhezustand HIGH. Taster nach GND zieht ihn auf LOW.",
+"familie": "Weitere Schaltungen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Pull-up 10 kΩ (oder den internen Pull-up des Controllers aktivieren).",
+"Prellen: Kontakt prellt einige Millisekunden – 100 nF am Eingang gegen GND oder Software-Entprellung (10–20 ms).",
+"Mehrere Taster als Matrix oder mit MCP23017 / 74HC165 einlesen."
+],
+"tags": "taster pullup eingang entprellen button",
+"kreis": "taster",
+"kat": "schaltungen",
+"uid": "schaltungen:taster_pullup"
+}
+}
+],
+"siehe": [
+"bt_wissen:wissen_pull",
+"bt_analog:schaltungen_entprell"
+],
+"familie": "Weitere Schaltungen"
+},
+{
+"id": "schaltungen_entprell",
+"titel": "Taster entprellen (RC + Schmitt-Trigger)",
+"kurz": "Hardware-Entprellung",
+"tags": [
+"entprellen",
+"taster",
+"rc",
+"schmitt",
+"74hc14",
+"prellen",
+"Weitere",
+"Schaltungen",
+"Taster",
+"entprellen",
+"(RC",
+"+",
+"Schmitt-Trigger)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"R und C glätten das Prellen, ein Schmitt-Trigger-Inverter (74HC14) macht daraus eine saubere Flanke."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "entprell",
+"name": "Taster entprellen (RC + Schmitt-Trigger)",
+"titel": "Hardware-Entprellung",
+"kurz": "R und C glätten das Prellen, ein Schmitt-Trigger-Inverter (74HC14) macht daraus eine saubere Flanke.",
+"familie": "Weitere Schaltungen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"τ = R · C ≈ 10–20 ms: z. B. 10 kΩ und 1 µF = 10 ms.",
+"Schmitt-Trigger-Eingang ist nötig – ein normales Gatter kann bei langsamer Flanke schwingen.",
+"Ausgang ist invertiert (Taster gedrückt → HIGH)."
+],
+"tags": "entprellen taster rc schmitt 74hc14 prellen",
+"kreis": "entprell",
+"rechner": "rczeit",
+"kat": "schaltungen",
+"uid": "schaltungen:entprell"
+}
+}
+],
+"siehe": [
+"bt_ic:logik_74hc14",
+"bt_katalog:passiv_rc-zeit"
+],
+"familie": "Weitere Schaltungen"
+},
+{
+"id": "schaltungen_sallen",
+"titel": "Sallen-Key-Tiefpass (2. Ordnung)",
+"kurz": "Aktiver Tiefpass mit Opamp als Folger",
+"tags": [
+"sallen",
+"key",
+"tiefpass",
+"filter",
+"aktiv",
+"opamp",
+"2",
+"ordnung",
+"Weitere",
+"Schaltungen",
+"Sallen-Key-Tiefpass",
+"(2.",
+"Ordnung)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zwei Widerstände und zwei Kondensatoren bilden einen Tiefpass 2. Ordnung (−40 dB pro Dekade) mit einem Opamp als Pufferverstärker."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "sallen",
+"name": "Sallen-Key-Tiefpass (2. Ordnung)",
+"titel": "Aktiver Tiefpass mit Opamp als Folger",
+"kurz": "Zwei Widerstände und zwei Kondensatoren bilden einen Tiefpass 2. Ordnung (−40 dB pro Dekade) mit einem Opamp als Pufferverstärker.",
+"familie": "Weitere Schaltungen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"f₀ = 1 / (2π · √(R1·R2·C1·C2)). Für Q = 0,707 (Butterworth): C1 = 2 · C2 bei R1 = R2.",
+"Opamp mit ausreichender Bandbreite (GBW ≥ 100 · f₀) wählen.",
+"Single-Supply: Eingang und Mitte auf halbe Betriebsspannung legen."
+],
+"tags": "sallen key tiefpass filter aktiv opamp 2 ordnung",
+"kreis": "sallen",
+"rechner": "sallen",
+"formeln": [
+"f₀ = 1 / (2π · √(R1·R2·C1·C2))",
+"Q = √(R1·R2·C1·C2) / (C2 · (R1 + R2))"
+],
+"kat": "schaltungen",
+"uid": "schaltungen:sallen"
+}
+}
+],
+"familie": "Weitere Schaltungen"
+},
+{
+"id": "schaltungen_tia",
+"titel": "Transimpedanzverstärker",
+"kurz": "Fotodiode → Spannung",
+"tags": [
+"fotodiode",
+"transimpedanz",
+"tia",
+"opamp",
+"licht",
+"strom",
+"spannung",
+"Weitere",
+"Schaltungen",
+"Transimpedanzverstärker",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wandelt den kleinen Strom einer Fotodiode in eine Spannung: Uaus = −I · Rf. Ein Kondensator Cf parallel zu Rf sorgt für Stabilität."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "tia",
+"name": "Transimpedanzverstärker",
+"titel": "Fotodiode → Spannung",
+"kurz": "Wandelt den kleinen Strom einer Fotodiode in eine Spannung: Uaus = −I · Rf. Ein Kondensator Cf parallel zu Rf sorgt für Stabilität.",
+"familie": "Weitere Schaltungen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Fotodiode: Anode am invertierenden Eingang, Kathode an GND (spannungslos, rauscharm). Für schnellere Signale Kathode an eine positive Spannung legen (Sperrrichtung).",
+"Cf einige pF: begrenzt die Bandbreite und stabilisiert.",
+"Opamp mit niedrigem Eingangsstrom (JFET: TL072) verwenden."
+],
+"tags": "fotodiode transimpedanz tia opamp licht strom spannung",
+"kreis": "tia",
+"rechner": "tia",
+"formeln": [
+"Uaus = −Iph · Rf"
+],
+"kat": "schaltungen",
+"uid": "schaltungen:tia"
+}
+}
+],
+"familie": "Weitere Schaltungen"
+}
+]
+}

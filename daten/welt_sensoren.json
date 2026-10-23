@@ -1,0 +1,694 @@
+{
+"id": "sensoren",
+"name": "Sensoren & Aktoren",
+"untertitel": "Sensoren, Motoren, Displays",
+"farbe": "tuerkis",
+"symbol": "ntc",
+"reihenfolge": 7,
+"seiten": [
+{
+"id": "temperatur",
+"titel": "Temperatursensoren",
+"kurz": "DS18B20, DHT22, BME280, PT100, Thermoelement",
+"tags": [
+"temperatur",
+"sensor",
+"ds18b20",
+"dht22",
+"bme280",
+"pt100",
+"thermoelement",
+"lm35"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Sensor",
+"Bereich",
+"Genauigkeit",
+"Schnittstelle",
+"Hinweis"
+],
+"zeilen": [
+[
+"DS18B20",
+"−55…+125 °C",
+"±0,5 °C",
+"1-Wire",
+"wasserdicht verfügbar, am Pi nativ (w1-gpio)"
+],
+[
+"DHT11",
+"0…50 °C, 20–80 %",
+"±2 °C / ±5 %",
+"1 Draht",
+"billig, träge"
+],
+[
+"DHT22 / AM2302",
+"−40…80 °C",
+"±0,5 °C / ±2 %",
+"1 Draht",
+"besser als DHT11"
+],
+[
+"BME280",
+"−40…85 °C",
+"±1 °C",
+"I²C/SPI",
+"T + Feuchte + Druck"
+],
+[
+"BMP280",
+"−40…85 °C",
+"±1 °C",
+"I²C/SPI",
+"T + Druck"
+],
+[
+"SHT31 / SHT40",
+"−40…125 °C",
+"±0,2 °C / ±1,5 %",
+"I²C",
+"Präzision"
+],
+[
+"LM35",
+"0…100 °C",
+"±0,5 °C",
+"analog 10 mV/°C",
+"braucht ADC"
+],
+[
+"TMP36",
+"−40…125 °C",
+"±2 °C",
+"analog 10 mV/°C",
+"offset 0,5 V"
+],
+[
+"PT100 / PT1000",
+"−200…850 °C",
+"Klasse A/B",
+"Widerstand (MAX31865)",
+"Industrie, linear"
+],
+[
+"Thermoelement K",
+"−200…1300 °C",
+"±1,5 °C",
+"mV (MAX6675/MAX31855)",
+"Kaltstellenkompensation"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"T (°C)",
+"PT100 (Ω)",
+"PT1000 (Ω)"
+],
+"zeilen": [
+[
+"−50",
+"80,31",
+"803,1"
+],
+[
+"0",
+"100,00",
+"1000,0"
+],
+[
+"25",
+"109,73",
+"1097,3"
+],
+[
+"50",
+"119,40",
+"1194,0"
+],
+[
+"100",
+"138,51",
+"1385,1"
+],
+[
+"200",
+"175,86",
+"1758,6"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "rechner",
+"titel": "PT100 (Näherung)",
+"felder": [
+[
+"r",
+"Widerstand",
+"Ω",
+"119,4"
+]
+],
+"ergebnis": [
+[
+"t",
+"Temperatur (lineare Näherung 0,385 Ω/K)",
+"(r-100)/0.385",
+"°C",
+"zahl"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "pi",
+"text": "**DS18B20 am Pi:** `dtoverlay=w1-gpio` in /boot/firmware/config.txt, 4,7 kΩ Pullup zwischen Daten und 3,3 V. Dann unter `/sys/bus/w1/devices/28-*/w1_slave` lesen."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Sensor-Eigenerwärmung: Nicht neben Spannungsreglern/CPU messen, sonst steigen die Werte."
+}
+],
+"siehe": [
+"passiv:ntc",
+"schnittstellen:i2c"
+],
+"symbol": "ntc"
+},
+{
+"id": "sensoren",
+"titel": "Weitere Sensoren",
+"kurz": "Licht, Abstand, Bewegung, Gas, Strom",
+"tags": [
+"sensor",
+"abstand",
+"bewegung",
+"gas",
+"licht",
+"pir",
+"hc-sr04",
+"ina219",
+"mpu6050",
+"imu"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Messgröße",
+"Sensor",
+"Schnittstelle",
+"Hinweis"
+],
+"zeilen": [
+[
+"Licht",
+"BH1750 / TSL2561",
+"I²C",
+"Lux-Wert"
+],
+[
+"Licht (einfach)",
+"LDR + Widerstand",
+"analog",
+"ungenau"
+],
+[
+"Abstand",
+"HC-SR04",
+"Trigger/Echo (5 V!)",
+"2–400 cm, Pegel auf 3,3 V teilen"
+],
+[
+"Abstand (Laser)",
+"VL53L0X / VL53L1X",
+"I²C",
+"bis 4 m"
+],
+[
+"Bewegung (PIR)",
+"HC-SR501",
+"digital",
+"Menschen, 3–7 m"
+],
+[
+"Beschleunigung",
+"MPU6050 / ADXL345",
+"I²C",
+"6-Achsen-IMU"
+],
+[
+"Magnetfeld",
+"HMC5883L / QMC5883",
+"I²C",
+"Kompass"
+],
+[
+"Hall",
+"A3144 / DRV5053",
+"digital/analog",
+"Magnet, Drehzahl"
+],
+[
+"Strom/Spannung",
+"INA219 / INA226",
+"I²C",
+"bis 26 V / 3,2 A"
+],
+[
+"Gas",
+"MQ-2 / MQ-135",
+"analog",
+"Heizung 150 mA, Aufwärmen!"
+],
+[
+"Luftqualität",
+"SCD40 / SGP40 / BME680",
+"I²C",
+"CO₂, VOC"
+],
+[
+"Druck",
+"BMP390",
+"I²C/SPI",
+"Höhe"
+],
+[
+"Feuchte (Boden)",
+"kapazitiv",
+"analog",
+"resistiv korrodiert"
+],
+[
+"Kamera",
+"Pi Camera 3",
+"CSI",
+"libcamera"
+],
+[
+"Touch",
+"TTP223 / MPR121",
+"digital / I²C",
+""
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "rechner",
+"titel": "HC-SR04: Echozeit → Abstand",
+"felder": [
+[
+"t",
+"Echo-Zeit",
+"s",
+"5,8m"
+],
+[
+"v",
+"Schallgeschwindigkeit",
+"m/s",
+"343"
+]
+],
+"ergebnis": [
+[
+"d",
+"Abstand",
+"t*v/2",
+"m"
+]
+]
+},
+{
+"t": "rechner",
+"titel": "Spannungsteiler für 5 V → 3,3 V",
+"felder": [
+[
+"r1",
+"R oben",
+"Ω",
+"1k"
+],
+[
+"r2",
+"R unten",
+"Ω",
+"2k"
+],
+[
+"u",
+"Eingang",
+"V",
+"5"
+]
+],
+"ergebnis": [
+[
+"ua",
+"Ausgang",
+"u*r2/(r1+r2)",
+"V"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Viele Sensor-Module sind **5-V-Typen**. Der Pi verträgt an den GPIOs **nur 3,3 V** – Pegelwandler oder Teiler verwenden!"
+}
+],
+"siehe": [
+"sensoren:temperatur",
+"schnittstellen:i2c"
+],
+"symbol": "mikrofon"
+},
+{
+"id": "motoren",
+"titel": "Motoren & Treiber",
+"kurz": "DC, Servo, Schrittmotor – Ansteuerung",
+"tags": [
+"motor",
+"servo",
+"schrittmotor",
+"h-brücke",
+"l298n",
+"a4988",
+"treiber",
+"dc"
+],
+"bloecke": [
+{
+"t": "symbol",
+"key": "motor",
+"text": "Motor – Schaltzeichen."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Motorart",
+"Steuerung",
+"Treiber",
+"Merkmal"
+],
+"zeilen": [
+[
+"DC-Motor",
+"PWM + H-Brücke",
+"L298N, TB6612, DRV8833",
+"einfach, Drehzahl, Richtung"
+],
+[
+"Servo (SG90/MG90)",
+"PWM 50 Hz, 1–2 ms",
+"direkt am GPIO",
+"Winkel 0–180°"
+],
+[
+"Schrittmotor (NEMA17)",
+"Step/Dir",
+"A4988, DRV8825, TMC2209",
+"präzise Positionierung"
+],
+[
+"BLDC (Brushless)",
+"ESC / FOC",
+"ESC mit PWM",
+"Drohnen, Lüfter"
+],
+[
+"Vibrationsmotor",
+"ein/aus",
+"Transistor",
+""
+],
+[
+"Magnetventil",
+"ein/aus",
+"MOSFET + Freilaufdiode",
+""
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Servo-Puls",
+"Winkel"
+],
+"zeilen": [
+[
+"1,0 ms",
+"0° (links)"
+],
+[
+"1,5 ms",
+"90° (Mitte)"
+],
+[
+"2,0 ms",
+"180° (rechts)"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Servo-Signal alle 20 ms"
+},
+{
+"t": "rechner",
+"titel": "Servo → Pulsbreite",
+"felder": [
+[
+"w",
+"Winkel",
+"°",
+"45"
+]
+],
+"ergebnis": [
+[
+"p",
+"Pulsbreite",
+"(1+w/180)*1e-3",
+"s"
+],
+[
+"d",
+"Tastverhältnis bei 50 Hz",
+"(1+w/180)*1e-3/20e-3",
+"",
+"proz"
+]
+]
+},
+{
+"t": "rechner",
+"titel": "Schrittmotor",
+"felder": [
+[
+"s",
+"Schritte/Umdrehung",
+"",
+"200"
+],
+[
+"m",
+"Microstepping",
+"",
+"16"
+],
+[
+"u",
+"Drehzahl",
+"U/min",
+"120"
+]
+],
+"ergebnis": [
+[
+"sp",
+"Schritte pro Umdrehung",
+"s*m",
+"",
+"ganz"
+],
+[
+"f",
+"Step-Frequenz",
+"s*m*u/60",
+"Hz"
+]
+]
+},
+{
+"t": "rechner",
+"titel": "DC-Motor: Treiber-Strom",
+"felder": [
+[
+"p",
+"Leistung",
+"W",
+"6"
+],
+[
+"u",
+"Spannung",
+"V",
+"12"
+],
+[
+"a",
+"Anlaufstrom-Faktor",
+"",
+"4"
+]
+],
+"ergebnis": [
+[
+"i",
+"Dauerstrom",
+"p/u",
+"A"
+],
+[
+"is",
+"Anlaufstrom",
+"p/u*a",
+"A"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Motoren **nie direkt am Pi**: separate Versorgung, gemeinsame Masse, Freilaufdioden. Der Pi-GPIO liefert nur Milliampere."
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Servo zuckt/spinnt am Pi? Hardware-PWM (`pigpio`, `gpiozero` mit pigpio-Faktory) liefert stabilere Pulse als Software-PWM."
+}
+],
+"siehe": [
+"halbleiter:mosfet",
+"mikro:pwm"
+],
+"symbol": "motor"
+},
+{
+"id": "display",
+"titel": "Displays & Anzeigen",
+"kurz": "OLED, LCD, 7-Segment, E-Paper",
+"tags": [
+"display",
+"oled",
+"lcd",
+"ssd1306",
+"hd44780",
+"tft",
+"7-segment",
+"e-paper"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Auflösung",
+"Schnittstelle",
+"Treiber-IC",
+"Hinweis"
+],
+"zeilen": [
+[
+"OLED 0,96\"",
+"128 × 64",
+"I²C / SPI",
+"SSD1306",
+"Adresse 0x3C, Standard"
+],
+[
+"OLED 1,3\"",
+"128 × 64",
+"I²C / SPI",
+"SH1106",
+"≠ SSD1306 (Offset 2 px)"
+],
+[
+"LCD 16×2 (HD44780)",
+"16 × 2 Zeichen",
+"4-Bit parallel / I²C-Backpack (PCF8574)",
+"HD44780",
+"Adresse 0x27 / 0x3F, 5 V"
+],
+[
+"TFT 1,8\" / 2,4\"",
+"160×128 / 320×240",
+"SPI",
+"ST7735 / ILI9341",
+"Farbe"
+],
+[
+"7-Segment",
+"–",
+"Multiplex / TM1637 / MAX7219",
+"–",
+"LED-Anzeige"
+],
+[
+"LED-Matrix 8×8",
+"64 LEDs",
+"SPI (MAX7219)",
+"MAX7219",
+"kaskadierbar"
+],
+[
+"E-Paper",
+"z. B. 250×122",
+"SPI",
+"–",
+"kein Strom im Stehen, langsam"
+],
+[
+"HDMI-Display 7\"",
+"1024×600",
+"HDMI + USB",
+"–",
+"Touch per USB"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "pi",
+"text": "I²C aktivieren: `sudo raspi-config` → Interface Options → I2C → Ja. Geräte finden: `i2cdetect -y 1`."
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "OLED-**Einbrennen** kommt vor – Bildschirmschoner/Dimmen verwenden, wenn statische Inhalte lange stehen."
+}
+],
+"siehe": [
+"schnittstellen:i2c"
+],
+"symbol": "lampe"
+}
+]
+}

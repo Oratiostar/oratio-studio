@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oratio Studio</title>
+<meta name="description" content="Oratio Studio: Nachschlagewerk für Elektronik, Bauteile, Handys, Kameras und Konsolen.">
+<link rel="icon" href="icon.png">
+<style>
+:root{
+  --bg:#f3f8fc; --card:#ffffff; --fg:#23304a; --muted:#6b7a90; --line:#cfe3f0; --soft:#e7f2fa; --link:#1f6fb8;
+  --code:#e8f3fa; --codefg:#2c4ba0; --diff:#fff2b8; --shadow:0 2px 10px rgba(30,60,100,.10);
+  --head:#ffffff; --input:#ffffff;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161f; --card:#1c2230; --fg:#e6ecf6; --muted:#97a4ba; --line:#303a50; --soft:#242c3d; --link:#7fc1ff;
+  --code:#27304a; --codefg:#a9c4ff; --diff:#5a4d12; --shadow:0 2px 10px rgba(0,0,0,.4); --head:#171c28; --input:#1c2230; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#12161f; --card:#1c2230; --fg:#e6ecf6; --muted:#97a4ba; --line:#303a50; --soft:#242c3d; --link:#7fc1ff;
+  --code:#27304a; --codefg:#a9c4ff; --diff:#5a4d12; --shadow:0 2px 10px rgba(0,0,0,.4); --head:#171c28; --input:#1c2230; color-scheme:dark;}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+a{color:var(--link)}
+header{position:sticky;top:0;z-index:20;background:var(--head);border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+.bar{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:8px max(14px,env(safe-area-inset-right)) 8px max(14px,env(safe-area-inset-left));flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--fg);font-weight:800;font-size:19px;letter-spacing:.2px}
+.logo img{width:34px;height:34px;border-radius:9px}
+.sp{flex:1}
+#q{flex:1 1 220px;min-width:0;max-width:420px;padding:9px 14px;border-radius:12px;border:2px solid var(--line);background:var(--input);color:var(--fg);font:inherit}
+#q:focus,.in:focus{outline:none;border-color:#27a3df}
+.btn{border:2px solid var(--line);background:var(--card);color:var(--fg);border-radius:12px;padding:7px 12px;font:inherit;font-weight:700;cursor:pointer}
+.btn:hover{border-color:#27a3df}
+main{max-width:1100px;margin:0 auto;padding:18px max(14px,env(safe-area-inset-right)) 40px max(14px,env(safe-area-inset-left))}
+h1{margin:6px 0 4px;font-size:28px;line-height:1.2;text-wrap:balance}
+.sub{color:var(--muted);margin:0 0 18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.welt{display:block;text-decoration:none;color:inherit;background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);transition:transform .12s}
+.welt:hover{transform:translateY(-3px)}
+.welt .kopf{display:flex;align-items:center;gap:10px;padding:14px;color:#fff;min-height:74px}
+.welt .ic{flex:none;width:44px;height:44px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:23px;box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.welt b{font-size:17px;line-height:1.2}
+.welt .t{padding:10px 14px 14px;color:var(--muted);font-size:14px}
+.welt .n{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--fg);opacity:.7;margin-bottom:2px}
+.light{color:#1c2438 !important}
+.crumb{font-size:14px;color:var(--muted);margin-bottom:6px}
+.banner{border-radius:18px;padding:18px 20px;color:#fff;margin:6px 0 16px;display:flex;gap:14px;align-items:center;box-shadow:var(--shadow)}
+.banner .ic{flex:none;width:58px;height:58px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:30px}
+.banner h1{margin:0;color:inherit}
+.banner p{margin:3px 0 0;opacity:.95}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.tag{font-size:12px;background:var(--soft);color:var(--muted);border-radius:99px;padding:2px 10px}
+.in{padding:9px 14px;border-radius:12px;border:2px solid var(--line);background:var(--input);color:var(--fg);font:inherit;width:100%;max-width:420px}
+details.gr{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:10px 0;box-shadow:var(--shadow)}
+details.gr>summary{cursor:pointer;padding:11px 16px;font-weight:800;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.gr>summary::-webkit-details-marker{display:none}
+details.gr>summary span{color:var(--muted);font-weight:600}
+.liste a{display:block;padding:9px 16px;border-top:1px solid var(--line);text-decoration:none;color:var(--fg)}
+.liste a:hover{background:var(--soft)}
+.liste a small{display:block;color:var(--muted);font-size:13.5px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:0 0 14px;box-shadow:var(--shadow)}
+.card p{margin:.3em 0 .6em}
+.txt{margin:0 0 14px;max-width:75ch}
+.txt p{margin:0 0 .7em}
+h2.h{margin:22px 0 8px;font-size:21px}
+code,.cd{font-family:ui-monospace,Consolas,"DejaVu Sans Mono",monospace;background:var(--code);color:var(--codefg);border-radius:5px;padding:0 5px;font-size:.92em}
+.tw{overflow-x:auto;margin:0 0 14px;border-radius:14px;border:1px solid var(--line);background:var(--card)}
+.tw .ti{padding:9px 14px;color:#fff;font-weight:800;font-size:14px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th{background:var(--soft);text-align:left;padding:8px 12px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);white-space:nowrap}
+td{padding:8px 12px;border-top:1px solid var(--line);vertical-align:top}
+td.m{font-family:ui-monospace,Consolas,"DejaVu Sans Mono",monospace;font-size:.93em}
+td.b{font-weight:800}
+.fuss{padding:8px 14px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+.hint{border-radius:14px;padding:11px 14px 11px 16px;margin:0 0 14px;border:1px solid var(--line);border-left:7px solid var(--c);background:var(--card)}
+.hint b.k{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--c);margin-bottom:2px}
+.formel{border-radius:14px;padding:12px 16px;margin:0 0 14px;background:var(--soft);border:1px solid var(--line)}
+.formel .n{font-weight:800;font-size:14px;color:var(--muted)}
+.formel pre{margin:6px 0;font:600 17px/1.5 ui-monospace,Consolas,"DejaVu Sans Mono",monospace;white-space:pre-wrap;color:var(--codefg)}
+ul.l{margin:0 0 14px;padding-left:1.2em}
+ul.l li{margin:.35em 0}
+.rech{border:2px solid var(--line);border-radius:16px;padding:12px 14px;margin:0 0 14px;background:var(--soft)}
+.rech .rk{display:inline-block;color:#fff;font-weight:800;font-size:13px;padding:3px 12px;border-radius:6px;margin-bottom:8px}
+.rech .rg{display:grid;grid-template-columns:minmax(0,1fr) minmax(90px,150px) auto minmax(0,1fr);gap:6px 10px;align-items:center}
+.rech input{padding:6px 10px;border-radius:9px;border:2px solid var(--line);background:var(--input);color:var(--codefg);font:700 15px ui-monospace,Consolas,monospace;min-width:0;width:100%}
+.rech input:focus{outline:none;border-color:#27a3df}
+.rech .u{color:var(--muted)}
+.rech .ok{color:#1c8f4a;font-weight:800}
+.rech .res{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 0;margin-top:8px;max-width:520px}
+.rech .res div{padding:6px 10px}
+.rech .res .a{background:var(--card)}
+.rech .res .v{color:#fff;font-weight:800;text-align:right}
+.rech .tx{color:var(--muted);font-size:13.5px;margin:0 0 8px}
+.platz{border:2px dashed var(--line);border-radius:14px;padding:12px 16px;margin:0 0 14px;color:var(--muted);font-size:14.5px}
+.siehe{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 20px}
+.siehe a{background:var(--card);border:1px solid var(--line);border-radius:99px;padding:5px 14px;text-decoration:none;font-size:14px}
+.siehe a:hover{border-color:#27a3df}
+.treffer a{display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin:8px 0;text-decoration:none;color:var(--fg)}
+.treffer a:hover{border-color:#27a3df}
+.chip{display:inline-block;font-size:11.5px;font-weight:800;color:#fff;border-radius:99px;padding:1px 9px;margin-right:6px;vertical-align:1px}
+.treffer small{display:block;color:var(--muted)}
+.pinw{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;margin:0 0 14px}
+.pinw svg{flex:none;max-width:100%;height:auto;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.pinw .tw{flex:1 1 280px;margin:0}
+.pt{display:inline-block;font-size:12px;font-weight:800;color:#fff;border-radius:6px;padding:0 7px}
+.vg .bar2{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:center}
+.vg th .x{cursor:pointer;margin-left:6px;color:#e4572e}
+.vg td.d{background:var(--diff)}
+.vg td:first-child{font-weight:700;color:var(--muted);min-width:96px}
+dialog{border:none;border-radius:18px;padding:0;max-width:min(560px,94vw);width:100%;background:var(--card);color:var(--fg);box-shadow:0 10px 40px rgba(0,0,0,.4)}
+dialog::backdrop{background:rgba(10,16,30,.55)}
+dialog .dh{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center}
+dialog .dl{max-height:60vh;overflow:auto}
+dialog .dl h3{margin:0;padding:8px 16px;background:var(--soft);font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);position:sticky;top:0}
+dialog .dl button{display:block;width:100%;text-align:left;border:none;border-top:1px solid var(--line);background:transparent;color:var(--fg);padding:10px 16px;font:inherit;cursor:pointer}
+dialog .dl button:hover:not(:disabled){background:var(--soft)}
+dialog .dl button:disabled{opacity:.45;cursor:default}
+footer{max-width:1100px;margin:0 auto;padding:10px max(14px,env(safe-area-inset-right)) 30px max(14px,env(safe-area-inset-left));color:var(--muted);font-size:13.5px}
+footer a{color:var(--muted)}
+@media (max-width:560px){h1{font-size:23px}.banner{padding:14px}.banner .ic{width:46px;height:46px;font-size:24px}.rech .rg{grid-template-columns:1fr 1fr}.rech .rg .u,.rech .rg .ok{grid-column:auto}}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <a class="logo" href="#/"><img src="icon.png" alt=""><span>Oratio Studio</span></a>
+  <input id="q" type="search" autocomplete="off" enterkeyhint="search">
+  <span class="sp"></span>
+  <button class="btn" id="bLang" aria-label="Sprache / Langue"></button>
+  <button class="btn" id="bTheme"></button>
+</div></header>
+<main id="app"></main>
+<footer id="fuss"></footer>
+<dialog id="dlg"></dialog>
+
+<script>
+"use strict";
+/* ============================================================ Grundlagen */
+const $ = (s, r) => (r || document).querySelector(s);
+const FARBEN = {sonne:"#ffd23f",orange:"#ff8c1a",rot:"#ff4d5e",pink:"#ff7ac8",lila:"#9b5de5",blau:"#2e86ff",himmel:"#7fd6ff",tuerkis:"#19c9b8",gruen:"#3ddc84",limette:"#b8f04a",creme:"#e6f3fb",braun:"#a8683c",grau:"#8c93a8",weiss:"#ffffff",nacht:"#2a1f5a",tinte:"#2a1740",papier:"#f6fbff",gold:"#ffc61a"};
+const SYM = {antenne:"📡",quarz:"💎",optokoppler:"🔌",batterie:"🔋",voltmeter:"🧪",gehaeuse:"📦",lampe:"💡",kondensator:"⚡",npn:"🔺",wechselspannung:"〰️",ntc:"🌡️",stromquelle:"⚙️",led:"💡",schalter:"🎚️",widerstand:"🔧",opamp:"▷",elko:"🔋",amperemeter:"📟",taster:"🔘"};
+const symbol = s => SYM[s] || "◆";
+const hexOf = f => FARBEN[f] || f || "#ff8c1a";
+function hell(f){ const h = hexOf(f).replace("#",""); const r=parseInt(h.substr(0,2),16),g=parseInt(h.substr(2,2),16),b=parseInt(h.substr(4,2),16); return (0.299*r+0.587*g+0.114*b) > 165; }
+function dunkler(f, k){ const h = hexOf(f).replace("#",""); const c=[0,2,4].map(i=>Math.round(parseInt(h.substr(i,2),16)*k)); return "rgb("+c.join(",")+")"; }
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+let LANG = "de", FR = null, INDEX = null, SUCHE = null;
+const WELT = {}, VERGL = {};
+try { LANG = localStorage.getItem("lang") || ((navigator.language||"").startsWith("fr") ? "fr" : "de"); } catch(e){}
+function T(s){ if (LANG !== "fr" || FR === null || typeof s !== "string") return s; const r = FR[s]; return r === undefined ? s : r; }
+
+const UI = {
+  de:{suche:"Suchen: Bauteil, Handy, Begriff …",welten:"Alle Welten",seiten:"Seiten",startsub:"Nachschlagewerk für Elektronik, Bauteile und Technik. Wähle eine Welt oder suche oben.",
+      filter:"In dieser Welt filtern …",home:"Start",treffer:"Treffer",keine:"Nichts gefunden.",weg:"Seite nicht gefunden.",siehe:"Siehe auch",
+      hinzu:"+ Hinzufügen",leerV:"Füge mindestens zwei Einträge hinzu, um sie zu vergleichen (höchstens %n).",gelb:"Gelb hinterlegt = Unterschied.",waehle:"Eintrag wählen",finde:"Suchen …",
+      rechner:"RECHNER",leerR:"Lass ein Feld leer – es wird aus den anderen berechnet.",mehrR:"Trage genug Werte ein (schreibe z. B. 4k7, 10u, 2,2M). Das leere Feld wird berechnet.",
+      pinsT:"Anschlüsse",nr:"Nr.",name:"Name",typ:"Typ",nurStudio:"Dieser interaktive Teil (%s) ist nur im Programm Oratio Studio auf dem Raspberry Pi verfügbar.",
+      hinw:{info:"Info",tipp:"Tipp",warn:"Achtung",merke:"Merke",pi:"Raspberry Pi",fun:"Spaß"},
+      pin:{i:"Eingang",o:"Ausgang",x:"Ein-/Ausgang",g:"Masse",v:"Versorgung",n:"nicht belegt"},
+      dunkel:"Dunkel",hellm:"Hell",auto:"Auto",imp:"Impressum & Datenschutz",stand:"Hobbyprojekt, Angaben ohne Gewähr. Bitte wichtige Werte im Datenblatt prüfen.",
+      zeit:"Zeitdiagramm",kreis:"Schaltbild",ver:"Versorgung / Werte",geh:"Gehäuse",ans:"Anschlüsse"},
+  fr:{suche:"Rechercher : composant, téléphone, terme …",welten:"Tous les mondes",seiten:"pages",startsub:"Ouvrage de référence pour l’électronique, les composants et la technique. Choisis un monde ou recherche ci-dessus.",
+      filter:"Filtrer dans ce monde …",home:"Accueil",treffer:"résultats",keine:"Aucun résultat.",weg:"Page introuvable.",siehe:"Voir aussi",
+      hinzu:"+ Ajouter",leerV:"Ajoute au moins deux entrées pour les comparer (maximum %n).",gelb:"Surligné en jaune = différence.",waehle:"Choisir une entrée",finde:"Rechercher …",
+      rechner:"CALCULATEUR",leerR:"Laisse un champ vide : il sera calculé à partir des autres.",mehrR:"Saisis assez de valeurs (par ex. 4k7, 10u, 2,2M). Le champ vide sera calculé.",
+      pinsT:"Broches",nr:"N°",name:"Nom",typ:"Type",nurStudio:"Cette partie interactive (%s) n’est disponible que dans le programme Oratio Studio sur le Raspberry Pi.",
+      hinw:{info:"Info",tipp:"Astuce",warn:"Attention",merke:"À retenir",pi:"Raspberry Pi",fun:"Pour le plaisir"},
+      pin:{i:"Entrée",o:"Sortie",x:"Entrée/sortie",g:"Masse",v:"Alimentation",n:"non connectée"},
+      dunkel:"Sombre",hellm:"Clair",auto:"Auto",imp:"Mentions légales & confidentialité",stand:"Projet de loisir, sans garantie. Vérifie les valeurs importantes dans la fiche technique.",
+      zeit:"Chronogramme",kreis:"Schéma",ver:"Alimentation / valeurs",geh:"Boîtier",ans:"Broches"}
+};
+const U = k => UI[LANG][k];
+
+/* Mini-Markup wie in Studio: **fett**, `code`, [[farbe:text]], \n */
+function md(t){
+  let s = esc(T(String(t)));
+  s = s.replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/`(.+?)`/g,"<code>$1</code>");
+  s = s.replace(/\[\[(#?\w+):(.+?)\]\]/g,(m,c,x)=>'<b style="color:'+(FARBEN[c]||c)+'">'+x+'</b>');
+  return s.replace(/\n/g,"<br>");
+}
+
+/* ============================================================ Daten laden */
+async function holen(pfad){ const r = await fetch(pfad); if(!r.ok) throw new Error(pfad); return r.json(); }
+async function welt(id){ if(!WELT[id]) WELT[id] = await holen("daten/welt_"+id+".json"); return WELT[id]; }
+async function vergl(id){ if(!(id in VERGL)){ VERGL[id] = (INDEX.vergleich||[]).includes(id) ? await holen("daten/vergleich_"+id+".json") : {}; } return VERGL[id]; }
+const weltInfo = id => INDEX.welten.find(w => w.id === id);
+
+/* ============================================================ Rechner (wie tb_kern.py) */
+const PRE = {p:1e-12,n:1e-9,u:1e-6,"µ":1e-6,m:1e-3,k:1e3,K:1e3,M:1e6,G:1e9,T:1e12};
+function parseSI(text){
+  if (text === null || text === undefined) return null;
+  let t = String(text).trim().replace(/,/g,".").replace(/Ω|ohm|Ohm/g,"");
+  if (!t) return null;
+  let m = t.match(/^([+-]?\d+)([pnuµmkKMGTR])(\d+)$/);
+  if (m) return parseFloat(m[1]+"."+m[3]) * (m[2]==="R" ? 1 : PRE[m[2]]);
+  m = t.match(/^([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)\s*([pnuµmkKMGT]?)\s*([A-Za-z°%\/]*)$/);
+  if (!m) return null;
+  return parseFloat(m[1]) * (m[2] ? PRE[m[2]] : 1);
+}
+function g4(v, n){ let s = Number(v).toPrecision(n); if (s.indexOf("e")>=0) return null; return String(parseFloat(s)); }
+function fmtSI(v, unit){
+  unit = unit || "";
+  if (typeof v === "string") return v;
+  if (v === null || !isFinite(v)) return "–";
+  if (v === 0) return ("0 "+unit).trim();
+  const a = Math.abs(v); let f = 1e-12, s = "p";
+  for (const [ff,ss] of [[1e12,"T"],[1e9,"G"],[1e6,"M"],[1e3,"k"],[1,""],[1e-3,"m"],[1e-6,"µ"],[1e-9,"n"],[1e-12,"p"]]) { if (a >= ff*0.99995){ f=ff; s=ss; break; } }
+  let txt = g4(v/f,4); if (txt === null) txt = (v/f).toFixed(2);
+  return (txt.replace(".",",")+" "+s+unit).trim();
+}
+const REIHEN = {E3:[1,2.2,4.7],E6:[1,1.5,2.2,3.3,4.7,6.8],E12:[1,1.2,1.5,1.8,2.2,2.7,3.3,3.9,4.7,5.6,6.8,8.2],
+  E24:[1,1.1,1.2,1.3,1.5,1.6,1.8,2,2.2,2.4,2.7,3,3.3,3.6,3.9,4.3,4.7,5.1,5.6,6.2,6.8,7.5,8.2,9.1]};
+const E96 = [1.00,1.02,1.05,1.07,1.10,1.13,1.15,1.18,1.21,1.24,1.27,1.30,1.33,1.37,1.40,1.43,1.47,1.50,1.54,1.58,1.62,1.65,1.69,1.74,1.78,1.82,1.87,1.91,1.96,2.00,2.05,2.10,2.15,2.21,2.26,2.32,2.37,2.43,2.49,2.55,2.61,2.67,2.74,2.80,2.87,2.94,3.01,3.09,3.16,3.24,3.32,3.40,3.48,3.57,3.65,3.74,3.83,3.92,4.02,4.12,4.22,4.32,4.42,4.53,4.64,4.75,4.87,4.99,5.11,5.23,5.36,5.49,5.62,5.76,5.90,6.04,6.19,6.34,6.49,6.65,6.81,6.98,7.15,7.32,7.50,7.68,7.87,8.06,8.25,8.45,8.66,8.87,9.09,9.31,9.53,9.76];
+REIHEN.E96 = E96; REIHEN.E48 = E96.filter((x,i)=>i%2===0);
+function eserie(v, n){
+  if (v === null || v <= 0) return 0;
+  const r = REIHEN[n]; const dek = Math.floor(Math.log10(v)); let best = null;
+  for (const d of [dek-1,dek,dek+1]) for (const x of r){ const c = x*Math.pow(10,d); if (best===null || Math.abs(Math.log(c/v)) < Math.abs(Math.log(best/v))) best = c; }
+  return best;
+}
+const pyRound = (x,n) => { if (n === undefined) { const r = Math.round(x); return (Math.abs(x%1)===0.5 && r%2!==0) ? r-1 : r; } const k = Math.pow(10,n); return Math.round(x*k)/k; };
+const ENV = {sqrt:Math.sqrt,log:(x,b)=>b===undefined?Math.log(x):Math.log(x)/Math.log(b),log10:Math.log10,log2:Math.log2,exp:Math.exp,sin:Math.sin,cos:Math.cos,tan:Math.tan,asin:Math.asin,acos:Math.acos,atan:Math.atan,atan2:Math.atan2,
+  pi:Math.PI,e:Math.E,floor:Math.floor,ceil:Math.ceil,fabs:Math.abs,radians:x=>x*Math.PI/180,degrees:x=>x*180/Math.PI,sinh:Math.sinh,cosh:Math.cosh,tanh:Math.tanh,pow:Math.pow,hypot:Math.hypot,
+  abs:Math.abs,min:Math.min,max:Math.max,round:pyRound,ln:Math.log,int:Math.trunc,float:Number,str:String,si:fmtSI,
+  E3:v=>eserie(v,"E3"),E6:v=>eserie(v,"E6"),E12:v=>eserie(v,"E12"),E24:v=>eserie(v,"E24"),E48:v=>eserie(v,"E48"),E96:v=>eserie(v,"E96")};
+const CACHE = {};
+function auswerten(expr, werte){
+  const env = Object.assign({}, ENV, werte), namen = Object.keys(env);
+  expr = expr.replace(/str\(int\((\w+)\)\)\[:-1\]/g,"String(Math.trunc($1)).slice(0,-1)").replace(/str\(int\((\w+)\)\)\[-1\]/g,"String(Math.trunc($1)).slice(-1)");
+  const key = namen.join(",")+"|"+expr;
+  let f = CACHE[key]; if (!f){ f = CACHE[key] = new Function(...namen, '"use strict"; return ('+expr+');'); }
+  return f(...namen.map(n=>env[n]));
+}
+
+/* ============================================================ Bausteine */
+function bText(b){ return '<div class="txt">'+[].concat(b.text).map(t=>'<p>'+md(t)+'</p>').join("")+'</div>'; }
+function bH2(b){ return '<h2 class="h">'+md(b.text)+'</h2>'; }
+const HFARB = {info:"#2e86ff",tipp:"#27a95f",warn:"#e0364a",merke:"#9b5de5",pi:"#c51a4a",fun:"#e0489a"};
+function bHinweis(b){ const t = b.typ in HFARB ? b.typ : "info"; return '<div class="hint" style="--c:'+HFARB[t]+'"><b class="k">'+U("hinw")[t]+'</b>'+md(b.text)+'</div>'; }
+function bFormel(b){ return '<div class="formel"><div class="n">'+md(b.name||"")+'</div><pre>'+esc(T(b.f))+'</pre>'+(b.text?'<div>'+md(b.text)+'</div>':'')+'</div>'; }
+function bListe(b){ return (b.titel?'<h2 class="h">'+md(b.titel)+'</h2>':'')+'<ul class="l">'+b.punkte.map(p=>'<li>'+md(p)+'</li>').join("")+'</ul>'; }
+function bTabelle(b, farbe){
+  const mono = new Set(b.mono||[]); const br = b.breite;
+  let h = '<div class="tw">'+(b.titel?'<div class="ti" style="background:'+hexOf(farbe)+';color:'+(hell(farbe)?"#1c2438":"#fff")+'">'+md(b.titel)+'</div>':'')+'<table>';
+  if (br) h += '<colgroup>'+br.map(x=>'<col style="width:'+x+'%">').join("")+'</colgroup>';
+  if (b.kopf && b.kopf.length) h += '<thead><tr>'+b.kopf.map(k=>'<th>'+md(k)+'</th>').join("")+'</tr></thead>';
+  h += '<tbody>'+b.zeilen.map(z=>'<tr>'+z.map((c,i)=>'<td class="'+(mono.has(i)?"m ":"")+(b.fett&&i===0?"b":"")+'">'+md(c)+'</td>').join("")+'</tr>').join("")+'</tbody></table>';
+  if (b.fuss) h += '<div class="fuss">'+md(b.fuss)+'</div>';
+  return h+'</div>';
+}
+function bSymbol(b){ return '<div class="card"><b>'+esc(b.key)+'</b> – '+md(b.text||"")+'</div>'; }
+function bPlatz(name){ return '<div class="platz">'+esc(U("nurStudio").replace("%s", name))+'</div>'; }
+
+let RID = 0;
+function bRechner(b, farbe){
+  const id = "r"+(++RID), c = hexOf(farbe), loese = !!b.formeln;
+  let h = '<div class="rech" id="'+id+'"><span class="rk" style="background:'+c+';color:'+(hell(farbe)?"#1c2438":"#fff")+'">'+U("rechner")+' · '+esc(T(b.titel||""))+'</span>';
+  if (b.text) h += '<p class="tx">'+md(b.text)+'</p>';
+  h += '<div class="rg">';
+  for (const f of b.felder) h += '<span>'+md(f[1])+'</span><input data-f="'+esc(f[0])+'" value="'+esc(f[3]||"")+'" inputmode="text" autocomplete="off" spellcheck="false"><span class="u">'+md(f[2]||"")+'</span><span class="ok" data-h="'+esc(f[0])+'"></span>';
+  h += '</div><div class="aus"></div></div>';
+  setTimeout(()=>{
+    const box = document.getElementById(id); if(!box) return;
+    const ins = [...box.querySelectorAll("input")], aus = box.querySelector(".aus");
+    const rechne = () => {
+      const w = {}; ins.forEach(i => w[i.dataset.f] = parseSI(i.value));
+      const gegeben = {}; for (const k in w) if (w[k] !== null) gegeben[k] = w[k];
+      if (!loese){
+        let o = '<div class="res">';
+        for (const r of b.ergebnis){
+          const fmt = r[4]||"si", einh = r[3]||""; let txt;
+          try { const v = auswerten(r[2], gegeben);
+            if (typeof v === "string") txt = v;
+            else if (!isFinite(v)) txt = "–";
+            else if (fmt==="ganz") txt = Math.round(v).toLocaleString("de-DE")+(einh?" "+einh:"");
+            else if (fmt==="zahl") txt = (g4(v,4)||String(v)).replace(".",",")+(einh?" "+einh:"");
+            else if (fmt==="proz") txt = (g4(v,4)||String(v)).replace(".",",")+" %";
+            else txt = fmtSI(v, einh);
+          } catch(e){ txt = "–"; }
+          o += '<div class="a">'+md(r[1])+'</div><div class="v" style="background:'+(txt==="–"?"#9fb1bf":dunkler(farbe,.8))+'">'+esc(txt)+'</div>';
+        }
+        aus.innerHTML = o+'</div>'; return;
+      }
+      const offen = Object.keys(w).filter(k => w[k] === null); let ok = 0;
+      box.querySelectorAll("[data-h]").forEach(s => s.textContent = "");
+      for (const fid of offen){
+        for (const ex of (b.formeln[fid]||[])){
+          try { const v = auswerten(ex, gegeben); const einh = (b.felder.find(f=>f[0]===fid)||[])[2]||"";
+            if (typeof v === "number" && !isFinite(v)) continue;
+            box.querySelector('[data-h="'+fid+'"]').textContent = "= "+(typeof v==="string"?v:fmtSI(v, einh)); ok++; break; } catch(e){}
+        }
+      }
+      aus.innerHTML = !offen.length ? '<p class="tx"><i>'+U("leerR")+'</i></p>' : (!ok ? '<p class="tx"><i>'+U("mehrR")+'</i></p>' : "");
+    };
+    ins.forEach(i => i.addEventListener("input", rechne)); rechne();
+  }, 0);
+  return h;
+}
+
+/* Bauteil-Eintrag: Daten, Pinbild, Tabelle, Formeln, Hinweise */
+const PINF = {i:"#2e86ff",o:"#27a95f",x:"#ff8c1a",g:"#4a5568",v:"#e0364a",n:"#9aa5b5"};
+function pinsSVG(e){
+  const m = /(DIP|SOP|SO|SOIC|TSSOP)-?(\d+)/i.exec(e.gehaeuse||""); const pins = e.pins;
+  if (!m || +m[2] !== pins.length || pins.length % 2) return "";
+  const n = pins.length, h = n/2, rowH = 26, W = 300, H = h*rowH + 40;
+  const dark = document.documentElement.getAttribute("data-theme")==="dark" || (!document.documentElement.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+  const body = dark ? "#2b3350" : "#e7eef6", line = dark ? "#8fa0c4" : "#5d6f8c", txt = dark ? "#e6ecf6" : "#23304a";
+  let s = '<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" role="img" aria-label="'+esc(e.gehaeuse)+'">';
+  s += '<rect x="90" y="14" width="120" height="'+(h*rowH+12)+'" rx="8" fill="'+body+'" stroke="'+line+'" stroke-width="2"/>';
+  s += '<path d="M135 14 a15 15 0 0 0 30 0" fill="'+(dark?"#12161f":"#fff")+'" stroke="'+line+'" stroke-width="2"/>';
+  const pin = (i, x, y, left) => { const p = String(pins[i]).split(":"), nm = p[0], ty = p[1]||"x", c = PINF[ty]||PINF.x;
+    return '<rect x="'+(left?10:210)+'" y="'+(y-9)+'" width="80" height="18" rx="4" fill="'+c+'"/>'
+      +'<text x="'+(left?50:250)+'" y="'+(y+5)+'" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">'+esc(nm.length>9?nm.slice(0,9):nm)+'</text>'
+      +'<text x="'+(left?100:200)+'" y="'+(y+4)+'" text-anchor="'+(left?"start":"end")+'" font-size="11" fill="'+txt+'">'+(i+1)+'</text>'; };
+  for (let i=0;i<h;i++){ const y = 34 + i*rowH; s += pin(i, 0, y, true); s += pin(n-1-i, 0, y, false); }
+  return s+'</svg>';
+}
+function bBauteil(b, farbe){
+  const e = b.e; let h = "";
+  const rows = [];
+  if (e.spannung) rows.push([U("ver"), e.spannung]);
+  if (e.gehaeuse) rows.push([U("geh"), e.gehaeuse]);
+  if (e.pins && e.pins.length) rows.push([U("ans"), String(e.pins.length)]);
+  for (const kv of (e.daten||[])) rows.push(kv);
+  if (rows.length) h += bTabelle({kopf:[], zeilen:rows, fett:true}, farbe);
+  if (e.pins && e.pins.length){
+    const svg = pinsSVG(e);
+    const tab = '<div class="tw"><div class="ti" style="background:'+hexOf(farbe)+';color:'+(hell(farbe)?"#1c2438":"#fff")+'">'+U("pinsT")+'</div><table><thead><tr><th>'+U("nr")+'</th><th>'+U("name")+'</th><th>'+U("typ")+'</th></tr></thead><tbody>'
+      +e.pins.map((p,i)=>{ const q = String(p).split(":"), t = q[1]; return '<tr><td>'+(i+1)+'</td><td class="m">'+esc(q[0])+'</td><td>'+(t&&U("pin")[t]?'<span class="pt" style="background:'+(PINF[t]||"#888")+'">'+U("pin")[t]+'</span>':"")+'</td></tr>'; }).join("")+'</tbody></table></div>';
+    h += '<div class="pinw">'+svg+tab+'</div>';
+  }
+  if (e.tabelle) h += bTabelle({kopf:e.tabelle.kopf||[], zeilen:e.tabelle.zeilen||[], titel:"", mono:(e.tabelle.kopf||[]).map((_,i)=>i)}, farbe);
+  if (e.formeln && e.formeln.length) h += bFormel({name:"Formeln", f:e.formeln.join("\n"), text:""});
+  if (e.zeit) h += bPlatz(U("zeit"));
+  if (e.kreis) h += bPlatz(U("kreis"));
+  for (const t of (e.hinweise||[])) h += bHinweis({typ: /nicht|NICHT|Achtung|Vorsicht|zerst|defekt/.test(t) ? "warn" : "info", text:t});
+  return h;
+}
+
+/* Geräte-Vergleich */
+function marke(z){ let h = ""; for (const [k,v] of z) if (k==="Hersteller"){ h = String(v); break; } h = h.split(" (")[0].split(" / ")[0].trim(); return h==="Micro:bit Educational Foundation" ? "micro:bit" : (h||"–"); }
+async function bVergleichInit(box, b, farbe){
+  const wd = await welt(b.welt), ex = await vergl(b.welt), weg = new Set(ex.ersetzt||[]), roh = [];
+  for (const p of wd.seiten){ if (weg.has(p.id)) continue;
+    for (const bl of p.bloecke) if (bl.t==="tabelle" && bl.kopf && bl.kopf[0]==="Eigenschaft" && bl.titel==="Technische Daten"){ roh.push([p.titel, bl.zeilen, marke(bl.zeilen)]); break; } }
+  for (const g of (ex.geraete||[])) roh.push([g.name, g.zeilen, g.marke || marke(g.zeilen)]);
+  const reihe = (ex.marken||[]).slice(); roh.forEach(r => { if(!reihe.includes(r[2])) reihe.push(r[2]); });
+  const jahr = z => { for (const [k,v] of z) if (k==="Erschienen"){ const m = /(19|20)\d\d/.exec(String(v)); return m ? +m[0] : 0; } return 0; };
+  roh.sort((a,c) => (reihe.indexOf(a[2])-reihe.indexOf(c[2])) || (jahr(a[1])-jahr(c[1])));
+  const items = roh.map(r => ({name:r[0], marke:r[2], z:r[1]})), maxn = b.n||3; let sel = [];
+  const zeige = () => {
+    let h = '<div class="bar2"><button class="btn" id="add"'+(sel.length>=maxn?" disabled":"")+'>'+U("hinzu")+'</button></div>';
+    if (sel.length < 2) h += '<p class="tx" style="color:var(--muted)">'+U("leerV").replace("%n",maxn)+'</p>';
+    if (sel.length){
+      const labels = []; sel.forEach(i => items[i].z.forEach(([k]) => { if(!labels.includes(k)) labels.push(k); }));
+      const val = (i,k) => { const r = items[i].z.find(x=>x[0]===k); return r ? String(r[1]) : "–"; };
+      h += '<div class="tw"><table><thead><tr><th></th>'+sel.map((i,n)=>'<th>'+esc(T(items[i].name))+'<span class="x" data-x="'+n+'">✕</span></th>').join("")+'</tr></thead><tbody>';
+      for (const k of labels){ const vs = sel.map(i=>val(i,k)); const diff = sel.length>1 && new Set(vs).size>1;
+        h += '<tr><td>'+esc(T(k))+'</td>'+vs.map(v=>'<td'+(diff?' class="d"':'')+'>'+esc(T(v))+'</td>').join("")+'</tr>'; }
+      h += '</tbody></table></div><p class="tx" style="color:var(--muted);font-size:13.5px">'+U("gelb")+'</p>';
+    }
+    box.innerHTML = h;
+    const add = box.querySelector("#add"); if (add) add.onclick = oeffnen;
+    box.querySelectorAll(".x").forEach(x => x.onclick = () => { sel.splice(+x.dataset.x,1); zeige(); });
+  };
+  const oeffnen = () => {
+    const dlg = $("#dlg");
+    const liste = (q) => { q = q.toLowerCase(); let h = "", last = null;
+      items.forEach((it,i) => { if (q && !(T(it.name)+" "+it.name+" "+it.marke).toLowerCase().includes(q)) return;
+        if (it.marke !== last){ h += '<h3>'+esc(it.marke)+'</h3>'; last = it.marke; }
+        h += '<button data-i="'+i+'"'+(sel.includes(i)?" disabled":"")+'>'+esc(T(it.name))+'</button>'; });
+      return h || '<p style="padding:14px 16px">'+U("keine")+'</p>'; };
+    dlg.innerHTML = '<div class="dh"><b style="flex:1">'+U("waehle")+'</b><button class="btn" id="zu">✕</button></div><div style="padding:10px 16px"><input class="in" id="dq" placeholder="'+esc(U("finde"))+'" style="max-width:none"></div><div class="dl">'+liste("")+'</div>';
+    const dl = dlg.querySelector(".dl");
+    const bind = () => dl.querySelectorAll("button").forEach(bt => bt.onclick = () => { sel.push(+bt.dataset.i); dlg.close(); zeige(); });
+    bind(); dlg.querySelector("#dq").oninput = e => { dl.innerHTML = liste(e.target.value); bind(); };
+    dlg.querySelector("#zu").onclick = () => dlg.close();
+    dlg.showModal(); dlg.querySelector("#dq").focus();
+  };
+  zeige();
+}
+function bVergleich(b, farbe){ const id = "v"+(++RID); setTimeout(() => { const bx = document.getElementById(id); if (bx) bVergleichInit(bx, b, farbe); }, 0); return '<div class="card vg" id="'+id+'"></div>'; }
+
+const BAUSTEIN = {text:bText,h2:bH2,hinweis:bHinweis,formel:bFormel,liste:bListe,tabelle:bTabelle,symbol:bSymbol,rechner:bRechner,bauteil:bBauteil,vergleich:bVergleich,
+  spezial:b=>bPlatz(b.name), labor:b=>bPlatz(b.tool), kacheln:b=>bTabelle({kopf:[],zeilen:b.k,fett:true},"blau")};
+
+/* ============================================================ Ansichten */
+const app = $("#app");
+function bannerHTML(w, titel, kurz, sym){
+  return '<div class="banner'+(hell(w.farbe)?" light":"")+'" style="background:'+hexOf(w.farbe)+'"><div class="ic">'+symbol(sym||w.symbol)+'</div><div><h1>'+esc(T(titel))+'</h1>'+(kurz?'<p>'+esc(T(kurz))+'</p>':'')+'</div></div>';
+}
+function startseite(){
+  document.title = "Oratio Studio";
+  app.innerHTML = '<h1>Oratio Studio</h1><p class="sub">'+U("startsub")+'</p><div class="grid">'+INDEX.welten.map(w =>
+    '<a class="welt" href="#/w/'+w.id+'"><div class="kopf'+(hell(w.farbe)?" light":"")+'" style="background:'+hexOf(w.farbe)+'"><div class="ic">'+symbol(w.symbol)+'</div><b>'+esc(T(w.name))+'</b></div><div class="t"><div class="n">'+w.seiten.length+' '+U("seiten")+'</div>'+esc(T(w.untertitel))+'</div></a>').join("")+'</div>';
+}
+function weltseite(id){
+  const w = weltInfo(id); if (!w) return nichts();
+  document.title = T(w.name)+" – Oratio Studio";
+  const grp = new Map(); w.seiten.forEach(s => { const g = s.gruppe || ""; if(!grp.has(g)) grp.set(g, []); grp.get(g).push(s); });
+  const offen = grp.size <= 3;
+  let h = '<div class="crumb"><a href="#/">'+U("home")+'</a> › '+esc(T(w.name))+'</div>'+bannerHTML(w, w.name, w.untertitel)+'<input class="in" id="wf" placeholder="'+esc(U("filter"))+'" style="margin-bottom:6px">';
+  h += '<div id="wl">'+[...grp].map(([g, ss]) => (g ? '<details class="gr"'+(offen?" open":"")+'><summary>'+esc(T(g))+'<span>'+ss.length+'</span></summary>' : '<div class="gr card" style="padding:0">')
+     +'<div class="liste">'+ss.map(s=>'<a href="#/s/'+w.id+'/'+encodeURIComponent(s.id)+'" data-t="'+esc((T(s.titel)+" "+s.titel+" "+T(s.kurz||"")).toLowerCase())+'">'+esc(T(s.titel))+(s.kurz?'<small>'+esc(T(s.kurz))+'</small>':'')+'</a>').join("")+'</div>'+(g?'</details>':'</div>')).join("")+'</div>';
+  app.innerHTML = h;
+  $("#wf").addEventListener("input", e => { const q = e.target.value.toLowerCase().trim();
+    document.querySelectorAll("#wl details").forEach(d => { let n = 0; d.querySelectorAll("a").forEach(a => { const ok = !q || a.dataset.t.includes(q); a.style.display = ok ? "" : "none"; if(ok) n++; }); d.style.display = n ? "" : "none"; if (q && n) d.open = true; }); });
+}
+async function seitenansicht(wid, sid){
+  const w = weltInfo(wid); if (!w) return nichts();
+  const wd = await welt(wid), s = wd.seiten.find(p => p.id === sid); if (!s) return nichts();
+  document.title = T(s.titel)+" – Oratio Studio";
+  let h = '<div class="crumb"><a href="#/">'+U("home")+'</a> › <a href="#/w/'+w.id+'">'+esc(T(w.name))+'</a> › '+esc(T(s.titel))+'</div>'+bannerHTML(w, s.titel, s.kurz, s.symbol);
+  if (s.tags && s.tags.length) h += '<div class="tags">'+s.tags.filter(t=>t.length>2&&!/[\/()]/.test(t)).slice(0,10).map(t=>'<span class="tag">'+esc(t)+'</span>').join("")+'</div>';
+  for (const b of s.bloecke){ const f = BAUSTEIN[b.t]; try { h += f ? f(b, w.farbe) : ""; } catch(e){ h += '<div class="platz">'+esc(b.t)+': '+esc(e.message)+'</div>'; } }
+  if (s.siehe && s.siehe.length){
+    const links = s.siehe.map(x => { const [a,b] = x.includes(":") ? x.split(":") : [wid, x]; const ww = weltInfo(a); const sp = ww && ww.seiten.find(p=>p.id===b); return sp ? '<a href="#/s/'+a+'/'+encodeURIComponent(b)+'">'+esc(T(sp.titel))+'</a>' : ""; }).join("");
+    if (links) h += '<h2 class="h">'+U("siehe")+'</h2><div class="siehe">'+links+'</div>';
+  }
+  app.innerHTML = h; window.scrollTo(0,0);
+}
+async function sucheAnzeigen(q){
+  q = decodeURIComponent(q||"").trim();
+  document.title = q+" – Oratio Studio";
+  if (!SUCHE) SUCHE = await holen("daten/suche.json");
+  const worte = q.toLowerCase().split(/\s+/).filter(Boolean), res = [];
+  if (worte.length) for (const [wid, sid, text] of SUCHE){
+    const w = weltInfo(wid); const s = w && w.seiten.find(p => p.id === sid); if (!s) continue;
+    const titel = (T(s.titel)+" "+s.titel).toLowerCase(), kurz = (T(s.kurz||"")+" "+(s.kurz||"")).toLowerCase(), all = titel+" "+kurz+" "+text;
+    if (!worte.every(x => all.includes(x))) continue;
+    let sc = 0; worte.forEach(x => { if (titel.includes(x)) sc += 5; if (kurz.includes(x)) sc += 2; });
+    res.push([sc, w, s]);
+  }
+  res.sort((a,b) => b[0]-a[0]);
+  app.innerHTML = '<h1>“'+esc(q)+'”</h1><p class="sub">'+res.length+' '+U("treffer")+'</p><div class="treffer">'+res.slice(0,80).map(([_, w, s]) =>
+    '<a href="#/s/'+w.id+'/'+encodeURIComponent(s.id)+'"><span class="chip'+(hell(w.farbe)?" light":"")+'" style="background:'+hexOf(w.farbe)+'">'+esc(T(w.name))+'</span><b>'+esc(T(s.titel))+'</b>'+(s.kurz?'<small>'+esc(T(s.kurz))+'</small>':'')+'</a>').join("")+'</div>'
+    + (res.length ? "" : '<p>'+U("keine")+'</p>');
+}
+function nichts(){ app.innerHTML = '<p>'+U("weg")+' <a href="#/">'+U("home")+'</a></p>'; }
+
+async function route(){
+  const p = decodeURIComponent((location.hash || "#/").slice(1)).split("/").filter(Boolean);
+  try {
+    if (!p.length) startseite();
+    else if (p[0] === "w") weltseite(p[1]);
+    else if (p[0] === "s") await seitenansicht(p[1], p.slice(2).join("/"));
+    else if (p[0] === "q") await sucheAnzeigen(p.slice(1).join("/"));
+    else nichts();
+  } catch(e){ app.innerHTML = '<p>'+esc(e.message)+'</p>'; }
+  $("#q").placeholder = U("suche");
+}
+
+/* ============================================================ Kopfleiste */
+function theme(){ let t = "auto"; try { t = localStorage.getItem("theme") || "auto"; } catch(e){} return t; }
+function setTheme(t){ if (t === "auto") document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme", t); }
+function beschrifte(){ $("#bLang").textContent = LANG === "de" ? "FR" : "DE"; const t = theme(); $("#bTheme").textContent = t==="dark" ? "🌙 "+U("dunkel") : t==="light" ? "☀️ "+U("hellm") : "A "+U("auto");
+  $("#fuss").innerHTML = esc(U("stand"))+' · <a href="impressum.html">'+U("imp")+'</a>'; document.documentElement.lang = LANG; }
+$("#bTheme").onclick = () => { const n = {auto:"dark",dark:"light",light:"auto"}[theme()]; try { localStorage.setItem("theme", n); } catch(e){} setTheme(n); beschrifte(); route(); };
+$("#bLang").onclick = async () => { LANG = LANG === "de" ? "fr" : "de"; try { localStorage.setItem("lang", LANG); } catch(e){} await frLaden(); beschrifte(); route(); };
+let st; $("#q").addEventListener("input", e => { clearTimeout(st); const v = e.target.value; st = setTimeout(() => { location.hash = v.trim() ? "#/q/"+encodeURIComponent(v.trim()) : "#/"; }, 280); });
+async function frLaden(){ if (LANG === "fr" && FR === null) { try { FR = await holen("daten/sprache_fr.json"); } catch(e){ FR = {}; } } }
+
+(async function start(){
+  setTheme(theme());
+  try { INDEX = await holen("daten/index.json"); await frLaden(); beschrifte(); window.addEventListener("hashchange", route); route(); }
+  catch(e){ app.innerHTML = '<p>Daten konnten nicht geladen werden. Bitte die Seite über einen Webserver öffnen (nicht direkt als Datei).</p>'; }
+})();
+</script>
+</body>
+</html>

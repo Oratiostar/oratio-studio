@@ -1,0 +1,4411 @@
+{
+ "id": "handys",
+ "name": "Handys",
+ "untertitel": "iPhone und Samsung Galaxy: alle Modelle im Überblick, Technik im Vergleich",
+ "farbe": "tuerkis",
+ "symbol": "antenne",
+ "reihenfolge": 35,
+ "seiten": [
+  {
+   "id": "v_eigen",
+   "titel": "Eigener Vergleich",
+   "kurz": "2–3 Einträge wählen und nebeneinander vergleichen",
+   "tags": [
+    "vergleich",
+    "eigener vergleich",
+    "nebeneinander",
+    "handy"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Tippe auf „Hinzufügen“, um zwei oder drei Einträge zu wählen. Darunter siehst du sofort ihre Technischen Daten nebeneinander. Zeilen mit Unterschieden sind gelb hinterlegt. Mit ✕ entfernst du einen Eintrag wieder."
+     ]
+    },
+    {
+     "t": "vergleich",
+     "welt": "handys",
+     "n": 3
+    }
+   ],
+   "siehe": [],
+   "symbol": "voltmeter",
+   "gruppe": "Vergleiche & Technik"
+  },
+  {
+   "id": "v_chips",
+   "titel": "Chips im Vergleich",
+   "kurz": "Apple A-Serie gegen Snapdragon & Exynos",
+   "tags": [
+    "chips",
+    "soc",
+    "nm",
+    "a-serie",
+    "snapdragon",
+    "exynos"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Beide Welten haben gemeinsame Wurzeln: ARM-Kerne, immer kleinere Fertigung (nm). Je kleiner die Strukturen, desto mehr Transistoren passen auf den Chip und desto weniger Strom braucht er bei gleicher Leistung."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Jahr",
+      "Apple",
+      "Fertigung",
+      "Samsung (Flaggschiff-Chip)",
+      "Fertigung"
+     ],
+     "zeilen": [
+      [
+       "2013",
+       "A7 (64 Bit, erster)",
+       "28 nm",
+       "Exynos 5410 / Snapdragon 600",
+       "28 nm"
+      ],
+      [
+       "2015",
+       "A9",
+       "14/16 nm",
+       "Exynos 7420 (S6)",
+       "14 nm"
+      ],
+      [
+       "2017",
+       "A11 Bionic",
+       "10 nm",
+       "Snapdragon 835 / Exynos 8895",
+       "10 nm"
+      ],
+      [
+       "2018",
+       "A12 Bionic (erster 7-nm-Smartphone-Chip)",
+       "7 nm",
+       "Snapdragon 845 / Exynos 9810",
+       "10 nm"
+      ],
+      [
+       "2020",
+       "A14 Bionic",
+       "5 nm",
+       "Snapdragon 865 / Exynos 990",
+       "7 nm"
+      ],
+      [
+       "2022",
+       "A16 Bionic",
+       "4 nm",
+       "Snapdragon 8 Gen 1 / Exynos 2200",
+       "4 nm"
+      ],
+      [
+       "2023",
+       "A17 Pro",
+       "3 nm",
+       "Snapdragon 8 Gen 2 for Galaxy",
+       "4 nm"
+      ],
+      [
+       "2024",
+       "A18 / A18 Pro",
+       "3 nm",
+       "Snapdragon 8 Gen 3 / Exynos 2400",
+       "4 nm"
+      ],
+      [
+       "2025",
+       "A19 / A19 Pro",
+       "3 nm",
+       "Snapdragon 8 Elite for Galaxy",
+       "3 nm"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Im Überblick"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Apple entwickelt Kerne und GPU selbst, Qualcomm und Samsung nutzen ARM-Designs (Qualcomm teilweise eigene Oryon-Kerne). Nanometerangaben sind Marketingnamen, keine direkten Maße."
+    }
+   ],
+   "siehe": [
+    "handys:v_updates",
+    "speicher:ram"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Vergleiche & Technik"
+  },
+  {
+   "id": "v_kamera",
+   "titel": "Kamera: Megapixel durch die Jahre",
+   "kurz": "Wie viel MP ist wirklich nötig?",
+   "tags": [
+    "kamera",
+    "megapixel",
+    "binning",
+    "sensor"
+   ],
+   "bloecke": [
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Jahr",
+      "iPhone",
+      "Samsung Galaxy S"
+     ],
+     "zeilen": [
+      [
+       "2007",
+       "2 MP",
+       "–"
+      ],
+      [
+       "2010",
+       "5 MP (iPhone 4)",
+       "5 MP (S)"
+      ],
+      [
+       "2012",
+       "8 MP",
+       "8 MP (S3)"
+      ],
+      [
+       "2015",
+       "12 MP",
+       "16 MP (S6)"
+      ],
+      [
+       "2019",
+       "3 × 12 MP",
+       "12 + 12 + 16 MP (S10)"
+      ],
+      [
+       "2020",
+       "12 MP",
+       "108 MP (S20 Ultra)"
+      ],
+      [
+       "2022",
+       "48 MP (14 Pro)",
+       "108 MP (S22 Ultra)"
+      ],
+      [
+       "2023",
+       "48 MP",
+       "200 MP (S23 Ultra)"
+      ],
+      [
+       "2025",
+       "48 MP × 3 (17 Pro)",
+       "200 MP (S25 Ultra)"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Hauptkamera (ca.)"
+    },
+    {
+     "t": "text",
+     "text": [
+      "Mehr Megapixel bedeuten nicht automatisch bessere Bilder. Wichtiger sind **Sensorgröße, Blende, Bildverarbeitung** und Stabilisierung. Viele Hochauflösende Sensoren fassen 4 oder 16 Pixel zu einem zusammen („Pixel-Binning“), damit jeder Pixel mehr Licht sammelt."
+     ]
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Ein 12-MP-Foto reicht für einen Abzug 30 × 40 cm. Der Unterschied zeigt sich vor allem bei Zoom und schwachem Licht."
+    }
+   ],
+   "siehe": [
+    "handys:v_display"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Vergleiche & Technik"
+  },
+  {
+   "id": "v_akku",
+   "titel": "Akku & Laden",
+   "kurz": "mAh, Watt und die Lithium-Technik",
+   "tags": [
+    "akku",
+    "laden",
+    "mah",
+    "watt",
+    "wireless"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Smartphones nutzen Lithium-Ionen- oder Lithium-Polymer-Zellen mit etwa 3,85 V Nennspannung. Die Kapazität steht in **mAh**, die Energie in **Wh**."
+     ]
+    },
+    {
+     "t": "formel",
+     "name": "Energie in Wh",
+     "f": "Wh = mAh × V / 1000",
+     "text": "Beispiel: 5000 mAh × 3,85 V = 19,25 Wh."
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Merkmal",
+      "Typisch heute",
+      "Anmerkung"
+     ],
+     "zeilen": [
+      [
+       "Kapazität",
+       "3000–5000 mAh",
+       "Flaggschiffe seit S20 meist 4000–5000"
+      ],
+      [
+       "Kabelladen",
+       "20–45 W (Samsung), 20–30 W (iPhone)",
+       "Chinesische Hersteller teils über 100 W"
+      ],
+      [
+       "Kabellos (Qi/Qi2)",
+       "10–25 W (iPhone MagSafe bis 25 W)",
+       "Qi2 vereinheitlicht Magnet-Laden"
+      ],
+      [
+       "Lebensdauer",
+       "ca. 500–1000 Ladezyklen",
+       "Danach etwa 80 Prozent der Kapazität"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "Hitze schadet dem Akku am meisten. Nicht in der Sonne oder bei Hitze laden."
+    }
+   ],
+   "siehe": [
+    "handys:p_note"
+   ],
+   "symbol": "batterie",
+   "gruppe": "Vergleiche & Technik"
+  },
+  {
+   "id": "v_display",
+   "titel": "Display-Technik",
+   "kurz": "LCD, OLED, LTPO und Falt-Displays",
+   "tags": [
+    "display",
+    "oled",
+    "lcd",
+    "ltpo",
+    "ppi",
+    "retina"
+   ],
+   "bloecke": [
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Technik",
+      "Funktion",
+      "Vorteil",
+      "Nachteil"
+     ],
+     "zeilen": [
+      [
+       "LCD (IPS)",
+       "Flüssigkristalle + Hintergrundlicht",
+       "Günstig, hell",
+       "Schwarz ist nicht ganz schwarz"
+      ],
+      [
+       "OLED / AMOLED",
+       "Jedes Pixel leuchtet selbst",
+       "Echtes Schwarz, dünn",
+       "Einbrennen möglich, PWM-Flackern"
+      ],
+      [
+       "LTPO",
+       "OLED mit variabler Bildrate (1–120 Hz)",
+       "Spart Akku",
+       "Teurer"
+      ],
+      [
+       "Falt-Display",
+       "OLED auf ultradünnem Glas",
+       "Großer Schirm klein",
+       "Empfindlich, teuer"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technologien"
+    },
+    {
+     "t": "formel",
+     "name": "Pixeldichte (ppi)",
+     "f": "ppi = √(Breite² + Höhe²) / Diagonale",
+     "text": "iPhone 4 (Retina): √(960² + 640²) / 3,5 ≈ 330 ppi."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Über etwa 300 ppi erkennt ein normales Auge in Armlänge kaum noch einzelne Pixel – das war Apples „Retina“-Argument von 2010."
+    }
+   ],
+   "siehe": [
+    "handys:v_kamera"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Vergleiche & Technik"
+  },
+  {
+   "id": "v_ports",
+   "titel": "Anschlüsse im Vergleich",
+   "kurz": "30-Pin, Lightning, USB-C, Micro-USB",
+   "tags": [
+    "usb-c",
+    "lightning",
+    "micro-usb",
+    "anschluss",
+    "eu"
+   ],
+   "bloecke": [
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Anschluss",
+      "Zeit",
+      "Bemerkung"
+     ],
+     "zeilen": [
+      [
+       "Apple 30-Pin",
+       "2003–2012",
+       "Breit, mit Analog-Audio"
+      ],
+      [
+       "Micro-USB",
+       "2008–2018 (Android)",
+       "Nur eine Steckrichtung"
+      ],
+      [
+       "Lightning",
+       "2012–2023",
+       "Beidseitig, kleiner, Apple-eigen"
+      ],
+      [
+       "USB-C",
+       "2015– (Android), 2023– (iPhone)",
+       "Beidseitig, USB 3, bis 240 W"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Anschlüsse"
+    },
+    {
+     "t": "text",
+     "text": [
+      "Seit Ende 2024 schreibt die EU für Smartphones den Anschluss **USB-C** zum Laden vor. Apple stellte ab dem iPhone 15 (2023) um."
+     ]
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Nicht jedes USB-C-Kabel kann alles: Es gibt reine Ladekabel (USB 2.0), Daten-Kabel (5/10/20 Gbit/s) und Videoübertragung (DisplayPort)."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Vergleiche & Technik"
+  },
+  {
+   "id": "v_updates",
+   "titel": "Software-Updates",
+   "kurz": "Wie lange bekommt ein Handy Sicherheits-Updates?",
+   "tags": [
+    "updates",
+    "sicherheit",
+    "support"
+   ],
+   "bloecke": [
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Hersteller",
+      "Typische Dauer",
+      "Beispiele"
+     ],
+     "zeilen": [
+      [
+       "Apple",
+       "ca. 6–8 Jahre iOS-Updates",
+       "iPhone 6s (2015): mehr als 8 Jahre, bis iOS 15"
+      ],
+      [
+       "Samsung (S-Serie)",
+       "7 Jahre (ab S24)",
+       "S24: bis 2031"
+      ],
+      [
+       "Samsung (A-Serie)",
+       "5–6 Jahre",
+       "A55: bis 2030"
+      ],
+      [
+       "Google Pixel",
+       "7 Jahre (ab Pixel 8)",
+       "Pixel 8: bis 2030"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Updatezeiten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "Ohne Sicherheitsupdates wird ein Handy zur Gefahr (Banking, Passwörter). Nach Ende der Updates besser ersetzen oder nur eingeschränkt nutzen."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Vergleiche & Technik"
+  },
+  {
+   "id": "v_datenblatt",
+   "titel": "Datenblatt lesen",
+   "kurz": "Was die Angaben in der Spezifikationstabelle bedeuten",
+   "tags": [
+    "datenblatt",
+    "spezifikation",
+    "soc",
+    "ip68",
+    "ram"
+   ],
+   "bloecke": [
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Angabe",
+      "Bedeutung"
+     ],
+     "zeilen": [
+      [
+       "SoC",
+       "System on a Chip: Prozessor, Grafik, KI, Modem, alles auf einem Chip"
+      ],
+      [
+       "nm",
+       "Fertigungsstrukturgröße (kleiner = effizienter)"
+      ],
+      [
+       "RAM",
+       "Arbeitsspeicher: mehr = mehr Apps im Hintergrund"
+      ],
+      [
+       "mAh",
+       "Akku-Ladung. Entscheidend ist auch die Effizienz"
+      ],
+      [
+       "ppi",
+       "Pixel pro Zoll: Schärfe"
+      ],
+      [
+       "Hz",
+       "Bildwiederholrate: 60 = flüssig, 120 = sehr flüssig"
+      ],
+      [
+       "IP68",
+       "Staubdicht und wasserdicht (bis 1,5 m, 30 min)"
+      ],
+      [
+       "5G / Wi-Fi 6E / BT 5.3",
+       "Funkstandards"
+      ],
+      [
+       "NFC",
+       "Nahfeld-Funk für Bezahlen"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Begriffe"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Wichtiger als einzelne Zahlen sind unabhängige Tests: Akkulaufzeit, Kamera im Dunkeln, Displayhelligkeit im Freien."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Vergleiche & Technik"
+  },
+  {
+   "id": "z_neu",
+   "titel": "Neueste Modelle (Stand Oktober 2026)",
+   "kurz": "Was neu dazugekommen ist und was fehlt",
+   "tags": [
+    "neu",
+    "2026",
+    "aktuell"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Neu im Vergleich (Daten aus Web-Quellen, Oktober 2026): **Galaxy S26 / S26+ / S26 Ultra**, **Pixel 11 / 11 Pro / 11 Pro XL**, **Oppo Find X9 / X9 Pro**, **Xiaomi 17 / 17 Pro / 17 Pro Max**, **Vivo X300 / X300 Pro**."
+     ]
+    },
+    {
+     "t": "text",
+     "text": [
+      "Noch nicht aufgenommen: Galaxy Z Fold8 / Flip8, Pixel 11 Pro Fold, Xiaomi 17 Ultra, ein neues Sony Xperia 1 und die Modelle von OnePlus, Honor, Nothing und Motorola."
+     ]
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "„k. A.“ heißt: die Quellen nannten den Wert nicht. Preise für das Galaxy S26 habe ich nicht bestätigen können (Quellen widersprachen sich). Preise gelten für den Markt, der genannt ist (Europa, USA oder China), und ändern sich."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Vergleiche & Technik"
+  },
+  {
+   "id": "p_ip1",
+   "titel": "iPhone (1. Generation)",
+   "kurz": "Apple · 2007 · Samsung S5L8900 ",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone (1. generation)",
+    "2007",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Multi-Touch statt Tastatur: Das iPhone setzte den Standard für Smartphones. Noch ohne App Store, ohne 3G und ohne Copy & Paste."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2007"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Samsung S5L8900 (ARM11), 412 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "128 MB"
+      ],
+      [
+       "Display",
+       "3,5″ LCD, 480×320 (163 ppi)"
+      ],
+      [
+       "Kamera (hinten)",
+       "2 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "1400 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "2,5 W (USB, 5 V / 0,5 A)"
+      ],
+      [
+       "Anschluss",
+       "30-Pin-Dock"
+      ],
+      [
+       "Startpreis (USA)",
+       "499 $ (4 GB) / 599 $ (8 GB)"
+      ],
+      [
+       "Betriebssystem",
+       "iPhone OS 1 bis iOS 3.1.3"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ip3g",
+   "titel": "iPhone 3G",
+   "kurz": "Apple · 2008 · Samsung S5L8900",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone 3g",
+    "2008",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Brachte 3G, GPS und den App Store (App-Store-Start Juli 2008)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2008"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Samsung S5L8900, 412 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "128 MB"
+      ],
+      [
+       "Display",
+       "3,5″ LCD, 480×320"
+      ],
+      [
+       "Kamera (hinten)",
+       "2 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "1150 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 2,5 W, kein Schnellladen"
+      ],
+      [
+       "Anschluss",
+       "30-Pin-Dock"
+      ],
+      [
+       "Startpreis (USA)",
+       "199 $ (8 GB, mit Vertrag)"
+      ],
+      [
+       "Betriebssystem",
+       "iPhone OS 2 bis iOS 4.2.1"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ip3gs",
+   "titel": "iPhone 3GS",
+   "kurz": "Apple · 2009 · Samsung S5PC100 ",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone 3gs",
+    "2009",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Das „S“ stand für Speed. Erstmals Sprachsteuerung und Videoaufnahme."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2009"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Samsung S5PC100 (Cortex-A8), 600 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "256 MB"
+      ],
+      [
+       "Display",
+       "3,5″ LCD, 480×320"
+      ],
+      [
+       "Kamera (hinten)",
+       "3 MP, Autofokus, Video"
+      ],
+      [
+       "Akku (ca.)",
+       "1219 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 2,5 W, kein Schnellladen"
+      ],
+      [
+       "Anschluss",
+       "30-Pin-Dock"
+      ],
+      [
+       "Startpreis (USA)",
+       "199 $ (16 GB, mit Vertrag)"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 3 bis iOS 6.1.6"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ip4",
+   "titel": "iPhone 4",
+   "kurz": "Apple · 2010 · Apple A4",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone 4",
+    "2010",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Edelstahlrahmen als Antenne („Antennagate“), erste Frontkamera, FaceTime. Erstes Apple-SoC im iPhone."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2010"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Apple A4, 1 GHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "512 MB"
+      ],
+      [
+       "Display",
+       "3,5″ „Retina“-LCD, 960×640 (326 ppi)"
+      ],
+      [
+       "Kamera (hinten)",
+       "5 MP + Front-VGA"
+      ],
+      [
+       "Akku (ca.)",
+       "1420 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 2,5 W, kein Schnellladen"
+      ],
+      [
+       "Anschluss",
+       "30-Pin-Dock"
+      ],
+      [
+       "Startpreis (USA)",
+       "199 $ / 299 $"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 4 bis iOS 7.1.2"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ip4s",
+   "titel": "iPhone 4S",
+   "kurz": "Apple · 2011 · Apple A5 ",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone 4s",
+    "2011",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Siri als Sprachassistent. Die letzte iPhone-Vorstellung unter Steve Jobs (Oktober 2011)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2011"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Apple A5 (Dual-Core), 800 MHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "512 MB"
+      ],
+      [
+       "Display",
+       "3,5″ Retina-LCD"
+      ],
+      [
+       "Kamera (hinten)",
+       "8 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "1432 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 2,5 W, kein Schnellladen"
+      ],
+      [
+       "Anschluss",
+       "30-Pin-Dock"
+      ],
+      [
+       "Startpreis (USA)",
+       "199 $"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 5 bis iOS 9.3.6"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ip5",
+   "titel": "iPhone 5",
+   "kurz": "Apple · 2012 · Apple A6",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone 5",
+    "2012",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Größeres Display, Lightning-Stecker (beidseitig, kleiner als 30-Pin), Aluminium-Gehäuse."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2012"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Apple A6"
+      ],
+      [
+       "Arbeitsspeicher",
+       "1 GB"
+      ],
+      [
+       "Display",
+       "4″ Retina-LCD, 1136×640"
+      ],
+      [
+       "Kamera (hinten)",
+       "8 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "1440 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "5 W (bis ca. 10 W mit iPad-Netzteil)"
+      ],
+      [
+       "Anschluss",
+       "Lightning"
+      ],
+      [
+       "Startpreis (USA)",
+       "199 $"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 6 bis iOS 10.3.4"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ip5s",
+   "titel": "iPhone 5s / 5c",
+   "kurz": "Apple · 2013 · 5s: Apple A7 ",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone 5s / 5c",
+    "2013",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Das 5s hatte als erstes Smartphone einen 64-Bit-Prozessor und Touch ID. Das 5c bekam ein buntes Plastikgehäuse."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2013"
+      ],
+      [
+       "Prozessor (SoC)",
+       "5s: Apple A7 (64 Bit), 5c: Apple A6"
+      ],
+      [
+       "Arbeitsspeicher",
+       "1 GB"
+      ],
+      [
+       "Display",
+       "4″ Retina-LCD"
+      ],
+      [
+       "Kamera (hinten)",
+       "8 MP (5s mit Dual-LED-Blitz)"
+      ],
+      [
+       "Akku (ca.)",
+       "5s: 1570 mAh, 5c: 1510 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "5 W (bis ca. 10 W mit iPad-Netzteil)"
+      ],
+      [
+       "Anschluss",
+       "Lightning"
+      ],
+      [
+       "Startpreis (USA)",
+       "5s: 199 $, 5c: 99 $"
+      ],
+      [
+       "Betriebssystem",
+       "5s: bis iOS 12.5.7, 5c: bis iOS 10.3.4"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ip6",
+   "titel": "iPhone 6 / 6 Plus",
+   "kurz": "Apple · 2014 · Apple A8",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone 6 / 6 plus",
+    "2014",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Erstmals größere Displays. NFC für Apple Pay. Das 6 Plus kam anfangs mit der „Bendgate“-Kritik."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2014"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Apple A8"
+      ],
+      [
+       "Arbeitsspeicher",
+       "1 GB"
+      ],
+      [
+       "Display",
+       "4,7″ (326 ppi) / 5,5″ (401 ppi) Retina HD"
+      ],
+      [
+       "Kamera (hinten)",
+       "8 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "1810 mAh / 2915 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "5 W (bis ca. 12 W mit iPad-Netzteil)"
+      ],
+      [
+       "Anschluss",
+       "Lightning"
+      ],
+      [
+       "Startpreis (USA)",
+       "199 $ / 299 $"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 8 bis iOS 12.5.7"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ip6s",
+   "titel": "iPhone 6s / 6s Plus",
+   "kurz": "Apple · 2015 · Apple A9",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone 6s / 6s plus",
+    "2015",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "3D Touch (drucksensitives Display), 12-MP-Kamera, Live Photos."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2015"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Apple A9"
+      ],
+      [
+       "Arbeitsspeicher",
+       "2 GB"
+      ],
+      [
+       "Display",
+       "4,7″ / 5,5″, 3D Touch"
+      ],
+      [
+       "Kamera (hinten)",
+       "12 MP (4K-Video)"
+      ],
+      [
+       "Akku (ca.)",
+       "1715 mAh / 2750 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "5 W (bis ca. 12 W mit iPad-Netzteil)"
+      ],
+      [
+       "Anschluss",
+       "Lightning"
+      ],
+      [
+       "Startpreis (USA)",
+       "649 $ ohne Vertrag"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 9 bis iOS 15.8.x"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ipse1",
+   "titel": "iPhone SE (1. Generation)",
+   "kurz": "Apple · 2016 · Apple A9",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone se (1. generation)",
+    "2016",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Das kompakte Gehäuse des 5s mit dem Chip des 6s. Beliebt bei Fans kleiner Handys."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2016"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Apple A9"
+      ],
+      [
+       "Arbeitsspeicher",
+       "2 GB"
+      ],
+      [
+       "Display",
+       "4″ Retina-LCD"
+      ],
+      [
+       "Kamera (hinten)",
+       "12 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "1624 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "5 W (bis ca. 12 W mit iPad-Netzteil)"
+      ],
+      [
+       "Anschluss",
+       "Lightning"
+      ],
+      [
+       "Startpreis (USA)",
+       "399 $"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 9.3 bis iOS 15.8.x"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ip7",
+   "titel": "iPhone 7 / 7 Plus",
+   "kurz": "Apple · 2016 · Apple A10 Fusion ",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone 7 / 7 plus",
+    "2016",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Wasser- und staubdicht (IP67), kein 3,5-mm-Klinkenanschluss mehr, Home-Taste ohne beweglichen Teil (Taptic Engine)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2016"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Apple A10 Fusion (4 Kerne)"
+      ],
+      [
+       "Arbeitsspeicher",
+       "2 GB (7) / 3 GB (7 Plus)"
+      ],
+      [
+       "Display",
+       "4,7″ / 5,5″, IP67"
+      ],
+      [
+       "Kamera (hinten)",
+       "12 MP (7 Plus: 2 Kameras, 2× optisch)"
+      ],
+      [
+       "Akku (ca.)",
+       "1960 mAh / 2900 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "5 W (bis ca. 12 W mit iPad-Netzteil)"
+      ],
+      [
+       "Anschluss",
+       "Lightning, kein Kopfhöreranschluss"
+      ],
+      [
+       "Startpreis (USA)",
+       "649 $ / 769 $"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 10 bis iOS 15.8.x"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ip8",
+   "titel": "iPhone 8 / 8 Plus",
+   "kurz": "Apple · 2017 · Apple A11 Bionic",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone 8 / 8 plus",
+    "2017",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Glasrückseite und kabelloses Laden nach Qi-Standard."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2017"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Apple A11 Bionic"
+      ],
+      [
+       "Arbeitsspeicher",
+       "2 GB / 3 GB"
+      ],
+      [
+       "Display",
+       "4,7″ / 5,5″, Glasrückseite"
+      ],
+      [
+       "Kamera (hinten)",
+       "12 MP (8 Plus: 2 Kameras)"
+      ],
+      [
+       "Akku (ca.)",
+       "1821 mAh / 2691 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "bis ca. 18 W (Kabel), 7,5 W kabellos (Qi)"
+      ],
+      [
+       "Anschluss",
+       "Lightning"
+      ],
+      [
+       "Startpreis (USA)",
+       "699 $ / 799 $"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 11 bis iOS 16"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ipx",
+   "titel": "iPhone X",
+   "kurz": "Apple · 2017 · Apple A11 Bionic",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone x",
+    "2017",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Erstes iPhone ohne Home-Taste: Face ID (3D-Gesichtserkennung), erstes OLED-Display, Notch."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2017"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Apple A11 Bionic"
+      ],
+      [
+       "Arbeitsspeicher",
+       "3 GB"
+      ],
+      [
+       "Display",
+       "5,8″ OLED, 2436×1125 (458 ppi)"
+      ],
+      [
+       "Kamera (hinten)",
+       "12 MP, 2 Kameras"
+      ],
+      [
+       "Akku (ca.)",
+       "2716 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "bis ca. 18 W (Kabel), 7,5 W kabellos (Qi)"
+      ],
+      [
+       "Anschluss",
+       "Lightning"
+      ],
+      [
+       "Startpreis (USA)",
+       "999 $"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 11 bis iOS 16"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ipxs",
+   "titel": "iPhone XS / XS Max / XR",
+   "kurz": "Apple · 2018 · Apple A12 Bionic ",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone xs / xs max / xr",
+    "2018",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Der A12 war der weltweit erste 7-nm-Chip in einem Smartphone. XR als günstige, bunte Variante."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2018"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Apple A12 Bionic (7 nm)"
+      ],
+      [
+       "Arbeitsspeicher",
+       "4 GB (XS/Max), 3 GB (XR)"
+      ],
+      [
+       "Display",
+       "XS 5,8″ OLED, Max 6,5″ OLED, XR 6,1″ LCD"
+      ],
+      [
+       "Kamera (hinten)",
+       "XS: 2 Kameras, XR: 1 Kamera"
+      ],
+      [
+       "Akku (ca.)",
+       "2658 / 3174 / 2942 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "bis ca. 18 W (Kabel), 7,5 W kabellos (Qi)"
+      ],
+      [
+       "Anschluss",
+       "Lightning"
+      ],
+      [
+       "Startpreis (USA)",
+       "999 $ / 1099 $ / 749 $"
+      ],
+      [
+       "Betriebssystem",
+       "XS: bis iOS 17, XR: bis iOS 18"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ip11",
+   "titel": "iPhone 11 / 11 Pro / 11 Pro Max",
+   "kurz": "Apple · 2019 · Apple A13 Bionic",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone 11 / 11 pro / 11 pro max",
+    "2019",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Ultraweitwinkel, Nachtmodus. Die Pro-Modelle bekamen die „Pro“-Bezeichnung."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2019"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Apple A13 Bionic"
+      ],
+      [
+       "Arbeitsspeicher",
+       "4 GB"
+      ],
+      [
+       "Display",
+       "11: 6,1″ LCD, Pro: 5,8″ / 6,5″ OLED"
+      ],
+      [
+       "Kamera (hinten)",
+       "11: 2 Kameras, Pro: 3 Kameras (Ultraweitwinkel)"
+      ],
+      [
+       "Akku (ca.)",
+       "3110 / 3046 / 3969 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "bis ca. 18 W (Kabel), 7,5 W kabellos (Qi)"
+      ],
+      [
+       "Anschluss",
+       "Lightning"
+      ],
+      [
+       "Startpreis (USA)",
+       "699 $ / 999 $ / 1099 $"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 13 bis iOS 18"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ipse2",
+   "titel": "iPhone SE (2. Generation)",
+   "kurz": "Apple · 2020 · Apple A13 Bionic",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone se (2. generation)",
+    "2020",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "iPhone-8-Gehäuse mit dem schnellen A13-Chip. Touch ID statt Face ID."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2020"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Apple A13 Bionic"
+      ],
+      [
+       "Arbeitsspeicher",
+       "3 GB"
+      ],
+      [
+       "Display",
+       "4,7″ Retina-LCD"
+      ],
+      [
+       "Kamera (hinten)",
+       "12 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "1821 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "bis ca. 18 W (Kabel), 7,5 W kabellos (Qi)"
+      ],
+      [
+       "Anschluss",
+       "Lightning"
+      ],
+      [
+       "Startpreis (USA)",
+       "399 $"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 13 bis iOS 18"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ip12",
+   "titel": "iPhone 12 mini / 12 / 12 Pro / 12 Pro Max",
+   "kurz": "Apple · 2020 · Apple A14 Bionic ",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone 12 mini / 12 / 12 pro / 12 pro max",
+    "2020",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "5G, flacher Rahmen wie beim iPhone 4, MagSafe (Magnetring zum Laden), Ceramic Shield. Das Netzteil lag nicht mehr bei."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2020"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Apple A14 Bionic (5 nm)"
+      ],
+      [
+       "Arbeitsspeicher",
+       "4 GB (12/mini), 6 GB (Pro)"
+      ],
+      [
+       "Display",
+       "mini 5,4″, 12/Pro 6,1″, Pro Max 6,7″, alle OLED"
+      ],
+      [
+       "Kamera (hinten)",
+       "12: 2 Kameras, Pro: 3 + LiDAR"
+      ],
+      [
+       "Akku (ca.)",
+       "2227 / 2815 / 2815 / 3687 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 20 W (Kabel), 15 W kabellos (MagSafe)"
+      ],
+      [
+       "Anschluss",
+       "Lightning"
+      ],
+      [
+       "Startpreis (USA)",
+       "699 $ / 799 $ / 999 $ / 1099 $"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 14 bis iOS 18"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ip13",
+   "titel": "iPhone 13 mini / 13 / 13 Pro / Pro Max",
+   "kurz": "Apple · 2021 · Apple A15 Bionic",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone 13 mini / 13 / 13 pro / pro max",
+    "2021",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Kinomodus für Videos, kleineres Notch, ProMotion (adaptive 10–120 Hz) bei den Pro-Modellen."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2021"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Apple A15 Bionic"
+      ],
+      [
+       "Arbeitsspeicher",
+       "4 GB (13/mini), 6 GB (Pro)"
+      ],
+      [
+       "Display",
+       "mini 5,4″, 13/Pro 6,1″, Pro Max 6,7″; Pro mit 120 Hz (ProMotion)"
+      ],
+      [
+       "Kamera (hinten)",
+       "12 MP, Pro: 3 Kameras, Makro"
+      ],
+      [
+       "Akku (ca.)",
+       "2406 / 3227 / 3095 / 4352 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 20–27 W (Kabel), 15 W kabellos (MagSafe)"
+      ],
+      [
+       "Anschluss",
+       "Lightning"
+      ],
+      [
+       "Startpreis (USA)",
+       "699 $ / 799 $ / 999 $ / 1099 $"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 15 bis aktuell"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ipse3",
+   "titel": "iPhone SE (3. Generation)",
+   "kurz": "Apple · 2022 · Apple A15 Bionic",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone se (3. generation)",
+    "2022",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "5G im alten Gehäuse. Das letzte iPhone mit Home-Taste und Touch ID."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2022"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Apple A15 Bionic"
+      ],
+      [
+       "Arbeitsspeicher",
+       "4 GB"
+      ],
+      [
+       "Display",
+       "4,7″ Retina-LCD"
+      ],
+      [
+       "Kamera (hinten)",
+       "12 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "2018 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "bis ca. 18 W (Kabel), 7,5 W kabellos (Qi)"
+      ],
+      [
+       "Anschluss",
+       "Lightning"
+      ],
+      [
+       "Startpreis (USA)",
+       "429 $"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 15 bis aktuell"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ip14",
+   "titel": "iPhone 14 / 14 Plus / 14 Pro / Pro Max",
+   "kurz": "Apple · 2022 · 14/Plus: A15 Bionic",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone 14 / 14 plus / 14 pro / pro max",
+    "2022",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Dynamic Island, 48-MP-Hauptkamera (Pro), Satelliten-SOS, in den USA nur noch eSIM."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2022"
+      ],
+      [
+       "Prozessor (SoC)",
+       "14/Plus: A15 Bionic, Pro: A16 Bionic"
+      ],
+      [
+       "Arbeitsspeicher",
+       "6 GB"
+      ],
+      [
+       "Display",
+       "6,1″ / 6,7″ OLED; Pro mit Always-on und Dynamic Island"
+      ],
+      [
+       "Kamera (hinten)",
+       "14: 12 MP, Pro: 48 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "3279 / 4325 / 3200 / 4323 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 20–27 W (Kabel), 15 W kabellos (MagSafe)"
+      ],
+      [
+       "Anschluss",
+       "Lightning"
+      ],
+      [
+       "Startpreis (USA)",
+       "799 $ / 899 $ / 999 $ / 1099 $"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 16 bis aktuell"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ip15",
+   "titel": "iPhone 15 / 15 Plus / 15 Pro / Pro Max",
+   "kurz": "Apple · 2023 · 15/Plus: A16 Bionic",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone 15 / 15 plus / 15 pro / pro max",
+    "2023",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Endlich USB-C (EU-Vorgabe). Action-Taste statt Stummschalter bei den Pro-Modellen."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2023"
+      ],
+      [
+       "Prozessor (SoC)",
+       "15/Plus: A16 Bionic, Pro: A17 Pro (3 nm)"
+      ],
+      [
+       "Arbeitsspeicher",
+       "6 GB (15), 8 GB (Pro)"
+      ],
+      [
+       "Display",
+       "6,1″ / 6,7″ OLED; Pro: Titan-Rahmen"
+      ],
+      [
+       "Kamera (hinten)",
+       "48 MP (alle), Pro Max mit 5× Tele"
+      ],
+      [
+       "Akku (ca.)",
+       "3349 / 4383 / 3274 / 4422 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 27 W (Kabel), 15 W kabellos (Qi2/MagSafe)"
+      ],
+      [
+       "Anschluss",
+       "USB-C"
+      ],
+      [
+       "Startpreis (USA)",
+       "799 $ / 899 $ / 999 $ / 1199 $"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 17 bis aktuell"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ip16",
+   "titel": "iPhone 16 / 16 Plus / 16 Pro / Pro Max",
+   "kurz": "Apple · 2024 · 16/Plus: A18",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone 16 / 16 plus / 16 pro / pro max",
+    "2024",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Kamerasteuerung (Camera Control), Apple Intelligence, 8 GB RAM in allen Modellen."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2024"
+      ],
+      [
+       "Prozessor (SoC)",
+       "16/Plus: A18, Pro: A18 Pro"
+      ],
+      [
+       "Arbeitsspeicher",
+       "8 GB"
+      ],
+      [
+       "Display",
+       "6,1″ / 6,7″; Pro: 6,3″ / 6,9″"
+      ],
+      [
+       "Kamera (hinten)",
+       "48 MP, Pro: 48 MP Ultraweitwinkel"
+      ],
+      [
+       "Akku (ca.)",
+       "3561 / 4674 / 3582 / 4685 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 25–45 W (Kabel, je Modell), 25 W kabellos (MagSafe)"
+      ],
+      [
+       "Anschluss",
+       "USB-C"
+      ],
+      [
+       "Startpreis (USA)",
+       "799 $ / 899 $ / 999 $ / 1199 $"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 18 bis aktuell"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ip16e",
+   "titel": "iPhone 16e",
+   "kurz": "Apple · 2025 · Apple A18",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone 16e",
+    "2025",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Nachfolger der SE-Reihe, mit erstem selbst entwickelten Apple-Mobilfunkmodem (C1)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2025"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Apple A18"
+      ],
+      [
+       "Arbeitsspeicher",
+       "8 GB"
+      ],
+      [
+       "Display",
+       "6,1″ OLED"
+      ],
+      [
+       "Kamera (hinten)",
+       "48 MP (eine Kamera)"
+      ],
+      [
+       "Akku (ca.)",
+       "4005 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 20 W (Kabel), 7,5 W kabellos (Qi)"
+      ],
+      [
+       "Anschluss",
+       "USB-C"
+      ],
+      [
+       "Startpreis (USA)",
+       "599 $"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 18 bis aktuell"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_ip17",
+   "titel": "iPhone 17 / Air / 17 Pro / 17 Pro Max",
+   "kurz": "Apple · 2025 · 17: A19",
+   "tags": [
+    "iphone",
+    "apple",
+    "iphone 17 / air / 17 pro / 17 pro max",
+    "2025",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "iPhone Air: nur 5,6 mm dick, nur eSIM. Pro mit Aluminium-Unibody und Vapor-Chamber-Kühlung. (Angaben aus dem Stand 2025, bitte beim Kauf gegenprüfen.)"
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Apple"
+      ],
+      [
+       "Erschienen",
+       "2025"
+      ],
+      [
+       "Prozessor (SoC)",
+       "17: A19, Air / Pro: A19 Pro"
+      ],
+      [
+       "Arbeitsspeicher",
+       "8 GB (17), 12 GB (Air/Pro)"
+      ],
+      [
+       "Display",
+       "17: 6,3″ OLED 120 Hz, Air: 6,5″, Pro: 6,3″ / 6,9″"
+      ],
+      [
+       "Kamera (hinten)",
+       "17: 2×48 MP, Air: 1×48 MP, Pro: 3×48 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "je nach Modell ca. 3100–5000 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "bis ca. 40 W (Kabel, je Modell), bis 25 W kabellos (Qi2)"
+      ],
+      [
+       "Anschluss",
+       "USB-C"
+      ],
+      [
+       "Startpreis (USA)",
+       "799 $ / 999 $ / 1099 $ / 1199 $"
+      ],
+      [
+       "Betriebssystem",
+       "iOS 26 bis aktuell"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Preise sind die US-Startpreise der Einstiegsvariante."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Apple iPhone"
+  },
+  {
+   "id": "p_s1",
+   "titel": "Galaxy S",
+   "kurz": "Samsung · 2010 · Samsung Hummingbird",
+   "tags": [
+    "samsung",
+    "galaxy",
+    "galaxy s",
+    "2010",
+    "android",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Das erste Galaxy S. Mit dem Super-AMOLED-Display ein echter Gegner für das iPhone 4."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Samsung"
+      ],
+      [
+       "Erschienen",
+       "2010"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Samsung Hummingbird, 1 GHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "512 MB"
+      ],
+      [
+       "Display",
+       "4″ Super AMOLED, 800×480"
+      ],
+      [
+       "Kamera (hinten)",
+       "5 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "1500 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 5 W (USB)"
+      ],
+      [
+       "Anschluss",
+       "Micro-USB"
+      ],
+      [
+       "Betriebssystem",
+       "Android 2.1 bis 2.3"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Oft gibt es für einzelne Länder verschiedene Chips (Exynos oder Snapdragon)."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy S"
+  },
+  {
+   "id": "p_s2",
+   "titel": "Galaxy S II",
+   "kurz": "Samsung · 2011 · Samsung Exynos 4210 ",
+   "tags": [
+    "samsung",
+    "galaxy",
+    "galaxy s ii",
+    "2011",
+    "android",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Der Durchbruch: Mehr als 40 Millionen verkaufte Geräte."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Samsung"
+      ],
+      [
+       "Erschienen",
+       "2011"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Samsung Exynos 4210 (Dual-Core), 1,2 GHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "1 GB"
+      ],
+      [
+       "Display",
+       "4,3″ Super AMOLED Plus"
+      ],
+      [
+       "Kamera (hinten)",
+       "8 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "1650 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 5–10 W"
+      ],
+      [
+       "Anschluss",
+       "Micro-USB"
+      ],
+      [
+       "Betriebssystem",
+       "Android 2.3 bis 4.1"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Oft gibt es für einzelne Länder verschiedene Chips (Exynos oder Snapdragon)."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy S"
+  },
+  {
+   "id": "p_s3",
+   "titel": "Galaxy S III",
+   "kurz": "Samsung · 2012 · Exynos 4412 ",
+   "tags": [
+    "samsung",
+    "galaxy",
+    "galaxy s iii",
+    "2012",
+    "android",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Mit Smart Stay und S Voice. Wechselakku und microSD."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Samsung"
+      ],
+      [
+       "Erschienen",
+       "2012"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Exynos 4412 (Quad-Core), 1,4 GHz"
+      ],
+      [
+       "Arbeitsspeicher",
+       "1 GB"
+      ],
+      [
+       "Display",
+       "4,8″ Super AMOLED, 1280×720"
+      ],
+      [
+       "Kamera (hinten)",
+       "8 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "2100 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 10 W (5 V / 2 A)"
+      ],
+      [
+       "Anschluss",
+       "Micro-USB"
+      ],
+      [
+       "Betriebssystem",
+       "Android 4.0 bis 4.3"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Oft gibt es für einzelne Länder verschiedene Chips (Exynos oder Snapdragon)."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy S"
+  },
+  {
+   "id": "p_s4",
+   "titel": "Galaxy S4",
+   "kurz": "Samsung · 2013 · Exynos 5410 ",
+   "tags": [
+    "samsung",
+    "galaxy",
+    "galaxy s4",
+    "2013",
+    "android",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Weiter erfolgreich, mit vielen Gesten (Air Gesture) und Wechselakku."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Samsung"
+      ],
+      [
+       "Erschienen",
+       "2013"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Exynos 5410 (Octa) oder Snapdragon 600"
+      ],
+      [
+       "Arbeitsspeicher",
+       "2 GB"
+      ],
+      [
+       "Display",
+       "5″ Super AMOLED, 1080p"
+      ],
+      [
+       "Kamera (hinten)",
+       "13 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "2600 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 10 W, kabellos optional (Qi)"
+      ],
+      [
+       "Anschluss",
+       "Micro-USB"
+      ],
+      [
+       "Betriebssystem",
+       "Android 4.2 bis 5.0"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Oft gibt es für einzelne Länder verschiedene Chips (Exynos oder Snapdragon)."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy S"
+  },
+  {
+   "id": "p_s5",
+   "titel": "Galaxy S5",
+   "kurz": "Samsung · 2014 · Snapdragon 801 oder Exynos 5422",
+   "tags": [
+    "samsung",
+    "galaxy",
+    "galaxy s5",
+    "2014",
+    "android",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Wasserdicht (IP67), Fingerabdrucksensor, Pulsmesser an der Rückseite."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Samsung"
+      ],
+      [
+       "Erschienen",
+       "2014"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Snapdragon 801 oder Exynos 5422"
+      ],
+      [
+       "Arbeitsspeicher",
+       "2 GB"
+      ],
+      [
+       "Display",
+       "5,1″ Super AMOLED, 1080p"
+      ],
+      [
+       "Kamera (hinten)",
+       "16 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "2800 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 10 W (Quick Charge 2.0)"
+      ],
+      [
+       "Anschluss",
+       "Micro-USB"
+      ],
+      [
+       "Betriebssystem",
+       "Android 4.4 bis 6.0"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Oft gibt es für einzelne Länder verschiedene Chips (Exynos oder Snapdragon)."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy S"
+  },
+  {
+   "id": "p_s6",
+   "titel": "Galaxy S6 / S6 edge",
+   "kurz": "Samsung · 2015 · Exynos 7420 ",
+   "tags": [
+    "samsung",
+    "galaxy",
+    "galaxy s6 / s6 edge",
+    "2015",
+    "android",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Glas und Metall, aber ohne Wechselakku und ohne microSD. Kabelloses Laden eingebaut."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Samsung"
+      ],
+      [
+       "Erschienen",
+       "2015"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Exynos 7420 (64 Bit, 14 nm)"
+      ],
+      [
+       "Arbeitsspeicher",
+       "3 GB"
+      ],
+      [
+       "Display",
+       "5,1″ QHD, S6 edge mit gebogenen Seiten"
+      ],
+      [
+       "Kamera (hinten)",
+       "16 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "2550 / 2600 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 15 W (Kabel), ca. 10 W kabellos"
+      ],
+      [
+       "Anschluss",
+       "Micro-USB"
+      ],
+      [
+       "Betriebssystem",
+       "Android 5.0 bis 7.0"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Oft gibt es für einzelne Länder verschiedene Chips (Exynos oder Snapdragon)."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy S"
+  },
+  {
+   "id": "p_s7",
+   "titel": "Galaxy S7 / S7 edge",
+   "kurz": "Samsung · 2016 · Snapdragon 820 oder Exynos 8890",
+   "tags": [
+    "samsung",
+    "galaxy",
+    "galaxy s7 / s7 edge",
+    "2016",
+    "android",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Wasserdicht nach IP68 und microSD zurück. Bis heute oft als eines der besten Galaxys gelobt."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Samsung"
+      ],
+      [
+       "Erschienen",
+       "2016"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Snapdragon 820 oder Exynos 8890"
+      ],
+      [
+       "Arbeitsspeicher",
+       "4 GB"
+      ],
+      [
+       "Display",
+       "5,1″ / 5,5″ QHD, Always-on"
+      ],
+      [
+       "Kamera (hinten)",
+       "12 MP Dual Pixel"
+      ],
+      [
+       "Akku (ca.)",
+       "3000 / 3600 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 15 W (Kabel), ca. 10 W kabellos"
+      ],
+      [
+       "Anschluss",
+       "Micro-USB"
+      ],
+      [
+       "Betriebssystem",
+       "Android 6.0 bis 8.0"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Oft gibt es für einzelne Länder verschiedene Chips (Exynos oder Snapdragon)."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy S"
+  },
+  {
+   "id": "p_s8",
+   "titel": "Galaxy S8 / S8+",
+   "kurz": "Samsung · 2017 · Snapdragon 835 oder Exynos 8895",
+   "tags": [
+    "samsung",
+    "galaxy",
+    "galaxy s8 / s8+",
+    "2017",
+    "android",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Randloses Display, Bixby-Assistent. Der Fingerabdrucksensor lag unpraktisch neben der Kamera."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Samsung"
+      ],
+      [
+       "Erschienen",
+       "2017"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Snapdragon 835 oder Exynos 8895"
+      ],
+      [
+       "Arbeitsspeicher",
+       "4 GB"
+      ],
+      [
+       "Display",
+       "5,8″ / 6,2″ QHD+, 18,5:9 (Infinity Display)"
+      ],
+      [
+       "Kamera (hinten)",
+       "12 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "3000 / 3500 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 15 W (Kabel), ca. 10 W kabellos"
+      ],
+      [
+       "Anschluss",
+       "USB-C"
+      ],
+      [
+       "Betriebssystem",
+       "Android 7.0 bis 9.0"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Oft gibt es für einzelne Länder verschiedene Chips (Exynos oder Snapdragon)."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy S"
+  },
+  {
+   "id": "p_s9",
+   "titel": "Galaxy S9 / S9+",
+   "kurz": "Samsung · 2018 · Snapdragon 845 oder Exynos 9810",
+   "tags": [
+    "samsung",
+    "galaxy",
+    "galaxy s9 / s9+",
+    "2018",
+    "android",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Variable Blende und Super-Zeitlupe (960 fps)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Samsung"
+      ],
+      [
+       "Erschienen",
+       "2018"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Snapdragon 845 oder Exynos 9810"
+      ],
+      [
+       "Arbeitsspeicher",
+       "4 GB (S9), 6 GB (S9+)"
+      ],
+      [
+       "Display",
+       "5,8″ / 6,2″ QHD+"
+      ],
+      [
+       "Kamera (hinten)",
+       "12 MP mit variabler Blende (f/1,5 – f/2,4)"
+      ],
+      [
+       "Akku (ca.)",
+       "3000 / 3500 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "ca. 15 W (Kabel), ca. 10 W kabellos"
+      ],
+      [
+       "Anschluss",
+       "USB-C"
+      ],
+      [
+       "Betriebssystem",
+       "Android 8.0 bis 10"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Oft gibt es für einzelne Länder verschiedene Chips (Exynos oder Snapdragon)."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy S"
+  },
+  {
+   "id": "p_s10",
+   "titel": "Galaxy S10e / S10 / S10+",
+   "kurz": "Samsung · 2019 · Snapdragon 855 oder Exynos 9820",
+   "tags": [
+    "samsung",
+    "galaxy",
+    "galaxy s10e / s10 / s10+",
+    "2019",
+    "android",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Ultraschall-Fingerabdrucksensor im Display, Hole-Punch-Frontkamera. Zum 10. Jubiläum."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Samsung"
+      ],
+      [
+       "Erschienen",
+       "2019"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Snapdragon 855 oder Exynos 9820"
+      ],
+      [
+       "Arbeitsspeicher",
+       "6–12 GB"
+      ],
+      [
+       "Display",
+       "5,8″ / 6,1″ / 6,4″ Dynamic AMOLED, Lochkamera"
+      ],
+      [
+       "Kamera (hinten)",
+       "3 Kameras (12 + 12 + 16 MP)"
+      ],
+      [
+       "Akku (ca.)",
+       "3100 / 3400 / 4100 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "15 W (Kabel), 12 W kabellos"
+      ],
+      [
+       "Anschluss",
+       "USB-C"
+      ],
+      [
+       "Betriebssystem",
+       "Android 9 bis 12"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Oft gibt es für einzelne Länder verschiedene Chips (Exynos oder Snapdragon)."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy S"
+  },
+  {
+   "id": "p_s20",
+   "titel": "Galaxy S20 / S20+ / S20 Ultra",
+   "kurz": "Samsung · 2020 · Snapdragon 865 oder Exynos 990",
+   "tags": [
+    "samsung",
+    "galaxy",
+    "galaxy s20 / s20+ / s20 ultra",
+    "2020",
+    "android",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "5G, 120 Hz und große Kamerasprünge. Erstes „Ultra“."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Samsung"
+      ],
+      [
+       "Erschienen",
+       "2020"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Snapdragon 865 oder Exynos 990"
+      ],
+      [
+       "Arbeitsspeicher",
+       "8–16 GB"
+      ],
+      [
+       "Display",
+       "6,2″ / 6,7″ / 6,9″, 120 Hz"
+      ],
+      [
+       "Kamera (hinten)",
+       "S20 Ultra: 108 MP, 100× Zoom"
+      ],
+      [
+       "Akku (ca.)",
+       "4000 / 4500 / 5000 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "25 W (Kabel), 15 W kabellos"
+      ],
+      [
+       "Anschluss",
+       "USB-C"
+      ],
+      [
+       "Betriebssystem",
+       "Android 10 bis 13"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Oft gibt es für einzelne Länder verschiedene Chips (Exynos oder Snapdragon)."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy S"
+  },
+  {
+   "id": "p_s21",
+   "titel": "Galaxy S21 / S21+ / S21 Ultra",
+   "kurz": "Samsung · 2021 · Snapdragon 888 oder Exynos 2100",
+   "tags": [
+    "samsung",
+    "galaxy",
+    "galaxy s21 / s21+ / s21 ultra",
+    "2021",
+    "android",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Neue Gehäuseform mit Kamerainsel, S Pen-Unterstützung für das Ultra."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Samsung"
+      ],
+      [
+       "Erschienen",
+       "2021"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Snapdragon 888 oder Exynos 2100"
+      ],
+      [
+       "Arbeitsspeicher",
+       "8–16 GB"
+      ],
+      [
+       "Display",
+       "6,2″ / 6,7″ / 6,8″, adaptive 120 Hz"
+      ],
+      [
+       "Kamera (hinten)",
+       "12 + 12 + 64 MP, Ultra: 108 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "4000 / 4800 / 5000 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "25 W (Kabel), 15 W kabellos"
+      ],
+      [
+       "Anschluss",
+       "USB-C"
+      ],
+      [
+       "Betriebssystem",
+       "Android 11 bis 14"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Oft gibt es für einzelne Länder verschiedene Chips (Exynos oder Snapdragon)."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy S"
+  },
+  {
+   "id": "p_s22",
+   "titel": "Galaxy S22 / S22+ / S22 Ultra",
+   "kurz": "Samsung · 2022 · Snapdragon 8 Gen 1 oder Exynos 2200",
+   "tags": [
+    "samsung",
+    "galaxy",
+    "galaxy s22 / s22+ / s22 ultra",
+    "2022",
+    "android",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Das Ultra übernimmt den S Pen der eingestellten Note-Reihe. Hohe Hitze (Game Optimizing Service) sorgte für Diskussionen."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Samsung"
+      ],
+      [
+       "Erschienen",
+       "2022"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Snapdragon 8 Gen 1 oder Exynos 2200"
+      ],
+      [
+       "Arbeitsspeicher",
+       "8–12 GB"
+      ],
+      [
+       "Display",
+       "6,1″ / 6,6″ / 6,8″"
+      ],
+      [
+       "Kamera (hinten)",
+       "50 MP, Ultra: 108 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "3700 / 4500 / 5000 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "25 W (Ultra: 45 W), 15 W kabellos"
+      ],
+      [
+       "Anschluss",
+       "USB-C"
+      ],
+      [
+       "Betriebssystem",
+       "Android 12 bis 15"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Oft gibt es für einzelne Länder verschiedene Chips (Exynos oder Snapdragon)."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy S"
+  },
+  {
+   "id": "p_s23",
+   "titel": "Galaxy S23 / S23+ / S23 Ultra",
+   "kurz": "Samsung · 2023 · Snapdragon 8 Gen 2 for Galaxy ",
+   "tags": [
+    "samsung",
+    "galaxy",
+    "galaxy s23 / s23+ / s23 ultra",
+    "2023",
+    "android",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Erstmals überall derselbe Qualcomm-Chip. 200-MP-Hauptkamera beim Ultra."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Samsung"
+      ],
+      [
+       "Erschienen",
+       "2023"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Snapdragon 8 Gen 2 for Galaxy (alle Modelle)"
+      ],
+      [
+       "Arbeitsspeicher",
+       "8–12 GB"
+      ],
+      [
+       "Display",
+       "6,1″ / 6,6″ / 6,8″"
+      ],
+      [
+       "Kamera (hinten)",
+       "50 MP, Ultra: 200 MP"
+      ],
+      [
+       "Akku (ca.)",
+       "3900 / 4700 / 5000 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "25 W (Ultra: 45 W), 15 W kabellos"
+      ],
+      [
+       "Anschluss",
+       "USB-C"
+      ],
+      [
+       "Betriebssystem",
+       "Android 13 bis 16"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Oft gibt es für einzelne Länder verschiedene Chips (Exynos oder Snapdragon)."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy S"
+  },
+  {
+   "id": "p_s24",
+   "titel": "Galaxy S24 / S24+ / S24 Ultra",
+   "kurz": "Samsung · 2024 · Exynos 2400 ",
+   "tags": [
+    "samsung",
+    "galaxy",
+    "galaxy s24 / s24+ / s24 ultra",
+    "2024",
+    "android",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Galaxy AI (Live-Übersetzung, Circle to Search). Titan-Rahmen beim Ultra, 7 Jahre Updates."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Samsung"
+      ],
+      [
+       "Erschienen",
+       "2024"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Exynos 2400 (S24/S24+) oder Snapdragon 8 Gen 3 (Ultra)"
+      ],
+      [
+       "Arbeitsspeicher",
+       "8–12 GB"
+      ],
+      [
+       "Display",
+       "6,2″ / 6,7″ / 6,8″, bis 2600 nits"
+      ],
+      [
+       "Kamera (hinten)",
+       "50 MP, Ultra: 200 MP + 5× Tele"
+      ],
+      [
+       "Akku (ca.)",
+       "4000 / 4900 / 5000 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "25 W (S24+ und Ultra: 45 W), 15 W kabellos"
+      ],
+      [
+       "Anschluss",
+       "USB-C"
+      ],
+      [
+       "Betriebssystem",
+       "Android 14 bis aktuell"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Oft gibt es für einzelne Länder verschiedene Chips (Exynos oder Snapdragon)."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy S"
+  },
+  {
+   "id": "p_s25",
+   "titel": "Galaxy S25 / S25+ / S25 Ultra",
+   "kurz": "Samsung · 2025 · Snapdragon 8 Elite for Galaxy",
+   "tags": [
+    "samsung",
+    "galaxy",
+    "galaxy s25 / s25+ / s25 ultra",
+    "2025",
+    "android",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Erstmals Qualcomm Snapdragon 8 Elite in allen Modellen. Preise in den USA ab 799 $. Im Mai 2025 folgte das dünne S25 Edge (5,8 mm)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Samsung"
+      ],
+      [
+       "Erschienen",
+       "2025"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Snapdragon 8 Elite for Galaxy"
+      ],
+      [
+       "Arbeitsspeicher",
+       "12 GB"
+      ],
+      [
+       "Display",
+       "6,2″ / 6,7″ / 6,9″"
+      ],
+      [
+       "Kamera (hinten)",
+       "50 MP, Ultra: 200 MP + 50 MP 5× Tele"
+      ],
+      [
+       "Akku (ca.)",
+       "4000 / 4900 / 5000 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "25 W (S25+ und Ultra: 45 W), 15 W kabellos"
+      ],
+      [
+       "Anschluss",
+       "USB-C"
+      ],
+      [
+       "Betriebssystem",
+       "Android 15 bis aktuell"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Oft gibt es für einzelne Länder verschiedene Chips (Exynos oder Snapdragon)."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy S"
+  },
+  {
+   "id": "p_s26",
+   "titel": "Galaxy S26 / S26+ / S26 Ultra",
+   "kurz": "Samsung · 2026 · Exynos 2600 / Snapdragon 8 Elite Gen 5",
+   "tags": [
+    "samsung",
+    "galaxy",
+    "galaxy s26 / s26+ / s26 ultra",
+    "2026",
+    "android",
+    "handy",
+    "smartphone"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Das S26 und S26+ bekommen in Europa den Exynos 2600, das Ultra überall den Snapdragon 8 Elite Gen 5. Vorgestellt am 25. Februar 2026, im Handel ab März."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Samsung"
+      ],
+      [
+       "Erschienen",
+       "2026"
+      ],
+      [
+       "Prozessor (SoC)",
+       "Exynos 2600 (Europa) / Snapdragon 8 Elite Gen 5"
+      ],
+      [
+       "Arbeitsspeicher",
+       "12 GB (Ultra 1 TB: 16 GB)"
+      ],
+      [
+       "Display",
+       "6,3″ / 6,7″ / 6,9″"
+      ],
+      [
+       "Kamera (hinten)",
+       "50 MP, Ultra: 200 MP + 50 MP 5× Tele"
+      ],
+      [
+       "Akku (ca.)",
+       "4300 / 4900 / 5000 mAh"
+      ],
+      [
+       "Laden (max., Richtwert)",
+       "25 / 45 / 60 W (Kabel), 15 / 20 / 25 W kabellos"
+      ],
+      [
+       "Anschluss",
+       "USB-C"
+      ],
+      [
+       "Betriebssystem",
+       "Android 16 mit One UI 8.5, danach Android 17"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Web-Quellen (GSMArena, Wikipedia), gerundet. Der Chip hängt vom Land ab."
+    }
+   ],
+   "siehe": [
+    "handys:v_chips",
+    "handys:v_ports"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy S"
+  },
+  {
+   "id": "p_note",
+   "titel": "Galaxy Note: alle Modelle",
+   "kurz": "Mit S Pen groß geworden – und der Akku-Skandal",
+   "tags": [
+    "note",
+    "s pen",
+    "akku",
+    "rückruf",
+    "samsung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Die **Note-Reihe** (2011–2020) brachte große Displays und den Stift (S Pen). Mit dem Galaxy S22 Ultra kam der Stift in die S-Serie, die Note wurde eingestellt."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Modell",
+      "Jahr",
+      "Display",
+      "Besonderheit"
+     ],
+     "zeilen": [
+      [
+       "Galaxy Note",
+       "2011",
+       "5,3″",
+       "Erster „Phablet“ mit Stift"
+      ],
+      [
+       "Galaxy Note II",
+       "2012",
+       "5,5″",
+       "Multi-Fenster, bessere Stifterkennung"
+      ],
+      [
+       "Galaxy Note 3",
+       "2013",
+       "5,7″",
+       "3 GB RAM, Lederoptik"
+      ],
+      [
+       "Galaxy Note 4",
+       "2014",
+       "5,7″ QHD",
+       "Metallrahmen, Wechselakku"
+      ],
+      [
+       "Galaxy Note 5",
+       "2015",
+       "5,7″",
+       "Glas, kein Wechselakku"
+      ],
+      [
+       "Galaxy Note 7",
+       "2016",
+       "5,7″ gebogen",
+       "Iris-Scanner, USB-C – und Brandgefahr"
+      ],
+      [
+       "Galaxy Note FE",
+       "2017",
+       "5,7″",
+       "Überarbeitete Note 7 mit kleinerem Akku"
+      ],
+      [
+       "Galaxy Note 8",
+       "2017",
+       "6,3″",
+       "Erste Dual-Kamera in einem Samsung-Handy"
+      ],
+      [
+       "Galaxy Note 9",
+       "2018",
+       "6,4″",
+       "S Pen mit Bluetooth, 4000 mAh"
+      ],
+      [
+       "Galaxy Note 10 / 10+",
+       "2019",
+       "6,3″ / 6,8″",
+       "Lochkamera, 5G-Variante"
+      ],
+      [
+       "Galaxy Note 20 / Ultra",
+       "2020",
+       "6,7″ / 6,9″",
+       "Letzte Modelle"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Die Reihe im Überblick"
+    },
+    {
+     "t": "h2",
+     "text": "Der Fall Note 7"
+    },
+    {
+     "t": "text",
+     "text": [
+      "Im September 2016 rief Samsung das Note 7 weltweit zurück. Ursache waren **Kurzschlüsse im Akku**: Bei einer Zellvariante wurde der Separator zwischen Anode und Kathode im Gehäuse eingequetscht, bei einer zweiten Variante gab es Schweißfehler. Der entstehende Kurzschluss heizt die Zelle auf (thermisches Durchgehen). Samsung stoppte danach die Note 7 komplett und führte eine mehrstufige Akkuprüfung ein."
+     ]
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "Lithium-Akkus nie mechanisch beschädigen, nie in der Sonne oder bei Hitze laden. Aufgeblähte Akkus sofort ausbauen und fachgerecht entsorgen."
+    }
+   ],
+   "siehe": [
+    "handys:v_akku"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy Note, Z & A"
+  },
+  {
+   "id": "p_fold",
+   "titel": "Galaxy Z Fold & Z Flip",
+   "kurz": "Faltbare Handys von 2019 bis 2025",
+   "tags": [
+    "fold",
+    "flip",
+    "faltbar",
+    "samsung"
+   ],
+   "bloecke": [
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Jahr",
+      "Modelle",
+      "Neues"
+     ],
+     "zeilen": [
+      [
+       "2019",
+       "Galaxy Fold",
+       "Erstes faltbares Samsung, nach Display-Problemen verspätet"
+      ],
+      [
+       "2020",
+       "Z Flip, Z Fold2",
+       "Flip: Klapp-Design mit 6,7″; Fold2: 7,6″ Innen"
+      ],
+      [
+       "2021",
+       "Z Flip3, Z Fold3",
+       "Wasserdicht (IPX8), S Pen für Fold3"
+      ],
+      [
+       "2022",
+       "Z Flip4, Z Fold4",
+       "Mehr Akku, Taskleiste"
+      ],
+      [
+       "2023",
+       "Z Flip5, Z Fold5",
+       "Flex-Scharnier, größeres Cover-Display (Flip5)"
+      ],
+      [
+       "2024",
+       "Z Flip6, Z Fold6",
+       "Mehr Akku, KI-Funktionen"
+      ],
+      [
+       "2025",
+       "Z Flip7, Z Fold7",
+       "Fold7: 4,2 mm offen, 8,9 mm zu, 215 g; Flip7 mit 4,1″ Außen-Display"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Generationen"
+    },
+    {
+     "t": "text",
+     "text": [
+      "Das Display besteht aus einer **ultradünnen Glasschicht (UTG)** mit Kunststoff-Schutz. Im Scharnier gibt es einen Faltradius von wenigen Millimetern, den die Folie über zehntausende Faltungen aushalten muss."
+     ]
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Falt-Handys haben eine kleinere Dichtigkeit (IPX8, aber nicht staubdicht). Staub im Scharnier ist der häufigste Ausfallgrund."
+    }
+   ],
+   "siehe": [
+    "handys:v_display"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy Note, Z & A"
+  },
+  {
+   "id": "p_a",
+   "titel": "Galaxy A-Serie",
+   "kurz": "Die Mittelklasse von Samsung",
+   "tags": [
+    "a-serie",
+    "mittelklasse",
+    "samsung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Die **A-Serie** ist Samsungs meistverkaufte Handy-Reihe. Sie bietet viele Funktionen der S-Serie zu niedrigeren Preisen. Die Zahl im Namen zeigt die Klasse an: je höher, desto besser."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Klasse",
+      "Beispiel",
+      "Typische Ausstattung"
+     ],
+     "zeilen": [
+      [
+       "A1x / A0x",
+       "Galaxy A15",
+       "Einfach: LCD, 50 MP, 5000 mAh"
+      ],
+      [
+       "A3x",
+       "Galaxy A35",
+       "AMOLED 120 Hz, Exynos, 5 Jahre Updates"
+      ],
+      [
+       "A5x",
+       "Galaxy A55 / A56",
+       "Metallrahmen, IP67, 6 Jahre Updates"
+      ],
+      [
+       "A7x",
+       "Galaxy A75 (früher)",
+       "Selten – oft durch A5x ersetzt"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Einordnung"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Seit 2023 gibt Samsung für die A-Serie bis zu 6 Jahre Updates, bei der S-Serie seit S24 bis zu 7 Jahre."
+    }
+   ],
+   "siehe": [
+    "handys:v_updates"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Samsung Galaxy Note, Z & A"
+  }
+ ]
+}

@@ -1,0 +1,285 @@
+{
+"ersetzt": [
+"m_unor4",
+"m_nano",
+"m_pico2"
+],
+"geraete": [
+{
+"marke": "Arduino",
+"name": "Arduino Uno R4 Minima",
+"zeilen": [
+[
+"Hersteller",
+"Arduino"
+],
+[
+"Erschienen",
+"2023"
+],
+[
+"Kern",
+"Renesas RA4M1 (Cortex-M4F)"
+],
+[
+"Takt",
+"48 MHz"
+],
+[
+"Flash-Speicher",
+"256 KB"
+],
+[
+"Arbeitsspeicher",
+"32 KB SRAM"
+],
+[
+"Anschlüsse (GPIO)",
+"14 digital, 6 analog, 12-Bit-DAC"
+],
+[
+"Betriebsspannung (IO-Pegel)",
+"5 V"
+],
+[
+"Funk",
+"keiner"
+],
+[
+"Preis (ca.)",
+"ca. 20 €"
+]
+]
+},
+{
+"marke": "Arduino",
+"name": "Arduino Uno R4 WiFi",
+"zeilen": [
+[
+"Hersteller",
+"Arduino"
+],
+[
+"Erschienen",
+"2023"
+],
+[
+"Kern",
+"Renesas RA4M1 (Cortex-M4F) + ESP32-S3 als Funkchip"
+],
+[
+"Takt",
+"48 MHz"
+],
+[
+"Flash-Speicher",
+"256 KB"
+],
+[
+"Arbeitsspeicher",
+"32 KB SRAM"
+],
+[
+"Anschlüsse (GPIO)",
+"14 digital, 6 analog, 12-Bit-DAC"
+],
+[
+"Betriebsspannung (IO-Pegel)",
+"5 V"
+],
+[
+"Funk",
+"WLAN + Bluetooth LE (ESP32-S3)"
+],
+[
+"Preis (ca.)",
+"ca. 27 €"
+]
+]
+},
+{
+"marke": "Arduino",
+"name": "Arduino Nano",
+"zeilen": [
+[
+"Hersteller",
+"Arduino"
+],
+[
+"Erschienen",
+"2008"
+],
+[
+"Kern",
+"ATmega328P"
+],
+[
+"Takt",
+"16 MHz"
+],
+[
+"Flash-Speicher",
+"32 KB"
+],
+[
+"Arbeitsspeicher",
+"2 KB"
+],
+[
+"Anschlüsse (GPIO)",
+"14 digital, 8 analog"
+],
+[
+"Betriebsspannung (IO-Pegel)",
+"5 V"
+],
+[
+"Funk",
+"keiner"
+],
+[
+"Preis (ca.)",
+"ca. 10–25 €"
+]
+]
+},
+{
+"marke": "Arduino",
+"name": "Arduino Nano Every",
+"zeilen": [
+[
+"Hersteller",
+"Arduino"
+],
+[
+"Erschienen",
+"2019"
+],
+[
+"Kern",
+"ATMega4809"
+],
+[
+"Takt",
+"20 MHz"
+],
+[
+"Flash-Speicher",
+"48 KB"
+],
+[
+"Arbeitsspeicher",
+"6 KB"
+],
+[
+"Anschlüsse (GPIO)",
+"14 digital, 8 analog"
+],
+[
+"Betriebsspannung (IO-Pegel)",
+"5 V"
+],
+[
+"Funk",
+"keiner"
+],
+[
+"Preis (ca.)",
+"ca. 12–15 €"
+]
+]
+},
+{
+"marke": "Raspberry Pi",
+"name": "Raspberry Pi Pico 2 (RP2350)",
+"zeilen": [
+[
+"Hersteller",
+"Raspberry Pi"
+],
+[
+"Erschienen",
+"2024"
+],
+[
+"Kern",
+"Zwei Cortex-M33 oder zwei Hazard3 (RISC-V), umschaltbar"
+],
+[
+"Takt",
+"150 MHz"
+],
+[
+"Flash-Speicher",
+"4 MB"
+],
+[
+"Arbeitsspeicher",
+"520 KB SRAM"
+],
+[
+"Anschlüsse (GPIO)",
+"30 (RP2350A), 12 PIO-Zustandsmaschinen"
+],
+[
+"Betriebsspannung (IO-Pegel)",
+"3,3 V"
+],
+[
+"Funk",
+"keiner"
+],
+[
+"Preis (ca.)",
+"ca. 5 €"
+]
+]
+},
+{
+"marke": "Raspberry Pi",
+"name": "Raspberry Pi Pico 2 W (RP2350)",
+"zeilen": [
+[
+"Hersteller",
+"Raspberry Pi"
+],
+[
+"Erschienen",
+"2024"
+],
+[
+"Kern",
+"Zwei Cortex-M33 oder zwei Hazard3 (RISC-V), umschaltbar"
+],
+[
+"Takt",
+"150 MHz"
+],
+[
+"Flash-Speicher",
+"4 MB"
+],
+[
+"Arbeitsspeicher",
+"520 KB SRAM"
+],
+[
+"Anschlüsse (GPIO)",
+"30 (RP2350A), 12 PIO-Zustandsmaschinen"
+],
+[
+"Betriebsspannung (IO-Pegel)",
+"3,3 V"
+],
+[
+"Funk",
+"WLAN + Bluetooth 5.2"
+],
+[
+"Preis (ca.)",
+"ca. 7–8 €"
+]
+]
+}
+]
+}

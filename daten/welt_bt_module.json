@@ -1,0 +1,3625 @@
+{
+"id": "bt_module",
+"name": "Module & Busse",
+"untertitel": "Sensoren, Boards, Schnittstellen-ICs",
+"farbe": "pink",
+"symbol": "antenne",
+"reihenfolge": 23,
+"seiten": [
+{
+"id": "module_pi-gpio",
+"titel": "Raspberry Pi GPIO (40-Pin)",
+"kurz": "Pinbelegung der 40-poligen Stiftleiste (Pi 3 / 4 / 5 / Zero 2)",
+"tags": [
+"raspberry",
+"pi",
+"gpio",
+"header",
+"40",
+"pin",
+"i2c",
+"spi",
+"uart",
+"pwm",
+"pinout",
+"stiftleiste",
+"Raspberry",
+"Pi",
+"Header",
+"2×20",
+"Raspberry",
+"Pi",
+"GPIO",
+"(40-Pin)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Alle Funktionen des Pi-Anschlusses: Versorgung, GPIOs und Sonderfunktionen (I²C, SPI, UART, PWM). 3,3-V-Logik!"
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "pi-gpio",
+"name": "Raspberry Pi GPIO (40-Pin)",
+"titel": "Pinbelegung der 40-poligen Stiftleiste (Pi 3 / 4 / 5 / Zero 2)",
+"kurz": "Alle Funktionen des Pi-Anschlusses: Versorgung, GPIOs und Sonderfunktionen (I²C, SPI, UART, PWM). 3,3-V-Logik!",
+"familie": "Raspberry Pi",
+"gehaeuse": "Header 2×20",
+"pins": [
+"3V3:v",
+"5V:v",
+"GPIO2·SDA1:x",
+"5V:v",
+"GPIO3·SCL1:x",
+"GND:g",
+"GPIO4:x",
+"GPIO14·TXD:x",
+"GND:g",
+"GPIO15·RXD:x",
+"GPIO17:x",
+"GPIO18·PWM:x",
+"GPIO27:x",
+"GND:g",
+"GPIO22:x",
+"GPIO23:x",
+"3V3:v",
+"GPIO24:x",
+"GPIO10·MOSI:x",
+"GND:g",
+"GPIO9·MISO:x",
+"GPIO25:x",
+"GPIO11·SCLK:x",
+"GPIO8·CE0:x",
+"GND:g",
+"GPIO7·CE1:x",
+"ID_SD:n",
+"ID_SC:n",
+"GPIO5:x",
+"GND:g",
+"GPIO6:x",
+"GPIO12·PWM:x",
+"GPIO13·PWM:x",
+"GND:g",
+"GPIO19·MISO:x",
+"GPIO16:x",
+"GPIO26:x",
+"GPIO20:x",
+"GND:g",
+"GPIO21:x"
+],
+"spannung": "GPIO 3,3 V (NICHT 5-V-tolerant).",
+"hinweise": [
+"Links die ungeraden Pins (1, 3, 5 …), rechts die geraden (2, 4, 6 …). Pin 1 (3V3) ist oben links, wenn die SD-Karte unten liegt.",
+"Jeder GPIO ist nur mit 3,3 V belastbar. Maximal ca. 16 mA pro Pin, insgesamt etwa 50 mA – größere Lasten über Transistor / MOSFET.",
+"I²C-1: GPIO2 (SDA), GPIO3 (SCL) – hat schon 1,8-kΩ-Pull-ups auf der Platine. SPI-0: GPIO10 / 9 / 11, CE0 = GPIO8, CE1 = GPIO7. UART: GPIO14 (TX), GPIO15 (RX).",
+"Hardware-PWM: GPIO12 / 13 / 18 / 19. Pins 27/28 (ID_SD / ID_SC) sind für HAT-EEPROMs reserviert.",
+"Pi 5: der Header hängt am RP1-Chip – bei gpiod/gpiozero zeigt `gpiodetect`, welche Chip-Nummer er hat (meist gpiochip4 bzw. gpiochip0 in neueren Kernen)."
+],
+"tags": "raspberry pi gpio header 40 pin i2c spi uart pwm pinout stiftleiste",
+"kerbe": false,
+"oben": "Pin 1 oben links",
+"kat": "module",
+"uid": "module:pi-gpio"
+}
+}
+],
+"siehe": [
+"bt_wissen:wissen_pegel",
+"bt_module:bus_i2c"
+],
+"familie": "Raspberry Pi"
+},
+{
+"id": "module_pico",
+"titel": "Raspberry Pi Pico",
+"kurz": "RP2040-Mikrocontroller-Board (40 Pin, USB oben)",
+"tags": [
+"pico",
+"rp2040",
+"raspberry",
+"micropython",
+"mikrocontroller",
+"board",
+"Mikrocontroller",
+"DIP-40",
+"Raspberry",
+"Pi",
+"Pico",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Preiswertes Board mit zwei Cortex-M0+-Kernen, 264 kB RAM, 2 MB Flash. Programmierung mit MicroPython oder C/C++."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "pico",
+"name": "Raspberry Pi Pico",
+"titel": "RP2040-Mikrocontroller-Board (40 Pin, USB oben)",
+"kurz": "Preiswertes Board mit zwei Cortex-M0+-Kernen, 264 kB RAM, 2 MB Flash. Programmierung mit MicroPython oder C/C++.",
+"familie": "Mikrocontroller",
+"gehaeuse": "DIP-40",
+"pins": [
+"GP0:x",
+"GP1:x",
+"GND:g",
+"GP2:x",
+"GP3:x",
+"GP4:x",
+"GP5:x",
+"GND:g",
+"GP6:x",
+"GP7:x",
+"GP8:x",
+"GP9:x",
+"GND:g",
+"GP10:x",
+"GP11:x",
+"GP12:x",
+"GP13:x",
+"GND:g",
+"GP14:x",
+"GP15:x",
+"GP16:x",
+"GP17:x",
+"GND:g",
+"GP18:x",
+"GP19:x",
+"GP20:x",
+"GP21:x",
+"GND:g",
+"GP22:x",
+"RUN:x",
+"GP26·ADC0:x",
+"GP27·ADC1:x",
+"AGND:g",
+"GP28·ADC2:x",
+"ADC_VREF:v",
+"3V3:v",
+"3V3_EN:v",
+"GND:g",
+"VSYS:v",
+"VBUS:v"
+],
+"spannung": "3,3 V Logik, Eingang VSYS 1,8–5,5 V.",
+"hinweise": [
+"Pins wie bei einem 40-poligen DIP-Chip: 1–20 links von oben nach unten, 21–40 rechts von unten nach oben (Pin 40 = VBUS neben dem USB-Anschluss).",
+"Alle GPIOs sind NICHT 5-V-tolerant.",
+"ADC: GP26, GP27, GP28 (12 Bit, 3,3 V Referenz).",
+"BOOTSEL-Taste beim Einstecken gedrückt halten, dann erscheint ein USB-Laufwerk.",
+"Pico W: zusätzlich WLAN – GPIO 23–25 und 29 sind intern belegt."
+],
+"tags": "pico rp2040 raspberry micropython mikrocontroller board",
+"kerbe": false,
+"oben": "USB",
+"kat": "module",
+"uid": "module:pico"
+}
+}
+],
+"siehe": [
+"bt_module:module_pi-gpio"
+],
+"familie": "Mikrocontroller"
+},
+{
+"id": "module_nano",
+"titel": "Arduino Nano",
+"kurz": "ATmega328P-Board, 30 Pin (USB oben)",
+"tags": [
+"arduino",
+"nano",
+"atmega328",
+"board",
+"mikrocontroller",
+"Mikrocontroller",
+"DIP-30",
+"Arduino",
+"Nano",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Klassisches Arduino im DIP-30-Format, 5 V Logik, 16 MHz. Ideal für Steckbrett."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "nano",
+"name": "Arduino Nano",
+"titel": "ATmega328P-Board, 30 Pin (USB oben)",
+"kurz": "Klassisches Arduino im DIP-30-Format, 5 V Logik, 16 MHz. Ideal für Steckbrett.",
+"familie": "Mikrocontroller",
+"gehaeuse": "DIP-30",
+"pins": [
+"D13·SCK:x",
+"3V3:v",
+"AREF:n",
+"A0:x",
+"A1:x",
+"A2:x",
+"A3:x",
+"A4·SDA:x",
+"A5·SCL:x",
+"A6:x",
+"A7:x",
+"5V:v",
+"RST:x",
+"GND:g",
+"VIN:v",
+"D1·TX:x",
+"D0·RX:x",
+"RST:x",
+"GND:g",
+"D2:x",
+"D3:x",
+"D4:x",
+"D5:x",
+"D6:x",
+"D7:x",
+"D8:x",
+"D9:x",
+"D10:x",
+"D11:x",
+"D12:x"
+],
+"spannung": "5 V Logik, VIN 7–12 V empfohlen.",
+"hinweise": [
+"Pins 1–15 links von oben nach unten, 16–30 rechts von unten nach oben. USB-Buchse ist oben.",
+"I²C: A4 = SDA, A5 = SCL. SPI: D10 = SS, D11 = MOSI, D12 = MISO, D13 = SCK. UART: D0 = RX, D1 = TX.",
+"PWM: D3, D5, D6, D9, D10, D11. Analog: A0…A7 (A6/A7 nur analog).",
+"5 V Logik: mit 3,3-V-Geräten (Raspberry Pi, ESP) Pegelwandler verwenden!",
+"Klone mit CH340-Chip brauchen einen CH340-Treiber unter Windows."
+],
+"tags": "arduino nano atmega328 board mikrocontroller",
+"kerbe": false,
+"oben": "USB",
+"kat": "module",
+"uid": "module:nano"
+}
+}
+],
+"siehe": [
+"bt_module:module_atmega328p",
+"bt_wissen:wissen_pegel"
+],
+"familie": "Mikrocontroller"
+},
+{
+"id": "module_atmega328p",
+"titel": "ATmega328P",
+"kurz": "AVR-Mikrocontroller (Arduino Uno / Nano)",
+"tags": [
+"atmega328p",
+"avr",
+"arduino",
+"uno",
+"mikrocontroller",
+"Mikrocontroller",
+"DIP-28",
+"ATmega328P",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"8-Bit-AVR, 32 kB Flash, 2 kB RAM. Das „Herz“ des Arduino Uno."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "atmega328p",
+"name": "ATmega328P",
+"titel": "AVR-Mikrocontroller (Arduino Uno / Nano)",
+"kurz": "8-Bit-AVR, 32 kB Flash, 2 kB RAM. Das „Herz“ des Arduino Uno.",
+"familie": "Mikrocontroller",
+"gehaeuse": "DIP-28",
+"pins": [
+"PC6·RESET:x",
+"PD0·RXD:x",
+"PD1·TXD:x",
+"PD2:x",
+"PD3:x",
+"PD4:x",
+"VCC:v",
+"GND:g",
+"PB6·XTAL1:x",
+"PB7·XTAL2:x",
+"PD5:x",
+"PD6:x",
+"PD7:x",
+"PB0:x",
+"PB1:x",
+"PB2:x",
+"PB3:x",
+"PB4:x",
+"PB5:x",
+"AVCC:v",
+"AREF:n",
+"GND:g",
+"PC0:x",
+"PC1:x",
+"PC2:x",
+"PC3:x",
+"PC4:x",
+"PC5:x"
+],
+"spannung": "1,8–5,5 V.",
+"hinweise": [
+"Arduino-Pins: PD0…PD7 = D0…D7, PB0…PB5 = D8…D13, PC0…PC5 = A0…A5.",
+"Minimalschaltung ohne Arduino: 16-MHz-Quarz mit 2 × 22 pF an Pin 9/10, 10 kΩ Pull-up an RESET, 100 nF an VCC und AVCC.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "atmega328p avr arduino uno mikrocontroller",
+"kat": "module",
+"uid": "module:atmega328p"
+}
+}
+],
+"siehe": [
+"bt_module:module_nano"
+],
+"familie": "Mikrocontroller"
+},
+{
+"id": "module_attiny85",
+"titel": "ATtiny85",
+"kurz": "Winziger AVR-Mikrocontroller (DIP-8)",
+"tags": [
+"attiny85",
+"avr",
+"mikrocontroller",
+"klein",
+"dip8",
+"Mikrocontroller",
+"DIP-8",
+"ATtiny85",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"8 kB Flash, 5 I/O-Pins, im Steckbrett gut zu verwenden. Läuft mit internem 8-MHz-Oszillator."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "attiny85",
+"name": "ATtiny85",
+"titel": "Winziger AVR-Mikrocontroller (DIP-8)",
+"kurz": "8 kB Flash, 5 I/O-Pins, im Steckbrett gut zu verwenden. Läuft mit internem 8-MHz-Oszillator.",
+"familie": "Mikrocontroller",
+"gehaeuse": "DIP-8",
+"pins": [
+"PB5·RESET:x",
+"PB3:x",
+"PB4:x",
+"GND:g",
+"PB0·MOSI:x",
+"PB1·MISO:x",
+"PB2·SCK:x",
+"VCC:v"
+],
+"spannung": "2,7–5,5 V.",
+"hinweise": [
+"Programmierung per ISP (z. B. mit Arduino als ISP): PB0 = MOSI, PB1 = MISO, PB2 = SCK, RESET.",
+"PB5 (RESET) als normaler I/O nur mit Fuse-Änderung – danach nicht mehr per ISP programmierbar!",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "attiny85 avr mikrocontroller klein dip8",
+"kat": "module",
+"uid": "module:attiny85"
+}
+}
+],
+"familie": "Mikrocontroller"
+},
+{
+"id": "module_esp32",
+"titel": "ESP32 DevKit",
+"kurz": "WLAN + Bluetooth Mikrocontroller",
+"tags": [
+"esp32",
+"wlan",
+"bluetooth",
+"wifi",
+"mikrocontroller",
+"board",
+"espressif",
+"Mikrocontroller",
+"Modul",
+"ESP32",
+"DevKit",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Dual-Core 240 MHz, WLAN und Bluetooth LE, viel GPIO. 3,3-V-Logik."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "esp32",
+"name": "ESP32 DevKit",
+"titel": "WLAN + Bluetooth Mikrocontroller",
+"kurz": "Dual-Core 240 MHz, WLAN und Bluetooth LE, viel GPIO. 3,3-V-Logik.",
+"familie": "Mikrocontroller",
+"gehaeuse": "Modul",
+"pins": [],
+"spannung": "3,3 V Logik, 5 V über USB.",
+"hinweise": [
+"Die Pinbelegung hängt stark vom Board ab (30-, 36-, 38-Pin) – auf der Platine nachsehen.",
+"GPIO 34–39 sind nur Eingänge (kein Pull-up).",
+"Strapping-Pins (GPIO 0, 2, 12, 15) beeinflussen den Start: nicht mit Verbrauchern belasten.",
+"ADC2 geht nicht, solange WLAN aktiv ist – für Analogmessungen ADC1 nehmen (GPIO 32–39).",
+"Strom pro Pin klein halten (wenige mA, laut Datenblatt bis ca. 20 mA empfohlen) – größere Lasten über Transistor."
+],
+"tags": "esp32 wlan bluetooth wifi mikrocontroller board espressif",
+"kat": "module",
+"uid": "module:esp32"
+}
+}
+],
+"siehe": [
+"bt_module:module_pico"
+],
+"familie": "Mikrocontroller"
+},
+{
+"id": "module_esp8266",
+"titel": "ESP8266 / NodeMCU",
+"kurz": "WLAN-Mikrocontroller (günstig)",
+"tags": [
+"esp8266",
+"nodemcu",
+"wlan",
+"wifi",
+"mikrocontroller",
+"Mikrocontroller",
+"ESP8266",
+"/",
+"NodeMCU",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Alter Klassiker mit WLAN, 80 MHz. 3,3-V-Logik, wenige GPIO."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "esp8266",
+"name": "ESP8266 / NodeMCU",
+"titel": "WLAN-Mikrocontroller (günstig)",
+"kurz": "Alter Klassiker mit WLAN, 80 MHz. 3,3-V-Logik, wenige GPIO.",
+"familie": "Mikrocontroller",
+"gehaeuse": "",
+"pins": [],
+"spannung": "3,3 V Logik.",
+"hinweise": [
+"GPIO 0, 2, 15 sind Strapping-Pins: GPIO0 = LOW beim Start → Flash-Modus, GPIO15 muss LOW sein, GPIO2 HIGH.",
+"ADC (A0) nur 0…1 V am Chip (auf NodeMCU Teiler für 3,3 V).",
+"Nur ein ADC-Eingang, keine echten Hardware-PWM-Kanäle."
+],
+"tags": "esp8266 nodemcu wlan wifi mikrocontroller",
+"kat": "module",
+"uid": "module:esp8266"
+}
+}
+],
+"familie": "Mikrocontroller"
+},
+{
+"id": "module_24lc256",
+"titel": "24LC256 (24Cxx)",
+"kurz": "I²C-EEPROM, 256 kbit",
+"tags": [
+"eeprom",
+"i2c",
+"speicher",
+"24c256",
+"24lc256",
+"24c32",
+"Speicher",
+"DIP-8",
+"24LC256",
+"(24Cxx)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Nichtflüchtiger Speicher für Einstellungen und Daten. Adresse über A0…A2 einstellbar."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "24lc256",
+"name": "24LC256 (24Cxx)",
+"titel": "I²C-EEPROM, 256 kbit",
+"kurz": "Nichtflüchtiger Speicher für Einstellungen und Daten. Adresse über A0…A2 einstellbar.",
+"familie": "Speicher",
+"gehaeuse": "DIP-8",
+"pins": [
+"A0:i",
+"A1:i",
+"A2:i",
+"VSS:g",
+"SDA:x",
+"SCL:i",
+"WP:i",
+"VCC:v"
+],
+"spannung": "1,7–5,5 V.",
+"hinweise": [
+"I²C-Adresse 0x50 + (A2 A1 A0).",
+"WP an GND = schreibbar, an VCC = Schreibschutz.",
+"SDA / SCL mit 4,7-kΩ-Pull-ups.",
+"Pinbelegung gilt für 24C01 … 24C512 gleichermaßen."
+],
+"tags": "eeprom i2c speicher 24c256 24lc256 24c32",
+"kat": "module",
+"uid": "module:24lc256"
+}
+}
+],
+"siehe": [
+"bt_module:bus_i2c"
+],
+"familie": "Speicher"
+},
+{
+"id": "module_w25q",
+"titel": "W25Q32 / W25Q64",
+"kurz": "SPI-Flash-Speicher",
+"tags": [
+"flash",
+"spi",
+"speicher",
+"winbond",
+"w25q32",
+"w25q64",
+"bios",
+"Speicher",
+"DIP-8",
+"W25Q32",
+"/",
+"W25Q64",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Serieller Flash mit 4–16 MB, zum Beispiel BIOS, Fonts oder Daten."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "w25q",
+"name": "W25Q32 / W25Q64",
+"titel": "SPI-Flash-Speicher",
+"kurz": "Serieller Flash mit 4–16 MB, zum Beispiel BIOS, Fonts oder Daten.",
+"familie": "Speicher",
+"gehaeuse": "DIP-8",
+"pins": [
+"/CS:i",
+"DO:o",
+"/WP:i",
+"GND:g",
+"DI:i",
+"CLK:i",
+"/HOLD:i",
+"VCC:v"
+],
+"spannung": "2,7–3,6 V.",
+"hinweise": [
+"Nur 3,3 V! Nicht an 5 V anschließen.",
+"/WP und /HOLD müssen auf HIGH liegen, sonst sperrt der Chip.",
+"JEDEC-ID: 0xEF4016 (32 Mbit), 0xEF4017 (64 Mbit) zum Test."
+],
+"tags": "flash spi speicher winbond w25q32 w25q64 bios",
+"kat": "module",
+"uid": "module:w25q"
+}
+}
+],
+"siehe": [
+"bt_module:bus_spi"
+],
+"familie": "Speicher"
+},
+{
+"id": "module_62256",
+"titel": "62256 (32 K × 8 SRAM)",
+"kurz": "Statischer RAM, 256 kbit",
+"tags": [
+"sram",
+"62256",
+"ram",
+"speicher",
+"parallel",
+"Speicher",
+"DIP-28",
+"62256",
+"(32",
+"K",
+"×",
+"8",
+"SRAM)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Klassischer paralleler RAM für Retro-Computer und Basteleien (DIP-28)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "62256",
+"name": "62256 (32 K × 8 SRAM)",
+"titel": "Statischer RAM, 256 kbit",
+"kurz": "Klassischer paralleler RAM für Retro-Computer und Basteleien (DIP-28).",
+"familie": "Speicher",
+"gehaeuse": "DIP-28",
+"pins": [
+"A14:i",
+"A12:i",
+"A7:i",
+"A6:i",
+"A5:i",
+"A4:i",
+"A3:i",
+"A2:i",
+"A1:i",
+"A0:i",
+"D0:x",
+"D1:x",
+"D2:x",
+"GND:g",
+"D3:x",
+"D4:x",
+"D5:x",
+"D6:x",
+"D7:x",
+"/CE:i",
+"A10:i",
+"/OE:i",
+"A11:i",
+"A9:i",
+"A8:i",
+"A13:i",
+"/WE:i",
+"VCC:v"
+],
+"spannung": "5 V.",
+"hinweise": [
+"Schreiben: /CE = LOW, /WE = LOW; Lesen: /CE = LOW, /OE = LOW.",
+"Pinbelegung identisch zu 28C256 (EEPROM) – Vorsicht bei Verwechslung."
+],
+"tags": "sram 62256 ram speicher parallel",
+"kat": "module",
+"uid": "module:62256"
+}
+}
+],
+"siehe": [
+"bt_module:module_27c256"
+],
+"familie": "Speicher"
+},
+{
+"id": "module_27c256",
+"titel": "27C256",
+"kurz": "EPROM 32 K × 8 (UV-löschbar)",
+"tags": [
+"eprom",
+"27c256",
+"rom",
+"retro",
+"speicher",
+"Speicher",
+"DIP-28",
+"27C256",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Alter Programmspeicher für Retro-Rechner. Pinbelegung unterscheidet sich vom RAM 62256!"
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "27c256",
+"name": "27C256",
+"titel": "EPROM 32 K × 8 (UV-löschbar)",
+"kurz": "Alter Programmspeicher für Retro-Rechner. Pinbelegung unterscheidet sich vom RAM 62256!",
+"familie": "Speicher",
+"gehaeuse": "DIP-28",
+"pins": [
+"VPP:v",
+"A12:i",
+"A7:i",
+"A6:i",
+"A5:i",
+"A4:i",
+"A3:i",
+"A2:i",
+"A1:i",
+"A0:i",
+"D0:o",
+"D1:o",
+"D2:o",
+"GND:g",
+"D3:o",
+"D4:o",
+"D5:o",
+"D6:o",
+"D7:o",
+"/CE:i",
+"A10:i",
+"/OE:i",
+"A11:i",
+"A9:i",
+"A8:i",
+"A13:i",
+"A14:i",
+"VCC:v"
+],
+"spannung": "5 V; VPP nur beim Programmieren (12,5 V).",
+"hinweise": [
+"Pins 1 (VPP) und 27 (A14) sind anders belegt als beim 62256 / 28C256.",
+"Programmieren: Programmiergerät nötig.",
+"Pinbelegung bitte mit dem Datenblatt deines Herstellers gegenprüfen."
+],
+"tags": "eprom 27c256 rom retro speicher",
+"kat": "module",
+"uid": "module:27c256"
+}
+}
+],
+"siehe": [
+"bt_module:module_62256"
+],
+"familie": "Speicher"
+},
+{
+"id": "module_mcp23017",
+"titel": "MCP23017",
+"kurz": "16-Bit-I/O-Erweiterung (I²C)",
+"tags": [
+"mcp23017",
+"i2c",
+"io",
+"expander",
+"gpio",
+"erweiterung",
+"Erweiterung",
+"DIP-28",
+"MCP23017",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Schenkt dir 16 zusätzliche GPIOs über zwei Leitungen. Bis zu 8 Chips am gleichen Bus (Adresse über A0–A2)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "mcp23017",
+"name": "MCP23017",
+"titel": "16-Bit-I/O-Erweiterung (I²C)",
+"kurz": "Schenkt dir 16 zusätzliche GPIOs über zwei Leitungen. Bis zu 8 Chips am gleichen Bus (Adresse über A0–A2).",
+"familie": "Erweiterung",
+"gehaeuse": "DIP-28",
+"pins": [
+"GPB0:x",
+"GPB1:x",
+"GPB2:x",
+"GPB3:x",
+"GPB4:x",
+"GPB5:x",
+"GPB6:x",
+"GPB7:x",
+"VDD:v",
+"VSS:g",
+"NC:n",
+"SCL:i",
+"SDA:x",
+"NC:n",
+"A0:i",
+"A1:i",
+"A2:i",
+"/RESET:i",
+"INTB:o",
+"INTA:o",
+"GPA0:x",
+"GPA1:x",
+"GPA2:x",
+"GPA3:x",
+"GPA4:x",
+"GPA5:x",
+"GPA6:x",
+"GPA7:x"
+],
+"spannung": "1,8–5,5 V.",
+"hinweise": [
+"I²C-Adresse 0x20 + (A2 A1 A0).",
+"/RESET auf HIGH legen (z. B. 10 kΩ nach VDD) – offen lassen reicht nicht.",
+"Interrupt-Pins INTA/INTB melden Pegeländerungen an den Controller.",
+"Pro Pin max. 25 mA, insgesamt 125 mA."
+],
+"tags": "mcp23017 i2c io expander gpio erweiterung",
+"kat": "module",
+"uid": "module:mcp23017"
+}
+}
+],
+"siehe": [
+"bt_module:module_pcf8574"
+],
+"familie": "Erweiterung"
+},
+{
+"id": "module_pcf8574",
+"titel": "PCF8574",
+"kurz": "8-Bit-I/O-Erweiterung (I²C)",
+"tags": [
+"pcf8574",
+"i2c",
+"io",
+"expander",
+"lcd",
+"adapter",
+"Erweiterung",
+"DIP-16",
+"PCF8574",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Acht Quasi-Bidirektionale Ein-/Ausgänge über I²C. Wird auch auf dem I²C-Adapter für LCDs genutzt."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "pcf8574",
+"name": "PCF8574",
+"titel": "8-Bit-I/O-Erweiterung (I²C)",
+"kurz": "Acht Quasi-Bidirektionale Ein-/Ausgänge über I²C. Wird auch auf dem I²C-Adapter für LCDs genutzt.",
+"familie": "Erweiterung",
+"gehaeuse": "DIP-16",
+"pins": [
+"A0:i",
+"A1:i",
+"A2:i",
+"P0:x",
+"P1:x",
+"P2:x",
+"P3:x",
+"VSS:g",
+"P4:x",
+"P5:x",
+"P6:x",
+"P7:x",
+"/INT:o",
+"SCL:i",
+"SDA:x",
+"VDD:v"
+],
+"spannung": "2,5–6 V.",
+"hinweise": [
+"I²C-Adresse 0x20 + (A2 A1 A0). PCF8574A: 0x38 + …",
+"Ausgang zieht nur schwach nach HIGH (ca. 100 µA) – LED gegen +V schalten.",
+"Zum Einlesen: Pin auf HIGH schreiben, dann lesen."
+],
+"tags": "pcf8574 i2c io expander lcd adapter",
+"kat": "module",
+"uid": "module:pcf8574"
+}
+}
+],
+"siehe": [
+"bt_module:module_mcp23017"
+],
+"familie": "Erweiterung"
+},
+{
+"id": "module_ds1307",
+"titel": "DS1307",
+"kurz": "Echtzeituhr (RTC) mit I²C",
+"tags": [
+"rtc",
+"ds1307",
+"uhr",
+"echtzeit",
+"i2c",
+"Uhr",
+"DIP-8",
+"DS1307",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zählt Zeit und Datum (mit Pufferbatterie) auch bei ausgeschaltetem Gerät. 32,768-kHz-Quarz nötig."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "ds1307",
+"name": "DS1307",
+"titel": "Echtzeituhr (RTC) mit I²C",
+"kurz": "Zählt Zeit und Datum (mit Pufferbatterie) auch bei ausgeschaltetem Gerät. 32,768-kHz-Quarz nötig.",
+"familie": "Uhr",
+"gehaeuse": "DIP-8",
+"pins": [
+"X1:x",
+"X2:x",
+"VBAT:v",
+"GND:g",
+"SDA:x",
+"SCL:i",
+"SQW/OUT:o",
+"VCC:v"
+],
+"spannung": "4,5–5,5 V.",
+"hinweise": [
+"Quarz 32,768 kHz zwischen X1 und X2, Knopfzelle CR2032 an VBAT.",
+"Läuft nur mit 5 V; für 3,3 V besser DS3231 (Modul) verwenden.",
+"I²C-Adresse 0x68."
+],
+"tags": "rtc ds1307 uhr echtzeit i2c",
+"kat": "module",
+"uid": "module:ds1307"
+}
+}
+],
+"siehe": [
+"bt_module:module_ds3231"
+],
+"familie": "Uhr"
+},
+{
+"id": "module_ds3231",
+"titel": "DS3231 (Modul)",
+"kurz": "Hochgenaue Echtzeituhr mit Temperaturkompensation",
+"tags": [
+"rtc",
+"ds3231",
+"uhr",
+"echtzeit",
+"i2c",
+"modul",
+"Uhr",
+"Modul",
+"6",
+"Pin",
+"DS3231",
+"(Modul)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Sehr genau (±2 ppm), eingebauter Quarz, 3,3 V oder 5 V. Beliebtestes RTC-Modul."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "ds3231",
+"name": "DS3231 (Modul)",
+"titel": "Hochgenaue Echtzeituhr mit Temperaturkompensation",
+"kurz": "Sehr genau (±2 ppm), eingebauter Quarz, 3,3 V oder 5 V. Beliebtestes RTC-Modul.",
+"familie": "Uhr",
+"gehaeuse": "Modul 6 Pin",
+"pins": [
+"32K:o",
+"SQW:o",
+"SCL:i",
+"SDA:x",
+"VCC:v",
+"GND:g"
+],
+"spannung": "2,3–5,5 V.",
+"hinweise": [
+"Modul: Pins meist 32K, SQW, SCL, SDA, VCC, GND.",
+"I²C-Adresse 0x68.",
+"Auf manchen Modulen ist die Ladeschaltung für die CR2032 aktiv – dann Lithium-Zelle (CR2032), keine wiederaufladbare LIR2032 ohne Änderung.",
+"Reihenfolge je nach Platine verschieden – auf die Beschriftung der Platine achten."
+],
+"tags": "rtc ds3231 uhr echtzeit i2c modul",
+"kerbe": false,
+"kat": "module",
+"uid": "module:ds3231"
+}
+}
+],
+"familie": "Uhr"
+},
+{
+"id": "module_max485",
+"titel": "MAX485",
+"kurz": "RS-485-Transceiver",
+"tags": [
+"rs485",
+"modbus",
+"max485",
+"transceiver",
+"seriell",
+"Schnittstellen-IC",
+"DIP-8",
+"MAX485",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wandelt UART in differentielle Signale (A/B) um. Für lange Leitungen (bis ca. 1200 m), z. B. Modbus."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "max485",
+"name": "MAX485",
+"titel": "RS-485-Transceiver",
+"kurz": "Wandelt UART in differentielle Signale (A/B) um. Für lange Leitungen (bis ca. 1200 m), z. B. Modbus.",
+"familie": "Schnittstellen-IC",
+"gehaeuse": "DIP-8",
+"pins": [
+"RO:o",
+"/RE:i",
+"DE:i",
+"DI:i",
+"GND:g",
+"A:x",
+"B:x",
+"VCC:v"
+],
+"spannung": "5 V (MAX3485: 3,3 V).",
+"hinweise": [
+"RO = Empfangsdaten, DI = Sendedaten.",
+"Richtungswahl: /RE und DE zusammenschalten – HIGH = Senden, LOW = Empfangen.",
+"120-Ω-Abschluss an beiden Leitungsenden.",
+"Für 3,3 V (Raspberry Pi) MAX3485 / SP3485 nehmen."
+],
+"tags": "rs485 modbus max485 transceiver seriell",
+"kat": "module",
+"uid": "module:max485"
+}
+}
+],
+"siehe": [
+"bt_module:bus_rs485"
+],
+"familie": "Schnittstellen-IC"
+},
+{
+"id": "module_hcsr04",
+"titel": "HC-SR04",
+"kurz": "Ultraschall-Entfernungssensor",
+"tags": [
+"ultraschall",
+"entfernung",
+"abstand",
+"hc-sr04",
+"hcsr04",
+"Sensoren",
+"Modul",
+"4",
+"Pin",
+"HC-SR04",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Misst Entfernungen von 2 cm bis ca. 4 m. Trigger-Impuls senden, Echo-Zeit messen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "hcsr04",
+"name": "HC-SR04",
+"titel": "Ultraschall-Entfernungssensor",
+"kurz": "Misst Entfernungen von 2 cm bis ca. 4 m. Trigger-Impuls senden, Echo-Zeit messen.",
+"familie": "Sensoren",
+"gehaeuse": "Modul 4 Pin",
+"pins": [
+"VCC:v",
+"TRIG:i",
+"ECHO:o",
+"GND:g"
+],
+"spannung": "5 V.",
+"hinweise": [
+"Echo-Pegel ist 5 V: bei Raspberry Pi mit Spannungsteiler (z. B. 1 kΩ + 2 kΩ) auf 3,3 V bringen!",
+"Trigger: 10 µs HIGH-Impuls.",
+"Reihenfolge je nach Platine verschieden – auf die Beschriftung der Platine achten."
+],
+"tags": "ultraschall entfernung abstand hc-sr04 hcsr04",
+"kerbe": false,
+"formeln": [
+"s = t · 343 m/s / 2"
+],
+"kat": "module",
+"uid": "module:hcsr04"
+}
+}
+],
+"familie": "Sensoren"
+},
+{
+"id": "module_dht22",
+"titel": "DHT22 / DHT11",
+"kurz": "Temperatur- und Feuchtesensor",
+"tags": [
+"dht22",
+"dht11",
+"temperatur",
+"luftfeuchte",
+"feuchtigkeit",
+"sensor",
+"Sensoren",
+"Sensor",
+"4",
+"Pin",
+"DHT22",
+"/",
+"DHT11",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein-Draht-Sensor (eigenes Protokoll). DHT22 misst −40…80 °C und 0–100 % rF genauer als DHT11."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "dht22",
+"name": "DHT22 / DHT11",
+"titel": "Temperatur- und Feuchtesensor",
+"kurz": "Ein-Draht-Sensor (eigenes Protokoll). DHT22 misst −40…80 °C und 0–100 % rF genauer als DHT11.",
+"familie": "Sensoren",
+"gehaeuse": "Sensor 4 Pin",
+"pins": [
+"VCC:v",
+"DATA:x",
+"NC:n",
+"GND:g"
+],
+"spannung": "3,3–5,5 V.",
+"hinweise": [
+"Blick auf die Gitterseite, Pins von links: VCC, DATA, NC, GND.",
+"Pull-up 10 kΩ zwischen DATA und VCC (bei Modulplatine oft schon vorhanden).",
+"Mindestens 2 s zwischen zwei Messungen (DHT22), DHT11 1 s.",
+"Ist kein I²C – braucht präzises Timing: besser Bibliothek nutzen."
+],
+"tags": "dht22 dht11 temperatur luftfeuchte feuchtigkeit sensor",
+"kerbe": false,
+"kat": "module",
+"uid": "module:dht22"
+}
+}
+],
+"familie": "Sensoren"
+},
+{
+"id": "module_bme280",
+"titel": "BME280 (Modul)",
+"kurz": "Temperatur, Luftfeuchte und Luftdruck (I²C/SPI)",
+"tags": [
+"bme280",
+"bmp280",
+"wetter",
+"druck",
+"feuchte",
+"temperatur",
+"sensor",
+"i2c",
+"Sensoren",
+"Modul",
+"6",
+"Pin",
+"BME280",
+"(Modul)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Kleiner Wetter-Sensor von Bosch. Sehr genau, 3,3 V."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "bme280",
+"name": "BME280 (Modul)",
+"titel": "Temperatur, Luftfeuchte und Luftdruck (I²C/SPI)",
+"kurz": "Kleiner Wetter-Sensor von Bosch. Sehr genau, 3,3 V.",
+"familie": "Sensoren",
+"gehaeuse": "Modul 6 Pin",
+"pins": [
+"VCC:v",
+"GND:g",
+"SCL:i",
+"SDA:x",
+"CSB:i",
+"SDO:x"
+],
+"spannung": "1,7–3,6 V (Modul oft mit Regler bis 5 V).",
+"hinweise": [
+"I²C-Adresse 0x76 (SDO an GND) oder 0x77 (SDO an VCC).",
+"BMP280 hat keine Feuchte – Chip-ID 0x58 (BMP280) / 0x60 (BME280).",
+"Selbsterwärmung beachten: nicht direkt neben Wärmequellen betreiben.",
+"Reihenfolge je nach Platine verschieden – auf die Beschriftung der Platine achten."
+],
+"tags": "bme280 bmp280 wetter druck feuchte temperatur sensor i2c",
+"kerbe": false,
+"kat": "module",
+"uid": "module:bme280"
+}
+}
+],
+"siehe": [
+"bt_module:bus_i2c"
+],
+"familie": "Sensoren"
+},
+{
+"id": "module_mpu6050",
+"titel": "MPU-6050 (Modul)",
+"kurz": "6-Achsen-Beschleunigung und Gyroskop (I²C)",
+"tags": [
+"mpu6050",
+"gyro",
+"beschleunigung",
+"imu",
+"sensor",
+"i2c",
+"gy-521",
+"Sensoren",
+"Modul",
+"8",
+"Pin",
+"MPU-6050",
+"(Modul)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Beschleunigungssensor und Drehratensensor in einem. Beliebt für Balancier-Roboter und Lageerkennung."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "mpu6050",
+"name": "MPU-6050 (Modul)",
+"titel": "6-Achsen-Beschleunigung und Gyroskop (I²C)",
+"kurz": "Beschleunigungssensor und Drehratensensor in einem. Beliebt für Balancier-Roboter und Lageerkennung.",
+"familie": "Sensoren",
+"gehaeuse": "Modul 8 Pin",
+"pins": [
+"VCC:v",
+"GND:g",
+"SCL:i",
+"SDA:x",
+"XDA:x",
+"XCL:x",
+"AD0:i",
+"INT:o"
+],
+"spannung": "3–5 V (Modul mit Regler).",
+"hinweise": [
+"I²C-Adresse 0x68 (AD0 = LOW) oder 0x69 (AD0 = HIGH).",
+"Interrupt-Ausgang INT meldet neue Daten.",
+"Reihenfolge je nach Platine verschieden – auf die Beschriftung der Platine achten."
+],
+"tags": "mpu6050 gyro beschleunigung imu sensor i2c gy-521",
+"kerbe": false,
+"kat": "module",
+"uid": "module:mpu6050"
+}
+}
+],
+"familie": "Sensoren"
+},
+{
+"id": "module_hcsr501",
+"titel": "HC-SR501 (PIR)",
+"kurz": "Bewegungsmelder (PIR-Sensor)",
+"tags": [
+"pir",
+"bewegung",
+"hc-sr501",
+"bewegungsmelder",
+"Sensoren",
+"Modul",
+"3",
+"Pin",
+"HC-SR501",
+"(PIR)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Erkennt Wärmebewegung (Menschen, Tiere). Ausgang ist HIGH bei Bewegung."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "hcsr501",
+"name": "HC-SR501 (PIR)",
+"titel": "Bewegungsmelder (PIR-Sensor)",
+"kurz": "Erkennt Wärmebewegung (Menschen, Tiere). Ausgang ist HIGH bei Bewegung.",
+"familie": "Sensoren",
+"gehaeuse": "Modul 3 Pin",
+"pins": [
+"VCC:v",
+"OUT:o",
+"GND:g"
+],
+"spannung": "5–20 V (3,3-V-Ausgang).",
+"hinweise": [
+"Zwei Potis: Empfindlichkeit und Haltezeit.",
+"Lötbrücke für Einzel- / Wiederholtrigger.",
+"Ausgang liefert 3,3 V – auch für Raspberry Pi geeignet."
+],
+"tags": "pir bewegung hc-sr501 bewegungsmelder",
+"kerbe": false,
+"kat": "module",
+"uid": "module:hcsr501"
+}
+}
+],
+"familie": "Sensoren"
+},
+{
+"id": "module_ssd1306",
+"titel": "SSD1306 OLED (I²C)",
+"kurz": "OLED-Display 0,96″, 128 × 64",
+"tags": [
+"oled",
+"ssd1306",
+"display",
+"i2c",
+"128x64",
+"Display",
+"Modul",
+"4",
+"Pin",
+"SSD1306",
+"OLED",
+"(I²C)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Kleines, kontrastreiches Display. Gibt es mit 4-Pin I²C (häufig) oder 7-Pin SPI."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "ssd1306",
+"name": "SSD1306 OLED (I²C)",
+"titel": "OLED-Display 0,96″, 128 × 64",
+"kurz": "Kleines, kontrastreiches Display. Gibt es mit 4-Pin I²C (häufig) oder 7-Pin SPI.",
+"familie": "Display",
+"gehaeuse": "Modul 4 Pin",
+"pins": [
+"GND:g",
+"VCC:v",
+"SCL:i",
+"SDA:x"
+],
+"spannung": "3,3–5 V (Modul).",
+"hinweise": [
+"I²C-Adresse 0x3C (manchmal 0x3D).",
+"Pin-Reihenfolge kann (GND, VCC, SCL, SDA) oder (VCC, GND, SCL, SDA) sein – auf der Platine nachsehen!",
+"Raspberry Pi: I²C an GPIO2 (SDA) / GPIO3 (SCL) aktivieren.",
+"Moderne Treiber: luma.oled (Python), Adafruit_SSD1306."
+],
+"tags": "oled ssd1306 display i2c 128x64",
+"kerbe": false,
+"kat": "module",
+"uid": "module:ssd1306"
+}
+}
+],
+"familie": "Display"
+},
+{
+"id": "module_hd44780",
+"titel": "HD44780-LCD (16 × 2)",
+"kurz": "Alphanumerisches Zeichen-LCD",
+"tags": [
+"lcd",
+"hd44780",
+"1602",
+"display",
+"zeichen",
+"i2c",
+"Display",
+"SIP-16",
+"HD44780-LCD",
+"(16",
+"×",
+"2)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Standard-Textdisplay mit 16 Anschlüssen. Im 4-Bit-Modus reichen 6 Datenleitungen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "hd44780",
+"name": "HD44780-LCD (16 × 2)",
+"titel": "Alphanumerisches Zeichen-LCD",
+"kurz": "Standard-Textdisplay mit 16 Anschlüssen. Im 4-Bit-Modus reichen 6 Datenleitungen.",
+"familie": "Display",
+"gehaeuse": "SIP-16",
+"pins": [
+"VSS:g",
+"VDD:v",
+"V0:x",
+"RS:i",
+"RW:i",
+"E:i",
+"D0:x",
+"D1:x",
+"D2:x",
+"D3:x",
+"D4:x",
+"D5:x",
+"D6:x",
+"D7:x",
+"A:v",
+"K:g"
+],
+"spannung": "5 V (3,3-V-Varianten vorhanden).",
+"hinweise": [
+"V0 = Kontrast (Poti 10 kΩ zwischen VDD und GND, Schleifer an V0).",
+"RW an GND, wenn nur geschrieben wird.",
+"4-Bit-Modus: D4…D7 benutzen, D0…D3 offen.",
+"Mit I²C-Adapter (PCF8574): nur 4 Drähte nötig, Adresse 0x27 oder 0x3F.",
+"Raspberry Pi: 5-V-Pegel nur mit Pegelwandler; mit RW an GND reicht 3,3 V Steuerung oft."
+],
+"tags": "lcd hd44780 1602 display zeichen i2c",
+"kerbe": false,
+"kat": "module",
+"uid": "module:hd44780"
+}
+}
+],
+"familie": "Display"
+},
+{
+"id": "module_ws2812b",
+"titel": "WS2812B / NeoPixel",
+"kurz": "Adressierbare RGB-LED mit eingebautem Controller",
+"tags": [
+"ws2812b",
+"neopixel",
+"led",
+"strip",
+"rgb",
+"adressierbar",
+"Dioden",
+"und",
+"LEDs",
+"SMD",
+"5050",
+"(4",
+"Pin)",
+"WS2812B",
+"/",
+"NeoPixel",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Eine einzige Datenleitung steuert beliebig viele LEDs in Reihe. Jede LED: 24 Bit (je 8 Bit für G, R, B)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "ws2812b",
+"name": "WS2812B / NeoPixel",
+"titel": "Adressierbare RGB-LED mit eingebautem Controller",
+"kurz": "Eine einzige Datenleitung steuert beliebig viele LEDs in Reihe. Jede LED: 24 Bit (je 8 Bit für G, R, B).",
+"familie": "Dioden und LEDs",
+"gehaeuse": "SMD 5050 (4 Pin)",
+"pins": [
+"VDD:v",
+"DOUT:o",
+"VSS:g",
+"DIN:i"
+],
+"spannung": "5 V (Daten ≥ 0,7 · VDD).",
+"hinweise": [
+"Pro LED bis 60 mA (weiß, voll hell). Netzteil entsprechend dimensionieren.",
+"5-V-Daten: bei 3,3-V-Mikrocontroller Pegelwandler (74HCT125, 74AHCT1G125) oder 3,3 → 5 V über Diode.",
+"330 Ω in die Datenleitung, 1000 µF an der Versorgung (Einschaltstrom).",
+"Datenrichtung beachten: DIN → DOUT.",
+"Reihenfolge der Farben: G R B (nicht RGB)."
+],
+"tags": "ws2812b neopixel led strip rgb adressierbar",
+"kerbe": false,
+"kat": "module",
+"uid": "module:ws2812b"
+}
+}
+],
+"siehe": [
+"bt_wissen:wissen_pegel"
+],
+"familie": "Dioden und LEDs"
+},
+{
+"id": "module_nrf24l01",
+"titel": "nRF24L01+ (Modul)",
+"kurz": "2,4-GHz-Funkmodul (SPI)",
+"tags": [
+"nrf24",
+"funk",
+"modul",
+"2.4",
+"ghz",
+"spi",
+"Funk",
+"Modul",
+"2",
+"×",
+"4",
+"nRF24L01+",
+"(Modul)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Preiswerte Funkstrecke für Sensor- und Fernsteuerungsprojekte. 3,3 V, Reichweite 20–100 m (PA+LNA-Version mehr)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "nrf24l01",
+"name": "nRF24L01+ (Modul)",
+"titel": "2,4-GHz-Funkmodul (SPI)",
+"kurz": "Preiswerte Funkstrecke für Sensor- und Fernsteuerungsprojekte. 3,3 V, Reichweite 20–100 m (PA+LNA-Version mehr).",
+"familie": "Funk",
+"gehaeuse": "Modul 2 × 4",
+"pins": [
+"GND:g",
+"VCC:v",
+"CE:i",
+"CSN:i",
+"SCK:i",
+"MOSI:i",
+"MISO:o",
+"IRQ:o"
+],
+"spannung": "1,9–3,6 V!",
+"hinweise": [
+"Betriebsspannung 3,3 V; Logik-Pins 5-V-tolerant.",
+"Braucht stabile Spannung: 10 µF + 100 nF direkt am Modul, bei Problemen 100 µF.",
+"Reihenfolge je nach Platine verschieden – auf die Beschriftung der Platine achten."
+],
+"tags": "nrf24 funk modul 2.4 ghz spi",
+"kerbe": false,
+"kat": "module",
+"uid": "module:nrf24l01"
+}
+}
+],
+"familie": "Funk"
+},
+{
+"id": "module_hc05",
+"titel": "HC-05 (Modul)",
+"kurz": "Bluetooth-Seriell-Modul",
+"tags": [
+"bluetooth",
+"hc05",
+"hc-05",
+"uart",
+"modul",
+"Funk",
+"Modul",
+"6",
+"Pin",
+"HC-05",
+"(Modul)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Klassisches Bluetooth (SPP) als UART-Brücke. Master oder Slave einstellbar über AT-Befehle."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "hc05",
+"name": "HC-05 (Modul)",
+"titel": "Bluetooth-Seriell-Modul",
+"kurz": "Klassisches Bluetooth (SPP) als UART-Brücke. Master oder Slave einstellbar über AT-Befehle.",
+"familie": "Funk",
+"gehaeuse": "Modul 6 Pin",
+"pins": [
+"STATE:o",
+"RXD:i",
+"TXD:o",
+"GND:g",
+"VCC:v",
+"EN:i"
+],
+"spannung": "3,6–6 V (VCC), UART 3,3 V.",
+"hinweise": [
+"Datenleitungen sind 3,3 V: RXD des Moduls mit Spannungsteiler (1 kΩ / 2 kΩ) am 5-V-TXD.",
+"AT-Modus: EN (Key) beim Einschalten HIGH – Standard-Baudrate 38400.",
+"Standard-Baudrate im Betrieb meist 9600.",
+"Für moderne Projekte lieber ESP32 (BLE) verwenden."
+],
+"tags": "bluetooth hc05 hc-05 uart modul",
+"kerbe": false,
+"kat": "module",
+"uid": "module:hc05"
+}
+}
+],
+"familie": "Funk"
+},
+{
+"id": "module_servo",
+"titel": "Servo (SG90)",
+"kurz": "Modellbau-Servo (Winkel per PWM)",
+"tags": [
+"servo",
+"sg90",
+"pwm",
+"motor",
+"modellbau",
+"Motor",
+"Stecker",
+"3",
+"Pin",
+"Servo",
+"(SG90)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Fährt je nach PWM-Impulsbreite einen Winkel an (meist 0–180°)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "servo",
+"name": "Servo (SG90)",
+"titel": "Modellbau-Servo (Winkel per PWM)",
+"kurz": "Fährt je nach PWM-Impulsbreite einen Winkel an (meist 0–180°).",
+"familie": "Motor",
+"gehaeuse": "Stecker 3 Pin",
+"pins": [
+"GND:g",
+"VCC:v",
+"SIGNAL:i"
+],
+"spannung": "4,8–6 V.",
+"hinweise": [
+"Kabelfarben SG90: Braun = GND, Rot = +5 V, Orange = Signal.",
+"Signal: 50 Hz (20 ms), Impuls 1 ms = 0°, 1,5 ms = Mitte, 2 ms = 180° (typisch, je nach Servo 0,5–2,5 ms).",
+"Servo NICHT direkt vom Pi-/Arduino-5-V versorgen (Stromspitzen): eigene Versorgung, GND verbinden.",
+"Zittern: stabiles Netzteil, Elko 470 µF an der Versorgung."
+],
+"tags": "servo sg90 pwm motor modellbau",
+"kerbe": false,
+"kat": "module",
+"uid": "module:servo"
+}
+}
+],
+"familie": "Motor"
+},
+{
+"id": "module_28byj48",
+"titel": "28BYJ-48 + ULN2003",
+"kurz": "Unipolarer Schrittmotor mit Treiberplatine",
+"tags": [
+"28byj-48",
+"schrittmotor",
+"stepper",
+"uln2003",
+"Motor",
+"Modul",
+"4",
+"+",
+"2",
+"28BYJ-48",
+"+",
+"ULN2003",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Kleiner billiger Schrittmotor (5 V) mit Getriebe, ca. 2048 Schritte pro Umdrehung (Halbschritt 4096)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "28byj48",
+"name": "28BYJ-48 + ULN2003",
+"titel": "Unipolarer Schrittmotor mit Treiberplatine",
+"kurz": "Kleiner billiger Schrittmotor (5 V) mit Getriebe, ca. 2048 Schritte pro Umdrehung (Halbschritt 4096).",
+"familie": "Motor",
+"gehaeuse": "Modul 4 + 2",
+"pins": [
+"IN1:i",
+"IN2:i",
+"IN3:i",
+"IN4:i",
+"GND+:g",
+"VCC:v"
+],
+"spannung": "5 V.",
+"hinweise": [
+"Steuerung der vier Spulen über IN1 … IN4 (Treiber ULN2003).",
+"Halbschritt-Folge: IN1; IN1+IN2; IN2; IN2+IN3; IN3; IN3+IN4; IN4; IN4+IN1.",
+"Nicht zu schnell fahren (max. ca. 15 U/min mit Last).",
+"Motor nicht aus dem Pi-5-V-Pin versorgen, besser extern."
+],
+"tags": "28byj-48 schrittmotor stepper uln2003",
+"kerbe": false,
+"kat": "module",
+"uid": "module:28byj48"
+}
+}
+],
+"siehe": [
+"bt_katalog:bauteile_uln2003"
+],
+"familie": "Motor"
+},
+{
+"id": "module_ky040",
+"titel": "KY-040 Drehgeber",
+"kurz": "Drehgeber mit Taster (Rotary Encoder)",
+"tags": [
+"drehgeber",
+"encoder",
+"ky-040",
+"rotary",
+"Eingabe",
+"Modul",
+"5",
+"Pin",
+"KY-040",
+"Drehgeber",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Liefert zwei um 90° versetzte Signale (CLK / DT). Aus der Reihenfolge erkennt man die Drehrichtung."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "ky040",
+"name": "KY-040 Drehgeber",
+"titel": "Drehgeber mit Taster (Rotary Encoder)",
+"kurz": "Liefert zwei um 90° versetzte Signale (CLK / DT). Aus der Reihenfolge erkennt man die Drehrichtung.",
+"familie": "Eingabe",
+"gehaeuse": "Modul 5 Pin",
+"pins": [
+"CLK:o",
+"DT:o",
+"SW:o",
+"+:v",
+"GND:g"
+],
+"spannung": "3,3–5 V.",
+"hinweise": [
+"Pins (Modul): GND, +, SW, DT, CLK – Reihenfolge je nach Platine prüfen.",
+"Entprellen nötig (100 nF an CLK/DT nach GND oder Software).",
+"Drehrichtung: bei fallender Flanke von CLK Pegel von DT prüfen.",
+"Reihenfolge je nach Platine verschieden – auf die Beschriftung der Platine achten."
+],
+"tags": "drehgeber encoder ky-040 rotary",
+"kerbe": false,
+"kat": "module",
+"uid": "module:ky040"
+}
+}
+],
+"familie": "Eingabe"
+},
+{
+"id": "module_relaismodul",
+"titel": "Relais-Modul (1-Kanal)",
+"kurz": "Relais auf Platine mit Treiber und Optokoppler",
+"tags": [
+"relais",
+"modul",
+"schalten",
+"netz",
+"active",
+"low",
+"Schalter",
+"Modul",
+"Relais-Modul",
+"(1-Kanal)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Schaltet Lasten mit Kontakten (COM / NO / NC) – Steuerseite mit 3,3 V oder 5 V."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "relaismodul",
+"name": "Relais-Modul (1-Kanal)",
+"titel": "Relais auf Platine mit Treiber und Optokoppler",
+"kurz": "Schaltet Lasten mit Kontakten (COM / NO / NC) – Steuerseite mit 3,3 V oder 5 V.",
+"familie": "Schalter",
+"gehaeuse": "Modul",
+"pins": [
+"VCC:v",
+"GND:g",
+"IN:i",
+"COM:x",
+"NO:x",
+"NC:x"
+],
+"spannung": "Spule 5 V; Kontakt z. B. 10 A / 250 V.",
+"hinweise": [
+"Viele Module sind active LOW: IN = LOW → Relais zieht an.",
+"Spule 70–90 mA: nicht aus dem Pi-3,3-V-Pin, sondern aus 5 V.",
+"NO = Schließer (offen in Ruhe), NC = Öffner, COM = gemeinsam.",
+"Netzspannung nur mit Erfahrung anschließen und geeignet isolieren!"
+],
+"tags": "relais modul schalten netz active low",
+"kerbe": false,
+"kat": "module",
+"uid": "module:relaismodul"
+}
+}
+],
+"familie": "Schalter"
+},
+{
+"id": "module_hx711",
+"titel": "HX711 (Modul)",
+"kurz": "24-Bit-Wandler für Wägezellen",
+"tags": [
+"hx711",
+"waage",
+"wägezelle",
+"dms",
+"Sensoren",
+"Modul",
+"4",
+"Pin",
+"HX711",
+"(Modul)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Liest Dehnungsmessstreifen (Waagen) mit Verstärker. Zwei-Draht-Protokoll (DT / SCK, kein I²C)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "hx711",
+"name": "HX711 (Modul)",
+"titel": "24-Bit-Wandler für Wägezellen",
+"kurz": "Liest Dehnungsmessstreifen (Waagen) mit Verstärker. Zwei-Draht-Protokoll (DT / SCK, kein I²C).",
+"familie": "Sensoren",
+"gehaeuse": "Modul 4 Pin",
+"pins": [
+"GND:g",
+"DT:o",
+"SCK:i",
+"VCC:v"
+],
+"spannung": "2,6–5,5 V.",
+"hinweise": [
+"Wägezelle: rot = E+, schwarz = E−, weiß = A−, grün = A+ (üblich, Farben prüfen).",
+"Verstärkung 128 / 64 (Kanal A), 32 (Kanal B).",
+"Kalibrieren mit bekanntem Gewicht."
+],
+"tags": "hx711 waage wägezelle dms",
+"kerbe": false,
+"kat": "module",
+"uid": "module:hx711"
+}
+}
+],
+"familie": "Sensoren"
+},
+{
+"id": "module_tp4056",
+"titel": "TP4056 (Lademodul)",
+"kurz": "Li-Ion-Lader, 1 A, mit USB",
+"tags": [
+"tp4056",
+"lader",
+"li-ion",
+"akku",
+"laden",
+"Strom",
+"Modul",
+"TP4056",
+"(Lademodul)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Lädt einzelne Li-Ion-Zellen (4,2 V) per Konstantstrom / Konstantspannung. Ladestrom wird durch einen Widerstand eingestellt."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "tp4056",
+"name": "TP4056 (Lademodul)",
+"titel": "Li-Ion-Lader, 1 A, mit USB",
+"kurz": "Lädt einzelne Li-Ion-Zellen (4,2 V) per Konstantstrom / Konstantspannung. Ladestrom wird durch einen Widerstand eingestellt.",
+"familie": "Strom",
+"gehaeuse": "Modul",
+"pins": [],
+"spannung": "5 V Eingang, 4,2 V Ladeschluss.",
+"hinweise": [
+"Ohne Schutzschaltung (DW01 + FS8205) gibt es keine Tiefentladeabschaltung – Modul mit Schutz verwenden.",
+"Ladestrom: Rprog 1,2 kΩ = 1 A, 2 kΩ = 580 mA, 10 kΩ = 130 mA.",
+"LED rot = lädt, blau/grün = voll.",
+"Beim Laden nicht auf brennbarem Untergrund; keine beschädigten Zellen laden.",
+"Zellen nie umpolen."
+],
+"tags": "tp4056 lader li-ion akku laden",
+"kerbe": false,
+"kat": "module",
+"uid": "module:tp4056"
+}
+}
+],
+"familie": "Strom"
+},
+{
+"id": "module_buzzer",
+"titel": "Buzzer",
+"kurz": "Piezo-Summer: aktiv und passiv",
+"tags": [
+"buzzer",
+"piezo",
+"summer",
+"ton",
+"aktiv",
+"passiv",
+"Aktor",
+"Buzzer",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Aktiver Buzzer: hat einen eigenen Oszillator, macht bei Spannung einen festen Ton. Passiver Buzzer: braucht ein Tonsignal (PWM)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "buzzer",
+"name": "Buzzer",
+"titel": "Piezo-Summer: aktiv und passiv",
+"kurz": "Aktiver Buzzer: hat einen eigenen Oszillator, macht bei Spannung einen festen Ton. Passiver Buzzer: braucht ein Tonsignal (PWM).",
+"familie": "Aktor",
+"gehaeuse": "",
+"pins": [],
+"spannung": "3–5 V.",
+"hinweise": [
+"Aktiv: sieht aus wie ein verklebter Zylinder, hat „+“ markiert.",
+"Passiv: Ton wird per PWM (z. B. 2 kHz) erzeugt, Tonhöhe frei einstellbar.",
+"Strom ca. 10–30 mA: direkt oder über Transistor.",
+"Bei Magnet-Summern (Spule) Freilaufdiode antiparallel."
+],
+"tags": "buzzer piezo summer ton aktiv passiv",
+"kat": "module",
+"uid": "module:buzzer"
+}
+}
+],
+"familie": "Aktor"
+},
+{
+"id": "module_vmcu",
+"titel": "Mikrocontroller-Vergleich",
+"kurz": "Beliebte Mikrocontroller und Boards",
+"tags": [
+"mikrocontroller",
+"vergleich",
+"arduino",
+"pico",
+"esp32",
+"stm32",
+"rp2040",
+"atmega",
+"verzeichnis",
+"liste",
+"tabelle",
+"vergleich",
+"nachschlagen",
+"Verzeichnis",
+"(Tabelle)",
+"Mikrocontroller-Vergleich",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Kerne, Taktfrequenz und Speicher im Überblick."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "vmcu",
+"name": "Mikrocontroller-Vergleich",
+"titel": "Beliebte Mikrocontroller und Boards",
+"kurz": "Kerne, Taktfrequenz und Speicher im Überblick.",
+"familie": "Verzeichnis (Tabelle)",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Raspberry Pi (Linux-Computer) ist kein Mikrocontroller: viele Programme parallel, kein Echtzeitbetrieb.",
+"Werte sind Richtwerte aus gängigen Datenblättern – für die Auslegung immer das Datenblatt des Herstellers prüfen."
+],
+"tags": "mikrocontroller vergleich arduino pico esp32 stm32 rp2040 atmega verzeichnis liste tabelle vergleich nachschlagen",
+"tabelle": {
+"kopf": [
+"Chip",
+"Kern",
+"Takt",
+"RAM",
+"Logik"
+],
+"zeilen": [
+[
+"ATmega328P (Uno/Nano)",
+"8-Bit AVR",
+"16 MHz",
+"2 kB",
+"5 V"
+],
+[
+"ATtiny85",
+"8-Bit AVR",
+"8 MHz (intern)",
+"512 B",
+"2,7–5,5 V"
+],
+[
+"RP2040 (Pico)",
+"2 × Cortex-M0+",
+"133 MHz",
+"264 kB",
+"3,3 V"
+],
+[
+"ESP8266",
+"Xtensa L106",
+"80 / 160 MHz",
+"~80 kB",
+"3,3 V"
+],
+[
+"ESP32",
+"2 × Xtensa LX6",
+"240 MHz",
+"520 kB",
+"3,3 V"
+],
+[
+"ESP32-C3",
+"RISC-V",
+"160 MHz",
+"400 kB",
+"3,3 V"
+],
+[
+"STM32F103 (Blue Pill)",
+"Cortex-M3",
+"72 MHz",
+"20 kB",
+"3,3 V"
+],
+[
+"nRF52840",
+"Cortex-M4F",
+"64 MHz",
+"256 kB",
+"1,7–3,6 V"
+]
+]
+},
+"kat": "module",
+"uid": "module:vmcu"
+}
+}
+],
+"familie": "Verzeichnis (Tabelle)"
+},
+{
+"id": "module_vsensor",
+"titel": "Sensoren-Verzeichnis",
+"kurz": "Gängige Sensoren und ihre Schnittstellen",
+"tags": [
+"sensor",
+"temperatur",
+"feuchte",
+"licht",
+"entfernung",
+"i2c",
+"adresse",
+"bme280",
+"mpu6050",
+"ina219",
+"verzeichnis",
+"liste",
+"tabelle",
+"vergleich",
+"nachschlagen",
+"Verzeichnis",
+"(Tabelle)",
+"Sensoren-Verzeichnis",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Welcher Sensor, welcher Bus, welche Adresse?"
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "vsensor",
+"name": "Sensoren-Verzeichnis",
+"titel": "Gängige Sensoren und ihre Schnittstellen",
+"kurz": "Welcher Sensor, welcher Bus, welche Adresse?",
+"familie": "Verzeichnis (Tabelle)",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Adressen gelten für das Standardmodul – bei A0…A2-Pins ändern sie sich.",
+"Werte sind Richtwerte aus gängigen Datenblättern – für die Auslegung immer das Datenblatt des Herstellers prüfen."
+],
+"tags": "sensor temperatur feuchte licht entfernung i2c adresse bme280 mpu6050 ina219 verzeichnis liste tabelle vergleich nachschlagen",
+"tabelle": {
+"kopf": [
+"Sensor",
+"Misst",
+"Schnittstelle",
+"Adresse"
+],
+"zeilen": [
+[
+"DS18B20",
+"Temperatur",
+"1-Wire",
+"–"
+],
+[
+"LM35 / TMP36",
+"Temperatur",
+"analog",
+"–"
+],
+[
+"DHT22 / DHT11",
+"Temp. + Feuchte",
+"1 Draht (eigen)",
+"–"
+],
+[
+"BME280",
+"Temp., Feuchte, Druck",
+"I²C / SPI",
+"0x76 / 0x77"
+],
+[
+"BMP280",
+"Temp., Druck",
+"I²C / SPI",
+"0x76 / 0x77"
+],
+[
+"SHT31",
+"Temp. + Feuchte",
+"I²C",
+"0x44 / 0x45"
+],
+[
+"BH1750",
+"Licht (Lux)",
+"I²C",
+"0x23 / 0x5C"
+],
+[
+"VL53L0X",
+"Entfernung (ToF)",
+"I²C",
+"0x29"
+],
+[
+"HC-SR04",
+"Entfernung (Ultraschall)",
+"GPIO",
+"–"
+],
+[
+"MPU-6050",
+"Beschleunigung + Gyro",
+"I²C",
+"0x68 / 0x69"
+],
+[
+"HMC5883L / QMC5883L",
+"Magnetfeld",
+"I²C",
+"0x1E / 0x0D"
+],
+[
+"INA219",
+"Strom + Spannung",
+"I²C",
+"0x40…0x4F"
+],
+[
+"ADS1115",
+"16-Bit-ADC",
+"I²C",
+"0x48…0x4B"
+],
+[
+"NEO-6M",
+"GPS",
+"UART 9600",
+"–"
+],
+[
+"MAX31855",
+"Thermoelement",
+"SPI",
+"–"
+]
+]
+},
+"kat": "module",
+"uid": "module:vsensor"
+}
+}
+],
+"familie": "Verzeichnis (Tabelle)"
+},
+{
+"id": "module_vdisplay",
+"titel": "Display-Verzeichnis",
+"kurz": "Typische Displays und ihre Controller",
+"tags": [
+"display",
+"oled",
+"tft",
+"lcd",
+"ssd1306",
+"ili9341",
+"st7789",
+"hd44780",
+"max7219",
+"verzeichnis",
+"liste",
+"tabelle",
+"vergleich",
+"nachschlagen",
+"Verzeichnis",
+"(Tabelle)",
+"Display-Verzeichnis",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"OLED, TFT, LCD und LED-Anzeigen mit Controller und Schnittstelle."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "vdisplay",
+"name": "Display-Verzeichnis",
+"titel": "Typische Displays und ihre Controller",
+"kurz": "OLED, TFT, LCD und LED-Anzeigen mit Controller und Schnittstelle.",
+"familie": "Verzeichnis (Tabelle)",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Werte sind Richtwerte aus gängigen Datenblättern – für die Auslegung immer das Datenblatt des Herstellers prüfen."
+],
+"tags": "display oled tft lcd ssd1306 ili9341 st7789 hd44780 max7219 verzeichnis liste tabelle vergleich nachschlagen",
+"tabelle": {
+"kopf": [
+"Display",
+"Größe",
+"Controller",
+"Schnittstelle"
+],
+"zeilen": [
+[
+"OLED 0,96″",
+"128×64",
+"SSD1306",
+"I²C (0x3C) / SPI"
+],
+[
+"OLED 1,3″",
+"128×64",
+"SH1106",
+"I²C (0x3C) / SPI"
+],
+[
+"LCD 16×2 / 20×4",
+"Zeichen",
+"HD44780",
+"parallel (+ PCF8574)"
+],
+[
+"TFT 1,8″",
+"128×160",
+"ST7735",
+"SPI"
+],
+[
+"TFT 2,4″ / 2,8″",
+"240×320",
+"ILI9341",
+"SPI"
+],
+[
+"TFT 1,3″ / 1,54″",
+"240×240",
+"ST7789",
+"SPI"
+],
+[
+"E-Paper 2,9″",
+"296×128",
+"SSD1680 u. a.",
+"SPI"
+],
+[
+"Nokia 5110",
+"84×48",
+"PCD8544",
+"SPI"
+],
+[
+"7-Segment 4-stellig",
+"–",
+"TM1637 / MAX7219",
+"2-Draht / SPI"
+],
+[
+"LED-Matrix 8×8",
+"–",
+"MAX7219",
+"SPI"
+],
+[
+"WS2812B-Matrix",
+"variabel",
+"eingebaut",
+"1 Draht"
+]
+]
+},
+"kat": "module",
+"uid": "module:vdisplay"
+}
+}
+],
+"familie": "Verzeichnis (Tabelle)"
+},
+{
+"id": "module_vfunk",
+"titel": "Funk- und RFID-Module",
+"kurz": "Funkmodule im Vergleich",
+"tags": [
+"funk",
+"lora",
+"nrf24",
+"hc-12",
+"rfid",
+"rc522",
+"nfc",
+"bluetooth",
+"433",
+"verzeichnis",
+"liste",
+"tabelle",
+"vergleich",
+"nachschlagen",
+"Verzeichnis",
+"(Tabelle)",
+"Funk-",
+"und",
+"RFID-Module",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Reichweite, Frequenz und Schnittstelle."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "vfunk",
+"name": "Funk- und RFID-Module",
+"titel": "Funkmodule im Vergleich",
+"kurz": "Reichweite, Frequenz und Schnittstelle.",
+"familie": "Verzeichnis (Tabelle)",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Funk: Sendeleistung, Frequenzbereiche und Sendezeiten sind gesetzlich geregelt – für Dauerbetrieb die gültigen Vorschriften (z. B. der Bundesnetzagentur) prüfen.",
+"Werte sind Richtwerte aus gängigen Datenblättern – für die Auslegung immer das Datenblatt des Herstellers prüfen."
+],
+"tags": "funk lora nrf24 hc-12 rfid rc522 nfc bluetooth 433 verzeichnis liste tabelle vergleich nachschlagen",
+"tabelle": {
+"kopf": [
+"Modul",
+"Frequenz",
+"Reichweite",
+"Schnittstelle"
+],
+"zeilen": [
+[
+"nRF24L01+",
+"2,4 GHz",
+"20–100 m",
+"SPI"
+],
+[
+"ESP-NOW (ESP32/ESP8266)",
+"2,4 GHz",
+"~100 m",
+"—"
+],
+[
+"HC-05 / HC-06",
+"2,4 GHz Bluetooth",
+"~10 m",
+"UART"
+],
+[
+"HC-12",
+"433 MHz",
+"bis ~1 km (offen)",
+"UART"
+],
+[
+"LoRa SX1276 / RFM95",
+"868 MHz (EU)",
+"km-Bereich",
+"SPI"
+],
+[
+"433-MHz-ASK (FS1000A)",
+"433 MHz",
+"~50 m",
+"digital"
+],
+[
+"RC522 (RFID)",
+"13,56 MHz",
+"wenige cm",
+"SPI"
+],
+[
+"PN532 (NFC)",
+"13,56 MHz",
+"wenige cm",
+"I²C / SPI / UART"
+],
+[
+"ESP-01 (ESP8266)",
+"2,4 GHz WLAN",
+"—",
+"UART (AT)"
+]
+]
+},
+"kat": "module",
+"uid": "module:vfunk"
+}
+}
+],
+"familie": "Verzeichnis (Tabelle)"
+},
+{
+"id": "bus_i2c",
+"titel": "I²C",
+"kurz": "Zwei-Draht-Bus (SDA / SCL)",
+"tags": [
+"i2c",
+"bus",
+"sda",
+"scl",
+"pullup",
+"adresse",
+"i2cdetect",
+"twi",
+"Bus",
+"I²C",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein Master spricht mit vielen Geräten über nur zwei Leitungen. Jedes Gerät hat eine 7-Bit-Adresse."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "i2c",
+"name": "I²C",
+"titel": "Zwei-Draht-Bus (SDA / SCL)",
+"kurz": "Ein Master spricht mit vielen Geräten über nur zwei Leitungen. Jedes Gerät hat eine 7-Bit-Adresse.",
+"familie": "Bus",
+"gehaeuse": "",
+"pins": [],
+"spannung": "3,3 V oder 5 V (Pegel beachten).",
+"hinweise": [
+"SDA = Daten, SCL = Takt. Beide Leitungen mit Pull-up-Widerständen nach VCC (typisch 4,7 kΩ bei 100 kHz, 2,2 kΩ bei 400 kHz).",
+"Geschwindigkeiten: 100 kHz (Standard), 400 kHz (Fast), 1 MHz (Fast+).",
+"Adressen: 0x03 … 0x77. Raspberry Pi: `i2cdetect -y 1` zeigt angeschlossene Geräte.",
+"Zwei Geräte mit gleicher Adresse gehen nicht am gleichen Bus – Adress-Pins (A0 …) nutzen oder Multiplexer (TCA9548A).",
+"Pegel mischen (3,3 V ↔ 5 V): BSS138-Pegelwandler oder PCA9306.",
+"Kabel kurz halten (unter ca. 1 m), sonst Fehler durch Kapazität."
+],
+"tags": "i2c bus sda scl pullup adresse i2cdetect twi",
+"tabelle": {
+"kopf": [
+"Gerät",
+"Adresse"
+],
+"zeilen": [
+[
+"SSD1306 OLED",
+"0x3C / 0x3D"
+],
+[
+"PCF8574 (LCD-Adapter)",
+"0x20…0x27 / 0x38…0x3F"
+],
+[
+"MCP23017",
+"0x20…0x27"
+],
+[
+"24LC256 EEPROM",
+"0x50…0x57"
+],
+[
+"DS3231 / DS1307",
+"0x68"
+],
+[
+"MPU-6050",
+"0x68 / 0x69"
+],
+[
+"BME280 / BMP280",
+"0x76 / 0x77"
+],
+[
+"ADS1115",
+"0x48…0x4B"
+],
+[
+"PCF8591",
+"0x48…0x4F"
+],
+[
+"INA219",
+"0x40…0x4F"
+]
+]
+},
+"kat": "bus",
+"uid": "bus:i2c"
+}
+}
+],
+"siehe": [
+"bt_module:module_pi-gpio",
+"bt_katalog:bauteile_bss138"
+],
+"familie": "Bus"
+},
+{
+"id": "bus_spi",
+"titel": "SPI",
+"kurz": "Vierdraht-Bus (SCK / MOSI / MISO / CS)",
+"tags": [
+"spi",
+"bus",
+"sck",
+"mosi",
+"miso",
+"cs",
+"chip",
+"select",
+"Bus",
+"SPI",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Schneller serieller Bus. Ein Master, mehrere Slaves – jeder Slave hat eine eigene Chip-Select-Leitung."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "spi",
+"name": "SPI",
+"titel": "Vierdraht-Bus (SCK / MOSI / MISO / CS)",
+"kurz": "Schneller serieller Bus. Ein Master, mehrere Slaves – jeder Slave hat eine eigene Chip-Select-Leitung.",
+"familie": "Bus",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"SCK = Takt, MOSI = Master → Slave, MISO = Slave → Master, /CS = Chip Select (LOW = aktiv).",
+"Vier Modi (0–3) je nach Takt-Polarität (CPOL) und Phase (CPHA). Meist Modus 0.",
+"Geschwindigkeit je nach Chip: 1 … 50 MHz. Raspberry Pi: SPI0 (GPIO 10, 9, 11, CE0 = 8, CE1 = 7).",
+"MISO eines nicht gewählten Slaves ist hochohmig – nur ein Slave darf zur gleichen Zeit senden.",
+"Lange Leitungen: Serienwiderstände 33 Ω."
+],
+"tags": "spi bus sck mosi miso cs chip select",
+"tabelle": {
+"kopf": [
+"Modus",
+"CPOL",
+"CPHA",
+"Takt im Ruhezustand"
+],
+"zeilen": [
+[
+"0",
+"0",
+"0",
+"LOW"
+],
+[
+"1",
+"0",
+"1",
+"LOW"
+],
+[
+"2",
+"1",
+"0",
+"HIGH"
+],
+[
+"3",
+"1",
+"1",
+"HIGH"
+]
+]
+},
+"kat": "bus",
+"uid": "bus:spi"
+}
+}
+],
+"familie": "Bus"
+},
+{
+"id": "bus_uart",
+"titel": "UART (seriell)",
+"kurz": "Asynchrone serielle Schnittstelle (TX / RX)",
+"tags": [
+"uart",
+"seriell",
+"rx",
+"tx",
+"baudrate",
+"8n1",
+"ttl",
+"Bus",
+"UART",
+"(seriell)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zwei Leitungen, keine gemeinsame Taktleitung: beide Seiten müssen dieselbe Baudrate verwenden. Typisch 9600 … 115200 Baud, Format 8N1."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "uart",
+"name": "UART (seriell)",
+"titel": "Asynchrone serielle Schnittstelle (TX / RX)",
+"kurz": "Zwei Leitungen, keine gemeinsame Taktleitung: beide Seiten müssen dieselbe Baudrate verwenden. Typisch 9600 … 115200 Baud, Format 8N1.",
+"familie": "Bus",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"TX → RX und RX → TX (gekreuzt!), GND verbinden.",
+"8N1 = 8 Datenbits, keine Parität, 1 Stoppbit. Ruhepegel HIGH, Startbit LOW.",
+"Pegel: TTL (3,3 V / 5 V) – nicht direkt mit RS-232 verbinden (siehe MAX232)!",
+"Raspberry Pi: GPIO14 (TXD) und GPIO15 (RXD); Serial-Konsole und Hardware-UART in raspi-config einstellbar.",
+"Zeit pro Bit = 1 / Baudrate. 115200 Baud → ca. 8,7 µs."
+],
+"tags": "uart seriell rx tx baudrate 8n1 ttl",
+"formeln": [
+"Bitzeit = 1 / Baudrate",
+"Zeichen pro Sekunde ≈ Baudrate / 10 (bei 8N1)"
+],
+"kat": "bus",
+"uid": "bus:uart"
+}
+}
+],
+"siehe": [
+"bt_ic:decoder_max232",
+"bt_module:bus_rs232"
+],
+"familie": "Bus"
+},
+{
+"id": "bus_rs232",
+"titel": "RS-232 / DB9",
+"kurz": "Alte serielle Schnittstelle am PC",
+"tags": [
+"rs232",
+"db9",
+"d-sub",
+"seriell",
+"com",
+"nullmodem",
+"Bus",
+"D-Sub",
+"9",
+"RS-232",
+"/",
+"DB9",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Spannungspegel ±3…±15 V (typisch ±12 V). Nicht direkt mit Mikrocontroller-UART verbinden!"
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "rs232",
+"name": "RS-232 / DB9",
+"titel": "Alte serielle Schnittstelle am PC",
+"kurz": "Spannungspegel ±3…±15 V (typisch ±12 V). Nicht direkt mit Mikrocontroller-UART verbinden!",
+"familie": "Bus",
+"gehaeuse": "D-Sub 9",
+"pins": [
+"DCD:i",
+"RXD:i",
+"TXD:o",
+"DTR:o",
+"GND:g",
+"DSR:i",
+"RTS:o",
+"CTS:i",
+"RI:i"
+],
+"spannung": "±12 V.",
+"hinweise": [
+"D-Sub 9: Pins 1 DCD, 2 RXD, 3 TXD, 4 DTR, 5 GND, 6 DSR, 7 RTS, 8 CTS, 9 RI (aus Sicht des PCs / DTE).",
+"Nullmodem-Kabel: TXD ↔ RXD und RTS ↔ CTS gekreuzt.",
+"Pegelwandler: MAX232 (5 V), MAX3232 (3,3 V).",
+"Logik ist invertiert: 1 = negative Spannung."
+],
+"tags": "rs232 db9 d-sub seriell com nullmodem",
+"kerbe": false,
+"kat": "bus",
+"uid": "bus:rs232"
+}
+}
+],
+"siehe": [
+"bt_ic:decoder_max232"
+],
+"familie": "Bus"
+},
+{
+"id": "bus_rs485",
+"titel": "RS-485 / Modbus",
+"kurz": "Differentieller Bus für lange Leitungen",
+"tags": [
+"rs485",
+"modbus",
+"differenziell",
+"bus",
+"a",
+"b",
+"Bus",
+"RS-485",
+"/",
+"Modbus",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zwei Adern (A / B) tragen das Signal als Spannungsdifferenz. Robust gegen Störungen, bis 1200 m und 32 Teilnehmer (Standard)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "rs485",
+"name": "RS-485 / Modbus",
+"titel": "Differentieller Bus für lange Leitungen",
+"kurz": "Zwei Adern (A / B) tragen das Signal als Spannungsdifferenz. Robust gegen Störungen, bis 1200 m und 32 Teilnehmer (Standard).",
+"familie": "Bus",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Halbduplex: nur einer sendet, alle anderen hören zu (Richtung mit DE / /RE umschalten).",
+"Abschlusswiderstände 120 Ω an beiden Enden der Leitung.",
+"Verdrilltes Kabelpaar verwenden. GND-Verbindung zusätzlich empfohlen.",
+"Modbus RTU läuft meist über RS-485: 9600 / 19200 Baud, 8N1 oder 8E1."
+],
+"tags": "rs485 modbus differenziell bus a b",
+"kat": "bus",
+"uid": "bus:rs485"
+}
+}
+],
+"siehe": [
+"bt_module:module_max485"
+],
+"familie": "Bus"
+},
+{
+"id": "bus_onewire",
+"titel": "1-Wire",
+"kurz": "Ein-Draht-Bus (Dallas / Maxim)",
+"tags": [
+"1wire",
+"one",
+"wire",
+"ds18b20",
+"dallas",
+"bus",
+"Bus",
+"1-Wire",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Daten und Versorgung über eine einzige Leitung (plus GND). Jeder Chip hat eine eindeutige 64-Bit-Kennung."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "onewire",
+"name": "1-Wire",
+"titel": "Ein-Draht-Bus (Dallas / Maxim)",
+"kurz": "Daten und Versorgung über eine einzige Leitung (plus GND). Jeder Chip hat eine eindeutige 64-Bit-Kennung.",
+"familie": "Bus",
+"gehaeuse": "",
+"pins": [],
+"spannung": "3–5,5 V.",
+"hinweise": [
+"Pull-up 4,7 kΩ von DATA nach VCC.",
+"Bekanntester Vertreter: DS18B20 (Temperatursensor). Mehrere Sensoren am gleichen Draht möglich.",
+"Raspberry Pi: GPIO4 (Standard, in raspi-config / config.txt `dtoverlay=w1-gpio`) – Geräte erscheinen unter /sys/bus/w1/devices/."
+],
+"tags": "1wire one wire ds18b20 dallas bus",
+"kat": "bus",
+"uid": "bus:onewire"
+}
+}
+],
+"siehe": [
+"bt_katalog:bauteile_ds18b20"
+],
+"familie": "Bus"
+},
+{
+"id": "bus_can",
+"titel": "CAN-Bus",
+"kurz": "Robuster Fahrzeug-/Industrie-Bus",
+"tags": [
+"can",
+"bus",
+"auto",
+"mcp2515",
+"tja1050",
+"Bus",
+"CAN-Bus",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zwei Leitungen CAN-H und CAN-L, differenziell. Multi-Master, Priorität per Nachrichten-ID."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "can",
+"name": "CAN-Bus",
+"titel": "Robuster Fahrzeug-/Industrie-Bus",
+"kurz": "Zwei Leitungen CAN-H und CAN-L, differenziell. Multi-Master, Priorität per Nachrichten-ID.",
+"familie": "Bus",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Abschluss mit 120 Ω an beiden Enden (60 Ω gemessen zwischen H und L).",
+"Üblich: 500 kbit/s (Auto), 1 Mbit/s (kurz).",
+"Mikrocontroller braucht einen CAN-Transceiver (z. B. TJA1050, MCP2551) und gegebenenfalls einen Controller (MCP2515 per SPI)."
+],
+"tags": "can bus auto mcp2515 tja1050",
+"kat": "bus",
+"uid": "bus:can"
+}
+}
+],
+"familie": "Bus"
+},
+{
+"id": "bus_i2s",
+"titel": "I²S",
+"kurz": "Digitales Audio (Bit-/Wort-Takt)",
+"tags": [
+"i2s",
+"audio",
+"dac",
+"max98357",
+"pcm5102",
+"inmp441",
+"bclk",
+"Bus",
+"I²S",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Überträgt Audiodaten seriell: Bit-Clock (BCLK), Word-Select (LRCLK) und Daten (DIN / DOUT)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "i2s",
+"name": "I²S",
+"titel": "Digitales Audio (Bit-/Wort-Takt)",
+"kurz": "Überträgt Audiodaten seriell: Bit-Clock (BCLK), Word-Select (LRCLK) und Daten (DIN / DOUT).",
+"familie": "Bus",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Pi: GPIO18 (BCLK), GPIO19 (LRCLK), GPIO20 (DIN), GPIO21 (DOUT).",
+"Häufige Chips: MAX98357A (Verstärker), PCM5102 (DAC), INMP441 (Mikrofon).",
+"Mono / Stereo über LRCLK."
+],
+"tags": "i2s audio dac max98357 pcm5102 inmp441 bclk",
+"kat": "bus",
+"uid": "bus:i2s"
+}
+}
+],
+"familie": "Bus"
+},
+{
+"id": "bus_usb",
+"titel": "USB-Stecker",
+"kurz": "USB-A, Micro-B und USB-C im Überblick",
+"tags": [
+"usb",
+"stecker",
+"usb-c",
+"cc",
+"micro",
+"pinout",
+"Stecker",
+"USB-Stecker",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Pinbelegung und Farben der Standard-USB-Kabel. USB-C ist reversibel: zur Strom-Aushandlung dienen die CC-Pins."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "usb",
+"name": "USB-Stecker",
+"titel": "USB-A, Micro-B und USB-C im Überblick",
+"kurz": "Pinbelegung und Farben der Standard-USB-Kabel. USB-C ist reversibel: zur Strom-Aushandlung dienen die CC-Pins.",
+"familie": "Stecker",
+"gehaeuse": "",
+"pins": [],
+"spannung": "5 V (bis 20 V mit USB-PD).",
+"hinweise": [
+"USB-A / 2.0-Kabel: rot = +5 V, schwarz = GND, weiß = D−, grün = D+.",
+"USB-C: nur 5 V ohne Rücksprache – mit 5,1-kΩ-Widerständen von CC1 und CC2 nach GND meldet sich ein Gerät als „Sink“ und bekommt 5 V.",
+"USB 2.0 liefert 500 mA (100 mA vor Enumeration), USB 3.0 900 mA, USB-C 1,5 A / 3 A.",
+"Sicherung (Polyfuse) in der +5-V-Leitung schützt den Port."
+],
+"tags": "usb stecker usb-c cc micro pinout",
+"tabelle": {
+"kopf": [
+"Pin",
+"USB 2.0 Typ A",
+"Micro-B"
+],
+"zeilen": [
+[
+"1",
+"+5 V (rot)",
+"+5 V"
+],
+[
+"2",
+"D− (weiß)",
+"D−"
+],
+[
+"3",
+"D+ (grün)",
+"D+"
+],
+[
+"4",
+"GND (schwarz)",
+"ID"
+],
+[
+"5",
+"–",
+"GND"
+]
+]
+},
+"kat": "bus",
+"uid": "bus:usb"
+}
+}
+],
+"familie": "Stecker"
+},
+{
+"id": "bus_klinke",
+"titel": "Klinkenstecker 3,5 mm",
+"kurz": "Audio-Stecker TS / TRS / TRRS",
+"tags": [
+"klinke",
+"3,5mm",
+"audio",
+"trs",
+"trrs",
+"mono",
+"stereo",
+"stecker",
+"Stecker",
+"Klinkenstecker",
+"3,5",
+"mm",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Tip (Spitze), Ring, Sleeve (Hülse). Stereo-TRS: Tip = links, Ring = rechts, Sleeve = GND."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "klinke",
+"name": "Klinkenstecker 3,5 mm",
+"titel": "Audio-Stecker TS / TRS / TRRS",
+"kurz": "Tip (Spitze), Ring, Sleeve (Hülse). Stereo-TRS: Tip = links, Ring = rechts, Sleeve = GND.",
+"familie": "Stecker",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"TS (Mono): Spitze = Signal, Hülse = GND.",
+"TRS (Stereo): Spitze = L, Ring = R, Hülse = GND.",
+"TRRS (Smartphone-Headset): Spitze L, Ring 1 R, Ring 2 GND oder Mikrofon, Hülse Mikrofon oder GND – je nach Standard (CTIA / OMTP)."
+],
+"tags": "klinke 3,5mm audio trs trrs mono stereo stecker",
+"kat": "bus",
+"uid": "bus:klinke"
+}
+}
+],
+"familie": "Stecker"
+},
+{
+"id": "bus_dcbuchse",
+"titel": "DC-Hohlstecker",
+"kurz": "Netzteil-Anschluss (5,5 × 2,1 mm)",
+"tags": [
+"dc",
+"buchse",
+"hohlstecker",
+"netzteil",
+"polarität",
+"5,5x2,1",
+"Stecker",
+"DC-Hohlstecker",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Pluspol innen (Mitte) und Minus außen ist Standard, aber nicht garantiert."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "dcbuchse",
+"name": "DC-Hohlstecker",
+"titel": "Netzteil-Anschluss (5,5 × 2,1 mm)",
+"kurz": "Pluspol innen (Mitte) und Minus außen ist Standard, aber nicht garantiert.",
+"familie": "Stecker",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Standard: Innenkontakt = +, Außenhülse = − (center-positive).",
+"Gängige Maße: 5,5 × 2,1 mm und 5,5 × 2,5 mm; 3,5 × 1,35 mm für kleine Geräte.",
+"Polarität IMMER auf dem Netzteil-Aufdruck prüfen (Symbol ⊖—●—⊕).",
+"Verpolungsschutz: Diode oder P-MOSFET (z. B. IRLML6402) in Serie."
+],
+"tags": "dc buchse hohlstecker netzteil polarität 5,5x2,1",
+"kat": "bus",
+"uid": "bus:dcbuchse"
+}
+}
+],
+"familie": "Stecker"
+},
+{
+"id": "bus_jst",
+"titel": "Steckverbinder",
+"kurz": "Rastermaße und typische Stecker",
+"tags": [
+"stecker",
+"dupont",
+"jst",
+"molex",
+"rastermaß",
+"pitch",
+"header",
+"Stecker",
+"Steckverbinder",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Welcher Stecker passt wohin? Häufige Bastler-Steckverbinder."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "jst",
+"name": "Steckverbinder",
+"titel": "Rastermaße und typische Stecker",
+"kurz": "Welcher Stecker passt wohin? Häufige Bastler-Steckverbinder.",
+"familie": "Stecker",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Dupont / Stiftleiste: 2,54 mm (0,1″) – Steckbrett, Platinen.",
+"JST-XH: 2,5 mm – Akkus (Balancer), Module.",
+"JST-PH: 2,0 mm – LiPo-Akkus (kleine).",
+"JST-SH / Qwiic / STEMMA QT: 1,0 mm – I²C-Module.",
+"Molex KK: 2,54 mm – PC-Lüfter, Netzteil.",
+"Pin-Header: oft „Pitch“ genannt."
+],
+"tags": "stecker dupont jst molex rastermaß pitch header",
+"tabelle": {
+"kopf": [
+"Name",
+"Raster",
+"Einsatz"
+],
+"zeilen": [
+[
+"Dupont / Header",
+"2,54 mm",
+"Steckbrett"
+],
+[
+"JST-XH",
+"2,50 mm",
+"Balancer"
+],
+[
+"JST-PH",
+"2,00 mm",
+"LiPo"
+],
+[
+"JST-SH (Qwiic)",
+"1,00 mm",
+"I²C"
+],
+[
+"Molex KK",
+"2,54 mm",
+"Lüfter"
+]
+]
+},
+"kat": "bus",
+"uid": "bus:jst"
+}
+}
+],
+"familie": "Stecker"
+},
+{
+"id": "bus_rj45",
+"titel": "RJ45 / Ethernet",
+"kurz": "Ethernet-Kabel T568B-Belegung",
+"tags": [
+"rj45",
+"ethernet",
+"cat5",
+"cat6",
+"kabel",
+"t568b",
+"netzwerk",
+"Stecker",
+"RJ45",
+"/",
+"Ethernet",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Farbfolge der acht Adern im Stecker bei Standard-Patchkabeln (T568B)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "rj45",
+"name": "RJ45 / Ethernet",
+"titel": "Ethernet-Kabel T568B-Belegung",
+"kurz": "Farbfolge der acht Adern im Stecker bei Standard-Patchkabeln (T568B).",
+"familie": "Stecker",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Stecker mit Kontakten nach oben, Rastnase unten, Kabel zeigt weg: Pin 1 links.",
+"Adernpaare: (1,2) Senden, (3,6) Empfangen, (4,5) und (7,8) bei Gigabit zusätzlich.",
+"Crossover-Kabel: T568A auf der einen Seite, T568B auf der anderen (heute meist nicht mehr nötig)."
+],
+"tags": "rj45 ethernet cat5 cat6 kabel t568b netzwerk",
+"tabelle": {
+"kopf": [
+"Pin",
+"T568B Farbe",
+"Funktion (10/100)"
+],
+"zeilen": [
+[
+"1",
+"weiß/orange",
+"TX+"
+],
+[
+"2",
+"orange",
+"TX−"
+],
+[
+"3",
+"weiß/grün",
+"RX+"
+],
+[
+"4",
+"blau",
+"–"
+],
+[
+"5",
+"weiß/blau",
+"–"
+],
+[
+"6",
+"grün",
+"RX−"
+],
+[
+"7",
+"weiß/braun",
+"–"
+],
+[
+"8",
+"braun",
+"–"
+]
+]
+},
+"kat": "bus",
+"uid": "bus:rj45"
+}
+}
+],
+"familie": "Stecker"
+},
+{
+"id": "bus_swd",
+"titel": "SWD / JTAG",
+"kurz": "Debug-Schnittstelle für ARM-Mikrocontroller",
+"tags": [
+"swd",
+"jtag",
+"debug",
+"programmer",
+"openocd",
+"stlink",
+"Debug",
+"Header",
+"4",
+"Pin",
+"SWD",
+"/",
+"JTAG",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Programmieren und Debuggen von STM32, RP2040 u. a. mit zwei Leitungen: SWDIO und SWCLK."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "swd",
+"name": "SWD / JTAG",
+"titel": "Debug-Schnittstelle für ARM-Mikrocontroller",
+"kurz": "Programmieren und Debuggen von STM32, RP2040 u. a. mit zwei Leitungen: SWDIO und SWCLK.",
+"familie": "Debug",
+"gehaeuse": "Header 4 Pin",
+"pins": [
+"VTref:v",
+"SWDIO:x",
+"GND:g",
+"SWCLK:i"
+],
+"spannung": "3,3 V.",
+"hinweise": [
+"Minimal: SWDIO, SWCLK, GND (und möglichst VTref / RESET).",
+"Raspberry Pi als SWD-Programmer: OpenOCD + GPIO 24 (SWDIO), 25 (SWCLK).",
+"Pico: Debug-Pads unten (SWCLK, GND, SWDIO)."
+],
+"tags": "swd jtag debug programmer openocd stlink",
+"kerbe": false,
+"kat": "bus",
+"uid": "bus:swd"
+}
+}
+],
+"familie": "Debug"
+},
+{
+"id": "bus_sdkarte",
+"titel": "SD-Karte (SPI-Modus)",
+"kurz": "SD-Karte an SPI anschließen",
+"tags": [
+"sd",
+"karte",
+"spi",
+"modul",
+"microsd",
+"Speicher",
+"Modul",
+"SD-Karte",
+"(SPI-Modus)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Jede SD-Karte versteht auch SPI – damit reichen vier Leitungen. 3,3 V Pegel!"
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "sdkarte",
+"name": "SD-Karte (SPI-Modus)",
+"titel": "SD-Karte an SPI anschließen",
+"kurz": "Jede SD-Karte versteht auch SPI – damit reichen vier Leitungen. 3,3 V Pegel!",
+"familie": "Speicher",
+"gehaeuse": "Modul",
+"pins": [
+"CS:i",
+"DI:i",
+"GND:g",
+"VCC:v",
+"SCK:i",
+"GND:g",
+"DO:o",
+"NC:n"
+],
+"spannung": "3,3 V.",
+"hinweise": [
+"SD-Pins in Reihenfolge: 1 CS, 2 DI (MOSI), 3 VSS, 4 VDD, 5 SCLK, 6 VSS, 7 DO (MISO), 8 NC.",
+"Nicht an 5 V-Logik anschließen. Fertige SD-Module haben oft einen Pegelwandler und Spannungsregler."
+],
+"tags": "sd karte spi modul microsd",
+"kerbe": false,
+"kat": "bus",
+"uid": "bus:sdkarte"
+}
+}
+],
+"familie": "Speicher"
+}
+]
+}

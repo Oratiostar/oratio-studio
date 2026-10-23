@@ -1,0 +1,468 @@
+{
+"ersetzt": [
+"k_xsx",
+"k_gb"
+],
+"geraete": [
+{
+"marke": "Sony",
+"name": "PlayStation 4 Pro",
+"zeilen": [
+[
+"Hersteller",
+"Sony"
+],
+[
+"Erschienen",
+"2016"
+],
+[
+"Generation",
+"8"
+],
+[
+"Art",
+"Heimkonsole"
+],
+[
+"Prozessor (CPU)",
+"AMD Jaguar, 8 Kerne, 2,1 GHz"
+],
+[
+"Arbeitsspeicher",
+"8 GB GDDR5 + 1 GB DDR3"
+],
+[
+"Grafik (GPU)",
+"AMD GCN, 4,2 TFLOPS"
+],
+[
+"Spielmedium",
+"Blu-ray, Festplatte (1 TB)"
+],
+[
+"Controller",
+"DualShock 4 (Touchpad, Lichtleiste)"
+],
+[
+"Verkauft (weltweit, ca.)",
+"in den 117 Mio. der PS4 enthalten"
+]
+]
+},
+{
+"marke": "Sony",
+"name": "PlayStation 5 Pro",
+"zeilen": [
+[
+"Hersteller",
+"Sony"
+],
+[
+"Erschienen",
+"2024"
+],
+[
+"Generation",
+"9"
+],
+[
+"Art",
+"Heimkonsole"
+],
+[
+"Prozessor (CPU)",
+"AMD Zen 2, 8 Kerne, bis 3,85 GHz"
+],
+[
+"Arbeitsspeicher",
+"16 GB GDDR6 + 2 GB DDR5"
+],
+[
+"Grafik (GPU)",
+"AMD RDNA (RDNA 3-Technik), ca. 16,7 TFLOPS"
+],
+[
+"Spielmedium",
+"2-TB-SSD, Laufwerk optional (Ultra-HD-Blu-ray)"
+],
+[
+"Controller",
+"DualSense (haptisches Feedback, adaptive Trigger)"
+],
+[
+"Verkauft (weltweit, ca.)",
+"in den PS5-Zahlen enthalten"
+]
+]
+},
+{
+"marke": "Microsoft",
+"name": "Xbox One X",
+"zeilen": [
+[
+"Hersteller",
+"Microsoft"
+],
+[
+"Erschienen",
+"2017"
+],
+[
+"Generation",
+"8"
+],
+[
+"Art",
+"Heimkonsole"
+],
+[
+"Prozessor (CPU)",
+"AMD Jaguar, 8 Kerne, 2,3 GHz"
+],
+[
+"Arbeitsspeicher",
+"12 GB GDDR5"
+],
+[
+"Grafik (GPU)",
+"AMD GCN, 6 TFLOPS"
+],
+[
+"Spielmedium",
+"Ultra-HD-Blu-ray, Festplatte (1 TB)"
+],
+[
+"Controller",
+"Xbox-One-Controller"
+],
+[
+"Verkauft (weltweit, ca.)",
+"in den 58 Mio. der Xbox One enthalten"
+]
+]
+},
+{
+"marke": "Microsoft",
+"name": "Xbox Series X",
+"zeilen": [
+[
+"Hersteller",
+"Microsoft"
+],
+[
+"Erschienen",
+"2020"
+],
+[
+"Generation",
+"9"
+],
+[
+"Art",
+"Heimkonsole"
+],
+[
+"Prozessor (CPU)",
+"AMD Zen 2, 8 Kerne, 3,8 GHz"
+],
+[
+"Arbeitsspeicher",
+"16 GB GDDR6"
+],
+[
+"Grafik (GPU)",
+"AMD RDNA 2, 12,15 TFLOPS"
+],
+[
+"Spielmedium",
+"Ultra-HD-Blu-ray, 1-TB-NVMe-SSD"
+],
+[
+"Controller",
+"Xbox Wireless Controller (Share-Taste)"
+],
+[
+"Verkauft (weltweit, ca.)",
+"zusammen mit Series S ca. 35 Mio."
+]
+]
+},
+{
+"marke": "Microsoft",
+"name": "Xbox Series S",
+"zeilen": [
+[
+"Hersteller",
+"Microsoft"
+],
+[
+"Erschienen",
+"2020"
+],
+[
+"Generation",
+"9"
+],
+[
+"Art",
+"Heimkonsole"
+],
+[
+"Prozessor (CPU)",
+"AMD Zen 2, 8 Kerne, 3,6 GHz"
+],
+[
+"Arbeitsspeicher",
+"10 GB GDDR6"
+],
+[
+"Grafik (GPU)",
+"AMD RDNA 2, 4 TFLOPS"
+],
+[
+"Spielmedium",
+"nur digital (kein Laufwerk), 512-GB-NVMe-SSD"
+],
+[
+"Controller",
+"Xbox Wireless Controller (Share-Taste)"
+],
+[
+"Verkauft (weltweit, ca.)",
+"zusammen mit Series X ca. 35 Mio."
+]
+]
+},
+{
+"marke": "Nintendo",
+"name": "Nintendo Switch Lite",
+"zeilen": [
+[
+"Hersteller",
+"Nintendo"
+],
+[
+"Erschienen",
+"2019"
+],
+[
+"Generation",
+"8"
+],
+[
+"Art",
+"Handheld"
+],
+[
+"Prozessor (CPU)",
+"NVIDIA Tegra X1 (4× Cortex-A57), bis 1,02 GHz"
+],
+[
+"Arbeitsspeicher",
+"4 GB LPDDR4"
+],
+[
+"Grafik (GPU)",
+"NVIDIA Maxwell, 256 CUDA-Kerne"
+],
+[
+"Spielmedium",
+"Spielkarte, 32 GB intern"
+],
+[
+"Controller",
+"fest eingebaut (nicht abnehmbar), 5,5″-Display"
+],
+[
+"Verkauft (weltweit, ca.)",
+"in den 155 Mio. der Switch enthalten"
+]
+]
+},
+{
+"marke": "Nintendo",
+"name": "Nintendo Switch OLED",
+"zeilen": [
+[
+"Hersteller",
+"Nintendo"
+],
+[
+"Erschienen",
+"2021"
+],
+[
+"Generation",
+"8"
+],
+[
+"Art",
+"Hybrid"
+],
+[
+"Prozessor (CPU)",
+"NVIDIA Tegra X1 (4× Cortex-A57), bis 1,02 GHz"
+],
+[
+"Arbeitsspeicher",
+"4 GB LPDDR4"
+],
+[
+"Grafik (GPU)",
+"NVIDIA Maxwell, 256 CUDA-Kerne"
+],
+[
+"Spielmedium",
+"Spielkarte, 64 GB intern"
+],
+[
+"Controller",
+"Joy-Con (abnehmbar), 7″-OLED-Display"
+],
+[
+"Verkauft (weltweit, ca.)",
+"in den 155 Mio. der Switch enthalten"
+]
+]
+},
+{
+"marke": "Valve",
+"name": "Steam Deck OLED",
+"zeilen": [
+[
+"Hersteller",
+"Valve"
+],
+[
+"Erschienen",
+"2023"
+],
+[
+"Generation",
+"9"
+],
+[
+"Art",
+"PC-Handheld"
+],
+[
+"Prozessor (CPU)",
+"AMD Sephiroth (Zen 2, 4 Kerne / 8 Threads, 2,4–3,5 GHz)"
+],
+[
+"Arbeitsspeicher",
+"16 GB LPDDR5"
+],
+[
+"Grafik (GPU)",
+"AMD RDNA 2, 8 CUs, 1,6 TFLOPS"
+],
+[
+"Spielmedium",
+"SSD (512 GB oder 1 TB NVMe), microSD"
+],
+[
+"Controller",
+"2 Sticks, 2 Trackpads, 4 Rückentasten, 7,4″-HDR-OLED (90 Hz)"
+],
+[
+"Verkauft (weltweit, ca.)",
+"keine Angabe"
+]
+]
+},
+{
+"marke": "Nintendo",
+"name": "Game Boy",
+"zeilen": [
+[
+"Hersteller",
+"Nintendo"
+],
+[
+"Erschienen",
+"1989"
+],
+[
+"Generation",
+"4"
+],
+[
+"Art",
+"Handheld"
+],
+[
+"Prozessor (CPU)",
+"Sharp LR35902 (Z80-ähnlich), 4,19 MHz"
+],
+[
+"Arbeitsspeicher",
+"8 KB RAM + 8 KB VRAM"
+],
+[
+"Grafik (GPU)",
+"LCD 160×144, 4 Graustufen"
+],
+[
+"Spielmedium",
+"Steckmodul"
+],
+[
+"Controller",
+"D-Pad, A/B, Start/Select"
+],
+[
+"Verkauft (weltweit, ca.)",
+"zusammen mit Game Boy Color 118,7 Mio."
+]
+]
+},
+{
+"marke": "Nintendo",
+"name": "Game Boy Color",
+"zeilen": [
+[
+"Hersteller",
+"Nintendo"
+],
+[
+"Erschienen",
+"1998"
+],
+[
+"Generation",
+"5"
+],
+[
+"Art",
+"Handheld"
+],
+[
+"Prozessor (CPU)",
+"Sharp LR35902 (Z80-ähnlich), 8,38 MHz"
+],
+[
+"Arbeitsspeicher",
+"32 KB RAM + 16 KB VRAM"
+],
+[
+"Grafik (GPU)",
+"LCD 160×144, bis 56 Farben gleichzeitig"
+],
+[
+"Spielmedium",
+"Steckmodul"
+],
+[
+"Controller",
+"D-Pad, A/B, Start/Select"
+],
+[
+"Verkauft (weltweit, ca.)",
+"zusammen mit Game Boy 118,7 Mio."
+]
+]
+}
+]
+}

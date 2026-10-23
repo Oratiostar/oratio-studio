@@ -1,0 +1,5031 @@
+{
+ "id": "kameras",
+ "name": "Kameras",
+ "untertitel": "Sony, Canon, Nikon, Fujifilm, Panasonic: Sensoren, Objektive, Vergleiche",
+ "farbe": "tinte",
+ "symbol": "antenne",
+ "reihenfolge": 36,
+ "seiten": [
+  {
+   "id": "v_eigen",
+   "titel": "Eigener Vergleich",
+   "kurz": "2–3 Kameras wählen und nebeneinander vergleichen",
+   "tags": [
+    "vergleich",
+    "eigener vergleich",
+    "nebeneinander",
+    "kamera"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Tippe auf „Hinzufügen“, um zwei oder drei Einträge zu wählen. Darunter siehst du sofort ihre Technischen Daten nebeneinander. Zeilen mit Unterschieden sind gelb hinterlegt. Mit ✕ entfernst du einen Eintrag wieder."
+     ]
+    },
+    {
+     "t": "vergleich",
+     "welt": "kameras",
+     "n": 3
+    }
+   ],
+   "symbol": "voltmeter",
+   "gruppe": "Vergleiche & Wissen"
+  },
+  {
+   "id": "v_sensor",
+   "titel": "Sensorgrößen: Vollformat, APS-C und Co.",
+   "kurz": "Größe, Crop-Faktor, Vor- und Nachteile",
+   "tags": [
+    "sensor",
+    "vollformat",
+    "aps-c",
+    "crop",
+    "micro four thirds",
+    "mittelformat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Je größer der Sensor, desto mehr Licht sammelt er – das bringt weniger Rauschen bei wenig Licht und mehr Freistellung (unscharfer Hintergrund). Dafür werden Kamera und Objektive größer, schwerer und teurer."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Format",
+      "Größe (mm)",
+      "Crop-Faktor",
+      "Typisch bei"
+     ],
+     "zeilen": [
+      [
+       "Mittelformat (Fujifilm GFX)",
+       "43,8 × 32,9",
+       "0,79",
+       "Fujifilm GFX, Hasselblad"
+      ],
+      [
+       "Vollformat (35 mm)",
+       "36 × 24",
+       "1,0",
+       "Sony Alpha, Canon R, Nikon Z, Panasonic S, Leica"
+      ],
+      [
+       "APS-C (Canon)",
+       "22,3 × 14,9",
+       "1,6",
+       "Canon R7, R10, R50"
+      ],
+      [
+       "APS-C",
+       "23,5 × 15,6",
+       "1,5",
+       "Sony, Nikon DX, Fujifilm X, Pentax"
+      ],
+      [
+       "Micro Four Thirds",
+       "17,3 × 13",
+       "2,0",
+       "Panasonic GH/G, OM System"
+      ],
+      [
+       "1 Zoll",
+       "13,2 × 8,8",
+       "2,7",
+       "Sony RX100, viele Kompaktkameras"
+      ],
+      [
+       "Smartphone (groß)",
+       "ca. 9,8 × 7,3 (1/1,3″)",
+       "ca. 3,5–4",
+       "Aktuelle Smartphones"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Sensorformate"
+    },
+    {
+     "t": "formel",
+     "name": "Crop-Faktor",
+     "f": "Crop = 43,3 mm / Sensordiagonale",
+     "text": "Diagonale Vollformat = 43,3 mm"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "**Faustregel:** Äquivalente Brennweite = Brennweite × Crop-Faktor. Ein 35-mm-Objektiv an APS-C (1,5) zeigt denselben Bildausschnitt wie 52 mm am Vollformat."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Die Blende hat am kleineren Sensor dieselbe Lichtmenge pro Fläche, aber der Sensor sammelt insgesamt weniger Licht. Für den Vergleich der Freistellung rechnet man die Blende ebenfalls mit dem Crop-Faktor um (f/2 an APS-C ≈ f/3 am Vollformat)."
+    }
+   ],
+   "siehe": [
+    "kameras:v_objektiv",
+    "kameras:v_aequiv"
+   ],
+   "symbol": "voltmeter",
+   "gruppe": "Vergleiche & Wissen"
+  },
+  {
+   "id": "v_aequiv",
+   "titel": "Äquivalente Brennweite und Bildwinkel",
+   "kurz": "Rechner: Crop-Faktor, Bildwinkel",
+   "tags": [
+    "brennweite",
+    "bildwinkel",
+    "äquivalent",
+    "crop",
+    "rechner"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Der **Bildwinkel** beschreibt, wie viel von der Szene aufs Bild kommt. Er hängt von Brennweite und Sensorgröße ab."
+     ]
+    },
+    {
+     "t": "rechner",
+     "titel": "Brennweite umrechnen",
+     "felder": [
+      [
+       "f",
+       "Brennweite",
+       "mm",
+       "35"
+      ],
+      [
+       "c",
+       "Crop-Faktor",
+       "",
+       "1,5"
+      ]
+     ],
+     "ergebnis": [
+      [
+       "aeq",
+       "Äquivalent (Vollformat)",
+       "f*c",
+       "mm",
+       "zahl"
+      ],
+      [
+       "w",
+       "Bildwinkel (Diagonale)",
+       "2*degrees(atan(43.27/(2*f*c)))",
+       "°",
+       "zahl"
+      ]
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Brennweite (Vollformat)",
+      "Bildwinkel (Diagonale)",
+      "Typisch für"
+     ],
+     "zeilen": [
+      [
+       "14 mm",
+       "114°",
+       "Ultraweitwinkel, Architektur, Landschaft"
+      ],
+      [
+       "24 mm",
+       "84°",
+       "Weitwinkel, Reportage"
+      ],
+      [
+       "35 mm",
+       "63°",
+       "Straße, Reportage"
+      ],
+      [
+       "50 mm",
+       "47°",
+       "Normalbrennweite, Alltag"
+      ],
+      [
+       "85 mm",
+       "29°",
+       "Porträt"
+      ],
+      [
+       "135 mm",
+       "18°",
+       "Porträt, Sport"
+      ],
+      [
+       "200 mm",
+       "12°",
+       "Tele, Sport"
+      ],
+      [
+       "400 mm",
+       "6°",
+       "Tiere, Flugzeuge"
+      ],
+      [
+       "600 mm",
+       "4°",
+       "Wildtiere, Vögel"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Bildwinkel (Vollformat)"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "**Verwacklungsregel:** Verschlusszeit mindestens 1 / (äquivalente Brennweite) Sekunden, z. B. 1/100 s bei 100 mm. Ein Bildstabilisator verlängert das um 3–6 Blendenstufen."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_objektiv"
+   ],
+   "symbol": "widerstand",
+   "gruppe": "Vergleiche & Wissen"
+  },
+  {
+   "id": "v_bajonett",
+   "titel": "Bajonette: welches Objektiv passt wohin?",
+   "kurz": "Sony E, Canon RF, Nikon Z, Fujifilm X, L-Mount, MFT",
+   "tags": [
+    "bajonett",
+    "mount",
+    "sony e",
+    "canon rf",
+    "nikon z",
+    "l-mount",
+    "mft",
+    "objektiv"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Das **Bajonett** ist der Anschluss zwischen Kamera und Objektiv. Es bestimmt, welche Objektive ohne Adapter passen. Spiegellose Systeme haben ein kurzes Auflagemaß und lassen sich per Adapter mit vielen alten Objektiven nutzen."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Bajonett",
+      "Hersteller",
+      "Sensorformat",
+      "Auflagemaß",
+      "Bemerkung"
+     ],
+     "zeilen": [
+      [
+       "Sony E",
+       "Sony (auch Sigma, Tamron, Viltrox)",
+       "Vollformat + APS-C",
+       "18 mm",
+       "Riesige Auswahl an Fremdobjektiven"
+      ],
+      [
+       "Canon RF",
+       "Canon",
+       "Vollformat + APS-C",
+       "20 mm",
+       "Fremdobjektive nur teilweise erlaubt"
+      ],
+      [
+       "Nikon Z",
+       "Nikon",
+       "Vollformat + APS-C",
+       "16 mm",
+       "Großer Durchmesser (55 mm)"
+      ],
+      [
+       "Fujifilm X",
+       "Fujifilm",
+       "APS-C",
+       "17,7 mm",
+       "Eigene Objektive mit Blendenring"
+      ],
+      [
+       "Fujifilm G",
+       "Fujifilm",
+       "Mittelformat",
+       "26,7 mm",
+       "Nur GFX"
+      ],
+      [
+       "L-Mount",
+       "Leica, Panasonic, Sigma",
+       "Vollformat + APS-C",
+       "20 mm",
+       "Allianz der Hersteller"
+      ],
+      [
+       "Micro Four Thirds",
+       "Panasonic, OM System",
+       "MFT",
+       "19,25 mm",
+       "Kleine, leichte Objektive"
+      ],
+      [
+       "Canon EF / EF-S",
+       "Canon (DSLR)",
+       "Vollformat / APS-C",
+       "44 mm",
+       "Älter, per Adapter an RF"
+      ],
+      [
+       "Nikon F",
+       "Nikon (DSLR)",
+       "Vollformat / APS-C",
+       "46,5 mm",
+       "Älter, per Adapter an Z"
+      ],
+      [
+       "Pentax K",
+       "Pentax",
+       "Vollformat / APS-C",
+       "45,5 mm",
+       "Sehr alte Objektive passen"
+      ],
+      [
+       "Leica M",
+       "Leica",
+       "Vollformat",
+       "27,8 mm",
+       "Messsucherkamera"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Bajonette"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "**Auflagemaß** = Abstand vom Bajonett zum Sensor. Je kleiner es ist, desto leichter lassen sich Objektive mit größerem Maß per Adapter anbauen, aber nicht umgekehrt."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_objektiv"
+   ],
+   "symbol": "schalter",
+   "gruppe": "Vergleiche & Wissen"
+  },
+  {
+   "id": "v_systeme",
+   "titel": "DSLR, spiegellos, Kompakt: welche Bauart?",
+   "kurz": "Unterschiede, Hersteller, Vor- und Nachteile",
+   "tags": [
+    "dslr",
+    "spiegellos",
+    "kompakt",
+    "mirrorless",
+    "bauart"
+   ],
+   "bloecke": [
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Bauart",
+      "Prinzip",
+      "Vorteile",
+      "Nachteile"
+     ],
+     "zeilen": [
+      [
+       "Spiegellos",
+       "Elektronischer Sucher, Sensor immer aktiv",
+       "Kompakt, schneller Autofokus, Videofunktionen",
+       "Akku hält kürzer"
+      ],
+      [
+       "DSLR",
+       "Spiegel und optischer Sucher",
+       "Lange Akkulaufzeit, große Objektivauswahl, günstig gebraucht",
+       "Größer, wird nicht mehr weiterentwickelt"
+      ],
+      [
+       "Kompakt (1 Zoll)",
+       "Fest verbautes Objektiv",
+       "Klein, einfach",
+       "Kleiner Sensor, weniger Freistellung"
+      ],
+      [
+       "Kompakt (großer Sensor)",
+       "Festes Objektiv, APS-C oder Vollformat",
+       "Kleine Kamera, beste Qualität (z. B. Fujifilm X100VI, Leica Q3)",
+       "Nicht wechselbar, teuer"
+      ],
+      [
+       "Mittelformat",
+       "Großer Sensor",
+       "Höchste Bildqualität",
+       "Teuer, groß, langsamer"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Bauarten im Vergleich"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Seit etwa 2020 entwickeln Canon, Nikon und Sony fast nur noch spiegellose Systeme. DSLR-Objektive lassen sich per Adapter weiterverwenden."
+    }
+   ],
+   "siehe": [
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Vergleiche & Wissen"
+  },
+  {
+   "id": "v_marken",
+   "titel": "Hersteller im Überblick",
+   "kurz": "Sony, Canon, Nikon, Fujifilm, Panasonic und weitere",
+   "tags": [
+    "hersteller",
+    "marken",
+    "sony",
+    "canon",
+    "nikon",
+    "fujifilm",
+    "panasonic"
+   ],
+   "bloecke": [
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Hersteller",
+      "Stärken",
+      "Bajonett",
+      "Typisch für"
+     ],
+     "zeilen": [
+      [
+       "Sony",
+       "Autofokus, Sensoren, große Systemauswahl",
+       "E",
+       "Alleskönner, Video, Sport"
+      ],
+      [
+       "Canon",
+       "Farben, Bedienung, Objektive",
+       "RF",
+       "Porträt, Hochzeit, Sport"
+      ],
+      [
+       "Nikon",
+       "Handling, Bildqualität, Robustheit",
+       "Z",
+       "Natur, Landschaft, Sport"
+      ],
+      [
+       "Fujifilm",
+       "Retro-Bedienung, Farbfilmlook, APS-C und Mittelformat",
+       "X / G",
+       "Reise, Straße, Porträt"
+      ],
+      [
+       "Panasonic",
+       "Video, Stabilisierung",
+       "L / MFT",
+       "Video, Hybrid"
+      ],
+      [
+       "OM System",
+       "Leicht, Tele, Wetterschutz",
+       "MFT",
+       "Natur, Reisen"
+      ],
+      [
+       "Leica",
+       "Verarbeitung, Messsucher",
+       "M / L",
+       "Straße, Reportage"
+      ],
+      [
+       "Pentax",
+       "Robust, DSLR-Tradition",
+       "K",
+       "Landschaft, Outdoor"
+      ],
+      [
+       "Sigma",
+       "Objektive, kompakte Kameras",
+       "L / E",
+       "Foto-Enthusiasten"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Hersteller"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Wähle zuerst das **System** (Bajonett und Objektive), nicht nur das Gehäuse. Objektive halten länger als Kameras."
+    }
+   ],
+   "siehe": [
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Vergleiche & Wissen"
+  },
+  {
+   "id": "v_objektiv",
+   "titel": "Objektive: Brennweite, Blende, Typen",
+   "kurz": "Weitwinkel bis Tele, Zoom oder Festbrennweite",
+   "tags": [
+    "objektiv",
+    "brennweite",
+    "zoom",
+    "festbrennweite",
+    "weitwinkel",
+    "tele",
+    "makro"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Ein Objektiv wird durch **Brennweite** (Bildausschnitt) und **größte Blende** (Lichtstärke) beschrieben, z. B. 24–70 mm f/2.8."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Typ",
+      "Brennweite (Vollformat)",
+      "Gut für"
+     ],
+     "zeilen": [
+      [
+       "Ultraweitwinkel",
+       "10–20 mm",
+       "Landschaft, Architektur, Innenräume"
+      ],
+      [
+       "Weitwinkel",
+       "24–35 mm",
+       "Reportage, Straße, Reisen"
+      ],
+      [
+       "Normal",
+       "40–60 mm",
+       "Alltag, Porträt, Gesamtbild"
+      ],
+      [
+       "Mitteltele",
+       "70–135 mm",
+       "Porträt"
+      ],
+      [
+       "Tele",
+       "135–300 mm",
+       "Sport, Natur"
+      ],
+      [
+       "Supertele",
+       "400 mm und mehr",
+       "Wildtiere, Vögel, Flugsport"
+      ],
+      [
+       "Makro",
+       "60–105 mm",
+       "Nahaufnahmen (1:1)"
+      ],
+      [
+       "Fisheye",
+       "8–15 mm",
+       "Extreme Verzerrung, Sonderlook"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Brennweitenbereiche"
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Merkmal",
+      "Zoom",
+      "Festbrennweite"
+     ],
+     "zeilen": [
+      [
+       "Flexibilität",
+       "Brennweite stufenlos",
+       "Nur ein Bildausschnitt, selbst zoomen mit den Füßen"
+      ],
+      [
+       "Lichtstärke",
+       "oft f/2.8–f/6.3",
+       "oft f/1.2–f/2"
+      ],
+      [
+       "Größe, Gewicht",
+       "größer",
+       "kleiner, leichter"
+      ],
+      [
+       "Preis",
+       "hoch bei guten Zooms",
+       "günstig bis sehr teuer"
+      ],
+      [
+       "Bildqualität",
+       "sehr gut bis exzellent",
+       "oft etwas besser bei offener Blende"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Zoom oder Festbrennweite"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Gute Einsteigerobjektive: **50 mm f/1.8** (günstig, scharf, gute Freistellung) und ein **Kit-Zoom** (24–105 oder 24–70 f/4). Für Sport/Wildtiere ein **70–200 mm** oder **100–400 mm**."
+    }
+   ],
+   "siehe": [
+    "kameras:v_blende",
+    "kameras:v_aequiv"
+   ],
+   "symbol": "lampe",
+   "gruppe": "Objektive"
+  },
+  {
+   "id": "v_blende",
+   "titel": "Blende, Verschlusszeit, ISO",
+   "kurz": "Das Belichtungsdreieck und Blendenreihe",
+   "tags": [
+    "blende",
+    "belichtung",
+    "verschlusszeit",
+    "iso",
+    "schärfentiefe",
+    "blendenreihe"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Drei Werte bestimmen die Helligkeit: **Blende** (Öffnung des Objektivs), **Verschlusszeit** (wie lange belichtet wird) und **ISO** (Verstärkung des Sensors). Jede Stufe verdoppelt oder halbiert das Licht."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Blende (f-Zahl)",
+      "Lichtmenge",
+      "Schärfentiefe"
+     ],
+     "zeilen": [
+      [
+       "f/1.4",
+       "100 % (Referenz)",
+       "sehr gering"
+      ],
+      [
+       "f/2",
+       "50 %",
+       "gering"
+      ],
+      [
+       "f/2.8",
+       "25 %",
+       "gering"
+      ],
+      [
+       "f/4",
+       "12,5 %",
+       "mittel"
+      ],
+      [
+       "f/5.6",
+       "6,25 %",
+       "mittel"
+      ],
+      [
+       "f/8",
+       "3,1 %",
+       "groß"
+      ],
+      [
+       "f/11",
+       "1,6 %",
+       "groß"
+      ],
+      [
+       "f/16",
+       "0,8 %",
+       "sehr groß (Beugung wird sichtbar)"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Blendenreihe (ganze Stufen)"
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Wunsch",
+      "Blende",
+      "Zeit",
+      "ISO"
+     ],
+     "zeilen": [
+      [
+       "Unscharfer Hintergrund",
+       "offen (f/1.8–f/2.8)",
+       "passend",
+       "niedrig"
+      ],
+      [
+       "Alles scharf (Landschaft)",
+       "f/8–f/11",
+       "Stativ",
+       "100–200"
+      ],
+      [
+       "Bewegung einfrieren",
+       "egal",
+       "1/500 s oder kürzer",
+       "höher"
+      ],
+      [
+       "Bewegung wischen",
+       "geschlossen",
+       "1/4 s bis mehrere s",
+       "niedrig, Stativ"
+      ],
+      [
+       "Wenig Licht",
+       "offen",
+       "nicht länger als Verwacklungsgrenze",
+       "hoch (1600–6400)"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Typische Einstellungen"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Blenden wachsen um den Faktor √2 (1,4 → 2 → 2,8 → 4 → 5,6 → 8 → 11 → 16). Eine Stufe weiter geschlossen heißt halb so viel Licht."
+    }
+   ],
+   "siehe": [
+    "kameras:v_objektiv"
+   ],
+   "symbol": "widerstand",
+   "gruppe": "Objektive"
+  },
+  {
+   "id": "c_a7iii",
+   "titel": "Sony α7 III",
+   "kurz": "Sony · 2018 · Vollformat",
+   "tags": [
+    "kamera",
+    "sony",
+    "sony α7 iii",
+    "2018",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Der Klassiker für Einsteiger ins Vollformat. Lange Akkulaufzeit und guter Autofokus. Heute oft gebraucht erhältlich."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sony"
+      ],
+      [
+       "Erschienen",
+       "2018"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "24,2 MP"
+      ],
+      [
+       "Bajonett",
+       "Sony E"
+      ],
+      [
+       "Serienbild (max.)",
+       "10 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "5 Achsen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "650 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "1999 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Sony Alpha"
+  },
+  {
+   "id": "c_a7iv",
+   "titel": "Sony α7 IV",
+   "kurz": "Sony · 2021 · Vollformat",
+   "tags": [
+    "kamera",
+    "sony",
+    "sony α7 iv",
+    "2021",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Hybrid-Kamera mit guter Foto- und Videoqualität, Fokus auf Augen von Menschen und Tieren."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sony"
+      ],
+      [
+       "Erschienen",
+       "2021"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "33 MP"
+      ],
+      [
+       "Bajonett",
+       "Sony E"
+      ],
+      [
+       "Serienbild (max.)",
+       "10 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K60"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "5 Achsen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "658 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "2499 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Sony Alpha"
+  },
+  {
+   "id": "c_a7rv",
+   "titel": "Sony α7R V",
+   "kurz": "Sony · 2022 · Vollformat",
+   "tags": [
+    "kamera",
+    "sony",
+    "sony α7r v",
+    "2022",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Hochauflösend, für Landschaft, Studio und Architektur. KI-Autofokus."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sony"
+      ],
+      [
+       "Erschienen",
+       "2022"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "61 MP"
+      ],
+      [
+       "Bajonett",
+       "Sony E"
+      ],
+      [
+       "Serienbild (max.)",
+       "10 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "8K24"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "5 Achsen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "723 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "3899 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Sony Alpha"
+  },
+  {
+   "id": "c_a7cii",
+   "titel": "Sony α7C II",
+   "kurz": "Sony · 2023 · Vollformat",
+   "tags": [
+    "kamera",
+    "sony",
+    "sony α7c ii",
+    "2023",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Kompaktes Vollformat in kleinem Gehäuse, ideal für Reisen."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sony"
+      ],
+      [
+       "Erschienen",
+       "2023"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "33 MP"
+      ],
+      [
+       "Bajonett",
+       "Sony E"
+      ],
+      [
+       "Serienbild (max.)",
+       "10 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K60"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "5 Achsen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "514 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "2199 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Sony Alpha"
+  },
+  {
+   "id": "c_a9iii",
+   "titel": "Sony α9 III",
+   "kurz": "Sony · 2023 · Vollformat",
+   "tags": [
+    "kamera",
+    "sony",
+    "sony α9 iii",
+    "2023",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Erste Vollformat-Kamera mit Global Shutter: keine Verzerrung durch den Verschluss, Blitz bei jeder Zeit synchron."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sony"
+      ],
+      [
+       "Erschienen",
+       "2023"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "24,6 MP (Global Shutter)"
+      ],
+      [
+       "Bajonett",
+       "Sony E"
+      ],
+      [
+       "Serienbild (max.)",
+       "120 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K120"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "5 Achsen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "617 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "5999 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Sony Alpha"
+  },
+  {
+   "id": "c_a6700",
+   "titel": "Sony α6700",
+   "kurz": "Sony · 2023 · APS-C",
+   "tags": [
+    "kamera",
+    "sony",
+    "sony α6700",
+    "2023",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Kleine APS-C-Kamera mit aktuellem Autofokus."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sony"
+      ],
+      [
+       "Erschienen",
+       "2023"
+      ],
+      [
+       "Sensor",
+       "APS-C"
+      ],
+      [
+       "Auflösung",
+       "26 MP"
+      ],
+      [
+       "Bajonett",
+       "Sony E"
+      ],
+      [
+       "Serienbild (max.)",
+       "11 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K120"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "5 Achsen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "493 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "1399 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Sony Alpha"
+  },
+  {
+   "id": "c_zve10",
+   "titel": "Sony ZV-E10",
+   "kurz": "Sony · 2021 · APS-C",
+   "tags": [
+    "kamera",
+    "sony",
+    "sony zv-e10",
+    "2021",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Für Vlogging gebaut, Klappdisplay, günstig."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sony"
+      ],
+      [
+       "Erschienen",
+       "2021"
+      ],
+      [
+       "Sensor",
+       "APS-C"
+      ],
+      [
+       "Auflösung",
+       "24,2 MP"
+      ],
+      [
+       "Bajonett",
+       "Sony E"
+      ],
+      [
+       "Serienbild (max.)",
+       "11 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "nur im Objektiv"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "343 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "699 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Sony Alpha"
+  },
+  {
+   "id": "c_rx100",
+   "titel": "Sony RX100 VII",
+   "kurz": "Sony · 2019 · 1 Zoll",
+   "tags": [
+    "kamera",
+    "sony",
+    "sony rx100 vii",
+    "2019",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Kompakte Reisekamera mit großem Zoom im Hosentaschenformat."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sony"
+      ],
+      [
+       "Erschienen",
+       "2019"
+      ],
+      [
+       "Sensor",
+       "1 Zoll"
+      ],
+      [
+       "Auflösung",
+       "20,1 MP"
+      ],
+      [
+       "Bajonett",
+       "fest (24–200 mm)"
+      ],
+      [
+       "Serienbild (max.)",
+       "90 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "im Objektiv"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "302 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "1299 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Sony Alpha"
+  },
+  {
+   "id": "c_a7v",
+   "titel": "Sony α7 V",
+   "kurz": "Sony · 2025 · Vollformat",
+   "tags": [
+    "kamera",
+    "sony",
+    "sony α7 v",
+    "2025",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Neue Allrounderin mit teilweise gestapeltem Sensor, Nachfolgerin der α7 IV."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sony"
+      ],
+      [
+       "Erschienen",
+       "2025"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "33 MP (teilweise gestapelt)"
+      ],
+      [
+       "Bajonett",
+       "Sony E"
+      ],
+      [
+       "Serienbild (max.)",
+       "30 Bilder/s (elektr.), 10 mechanisch"
+      ],
+      [
+       "Video (max.)",
+       "7K→4K60, 4K120 (Super 35)"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "k. A."
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "k. A."
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "ca. 2899 $ (Australien: 4699 AUD)"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten und Web-Quellen, gerundet. „k. A.“ heißt: ohne gesicherte Angabe. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Sony Alpha"
+  },
+  {
+   "id": "c_a7cr",
+   "titel": "Sony α7CR",
+   "kurz": "Sony · 2024 · Vollformat",
+   "tags": [
+    "kamera",
+    "sony",
+    "sony α7cr",
+    "2024",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Sehr kleine Vollformat-Kamera mit hoher Auflösung."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sony"
+      ],
+      [
+       "Erschienen",
+       "2024"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "61 MP"
+      ],
+      [
+       "Bajonett",
+       "Sony E"
+      ],
+      [
+       "Serienbild (max.)",
+       "10 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K60"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "7 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "515 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "2999 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten und Web-Quellen, gerundet. „k. A.“ heißt: ohne gesicherte Angabe. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Sony Alpha"
+  },
+  {
+   "id": "c_r5",
+   "titel": "Canon EOS R5",
+   "kurz": "Canon · 2020 · Vollformat",
+   "tags": [
+    "kamera",
+    "canon",
+    "canon eos r5",
+    "2020",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Hochauflösende Profikamera mit Video. Überhitzung bei langen 8K-Aufnahmen war anfangs ein Thema."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Canon"
+      ],
+      [
+       "Erschienen",
+       "2020"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "45 MP"
+      ],
+      [
+       "Bajonett",
+       "Canon RF"
+      ],
+      [
+       "Serienbild (max.)",
+       "20 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "8K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "8 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "738 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "3899 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Canon"
+  },
+  {
+   "id": "c_r6ii",
+   "titel": "Canon EOS R6 Mark II",
+   "kurz": "Canon · 2022 · Vollformat",
+   "tags": [
+    "kamera",
+    "canon",
+    "canon eos r6 mark ii",
+    "2022",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Schnelle Allround-Kamera für Sport und Hochzeit."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Canon"
+      ],
+      [
+       "Erschienen",
+       "2022"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "24,2 MP"
+      ],
+      [
+       "Bajonett",
+       "Canon RF"
+      ],
+      [
+       "Serienbild (max.)",
+       "40 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K60"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "8 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "670 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "2499 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Canon"
+  },
+  {
+   "id": "c_r8",
+   "titel": "Canon EOS R8",
+   "kurz": "Canon · 2023 · Vollformat",
+   "tags": [
+    "kamera",
+    "canon",
+    "canon eos r8",
+    "2023",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Leichtes Einsteiger-Vollformat."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Canon"
+      ],
+      [
+       "Erschienen",
+       "2023"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "24,2 MP"
+      ],
+      [
+       "Bajonett",
+       "Canon RF"
+      ],
+      [
+       "Serienbild (max.)",
+       "40 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K60"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "kein"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "461 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "1499 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Canon"
+  },
+  {
+   "id": "c_r3",
+   "titel": "Canon EOS R3",
+   "kurz": "Canon · 2021 · Vollformat",
+   "tags": [
+    "kamera",
+    "canon",
+    "canon eos r3",
+    "2021",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Sport- und Profikamera mit Blickfeldsteuerung des Autofokus."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Canon"
+      ],
+      [
+       "Erschienen",
+       "2021"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "24,1 MP (gestapelt)"
+      ],
+      [
+       "Bajonett",
+       "Canon RF"
+      ],
+      [
+       "Serienbild (max.)",
+       "30 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "6K RAW"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "8 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "822 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "5999 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Canon"
+  },
+  {
+   "id": "c_r7",
+   "titel": "Canon EOS R7",
+   "kurz": "Canon · 2022 · APS-C",
+   "tags": [
+    "kamera",
+    "canon",
+    "canon eos r7",
+    "2022",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Schnelle APS-C-Kamera für Tiere und Sport."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Canon"
+      ],
+      [
+       "Erschienen",
+       "2022"
+      ],
+      [
+       "Sensor",
+       "APS-C"
+      ],
+      [
+       "Auflösung",
+       "32,5 MP"
+      ],
+      [
+       "Bajonett",
+       "Canon RF"
+      ],
+      [
+       "Serienbild (max.)",
+       "30 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K60"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "8 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "612 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "1499 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Canon"
+  },
+  {
+   "id": "c_r10",
+   "titel": "Canon EOS R10",
+   "kurz": "Canon · 2022 · APS-C",
+   "tags": [
+    "kamera",
+    "canon",
+    "canon eos r10",
+    "2022",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Kompakt, gut für Einsteiger."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Canon"
+      ],
+      [
+       "Erschienen",
+       "2022"
+      ],
+      [
+       "Sensor",
+       "APS-C"
+      ],
+      [
+       "Auflösung",
+       "24,2 MP"
+      ],
+      [
+       "Bajonett",
+       "Canon RF"
+      ],
+      [
+       "Serienbild (max.)",
+       "23 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K60"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "kein"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "429 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "979 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Canon"
+  },
+  {
+   "id": "c_r50",
+   "titel": "Canon EOS R50",
+   "kurz": "Canon · 2023 · APS-C",
+   "tags": [
+    "kamera",
+    "canon",
+    "canon eos r50",
+    "2023",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Sehr kleine Einsteigerkamera, auch für Vlogger."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Canon"
+      ],
+      [
+       "Erschienen",
+       "2023"
+      ],
+      [
+       "Sensor",
+       "APS-C"
+      ],
+      [
+       "Auflösung",
+       "24,2 MP"
+      ],
+      [
+       "Bajonett",
+       "Canon RF"
+      ],
+      [
+       "Serienbild (max.)",
+       "12 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "kein"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "375 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "679 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Canon"
+  },
+  {
+   "id": "c_5d4",
+   "titel": "Canon EOS 5D Mark IV",
+   "kurz": "Canon · 2016 · Vollformat",
+   "tags": [
+    "kamera",
+    "canon",
+    "canon eos 5d mark iv",
+    "2016",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Bewährte DSLR, heute günstig gebraucht."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Canon"
+      ],
+      [
+       "Erschienen",
+       "2016"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "30,4 MP"
+      ],
+      [
+       "Bajonett",
+       "Canon EF"
+      ],
+      [
+       "Serienbild (max.)",
+       "7 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "kein"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "890 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "3499 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Canon"
+  },
+  {
+   "id": "c_90d",
+   "titel": "Canon EOS 90D",
+   "kurz": "Canon · 2019 · APS-C",
+   "tags": [
+    "kamera",
+    "canon",
+    "canon eos 90d",
+    "2019",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Robuste APS-C-DSLR."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Canon"
+      ],
+      [
+       "Erschienen",
+       "2019"
+      ],
+      [
+       "Sensor",
+       "APS-C"
+      ],
+      [
+       "Auflösung",
+       "32,5 MP"
+      ],
+      [
+       "Bajonett",
+       "Canon EF"
+      ],
+      [
+       "Serienbild (max.)",
+       "10 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "kein"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "701 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "1199 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Canon"
+  },
+  {
+   "id": "c_r6iii",
+   "titel": "Canon EOS R6 Mark III",
+   "kurz": "Canon · 2025 · Vollformat",
+   "tags": [
+    "kamera",
+    "canon",
+    "canon eos r6 mark iii",
+    "2025",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Schnelle Allround-Kamera für Foto und Video, Nachfolgerin der R6 Mark II."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Canon"
+      ],
+      [
+       "Erschienen",
+       "2025"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "32,5 MP"
+      ],
+      [
+       "Bajonett",
+       "Canon RF"
+      ],
+      [
+       "Serienbild (max.)",
+       "40 Bilder/s (elektr.)"
+      ],
+      [
+       "Video (max.)",
+       "7K RAW, 4K60 (oversampled), 4K120"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "8,5 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "k. A."
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "ca. 2999 $ (3050 € in Europa)"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten und Web-Quellen, gerundet. „k. A.“ heißt: ohne gesicherte Angabe. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Canon"
+  },
+  {
+   "id": "c_r5ii",
+   "titel": "Canon EOS R5 Mark II",
+   "kurz": "Canon · 2024 · Vollformat",
+   "tags": [
+    "kamera",
+    "canon",
+    "canon eos r5 mark ii",
+    "2024",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Hochauflösende Profi-Kamera mit gestapeltem Sensor und 8K-Video."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Canon"
+      ],
+      [
+       "Erschienen",
+       "2024"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "45 MP (gestapelt)"
+      ],
+      [
+       "Bajonett",
+       "Canon RF"
+      ],
+      [
+       "Serienbild (max.)",
+       "30 Bilder/s (elektr.)"
+      ],
+      [
+       "Video (max.)",
+       "8K RAW"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "8,5 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "746 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "4299 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten und Web-Quellen, gerundet. „k. A.“ heißt: ohne gesicherte Angabe. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Canon"
+  },
+  {
+   "id": "c_z9",
+   "titel": "Nikon Z9",
+   "kurz": "Nikon · 2021 · Vollformat",
+   "tags": [
+    "kamera",
+    "nikon",
+    "nikon z9",
+    "2021",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Flaggschiff ohne mechanischen Verschluss, für Sport und Natur."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nikon"
+      ],
+      [
+       "Erschienen",
+       "2021"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "45,7 MP (gestapelt)"
+      ],
+      [
+       "Bajonett",
+       "Nikon Z"
+      ],
+      [
+       "Serienbild (max.)",
+       "20 Bilder/s (RAW)"
+      ],
+      [
+       "Video (max.)",
+       "8K60"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "6 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "1340 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "5499 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Nikon Z"
+  },
+  {
+   "id": "c_z8",
+   "titel": "Nikon Z8",
+   "kurz": "Nikon · 2023 · Vollformat",
+   "tags": [
+    "kamera",
+    "nikon",
+    "nikon z8",
+    "2023",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Kleinere Version der Z9 mit fast gleicher Technik."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nikon"
+      ],
+      [
+       "Erschienen",
+       "2023"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "45,7 MP (gestapelt)"
+      ],
+      [
+       "Bajonett",
+       "Nikon Z"
+      ],
+      [
+       "Serienbild (max.)",
+       "20 Bilder/s (RAW)"
+      ],
+      [
+       "Video (max.)",
+       "8K60"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "6 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "910 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "3999 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Nikon Z"
+  },
+  {
+   "id": "c_z6iii",
+   "titel": "Nikon Z6 III",
+   "kurz": "Nikon · 2024 · Vollformat",
+   "tags": [
+    "kamera",
+    "nikon",
+    "nikon z6 iii",
+    "2024",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Vielseitig, kann internes RAW-Video."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nikon"
+      ],
+      [
+       "Erschienen",
+       "2024"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "24,5 MP (teilgestapelt)"
+      ],
+      [
+       "Bajonett",
+       "Nikon Z"
+      ],
+      [
+       "Serienbild (max.)",
+       "20 Bilder/s (RAW)"
+      ],
+      [
+       "Video (max.)",
+       "6K RAW"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "8 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "760 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "2499 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Nikon Z"
+  },
+  {
+   "id": "c_z5",
+   "titel": "Nikon Z5",
+   "kurz": "Nikon · 2020 · Vollformat",
+   "tags": [
+    "kamera",
+    "nikon",
+    "nikon z5",
+    "2020",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Günstiger Einstieg ins Z-Vollformat."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nikon"
+      ],
+      [
+       "Erschienen",
+       "2020"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "24,3 MP"
+      ],
+      [
+       "Bajonett",
+       "Nikon Z"
+      ],
+      [
+       "Serienbild (max.)",
+       "4,5 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "5 Achsen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "675 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "1399 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Nikon Z"
+  },
+  {
+   "id": "c_zf",
+   "titel": "Nikon Z f",
+   "kurz": "Nikon · 2023 · Vollformat",
+   "tags": [
+    "kamera",
+    "nikon",
+    "nikon z f",
+    "2023",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Retro-Design im Stil der alten Nikon-Filmkameras."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nikon"
+      ],
+      [
+       "Erschienen",
+       "2023"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "24,5 MP"
+      ],
+      [
+       "Bajonett",
+       "Nikon Z"
+      ],
+      [
+       "Serienbild (max.)",
+       "14 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "8 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "710 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "2399 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Nikon Z"
+  },
+  {
+   "id": "c_z50",
+   "titel": "Nikon Z50",
+   "kurz": "Nikon · 2019 · APS-C",
+   "tags": [
+    "kamera",
+    "nikon",
+    "nikon z50",
+    "2019",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Kompakte APS-C-Kamera (DX)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nikon"
+      ],
+      [
+       "Erschienen",
+       "2019"
+      ],
+      [
+       "Sensor",
+       "APS-C"
+      ],
+      [
+       "Auflösung",
+       "20,9 MP"
+      ],
+      [
+       "Bajonett",
+       "Nikon Z"
+      ],
+      [
+       "Serienbild (max.)",
+       "11 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "kein"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "450 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "859 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Nikon Z"
+  },
+  {
+   "id": "c_z30",
+   "titel": "Nikon Z30",
+   "kurz": "Nikon · 2022 · APS-C",
+   "tags": [
+    "kamera",
+    "nikon",
+    "nikon z30",
+    "2022",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Ohne Sucher, für Vlogging gedacht."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nikon"
+      ],
+      [
+       "Erschienen",
+       "2022"
+      ],
+      [
+       "Sensor",
+       "APS-C"
+      ],
+      [
+       "Auflösung",
+       "20,9 MP"
+      ],
+      [
+       "Bajonett",
+       "Nikon Z"
+      ],
+      [
+       "Serienbild (max.)",
+       "11 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "kein"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "405 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "709 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Nikon Z"
+  },
+  {
+   "id": "c_d850",
+   "titel": "Nikon D850",
+   "kurz": "Nikon · 2017 · Vollformat",
+   "tags": [
+    "kamera",
+    "nikon",
+    "nikon d850",
+    "2017",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "DSLR-Klassiker, für viele die beste DSLR überhaupt."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nikon"
+      ],
+      [
+       "Erschienen",
+       "2017"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "45,7 MP"
+      ],
+      [
+       "Bajonett",
+       "Nikon F"
+      ],
+      [
+       "Serienbild (max.)",
+       "7 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "kein"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "1005 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "3299 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Nikon Z"
+  },
+  {
+   "id": "c_z5ii",
+   "titel": "Nikon Z5II",
+   "kurz": "Nikon · 2025 · Vollformat",
+   "tags": [
+    "kamera",
+    "nikon",
+    "nikon z5ii",
+    "2025",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Günstiger Einstieg ins Z-Vollformat mit dem schnellen Expeed-7-Prozessor."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nikon"
+      ],
+      [
+       "Erschienen",
+       "2025"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "24,5 MP"
+      ],
+      [
+       "Bajonett",
+       "Nikon Z"
+      ],
+      [
+       "Serienbild (max.)",
+       "30 Bilder/s (elektr.)"
+      ],
+      [
+       "Video (max.)",
+       "4K60"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "7,5 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "ca. 700 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "1699 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten und Web-Quellen, gerundet. „k. A.“ heißt: ohne gesicherte Angabe. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Nikon Z"
+  },
+  {
+   "id": "c_z50ii",
+   "titel": "Nikon Z50II",
+   "kurz": "Nikon · 2024 · APS-C",
+   "tags": [
+    "kamera",
+    "nikon",
+    "nikon z50ii",
+    "2024",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Handliche APS-C-Kamera für Einsteiger und Reisen."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Nikon"
+      ],
+      [
+       "Erschienen",
+       "2024"
+      ],
+      [
+       "Sensor",
+       "APS-C"
+      ],
+      [
+       "Auflösung",
+       "20,9 MP"
+      ],
+      [
+       "Bajonett",
+       "Nikon Z"
+      ],
+      [
+       "Serienbild (max.)",
+       "11 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K60"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "keiner"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "ca. 550 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "959 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten und Web-Quellen, gerundet. „k. A.“ heißt: ohne gesicherte Angabe. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Nikon Z"
+  },
+  {
+   "id": "c_xt5",
+   "titel": "Fujifilm X-T5",
+   "kurz": "Fujifilm · 2022 · APS-C",
+   "tags": [
+    "kamera",
+    "fujifilm",
+    "fujifilm x-t5",
+    "2022",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Hochauflösend, klassische Bedienung mit Rädern."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Fujifilm"
+      ],
+      [
+       "Erschienen",
+       "2022"
+      ],
+      [
+       "Sensor",
+       "APS-C"
+      ],
+      [
+       "Auflösung",
+       "40,2 MP"
+      ],
+      [
+       "Bajonett",
+       "Fujifilm X"
+      ],
+      [
+       "Serienbild (max.)",
+       "15 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "6,2K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "7 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "557 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "1699 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Fujifilm"
+  },
+  {
+   "id": "c_xh2s",
+   "titel": "Fujifilm X-H2S",
+   "kurz": "Fujifilm · 2022 · APS-C",
+   "tags": [
+    "kamera",
+    "fujifilm",
+    "fujifilm x-h2s",
+    "2022",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Schnell, für Sport und Video."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Fujifilm"
+      ],
+      [
+       "Erschienen",
+       "2022"
+      ],
+      [
+       "Sensor",
+       "APS-C"
+      ],
+      [
+       "Auflösung",
+       "26,1 MP (gestapelt)"
+      ],
+      [
+       "Bajonett",
+       "Fujifilm X"
+      ],
+      [
+       "Serienbild (max.)",
+       "40 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "6,2K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "7 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "660 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "2499 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Fujifilm"
+  },
+  {
+   "id": "c_xs20",
+   "titel": "Fujifilm X-S20",
+   "kurz": "Fujifilm · 2023 · APS-C",
+   "tags": [
+    "kamera",
+    "fujifilm",
+    "fujifilm x-s20",
+    "2023",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Kompakt, ideal für Vlogging und Reisen."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Fujifilm"
+      ],
+      [
+       "Erschienen",
+       "2023"
+      ],
+      [
+       "Sensor",
+       "APS-C"
+      ],
+      [
+       "Auflösung",
+       "26,1 MP"
+      ],
+      [
+       "Bajonett",
+       "Fujifilm X"
+      ],
+      [
+       "Serienbild (max.)",
+       "20 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "6,2K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "7 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "491 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "1299 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Fujifilm"
+  },
+  {
+   "id": "c_xe4",
+   "titel": "Fujifilm X-E4",
+   "kurz": "Fujifilm · 2021 · APS-C",
+   "tags": [
+    "kamera",
+    "fujifilm",
+    "fujifilm x-e4",
+    "2021",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Kleine Retro-Messsucher-Optik."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Fujifilm"
+      ],
+      [
+       "Erschienen",
+       "2021"
+      ],
+      [
+       "Sensor",
+       "APS-C"
+      ],
+      [
+       "Auflösung",
+       "26,1 MP"
+      ],
+      [
+       "Bajonett",
+       "Fujifilm X"
+      ],
+      [
+       "Serienbild (max.)",
+       "8 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "kein"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "364 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "849 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Fujifilm"
+  },
+  {
+   "id": "c_x100vi",
+   "titel": "Fujifilm X100VI",
+   "kurz": "Fujifilm · 2024 · APS-C",
+   "tags": [
+    "kamera",
+    "fujifilm",
+    "fujifilm x100vi",
+    "2024",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Beliebte Kompaktkamera mit Festbrennweite und optisch-elektronischem Sucher. Wurde wegen hoher Nachfrage knapp."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Fujifilm"
+      ],
+      [
+       "Erschienen",
+       "2024"
+      ],
+      [
+       "Sensor",
+       "APS-C"
+      ],
+      [
+       "Auflösung",
+       "40,2 MP"
+      ],
+      [
+       "Bajonett",
+       "fest (23 mm f/2)"
+      ],
+      [
+       "Serienbild (max.)",
+       "11 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "6,2K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "6 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "521 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "1599 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Fujifilm"
+  },
+  {
+   "id": "c_gfx100ii",
+   "titel": "Fujifilm GFX100 II",
+   "kurz": "Fujifilm · 2023 · Mittelformat",
+   "tags": [
+    "kamera",
+    "fujifilm",
+    "fujifilm gfx100 ii",
+    "2023",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Mittelformat für höchste Bildqualität."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Fujifilm"
+      ],
+      [
+       "Erschienen",
+       "2023"
+      ],
+      [
+       "Sensor",
+       "Mittelformat"
+      ],
+      [
+       "Auflösung",
+       "102 MP"
+      ],
+      [
+       "Bajonett",
+       "Fujifilm G"
+      ],
+      [
+       "Serienbild (max.)",
+       "8,7 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "8K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "8 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "1030 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "7499 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Fujifilm"
+  },
+  {
+   "id": "c_gfx50s2",
+   "titel": "Fujifilm GFX50S II",
+   "kurz": "Fujifilm · 2021 · Mittelformat",
+   "tags": [
+    "kamera",
+    "fujifilm",
+    "fujifilm gfx50s ii",
+    "2021",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Günstigster Einstieg ins Mittelformat von Fujifilm."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Fujifilm"
+      ],
+      [
+       "Erschienen",
+       "2021"
+      ],
+      [
+       "Sensor",
+       "Mittelformat"
+      ],
+      [
+       "Auflösung",
+       "51,4 MP"
+      ],
+      [
+       "Bajonett",
+       "Fujifilm G"
+      ],
+      [
+       "Serienbild (max.)",
+       "3 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "Full HD"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "6,5 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "900 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "3999 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Fujifilm"
+  },
+  {
+   "id": "c_gfx100s2",
+   "titel": "Fujifilm GFX100S II",
+   "kurz": "Fujifilm · 2024 · Mittelformat (43,8 × 32,9 mm)",
+   "tags": [
+    "kamera",
+    "fujifilm",
+    "fujifilm gfx100s ii",
+    "2024",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Mittelformat mit 102 MP in einem handlichen Gehäuse."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Fujifilm"
+      ],
+      [
+       "Erschienen",
+       "2024"
+      ],
+      [
+       "Sensor",
+       "Mittelformat (43,8 × 32,9 mm)"
+      ],
+      [
+       "Auflösung",
+       "102 MP"
+      ],
+      [
+       "Bajonett",
+       "Fujifilm G"
+      ],
+      [
+       "Serienbild (max.)",
+       "7 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "8 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "ca. 883 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "4999 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten und Web-Quellen, gerundet. „k. A.“ heißt: ohne gesicherte Angabe. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Fujifilm"
+  },
+  {
+   "id": "c_s5ii",
+   "titel": "Panasonic Lumix S5 II",
+   "kurz": "Panasonic · 2023 · Vollformat",
+   "tags": [
+    "kamera",
+    "panasonic",
+    "panasonic lumix s5 ii",
+    "2023",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Hybrid-Kamera mit Phasen-Autofokus und gutem Video."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Panasonic"
+      ],
+      [
+       "Erschienen",
+       "2023"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "24,2 MP"
+      ],
+      [
+       "Bajonett",
+       "L-Mount"
+      ],
+      [
+       "Serienbild (max.)",
+       "30 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "6K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "6,5 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "740 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "1999 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Panasonic & OM System"
+  },
+  {
+   "id": "c_s9",
+   "titel": "Panasonic Lumix S9",
+   "kurz": "Panasonic · 2024 · Vollformat",
+   "tags": [
+    "kamera",
+    "panasonic",
+    "panasonic lumix s9",
+    "2024",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Kleines Vollformat für Influencer."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Panasonic"
+      ],
+      [
+       "Erschienen",
+       "2024"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "24,2 MP"
+      ],
+      [
+       "Bajonett",
+       "L-Mount"
+      ],
+      [
+       "Serienbild (max.)",
+       "9 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "6K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "kein"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "486 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "1499 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Panasonic & OM System"
+  },
+  {
+   "id": "c_s1r",
+   "titel": "Panasonic Lumix S1R",
+   "kurz": "Panasonic · 2019 · Vollformat",
+   "tags": [
+    "kamera",
+    "panasonic",
+    "panasonic lumix s1r",
+    "2019",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Hochauflösend, robustes Gehäuse."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Panasonic"
+      ],
+      [
+       "Erschienen",
+       "2019"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "47,3 MP"
+      ],
+      [
+       "Bajonett",
+       "L-Mount"
+      ],
+      [
+       "Serienbild (max.)",
+       "9 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K60"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "5,5 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "1020 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "3697 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Panasonic & OM System"
+  },
+  {
+   "id": "c_gh6",
+   "titel": "Panasonic Lumix GH6",
+   "kurz": "Panasonic · 2022 · Micro Four Thirds",
+   "tags": [
+    "kamera",
+    "panasonic",
+    "panasonic lumix gh6",
+    "2022",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Video-Kamera mit vielen Profi-Funktionen."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Panasonic"
+      ],
+      [
+       "Erschienen",
+       "2022"
+      ],
+      [
+       "Sensor",
+       "Micro Four Thirds"
+      ],
+      [
+       "Auflösung",
+       "25,2 MP"
+      ],
+      [
+       "Bajonett",
+       "MFT"
+      ],
+      [
+       "Serienbild (max.)",
+       "14 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "5,7K60"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "7,5 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "823 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "2199 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Panasonic & OM System"
+  },
+  {
+   "id": "c_gh7",
+   "titel": "Panasonic Lumix GH7",
+   "kurz": "Panasonic · 2024 · Micro Four Thirds",
+   "tags": [
+    "kamera",
+    "panasonic",
+    "panasonic lumix gh7",
+    "2024",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Nachfolger der GH6 mit Phasen-Autofokus."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Panasonic"
+      ],
+      [
+       "Erschienen",
+       "2024"
+      ],
+      [
+       "Sensor",
+       "Micro Four Thirds"
+      ],
+      [
+       "Auflösung",
+       "25,2 MP"
+      ],
+      [
+       "Bajonett",
+       "MFT"
+      ],
+      [
+       "Serienbild (max.)",
+       "75 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "5,7K60"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "7,5 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "721 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "2199 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Panasonic & OM System"
+  },
+  {
+   "id": "c_g9ii",
+   "titel": "Panasonic Lumix G9 II",
+   "kurz": "Panasonic · 2023 · Micro Four Thirds",
+   "tags": [
+    "kamera",
+    "panasonic",
+    "panasonic lumix g9 ii",
+    "2023",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Foto-Kamera mit schnellem Serienbild."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Panasonic"
+      ],
+      [
+       "Erschienen",
+       "2023"
+      ],
+      [
+       "Sensor",
+       "Micro Four Thirds"
+      ],
+      [
+       "Auflösung",
+       "25,2 MP"
+      ],
+      [
+       "Bajonett",
+       "MFT"
+      ],
+      [
+       "Serienbild (max.)",
+       "60 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "5,8K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "8 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "658 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "1899 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Panasonic & OM System"
+  },
+  {
+   "id": "c_om1",
+   "titel": "OM System OM-1",
+   "kurz": "OM System · 2022 · Micro Four Thirds",
+   "tags": [
+    "kamera",
+    "om system",
+    "om system om-1",
+    "2022",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Wetterfest, für Natur- und Tierfotografie, kleine Teleobjektive."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "OM System"
+      ],
+      [
+       "Erschienen",
+       "2022"
+      ],
+      [
+       "Sensor",
+       "Micro Four Thirds"
+      ],
+      [
+       "Auflösung",
+       "20,4 MP"
+      ],
+      [
+       "Bajonett",
+       "MFT"
+      ],
+      [
+       "Serienbild (max.)",
+       "120 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K60"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "7 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "599 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "2199 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Panasonic & OM System"
+  },
+  {
+   "id": "c_s1ii",
+   "titel": "Panasonic Lumix S1II",
+   "kurz": "Panasonic · 2025 · Vollformat",
+   "tags": [
+    "kamera",
+    "panasonic",
+    "panasonic lumix s1ii",
+    "2025",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Foto- und Video-Kamera mit sehr schnellem Auslesen des Sensors."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Panasonic"
+      ],
+      [
+       "Erschienen",
+       "2025"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "24,1 MP (teilweise gestapelt)"
+      ],
+      [
+       "Bajonett",
+       "Leica L"
+      ],
+      [
+       "Serienbild (max.)",
+       "70 Bilder/s (elektr.)"
+      ],
+      [
+       "Video (max.)",
+       "6K60 (Open Gate)"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "8 Stufen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "ca. 780 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "3199 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten und Web-Quellen, gerundet. „k. A.“ heißt: ohne gesicherte Angabe. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Panasonic & OM System"
+  },
+  {
+   "id": "c_q3",
+   "titel": "Leica Q3",
+   "kurz": "Leica · 2023 · Vollformat",
+   "tags": [
+    "kamera",
+    "leica",
+    "leica q3",
+    "2023",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Kompakte Vollformat-Kamera mit Festbrennweite."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Leica"
+      ],
+      [
+       "Erschienen",
+       "2023"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "60 MP"
+      ],
+      [
+       "Bajonett",
+       "fest (28 mm f/1.7)"
+      ],
+      [
+       "Serienbild (max.)",
+       "15 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "8K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "im Objektiv"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "743 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "5995 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Leica, Pentax & Sigma"
+  },
+  {
+   "id": "c_m11",
+   "titel": "Leica M11",
+   "kurz": "Leica · 2022 · Vollformat",
+   "tags": [
+    "kamera",
+    "leica",
+    "leica m11",
+    "2022",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Messsucherkamera mit Handfokus."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Leica"
+      ],
+      [
+       "Erschienen",
+       "2022"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "60 MP"
+      ],
+      [
+       "Bajonett",
+       "Leica M"
+      ],
+      [
+       "Serienbild (max.)",
+       "4,5 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "kein Video"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "kein"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "640 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "8995 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Leica, Pentax & Sigma"
+  },
+  {
+   "id": "c_k3iii",
+   "titel": "Pentax K-3 Mark III",
+   "kurz": "Pentax · 2021 · APS-C",
+   "tags": [
+    "kamera",
+    "pentax",
+    "pentax k-3 mark iii",
+    "2021",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Robuste APS-C-DSLR mit optischem Sucher."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Pentax"
+      ],
+      [
+       "Erschienen",
+       "2021"
+      ],
+      [
+       "Sensor",
+       "APS-C"
+      ],
+      [
+       "Auflösung",
+       "25,7 MP"
+      ],
+      [
+       "Bajonett",
+       "Pentax K"
+      ],
+      [
+       "Serienbild (max.)",
+       "12 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K30"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "5 Achsen"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "820 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "1999 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Leica, Pentax & Sigma"
+  },
+  {
+   "id": "c_fp",
+   "titel": "Sigma fp",
+   "kurz": "Sigma · 2019 · Vollformat",
+   "tags": [
+    "kamera",
+    "sigma",
+    "sigma fp",
+    "2019",
+    "fotoapparat"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Kleinste Vollformat-Kamera, modular, für Video und Foto."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Hersteller",
+       "Sigma"
+      ],
+      [
+       "Erschienen",
+       "2019"
+      ],
+      [
+       "Sensor",
+       "Vollformat"
+      ],
+      [
+       "Auflösung",
+       "24,6 MP"
+      ],
+      [
+       "Bajonett",
+       "L-Mount"
+      ],
+      [
+       "Serienbild (max.)",
+       "18 Bilder/s"
+      ],
+      [
+       "Video (max.)",
+       "4K24"
+      ],
+      [
+       "Bildstabilisator im Gehäuse",
+       "kein"
+      ],
+      [
+       "Gewicht (mit Akku, ca.)",
+       "422 g"
+      ],
+      [
+       "Startpreis (USA, Gehäuse)",
+       "1899 $"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Technische Daten"
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Angaben nach Herstellerdaten, gerundet. Serienbild und Video gelten oft nur mit elektronischem Verschluss oder bestimmten Einstellungen. Preise sind US-Startpreise und ändern sich."
+    }
+   ],
+   "siehe": [
+    "kameras:v_sensor",
+    "kameras:v_bajonett"
+   ],
+   "symbol": "antenne",
+   "gruppe": "Leica, Pentax & Sigma"
+  }
+ ]
+}

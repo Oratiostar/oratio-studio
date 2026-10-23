@@ -1,0 +1,821 @@
+{
+"id": "mathe",
+"name": "Mathe & Konstanten",
+"untertitel": "Potenzen, Winkel, komplexe Zahlen",
+"farbe": "lila",
+"symbol": "wechselspannung",
+"reihenfolge": 6,
+"seiten": [
+{
+"id": "potenzen",
+"titel": "Potenzen, Zehnerpotenzen & Vorsätze",
+"kurz": "Rechenregeln, Zweierpotenzen, SI-Vorsätze",
+"tags": [
+"potenz",
+"zehnerpotenz",
+"vorsatz",
+"si",
+"exponent",
+"zweierpotenz",
+"kibibyte"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Vorsatz",
+"Zeichen",
+"Faktor"
+],
+"zeilen": [
+[
+"Tera",
+"T",
+"10¹²"
+],
+[
+"Giga",
+"G",
+"10⁹"
+],
+[
+"Mega",
+"M",
+"10⁶"
+],
+[
+"Kilo",
+"k",
+"10³"
+],
+[
+"Milli",
+"m",
+"10⁻³"
+],
+[
+"Mikro",
+"µ",
+"10⁻⁶"
+],
+[
+"Nano",
+"n",
+"10⁻⁹"
+],
+[
+"Piko",
+"p",
+"10⁻¹²"
+],
+[
+"Femto",
+"f",
+"10⁻¹⁵"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Regel",
+"Formel"
+],
+"zeilen": [
+[
+"Produkt",
+"aᵐ · aⁿ = aᵐ⁺ⁿ"
+],
+[
+"Quotient",
+"aᵐ / aⁿ = aᵐ⁻ⁿ"
+],
+[
+"Potenz einer Potenz",
+"(aᵐ)ⁿ = aᵐ·ⁿ"
+],
+[
+"Negativer Exponent",
+"a⁻ⁿ = 1 / aⁿ"
+],
+[
+"Null",
+"a⁰ = 1"
+],
+[
+"Wurzel",
+"ⁿ√a = a^(1/n)"
+],
+[
+"Logarithmus",
+"log(x·y) = log x + log y"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"2ⁿ",
+"Wert",
+"2ⁿ",
+"Wert"
+],
+"zeilen": [
+[
+"2⁰",
+"1",
+"2⁸",
+"256"
+],
+[
+"2¹",
+"2",
+"2⁹",
+"512"
+],
+[
+"2²",
+"4",
+"2¹⁰",
+"1 024"
+],
+[
+"2³",
+"8",
+"2¹²",
+"4 096"
+],
+[
+"2⁴",
+"16",
+"2¹⁶",
+"65 536"
+],
+[
+"2⁵",
+"32",
+"2²⁰",
+"1 048 576"
+],
+[
+"2⁶",
+"64",
+"2³²",
+"4 294 967 296"
+],
+[
+"2⁷",
+"128",
+"2⁶⁴",
+"1,8 · 10¹⁹"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Zweierpotenzen"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Binär",
+"Dezimal (SI)",
+"Name (IEC)"
+],
+"zeilen": [
+[
+"1 KiB = 2¹⁰ B",
+"1 024 B",
+"Kibibyte"
+],
+[
+"1 MiB = 2²⁰ B",
+"1 048 576 B",
+"Mebibyte"
+],
+[
+"1 GiB = 2³⁰ B",
+"1,074 · 10⁹ B",
+"Gibibyte"
+],
+[
+"1 kB (SI)",
+"1 000 B",
+"Kilobyte"
+],
+[
+"1 GB (SI)",
+"10⁹ B",
+"Gigabyte"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Speicher: Hersteller vs. Windows"
+},
+{
+"t": "rechner",
+"titel": "Zehnerpotenz-Umrechnung",
+"felder": [
+[
+"x",
+"Wert",
+"",
+"4k7"
+],
+[
+"e",
+"Exponent n (×10ⁿ)",
+"",
+"-3"
+]
+],
+"ergebnis": [
+[
+"a",
+"Ergebnis",
+"x*10**e",
+"",
+"si"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Eine **2 TB-Festplatte** zeigt dein PC als ca. 1,82 TiB, denn 2·10¹² / 2⁴⁰ ≈ 1,82."
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "Im Elektronik-Alltag: **µ = u** (10u = 10 µF), **n = nano**, **p = pico**, großes **M = Mega**, kleines **m = Milli**. Groß/klein ist entscheidend!"
+}
+],
+"siehe": [
+"grund:einheiten",
+"mathe:umstellen"
+],
+"symbol": "wechselspannung"
+},
+{
+"id": "umstellen",
+"titel": "Formeln umstellen",
+"kurz": "Dreiecksmethode und Äquivalenzumformung",
+"tags": [
+"umstellen",
+"formel",
+"gleichung",
+"dreieck",
+"auflösen",
+"äquivalenzumformung"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Eine Formel nach einer anderen Größe auflösen: **Auf beiden Seiten dasselbe tun**."
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Formel",
+"nach ... umgestellt"
+],
+"zeilen": [
+[
+"U = R · I",
+"R = U / I   |   I = U / R"
+],
+[
+"P = U · I",
+"U = P / I   |   I = P / U"
+],
+[
+"P = I² · R",
+"I = √(P/R)   |   R = P / I²"
+],
+[
+"P = U² / R",
+"U = √(P·R)   |   R = U² / P"
+],
+[
+"f = 1/T",
+"T = 1/f"
+],
+[
+"XC = 1/(2π·f·C)",
+"C = 1/(2π·f·XC)   |   f = 1/(2π·XC·C)"
+],
+[
+"Z = √(R² + X²)",
+"X = √(Z² − R²)"
+],
+[
+"U₂ = U₁ · R₂/(R₁+R₂)",
+"R₂ = R₁ · U₂/(U₁ − U₂)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "**Dreieck-Methode (U–R–I):** U oben, R und I unten. Das gesuchte abdecken: übrig bleibt die Rechnung. U = R·I; R = U/I; I = U/R."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Schritt",
+"Beispiel: U₂ = U₁ · R₂/(R₁+R₂), gesucht R₁"
+],
+"zeilen": [
+[
+"1",
+"Mal (R₁ + R₂): U₂·(R₁+R₂) = U₁·R₂"
+],
+[
+"2",
+"Ausmultiplizieren: U₂·R₁ + U₂·R₂ = U₁·R₂"
+],
+[
+"3",
+"U₂·R₂ abziehen: U₂·R₁ = U₁·R₂ − U₂·R₂ = R₂·(U₁ − U₂)"
+],
+[
+"4",
+"Durch U₂: R₁ = R₂·(U₁ − U₂)/U₂"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Die Rechner in Atlas lösen automatisch nach dem leeren Feld – so brauchst du nicht umzustellen."
+}
+],
+"siehe": [
+"grund:formeln",
+"mathe:potenzen"
+],
+"symbol": "wechselspannung"
+},
+{
+"id": "trigo",
+"titel": "Trigonometrie & Winkel",
+"kurz": "sin, cos, tan, Bogenmaß, Zeiger",
+"tags": [
+"trigonometrie",
+"sin",
+"cos",
+"tan",
+"winkel",
+"bogenmaß",
+"pythagoras"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Winkel",
+"sin",
+"cos",
+"tan"
+],
+"zeilen": [
+[
+"0°",
+"0",
+"1",
+"0"
+],
+[
+"30°",
+"0,5",
+"0,866",
+"0,577"
+],
+[
+"45°",
+"0,707",
+"0,707",
+"1"
+],
+[
+"60°",
+"0,866",
+"0,5",
+"1,732"
+],
+[
+"90°",
+"1",
+"0",
+"–"
+],
+[
+"180°",
+"0",
+"−1",
+"0"
+],
+[
+"270°",
+"−1",
+"0",
+"–"
+],
+[
+"360°",
+"0",
+"1",
+"0"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "formel",
+"name": "Rechtwinkliges Dreieck",
+"f": "sin α = Gegenkathete / Hypotenuse    cos α = Ankathete / Hypotenuse    tan α = Gegenk. / Ankathete",
+"text": ""
+},
+{
+"t": "formel",
+"name": "Satz des Pythagoras",
+"f": "c² = a² + b²",
+"text": ""
+},
+{
+"t": "formel",
+"name": "Bogenmaß",
+"f": "rad = Grad · π / 180",
+"text": ""
+},
+{
+"t": "rechner",
+"titel": "Winkel & Funktion",
+"felder": [
+[
+"g",
+"Winkel",
+"°",
+"30"
+],
+[
+"s",
+"sin",
+"",
+""
+],
+[
+"c",
+"cos",
+"",
+""
+]
+],
+"formeln": {
+"s": [
+"sin(radians(g))"
+],
+"c": [
+"cos(radians(g))"
+]
+},
+"text": "Lass ein Feld leer – es wird aus den anderen berechnet. Schreibweise: 4k7, 10u, 2,2M, 100n."
+},
+{
+"t": "rechner",
+"titel": "Rechtwinkliges Dreieck",
+"felder": [
+[
+"a",
+"Kathete a",
+"",
+"3"
+],
+[
+"b",
+"Kathete b",
+"",
+"4"
+]
+],
+"ergebnis": [
+[
+"c",
+"Hypotenuse c",
+"sqrt(a*a+b*b)",
+"",
+"zahl"
+],
+[
+"al",
+"Winkel α",
+"degrees(atan(a/b))",
+"°",
+"zahl"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "fun",
+"text": "**Phasenwinkel:** cos φ = P/S (Wirkleistung/Scheinleistung). Der Leistungsfaktor ist also nichts anderes als der Cosinus des Winkels zwischen U und I."
+}
+],
+"siehe": [
+"grund:blind"
+],
+"symbol": "sinus"
+},
+{
+"id": "komplex",
+"titel": "Komplexe Zahlen (Elektrotechnik)",
+"kurz": "j, Zeiger, Impedanz",
+"tags": [
+"komplex",
+"j",
+"impedanz",
+"zeiger",
+"polar",
+"kartesisch",
+"phase"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"In der Elektrotechnik heißt die imaginäre Einheit **j** (nicht i, denn i ist der Strom): **j² = −1**."
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Form",
+"Schreibweise",
+"Wann nutzen"
+],
+"zeilen": [
+[
+"Kartesisch",
+"Z = R + j·X",
+"addieren/subtrahieren"
+],
+[
+"Polar",
+"Z = |Z| · e^(jφ) = |Z| ∠ φ",
+"multiplizieren/dividieren"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "formel",
+"name": "Umrechnung",
+"f": "|Z| = √(R² + X²)    φ = arctan(X / R)    R = |Z|·cos φ    X = |Z|·sin φ",
+"text": ""
+},
+{
+"t": "tabelle",
+"kopf": [
+"Bauteil",
+"Impedanz"
+],
+"zeilen": [
+[
+"Widerstand",
+"Z = R"
+],
+[
+"Spule",
+"Z = j·ω·L"
+],
+[
+"Kondensator",
+"Z = 1/(j·ω·C) = −j/(ω·C)"
+],
+[
+"Reihe R–L",
+"Z = R + jωL"
+],
+[
+"Reihe R–C",
+"Z = R − j/(ωC)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "rechner",
+"titel": "R-C-Reihenschaltung",
+"felder": [
+[
+"r",
+"R",
+"Ω",
+"1k"
+],
+[
+"c",
+"C",
+"F",
+"100n"
+],
+[
+"f",
+"f",
+"Hz",
+"1,6k"
+]
+],
+"ergebnis": [
+[
+"xc",
+"X_C",
+"1/(2*pi*f*c)",
+"Ω"
+],
+[
+"z",
+"|Z|",
+"sqrt(r*r+(1/(2*pi*f*c))**2)",
+"Ω"
+],
+[
+"phi",
+"Phase φ",
+"-degrees(atan(1/(2*pi*f*c)/r))",
+"°",
+"zahl"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Im Zeigerdiagramm eilt bei der **Spule** die Spannung dem Strom um 90° voraus; beim **Kondensator** eilt der Strom voraus. Merkspruch: **ELI the ICE man** (E vor I bei L, I vor E bei C)."
+}
+],
+"siehe": [
+"grund:wechselstrom",
+"mathe:trigo"
+],
+"symbol": "sinus"
+},
+{
+"id": "griechisch",
+"titel": "Griechisches Alphabet",
+"kurz": "Formelzeichen und ihre Bedeutung",
+"tags": [
+"griechisch",
+"alpha",
+"omega",
+"formelzeichen",
+"konstante",
+"pi"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Buchstabe",
+"Name",
+"Verwendung in der Elektronik"
+],
+"zeilen": [
+[
+"α β γ",
+"Alpha Beta Gamma",
+"Winkel; β = Stromverstärkung; γ = Strahlung"
+],
+[
+"Δ δ",
+"Delta",
+"Differenz, Dreieckschaltung"
+],
+[
+"ε",
+"Epsilon",
+"Permittivität (ε₀ = 8,854·10⁻¹² F/m)"
+],
+[
+"η",
+"Eta",
+"Wirkungsgrad"
+],
+[
+"θ",
+"Theta",
+"Temperatur, Winkel"
+],
+[
+"λ",
+"Lambda",
+"Wellenlänge"
+],
+[
+"µ",
+"My",
+"Mikro, Permeabilität µ₀ = 4π·10⁻⁷ H/m"
+],
+[
+"π",
+"Pi",
+"3,14159…"
+],
+[
+"ρ",
+"Rho",
+"spezifischer Widerstand"
+],
+[
+"Σ σ",
+"Sigma",
+"Summe, Leitfähigkeit"
+],
+[
+"τ",
+"Tau",
+"Zeitkonstante (R·C)"
+],
+[
+"Φ φ",
+"Phi",
+"Phasenwinkel, magnet. Fluss"
+],
+[
+"Ω ω",
+"Omega",
+"Ohm; ω = 2πf Kreisfrequenz"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Konstante",
+"Wert"
+],
+"zeilen": [
+[
+"π",
+"3,141592653…"
+],
+[
+"e",
+"2,718281828…"
+],
+[
+"c (Lichtgeschwindigkeit)",
+"299 792 458 m/s"
+],
+[
+"q (Elementarladung)",
+"1,602·10⁻¹⁹ C"
+],
+[
+"k (Boltzmann)",
+"1,381·10⁻²³ J/K"
+],
+[
+"h (Planck)",
+"6,626·10⁻³⁴ J·s"
+],
+[
+"ε₀",
+"8,854·10⁻¹² F/m"
+],
+[
+"µ₀",
+"1,257·10⁻⁶ H/m"
+],
+[
+"U_T bei 25 °C (k·T/q)",
+"25,7 mV"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Naturkonstanten"
+}
+],
+"siehe": [
+"mathe:potenzen"
+],
+"symbol": "wechselspannung"
+}
+]
+}

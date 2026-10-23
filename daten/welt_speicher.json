@@ -1,0 +1,2036 @@
+{
+"id": "speicher",
+"name": "Speicher & Bandbreiten",
+"untertitel": "SSD, PCIe, USB, RAM, Netz, Latenz",
+"farbe": "tinte",
+"symbol": "quarz",
+"reihenfolge": 4,
+"seiten": [
+{
+"id": "pi5",
+"titel": "Pi 5: Speicher im Vergleich",
+"kurz": "Was SD, USB 3 und PCIe am Raspberry Pi 5 wirklich schaffen",
+"tags": [
+"pi 5",
+"speicher",
+"sd",
+"nvme",
+"usb",
+"pcie",
+"ssd",
+"geschwindigkeit",
+"raspberry"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Die Tabelle zeigt, was jeder Speicher **am PC** typisch schafft, was er **theoretisch** könnte und was dabei am **Raspberry Pi 5** über SD-Karte, USB 3 und den PCIe-Anschluss herauskommt (deine Messwerte, unverändert)."
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Speicher / Anschluss",
+"Typisch am PC",
+"Theor. Maximum",
+"Pi 5 SD",
+"Pi 5 USB 3",
+"Pi 5 PCIe 2.0",
+"Pi 5 PCIe 3.0"
+],
+"zeilen": [
+[
+"microSD UHS-I A1",
+"80–100 MB/s",
+"~104 MB/s",
+"70–90 MB/s",
+"–",
+"–",
+"–"
+],
+[
+"microSD UHS-I A2",
+"90–104 MB/s",
+"~104 MB/s*",
+"80–100 MB/s",
+"–",
+"–",
+"–"
+],
+[
+"USB-Stick einfach",
+"20–100 MB/s",
+"500 MB/s",
+"–",
+"20–100 MB/s",
+"–",
+"–"
+],
+[
+"USB-Stick schnell",
+"100–400 MB/s",
+"500 MB/s",
+"–",
+"100–350 MB/s",
+"–",
+"–"
+],
+[
+"2,5\" HDD SATA",
+"80–150 MB/s",
+"~600 MB/s",
+"–",
+"80–150 MB/s",
+"–",
+"–"
+],
+[
+"3,5\" HDD SATA",
+"150–280 MB/s",
+"~600 MB/s",
+"–",
+"120–250 MB/s",
+"–",
+"–"
+],
+[
+"SATA SSD",
+"450–550 MB/s",
+"~600 MB/s",
+"–",
+"350–450 MB/s",
+"–",
+"–"
+],
+[
+"NVMe PCIe 3.0",
+"800–950 MB/s",
+"~985 MB/s",
+"–",
+"350–450 MB/s",
+"430–500 MB/s",
+"800–950 MB/s"
+],
+[
+"NVMe PCIe 4.0",
+"1,6–1,9 GB/s",
+"~1,97 GB/s",
+"–",
+"350–450 MB/s",
+"430–500 MB/s",
+"800–950 MB/s"
+],
+[
+"NVMe PCIe 5.0",
+"3,2–3,7 GB/s",
+"~3,94 GB/s",
+"–",
+"350–450 MB/s",
+"430–500 MB/s",
+"800–950 MB/s"
+],
+[
+"NVMe PCIe 6.0",
+"–",
+"~7,56 GB/s",
+"–",
+"350–450 MB/s",
+"430–500 MB/s",
+"800–950 MB/s"
+],
+[
+"NVMe PCIe 7.0",
+"–",
+"~15,13 GB/s",
+"–",
+"350–450 MB/s",
+"430–500 MB/s",
+"800–950 MB/s"
+]
+],
+"mono": [
+1,
+2,
+3,
+4,
+5,
+6
+],
+"fett": true,
+"titel": "Speichervergleich"
+},
+{
+"t": "hinweis",
+"typ": "info",
+"text": "* microSD-Werte hängen stark von Karte, Leser und Zugriffsmuster ab. PCIe-Werte gelten pro Lane (×1): Der Pi 5 hat nur **eine** Lane; ×4, ×8 und ×16 siehe Seite „PCI Express“."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "PCIe 3.0 am Pi 5 ist **inoffiziell** (offiziell: Gen 2). Es kann instabil sein – in `config.txt` mit `dtparam=pciex1_gen=3` aktivierbar."
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Eine NVMe-SSD am Pi 5 ist grob 5–10× schneller als eine microSD – vor allem bei kleinen Zugriffen (IOPS) wirkt sich das beim Booten und bei Datenbanken aus."
+}
+],
+"siehe": [
+"speicher:pcie",
+"speicher:sdkarten",
+"linux:pi"
+],
+"symbol": "quarz"
+},
+{
+"id": "pcie",
+"titel": "PCI Express (PCIe)",
+"kurz": "Von Version 1.0 bis 7.0: Pro Lane, ×1 bis ×16",
+"tags": [
+"pcie",
+"pci express",
+"lane",
+"nvme",
+"x1",
+"x4",
+"x16"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"PCIe",
+"Pro Lane",
+"×1",
+"×4",
+"×8",
+"×16"
+],
+"zeilen": [
+[
+"PCIe 1.0",
+"~250 MB/s",
+"250 MB/s",
+"1 GB/s",
+"2 GB/s",
+"4 GB/s"
+],
+[
+"PCIe 2.0",
+"~500 MB/s",
+"500 MB/s",
+"2 GB/s",
+"4 GB/s",
+"8 GB/s"
+],
+[
+"PCIe 3.0",
+"~985 MB/s",
+"985 MB/s",
+"3,94 GB/s",
+"7,88 GB/s",
+"15,75 GB/s"
+],
+[
+"PCIe 4.0",
+"~1,97 GB/s",
+"1,97 GB/s",
+"7,88 GB/s",
+"15,75 GB/s",
+"31,5 GB/s"
+],
+[
+"PCIe 5.0",
+"~3,94 GB/s",
+"3,94 GB/s",
+"15,75 GB/s",
+"31,5 GB/s",
+"63 GB/s"
+],
+[
+"PCIe 6.0",
+"~7,56 GB/s",
+"7,56 GB/s",
+"30,24 GB/s",
+"60,48 GB/s",
+"120,96 GB/s"
+],
+[
+"PCIe 7.0",
+"~15,13 GB/s",
+"15,13 GB/s",
+"60,52 GB/s",
+"121,04 GB/s",
+"242,08 GB/s"
+]
+],
+"mono": [
+1,
+2,
+3,
+4,
+5
+],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "info",
+"text": "Die Werte sind theoretische Nutzdatenraten **pro Richtung**. PCIe 1.0/2.0 nutzen die Kodierung 8b/10b (20 % Verlust); ab PCIe 3.0 wird 128b/130b verwendet (ca. 1,5 % Verlust)."
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "Jede neue Generation **verdoppelt** die Rate pro Lane. Lanes: ×1, ×4, ×8, ×16 – mehr Lanes = proportional mehr Bandbreite. Der Pi 5 hat genau **eine** Lane (×1)."
+}
+],
+"siehe": [
+"speicher:pi5",
+"speicher:usb"
+],
+"symbol": "quarz"
+},
+{
+"id": "usb",
+"titel": "USB & Thunderbolt",
+"kurz": "Bit-Rate, Byte-Rate und was wirklich ankommt",
+"tags": [
+"usb",
+"thunderbolt",
+"usb4",
+"usb 3",
+"gbit",
+"mbit"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"USB-Bezeichnung",
+"Signalisierungsrate",
+"Theoretisch in Byte",
+"Nutzdaten nach Kodierung (max.)"
+],
+"zeilen": [
+[
+"USB 1.0 / 1.1",
+"12 Mbit/s",
+"~1,5 MB/s",
+"~1,5 MB/s"
+],
+[
+"USB 2.0",
+"480 Mbit/s",
+"~60 MB/s",
+"60 MB/s (praktisch 35–40 MB/s)"
+],
+[
+"USB 3.0 / USB 3.2 Gen 1",
+"5 Gbit/s",
+"625 MB/s",
+"500 MB/s (8b/10b)"
+],
+[
+"USB 3.1 Gen 2 / USB 3.2 Gen 2",
+"10 Gbit/s",
+"1,25 GB/s",
+"≈ 1,2 GB/s (128b/132b)"
+],
+[
+"USB 3.2 Gen 2×2",
+"20 Gbit/s",
+"2,5 GB/s",
+"≈ 2,4 GB/s"
+],
+[
+"USB4",
+"20 Gbit/s",
+"2,5 GB/s",
+"≈ 2,4 GB/s"
+],
+[
+"USB4",
+"40 Gbit/s",
+"5 GB/s",
+"≈ 4,8 GB/s"
+],
+[
+"USB4 Version 2.0",
+"80 Gbit/s",
+"10 GB/s",
+"≈ 9,7 GB/s"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "USB-Generationen"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Thunderbolt",
+"Max. Signalisierungsrate",
+"Theoretisch in Byte",
+"Typische Nutzung"
+],
+"zeilen": [
+[
+"Thunderbolt 1",
+"10 Gbit/s",
+"1,25 GB/s",
+"Externe SSD, Displays"
+],
+[
+"Thunderbolt 2",
+"20 Gbit/s",
+"2,5 GB/s",
+"Schnelle externe Speicher"
+],
+[
+"Thunderbolt 3",
+"40 Gbit/s",
+"5 GB/s",
+"NVMe, Docking, eGPU, Displays (PCIe-Daten max. ~32 Gbit/s ≈ 4 GB/s, real ca. 3 GB/s)"
+],
+[
+"Thunderbolt 4",
+"40 Gbit/s",
+"5 GB/s",
+"Docking, NVMe, Displays (PCIe-Daten max. ~32 Gbit/s ≈ 4 GB/s, real ca. 3 GB/s)"
+],
+[
+"Thunderbolt 5",
+"80 Gbit/s",
+"10 GB/s",
+"Sehr schnelle SSDs, Displays"
+],
+[
+"Thunderbolt 5 Boost",
+"bis 120 Gbit/s*",
+"bis 15 GB/s*",
+"Erhöhte Display-Bandbreite"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Thunderbolt"
+},
+{
+"t": "hinweis",
+"typ": "info",
+"text": "* Bei Thunderbolt 5 ist 120 Gbit/s ein spezieller Display-Bandbreitenmodus."
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Der Pi 5 hat zwei USB-3.0-Ports (zusammen 5 Gbit/s geteilt) und zwei USB-2.0-Ports. Eine SSD am Pi erreicht an USB 3 etwa 350–450 MB/s."
+}
+],
+"siehe": [
+"speicher:bitbyte",
+"speicher:pi5",
+"schnittstellen:usb"
+],
+"symbol": "quarz"
+},
+{
+"id": "bitbyte",
+"titel": "Bit, Byte, MB und MiB",
+"kurz": "Umrechnen, Dezimal gegen Binär, Dateigröße und Zeit",
+"tags": [
+"bit",
+"byte",
+"mib",
+"gib",
+"umrechnen",
+"mbit",
+"dezimal",
+"binär",
+"kibibyte"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Größe",
+"Wofür man sie meist benutzt"
+],
+"zeilen": [
+[
+"Bit (b)",
+"Übertragungsgeschwindigkeit – Internet, WLAN, USB, Ethernet"
+],
+[
+"Byte (B)",
+"Datenmenge und Speichergeschwindigkeit – SSD, HDD, microSD, Dateien"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "formel",
+"name": "Umrechnung",
+"f": "1 Byte = 8 Bit     MB/s = Mbit/s ÷ 8",
+"text": "Beispiel: 5 Gbit/s ÷ 8 = 625 MB/s Signalrate (USB 3.0 nach 8b/10b-Kodierung: 500 MB/s Nutzdaten)."
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "**Bit = Geschwindigkeit der Leitung · Byte = Datenmenge / Speichergeschwindigkeit.** Kleines b = Bit, großes B = Byte."
+},
+{
+"t": "h2",
+"text": "Dezimal oder binär – MB, MiB und Co."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Einheit",
+"Dezimal (Hersteller)",
+"Binär (Windows/Linux oft)",
+"Unterschied",
+"Beispiel"
+],
+"zeilen": [
+[
+"kB / KiB",
+"1.000 Byte",
+"1.024 Byte",
+"+ 2,4 %",
+"–"
+],
+[
+"MB / MiB",
+"1.000.000 Byte",
+"1.048.576 Byte",
+"+ 4,9 %",
+"–"
+],
+[
+"GB / GiB",
+"10⁹ Byte",
+"2³⁰ Byte",
+"+ 7,4 %",
+"500-GB-SSD = 465,7 GiB"
+],
+[
+"TB / TiB",
+"10¹² Byte",
+"2⁴⁰ Byte",
+"+ 10,0 %",
+"1-TB-SSD = 931,3 GiB"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "rechner",
+"titel": "Mbit/s in MB/s",
+"felder": [
+[
+"mbit",
+"Rate",
+"Mbit/s",
+"1000"
+]
+],
+"ergebnis": [
+[
+"mb",
+"in MB/s",
+"mbit/8",
+"MB/s",
+"zahl"
+],
+[
+"gb",
+"in GB pro Stunde",
+"mbit/8*3.6",
+"GB/h",
+"zahl"
+]
+],
+"text": "1 Gbit/s = 1000 Mbit/s."
+},
+{
+"t": "rechner",
+"titel": "Übertragungszeit",
+"felder": [
+[
+"gb",
+"Dateigröße",
+"GB",
+"10"
+],
+[
+"mb",
+"Geschwindigkeit",
+"MB/s",
+"100"
+]
+],
+"ergebnis": [
+[
+"s",
+"Dauer",
+"gb*1000/mb",
+"s",
+"zahl"
+],
+[
+"min",
+"Dauer",
+"gb*1000/mb/60",
+"min",
+"zahl"
+]
+],
+"text": "Praxis: etwa 70–90 % der theoretischen Rate."
+},
+{
+"t": "rechner",
+"titel": "Hersteller-GB in GiB",
+"felder": [
+[
+"gb",
+"Herstellerangabe",
+"GB",
+"500"
+]
+],
+"ergebnis": [
+[
+"gib",
+"angezeigt als",
+"gb*1e9/2**30",
+"GiB",
+"zahl"
+]
+]
+}
+],
+"siehe": [
+"speicher:usb",
+"zahlen:zahlen"
+],
+"symbol": "quarz"
+},
+{
+"id": "sdkarten",
+"titel": "SD-Karten, SATA, eMMC",
+"kurz": "Bus-Modi, Klassen und Aufdrucke",
+"tags": [
+"sd",
+"microsd",
+"sata",
+"sas",
+"emmc",
+"uhs",
+"a1",
+"a2",
+"v30",
+"u3",
+"speed class"
+],
+"bloecke": [
+{
+"t": "h2",
+"text": "Laufwerks-Schnittstellen"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Schnittstelle",
+"Signalrate",
+"Kodierung",
+"Nutzdaten max.",
+"Typische Nutzung"
+],
+"zeilen": [
+[
+"SATA I",
+"1,5 Gbit/s",
+"8b/10b",
+"150 MB/s",
+"Alte HDDs/SSDs"
+],
+[
+"SATA II",
+"3 Gbit/s",
+"8b/10b",
+"300 MB/s",
+"Ältere PCs"
+],
+[
+"SATA III",
+"6 Gbit/s",
+"8b/10b",
+"600 MB/s",
+"2,5\"-SSD, HDD, M.2 SATA"
+],
+[
+"SAS-3",
+"12 Gbit/s",
+"8b/10b",
+"1,2 GB/s",
+"Server-HDD/-SSD"
+],
+[
+"eMMC 5.1 (HS400)",
+"8 Bit breit, 200 MHz DDR",
+"–",
+"400 MB/s",
+"Fest verlöteter Speicher in Boards und Geräten"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "h2",
+"text": "SD-Karten – Bus-Geschwindigkeit"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Bus / Modus",
+"Max. Rate",
+"Hinweis"
+],
+"zeilen": [
+[
+"Default Speed",
+"12,5 MB/s",
+"25 MHz"
+],
+[
+"High Speed",
+"25 MB/s",
+"50 MHz"
+],
+[
+"UHS-I SDR50 / DDR50",
+"50 MB/s",
+"–"
+],
+[
+"UHS-I SDR104",
+"104 MB/s",
+"–"
+],
+[
+"UHS-II",
+"156 / 312 MB/s",
+"Zweite Pin-Reihe nötig"
+],
+[
+"UHS-III",
+"624 MB/s",
+"Kaum verbreitet"
+],
+[
+"SD Express (SD 7.x)",
+"≈ 985 MB/s",
+"PCIe 3.0 ×1 + NVMe"
+],
+[
+"SD Express (SD 8.0)",
+"≈ 3,94 GB/s",
+"PCIe 4.0 ×2 + NVMe"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "h2",
+"text": "SD-Karten – Klassen und Aufdrucke"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Aufdruck",
+"Name",
+"Garantie (Minimum, nicht Maximum)"
+],
+"zeilen": [
+[
+"Class 2 / 4 / 6 / 10",
+"Speed Class",
+"2 / 4 / 6 / 10 MB/s dauerhaft schreiben"
+],
+[
+"U1 / U3",
+"UHS Speed Class",
+"10 / 30 MB/s dauerhaft schreiben"
+],
+[
+"V6 / V10 / V30",
+"Video Speed Class",
+"6 / 10 / 30 MB/s dauerhaft schreiben"
+],
+[
+"V60 / V90",
+"Video Speed Class",
+"60 / 90 MB/s dauerhaft schreiben"
+],
+[
+"A1",
+"Application Performance Class",
+"≥ 1.500 IOPS lesen / ≥ 500 IOPS schreiben (4 kB zufällig)"
+],
+[
+"A2",
+"Application Performance Class",
+"≥ 4.000 IOPS lesen / ≥ 2.000 IOPS schreiben (4 kB zufällig)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Für den Raspberry Pi als Systemkarte zählt **A1/A2** (Zufallszugriffe) mehr als die reine Schreibrate. Für Videoaufnahme zählt **V30/V60/V90**."
+}
+],
+"siehe": [
+"speicher:pi5",
+"speicher:nand"
+],
+"symbol": "quarz"
+},
+{
+"id": "nand",
+"titel": "Flash-Speicher (NAND)",
+"kurz": "SLC, MLC, TLC, QLC im Vergleich",
+"tags": [
+"nand",
+"flash",
+"slc",
+"mlc",
+"tlc",
+"qlc",
+"ssd",
+"zyklen"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Bit/Zelle",
+"Zyklen (grob)",
+"Geschwindigkeit",
+"Preis/GB",
+"Typische Nutzung"
+],
+"zeilen": [
+[
+"SLC",
+"1",
+"~100.000",
+"Am schnellsten",
+"Am höchsten",
+"Industrie, SLC-Cache in SSDs"
+],
+[
+"MLC",
+"2",
+"~3.000–10.000",
+"Schnell",
+"Hoch",
+"Pro-SSDs, ältere SSDs"
+],
+[
+"TLC",
+"3",
+"~1.000–3.000",
+"Gut",
+"Mittel",
+"Standard-SSDs, SD-Karten, USB-Sticks"
+],
+[
+"QLC",
+"4",
+"~100–1.000",
+"Niedrig",
+"Niedrig",
+"Große, günstige SSDs (Schreiben bricht nach vollem Cache ein)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "Mehr Bit pro Zelle = billiger und größer, aber **langsamer** und mit **weniger Schreibzyklen**."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Dauerhaft viel schreiben (Logdateien, Datenbanken) auf einer billigen SD-Karte verkürzt ihr Leben. Logs auf SSD oder in RAM (`log2ram`)."
+}
+],
+"siehe": [
+"speicher:sdkarten"
+],
+"symbol": "quarz"
+},
+{
+"id": "ram",
+"titel": "Arbeitsspeicher & KI-Limit",
+"kurz": "Bandbreite, Speichertypen und Tokens pro Sekunde",
+"tags": [
+"ram",
+"ddr4",
+"ddr5",
+"lpddr",
+"gddr",
+"hbm",
+"bandbreite",
+"ki",
+"token",
+"ollama",
+"llm"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Transferrate",
+"Busbreite",
+"Bandbreite",
+"Typische Nutzung"
+],
+"zeilen": [
+[
+"DDR3-1600",
+"1.600 MT/s",
+"64 Bit",
+"12,8 GB/s",
+"Alte PCs"
+],
+[
+"DDR4-2400",
+"2.400 MT/s",
+"64 Bit",
+"19,2 GB/s",
+"PCs, Laptops"
+],
+[
+"DDR4-3200",
+"3.200 MT/s",
+"64 Bit",
+"25,6 GB/s",
+"PCs, Laptops"
+],
+[
+"DDR5-4800",
+"4.800 MT/s",
+"64 Bit",
+"38,4 GB/s",
+"Aktuelle PCs"
+],
+[
+"DDR5-6400",
+"6.400 MT/s",
+"64 Bit",
+"51,2 GB/s",
+"Aktuelle PCs"
+],
+[
+"LPDDR4-3200",
+"3.200 MT/s",
+"32 Bit",
+"12,8 GB/s",
+"Smartphones, Einplatinenrechner"
+],
+[
+"LPDDR4X-4267",
+"4.267 MT/s",
+"32 Bit",
+"17,1 GB/s",
+"Smartphones, Einplatinenrechner"
+],
+[
+"LPDDR5-6400",
+"6.400 MT/s",
+"32 Bit",
+"25,6 GB/s",
+"Smartphones, Laptops"
+],
+[
+"LPDDR5X-8533",
+"8.533 MT/s",
+"64 Bit",
+"68,3 GB/s",
+"Laptops, Smartphones"
+],
+[
+"GDDR6 (14 Gbit/s je Pin)",
+"14.000 MT/s",
+"256 Bit",
+"448 GB/s",
+"Grafikkarten"
+],
+[
+"HBM3 (ein Stack)",
+"6.400 MT/s",
+"1.024 Bit",
+"≈ 819 GB/s",
+"KI-Beschleuniger"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "formel",
+"name": "Bandbreite",
+"f": "Bandbreite = Transferrate × Busbreite ÷ 8",
+"text": "Zwei Kanäle (Dual-Channel) verdoppeln den Wert, z. B. DDR4-3200 Dual = 51,2 GB/s."
+},
+{
+"t": "rechner",
+"titel": "RAM-Bandbreite",
+"felder": [
+[
+"mt",
+"Transferrate",
+"MT/s",
+"3200"
+],
+[
+"bit",
+"Busbreite",
+"Bit",
+"64"
+],
+[
+"k",
+"Kanäle",
+"",
+"2"
+]
+],
+"ergebnis": [
+[
+"bw",
+"Bandbreite",
+"mt*bit*k/8/1000",
+"GB/s",
+"zahl"
+]
+]
+},
+{
+"t": "h2",
+"text": "KI: theoretisches Tokens-Limit"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Speicher",
+"Bandbreite",
+"Tokens/s bei 2-GB-Modell",
+"bei 4 GB",
+"bei 8 GB"
+],
+"zeilen": [
+[
+"LPDDR4-3200 (32 Bit)",
+"12,8 GB/s",
+"6,4",
+"3,2",
+"1,6"
+],
+[
+"LPDDR4X-4267 (32 Bit)",
+"17,1 GB/s",
+"8,5",
+"4,3",
+"2,1"
+],
+[
+"DDR4-3200 Dual-Channel",
+"51,2 GB/s",
+"25,6",
+"12,8",
+"6,4"
+],
+[
+"LPDDR5X-8533 (64 Bit)",
+"68,3 GB/s",
+"34,1",
+"17,1",
+"8,5"
+],
+[
+"DDR5-5600 Dual-Channel",
+"89,6 GB/s",
+"44,8",
+"22,4",
+"11,2"
+],
+[
+"GDDR6 (256 Bit, 14 Gbit/s)",
+"448 GB/s",
+"224",
+"112",
+"56"
+],
+[
+"HBM3 (ein Stack)",
+"≈ 819 GB/s",
+"410",
+"205",
+"102"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "formel",
+"name": "Tokens pro Sekunde",
+"f": "Tokens/s ≤ Bandbreite ÷ Modellgröße",
+"text": "Jedes Token liest alle Gewichte einmal. Obere Grenze; in der Praxis oft nur 30–60 % davon."
+},
+{
+"t": "rechner",
+"titel": "Tokens-Limit",
+"felder": [
+[
+"bw",
+"RAM-Bandbreite",
+"GB/s",
+"17,1"
+],
+[
+"gb",
+"Modellgröße im RAM",
+"GB",
+"4"
+]
+],
+"ergebnis": [
+[
+"t",
+"Tokens/s (Obergrenze)",
+"bw/gb",
+"",
+"zahl"
+],
+[
+"p",
+"realistisch (ca. 45 %)",
+"bw/gb*0.45",
+"",
+"zahl"
+]
+],
+"text": "Beispiel: Pi 5 mit LPDDR4X-4267 und einem 4-GB-Modell (z. B. Q4-Quantisierung)."
+}
+],
+"siehe": [
+"speicher:latenz",
+"speicher:pi5"
+],
+"symbol": "quarz"
+},
+{
+"id": "latenz",
+"titel": "Speicherhierarchie & Latenz",
+"kurz": "Wie lange die erste Antwort dauert",
+"tags": [
+"latenz",
+"cache",
+"ping",
+"hierarchie",
+"l1",
+"l2",
+"l3",
+"satellit"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Ebene",
+"Größe typisch",
+"Latenz",
+"Wenn 1 ns = 1 s wäre"
+],
+"zeilen": [
+[
+"CPU-Register",
+"wenige Bytes",
+"< 0,3 ns",
+"<1 s"
+],
+[
+"L1-Cache",
+"32–64 KB",
+"~1 ns",
+"~1 s"
+],
+[
+"L2-Cache",
+"256 KB–2 MB",
+"3–5 ns",
+"~4 s"
+],
+[
+"L3-Cache",
+"8–64 MB",
+"10–20 ns",
+"~15 s"
+],
+[
+"RAM (DDR4/DDR5)",
+"8–128 GB",
+"60–100 ns",
+"~1,5 Minuten"
+],
+[
+"NVMe-SSD",
+"0,25–4 TB",
+"20–100 µs",
+"~14 Stunden"
+],
+[
+"SATA-SSD",
+"0,25–4 TB",
+"70–200 µs",
+"~1,5 Tage"
+],
+[
+"HDD",
+"1–20 TB",
+"5–12 ms",
+"~3 Monate"
+],
+[
+"LAN (Ping)",
+"–",
+"0,1–1 ms",
+"~6 Tage"
+],
+[
+"Internet innerhalb Europas (Ping)",
+"–",
+"10–30 ms",
+"~8 Monate"
+],
+[
+"Internet Europa ↔ USA (Ping)",
+"–",
+"80–120 ms",
+"~3 Jahre"
+],
+[
+"LEO-Satellit (z. B. Starlink, Ping)",
+"–",
+"25–60 ms",
+"~1,3 Jahre"
+],
+[
+"Geostationärer Satellit (Ping)",
+"–",
+"550–700 ms",
+"~20 Jahre"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "**Latenz** = wie lange die erste Antwort dauert. **Bandbreite** = wie viel danach pro Sekunde fließt. Beides ist unabhängig voneinander. Werte sind Größenordnungen."
+}
+],
+"siehe": [
+"speicher:ram"
+],
+"symbol": "quarz"
+},
+{
+"id": "netzraten",
+"titel": "Ethernet, WLAN, Mobilfunk",
+"kurz": "Kabel, Funk und Internetzugang in Bit und Byte",
+"tags": [
+"ethernet",
+"wlan",
+"wifi",
+"bluetooth",
+"lte",
+"5g",
+"dsl",
+"glasfaser",
+"gigabit",
+"cat6",
+"docsis"
+],
+"bloecke": [
+{
+"t": "h2",
+"text": "Ethernet und Kabel"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Standard",
+"Signalrate",
+"In Byte (theor.)",
+"Praktisch (TCP)",
+"Kabel / Reichweite"
+],
+"zeilen": [
+[
+"10BASE-T",
+"10 Mbit/s",
+"1,25 MB/s",
+"~1,1 MB/s",
+"Cat 3, 100 m"
+],
+[
+"100BASE-TX (Fast Ethernet)",
+"100 Mbit/s",
+"12,5 MB/s",
+"~11,7 MB/s",
+"Cat 5, 100 m"
+],
+[
+"1000BASE-T (Gigabit)",
+"1 Gbit/s",
+"125 MB/s",
+"~117 MB/s",
+"Cat 5e, 100 m"
+],
+[
+"2.5GBASE-T",
+"2,5 Gbit/s",
+"312,5 MB/s",
+"~290 MB/s",
+"Cat 5e, 100 m"
+],
+[
+"5GBASE-T",
+"5 Gbit/s",
+"625 MB/s",
+"~580 MB/s",
+"Cat 6, 100 m"
+],
+[
+"10GBASE-T",
+"10 Gbit/s",
+"1,25 GB/s",
+"~1,17 GB/s",
+"Cat 6a, 100 m (Cat 6: bis 55 m)"
+],
+[
+"25GBASE-T / 40GBASE-T",
+"25 / 40 Gbit/s",
+"3,1 / 5 GB/s",
+"–",
+"Cat 8, 30 m"
+],
+[
+"100GBASE-SR4 (Glasfaser)",
+"100 Gbit/s",
+"12,5 GB/s",
+"–",
+"Multimode OM4, 100 m"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "h2",
+"text": "WLAN"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Standard",
+"Name",
+"Frequenz",
+"Max. Link-Rate",
+"Typisch am Gerät (2×2)"
+],
+"zeilen": [
+[
+"802.11b",
+"–",
+"2,4 GHz",
+"11 Mbit/s",
+"–"
+],
+[
+"802.11g",
+"–",
+"2,4 GHz",
+"54 Mbit/s",
+"–"
+],
+[
+"802.11n",
+"Wi-Fi 4",
+"2,4 / 5 GHz",
+"600 Mbit/s",
+"300 Mbit/s"
+],
+[
+"802.11ac",
+"Wi-Fi 5",
+"5 GHz",
+"6,9 Gbit/s",
+"867–1.733 Mbit/s"
+],
+[
+"802.11ax",
+"Wi-Fi 6",
+"2,4 / 5 GHz",
+"9,6 Gbit/s",
+"1.201–2.402 Mbit/s"
+],
+[
+"802.11ax",
+"Wi-Fi 6E",
+"2,4 / 5 / 6 GHz",
+"9,6 Gbit/s",
+"1.201–2.402 Mbit/s"
+],
+[
+"802.11be",
+"Wi-Fi 7",
+"2,4 / 5 / 6 GHz",
+"46 Gbit/s",
+"2.882–5.764 Mbit/s"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "info",
+"text": "Der echte WLAN-Durchsatz liegt meist nur bei etwa der **Hälfte** der Link-Rate (Overhead, Halbduplex, Störungen, Abstand)."
+},
+{
+"t": "h2",
+"text": "Bluetooth, Mobilfunk und Internetzugang"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Technik",
+"Max. Signalrate",
+"In Byte",
+"Praxis / Hinweis"
+],
+"zeilen": [
+[
+"Bluetooth 2.0 + EDR",
+"3 Mbit/s",
+"0,375 MB/s",
+"Netto ca. 2,1 Mbit/s"
+],
+[
+"Bluetooth 5 LE (2M PHY)",
+"2 Mbit/s",
+"0,25 MB/s",
+"Netto meist 0,5–1,4 Mbit/s"
+],
+[
+"3G UMTS",
+"0,384 Mbit/s",
+"0,05 MB/s",
+"Veraltet"
+],
+[
+"3G HSPA+",
+"42 Mbit/s",
+"5,25 MB/s",
+"Veraltet"
+],
+[
+"4G LTE (Cat 4)",
+"150 Mbit/s",
+"18,75 MB/s",
+"Praxis oft 20–80 Mbit/s"
+],
+[
+"4G LTE-Advanced",
+"bis ~1 Gbit/s",
+"125 MB/s",
+"Nur mit Carrier Aggregation"
+],
+[
+"5G NR",
+"bis 10–20 Gbit/s (Spitze)",
+"1,25–2,5 GB/s",
+"Praxis ca. 100–900 Mbit/s, Funkzelle wird geteilt"
+],
+[
+"ADSL2+",
+"24 Mbit/s",
+"3 MB/s",
+"Abhängig von Leitungslänge"
+],
+[
+"VDSL2",
+"100 Mbit/s",
+"12,5 MB/s",
+"Abhängig von Leitungslänge"
+],
+[
+"VDSL2 Super Vectoring",
+"250 Mbit/s",
+"31,25 MB/s",
+"Abhängig von Leitungslänge"
+],
+[
+"Kabel DOCSIS 3.1",
+"bis 10 Gbit/s Download",
+"1,25 GB/s",
+"Wird mit Nachbarn geteilt"
+],
+[
+"Glasfaser GPON",
+"2,5 Gbit/s Download",
+"312,5 MB/s",
+"Wird auf mehrere Anschlüsse aufgeteilt"
+],
+[
+"Glasfaser XGS-PON",
+"10 Gbit/s",
+"1,25 GB/s",
+"Wird auf mehrere Anschlüsse aufgeteilt"
+]
+],
+"mono": [],
+"fett": true
+}
+],
+"siehe": [
+"netzwerk:osi",
+"speicher:bitbyte"
+],
+"symbol": "quarz"
+},
+{
+"id": "video",
+"titel": "Video & Audio – Datenraten",
+"kurz": "HDMI, DisplayPort, unkomprimiert und Streaming",
+"tags": [
+"hdmi",
+"displayport",
+"video",
+"audio",
+"bitrate",
+"4k",
+"8k",
+"mp3",
+"pcm",
+"blu-ray"
+],
+"bloecke": [
+{
+"t": "h2",
+"text": "Video-Schnittstellen"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Standard",
+"Signalrate gesamt",
+"Nutzbar für Video",
+"Typisch möglich"
+],
+"zeilen": [
+[
+"HDMI 1.4",
+"10,2 Gbit/s",
+"8,16 Gbit/s",
+"4K30, 1080p120"
+],
+[
+"HDMI 2.0",
+"18 Gbit/s",
+"14,4 Gbit/s",
+"4K60"
+],
+[
+"HDMI 2.1",
+"48 Gbit/s",
+"≈ 42,7 Gbit/s",
+"4K120, 8K60 mit DSC"
+],
+[
+"DisplayPort 1.2",
+"21,6 Gbit/s",
+"17,28 Gbit/s",
+"4K60"
+],
+[
+"DisplayPort 1.4",
+"32,4 Gbit/s",
+"25,92 Gbit/s",
+"4K120, 8K60 mit DSC"
+],
+[
+"DisplayPort 2.0 / 2.1",
+"80 Gbit/s",
+"≈ 77,4 Gbit/s",
+"4K240, 8K"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "h2",
+"text": "Unkomprimierte Video-Datenrate (24 Bit, ohne Blanking)"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Auflösung",
+"Bildrate",
+"Datenrate",
+"In Byte"
+],
+"zeilen": [
+[
+"1080p (1920×1080)",
+"60 Hz",
+"2,99 Gbit/s",
+"373 MB/s"
+],
+[
+"1440p (2560×1440)",
+"60 Hz",
+"5,31 Gbit/s",
+"664 MB/s"
+],
+[
+"4K (3840×2160)",
+"30 Hz",
+"5,97 Gbit/s",
+"746 MB/s"
+],
+[
+"4K (3840×2160)",
+"60 Hz",
+"11,94 Gbit/s",
+"1,49 GB/s"
+],
+[
+"4K (3840×2160)",
+"120 Hz",
+"23,89 Gbit/s",
+"2,99 GB/s"
+],
+[
+"8K (7680×4320)",
+"60 Hz",
+"47,78 Gbit/s",
+"5,97 GB/s"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "rechner",
+"titel": "Video-Datenrate",
+"felder": [
+[
+"b",
+"Breite",
+"px",
+"1920"
+],
+[
+"h",
+"Höhe",
+"px",
+"1080"
+],
+[
+"hz",
+"Bildrate",
+"Hz",
+"60"
+],
+[
+"bit",
+"Bit pro Pixel",
+"Bit",
+"24"
+]
+],
+"ergebnis": [
+[
+"g",
+"Datenrate",
+"b*h*hz*bit/1e9",
+"Gbit/s",
+"zahl"
+],
+[
+"mb",
+"in Byte",
+"b*h*hz*bit/8e6",
+"MB/s",
+"zahl"
+]
+]
+},
+{
+"t": "h2",
+"text": "Audio und Video – typische Bitraten"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Format",
+"Bitrate",
+"Datenmenge pro Stunde"
+],
+"zeilen": [
+[
+"Telefon (G.711)",
+"64 kbit/s",
+"28,8 MB"
+],
+[
+"MP3 128 kbit/s",
+"128 kbit/s",
+"57,6 MB"
+],
+[
+"MP3 320 kbit/s",
+"320 kbit/s",
+"144 MB"
+],
+[
+"Audio-CD (44,1 kHz, 16 Bit, Stereo)",
+"1.411 kbit/s",
+"635 MB"
+],
+[
+"PCM 96 kHz, 24 Bit, Stereo",
+"4,61 Mbit/s",
+"2,07 GB"
+],
+[
+"PCM 192 kHz, 24 Bit, Stereo",
+"9,22 Mbit/s",
+"4,15 GB"
+],
+[
+"Video-Stream HD (1080p, H.264)",
+"ca. 5 Mbit/s",
+"ca. 2,25 GB"
+],
+[
+"Video-Stream 4K (HEVC/AV1)",
+"ca. 15–25 Mbit/s",
+"ca. 6,75–11,25 GB"
+],
+[
+"Blu-ray (max. gesamt)",
+"54 Mbit/s",
+"24,3 GB"
+],
+[
+"UHD-Blu-ray (max. gesamt)",
+"144 Mbit/s",
+"64,8 GB"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "rechner",
+"titel": "Datenmenge pro Stunde",
+"felder": [
+[
+"r",
+"Bitrate",
+"Mbit/s",
+"5"
+]
+],
+"ergebnis": [
+[
+"gb",
+"pro Stunde",
+"r*3600/8/1000",
+"GB",
+"zahl"
+]
+]
+}
+],
+"siehe": [
+"speicher:bitbyte"
+],
+"symbol": "quarz"
+},
+{
+"id": "busse",
+"titel": "Busse & Takt",
+"kurz": "UART, I²C, SPI, CAN … und Frequenz gegen Lichtweg",
+"tags": [
+"uart",
+"i2c",
+"spi",
+"can",
+"rs485",
+"1-wire",
+"lin",
+"i2s",
+"baud",
+"takt",
+"frequenz",
+"periode",
+"lichtweg"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Bus",
+"Typische Rate",
+"Leitungen",
+"Duplex",
+"Reichweite",
+"Typisch für"
+],
+"zeilen": [
+[
+"UART (TTL) / RS-232",
+"9.600–115.200 Baud, bis ca. 1–3 Mbit/s",
+"2 (TX, RX)",
+"Voll",
+"RS-232: ca. 15 m",
+"Debug-Konsole, GPS, Module"
+],
+[
+"I²C",
+"100 kbit/s / 400 kbit/s / 1 Mbit/s / 3,4 Mbit/s",
+"2 (SDA, SCL)",
+"Halb",
+"< 1 m (Platine)",
+"Sensoren, OLED, RTC"
+],
+[
+"SPI",
+"1–50 MHz (kein fester Standard, 1 Bit je Takt)",
+"4 (+ 1 CS je Gerät)",
+"Voll",
+"< 0,3 m",
+"Displays, SD-Karte, ADC, Flash"
+],
+[
+"1-Wire",
+"≈ 16 kbit/s (Overdrive ≈ 125 kbit/s)",
+"1 (+ GND)",
+"Halb",
+"ca. 100 m",
+"DS18B20, iButton"
+],
+[
+"CAN 2.0",
+"bis 1 Mbit/s",
+"2 (differenziell)",
+"Halb",
+"40 m bei 1 Mbit/s, 1 km bei 50 kbit/s",
+"Auto, Industrie"
+],
+[
+"CAN FD",
+"Datenphase 2–8 Mbit/s",
+"2 (differenziell)",
+"Halb",
+"kürzer als CAN 2.0",
+"Moderne Fahrzeuge"
+],
+[
+"RS-485",
+"bis 10 Mbit/s (kurz), 100 kbit/s bei 1.200 m",
+"2 (differenziell)",
+"Halb",
+"bis 1.200 m",
+"Modbus, DMX512 (250 kbit/s)"
+],
+[
+"LIN",
+"bis 20 kbit/s",
+"1",
+"Halb",
+"ca. 40 m",
+"Komfortfunktionen im Auto"
+],
+[
+"I²S",
+"Takt = Abtastrate × Bits × Kanäle (48 kHz × 32 × 2 = 3,072 MHz)",
+"3–4",
+"Halb/Voll",
+"< 0,3 m",
+"Digitales Audio"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "rechner",
+"titel": "UART-Datenrate",
+"felder": [
+[
+"baud",
+"Baudrate",
+"Baud",
+"115200"
+],
+[
+"bits",
+"Bits pro Byte (8N1 = 10)",
+"",
+"10"
+]
+],
+"ergebnis": [
+[
+"b",
+"Bytes pro Sekunde",
+"baud/bits",
+"B/s",
+"zahl"
+],
+[
+"kb",
+"Dauer für 1 kB",
+"1024*bits/baud*1000",
+"ms",
+"zahl"
+]
+],
+"text": "115.200 Baud mit 8N1 ≈ 11,5 kB/s."
+},
+{
+"t": "h2",
+"text": "Frequenz, Periodendauer und Lichtweg"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Frequenz",
+"Periodendauer",
+"Lichtweg je Takt (Vakuum)",
+"Beispiel"
+],
+"zeilen": [
+[
+"1 kHz",
+"1 ms",
+"300 km",
+"–"
+],
+[
+"1 MHz",
+"1 µs",
+"300 m",
+"–"
+],
+[
+"16 MHz",
+"62,5 ns",
+"18,7 m",
+"Arduino Uno"
+],
+[
+"100 MHz",
+"10 ns",
+"3 m",
+"–"
+],
+[
+"240 MHz",
+"4,17 ns",
+"1,25 m",
+"ESP32-S3"
+],
+[
+"1 GHz",
+"1 ns",
+"30 cm",
+"–"
+],
+[
+"2,4 GHz",
+"0,417 ns",
+"12,5 cm",
+"WLAN 2,4 GHz"
+],
+[
+"5 GHz",
+"0,2 ns",
+"6 cm",
+"WLAN 5 GHz"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "rechner",
+"titel": "Takt → Periode & Lichtweg",
+"felder": [
+[
+"f",
+"Frequenz",
+"MHz",
+"240"
+]
+],
+"ergebnis": [
+[
+"t",
+"Periodendauer",
+"1000/f",
+"ns",
+"zahl"
+],
+[
+"l",
+"Lichtweg je Takt",
+"299.792458/f",
+"m",
+"zahl"
+]
+]
+}
+],
+"siehe": [
+"schnittstellen:i2c",
+"schnittstellen:uart",
+"speicher:bitbyte"
+],
+"symbol": "quarz"
+}
+]
+}

@@ -1,0 +1,919 @@
+{
+"id": "prog",
+"name": "Programmieren",
+"untertitel": "Python, C, Bash, Regex, SQL",
+"farbe": "limette",
+"symbol": "schalter",
+"reihenfolge": 14,
+"seiten": [
+{
+"id": "python",
+"titel": "Python-Spickzettel",
+"kurz": "Syntax, Datentypen, häufige Muster",
+"tags": [
+"python",
+"py",
+"syntax",
+"spickzettel",
+"gpiozero",
+"for",
+"liste",
+"dict"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Thema",
+"Beispiel"
+],
+"zeilen": [
+[
+"Variable / Typen",
+"x = 5 · s = \"Text\" · f = 3.14 · b = True · l = [1,2] · d = {\"a\":1}"
+],
+[
+"if / elif / else",
+"if x > 3:  …  elif x == 3:  …  else:  …"
+],
+[
+"for",
+"for i in range(10):  …    for z in liste:  …"
+],
+[
+"while",
+"while x < 10:  x += 1"
+],
+[
+"Funktion",
+"def f(a, b=2):  return a + b"
+],
+[
+"Listen",
+"l.append(1) · l[0] · l[-1] · l[1:3] · len(l)"
+],
+[
+"Dict",
+"d[\"k\"] = 1 · d.get(\"k\", 0) · for k, v in d.items()"
+],
+[
+"f-String",
+"f\"Wert: {x:.2f} V\""
+],
+[
+"List-Comprehension",
+"[x*x for x in range(5) if x % 2 == 0]"
+],
+[
+"Datei lesen",
+"with open(\"a.txt\") as f:  text = f.read()"
+],
+[
+"Fehler fangen",
+"try:  …  except ValueError as e:  …  finally:  …"
+],
+[
+"Klasse",
+"class A:  def __init__(self, x):  self.x = x"
+],
+[
+"Import",
+"import math · from time import sleep"
+],
+[
+"Argumente",
+"import sys; sys.argv[1]"
+],
+[
+"JSON",
+"import json; json.load(open(\"a.json\"))"
+]
+],
+"mono": [
+1
+],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Operator",
+"Bedeutung"
+],
+"zeilen": [
+[
+"//",
+"ganzzahlige Division (7 // 2 = 3)"
+],
+[
+"%",
+"Rest (7 % 2 = 1)"
+],
+[
+"**",
+"Potenz (2 ** 10)"
+],
+[
+"==  !=",
+"gleich / ungleich"
+],
+[
+"and  or  not",
+"logisch"
+],
+[
+"in",
+"enthalten: 3 in [1,2,3]"
+],
+[
+"is",
+"identisch (None prüfen: x is None)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Pi-Beispiel",
+"Code"
+],
+"zeilen": [
+[
+"LED blinken (gpiozero)",
+"from gpiozero import LED; from time import sleep\nled = LED(17)\nwhile True: led.toggle(); sleep(0.5)"
+],
+[
+"Taster lesen",
+"from gpiozero import Button; b = Button(2); b.wait_for_press()"
+],
+[
+"Temperatur lesen",
+"open('/sys/class/thermal/thermal_zone0/temp').read()  # /1000 = °C"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "Einrückung (4 Leerzeichen) **ist** die Blockstruktur. Mischung aus Tab und Leerzeichen → `IndentationError`."
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Fehlersuche: `print(type(x), x)`, oder im interaktiven Interpreter `python3 -i skript.py`."
+}
+],
+"siehe": [
+"prog:c",
+"prog:regex"
+],
+"symbol": "gehaeuse"
+},
+{
+"id": "c",
+"titel": "C / Arduino-Spickzettel",
+"kurz": "Typen, Operatoren, Bit-Operationen",
+"tags": [
+"c",
+"arduino",
+"cpp",
+"bit",
+"pinmode",
+"datentyp",
+"millis",
+"esp32"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Bytes (AVR / 32 Bit)",
+"Bereich"
+],
+"zeilen": [
+[
+"char / int8_t",
+"1",
+"−128 … 127"
+],
+[
+"uint8_t / byte",
+"1",
+"0 … 255"
+],
+[
+"int (AVR)",
+"2",
+"−32768 … 32767"
+],
+[
+"int (ESP32/ARM)",
+"4",
+"±2,1 Mrd."
+],
+[
+"uint16_t",
+"2",
+"0 … 65535"
+],
+[
+"long / int32_t",
+"4",
+"±2,1 Mrd."
+],
+[
+"uint32_t",
+"4",
+"0 … 4,29 Mrd."
+],
+[
+"float",
+"4",
+"≈ 7 Stellen"
+],
+[
+"double (AVR = float!)",
+"4 / 8",
+""
+],
+[
+"bool",
+"1",
+"true/false"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Operation",
+"Beispiel",
+"Wirkung"
+],
+"zeilen": [
+[
+"Bit setzen",
+"x |= (1 << n)",
+"Bit n = 1"
+],
+[
+"Bit löschen",
+"x &= ~(1 << n)",
+"Bit n = 0"
+],
+[
+"Bit umschalten",
+"x ^= (1 << n)",
+"Bit n invertieren"
+],
+[
+"Bit prüfen",
+"(x >> n) & 1",
+"0 oder 1"
+],
+[
+"Maske",
+"x & 0x0F",
+"unteres Nibble"
+],
+[
+"Schieben",
+"x << 2 / x >> 2",
+"× 4 / ÷ 4"
+]
+],
+"mono": [
+1
+],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Arduino-Funktion",
+"Zweck"
+],
+"zeilen": [
+[
+"pinMode(pin, OUTPUT)",
+"Pin als Ausgang"
+],
+[
+"digitalWrite(pin, HIGH)",
+"Ausgang setzen"
+],
+[
+"digitalRead(pin)",
+"Eingang lesen"
+],
+[
+"analogRead(A0)",
+"ADC 0–1023"
+],
+[
+"analogWrite(pin, 0–255)",
+"PWM"
+],
+[
+"delay(ms) / millis()",
+"Warten / Zeit seit Start"
+],
+[
+"Serial.begin(115200)",
+"Seriell starten"
+],
+[
+"Serial.println(x)",
+"Ausgabe"
+],
+[
+"map(x, a, b, c, d)",
+"Bereich umrechnen"
+],
+[
+"attachInterrupt(…)",
+"Interrupt"
+]
+],
+"mono": [
+0
+],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "**Nicht mit `delay()` blockieren:** `millis()` verwenden: `if (millis() - letzte >= 1000) { letzte = millis(); … }`."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "`int` hat auf Arduino Uno nur 16 Bit – `60 * 1000` überläuft! `60000UL` (unsigned long) schreiben."
+}
+],
+"siehe": [
+"zahlen:zahlen",
+"prog:python"
+],
+"symbol": "gehaeuse"
+},
+{
+"id": "bash",
+"titel": "Bash-Skripte",
+"kurz": "Variablen, Schleifen, Bedingungen",
+"tags": [
+"bash",
+"shell",
+"skript",
+"script",
+"schleife",
+"variable",
+"shebang"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Thema",
+"Beispiel"
+],
+"zeilen": [
+[
+"Shebang",
+"#!/bin/bash"
+],
+[
+"Variable",
+"name=\"Welt\"; echo \"Hallo $name\""
+],
+[
+"Argumente",
+"$1 $2 … $@ (alle) $# (Anzahl)"
+],
+[
+"Befehlsausgabe",
+"heute=$(date +%F)"
+],
+[
+"if",
+"if [ -f datei ]; then … fi"
+],
+[
+"for",
+"for f in *.txt; do echo \"$f\"; done"
+],
+[
+"while",
+"while true; do …; sleep 1; done"
+],
+[
+"Funktion",
+"f() { echo \"$1\"; }"
+],
+[
+"Exit-Code",
+"echo $?   (0 = erfolgreich)"
+],
+[
+"Abbruch bei Fehler",
+"set -euo pipefail"
+],
+[
+"Standardwert",
+"${var:-standard}"
+]
+],
+"mono": [
+1
+],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Test",
+"Bedeutung"
+],
+"zeilen": [
+[
+"-f datei",
+"Datei existiert"
+],
+[
+"-d ordner",
+"Ordner existiert"
+],
+[
+"-z \"$s\"",
+"String leer"
+],
+[
+"-n \"$s\"",
+"String nicht leer"
+],
+[
+"$a -eq $b",
+"Zahlen gleich (-ne, -lt, -gt, -le, -ge)"
+],
+[
+"\"$a\" = \"$b\"",
+"Strings gleich"
+],
+[
+"-x datei",
+"ausführbar"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Variablen immer in **Anführungszeichen**: `rm \"$ordner\"/*`. Bei leerer Variable würde `rm $ordner/*` sonst `/*` löschen!"
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Skript ausführbar machen: `chmod +x skript.sh`, starten mit `./skript.sh`."
+}
+],
+"siehe": [
+"linux:befehle",
+"linux:chmod"
+],
+"symbol": "gehaeuse"
+},
+{
+"id": "regex",
+"titel": "Reguläre Ausdrücke",
+"kurz": "Muster, Gruppen, Beispiele",
+"tags": [
+"regex",
+"regexp",
+"reguläre ausdrücke",
+"muster",
+"grep",
+"suchen"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Muster",
+"Bedeutung"
+],
+"zeilen": [
+[
+".",
+"beliebiges Zeichen"
+],
+[
+"^ / $",
+"Zeilenanfang / -ende"
+],
+[
+"*  +  ?",
+"0+, 1+, 0 oder 1"
+],
+[
+"{n,m}",
+"n bis m Wiederholungen"
+],
+[
+"[abc] / [a-z] / [^a]",
+"Zeichenklasse / Bereich / Negation"
+],
+[
+"\\d \\w \\s",
+"Ziffer / Wortzeichen / Leerraum"
+],
+[
+"( … )",
+"Gruppe"
+],
+[
+"a|b",
+"oder"
+],
+[
+"\\b",
+"Wortgrenze"
+],
+[
+"(?i)",
+"Groß/Klein egal"
+]
+],
+"mono": [
+0
+],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Ziel",
+"Ausdruck"
+],
+"zeilen": [
+[
+"IPv4 (grob)",
+"\\b(\\d{1,3}\\.){3}\\d{1,3}\\b"
+],
+[
+"Datum 2026-10-21",
+"\\d{4}-\\d{2}-\\d{2}"
+],
+[
+"Uhrzeit",
+"([01]\\d|2[0-3]):[0-5]\\d"
+],
+[
+"E-Mail (grob)",
+"[\\w.+-]+@[\\w-]+\\.[\\w.]+"
+],
+[
+"Hex-Farbe",
+"#[0-9A-Fa-f]{6}"
+],
+[
+"Zahl (mit Komma)",
+"-?\\d+([.,]\\d+)?"
+],
+[
+"Leerzeilen",
+"^\\s*$"
+]
+],
+"mono": [
+1
+],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Zum Testen: `grep -E 'muster' datei` (erweiterte Regex) oder Python `re.findall(r'muster', text)`."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Regex für **HTML, E-Mail nach RFC, Zeitzonen** ist eine Falle – dafür gibt es Parser/Bibliotheken."
+}
+],
+"siehe": [
+"prog:python"
+],
+"symbol": "gehaeuse"
+},
+{
+"id": "sql",
+"titel": "SQL & Datenbanken",
+"kurz": "SELECT, JOIN, GROUP BY, SQLite",
+"tags": [
+"sql",
+"sqlite",
+"datenbank",
+"select",
+"insert",
+"mariadb",
+"mysql"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Befehl",
+"Beispiel"
+],
+"zeilen": [
+[
+"Tabelle anlegen",
+"CREATE TABLE mess (id INTEGER PRIMARY KEY, zeit TEXT, wert REAL);"
+],
+[
+"Einfügen",
+"INSERT INTO mess (zeit, wert) VALUES ('2026-10-21', 21.5);"
+],
+[
+"Abfragen",
+"SELECT * FROM mess WHERE wert > 20 ORDER BY zeit DESC LIMIT 10;"
+],
+[
+"Ändern",
+"UPDATE mess SET wert = 22 WHERE id = 1;"
+],
+[
+"Löschen",
+"DELETE FROM mess WHERE id = 1;"
+],
+[
+"Zählen",
+"SELECT COUNT(*) FROM mess;"
+],
+[
+"Mittelwert",
+"SELECT AVG(wert), MIN(wert), MAX(wert) FROM mess;"
+],
+[
+"Gruppieren",
+"SELECT date(zeit), AVG(wert) FROM mess GROUP BY date(zeit);"
+],
+[
+"Verbinden",
+"SELECT * FROM a JOIN b ON a.id = b.a_id;"
+],
+[
+"Index",
+"CREATE INDEX idx ON mess (zeit);"
+]
+],
+"mono": [
+1
+],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Bedeutung"
+],
+"zeilen": [
+[
+"INTEGER",
+"ganze Zahl"
+],
+[
+"REAL",
+"Gleitkomma"
+],
+[
+"TEXT",
+"Text"
+],
+[
+"BLOB",
+"Binärdaten"
+],
+[
+"NULL",
+"kein Wert"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "SQLite-Datentypen"
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "SQLite braucht keinen Server: `sqlite3 daten.db` im Terminal, in Python `import sqlite3`. Ideal für Messwerte auf dem Pi."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "**SQL-Injection:** Nie Benutzereingaben in den SQL-Text kleben. Parameter verwenden: `cur.execute('… WHERE id=?', (x,))`."
+}
+],
+"siehe": [
+"prog:python"
+],
+"symbol": "gehaeuse"
+},
+{
+"id": "bigo",
+"titel": "Algorithmen & Big-O",
+"kurz": "Komplexität, Sortieren, Datenstrukturen",
+"tags": [
+"big-o",
+"komplexität",
+"sortieren",
+"algorithmus",
+"datenstruktur",
+"hash",
+"bubble",
+"quicksort"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"O(…)",
+"Name",
+"Beispiel (n = 1000)"
+],
+"zeilen": [
+[
+"1",
+"konstant",
+"Array-Zugriff"
+],
+[
+"log n",
+"logarithmisch",
+"Binärsuche (≈ 10)"
+],
+[
+"n",
+"linear",
+"Liste durchsuchen (1 000)"
+],
+[
+"n log n",
+"linearithmisch",
+"gute Sortierung (≈ 10 000)"
+],
+[
+"n²",
+"quadratisch",
+"Bubble Sort (1 000 000)"
+],
+[
+"2ⁿ",
+"exponentiell",
+"alle Teilmengen (unbrauchbar)"
+],
+[
+"n!",
+"faktoriell",
+"alle Permutationen"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Sortierung",
+"Durchschnitt",
+"Schlechtester Fall",
+"Stabil"
+],
+"zeilen": [
+[
+"Bubble Sort",
+"n²",
+"n²",
+"ja"
+],
+[
+"Insertion Sort",
+"n²",
+"n²",
+"ja"
+],
+[
+"Quick Sort",
+"n log n",
+"n²",
+"nein"
+],
+[
+"Merge Sort",
+"n log n",
+"n log n",
+"ja"
+],
+[
+"Heap Sort",
+"n log n",
+"n log n",
+"nein"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Datenstruktur",
+"Zugriff",
+"Suche",
+"Einfügen"
+],
+"zeilen": [
+[
+"Array / Liste",
+"1",
+"n",
+"n"
+],
+[
+"Verkettete Liste",
+"n",
+"n",
+"1"
+],
+[
+"Hash-Tabelle / Dict",
+"–",
+"1",
+"1"
+],
+[
+"Binärbaum (balanciert)",
+"log n",
+"log n",
+"log n"
+],
+[
+"Stack (LIFO)",
+"–",
+"–",
+"1"
+],
+[
+"Queue (FIFO)",
+"–",
+"–",
+"1"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "rechner",
+"titel": "Binärsuche",
+"felder": [
+[
+"n",
+"Elemente",
+"",
+"1M"
+]
+],
+"ergebnis": [
+[
+"s",
+"Schritte maximal",
+"ceil(log(n)/log(2))",
+"",
+"ganz"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Python: `sorted()`, `dict`, `set` sind sehr gut optimiert – eigene Sortierung lohnt sich praktisch nie."
+}
+],
+"siehe": [
+"prog:python"
+],
+"symbol": "gehaeuse"
+}
+]
+}

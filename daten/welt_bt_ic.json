@@ -1,0 +1,9304 @@
+{
+"id": "bt_ic",
+"name": "ICs: Logik & Speicher",
+"untertitel": "74xx, CMOS, Flip-Flops, Decoder",
+"farbe": "orange",
+"symbol": "optokoppler",
+"reihenfolge": 20,
+"seiten": [
+{
+"id": "logik_7400",
+"titel": "7400",
+"kurz": "4 × NAND-Gatter (je 2 Eingänge)",
+"tags": [
+"nand",
+"gatter",
+"und",
+"nicht",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7400",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ausgang ist nur dann LOW, wenn BEIDE Eingänge HIGH sind. Das NAND ist das Universal-Gatter: aus NANDs lässt sich jede andere Logik bauen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7400",
+"name": "7400",
+"titel": "4 × NAND-Gatter (je 2 Eingänge)",
+"kurz": "Ausgang ist nur dann LOW, wenn BEIDE Eingänge HIGH sind. Das NAND ist das Universal-Gatter: aus NANDs lässt sich jede andere Logik bauen.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1B:i",
+"1Y:o",
+"2A:i",
+"2B:i",
+"2Y:o",
+"GND:g",
+"3Y:o",
+"3A:i",
+"3B:i",
+"4Y:o",
+"4A:i",
+"4B:i",
+"VCC:v"
+],
+"symbol": "nand",
+"eingaenge": 2,
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V (Eingänge TTL-kompatibel).",
+"hinweise": [
+"Gilt genauso für 74LS…, 74HC… und 74HCT… mit gleicher Nummer (z. B. 74HC00): die Pinbelegung ist gleich.",
+"Alle Gatter im Gehäuse sind unabhängig. Nicht benutzte Eingänge bei HC/HCT immer fest auf GND oder VCC legen, sonst schwingt der Chip oder zieht Strom.",
+"Pro IC einen 100-nF-Kondensator zwischen VCC und GND, möglichst nah am Chip.",
+"Raspberry Pi (3,3 V): 74HC und 74LVC sind bei 3,3 V sicher. 74LS und 74HCT brauchen 5 V Versorgung; ihre Ausgänge (ca. 5 V) dürfen NICHT direkt an einen Pi-Eingang."
+],
+"tags": "nand gatter und nicht",
+"kat": "logik",
+"uid": "logik:7400"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7402",
+"titel": "7402",
+"kurz": "4 × NOR-Gatter (je 2 Eingänge)",
+"tags": [
+"nor",
+"gatter",
+"oder",
+"nicht",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7402",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ausgang ist nur dann HIGH, wenn BEIDE Eingänge LOW sind. Auch das NOR ist ein Universal-Gatter. Achtung: andere Pinbelegung als 7400!"
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7402",
+"name": "7402",
+"titel": "4 × NOR-Gatter (je 2 Eingänge)",
+"kurz": "Ausgang ist nur dann HIGH, wenn BEIDE Eingänge LOW sind. Auch das NOR ist ein Universal-Gatter. Achtung: andere Pinbelegung als 7400!",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1Y:o",
+"1A:i",
+"1B:i",
+"2Y:o",
+"2A:i",
+"2B:i",
+"GND:g",
+"3A:i",
+"3B:i",
+"3Y:o",
+"4A:i",
+"4B:i",
+"4Y:o",
+"VCC:v"
+],
+"symbol": "nor",
+"eingaenge": 2,
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V (Eingänge TTL-kompatibel).",
+"hinweise": [
+"Gilt genauso für 74LS…, 74HC… und 74HCT… mit gleicher Nummer (z. B. 74HC02): die Pinbelegung ist gleich.",
+"Alle Gatter im Gehäuse sind unabhängig. Nicht benutzte Eingänge bei HC/HCT immer fest auf GND oder VCC legen, sonst schwingt der Chip oder zieht Strom.",
+"Pro IC einen 100-nF-Kondensator zwischen VCC und GND, möglichst nah am Chip.",
+"Raspberry Pi (3,3 V): 74HC und 74LVC sind bei 3,3 V sicher. 74LS und 74HCT brauchen 5 V Versorgung; ihre Ausgänge (ca. 5 V) dürfen NICHT direkt an einen Pi-Eingang.",
+"Die Pinbelegung weicht vom 7400/7408/7432 ab: der Ausgang steht hier VOR den Eingängen (1Y an Pin 1)."
+],
+"tags": "nor gatter oder nicht",
+"kat": "logik",
+"uid": "logik:7402"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7404",
+"titel": "7404",
+"kurz": "6 × Inverter (NICHT)",
+"tags": [
+"not",
+"inverter",
+"nicht",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7404",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Dreht den Pegel um: HIGH wird LOW und LOW wird HIGH. Sechs Stück im Gehäuse."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7404",
+"name": "7404",
+"titel": "6 × Inverter (NICHT)",
+"kurz": "Dreht den Pegel um: HIGH wird LOW und LOW wird HIGH. Sechs Stück im Gehäuse.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1Y:o",
+"2A:i",
+"2Y:o",
+"3A:i",
+"3Y:o",
+"GND:g",
+"4Y:o",
+"4A:i",
+"5Y:o",
+"5A:i",
+"6Y:o",
+"6A:i",
+"VCC:v"
+],
+"symbol": "not",
+"eingaenge": 1,
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V (Eingänge TTL-kompatibel).",
+"hinweise": [
+"Gilt genauso für 74LS…, 74HC… und 74HCT… mit gleicher Nummer (z. B. 74HC04): die Pinbelegung ist gleich.",
+"Alle Gatter im Gehäuse sind unabhängig. Nicht benutzte Eingänge bei HC/HCT immer fest auf GND oder VCC legen, sonst schwingt der Chip oder zieht Strom.",
+"Pro IC einen 100-nF-Kondensator zwischen VCC und GND, möglichst nah am Chip.",
+"Raspberry Pi (3,3 V): 74HC und 74LVC sind bei 3,3 V sicher. 74LS und 74HCT brauchen 5 V Versorgung; ihre Ausgänge (ca. 5 V) dürfen NICHT direkt an einen Pi-Eingang.",
+"Inverter lassen sich als Verstärker oder (mit Rückkopplung über Widerstand + Kondensator) als einfacher Oszillator verwenden."
+],
+"tags": "not inverter nicht",
+"kat": "logik",
+"uid": "logik:7404"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7408",
+"titel": "7408",
+"kurz": "4 × AND-Gatter (je 2 Eingänge)",
+"tags": [
+"and",
+"gatter",
+"und",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7408",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ausgang ist nur HIGH, wenn BEIDE Eingänge HIGH sind."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7408",
+"name": "7408",
+"titel": "4 × AND-Gatter (je 2 Eingänge)",
+"kurz": "Ausgang ist nur HIGH, wenn BEIDE Eingänge HIGH sind.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1B:i",
+"1Y:o",
+"2A:i",
+"2B:i",
+"2Y:o",
+"GND:g",
+"3Y:o",
+"3A:i",
+"3B:i",
+"4Y:o",
+"4A:i",
+"4B:i",
+"VCC:v"
+],
+"symbol": "and",
+"eingaenge": 2,
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V (Eingänge TTL-kompatibel).",
+"hinweise": [
+"Gilt genauso für 74LS…, 74HC… und 74HCT… mit gleicher Nummer (z. B. 74HC08): die Pinbelegung ist gleich.",
+"Alle Gatter im Gehäuse sind unabhängig. Nicht benutzte Eingänge bei HC/HCT immer fest auf GND oder VCC legen, sonst schwingt der Chip oder zieht Strom.",
+"Pro IC einen 100-nF-Kondensator zwischen VCC und GND, möglichst nah am Chip.",
+"Raspberry Pi (3,3 V): 74HC und 74LVC sind bei 3,3 V sicher. 74LS und 74HCT brauchen 5 V Versorgung; ihre Ausgänge (ca. 5 V) dürfen NICHT direkt an einen Pi-Eingang."
+],
+"tags": "and gatter und",
+"kat": "logik",
+"uid": "logik:7408"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7432",
+"titel": "7432",
+"kurz": "4 × OR-Gatter (je 2 Eingänge)",
+"tags": [
+"or",
+"gatter",
+"oder",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7432",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ausgang ist HIGH, sobald MINDESTENS EIN Eingang HIGH ist."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7432",
+"name": "7432",
+"titel": "4 × OR-Gatter (je 2 Eingänge)",
+"kurz": "Ausgang ist HIGH, sobald MINDESTENS EIN Eingang HIGH ist.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1B:i",
+"1Y:o",
+"2A:i",
+"2B:i",
+"2Y:o",
+"GND:g",
+"3Y:o",
+"3A:i",
+"3B:i",
+"4Y:o",
+"4A:i",
+"4B:i",
+"VCC:v"
+],
+"symbol": "or",
+"eingaenge": 2,
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V (Eingänge TTL-kompatibel).",
+"hinweise": [
+"Gilt genauso für 74LS…, 74HC… und 74HCT… mit gleicher Nummer (z. B. 74HC32): die Pinbelegung ist gleich.",
+"Alle Gatter im Gehäuse sind unabhängig. Nicht benutzte Eingänge bei HC/HCT immer fest auf GND oder VCC legen, sonst schwingt der Chip oder zieht Strom.",
+"Pro IC einen 100-nF-Kondensator zwischen VCC und GND, möglichst nah am Chip.",
+"Raspberry Pi (3,3 V): 74HC und 74LVC sind bei 3,3 V sicher. 74LS und 74HCT brauchen 5 V Versorgung; ihre Ausgänge (ca. 5 V) dürfen NICHT direkt an einen Pi-Eingang."
+],
+"tags": "or gatter oder",
+"kat": "logik",
+"uid": "logik:7432"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7486",
+"titel": "7486",
+"kurz": "4 × XOR-Gatter (je 2 Eingänge)",
+"tags": [
+"xor",
+"exklusiv",
+"oder",
+"parität",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7486",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Exklusiv-ODER: Ausgang ist HIGH, wenn die Eingänge UNTERSCHIEDLICH sind. Nützlich für Vergleicher, Paritätsbit und Halbaddierer (Summe)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7486",
+"name": "7486",
+"titel": "4 × XOR-Gatter (je 2 Eingänge)",
+"kurz": "Exklusiv-ODER: Ausgang ist HIGH, wenn die Eingänge UNTERSCHIEDLICH sind. Nützlich für Vergleicher, Paritätsbit und Halbaddierer (Summe).",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1B:i",
+"1Y:o",
+"2A:i",
+"2B:i",
+"2Y:o",
+"GND:g",
+"3Y:o",
+"3A:i",
+"3B:i",
+"4Y:o",
+"4A:i",
+"4B:i",
+"VCC:v"
+],
+"symbol": "xor",
+"eingaenge": 2,
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V (Eingänge TTL-kompatibel).",
+"hinweise": [
+"Gilt genauso für 74LS…, 74HC… und 74HCT… mit gleicher Nummer (z. B. 74HC86): die Pinbelegung ist gleich.",
+"Alle Gatter im Gehäuse sind unabhängig. Nicht benutzte Eingänge bei HC/HCT immer fest auf GND oder VCC legen, sonst schwingt der Chip oder zieht Strom.",
+"Pro IC einen 100-nF-Kondensator zwischen VCC und GND, möglichst nah am Chip.",
+"Raspberry Pi (3,3 V): 74HC und 74LVC sind bei 3,3 V sicher. 74LS und 74HCT brauchen 5 V Versorgung; ihre Ausgänge (ca. 5 V) dürfen NICHT direkt an einen Pi-Eingang.",
+"Halbaddierer: Summe = A XOR B, Übertrag = A AND B."
+],
+"tags": "xor exklusiv oder parität",
+"kat": "logik",
+"uid": "logik:7486"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7410",
+"titel": "7410",
+"kurz": "3 × NAND-Gatter (je 3 Eingänge)",
+"tags": [
+"nand",
+"3",
+"eingaenge",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7410",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ausgang ist nur LOW, wenn ALLE drei Eingänge HIGH sind."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7410",
+"name": "7410",
+"titel": "3 × NAND-Gatter (je 3 Eingänge)",
+"kurz": "Ausgang ist nur LOW, wenn ALLE drei Eingänge HIGH sind.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1B:i",
+"2A:i",
+"2B:i",
+"2C:i",
+"2Y:o",
+"GND:g",
+"3Y:o",
+"3A:i",
+"3B:i",
+"3C:i",
+"1Y:o",
+"1C:i",
+"VCC:v"
+],
+"symbol": "nand",
+"eingaenge": 3,
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V (Eingänge TTL-kompatibel).",
+"hinweise": [
+"Gilt genauso für 74LS…, 74HC… und 74HCT… mit gleicher Nummer (z. B. 74HC10): die Pinbelegung ist gleich.",
+"Alle Gatter im Gehäuse sind unabhängig. Nicht benutzte Eingänge bei HC/HCT immer fest auf GND oder VCC legen, sonst schwingt der Chip oder zieht Strom.",
+"Pro IC einen 100-nF-Kondensator zwischen VCC und GND, möglichst nah am Chip.",
+"Raspberry Pi (3,3 V): 74HC und 74LVC sind bei 3,3 V sicher. 74LS und 74HCT brauchen 5 V Versorgung; ihre Ausgänge (ca. 5 V) dürfen NICHT direkt an einen Pi-Eingang."
+],
+"tags": "nand 3 eingaenge",
+"kat": "logik",
+"uid": "logik:7410"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7411",
+"titel": "7411",
+"kurz": "3 × AND-Gatter (je 3 Eingänge)",
+"tags": [
+"and",
+"3",
+"eingaenge",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7411",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ausgang ist nur HIGH, wenn ALLE drei Eingänge HIGH sind."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7411",
+"name": "7411",
+"titel": "3 × AND-Gatter (je 3 Eingänge)",
+"kurz": "Ausgang ist nur HIGH, wenn ALLE drei Eingänge HIGH sind.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1B:i",
+"2A:i",
+"2B:i",
+"2C:i",
+"2Y:o",
+"GND:g",
+"3Y:o",
+"3A:i",
+"3B:i",
+"3C:i",
+"1Y:o",
+"1C:i",
+"VCC:v"
+],
+"symbol": "and",
+"eingaenge": 3,
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V (Eingänge TTL-kompatibel).",
+"hinweise": [
+"Gilt genauso für 74LS…, 74HC… und 74HCT… mit gleicher Nummer (z. B. 74HC11): die Pinbelegung ist gleich.",
+"Alle Gatter im Gehäuse sind unabhängig. Nicht benutzte Eingänge bei HC/HCT immer fest auf GND oder VCC legen, sonst schwingt der Chip oder zieht Strom.",
+"Pro IC einen 100-nF-Kondensator zwischen VCC und GND, möglichst nah am Chip.",
+"Raspberry Pi (3,3 V): 74HC und 74LVC sind bei 3,3 V sicher. 74LS und 74HCT brauchen 5 V Versorgung; ihre Ausgänge (ca. 5 V) dürfen NICHT direkt an einen Pi-Eingang."
+],
+"tags": "and 3 eingaenge",
+"kat": "logik",
+"uid": "logik:7411"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7427",
+"titel": "7427",
+"kurz": "3 × NOR-Gatter (je 3 Eingänge)",
+"tags": [
+"nor",
+"3",
+"eingaenge",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7427",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ausgang ist nur HIGH, wenn ALLE drei Eingänge LOW sind."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7427",
+"name": "7427",
+"titel": "3 × NOR-Gatter (je 3 Eingänge)",
+"kurz": "Ausgang ist nur HIGH, wenn ALLE drei Eingänge LOW sind.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1B:i",
+"2A:i",
+"2B:i",
+"2C:i",
+"2Y:o",
+"GND:g",
+"3Y:o",
+"3A:i",
+"3B:i",
+"3C:i",
+"1Y:o",
+"1C:i",
+"VCC:v"
+],
+"symbol": "nor",
+"eingaenge": 3,
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V (Eingänge TTL-kompatibel).",
+"hinweise": [
+"Gilt genauso für 74LS…, 74HC… und 74HCT… mit gleicher Nummer (z. B. 74HC27): die Pinbelegung ist gleich.",
+"Alle Gatter im Gehäuse sind unabhängig. Nicht benutzte Eingänge bei HC/HCT immer fest auf GND oder VCC legen, sonst schwingt der Chip oder zieht Strom.",
+"Pro IC einen 100-nF-Kondensator zwischen VCC und GND, möglichst nah am Chip.",
+"Raspberry Pi (3,3 V): 74HC und 74LVC sind bei 3,3 V sicher. 74LS und 74HCT brauchen 5 V Versorgung; ihre Ausgänge (ca. 5 V) dürfen NICHT direkt an einen Pi-Eingang."
+],
+"tags": "nor 3 eingaenge",
+"kat": "logik",
+"uid": "logik:7427"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7420",
+"titel": "7420",
+"kurz": "2 × NAND-Gatter (je 4 Eingänge)",
+"tags": [
+"nand",
+"4",
+"eingaenge",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7420",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ausgang ist nur LOW, wenn ALLE vier Eingänge HIGH sind."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7420",
+"name": "7420",
+"titel": "2 × NAND-Gatter (je 4 Eingänge)",
+"kurz": "Ausgang ist nur LOW, wenn ALLE vier Eingänge HIGH sind.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1B:i",
+"NC:n",
+"1C:i",
+"1D:i",
+"1Y:o",
+"GND:g",
+"2Y:o",
+"2A:i",
+"2B:i",
+"NC:n",
+"2C:i",
+"2D:i",
+"VCC:v"
+],
+"symbol": "nand",
+"eingaenge": 4,
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V (Eingänge TTL-kompatibel).",
+"hinweise": [
+"Gilt genauso für 74LS…, 74HC… und 74HCT… mit gleicher Nummer (z. B. 74HC20): die Pinbelegung ist gleich.",
+"Alle Gatter im Gehäuse sind unabhängig. Nicht benutzte Eingänge bei HC/HCT immer fest auf GND oder VCC legen, sonst schwingt der Chip oder zieht Strom.",
+"Pro IC einen 100-nF-Kondensator zwischen VCC und GND, möglichst nah am Chip.",
+"Raspberry Pi (3,3 V): 74HC und 74LVC sind bei 3,3 V sicher. 74LS und 74HCT brauchen 5 V Versorgung; ihre Ausgänge (ca. 5 V) dürfen NICHT direkt an einen Pi-Eingang."
+],
+"tags": "nand 4 eingaenge",
+"kat": "logik",
+"uid": "logik:7420"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7430",
+"titel": "7430",
+"kurz": "1 × NAND-Gatter mit 8 Eingängen",
+"tags": [
+"nand",
+"8",
+"eingaenge",
+"adresse",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7430",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ausgang ist nur LOW, wenn ALLE acht Eingänge HIGH sind. Praktisch zum Erkennen eines bestimmten Zählerstands oder Adresswerts."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7430",
+"name": "7430",
+"titel": "1 × NAND-Gatter mit 8 Eingängen",
+"kurz": "Ausgang ist nur LOW, wenn ALLE acht Eingänge HIGH sind. Praktisch zum Erkennen eines bestimmten Zählerstands oder Adresswerts.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"A:i",
+"B:i",
+"C:i",
+"D:i",
+"E:i",
+"F:i",
+"GND:g",
+"Y:o",
+"NC:n",
+"NC:n",
+"G:i",
+"H:i",
+"NC:n",
+"VCC:v"
+],
+"symbol": "nand",
+"eingaenge": 8,
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V (Eingänge TTL-kompatibel).",
+"hinweise": [
+"Gilt genauso für 74LS…, 74HC… und 74HCT… mit gleicher Nummer (z. B. 74HC30): die Pinbelegung ist gleich.",
+"Alle Gatter im Gehäuse sind unabhängig. Nicht benutzte Eingänge bei HC/HCT immer fest auf GND oder VCC legen, sonst schwingt der Chip oder zieht Strom.",
+"Pro IC einen 100-nF-Kondensator zwischen VCC und GND, möglichst nah am Chip.",
+"Raspberry Pi (3,3 V): 74HC und 74LVC sind bei 3,3 V sicher. 74LS und 74HCT brauchen 5 V Versorgung; ihre Ausgänge (ca. 5 V) dürfen NICHT direkt an einen Pi-Eingang."
+],
+"tags": "nand 8 eingaenge adresse",
+"kat": "logik",
+"uid": "logik:7430"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7414",
+"titel": "7414",
+"kurz": "6 × Inverter mit Schmitt-Trigger",
+"tags": [
+"schmitt",
+"trigger",
+"inverter",
+"entprellen",
+"hysterese",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7414",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie der 7404, aber mit zwei Schaltschwellen (Hysterese). Macht aus langsamen oder verrauschten Signalen (Taster, RC-Glied, Sensor) saubere Rechteckflanken."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7414",
+"name": "7414",
+"titel": "6 × Inverter mit Schmitt-Trigger",
+"kurz": "Wie der 7404, aber mit zwei Schaltschwellen (Hysterese). Macht aus langsamen oder verrauschten Signalen (Taster, RC-Glied, Sensor) saubere Rechteckflanken.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1Y:o",
+"2A:i",
+"2Y:o",
+"3A:i",
+"3Y:o",
+"GND:g",
+"4Y:o",
+"4A:i",
+"5Y:o",
+"5A:i",
+"6Y:o",
+"6A:i",
+"VCC:v"
+],
+"symbol": "schmitt_not",
+"eingaenge": 1,
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V (Eingänge TTL-kompatibel).",
+"hinweise": [
+"Gilt genauso für 74LS…, 74HC… und 74HCT… mit gleicher Nummer (z. B. 74HC14): die Pinbelegung ist gleich.",
+"Alle Gatter im Gehäuse sind unabhängig. Nicht benutzte Eingänge bei HC/HCT immer fest auf GND oder VCC legen, sonst schwingt der Chip oder zieht Strom.",
+"Pro IC einen 100-nF-Kondensator zwischen VCC und GND, möglichst nah am Chip.",
+"Raspberry Pi (3,3 V): 74HC und 74LVC sind bei 3,3 V sicher. 74LS und 74HCT brauchen 5 V Versorgung; ihre Ausgänge (ca. 5 V) dürfen NICHT direkt an einen Pi-Eingang.",
+"Typische Schwellen bei 5 V: steigend ca. 1,7 V (LS) / 2,7 V (HC), fallend ca. 0,9 V (LS) / 1,8 V (HC). Genaue Werte im Datenblatt.",
+"Taster entprellen: Taster gegen GND, Widerstand 10 kΩ nach VCC, 100 nF parallel zum Taster, dahinter den 7414."
+],
+"tags": "schmitt trigger inverter entprellen hysterese",
+"tabelle": {
+"kopf": [
+"Eingang A",
+"Ausgang Y"
+],
+"zeilen": [
+[
+"steigt über obere Schwelle",
+"LOW"
+],
+[
+"fällt unter untere Schwelle",
+"HIGH"
+],
+[
+"dazwischen",
+"bleibt wie zuvor"
+]
+]
+},
+"kat": "logik",
+"uid": "logik:7414"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_74132",
+"titel": "74132",
+"kurz": "4 × NAND mit Schmitt-Trigger (je 2 Eingänge)",
+"tags": [
+"schmitt",
+"trigger",
+"nand",
+"hysterese",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"74132",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie der 7400, aber die Eingänge haben Hysterese. Gut, um langsame Signale zu bereinigen oder einen RC-Oszillator zu bauen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74132",
+"name": "74132",
+"titel": "4 × NAND mit Schmitt-Trigger (je 2 Eingänge)",
+"kurz": "Wie der 7400, aber die Eingänge haben Hysterese. Gut, um langsame Signale zu bereinigen oder einen RC-Oszillator zu bauen.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1B:i",
+"1Y:o",
+"2A:i",
+"2B:i",
+"2Y:o",
+"GND:g",
+"3Y:o",
+"3A:i",
+"3B:i",
+"4Y:o",
+"4A:i",
+"4B:i",
+"VCC:v"
+],
+"symbol": "schmitt_nand",
+"eingaenge": 2,
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V (Eingänge TTL-kompatibel).",
+"hinweise": [
+"Gilt genauso für 74LS…, 74HC… und 74HCT… mit gleicher Nummer (z. B. 74HC132): die Pinbelegung ist gleich.",
+"Alle Gatter im Gehäuse sind unabhängig. Nicht benutzte Eingänge bei HC/HCT immer fest auf GND oder VCC legen, sonst schwingt der Chip oder zieht Strom.",
+"Pro IC einen 100-nF-Kondensator zwischen VCC und GND, möglichst nah am Chip.",
+"Raspberry Pi (3,3 V): 74HC und 74LVC sind bei 3,3 V sicher. 74LS und 74HCT brauchen 5 V Versorgung; ihre Ausgänge (ca. 5 V) dürfen NICHT direkt an einen Pi-Eingang."
+],
+"tags": "schmitt trigger nand hysterese",
+"kat": "logik",
+"uid": "logik:74132"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7406",
+"titel": "7406",
+"kurz": "6 × Inverter, Open-Collector",
+"tags": [
+"open",
+"collector",
+"oc",
+"inverter",
+"treiber",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7406",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie 7404, aber der Ausgang ist offen (Open-Collector): er kann nur nach GND ziehen. Verträgt bis 30 V am Ausgang und schaltet bis ca. 40 mA. Direkt für LEDs, Relais und Pegelwandlung."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7406",
+"name": "7406",
+"titel": "6 × Inverter, Open-Collector",
+"kurz": "Wie 7404, aber der Ausgang ist offen (Open-Collector): er kann nur nach GND ziehen. Verträgt bis 30 V am Ausgang und schaltet bis ca. 40 mA. Direkt für LEDs, Relais und Pegelwandlung.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1Y:o",
+"2A:i",
+"2Y:o",
+"3A:i",
+"3Y:o",
+"GND:g",
+"4Y:o",
+"4A:i",
+"5Y:o",
+"5A:i",
+"6Y:o",
+"6A:i",
+"VCC:v"
+],
+"symbol": "not",
+"eingaenge": 1,
+"spannung": "VCC 4,75–5,25 V; Ausgang bis 30 V.",
+"hinweise": [
+"Der Ausgang liefert nie HIGH selbst. Es braucht einen Pull-up-Widerstand nach der gewünschten Spannung (z. B. 4,7 kΩ).",
+"Mehrere Open-Collector-Ausgänge dürfen zusammengeschaltet werden (Wired-AND).",
+"Typisch für LED-Anzeigen mit gemeinsamer Anode oder Relais mit Freilaufdiode."
+],
+"tags": "open collector oc inverter treiber",
+"kat": "logik",
+"uid": "logik:7406"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7407",
+"titel": "7407",
+"kurz": "6 × Puffer, Open-Collector",
+"tags": [
+"open",
+"collector",
+"puffer",
+"treiber",
+"buffer",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7407",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie 7406, aber nicht invertierend: Eingang HIGH macht den Ausgang hochohmig (Pull-up zieht hoch), Eingang LOW zieht ihn nach GND."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7407",
+"name": "7407",
+"titel": "6 × Puffer, Open-Collector",
+"kurz": "Wie 7406, aber nicht invertierend: Eingang HIGH macht den Ausgang hochohmig (Pull-up zieht hoch), Eingang LOW zieht ihn nach GND.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1Y:o",
+"2A:i",
+"2Y:o",
+"3A:i",
+"3Y:o",
+"GND:g",
+"4Y:o",
+"4A:i",
+"5Y:o",
+"5A:i",
+"6Y:o",
+"6A:i",
+"VCC:v"
+],
+"symbol": "buf",
+"eingaenge": 1,
+"spannung": "VCC 4,75–5,25 V; Ausgang bis 30 V.",
+"hinweise": [
+"Pull-up-Widerstand am Ausgang ist Pflicht für einen HIGH-Pegel.",
+"Gut für Pegelwandlung 3,3 V → 5 V nach oben (Pull-up an 5 V)."
+],
+"tags": "open collector puffer treiber buffer",
+"kat": "logik",
+"uid": "logik:7407"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_74125",
+"titel": "74125",
+"kurz": "4 × Puffer mit Tri-State-Ausgang",
+"tags": [
+"tri-state",
+"tristate",
+"bus",
+"puffer",
+"buffer",
+"oe",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"74125",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Puffer, dessen Ausgang sich abschalten lässt (hochohmig). Der Eingang /OE (aktiv LOW) schaltet frei. Damit teilen sich mehrere Chips eine gemeinsame Leitung (Bus)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74125",
+"name": "74125",
+"titel": "4 × Puffer mit Tri-State-Ausgang",
+"kurz": "Puffer, dessen Ausgang sich abschalten lässt (hochohmig). Der Eingang /OE (aktiv LOW) schaltet frei. Damit teilen sich mehrere Chips eine gemeinsame Leitung (Bus).",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1/OE:i",
+"1A:i",
+"1Y:o",
+"2/OE:i",
+"2A:i",
+"2Y:o",
+"GND:g",
+"3Y:o",
+"3A:i",
+"3/OE:i",
+"4Y:o",
+"4A:i",
+"4/OE:i",
+"VCC:v"
+],
+"symbol": "buf",
+"eingaenge": 1,
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V (Eingänge TTL-kompatibel).",
+"hinweise": [
+"Gilt genauso für 74LS…, 74HC… und 74HCT… mit gleicher Nummer (z. B. 74HC125): die Pinbelegung ist gleich.",
+"Alle Gatter im Gehäuse sind unabhängig. Nicht benutzte Eingänge bei HC/HCT immer fest auf GND oder VCC legen, sonst schwingt der Chip oder zieht Strom.",
+"Pro IC einen 100-nF-Kondensator zwischen VCC und GND, möglichst nah am Chip.",
+"Raspberry Pi (3,3 V): 74HC und 74LVC sind bei 3,3 V sicher. 74LS und 74HCT brauchen 5 V Versorgung; ihre Ausgänge (ca. 5 V) dürfen NICHT direkt an einen Pi-Eingang.",
+"74126 ist gleich, aber der Freigabeeingang ist aktiv HIGH."
+],
+"tags": "tri-state tristate bus puffer buffer oe",
+"tabelle": {
+"kopf": [
+"/OE",
+"A",
+"Y"
+],
+"zeilen": [
+[
+"0",
+"0",
+"0"
+],
+[
+"0",
+"1",
+"1"
+],
+[
+"1",
+"X",
+"Z (hochohmig)"
+]
+]
+},
+"kat": "logik",
+"uid": "logik:74125"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_4011",
+"titel": "CD4011",
+"kurz": "4 × NAND-Gatter (je 2 Eingänge), CMOS",
+"tags": [
+"nand",
+"cmos",
+"4000",
+"CMOS",
+"4000",
+"DIP-14",
+"CD4011",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie 7400, aber CMOS: weite Versorgungsspannung (3–15 V) und sehr wenig Strom. Beliebt für Oszillatoren und Batteriegeräte."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4011",
+"name": "CD4011",
+"titel": "4 × NAND-Gatter (je 2 Eingänge), CMOS",
+"kurz": "Wie 7400, aber CMOS: weite Versorgungsspannung (3–15 V) und sehr wenig Strom. Beliebt für Oszillatoren und Batteriegeräte.",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-14",
+"pins": [
+"A1:i",
+"B1:i",
+"Y1:o",
+"Y2:o",
+"A2:i",
+"B2:i",
+"VSS:g",
+"A3:i",
+"B3:i",
+"Y3:o",
+"Y4:o",
+"A4:i",
+"B4:i",
+"VDD:v"
+],
+"symbol": "nand",
+"eingaenge": 2,
+"spannung": "CD4000B: 3–15 V (maximal 18 V).",
+"hinweise": [
+"Nicht benutzte Eingänge niemals offen lassen: an VSS oder VDD legen (CMOS-Eingänge sind sehr hochohmig und fangen Störungen ein).",
+"Ausgangsströme sind klein (wenige mA). Für LEDs oder Relais einen Transistor oder Treiber dahinter schalten.",
+"Empfindlich gegen statische Aufladung (ESD): Chip vor dem Einbau nicht am Pin anfassen.",
+"Pinbelegung gilt auch für CD4001 (NOR), CD4071 (OR), CD4081 (AND) und CD4070 (XOR)."
+],
+"tags": "nand cmos 4000",
+"kat": "logik",
+"uid": "logik:4011"
+}
+}
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "logik_4001",
+"titel": "CD4001",
+"kurz": "4 × NOR-Gatter (je 2 Eingänge), CMOS",
+"tags": [
+"nor",
+"cmos",
+"4000",
+"CMOS",
+"4000",
+"DIP-14",
+"CD4001",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"CMOS-NOR: Ausgang ist nur HIGH, wenn beide Eingänge LOW sind."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4001",
+"name": "CD4001",
+"titel": "4 × NOR-Gatter (je 2 Eingänge), CMOS",
+"kurz": "CMOS-NOR: Ausgang ist nur HIGH, wenn beide Eingänge LOW sind.",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-14",
+"pins": [
+"A1:i",
+"B1:i",
+"Y1:o",
+"Y2:o",
+"A2:i",
+"B2:i",
+"VSS:g",
+"A3:i",
+"B3:i",
+"Y3:o",
+"Y4:o",
+"A4:i",
+"B4:i",
+"VDD:v"
+],
+"symbol": "nor",
+"eingaenge": 2,
+"spannung": "CD4000B: 3–15 V (maximal 18 V).",
+"hinweise": [
+"Nicht benutzte Eingänge niemals offen lassen: an VSS oder VDD legen (CMOS-Eingänge sind sehr hochohmig und fangen Störungen ein).",
+"Ausgangsströme sind klein (wenige mA). Für LEDs oder Relais einen Transistor oder Treiber dahinter schalten.",
+"Empfindlich gegen statische Aufladung (ESD): Chip vor dem Einbau nicht am Pin anfassen."
+],
+"tags": "nor cmos 4000",
+"kat": "logik",
+"uid": "logik:4001"
+}
+}
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "logik_4081",
+"titel": "CD4081",
+"kurz": "4 × AND-Gatter (je 2 Eingänge), CMOS",
+"tags": [
+"and",
+"cmos",
+"4000",
+"CMOS",
+"4000",
+"DIP-14",
+"CD4081",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"CMOS-AND: Ausgang nur HIGH, wenn beide Eingänge HIGH sind."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4081",
+"name": "CD4081",
+"titel": "4 × AND-Gatter (je 2 Eingänge), CMOS",
+"kurz": "CMOS-AND: Ausgang nur HIGH, wenn beide Eingänge HIGH sind.",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-14",
+"pins": [
+"A1:i",
+"B1:i",
+"Y1:o",
+"Y2:o",
+"A2:i",
+"B2:i",
+"VSS:g",
+"A3:i",
+"B3:i",
+"Y3:o",
+"Y4:o",
+"A4:i",
+"B4:i",
+"VDD:v"
+],
+"symbol": "and",
+"eingaenge": 2,
+"spannung": "CD4000B: 3–15 V (maximal 18 V).",
+"hinweise": [
+"Nicht benutzte Eingänge niemals offen lassen: an VSS oder VDD legen (CMOS-Eingänge sind sehr hochohmig und fangen Störungen ein).",
+"Ausgangsströme sind klein (wenige mA). Für LEDs oder Relais einen Transistor oder Treiber dahinter schalten.",
+"Empfindlich gegen statische Aufladung (ESD): Chip vor dem Einbau nicht am Pin anfassen."
+],
+"tags": "and cmos 4000",
+"kat": "logik",
+"uid": "logik:4081"
+}
+}
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "logik_4071",
+"titel": "CD4071",
+"kurz": "4 × OR-Gatter (je 2 Eingänge), CMOS",
+"tags": [
+"or",
+"cmos",
+"4000",
+"CMOS",
+"4000",
+"DIP-14",
+"CD4071",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"CMOS-OR: Ausgang HIGH, sobald mindestens ein Eingang HIGH ist."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4071",
+"name": "CD4071",
+"titel": "4 × OR-Gatter (je 2 Eingänge), CMOS",
+"kurz": "CMOS-OR: Ausgang HIGH, sobald mindestens ein Eingang HIGH ist.",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-14",
+"pins": [
+"A1:i",
+"B1:i",
+"Y1:o",
+"Y2:o",
+"A2:i",
+"B2:i",
+"VSS:g",
+"A3:i",
+"B3:i",
+"Y3:o",
+"Y4:o",
+"A4:i",
+"B4:i",
+"VDD:v"
+],
+"symbol": "or",
+"eingaenge": 2,
+"spannung": "CD4000B: 3–15 V (maximal 18 V).",
+"hinweise": [
+"Nicht benutzte Eingänge niemals offen lassen: an VSS oder VDD legen (CMOS-Eingänge sind sehr hochohmig und fangen Störungen ein).",
+"Ausgangsströme sind klein (wenige mA). Für LEDs oder Relais einen Transistor oder Treiber dahinter schalten.",
+"Empfindlich gegen statische Aufladung (ESD): Chip vor dem Einbau nicht am Pin anfassen."
+],
+"tags": "or cmos 4000",
+"kat": "logik",
+"uid": "logik:4071"
+}
+}
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "logik_4070",
+"titel": "CD4070",
+"kurz": "4 × XOR-Gatter (je 2 Eingänge), CMOS",
+"tags": [
+"xor",
+"cmos",
+"4000",
+"CMOS",
+"4000",
+"DIP-14",
+"CD4070",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"CMOS-XOR: Ausgang HIGH, wenn die Eingänge unterschiedlich sind."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4070",
+"name": "CD4070",
+"titel": "4 × XOR-Gatter (je 2 Eingänge), CMOS",
+"kurz": "CMOS-XOR: Ausgang HIGH, wenn die Eingänge unterschiedlich sind.",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-14",
+"pins": [
+"A1:i",
+"B1:i",
+"Y1:o",
+"Y2:o",
+"A2:i",
+"B2:i",
+"VSS:g",
+"A3:i",
+"B3:i",
+"Y3:o",
+"Y4:o",
+"A4:i",
+"B4:i",
+"VDD:v"
+],
+"symbol": "xor",
+"eingaenge": 2,
+"spannung": "CD4000B: 3–15 V (maximal 18 V).",
+"hinweise": [
+"Nicht benutzte Eingänge niemals offen lassen: an VSS oder VDD legen (CMOS-Eingänge sind sehr hochohmig und fangen Störungen ein).",
+"Ausgangsströme sind klein (wenige mA). Für LEDs oder Relais einen Transistor oder Treiber dahinter schalten.",
+"Empfindlich gegen statische Aufladung (ESD): Chip vor dem Einbau nicht am Pin anfassen."
+],
+"tags": "xor cmos 4000",
+"kat": "logik",
+"uid": "logik:4070"
+}
+}
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "logik_4069",
+"titel": "CD4069",
+"kurz": "6 × Inverter, CMOS",
+"tags": [
+"not",
+"inverter",
+"cmos",
+"oszillator",
+"CMOS",
+"4000",
+"DIP-14",
+"CD4069",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"CMOS-Inverter (unbuffered). Eignet sich als Linearverstärker und für einfache RC- oder Quarz-Oszillatoren."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4069",
+"name": "CD4069",
+"titel": "6 × Inverter, CMOS",
+"kurz": "CMOS-Inverter (unbuffered). Eignet sich als Linearverstärker und für einfache RC- oder Quarz-Oszillatoren.",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-14",
+"pins": [
+"A1:i",
+"Y1:o",
+"A2:i",
+"Y2:o",
+"A3:i",
+"Y3:o",
+"VSS:g",
+"Y4:o",
+"A4:i",
+"Y5:o",
+"A5:i",
+"Y6:o",
+"A6:i",
+"VDD:v"
+],
+"symbol": "not",
+"eingaenge": 1,
+"spannung": "CD4000B: 3–15 V (maximal 18 V).",
+"hinweise": [
+"Nicht benutzte Eingänge niemals offen lassen: an VSS oder VDD legen (CMOS-Eingänge sind sehr hochohmig und fangen Störungen ein).",
+"Ausgangsströme sind klein (wenige mA). Für LEDs oder Relais einen Transistor oder Treiber dahinter schalten.",
+"Empfindlich gegen statische Aufladung (ESD): Chip vor dem Einbau nicht am Pin anfassen.",
+"CD4049/4050 haben stärkere Ausgänge (Puffer), aber eine andere Pinbelegung."
+],
+"tags": "not inverter cmos oszillator",
+"kat": "logik",
+"uid": "logik:4069"
+}
+}
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "logik_4093",
+"titel": "CD4093",
+"kurz": "4 × NAND mit Schmitt-Trigger (je 2 Eingänge), CMOS",
+"tags": [
+"schmitt",
+"trigger",
+"cmos",
+"oszillator",
+"entprellen",
+"CMOS",
+"4000",
+"DIP-14",
+"CD4093",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"CMOS-NAND mit Hysterese an den Eingängen. Sehr beliebt für Entprellung und einfache Oszillatoren (ein Widerstand + ein Kondensator genügen)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4093",
+"name": "CD4093",
+"titel": "4 × NAND mit Schmitt-Trigger (je 2 Eingänge), CMOS",
+"kurz": "CMOS-NAND mit Hysterese an den Eingängen. Sehr beliebt für Entprellung und einfache Oszillatoren (ein Widerstand + ein Kondensator genügen).",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-14",
+"pins": [
+"A1:i",
+"B1:i",
+"Y1:o",
+"Y2:o",
+"A2:i",
+"B2:i",
+"VSS:g",
+"A3:i",
+"B3:i",
+"Y3:o",
+"Y4:o",
+"A4:i",
+"B4:i",
+"VDD:v"
+],
+"symbol": "schmitt_nand",
+"eingaenge": 2,
+"spannung": "CD4000B: 3–15 V (maximal 18 V).",
+"hinweise": [
+"Nicht benutzte Eingänge niemals offen lassen: an VSS oder VDD legen (CMOS-Eingänge sind sehr hochohmig und fangen Störungen ein).",
+"Ausgangsströme sind klein (wenige mA). Für LEDs oder Relais einen Transistor oder Treiber dahinter schalten.",
+"Empfindlich gegen statische Aufladung (ESD): Chip vor dem Einbau nicht am Pin anfassen.",
+"RC-Oszillator: Ausgang über Widerstand R auf den Eingang zurück, Kondensator C vom Eingang nach VSS. Frequenz ca. 1 / (0,8 · R · C) (Faustformel, hängt von VDD ab)."
+],
+"tags": "schmitt trigger cmos oszillator entprellen",
+"kat": "logik",
+"uid": "logik:4093"
+}
+}
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "logik_7403",
+"titel": "7403",
+"kurz": "4 × NAND-Gatter, Open-Collector",
+"tags": [
+"nand",
+"open",
+"collector",
+"oc",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7403",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie 7400, aber mit Open-Collector-Ausgängen. Der Ausgang kann nur nach GND ziehen, HIGH kommt von einem Pull-up."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7403",
+"name": "7403",
+"titel": "4 × NAND-Gatter, Open-Collector",
+"kurz": "Wie 7400, aber mit Open-Collector-Ausgängen. Der Ausgang kann nur nach GND ziehen, HIGH kommt von einem Pull-up.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1B:i",
+"1Y:o",
+"2A:i",
+"2B:i",
+"2Y:o",
+"GND:g",
+"3Y:o",
+"3A:i",
+"3B:i",
+"4Y:o",
+"4A:i",
+"4B:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Gilt auch für 74HC… / 74HCT… mit gleicher Nummer.",
+"Nicht benutzte Eingänge bei HC/HCT fest auf GND oder VCC legen.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip.",
+"Open-Collector-Ausgang: zieht nur nach LOW. Zum Schalten von HIGH braucht er einen Pull-up-Widerstand (z. B. 1 kΩ … 10 kΩ nach VCC). Mehrere Ausgänge dürfen an einer Leitung zusammengeschaltet werden (Wired-AND)."
+],
+"tags": "nand open collector oc",
+"symbol": "nand",
+"eingaenge": 2,
+"kat": "logik",
+"uid": "logik:7403"
+}
+}
+],
+"siehe": [
+"bt_ic:logik_7400",
+"bt_ic:logik_7404",
+"bt_ic:logik_7408"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7409",
+"titel": "7409",
+"kurz": "4 × AND-Gatter, Open-Collector",
+"tags": [
+"and",
+"open",
+"collector",
+"oc",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7409",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie 7408, aber mit Open-Collector-Ausgängen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7409",
+"name": "7409",
+"titel": "4 × AND-Gatter, Open-Collector",
+"kurz": "Wie 7408, aber mit Open-Collector-Ausgängen.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1B:i",
+"1Y:o",
+"2A:i",
+"2B:i",
+"2Y:o",
+"GND:g",
+"3Y:o",
+"3A:i",
+"3B:i",
+"4Y:o",
+"4A:i",
+"4B:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Gilt auch für 74HC… / 74HCT… mit gleicher Nummer.",
+"Nicht benutzte Eingänge bei HC/HCT fest auf GND oder VCC legen.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip.",
+"Open-Collector-Ausgang: zieht nur nach LOW. Zum Schalten von HIGH braucht er einen Pull-up-Widerstand (z. B. 1 kΩ … 10 kΩ nach VCC). Mehrere Ausgänge dürfen an einer Leitung zusammengeschaltet werden (Wired-AND)."
+],
+"tags": "and open collector oc",
+"symbol": "and",
+"eingaenge": 2,
+"kat": "logik",
+"uid": "logik:7409"
+}
+}
+],
+"siehe": [
+"bt_ic:logik_7400",
+"bt_ic:logik_7404",
+"bt_ic:logik_7408"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7437",
+"titel": "7437",
+"kurz": "4 × NAND-Gatter mit Leistungsausgang (Buffer)",
+"tags": [
+"nand",
+"buffer",
+"treiber",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7437",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Pin-kompatibel zum 7400, aber die Ausgänge können deutlich mehr Strom liefern (für Leitungen oder mehrere Eingänge)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7437",
+"name": "7437",
+"titel": "4 × NAND-Gatter mit Leistungsausgang (Buffer)",
+"kurz": "Pin-kompatibel zum 7400, aber die Ausgänge können deutlich mehr Strom liefern (für Leitungen oder mehrere Eingänge).",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1B:i",
+"1Y:o",
+"2A:i",
+"2B:i",
+"2Y:o",
+"GND:g",
+"3Y:o",
+"3A:i",
+"3B:i",
+"4Y:o",
+"4A:i",
+"4B:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Gilt auch für 74HC… / 74HCT… mit gleicher Nummer.",
+"Nicht benutzte Eingänge bei HC/HCT fest auf GND oder VCC legen.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "nand buffer treiber",
+"symbol": "nand",
+"eingaenge": 2,
+"kat": "logik",
+"uid": "logik:7437"
+}
+}
+],
+"siehe": [
+"bt_ic:logik_7400",
+"bt_ic:logik_7404",
+"bt_ic:logik_7408"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7428",
+"titel": "7428",
+"kurz": "4 × NOR-Gatter mit Leistungsausgang (Buffer)",
+"tags": [
+"nor",
+"buffer",
+"treiber",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7428",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie 7402, aber mit kräftigen Ausgängen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7428",
+"name": "7428",
+"titel": "4 × NOR-Gatter mit Leistungsausgang (Buffer)",
+"kurz": "Wie 7402, aber mit kräftigen Ausgängen.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1Y:o",
+"1A:i",
+"1B:i",
+"2Y:o",
+"2A:i",
+"2B:i",
+"GND:g",
+"3A:i",
+"3B:i",
+"3Y:o",
+"4A:i",
+"4B:i",
+"4Y:o",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Gilt auch für 74HC… / 74HCT… mit gleicher Nummer.",
+"Nicht benutzte Eingänge bei HC/HCT fest auf GND oder VCC legen.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "nor buffer treiber",
+"symbol": "nor",
+"eingaenge": 2,
+"kat": "logik",
+"uid": "logik:7428"
+}
+}
+],
+"siehe": [
+"bt_ic:logik_7400",
+"bt_ic:logik_7404",
+"bt_ic:logik_7408"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7433",
+"titel": "7433",
+"kurz": "4 × NOR-Gatter, Open-Collector",
+"tags": [
+"nor",
+"open",
+"collector",
+"oc",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7433",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie 7402 / 7428, Ausgänge als Open-Collector."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7433",
+"name": "7433",
+"titel": "4 × NOR-Gatter, Open-Collector",
+"kurz": "Wie 7402 / 7428, Ausgänge als Open-Collector.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1Y:o",
+"1A:i",
+"1B:i",
+"2Y:o",
+"2A:i",
+"2B:i",
+"GND:g",
+"3A:i",
+"3B:i",
+"3Y:o",
+"4A:i",
+"4B:i",
+"4Y:o",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Gilt auch für 74HC… / 74HCT… mit gleicher Nummer.",
+"Nicht benutzte Eingänge bei HC/HCT fest auf GND oder VCC legen.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip.",
+"Open-Collector-Ausgang: zieht nur nach LOW. Zum Schalten von HIGH braucht er einen Pull-up-Widerstand (z. B. 1 kΩ … 10 kΩ nach VCC). Mehrere Ausgänge dürfen an einer Leitung zusammengeschaltet werden (Wired-AND)."
+],
+"tags": "nor open collector oc",
+"symbol": "nor",
+"eingaenge": 2,
+"kat": "logik",
+"uid": "logik:7433"
+}
+}
+],
+"siehe": [
+"bt_ic:logik_7400",
+"bt_ic:logik_7404",
+"bt_ic:logik_7408"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7405",
+"titel": "7405",
+"kurz": "6 × Inverter, Open-Collector",
+"tags": [
+"inverter",
+"nicht",
+"open",
+"collector",
+"oc",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7405",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie 7404, aber die Ausgänge sind Open-Collector (Pull-up nötig). Praktisch, um LEDs oder höhere Spannungen zu schalten."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7405",
+"name": "7405",
+"titel": "6 × Inverter, Open-Collector",
+"kurz": "Wie 7404, aber die Ausgänge sind Open-Collector (Pull-up nötig). Praktisch, um LEDs oder höhere Spannungen zu schalten.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1Y:o",
+"2A:i",
+"2Y:o",
+"3A:i",
+"3Y:o",
+"GND:g",
+"4Y:o",
+"4A:i",
+"5Y:o",
+"5A:i",
+"6Y:o",
+"6A:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Gilt auch für 74HC… / 74HCT… mit gleicher Nummer.",
+"Nicht benutzte Eingänge bei HC/HCT fest auf GND oder VCC legen.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip.",
+"Open-Collector-Ausgang: zieht nur nach LOW. Zum Schalten von HIGH braucht er einen Pull-up-Widerstand (z. B. 1 kΩ … 10 kΩ nach VCC). Mehrere Ausgänge dürfen an einer Leitung zusammengeschaltet werden (Wired-AND)."
+],
+"tags": "inverter nicht open collector oc",
+"symbol": "not",
+"eingaenge": 1,
+"kat": "logik",
+"uid": "logik:7405"
+}
+}
+],
+"siehe": [
+"bt_ic:logik_7400",
+"bt_ic:logik_7404",
+"bt_ic:logik_7408"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_74HC04",
+"titel": "74HC04",
+"kurz": "6 × Inverter (HC-Variante)",
+"tags": [
+"inverter",
+"nicht",
+"hc",
+"cmos",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"74HC04",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Standard-Inverter in CMOS, gleiche Pinbelegung wie der 7404. Auch als Oszillator-Baustein mit Quarz oder RC beliebt."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74HC04",
+"name": "74HC04",
+"titel": "6 × Inverter (HC-Variante)",
+"kurz": "Standard-Inverter in CMOS, gleiche Pinbelegung wie der 7404. Auch als Oszillator-Baustein mit Quarz oder RC beliebt.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1Y:o",
+"2A:i",
+"2Y:o",
+"3A:i",
+"3Y:o",
+"GND:g",
+"4Y:o",
+"4A:i",
+"5Y:o",
+"5A:i",
+"6Y:o",
+"6A:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Gilt auch für 74HC… / 74HCT… mit gleicher Nummer.",
+"Nicht benutzte Eingänge bei HC/HCT fest auf GND oder VCC legen.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip.",
+"Für einen einfachen Oszillator: Inverter mit Widerstand (Rückkopplung) und Kondensator – besser einen Schmitt-Trigger wie 74HC14 nehmen."
+],
+"tags": "inverter nicht hc cmos",
+"symbol": "not",
+"eingaenge": 1,
+"kat": "logik",
+"uid": "logik:74HC04"
+}
+}
+],
+"siehe": [
+"bt_ic:logik_7400",
+"bt_ic:logik_7404",
+"bt_ic:logik_7408"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7412",
+"titel": "7412",
+"kurz": "3 × NAND-Gatter, 3 Eingänge, Open-Collector",
+"tags": [
+"nand",
+"open",
+"collector",
+"oc",
+"3",
+"eingänge",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7412",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie 7410, aber Open-Collector."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7412",
+"name": "7412",
+"titel": "3 × NAND-Gatter, 3 Eingänge, Open-Collector",
+"kurz": "Wie 7410, aber Open-Collector.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1B:i",
+"2A:i",
+"2B:i",
+"2C:i",
+"2Y:o",
+"GND:g",
+"3Y:o",
+"3A:i",
+"3B:i",
+"3C:i",
+"1C:i",
+"1Y:o",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Gilt auch für 74HC… / 74HCT… mit gleicher Nummer.",
+"Nicht benutzte Eingänge bei HC/HCT fest auf GND oder VCC legen.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip.",
+"Open-Collector-Ausgang: zieht nur nach LOW. Zum Schalten von HIGH braucht er einen Pull-up-Widerstand (z. B. 1 kΩ … 10 kΩ nach VCC). Mehrere Ausgänge dürfen an einer Leitung zusammengeschaltet werden (Wired-AND)."
+],
+"tags": "nand open collector oc 3 eingänge",
+"symbol": "nand",
+"eingaenge": 3,
+"kat": "logik",
+"uid": "logik:7412"
+}
+}
+],
+"siehe": [
+"bt_ic:logik_7400",
+"bt_ic:logik_7404",
+"bt_ic:logik_7408"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7421",
+"titel": "7421",
+"kurz": "2 × AND-Gatter mit 4 Eingängen",
+"tags": [
+"and",
+"4",
+"eingänge",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7421",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zwei unabhängige AND-Gatter mit je vier Eingängen. Pin-gleich mit 7420 (dort NAND)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7421",
+"name": "7421",
+"titel": "2 × AND-Gatter mit 4 Eingängen",
+"kurz": "Zwei unabhängige AND-Gatter mit je vier Eingängen. Pin-gleich mit 7420 (dort NAND).",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1B:i",
+"NC:n",
+"1C:i",
+"1D:i",
+"1Y:o",
+"GND:g",
+"2Y:o",
+"2A:i",
+"2B:i",
+"NC:n",
+"2C:i",
+"2D:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Gilt auch für 74HC… / 74HCT… mit gleicher Nummer.",
+"Nicht benutzte Eingänge bei HC/HCT fest auf GND oder VCC legen.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip.",
+"Pins 3 und 11 sind nicht belegt (NC)."
+],
+"tags": "and 4 eingänge",
+"symbol": "and",
+"eingaenge": 4,
+"kat": "logik",
+"uid": "logik:7421"
+}
+}
+],
+"siehe": [
+"bt_ic:logik_7400",
+"bt_ic:logik_7404",
+"bt_ic:logik_7408"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_7440",
+"titel": "7440",
+"kurz": "2 × NAND-Gatter, 4 Eingänge, Leistungsausgang",
+"tags": [
+"nand",
+"4",
+"eingänge",
+"buffer",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7440",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie 7420, aber mit kräftigen Ausgängen (Buffer)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7440",
+"name": "7440",
+"titel": "2 × NAND-Gatter, 4 Eingänge, Leistungsausgang",
+"kurz": "Wie 7420, aber mit kräftigen Ausgängen (Buffer).",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1B:i",
+"NC:n",
+"1C:i",
+"1D:i",
+"1Y:o",
+"GND:g",
+"2Y:o",
+"2A:i",
+"2B:i",
+"NC:n",
+"2C:i",
+"2D:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Gilt auch für 74HC… / 74HCT… mit gleicher Nummer.",
+"Nicht benutzte Eingänge bei HC/HCT fest auf GND oder VCC legen.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip.",
+"Pins 3 und 11 sind nicht belegt (NC)."
+],
+"tags": "nand 4 eingänge buffer",
+"symbol": "nand",
+"eingaenge": 4,
+"kat": "logik",
+"uid": "logik:7440"
+}
+}
+],
+"siehe": [
+"bt_ic:logik_7400",
+"bt_ic:logik_7404",
+"bt_ic:logik_7408"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_74HC02",
+"titel": "74HC02",
+"kurz": "4 × NOR-Gatter (HC-Variante)",
+"tags": [
+"nor",
+"hc",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"74HC02",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"NOR-Gatter in CMOS. Achtung: andere Pinbelegung als der 7400 (Ausgang steht vor den Eingängen)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74HC02",
+"name": "74HC02",
+"titel": "4 × NOR-Gatter (HC-Variante)",
+"kurz": "NOR-Gatter in CMOS. Achtung: andere Pinbelegung als der 7400 (Ausgang steht vor den Eingängen).",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1Y:o",
+"1A:i",
+"1B:i",
+"2Y:o",
+"2A:i",
+"2B:i",
+"GND:g",
+"3A:i",
+"3B:i",
+"3Y:o",
+"4A:i",
+"4B:i",
+"4Y:o",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Gilt auch für 74HC… / 74HCT… mit gleicher Nummer.",
+"Nicht benutzte Eingänge bei HC/HCT fest auf GND oder VCC legen.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip.",
+"Der Ausgang liegt hier bei Pin 1, 4, 10, 13 – nicht wie beim 7400."
+],
+"tags": "nor hc",
+"symbol": "nor",
+"eingaenge": 2,
+"kat": "logik",
+"uid": "logik:74HC02"
+}
+}
+],
+"siehe": [
+"bt_ic:logik_7400",
+"bt_ic:logik_7404",
+"bt_ic:logik_7408"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_4077",
+"titel": "CD4077",
+"kurz": "4 × XNOR-Gatter (CMOS)",
+"tags": [
+"xnor",
+"äquivalenz",
+"cmos",
+"cd4077",
+"CMOS",
+"4000",
+"DIP-14",
+"CD4077",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Vier Äquivalenz-Gatter: Ausgang HIGH, wenn beide Eingänge gleich sind. Pinbelegung wie CD4011 / CD4070."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4077",
+"name": "CD4077",
+"titel": "4 × XNOR-Gatter (CMOS)",
+"kurz": "Vier Äquivalenz-Gatter: Ausgang HIGH, wenn beide Eingänge gleich sind. Pinbelegung wie CD4011 / CD4070.",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-14",
+"pins": [
+"A1:i",
+"B1:i",
+"Y1:o",
+"Y2:o",
+"A2:i",
+"B2:i",
+"VSS:g",
+"A3:i",
+"B3:i",
+"Y3:o",
+"Y4:o",
+"A4:i",
+"B4:i",
+"VDD:v"
+],
+"spannung": "3–15 V (CD4000B).",
+"hinweise": [
+"Nicht benutzte Eingänge auf VSS oder VDD legen – CMOS-Eingänge nie offen lassen.",
+"Bei 3,3-V-Betrieb dürfen die Eingänge höchstens VDD haben; Pegel zu 5-V-Systemen beachten.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "xnor äquivalenz cmos cd4077",
+"symbol": "xnor",
+"eingaenge": 2,
+"kat": "logik",
+"uid": "logik:4077"
+}
+}
+],
+"siehe": [
+"bt_ic:logik_4070",
+"bt_ic:logik_7486"
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "logik_4002",
+"titel": "CD4002",
+"kurz": "2 × NOR-Gatter mit 4 Eingängen (CMOS)",
+"tags": [
+"nor",
+"4",
+"eingänge",
+"cmos",
+"CMOS",
+"4000",
+"DIP-14",
+"CD4002",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zwei NOR-Gatter mit je vier Eingängen. Ausgang ist nur HIGH, wenn alle vier Eingänge LOW sind."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4002",
+"name": "CD4002",
+"titel": "2 × NOR-Gatter mit 4 Eingängen (CMOS)",
+"kurz": "Zwei NOR-Gatter mit je vier Eingängen. Ausgang ist nur HIGH, wenn alle vier Eingänge LOW sind.",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-14",
+"pins": [
+"Y1:o",
+"A1:i",
+"B1:i",
+"C1:i",
+"D1:i",
+"NC:n",
+"VSS:g",
+"NC:n",
+"A2:i",
+"B2:i",
+"C2:i",
+"D2:i",
+"Y2:o",
+"VDD:v"
+],
+"spannung": "3–15 V.",
+"hinweise": [
+"Pins 6 und 8 sind nicht belegt.",
+"Unbenutzte Eingänge auf VSS legen (bei NOR ändert das die Funktion nicht).",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "nor 4 eingänge cmos",
+"symbol": "nor",
+"eingaenge": 4,
+"kat": "logik",
+"uid": "logik:4002"
+}
+}
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "logik_4012",
+"titel": "CD4012",
+"kurz": "2 × NAND-Gatter mit 4 Eingängen (CMOS)",
+"tags": [
+"nand",
+"4",
+"eingänge",
+"cmos",
+"CMOS",
+"4000",
+"DIP-14",
+"CD4012",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zwei NAND-Gatter mit je vier Eingängen. Ausgang ist nur LOW, wenn alle vier Eingänge HIGH sind."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4012",
+"name": "CD4012",
+"titel": "2 × NAND-Gatter mit 4 Eingängen (CMOS)",
+"kurz": "Zwei NAND-Gatter mit je vier Eingängen. Ausgang ist nur LOW, wenn alle vier Eingänge HIGH sind.",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-14",
+"pins": [
+"Y1:o",
+"A1:i",
+"B1:i",
+"C1:i",
+"D1:i",
+"NC:n",
+"VSS:g",
+"NC:n",
+"A2:i",
+"B2:i",
+"C2:i",
+"D2:i",
+"Y2:o",
+"VDD:v"
+],
+"spannung": "3–15 V.",
+"hinweise": [
+"Pins 6 und 8 sind nicht belegt.",
+"Unbenutzte Eingänge auf VDD legen (bei NAND ändert das die Funktion nicht).",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "nand 4 eingänge cmos",
+"symbol": "nand",
+"eingaenge": 4,
+"kat": "logik",
+"uid": "logik:4012"
+}
+}
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "logik_74hc14",
+"titel": "74HC14",
+"kurz": "6 × Schmitt-Trigger-Inverter (HC)",
+"tags": [
+"schmitt",
+"trigger",
+"inverter",
+"entprellen",
+"oszillator",
+"hc",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"74HC14",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Inverter mit Hysterese: macht aus langsamen oder verrauschten Signalen saubere Flanken. Ideal zum Entprellen von Tastern und für einfache RC-Oszillatoren."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74hc14",
+"name": "74HC14",
+"titel": "6 × Schmitt-Trigger-Inverter (HC)",
+"kurz": "Inverter mit Hysterese: macht aus langsamen oder verrauschten Signalen saubere Flanken. Ideal zum Entprellen von Tastern und für einfache RC-Oszillatoren.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1Y:o",
+"2A:i",
+"2Y:o",
+"3A:i",
+"3Y:o",
+"GND:g",
+"4Y:o",
+"4A:i",
+"5Y:o",
+"5A:i",
+"6Y:o",
+"6A:i",
+"VCC:v"
+],
+"spannung": "2–6 V.",
+"hinweise": [
+"Pinbelegung wie 7404 – aber mit Hysterese (Schaltschwellen ca. 0,4·VCC … 0,6·VCC, Datenblatt prüfen).",
+"Oszillator: Ausgang über R auf den Eingang, Eingang über C nach GND. f ≈ 1 / (0,7 · R · C) als grobe Faustformel (Hysterese-abhängig).",
+"Taster entprellen: Taster gegen GND, Pull-up 10 kΩ an den Eingang, 100 nF Eingang→GND.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "schmitt trigger inverter entprellen oszillator hc",
+"symbol": "schmitt_not",
+"eingaenge": 1,
+"kat": "logik",
+"uid": "logik:74hc14"
+}
+}
+],
+"siehe": [
+"bt_ic:logik_7414",
+"bt_wissen:wissen_schmitt"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_74hc08",
+"titel": "74HC08",
+"kurz": "4 × AND-Gatter (HC)",
+"tags": [
+"and",
+"hc",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"74HC08",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"CMOS-Variante des 7408, gleiche Pinbelegung wie 74LS08."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74hc08",
+"name": "74HC08",
+"titel": "4 × AND-Gatter (HC)",
+"kurz": "CMOS-Variante des 7408, gleiche Pinbelegung wie 74LS08.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1B:i",
+"1Y:o",
+"2A:i",
+"2B:i",
+"2Y:o",
+"GND:g",
+"3Y:o",
+"3A:i",
+"3B:i",
+"4Y:o",
+"4A:i",
+"4B:i",
+"VCC:v"
+],
+"spannung": "2–6 V.",
+"hinweise": [
+"Pinbelegung identisch zum 7408.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "and hc",
+"symbol": "and",
+"eingaenge": 2,
+"kat": "logik",
+"uid": "logik:74hc08"
+}
+}
+],
+"siehe": [
+"bt_ic:logik_7408"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_74hc32",
+"titel": "74HC32",
+"kurz": "4 × OR-Gatter (HC)",
+"tags": [
+"or",
+"hc",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"74HC32",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"CMOS-Variante des 7432."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74hc32",
+"name": "74HC32",
+"titel": "4 × OR-Gatter (HC)",
+"kurz": "CMOS-Variante des 7432.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1B:i",
+"1Y:o",
+"2A:i",
+"2B:i",
+"2Y:o",
+"GND:g",
+"3Y:o",
+"3A:i",
+"3B:i",
+"4Y:o",
+"4A:i",
+"4B:i",
+"VCC:v"
+],
+"spannung": "2–6 V.",
+"hinweise": [
+"Pinbelegung identisch zum 7432.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "or hc",
+"symbol": "or",
+"eingaenge": 2,
+"kat": "logik",
+"uid": "logik:74hc32"
+}
+}
+],
+"siehe": [
+"bt_ic:logik_7432"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_74hc86",
+"titel": "74HC86",
+"kurz": "4 × XOR-Gatter (HC)",
+"tags": [
+"xor",
+"hc",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"74HC86",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"CMOS-Variante des 7486: Ausgang HIGH, wenn genau ein Eingang HIGH ist."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74hc86",
+"name": "74HC86",
+"titel": "4 × XOR-Gatter (HC)",
+"kurz": "CMOS-Variante des 7486: Ausgang HIGH, wenn genau ein Eingang HIGH ist.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1A:i",
+"1B:i",
+"1Y:o",
+"2A:i",
+"2B:i",
+"2Y:o",
+"GND:g",
+"3Y:o",
+"3A:i",
+"3B:i",
+"4Y:o",
+"4A:i",
+"4B:i",
+"VCC:v"
+],
+"spannung": "2–6 V.",
+"hinweise": [
+"Pinbelegung identisch zum 7486.",
+"Gut als steuerbarer Inverter: A=Signal, B=1 → invertiert; B=0 → unverändert.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "xor hc",
+"symbol": "xor",
+"eingaenge": 2,
+"kat": "logik",
+"uid": "logik:74hc86"
+}
+}
+],
+"siehe": [
+"bt_ic:logik_7486"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "logik_74lvc1g00",
+"titel": "74LVC1G00",
+"kurz": "1 × NAND-Gatter (SOT-23-5)",
+"tags": [
+"smd",
+"sot23",
+"einzelgatter",
+"lvc",
+"Einzelgatter",
+"(SMD)",
+"SOT-23-5",
+"74LVC1G00",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Einzelgatter im winzigen SOT-23-5 / SC-70-Gehäuse (SMD). Beliebt als Pegelwandler oder Puffer, wo ein einzelnes Gatter fehlt."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74lvc1g00",
+"name": "74LVC1G00",
+"titel": "1 × NAND-Gatter (SOT-23-5)",
+"kurz": "Einzelgatter im winzigen SOT-23-5 / SC-70-Gehäuse (SMD). Beliebt als Pegelwandler oder Puffer, wo ein einzelnes Gatter fehlt.",
+"familie": "Einzelgatter (SMD)",
+"gehaeuse": "SOT-23-5",
+"pins": [
+"A:i",
+"B:i",
+"GND:g",
+"Y:o",
+"VCC:v"
+],
+"spannung": "1,65–5,5 V; Eingänge 5-V-tolerant.",
+"hinweise": [
+"Pin 1 = A, Pin 2 = B.",
+"Eingänge sind auch bei VCC = 3,3 V 5-V-tolerant: so lässt sich 5 V → 3,3 V pegeln.",
+"Sehr kurze Anschlüsse; 100 nF nahe an Pin 5 und 3."
+],
+"tags": "smd sot23 einzelgatter lvc",
+"symbol": "nand",
+"eingaenge": 2,
+"kerbe": false,
+"kat": "logik",
+"uid": "logik:74lvc1g00"
+}
+}
+],
+"familie": "Einzelgatter (SMD)"
+},
+{
+"id": "logik_74lvc1g04",
+"titel": "74LVC1G04",
+"kurz": "1 × Inverter (SOT-23-5)",
+"tags": [
+"smd",
+"sot23",
+"einzelgatter",
+"lvc",
+"Einzelgatter",
+"(SMD)",
+"SOT-23-5",
+"74LVC1G04",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Einzelgatter im winzigen SOT-23-5 / SC-70-Gehäuse (SMD). Beliebt als Pegelwandler oder Puffer, wo ein einzelnes Gatter fehlt."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74lvc1g04",
+"name": "74LVC1G04",
+"titel": "1 × Inverter (SOT-23-5)",
+"kurz": "Einzelgatter im winzigen SOT-23-5 / SC-70-Gehäuse (SMD). Beliebt als Pegelwandler oder Puffer, wo ein einzelnes Gatter fehlt.",
+"familie": "Einzelgatter (SMD)",
+"gehaeuse": "SOT-23-5",
+"pins": [
+"NC:n",
+"A:i",
+"GND:g",
+"Y:o",
+"VCC:v"
+],
+"spannung": "1,65–5,5 V; Eingänge 5-V-tolerant.",
+"hinweise": [
+"Pin 1 ist nicht belegt.",
+"Eingänge sind auch bei VCC = 3,3 V 5-V-tolerant: so lässt sich 5 V → 3,3 V pegeln.",
+"Sehr kurze Anschlüsse; 100 nF nahe an Pin 5 und 3."
+],
+"tags": "smd sot23 einzelgatter lvc",
+"symbol": "not",
+"eingaenge": 1,
+"kerbe": false,
+"kat": "logik",
+"uid": "logik:74lvc1g04"
+}
+}
+],
+"familie": "Einzelgatter (SMD)"
+},
+{
+"id": "logik_74lvc1g08",
+"titel": "74LVC1G08",
+"kurz": "1 × AND-Gatter (SOT-23-5)",
+"tags": [
+"smd",
+"sot23",
+"einzelgatter",
+"lvc",
+"Einzelgatter",
+"(SMD)",
+"SOT-23-5",
+"74LVC1G08",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Einzelgatter im winzigen SOT-23-5 / SC-70-Gehäuse (SMD). Beliebt als Pegelwandler oder Puffer, wo ein einzelnes Gatter fehlt."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74lvc1g08",
+"name": "74LVC1G08",
+"titel": "1 × AND-Gatter (SOT-23-5)",
+"kurz": "Einzelgatter im winzigen SOT-23-5 / SC-70-Gehäuse (SMD). Beliebt als Pegelwandler oder Puffer, wo ein einzelnes Gatter fehlt.",
+"familie": "Einzelgatter (SMD)",
+"gehaeuse": "SOT-23-5",
+"pins": [
+"A:i",
+"B:i",
+"GND:g",
+"Y:o",
+"VCC:v"
+],
+"spannung": "1,65–5,5 V; Eingänge 5-V-tolerant.",
+"hinweise": [
+"Eingänge sind auch bei VCC = 3,3 V 5-V-tolerant: so lässt sich 5 V → 3,3 V pegeln.",
+"Sehr kurze Anschlüsse; 100 nF nahe an Pin 5 und 3."
+],
+"tags": "smd sot23 einzelgatter lvc",
+"symbol": "and",
+"eingaenge": 2,
+"kerbe": false,
+"kat": "logik",
+"uid": "logik:74lvc1g08"
+}
+}
+],
+"familie": "Einzelgatter (SMD)"
+},
+{
+"id": "logik_74lvc1g14",
+"titel": "74LVC1G14",
+"kurz": "1 × Schmitt-Trigger-Inverter (SOT-23-5)",
+"tags": [
+"smd",
+"sot23",
+"einzelgatter",
+"lvc",
+"Einzelgatter",
+"(SMD)",
+"SOT-23-5",
+"74LVC1G14",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Einzelgatter im winzigen SOT-23-5 / SC-70-Gehäuse (SMD). Beliebt als Pegelwandler oder Puffer, wo ein einzelnes Gatter fehlt."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74lvc1g14",
+"name": "74LVC1G14",
+"titel": "1 × Schmitt-Trigger-Inverter (SOT-23-5)",
+"kurz": "Einzelgatter im winzigen SOT-23-5 / SC-70-Gehäuse (SMD). Beliebt als Pegelwandler oder Puffer, wo ein einzelnes Gatter fehlt.",
+"familie": "Einzelgatter (SMD)",
+"gehaeuse": "SOT-23-5",
+"pins": [
+"NC:n",
+"A:i",
+"GND:g",
+"Y:o",
+"VCC:v"
+],
+"spannung": "1,65–5,5 V; Eingänge 5-V-tolerant.",
+"hinweise": [
+"Pin 1 ist nicht belegt.",
+"Eingänge sind auch bei VCC = 3,3 V 5-V-tolerant: so lässt sich 5 V → 3,3 V pegeln.",
+"Sehr kurze Anschlüsse; 100 nF nahe an Pin 5 und 3."
+],
+"tags": "smd sot23 einzelgatter lvc",
+"symbol": "schmitt_not",
+"eingaenge": 1,
+"kerbe": false,
+"kat": "logik",
+"uid": "logik:74lvc1g14"
+}
+}
+],
+"familie": "Einzelgatter (SMD)"
+},
+{
+"id": "logik_74lvc1g17",
+"titel": "74LVC1G17",
+"kurz": "1 × Schmitt-Trigger-Puffer (SOT-23-5)",
+"tags": [
+"smd",
+"sot23",
+"einzelgatter",
+"lvc",
+"Einzelgatter",
+"(SMD)",
+"SOT-23-5",
+"74LVC1G17",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Einzelgatter im winzigen SOT-23-5 / SC-70-Gehäuse (SMD). Beliebt als Pegelwandler oder Puffer, wo ein einzelnes Gatter fehlt."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74lvc1g17",
+"name": "74LVC1G17",
+"titel": "1 × Schmitt-Trigger-Puffer (SOT-23-5)",
+"kurz": "Einzelgatter im winzigen SOT-23-5 / SC-70-Gehäuse (SMD). Beliebt als Pegelwandler oder Puffer, wo ein einzelnes Gatter fehlt.",
+"familie": "Einzelgatter (SMD)",
+"gehaeuse": "SOT-23-5",
+"pins": [
+"NC:n",
+"A:i",
+"GND:g",
+"Y:o",
+"VCC:v"
+],
+"spannung": "1,65–5,5 V; Eingänge 5-V-tolerant.",
+"hinweise": [
+"Nicht invertierend, mit Hysterese-Eingang.",
+"Eingänge sind auch bei VCC = 3,3 V 5-V-tolerant: so lässt sich 5 V → 3,3 V pegeln.",
+"Sehr kurze Anschlüsse; 100 nF nahe an Pin 5 und 3."
+],
+"tags": "smd sot23 einzelgatter lvc",
+"symbol": "buf",
+"eingaenge": 1,
+"kerbe": false,
+"kat": "logik",
+"uid": "logik:74lvc1g17"
+}
+}
+],
+"familie": "Einzelgatter (SMD)"
+},
+{
+"id": "logik_74lvc1g125",
+"titel": "74LVC1G125",
+"kurz": "1 × Puffer mit Tri-State (SOT-23-5)",
+"tags": [
+"smd",
+"sot23",
+"einzelgatter",
+"lvc",
+"Einzelgatter",
+"(SMD)",
+"SOT-23-5",
+"74LVC1G125",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Einzelgatter im winzigen SOT-23-5 / SC-70-Gehäuse (SMD). Beliebt als Pegelwandler oder Puffer, wo ein einzelnes Gatter fehlt."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74lvc1g125",
+"name": "74LVC1G125",
+"titel": "1 × Puffer mit Tri-State (SOT-23-5)",
+"kurz": "Einzelgatter im winzigen SOT-23-5 / SC-70-Gehäuse (SMD). Beliebt als Pegelwandler oder Puffer, wo ein einzelnes Gatter fehlt.",
+"familie": "Einzelgatter (SMD)",
+"gehaeuse": "SOT-23-5",
+"pins": [
+"/OE:i",
+"A:i",
+"GND:g",
+"Y:o",
+"VCC:v"
+],
+"spannung": "1,65–5,5 V; Eingänge 5-V-tolerant.",
+"hinweise": [
+"/OE = LOW: Ausgang aktiv. /OE = HIGH: Ausgang hochohmig.",
+"Eingänge sind auch bei VCC = 3,3 V 5-V-tolerant: so lässt sich 5 V → 3,3 V pegeln.",
+"Sehr kurze Anschlüsse; 100 nF nahe an Pin 5 und 3."
+],
+"tags": "smd sot23 einzelgatter lvc",
+"symbol": "buf",
+"eingaenge": 1,
+"kerbe": false,
+"kat": "logik",
+"uid": "logik:74lvc1g125"
+}
+}
+],
+"familie": "Einzelgatter (SMD)"
+},
+{
+"id": "logik_gatterfunktionen",
+"titel": "Gatter-Spickzettel",
+"kurz": "Alle Gatterfunktionen auf einen Blick",
+"tags": [
+"gatter",
+"funktion",
+"übersicht",
+"nand",
+"nor",
+"and",
+"or",
+"xor",
+"wahrheitstabelle",
+"Übersicht",
+"Gatter-Spickzettel",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Welche Verknüpfung macht welches Gatter? Schnell-Nachschlagetabelle für zwei Eingänge A und B."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "gatterfunktionen",
+"name": "Gatter-Spickzettel",
+"titel": "Alle Gatterfunktionen auf einen Blick",
+"kurz": "Welche Verknüpfung macht welches Gatter? Schnell-Nachschlagetabelle für zwei Eingänge A und B.",
+"familie": "Übersicht",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"NAND und NOR sind „universell“: aus ihnen lässt sich jede andere Logik bauen.",
+"XOR ist ungleich-Erkennung, XNOR ist Gleichheit-Erkennung.",
+"Typische Nummern: 7400 NAND, 7402 NOR, 7404 NOT, 7408 AND, 7432 OR, 7486 XOR."
+],
+"tags": "gatter funktion übersicht nand nor and or xor wahrheitstabelle",
+"tabelle": {
+"kopf": [
+"A",
+"B",
+"AND",
+"NAND",
+"OR",
+"NOR",
+"XOR",
+"XNOR"
+],
+"zeilen": [
+[
+"0",
+"0",
+"0",
+"1",
+"0",
+"1",
+"0",
+"1"
+],
+[
+"0",
+"1",
+"0",
+"1",
+"1",
+"0",
+"1",
+"0"
+],
+[
+"1",
+"0",
+"0",
+"1",
+"1",
+"0",
+"1",
+"0"
+],
+[
+"1",
+"1",
+"1",
+"0",
+"1",
+"0",
+"0",
+"1"
+]
+]
+},
+"formeln": [
+"AND: Y = A · B",
+"OR: Y = A + B",
+"NAND: Y = ¬(A · B)",
+"NOR: Y = ¬(A + B)",
+"XOR: Y = A ⊕ B = A·¬B + ¬A·B",
+"De Morgan: ¬(A·B) = ¬A + ¬B   und   ¬(A+B) = ¬A · ¬B"
+],
+"kat": "logik",
+"uid": "logik:gatterfunktionen"
+}
+}
+],
+"familie": "Übersicht"
+},
+{
+"id": "logik_v74a",
+"titel": "74xx-Verzeichnis 1",
+"kurz": "Funktion nach Nummer: 7400 bis 7496",
+"tags": [
+"74xx",
+"7400",
+"7490",
+"gatter",
+"zähler",
+"verzeichnis",
+"liste",
+"tabelle",
+"nachschlagen",
+"Verzeichnis",
+"(Tabelle)",
+"74xx-Verzeichnis",
+"1",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Alle klassischen Standard-Logik-ICs der Reihe 74xx mit kurzer Funktionsangabe. Die gleiche Nummer gibt es als 74LS…, 74HC…, 74HCT…, 74AC… usw."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "v74a",
+"name": "74xx-Verzeichnis 1",
+"titel": "Funktion nach Nummer: 7400 bis 7496",
+"kurz": "Alle klassischen Standard-Logik-ICs der Reihe 74xx mit kurzer Funktionsangabe. Die gleiche Nummer gibt es als 74LS…, 74HC…, 74HCT…, 74AC… usw.",
+"familie": "Verzeichnis (Tabelle)",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Gleiche Nummer = gleiche Funktion und (fast immer) gleiche Pinbelegung in allen Familien.",
+"Nicht jede Nummer ist in jeder Familie erhältlich.",
+"Pinbelegung und genaue Daten stehen im Datenblatt (Button „Datenblatt suchen“ sucht nach der Nummer)."
+],
+"tags": "74xx 7400 7490 gatter zähler verzeichnis liste tabelle nachschlagen",
+"tabelle": {
+"kopf": [
+"Nr.",
+"Funktion"
+],
+"zeilen": [
+[
+"7400",
+"4 × NAND, 2 Eingänge"
+],
+[
+"7401",
+"4 × NAND, 2 Eingänge, Open-Collector (andere Pinbelegung)"
+],
+[
+"7402",
+"4 × NOR, 2 Eingänge"
+],
+[
+"7403",
+"4 × NAND, Open-Collector"
+],
+[
+"7404",
+"6 × Inverter"
+],
+[
+"7405",
+"6 × Inverter, Open-Collector"
+],
+[
+"7406",
+"6 × Inverter-Treiber, Open-Collector, 30 V"
+],
+[
+"7407",
+"6 × Puffer-Treiber, Open-Collector, 30 V"
+],
+[
+"7408",
+"4 × AND, 2 Eingänge"
+],
+[
+"7409",
+"4 × AND, Open-Collector"
+],
+[
+"7410",
+"3 × NAND, 3 Eingänge"
+],
+[
+"7411",
+"3 × AND, 3 Eingänge"
+],
+[
+"7412",
+"3 × NAND, 3 Eingänge, Open-Collector"
+],
+[
+"7413",
+"2 × NAND, 4 Eingänge, Schmitt-Trigger"
+],
+[
+"7414",
+"6 × Inverter, Schmitt-Trigger"
+],
+[
+"7416",
+"6 × Inverter-Treiber, Open-Collector, 15 V"
+],
+[
+"7417",
+"6 × Puffer-Treiber, Open-Collector, 15 V"
+],
+[
+"7420",
+"2 × NAND, 4 Eingänge"
+],
+[
+"7421",
+"2 × AND, 4 Eingänge"
+],
+[
+"7422",
+"2 × NAND, 4 Eingänge, Open-Collector"
+],
+[
+"7425",
+"2 × NOR, 4 Eingänge, mit Strobe"
+],
+[
+"7426",
+"4 × NAND, Open-Collector, 15 V"
+],
+[
+"7427",
+"3 × NOR, 3 Eingänge"
+],
+[
+"7428",
+"4 × NOR, Leistungstreiber"
+],
+[
+"7430",
+"1 × NAND, 8 Eingänge"
+],
+[
+"7432",
+"4 × OR, 2 Eingänge"
+],
+[
+"7433",
+"4 × NOR, Open-Collector, Leistungstreiber"
+],
+[
+"7437",
+"4 × NAND, Leistungstreiber"
+],
+[
+"7438",
+"4 × NAND, Open-Collector, Leistungstreiber"
+],
+[
+"7440",
+"2 × NAND, 4 Eingänge, Leistungstreiber"
+],
+[
+"7442",
+"BCD-zu-Dezimal-Dekoder (1 aus 10)"
+],
+[
+"7445",
+"BCD-zu-Dezimal-Dekoder/Treiber, Open-Collector"
+],
+[
+"7446",
+"BCD-zu-7-Segment-Dekoder, Open-Collector 30 V, aktiv LOW"
+],
+[
+"7447",
+"BCD-zu-7-Segment-Dekoder, Open-Collector 15 V, aktiv LOW"
+],
+[
+"7448",
+"BCD-zu-7-Segment-Dekoder, aktiv HIGH (für Common-Kathode)"
+],
+[
+"7450",
+"AND-OR-INVERT-Gatter (2 × 2-AND)"
+],
+[
+"7451",
+"2 × AND-OR-INVERT"
+],
+[
+"7454",
+"AND-OR-INVERT 4 × 2"
+],
+[
+"7470",
+"JK-Flip-Flop, flankengesteuert, mit Preset/Clear"
+],
+[
+"7472",
+"JK-Master-Slave-Flip-Flop mit Preset/Clear"
+],
+[
+"7473",
+"2 × JK-Flip-Flop mit Clear"
+],
+[
+"7474",
+"2 × D-Flip-Flop mit Preset/Clear"
+],
+[
+"7475",
+"4-Bit-bistabiler Latch (2 × 2 Bit)"
+],
+[
+"7476",
+"2 × JK-Flip-Flop mit Preset/Clear"
+],
+[
+"7477",
+"4-Bit-Latch"
+],
+[
+"7478",
+"2 × JK-Flip-Flop mit gemeinsamem Takt"
+],
+[
+"7480",
+"Voll-Addierer, 1 Bit"
+],
+[
+"7482",
+"2-Bit-Volladdierer"
+],
+[
+"7483",
+"4-Bit-Volladdierer"
+],
+[
+"7485",
+"4-Bit-Vergleicher"
+],
+[
+"7486",
+"4 × XOR"
+],
+[
+"7489",
+"64-Bit-RAM (16 × 4)"
+],
+[
+"7490",
+"Dezimalzähler (÷2, ÷5)"
+],
+[
+"7491",
+"8-Bit-Schieberegister, seriell"
+],
+[
+"7492",
+"Teiler durch 12 (÷2, ÷6)"
+],
+[
+"7493",
+"4-Bit-Binärzähler (÷2, ÷8)"
+],
+[
+"7494",
+"4-Bit-Schieberegister mit Parallelladung"
+],
+[
+"7495",
+"4-Bit-Schieberegister, parallel laden, 2 Richtungen"
+],
+[
+"7496",
+"5-Bit-Schieberegister"
+]
+]
+},
+"kat": "logik",
+"uid": "logik:v74a"
+}
+}
+],
+"familie": "Verzeichnis (Tabelle)"
+},
+{
+"id": "logik_v74b",
+"titel": "74xx-Verzeichnis 2",
+"kurz": "Funktion nach Nummer: 74107 bis 74199",
+"tags": [
+"74xx",
+"74138",
+"74161",
+"74193",
+"74194",
+"schieberegister",
+"verzeichnis",
+"liste",
+"tabelle",
+"nachschlagen",
+"Verzeichnis",
+"(Tabelle)",
+"74xx-Verzeichnis",
+"2",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Fortsetzung: Flip-Flops, Dekoder, Multiplexer, Zähler, Schieberegister."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "v74b",
+"name": "74xx-Verzeichnis 2",
+"titel": "Funktion nach Nummer: 74107 bis 74199",
+"kurz": "Fortsetzung: Flip-Flops, Dekoder, Multiplexer, Zähler, Schieberegister.",
+"familie": "Verzeichnis (Tabelle)",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Pinbelegung und genaue Daten stehen im Datenblatt (Button „Datenblatt suchen“ sucht nach der Nummer)."
+],
+"tags": "74xx 74138 74161 74193 74194 schieberegister verzeichnis liste tabelle nachschlagen",
+"tabelle": {
+"kopf": [
+"Nr.",
+"Funktion"
+],
+"zeilen": [
+[
+"74107",
+"2 × JK-Flip-Flop mit Clear"
+],
+[
+"74109",
+"2 × JK-Flip-Flop (positive Flanke)"
+],
+[
+"74112",
+"2 × JK-Flip-Flop (negative Flanke) mit Preset/Clear"
+],
+[
+"74121",
+"Monoflop (Mono-Stabile Kippstufe)"
+],
+[
+"74123",
+"2 × retriggerbares Monoflop"
+],
+[
+"74125",
+"4 × Bus-Puffer, Tri-State (aktiv LOW)"
+],
+[
+"74126",
+"4 × Bus-Puffer, Tri-State (aktiv HIGH)"
+],
+[
+"74132",
+"4 × NAND, 2 Eingänge, Schmitt-Trigger"
+],
+[
+"74133",
+"1 × NAND, 13 Eingänge"
+],
+[
+"74137",
+"3-zu-8-Dekoder mit Adress-Latch"
+],
+[
+"74138",
+"3-zu-8-Dekoder / Demultiplexer"
+],
+[
+"74139",
+"2 × 2-zu-4-Dekoder"
+],
+[
+"74145",
+"BCD-zu-Dezimal-Dekoder/Treiber (Open-Collector 15 V)"
+],
+[
+"74147",
+"10-zu-4-Prioritäts-Encoder"
+],
+[
+"74148",
+"8-zu-3-Prioritäts-Encoder"
+],
+[
+"74150",
+"16-zu-1-Multiplexer"
+],
+[
+"74151",
+"8-zu-1-Multiplexer"
+],
+[
+"74153",
+"2 × 4-zu-1-Multiplexer"
+],
+[
+"74154",
+"4-zu-16-Dekoder"
+],
+[
+"74155",
+"2 × 2-zu-4-Dekoder / Demultiplexer"
+],
+[
+"74156",
+"2 × 2-zu-4-Dekoder, Open-Collector"
+],
+[
+"74157",
+"4 × 2-zu-1-Multiplexer"
+],
+[
+"74158",
+"4 × 2-zu-1-Multiplexer, invertierend"
+],
+[
+"74160",
+"Dezimalzähler, synchron, asynchrones Clear"
+],
+[
+"74161",
+"4-Bit-Binärzähler, synchron, asynchrones Clear"
+],
+[
+"74162",
+"Dezimalzähler, synchron, synchrones Clear"
+],
+[
+"74163",
+"4-Bit-Binärzähler, synchron, synchrones Clear"
+],
+[
+"74164",
+"8-Bit-Schieberegister, seriell ein, parallel aus"
+],
+[
+"74165",
+"8-Bit-Schieberegister, parallel ein, seriell aus"
+],
+[
+"74166",
+"8-Bit-Schieberegister, parallel ein, seriell aus (synchron)"
+],
+[
+"74169",
+"4-Bit-Auf-/Abwärtszähler, synchron"
+],
+[
+"74173",
+"4-Bit-D-Register, Tri-State"
+],
+[
+"74174",
+"6 × D-Flip-Flop mit Clear"
+],
+[
+"74175",
+"4 × D-Flip-Flop mit Clear, Q und /Q"
+],
+[
+"74180",
+"8-Bit-Paritätsprüfer / -Generator"
+],
+[
+"74181",
+"4-Bit-ALU (arithmetisch-logische Einheit)"
+],
+[
+"74182",
+"Look-Ahead-Carry-Generator"
+],
+[
+"74190",
+"Dezimal-Auf-/Abwärtszähler, synchron"
+],
+[
+"74191",
+"4-Bit-Binär-Auf-/Abwärtszähler, synchron"
+],
+[
+"74192",
+"Dezimal-Auf-/Abwärtszähler mit Takt hoch/runter"
+],
+[
+"74193",
+"4-Bit-Binär-Auf-/Abwärtszähler mit Takt hoch/runter"
+],
+[
+"74194",
+"4-Bit-Schieberegister, universal"
+],
+[
+"74195",
+"4-Bit-Schieberegister, parallel laden"
+],
+[
+"74198",
+"8-Bit-Schieberegister, universal"
+],
+[
+"74199",
+"8-Bit-Schieberegister, parallel/seriell"
+]
+]
+},
+"kat": "logik",
+"uid": "logik:v74b"
+}
+}
+],
+"familie": "Verzeichnis (Tabelle)"
+},
+{
+"id": "logik_v74c",
+"titel": "74xx-Verzeichnis 3",
+"kurz": "Funktion nach Nummer: 74221 bis 74688 (und 74HC40xx)",
+"tags": [
+"74xx",
+"74245",
+"74595",
+"74573",
+"bus",
+"treiber",
+"latch",
+"verzeichnis",
+"liste",
+"tabelle",
+"nachschlagen",
+"Verzeichnis",
+"(Tabelle)",
+"74xx-Verzeichnis",
+"3",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Fortsetzung: Bus-Treiber, Latches, Register, Multiplexer, Vergleicher und HC-Besonderheiten."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "v74c",
+"name": "74xx-Verzeichnis 3",
+"titel": "Funktion nach Nummer: 74221 bis 74688 (und 74HC40xx)",
+"kurz": "Fortsetzung: Bus-Treiber, Latches, Register, Multiplexer, Vergleicher und HC-Besonderheiten.",
+"familie": "Verzeichnis (Tabelle)",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Pinbelegung und genaue Daten stehen im Datenblatt (Button „Datenblatt suchen“ sucht nach der Nummer)."
+],
+"tags": "74xx 74245 74595 74573 bus treiber latch verzeichnis liste tabelle nachschlagen",
+"tabelle": {
+"kopf": [
+"Nr.",
+"Funktion"
+],
+"zeilen": [
+[
+"74221",
+"2 × Monoflop mit Schmitt-Trigger-Eingang"
+],
+[
+"74240",
+"8-Bit-Bus-Treiber, invertierend, Tri-State"
+],
+[
+"74241",
+"8-Bit-Bus-Treiber, nicht invertierend, Tri-State (2 Gruppen, Freigabe invers)"
+],
+[
+"74244",
+"8-Bit-Bus-Treiber, nicht invertierend, Tri-State"
+],
+[
+"74245",
+"8-Bit-Bus-Transceiver, bidirektional"
+],
+[
+"74247",
+"BCD-zu-7-Segment-Dekoder (Open-Collector, 15 V)"
+],
+[
+"74251",
+"8-zu-1-Multiplexer, Tri-State"
+],
+[
+"74253",
+"2 × 4-zu-1-Multiplexer, Tri-State"
+],
+[
+"74257",
+"4 × 2-zu-1-Multiplexer, Tri-State"
+],
+[
+"74258",
+"4 × 2-zu-1-Multiplexer, Tri-State, invertierend"
+],
+[
+"74259",
+"8-Bit-adressierbarer Latch"
+],
+[
+"74266",
+"4 × XNOR, Open-Collector"
+],
+[
+"74273",
+"8-Bit-D-Flip-Flop mit Clear"
+],
+[
+"74279",
+"4 × SR-Latch"
+],
+[
+"74280",
+"9-Bit-Paritätsprüfer"
+],
+[
+"74283",
+"4-Bit-Volladdierer (Standard-Pinbelegung)"
+],
+[
+"74290",
+"Dezimalzähler (÷2, ÷5), Preset"
+],
+[
+"74293",
+"4-Bit-Binärzähler (÷2, ÷8)"
+],
+[
+"74299",
+"8-Bit-Schieberegister, universal, Tri-State"
+],
+[
+"74365",
+"6-Bit-Bus-Treiber, Tri-State"
+],
+[
+"74366",
+"6-Bit-Bus-Treiber, invertierend, Tri-State"
+],
+[
+"74367",
+"6-Bit-Bus-Treiber, Tri-State (2 Freigaben)"
+],
+[
+"74368",
+"6-Bit-Bus-Treiber, invertierend, Tri-State (2 Freigaben)"
+],
+[
+"74373",
+"8-Bit-Latch, transparent, Tri-State"
+],
+[
+"74374",
+"8-Bit-D-Flip-Flop, Tri-State"
+],
+[
+"74375",
+"4 × D-Latch"
+],
+[
+"74377",
+"8-Bit-D-Flip-Flop mit Freigabe"
+],
+[
+"74390",
+"2 × Dezimalzähler (÷2, ÷5)"
+],
+[
+"74393",
+"2 × 4-Bit-Binärzähler"
+],
+[
+"74540",
+"8-Bit-Puffer, invertierend, Tri-State"
+],
+[
+"74541",
+"8-Bit-Puffer, nicht invertierend, Tri-State"
+],
+[
+"74573",
+"8-Bit-Latch, transparent, Tri-State (günstige Pinbelegung)"
+],
+[
+"74574",
+"8-Bit-D-Flip-Flop, Tri-State (günstige Pinbelegung)"
+],
+[
+"74590",
+"8-Bit-Binärzähler mit Ausgangsregister"
+],
+[
+"74595",
+"8-Bit-Schieberegister mit Ausgangsregister, Tri-State"
+],
+[
+"74597",
+"8-Bit-Schieberegister mit Eingangsregister"
+],
+[
+"74620",
+"8-Bit-Bus-Transceiver, invertierend"
+],
+[
+"74623",
+"8-Bit-Bus-Transceiver, nicht invertierend"
+],
+[
+"74640",
+"8-Bit-Bus-Transceiver, invertierend"
+],
+[
+"74645",
+"8-Bit-Bus-Transceiver, nicht invertierend"
+],
+[
+"74646",
+"8-Bit-Bus-Transceiver mit Register"
+],
+[
+"74688",
+"8-Bit-Vergleicher (Gleichheit)"
+],
+[
+"74HC4040",
+"12-Stufen-Binärzähler"
+],
+[
+"74HC4051",
+"8-Kanal-Analogmultiplexer"
+],
+[
+"74HC4060",
+"14-Stufen-Zähler mit Oszillator"
+],
+[
+"74HC4067",
+"16-Kanal-Analogmultiplexer"
+],
+[
+"74HC4094",
+"8-Bit-Schieberegister mit Strobe-Ausgängen"
+]
+]
+},
+"kat": "logik",
+"uid": "logik:v74c"
+}
+}
+],
+"familie": "Verzeichnis (Tabelle)"
+},
+{
+"id": "logik_v40a",
+"titel": "CD4000-Verzeichnis 1",
+"kurz": "Funktion nach Nummer: 4000 bis 4099",
+"tags": [
+"cd4000",
+"4000",
+"4011",
+"4017",
+"4093",
+"cmos",
+"verzeichnis",
+"liste",
+"tabelle",
+"nachschlagen",
+"Verzeichnis",
+"(Tabelle)",
+"CD4000-Verzeichnis",
+"1",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"CMOS-Logik der klassischen CD4000-Familie. Arbeitet bei 3–15 V – ideal für 9-V-Batteriebetrieb und einfache Bastelschaltungen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "v40a",
+"name": "CD4000-Verzeichnis 1",
+"titel": "Funktion nach Nummer: 4000 bis 4099",
+"kurz": "CMOS-Logik der klassischen CD4000-Familie. Arbeitet bei 3–15 V – ideal für 9-V-Batteriebetrieb und einfache Bastelschaltungen.",
+"familie": "Verzeichnis (Tabelle)",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Typische Vorsilben: CD4000, HEF4000, MC14000, TC4000 – gleiche Funktion bei verschiedenen Herstellern.",
+"Unbenutzte Eingänge nie offen lassen.",
+"Pinbelegung und genaue Daten stehen im Datenblatt (Button „Datenblatt suchen“ sucht nach der Nummer)."
+],
+"tags": "cd4000 4000 4011 4017 4093 cmos verzeichnis liste tabelle nachschlagen",
+"tabelle": {
+"kopf": [
+"Nr.",
+"Funktion"
+],
+"zeilen": [
+[
+"4000",
+"2 × NOR (3 Eingänge) + Inverter"
+],
+[
+"4001",
+"4 × NOR, 2 Eingänge"
+],
+[
+"4002",
+"2 × NOR, 4 Eingänge"
+],
+[
+"4006",
+"18-Bit-Schieberegister"
+],
+[
+"4007",
+"2 × Komplementärpaar + Inverter"
+],
+[
+"4008",
+"4-Bit-Volladdierer"
+],
+[
+"4009",
+"6 × Inverter-Puffer (invertierend)"
+],
+[
+"4010",
+"6 × Puffer (nicht invertierend)"
+],
+[
+"4011",
+"4 × NAND, 2 Eingänge"
+],
+[
+"4012",
+"2 × NAND, 4 Eingänge"
+],
+[
+"4013",
+"2 × D-Flip-Flop mit Set/Reset"
+],
+[
+"4014",
+"8-Bit-Schieberegister, parallel ein, seriell aus"
+],
+[
+"4015",
+"2 × 4-Bit-Schieberegister"
+],
+[
+"4016",
+"4 × bilateraler Analogschalter"
+],
+[
+"4017",
+"Dezimalzähler mit 10 decodierten Ausgängen"
+],
+[
+"4018",
+"Teiler durch n (2…10), programmierbar"
+],
+[
+"4019",
+"4 × AND-OR-Wähler"
+],
+[
+"4020",
+"14-Stufen-Binärzähler"
+],
+[
+"4021",
+"8-Bit-Schieberegister, parallel ein, seriell aus"
+],
+[
+"4022",
+"Oktalzähler mit 8 decodierten Ausgängen"
+],
+[
+"4023",
+"3 × NAND, 3 Eingänge"
+],
+[
+"4024",
+"7-Stufen-Binärzähler"
+],
+[
+"4025",
+"3 × NOR, 3 Eingänge"
+],
+[
+"4026",
+"Dezimalzähler mit 7-Segment-Ausgängen"
+],
+[
+"4027",
+"2 × JK-Flip-Flop"
+],
+[
+"4028",
+"BCD-zu-Dezimal-Dekoder"
+],
+[
+"4029",
+"4-Bit-Auf-/Abwärtszähler (binär/dezimal)"
+],
+[
+"4030",
+"4 × XOR"
+],
+[
+"4033",
+"Dezimalzähler mit 7-Segment-Ausgängen und Nullunterdrückung"
+],
+[
+"4034",
+"8-Bit-Bus-Register"
+],
+[
+"4035",
+"4-Bit-Schieberegister (parallel/seriell)"
+],
+[
+"4040",
+"12-Stufen-Binärzähler"
+],
+[
+"4041",
+"4 × Puffer / Inverter"
+],
+[
+"4042",
+"4 × D-Latch"
+],
+[
+"4043",
+"4 × NOR-SR-Latch, Tri-State"
+],
+[
+"4044",
+"4 × NAND-SR-Latch, Tri-State"
+],
+[
+"4046",
+"PLL mit VCO"
+],
+[
+"4047",
+"Monoflop / Astabiler Multivibrator"
+],
+[
+"4049",
+"6 × Inverter-Puffer (hoher Strom)"
+],
+[
+"4050",
+"6 × Puffer (hoher Strom)"
+],
+[
+"4051",
+"8-Kanal-Analogmultiplexer"
+],
+[
+"4052",
+"2 × 4-Kanal-Analogmultiplexer"
+],
+[
+"4053",
+"3 × 2-Kanal-Analogmultiplexer"
+],
+[
+"4060",
+"14-Stufen-Zähler mit Oszillator"
+],
+[
+"4066",
+"4 × bilateraler Analogschalter"
+],
+[
+"4067",
+"16-Kanal-Analogmultiplexer"
+],
+[
+"4068",
+"1 × NAND, 8 Eingänge"
+],
+[
+"4069",
+"6 × Inverter"
+],
+[
+"4070",
+"4 × XOR"
+],
+[
+"4071",
+"4 × OR, 2 Eingänge"
+],
+[
+"4072",
+"2 × OR, 4 Eingänge"
+],
+[
+"4073",
+"3 × AND, 3 Eingänge"
+],
+[
+"4075",
+"3 × OR, 3 Eingänge"
+],
+[
+"4076",
+"4-Bit-D-Register, Tri-State"
+],
+[
+"4077",
+"4 × XNOR"
+],
+[
+"4078",
+"1 × NOR, 8 Eingänge"
+],
+[
+"4081",
+"4 × AND, 2 Eingänge"
+],
+[
+"4082",
+"2 × AND, 4 Eingänge"
+],
+[
+"4093",
+"4 × NAND, 2 Eingänge, Schmitt-Trigger"
+],
+[
+"4094",
+"8-Bit-Schieberegister mit Ausgangsregister"
+],
+[
+"4098",
+"2 × Monoflop"
+],
+[
+"4099",
+"8-Bit-adressierbarer Latch"
+]
+]
+},
+"kat": "logik",
+"uid": "logik:v40a"
+}
+}
+],
+"familie": "Verzeichnis (Tabelle)"
+},
+{
+"id": "logik_v40b",
+"titel": "CD4000-Verzeichnis 2",
+"kurz": "Funktion nach Nummer: 4502 bis 4585",
+"tags": [
+"cd4500",
+"4511",
+"4518",
+"4520",
+"cmos",
+"verzeichnis",
+"liste",
+"tabelle",
+"nachschlagen",
+"Verzeichnis",
+"(Tabelle)",
+"CD4000-Verzeichnis",
+"2",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Die 45xx-Reihe: Zähler, Dekoder, Zeitgeber."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "v40b",
+"name": "CD4000-Verzeichnis 2",
+"titel": "Funktion nach Nummer: 4502 bis 4585",
+"kurz": "Die 45xx-Reihe: Zähler, Dekoder, Zeitgeber.",
+"familie": "Verzeichnis (Tabelle)",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Pinbelegung und genaue Daten stehen im Datenblatt (Button „Datenblatt suchen“ sucht nach der Nummer)."
+],
+"tags": "cd4500 4511 4518 4520 cmos verzeichnis liste tabelle nachschlagen",
+"tabelle": {
+"kopf": [
+"Nr.",
+"Funktion"
+],
+"zeilen": [
+[
+"4502",
+"6 × Inverter, Tri-State, mit Strobe"
+],
+[
+"4503",
+"6 × Puffer, Tri-State"
+],
+[
+"4504",
+"6-fach-Pegelwandler (Pegelumsetzung)"
+],
+[
+"4508",
+"2 × 4-Bit-Latch, Tri-State"
+],
+[
+"4510",
+"BCD-Auf-/Abwärtszähler"
+],
+[
+"4511",
+"BCD-zu-7-Segment-Dekoder mit Latch (Common-Kathode)"
+],
+[
+"4512",
+"8-Kanal-Datenwähler, Tri-State"
+],
+[
+"4514",
+"4-zu-16-Dekoder mit Latch (aktiv HIGH)"
+],
+[
+"4515",
+"4-zu-16-Dekoder mit Latch (aktiv LOW)"
+],
+[
+"4516",
+"4-Bit-Binär-Auf-/Abwärtszähler"
+],
+[
+"4518",
+"2 × BCD-Zähler"
+],
+[
+"4520",
+"2 × 4-Bit-Binärzähler"
+],
+[
+"4521",
+"24-Stufen-Frequenzteiler mit Oszillator"
+],
+[
+"4522",
+"BCD-Teiler, programmierbar"
+],
+[
+"4528",
+"2 × Monoflop, retriggerbar"
+],
+[
+"4538",
+"2 × präzises Monoflop"
+],
+[
+"4541",
+"Programmierbarer Zeitgeber / Oszillator"
+],
+[
+"4543",
+"BCD-zu-7-Segment-Dekoder für LCD"
+],
+[
+"4553",
+"3-stelliger BCD-Zähler"
+],
+[
+"4555",
+"2 × 2-zu-4-Dekoder"
+],
+[
+"4556",
+"2 × 2-zu-4-Dekoder, invertierend"
+],
+[
+"4560",
+"BCD-Addierer"
+],
+[
+"4584",
+"6 × Schmitt-Trigger-Inverter"
+],
+[
+"4585",
+"4-Bit-Vergleicher"
+]
+]
+},
+"kat": "logik",
+"uid": "logik:v40b"
+}
+}
+],
+"familie": "Verzeichnis (Tabelle)"
+},
+{
+"id": "speicher_sr-latch",
+"titel": "SR-Latch",
+"kurz": "Einfachster Speicher: 2 NOR (oder 2 NAND) kreuzgekoppelt",
+"tags": [
+"sr",
+"latch",
+"speicher",
+"nor",
+"nand",
+"entprellen",
+"set",
+"reset",
+"Grundschaltung",
+"SR-Latch",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Merkt sich 1 Bit. S (Set) setzt Q auf 1, R (Reset) setzt Q auf 0. Mit NOR-Gattern ist der Eingang aktiv HIGH, mit NAND-Gattern aktiv LOW."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "sr-latch",
+"name": "SR-Latch",
+"titel": "Einfachster Speicher: 2 NOR (oder 2 NAND) kreuzgekoppelt",
+"kurz": "Merkt sich 1 Bit. S (Set) setzt Q auf 1, R (Reset) setzt Q auf 0. Mit NOR-Gattern ist der Eingang aktiv HIGH, mit NAND-Gattern aktiv LOW.",
+"familie": "Grundschaltung",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"S und R gleichzeitig aktiv ist verboten (undefinierter Zustand nach dem Loslassen).",
+"Typische Anwendung: Taster entprellen (mit einem Umschalter und zwei NAND-Gattern).",
+"Aus dem SR-Latch entstehen D-Latch und Flip-Flops, indem man Freigabe oder Takt davorsetzt."
+],
+"tags": "sr latch speicher nor nand entprellen set reset",
+"tabelle": {
+"kopf": [
+"S",
+"R",
+"Q (NOR-Latch)"
+],
+"zeilen": [
+[
+"0",
+"0",
+"bleibt (Speichern)"
+],
+[
+"1",
+"0",
+"1 (Set)"
+],
+[
+"0",
+"1",
+"0 (Reset)"
+],
+[
+"1",
+"1",
+"verboten"
+]
+]
+},
+"zeit": "sr",
+"kat": "speicher",
+"uid": "speicher:sr-latch"
+}
+}
+],
+"familie": "Grundschaltung"
+},
+{
+"id": "speicher_d-ff",
+"titel": "D-Flip-Flop",
+"kurz": "Übernimmt D bei der Taktflanke",
+"tags": [
+"d",
+"flip",
+"flop",
+"ff",
+"speicher",
+"takt",
+"register",
+"Grundschaltung",
+"D-Flip-Flop",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Bei der steigenden Flanke von CLK wird der Wert an D nach Q übernommen und bis zur nächsten Flanke gehalten. Das Grundelement von Registern, Zählern und Synchronschaltungen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "d-ff",
+"name": "D-Flip-Flop",
+"titel": "Übernimmt D bei der Taktflanke",
+"kurz": "Bei der steigenden Flanke von CLK wird der Wert an D nach Q übernommen und bis zur nächsten Flanke gehalten. Das Grundelement von Registern, Zählern und Synchronschaltungen.",
+"familie": "Grundschaltung",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Wichtig: Datenleitungen müssen kurz VOR der Taktflanke stabil sein (Setup-Zeit) und kurz danach (Hold-Zeit).",
+"Mit Q̅ → D verbunden wird daraus ein Frequenzteiler durch 2 (T-Flip-Flop).",
+"Taktflanke vs. Pegel: ein Flip-Flop schaut nur im Moment der Flanke hin, ein Latch ist solange offen, wie der Takt aktiv ist."
+],
+"tags": "d flip flop ff speicher takt register",
+"tabelle": {
+"kopf": [
+"CLK",
+"D",
+"Q nachher"
+],
+"zeilen": [
+[
+"↑",
+"0",
+"0"
+],
+[
+"↑",
+"1",
+"1"
+],
+[
+"0 / 1 / ↓",
+"X",
+"bleibt"
+]
+]
+},
+"zeit": "dff",
+"kat": "speicher",
+"uid": "speicher:d-ff"
+}
+}
+],
+"familie": "Grundschaltung"
+},
+{
+"id": "speicher_jk-ff",
+"titel": "JK-Flip-Flop",
+"kurz": "Setzen, Rücksetzen, Kippen",
+"tags": [
+"jk",
+"flip",
+"flop",
+"ff",
+"toggeln",
+"kippen",
+"teiler",
+"Grundschaltung",
+"JK-Flip-Flop",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie ein SR-Flip-Flop, aber J = K = 1 ist erlaubt: dann kippt (toggelt) der Ausgang bei jeder Taktflanke."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "jk-ff",
+"name": "JK-Flip-Flop",
+"titel": "Setzen, Rücksetzen, Kippen",
+"kurz": "Wie ein SR-Flip-Flop, aber J = K = 1 ist erlaubt: dann kippt (toggelt) der Ausgang bei jeder Taktflanke.",
+"familie": "Grundschaltung",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"J = K = 1 ergibt einen Frequenzteiler durch 2.",
+"Es gibt Chips mit steigender und mit fallender Taktflanke (7476 und 74112: fallend). Im Datenblatt nachsehen."
+],
+"tags": "jk flip flop ff toggeln kippen teiler",
+"tabelle": {
+"kopf": [
+"J",
+"K",
+"Q nach Taktflanke"
+],
+"zeilen": [
+[
+"0",
+"0",
+"bleibt"
+],
+[
+"0",
+"1",
+"0"
+],
+[
+"1",
+"0",
+"1"
+],
+[
+"1",
+"1",
+"kippt (invertiert)"
+]
+]
+},
+"zeit": "jk",
+"kat": "speicher",
+"uid": "speicher:jk-ff"
+}
+}
+],
+"familie": "Grundschaltung"
+},
+{
+"id": "speicher_t-ff",
+"titel": "T-Flip-Flop",
+"kurz": "Kippt bei jeder Taktflanke (Teiler durch 2)",
+"tags": [
+"t",
+"flip",
+"flop",
+"teiler",
+"zaehler",
+"toggle",
+"Grundschaltung",
+"T-Flip-Flop",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ist T = 1, wechselt Q bei jeder Taktflanke. Damit halbiert sich die Frequenz. Wird aus einem D-Flip-Flop gebaut, indem Q̅ auf D zurückgeführt wird."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "t-ff",
+"name": "T-Flip-Flop",
+"titel": "Kippt bei jeder Taktflanke (Teiler durch 2)",
+"kurz": "Ist T = 1, wechselt Q bei jeder Taktflanke. Damit halbiert sich die Frequenz. Wird aus einem D-Flip-Flop gebaut, indem Q̅ auf D zurückgeführt wird.",
+"familie": "Grundschaltung",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Mehrere hintereinander (Q → Takt des nächsten) ergeben einen binären Zähler (Asynchronzähler).",
+"Aufbau mit 7474: Pin Q̅ (6) mit D (2) verbinden, Takt an CLK (3)."
+],
+"tags": "t flip flop teiler zaehler toggle",
+"tabelle": {
+"kopf": [
+"T",
+"Q nach Taktflanke"
+],
+"zeilen": [
+[
+"0",
+"bleibt"
+],
+[
+"1",
+"kippt (invertiert)"
+]
+]
+},
+"zeit": "t",
+"kat": "speicher",
+"uid": "speicher:t-ff"
+}
+}
+],
+"familie": "Grundschaltung"
+},
+{
+"id": "speicher_7474",
+"titel": "7474",
+"kurz": "2 × D-Flip-Flop mit Preset und Clear",
+"tags": [
+"d",
+"flip",
+"flop",
+"teiler",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7474",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zwei D-Flip-Flops, die bei der STEIGENDEN Taktflanke übernehmen. /PRE und /CLR (beide aktiv LOW) setzen oder löschen unabhängig vom Takt."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7474",
+"name": "7474",
+"titel": "2 × D-Flip-Flop mit Preset und Clear",
+"kurz": "Zwei D-Flip-Flops, die bei der STEIGENDEN Taktflanke übernehmen. /PRE und /CLR (beide aktiv LOW) setzen oder löschen unabhängig vom Takt.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"1/CLR:i",
+"1D:i",
+"1CLK:i",
+"1/PRE:i",
+"1Q:o",
+"1/Q:o",
+"GND:g",
+"2/Q:o",
+"2Q:o",
+"2/PRE:i",
+"2CLK:i",
+"2D:i",
+"2/CLR:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"/PRE und /CLR im Normalbetrieb auf HIGH legen (nicht offen lassen).",
+"Wichtig: Datenleitungen müssen kurz VOR der Taktflanke stabil sein (Setup-Zeit) und kurz danach (Hold-Zeit).",
+"Gilt auch für 74LS74, 74HC74, 74HCT74.",
+"100-nF-Kondensator zwischen VCC und GND, nah am Chip."
+],
+"tags": "d flip flop teiler",
+"tabelle": {
+"kopf": [
+"/PRE",
+"/CLR",
+"CLK",
+"D",
+"Q"
+],
+"zeilen": [
+[
+"0",
+"1",
+"X",
+"X",
+"1"
+],
+[
+"1",
+"0",
+"X",
+"X",
+"0"
+],
+[
+"1",
+"1",
+"↑",
+"0",
+"0"
+],
+[
+"1",
+"1",
+"↑",
+"1",
+"1"
+],
+[
+"1",
+"1",
+"0/1/↓",
+"X",
+"bleibt"
+]
+]
+},
+"zeit": "dff",
+"kat": "speicher",
+"uid": "speicher:7474"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "speicher_7476",
+"titel": "7476",
+"kurz": "2 × JK-Flip-Flop (Master-Slave) mit Preset und Clear",
+"tags": [
+"jk",
+"flip",
+"flop",
+"ff",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"7476",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zwei JK-Flip-Flops. Die Ausgänge ändern sich mit der FALLENDEN Flanke des Takts. 16 Pins."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7476",
+"name": "7476",
+"titel": "2 × JK-Flip-Flop (Master-Slave) mit Preset und Clear",
+"kurz": "Zwei JK-Flip-Flops. Die Ausgänge ändern sich mit der FALLENDEN Flanke des Takts. 16 Pins.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"1CLK:i",
+"1/PRE:i",
+"1/CLR:i",
+"1J:i",
+"VCC:v",
+"2CLK:i",
+"2/PRE:i",
+"2/CLR:i",
+"2J:i",
+"2/Q:o",
+"2Q:o",
+"2K:i",
+"GND:g",
+"1/Q:o",
+"1Q:o",
+"1K:i"
+],
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"VCC liegt hier bei Pin 5 und GND bei Pin 13, NICHT oben rechts und unten links wie bei den meisten anderen Chips.",
+"/PRE und /CLR im Normalbetrieb auf HIGH.",
+"100-nF-Kondensator zwischen VCC und GND, nah am Chip."
+],
+"tags": "jk flip flop ff",
+"tabelle": {
+"kopf": [
+"J",
+"K",
+"Q nach fallender Flanke"
+],
+"zeilen": [
+[
+"0",
+"0",
+"bleibt"
+],
+[
+"0",
+"1",
+"0"
+],
+[
+"1",
+"0",
+"1"
+],
+[
+"1",
+"1",
+"kippt"
+]
+]
+},
+"zeit": "jk",
+"kat": "speicher",
+"uid": "speicher:7476"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "speicher_74112",
+"titel": "74112",
+"kurz": "2 × JK-Flip-Flop, fallende Flanke, Preset und Clear",
+"tags": [
+"jk",
+"flip",
+"flop",
+"ff",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"74112",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zwei JK-Flip-Flops mit fallender Taktflanke, 16 Pins (74HC112: dasselbe)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74112",
+"name": "74112",
+"titel": "2 × JK-Flip-Flop, fallende Flanke, Preset und Clear",
+"kurz": "Zwei JK-Flip-Flops mit fallender Taktflanke, 16 Pins (74HC112: dasselbe).",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"1CLK:i",
+"1K:i",
+"1J:i",
+"1/PRE:i",
+"1Q:o",
+"1/Q:o",
+"2/Q:o",
+"GND:g",
+"2Q:o",
+"2/PRE:i",
+"2J:i",
+"2K:i",
+"2CLK:i",
+"2/CLR:i",
+"1/CLR:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Alle /PRE und /CLR auf HIGH legen, wenn man sie nicht braucht.",
+"100-nF-Kondensator zwischen VCC und GND, nah am Chip."
+],
+"tags": "jk flip flop ff",
+"tabelle": {
+"kopf": [
+"J",
+"K",
+"Q nach fallender Flanke"
+],
+"zeilen": [
+[
+"0",
+"0",
+"bleibt"
+],
+[
+"0",
+"1",
+"0"
+],
+[
+"1",
+"0",
+"1"
+],
+[
+"1",
+"1",
+"kippt"
+]
+]
+},
+"zeit": "jk",
+"kat": "speicher",
+"uid": "speicher:74112"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "speicher_4013",
+"titel": "CD4013",
+"kurz": "2 × D-Flip-Flop mit Set und Reset, CMOS",
+"tags": [
+"d",
+"flip",
+"flop",
+"cmos",
+"4000",
+"CMOS",
+"4000",
+"DIP-14",
+"CD4013",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zwei D-Flip-Flops, steigende Taktflanke. SET und RESET sind hier aktiv HIGH (anders als beim 7474)!"
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4013",
+"name": "CD4013",
+"titel": "2 × D-Flip-Flop mit Set und Reset, CMOS",
+"kurz": "Zwei D-Flip-Flops, steigende Taktflanke. SET und RESET sind hier aktiv HIGH (anders als beim 7474)!",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-14",
+"pins": [
+"1Q:o",
+"1/Q:o",
+"1CLK:i",
+"1RESET:i",
+"1D:i",
+"1SET:i",
+"VSS:g",
+"2SET:i",
+"2D:i",
+"2RESET:i",
+"2CLK:i",
+"2/Q:o",
+"2Q:o",
+"VDD:v"
+],
+"spannung": "CD4000B: 3–15 V (maximal 18 V).",
+"hinweise": [
+"SET und RESET sind aktiv HIGH. Im Normalbetrieb auf VSS (GND) legen.",
+"Nicht benutzte Eingänge nicht offen lassen.",
+"Wichtig: Datenleitungen müssen kurz VOR der Taktflanke stabil sein (Setup-Zeit) und kurz danach (Hold-Zeit)."
+],
+"tags": "d flip flop cmos 4000",
+"tabelle": {
+"kopf": [
+"SET",
+"RESET",
+"CLK",
+"D",
+"Q"
+],
+"zeilen": [
+[
+"1",
+"0",
+"X",
+"X",
+"1"
+],
+[
+"0",
+"1",
+"X",
+"X",
+"0"
+],
+[
+"0",
+"0",
+"↑",
+"0",
+"0"
+],
+[
+"0",
+"0",
+"↑",
+"1",
+"1"
+],
+[
+"0",
+"0",
+"sonst",
+"X",
+"bleibt"
+]
+]
+},
+"zeit": "dff",
+"kat": "speicher",
+"uid": "speicher:4013"
+}
+}
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "speicher_74161",
+"titel": "74HC161",
+"kurz": "4-Bit-Binärzähler, synchron, Parallel-Laden",
+"tags": [
+"zaehler",
+"counter",
+"binär",
+"4",
+"bit",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"74HC161",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zählt 0…15 mit jeder steigenden Taktflanke. Parallel ladbar (LOAD), mit asynchronem Clear und Übertrag (RCO) zum Kaskadieren."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74161",
+"name": "74HC161",
+"titel": "4-Bit-Binärzähler, synchron, Parallel-Laden",
+"kurz": "Zählt 0…15 mit jeder steigenden Taktflanke. Parallel ladbar (LOAD), mit asynchronem Clear und Übertrag (RCO) zum Kaskadieren.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"/CLR:i",
+"CLK:i",
+"A:i",
+"B:i",
+"C:i",
+"D:i",
+"ENP:i",
+"GND:g",
+"/LOAD:i",
+"ENT:i",
+"QD:o",
+"QC:o",
+"QB:o",
+"QA:o",
+"RCO:o",
+"VCC:v"
+],
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Zum Zählen: /CLR, /LOAD, ENP und ENT auf HIGH.",
+"QA ist das niederwertigste Bit (LSB), QD das höchste.",
+"Kaskadieren: RCO des ersten an ENT des zweiten Zählers.",
+"Der 74HC163 ist gleich, aber /CLR wirkt synchron (mit dem Takt). Beide haben dieselbe Pinbelegung.",
+"74160/74162 zählen 0…9 (Dekadenzähler) mit gleicher Pinbelegung."
+],
+"tags": "zaehler counter binär 4 bit",
+"tabelle": {
+"kopf": [
+"/CLR",
+"/LOAD",
+"ENP·ENT",
+"CLK",
+"Wirkung"
+],
+"zeilen": [
+[
+"0",
+"X",
+"X",
+"X",
+"alle Q = 0 (sofort)"
+],
+[
+"1",
+"0",
+"X",
+"↑",
+"A…D laden"
+],
+[
+"1",
+"1",
+"1",
+"↑",
+"zählt +1"
+],
+[
+"1",
+"1",
+"0",
+"X",
+"hält"
+]
+]
+},
+"zeit": "zaehler",
+"kat": "speicher",
+"uid": "speicher:74161"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "speicher_74193",
+"titel": "74HC193",
+"kurz": "4-Bit-Zähler vorwärts/rückwärts (UP/DOWN)",
+"tags": [
+"zaehler",
+"vorwaerts",
+"rueckwaerts",
+"up",
+"down",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"74HC193",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zwei Takteingänge: UP zählt hoch, DOWN zählt runter. Asynchrones Parallel-Laden und Clear."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74193",
+"name": "74HC193",
+"titel": "4-Bit-Zähler vorwärts/rückwärts (UP/DOWN)",
+"kurz": "Zwei Takteingänge: UP zählt hoch, DOWN zählt runter. Asynchrones Parallel-Laden und Clear.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"B:i",
+"QB:o",
+"QA:o",
+"DOWN:i",
+"UP:i",
+"QC:o",
+"QD:o",
+"GND:g",
+"D:i",
+"C:i",
+"/LOAD:i",
+"/CO:o",
+"/BO:o",
+"CLR:i",
+"A:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Der Takt, den man NICHT benutzt, muss auf HIGH liegen.",
+"CLR ist aktiv HIGH, /LOAD aktiv LOW.",
+"Kaskade: /CO (Carry) → UP des nächsten, /BO (Borrow) → DOWN des nächsten."
+],
+"tags": "zaehler vorwaerts rueckwaerts up down",
+"kat": "speicher",
+"uid": "speicher:74193"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "speicher_7490",
+"titel": "7490",
+"kurz": "Dekadenzähler (÷2 und ÷5)",
+"tags": [
+"dekadenzaehler",
+"bcd",
+"zaehler",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7490",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Besteht aus einem ÷2- und einem ÷5-Zähler. Verbindet man QA mit Eingang B, zählt er BCD 0…9. Typisch für Frequenzzähler und Ziffernanzeigen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7490",
+"name": "7490",
+"titel": "Dekadenzähler (÷2 und ÷5)",
+"kurz": "Besteht aus einem ÷2- und einem ÷5-Zähler. Verbindet man QA mit Eingang B, zählt er BCD 0…9. Typisch für Frequenzzähler und Ziffernanzeigen.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"CKB:i",
+"R0(1):i",
+"R0(2):i",
+"NC:n",
+"VCC:v",
+"R9(1):i",
+"R9(2):i",
+"QC:o",
+"QB:o",
+"GND:g",
+"QD:o",
+"QA:o",
+"NC:n",
+"CKA:i"
+],
+"spannung": "7490: 5 V. (74HC90: 2–6 V.)",
+"hinweise": [
+"Als BCD-Zähler: Ausgang QA mit Eingang CKB verbinden, Takt an CKA.",
+"Rücksetzen: beide R0 auf HIGH (R9 auf LOW). Beide R9 auf HIGH setzt auf 9.",
+"Zählt mit FALLENDER Taktflanke."
+],
+"tags": "dekadenzaehler bcd zaehler",
+"kat": "speicher",
+"uid": "speicher:7490"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "speicher_4017",
+"titel": "CD4017",
+"kurz": "Dekadenzähler mit 10 Ausgängen (Lauflicht)",
+"tags": [
+"lauflicht",
+"zaehler",
+"dekade",
+"10",
+"ausgaenge",
+"CMOS",
+"4000",
+"DIP-16",
+"CD4017",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Bei jeder steigenden Taktflanke wandert ein HIGH auf den nächsten der Ausgänge Q0…Q9. Klassiker für Lauflichter und Ablaufsteuerungen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4017",
+"name": "CD4017",
+"titel": "Dekadenzähler mit 10 Ausgängen (Lauflicht)",
+"kurz": "Bei jeder steigenden Taktflanke wandert ein HIGH auf den nächsten der Ausgänge Q0…Q9. Klassiker für Lauflichter und Ablaufsteuerungen.",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-16",
+"pins": [
+"Q5:o",
+"Q1:o",
+"Q0:o",
+"Q2:o",
+"Q6:o",
+"Q7:o",
+"Q3:o",
+"VSS:g",
+"Q8:o",
+"Q4:o",
+"Q9:o",
+"CO:o",
+"CE:i",
+"CLK:i",
+"RESET:i",
+"VDD:v"
+],
+"spannung": "CD4000B: 3–15 V (maximal 18 V).",
+"hinweise": [
+"CE (Clock Enable, auch CLK-INHIBIT) auf GND, RESET auf GND zum Zählen.",
+"RESET auf HIGH setzt den Zähler auf Q0.",
+"Wird Qn mit RESET verbunden, läuft der Zähler nur Q0…Q(n−1), also n Schritte (z. B. Q6 an RESET = 6 Schritte).",
+"CO (Carry Out) geht nach 5 Takten auf LOW → zum Kaskadieren.",
+"Ausgänge sind schwach: LED mit 1 kΩ oder über Transistor schalten. Die Pinbelegung gilt auch für den 74HC4017."
+],
+"tags": "lauflicht zaehler dekade 10 ausgaenge",
+"kat": "speicher",
+"uid": "speicher:4017"
+}
+}
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "speicher_74164",
+"titel": "74HC164",
+"kurz": "8-Bit-Schieberegister, seriell ein, parallel aus",
+"tags": [
+"schieberegister",
+"seriell",
+"parallel",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"74HC164",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Bei jeder steigenden Taktflanke wird ein Bit aus A AND B eingeschoben; die acht Ausgänge QA…QH zeigen die letzten acht Bits."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74164",
+"name": "74HC164",
+"titel": "8-Bit-Schieberegister, seriell ein, parallel aus",
+"kurz": "Bei jeder steigenden Taktflanke wird ein Bit aus A AND B eingeschoben; die acht Ausgänge QA…QH zeigen die letzten acht Bits.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"A:i",
+"B:i",
+"QA:o",
+"QB:o",
+"QC:o",
+"QD:o",
+"GND:g",
+"CLK:i",
+"/CLR:i",
+"QE:o",
+"QF:o",
+"QG:o",
+"QH:o",
+"VCC:v"
+],
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Nicht benutzten Dateneingang auf HIGH legen (A AND B).",
+"/CLR auf HIGH im Normalbetrieb.",
+"Ausgänge haben keinen Zwischenspeicher: beim Schieben flackern sie. Für saubere Ausgabe nimmt man den 74HC595."
+],
+"tags": "schieberegister seriell parallel",
+"kat": "speicher",
+"uid": "speicher:74164"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "speicher_74165",
+"titel": "74HC165",
+"kurz": "8-Bit-Schieberegister, parallel ein, seriell aus",
+"tags": [
+"schieberegister",
+"eingabe",
+"taster",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"74HC165",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Liest 8 Eingänge (A…H) gleichzeitig ein und gibt sie danach Bit für Bit seriell aus (QH). Ideal, um viele Taster mit wenigen Pins einzulesen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74165",
+"name": "74HC165",
+"titel": "8-Bit-Schieberegister, parallel ein, seriell aus",
+"kurz": "Liest 8 Eingänge (A…H) gleichzeitig ein und gibt sie danach Bit für Bit seriell aus (QH). Ideal, um viele Taster mit wenigen Pins einzulesen.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"/PL:i",
+"CLK:i",
+"E:i",
+"F:i",
+"G:i",
+"H:i",
+"/QH:o",
+"GND:g",
+"QH:o",
+"SER:i",
+"A:i",
+"B:i",
+"C:i",
+"D:i",
+"CLK INH:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"/PL (Parallel Load, aktiv LOW) kurz auf LOW → Eingänge werden übernommen, danach auf HIGH und mit CLK herausschieben.",
+"CLK INH auf GND.",
+"Für Taster: Pull-down-Widerstände (10 kΩ) an die Eingänge.",
+"Mehrere Chips lassen sich hintereinander schalten (QH → SER des nächsten)."
+],
+"tags": "schieberegister eingabe taster",
+"kat": "speicher",
+"uid": "speicher:74165"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "speicher_74595",
+"titel": "74HC595",
+"kurz": "8-Bit-Schieberegister mit Speicher (seriell ein, parallel aus)",
+"tags": [
+"schieberegister",
+"ausgang",
+"led",
+"erweiterung",
+"gpio",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"74HC595",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Der Standard, um mit 3 Pins 8 Ausgänge zu steuern (LEDs, 7-Segment, Relais). Schieberegister plus Ausgangs-Zwischenspeicher: erst wenn RCLK einen Impuls bekommt, erscheinen die Daten an den Ausgängen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74595",
+"name": "74HC595",
+"titel": "8-Bit-Schieberegister mit Speicher (seriell ein, parallel aus)",
+"kurz": "Der Standard, um mit 3 Pins 8 Ausgänge zu steuern (LEDs, 7-Segment, Relais). Schieberegister plus Ausgangs-Zwischenspeicher: erst wenn RCLK einen Impuls bekommt, erscheinen die Daten an den Ausgängen.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"QB:o",
+"QC:o",
+"QD:o",
+"QE:o",
+"QF:o",
+"QG:o",
+"QH:o",
+"GND:g",
+"QH':o",
+"/SRCLR:i",
+"SRCLK:i",
+"RCLK:i",
+"/OE:i",
+"SER:i",
+"QA:o",
+"VCC:v"
+],
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Ablauf: SER setzen → SRCLK-Impuls (Bit schieben), 8× wiederholen → RCLK-Impuls (Ausgabe übernehmen).",
+"/SRCLR auf VCC, /OE auf GND (Ausgänge immer aktiv).",
+"Mehrere kaskadieren: QH' (Pin 9) → SER des nächsten, SRCLK und RCLK gemeinsam.",
+"Pro Ausgang ca. 6 mA (HC). LEDs mit Vorwiderstand; für mehr einen ULN2003 dahinter.",
+"Auf dem Raspberry Pi geht das mit SPI oder per Bit-Banging mit 3 GPIO-Pins."
+],
+"tags": "schieberegister ausgang led erweiterung gpio",
+"kat": "speicher",
+"uid": "speicher:74595"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "speicher_74573",
+"titel": "74HC573",
+"kurz": "8-fach Latch (transparent) mit Tri-State-Ausgängen",
+"tags": [
+"latch",
+"speicher",
+"bus",
+"adresse",
+"8",
+"bit",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-20",
+"74HC573",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Solange LE (Latch Enable) HIGH ist, folgen die Ausgänge den Eingängen; bei LE = LOW wird der Wert gehalten. /OE schaltet die Ausgänge hochohmig."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74573",
+"name": "74HC573",
+"titel": "8-fach Latch (transparent) mit Tri-State-Ausgängen",
+"kurz": "Solange LE (Latch Enable) HIGH ist, folgen die Ausgänge den Eingängen; bei LE = LOW wird der Wert gehalten. /OE schaltet die Ausgänge hochohmig.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-20",
+"pins": [
+"/OE:i",
+"D1:i",
+"D2:i",
+"D3:i",
+"D4:i",
+"D5:i",
+"D6:i",
+"D7:i",
+"D8:i",
+"GND:g",
+"LE:i",
+"Q8:o",
+"Q7:o",
+"Q6:o",
+"Q5:o",
+"Q4:o",
+"Q3:o",
+"Q2:o",
+"Q1:o",
+"VCC:v"
+],
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Typisch zum Zwischenspeichern von Adressen (Mikroprozessor-Bus).",
+"Der 74HC574 hat dieselbe Pinbelegung, ist aber ein Flip-Flop (übernimmt bei steigender Taktflanke an Pin 11)."
+],
+"tags": "latch speicher bus adresse 8 bit",
+"kat": "speicher",
+"uid": "speicher:74573"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "speicher_74574",
+"titel": "74HC574",
+"kurz": "8-fach D-Flip-Flop mit Tri-State-Ausgängen",
+"tags": [
+"register",
+"d",
+"flip",
+"flop",
+"8",
+"bit",
+"ausgang",
+"bus",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-20",
+"74HC574",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Acht D-Flip-Flops mit gemeinsamem Takt (CLK) und gemeinsamem Ausgangs-Freigabe-Eingang /OE. Übernimmt bei der steigenden Flanke."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74574",
+"name": "74HC574",
+"titel": "8-fach D-Flip-Flop mit Tri-State-Ausgängen",
+"kurz": "Acht D-Flip-Flops mit gemeinsamem Takt (CLK) und gemeinsamem Ausgangs-Freigabe-Eingang /OE. Übernimmt bei der steigenden Flanke.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-20",
+"pins": [
+"/OE:i",
+"D1:i",
+"D2:i",
+"D3:i",
+"D4:i",
+"D5:i",
+"D6:i",
+"D7:i",
+"D8:i",
+"GND:g",
+"CLK:i",
+"Q8:o",
+"Q7:o",
+"Q6:o",
+"Q5:o",
+"Q4:o",
+"Q3:o",
+"Q2:o",
+"Q1:o",
+"VCC:v"
+],
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Pinbelegung wie 74HC573, aber mit Taktflanke statt Pegel-gesteuert.",
+"Gut als Ausgangsregister: erst Daten anlegen, dann CLK-Impuls."
+],
+"tags": "register d flip flop 8 bit ausgang bus",
+"kat": "speicher",
+"uid": "speicher:74574"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "speicher_74163",
+"titel": "74163 / 74HC163",
+"kurz": "4-Bit-Binärzähler, synchron (Clear synchron)",
+"tags": [
+"zähler",
+"binär",
+"synchron",
+"163",
+"counter",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"74163",
+"/",
+"74HC163",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie 74161, aber das Löschen (/CLR) geschieht synchron mit der Taktflanke. Zählt 0…15 und gibt am Ende einen Übertrag (RCO)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74163",
+"name": "74163 / 74HC163",
+"titel": "4-Bit-Binärzähler, synchron (Clear synchron)",
+"kurz": "Wie 74161, aber das Löschen (/CLR) geschieht synchron mit der Taktflanke. Zählt 0…15 und gibt am Ende einen Übertrag (RCO).",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"/CLR:i",
+"CLK:i",
+"A:i",
+"B:i",
+"C:i",
+"D:i",
+"ENP:i",
+"GND:g",
+"/LOAD:i",
+"ENT:i",
+"QD:o",
+"QC:o",
+"QB:o",
+"QA:o",
+"RCO:o",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V.",
+"hinweise": [
+"Pinbelegung wie 74161. Unterschied: /CLR wirkt erst mit der nächsten Taktflanke.",
+"Mehrere Zähler kaskadieren: RCO der unteren Stufe an ENT der nächsten Stufe, ENP/ENT gemeinsam.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "zähler binär synchron 163 counter",
+"zeit": "zaehler",
+"kat": "speicher",
+"uid": "speicher:74163"
+}
+}
+],
+"siehe": [
+"bt_ic:speicher_74161",
+"bt_ic:speicher_74193"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "speicher_74160",
+"titel": "74160 / 74HC160",
+"kurz": "Dezimalzähler 0…9, synchron",
+"tags": [
+"zähler",
+"dezimal",
+"bcd",
+"160",
+"counter",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"74160",
+"/",
+"74HC160",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie 74161, zählt aber nur 0…9 (BCD) und springt dann auf 0. Ideal für Dezimalanzeigen (zusammen mit 7447 / 4511)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74160",
+"name": "74160 / 74HC160",
+"titel": "Dezimalzähler 0…9, synchron",
+"kurz": "Wie 74161, zählt aber nur 0…9 (BCD) und springt dann auf 0. Ideal für Dezimalanzeigen (zusammen mit 7447 / 4511).",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"/CLR:i",
+"CLK:i",
+"A:i",
+"B:i",
+"C:i",
+"D:i",
+"ENP:i",
+"GND:g",
+"/LOAD:i",
+"ENT:i",
+"QD:o",
+"QC:o",
+"QB:o",
+"QA:o",
+"RCO:o",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V.",
+"hinweise": [
+"Pinbelegung wie 74161 / 74163.",
+"Zählt BCD, Übertrag RCO bei Stand 9.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "zähler dezimal bcd 160 counter",
+"zeit": "zaehler",
+"kat": "speicher",
+"uid": "speicher:74160"
+}
+}
+],
+"siehe": [
+"bt_ic:speicher_74161"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "speicher_7493",
+"titel": "7493",
+"kurz": "4-Bit-Binärzähler (asynchron)",
+"tags": [
+"zähler",
+"binär",
+"asynchron",
+"ripple",
+"7493",
+"teiler",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-14",
+"7493",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Besteht aus einem 1-Bit- und einem 3-Bit-Zähler. QA-Ausgang mit CKB verbinden, dann zählt er von 0 bis 15."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7493",
+"name": "7493",
+"titel": "4-Bit-Binärzähler (asynchron)",
+"kurz": "Besteht aus einem 1-Bit- und einem 3-Bit-Zähler. QA-Ausgang mit CKB verbinden, dann zählt er von 0 bis 15.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-14",
+"pins": [
+"CKB:i",
+"R0(1):i",
+"R0(2):i",
+"NC:n",
+"VCC:v",
+"NC:n",
+"NC:n",
+"QC:o",
+"QB:o",
+"GND:g",
+"QD:o",
+"QA:o",
+"NC:n",
+"CKA:i"
+],
+"spannung": "5 V.",
+"hinweise": [
+"Für 4-Bit-Zählung CKA als Takt benutzen und QA mit CKB verbinden.",
+"Zählt bei der FALLENDEN Taktflanke.",
+"Reset: beide R0-Eingänge gleichzeitig HIGH.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "zähler binär asynchron ripple 7493 teiler",
+"zeit": "zaehler",
+"kat": "speicher",
+"uid": "speicher:7493"
+}
+}
+],
+"siehe": [
+"bt_ic:speicher_7490"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "speicher_74175",
+"titel": "74175 / 74HC175",
+"kurz": "4 × D-Flip-Flop mit gemeinsamem Takt und Clear",
+"tags": [
+"d",
+"flip",
+"flop",
+"register",
+"4",
+"bit",
+"175",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"74175",
+"/",
+"74HC175",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Vier D-Flip-Flops in einem Gehäuse mit Q und /Q Ausgängen. Gut als 4-Bit-Register."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74175",
+"name": "74175 / 74HC175",
+"titel": "4 × D-Flip-Flop mit gemeinsamem Takt und Clear",
+"kurz": "Vier D-Flip-Flops in einem Gehäuse mit Q und /Q Ausgängen. Gut als 4-Bit-Register.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"/CLR:i",
+"1Q:o",
+"/1Q:o",
+"1D:i",
+"2D:i",
+"/2Q:o",
+"2Q:o",
+"GND:g",
+"CLK:i",
+"3Q:o",
+"/3Q:o",
+"3D:i",
+"4D:i",
+"/4Q:o",
+"4Q:o",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V.",
+"hinweise": [
+"Daten werden bei der steigenden Taktflanke übernommen.",
+"/CLR = LOW löscht alle vier Flip-Flops asynchron.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "d flip flop register 4 bit 175",
+"zeit": "dff",
+"kat": "speicher",
+"uid": "speicher:74175"
+}
+}
+],
+"siehe": [
+"bt_ic:speicher_7474",
+"bt_ic:speicher_74574"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "speicher_74373",
+"titel": "74373 / 74HC373",
+"kurz": "8-Bit-Latch (transparent) mit Tri-State",
+"tags": [
+"latch",
+"8",
+"bit",
+"tri-state",
+"373",
+"bus",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-20",
+"74373",
+"/",
+"74HC373",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Acht D-Latches: solange LE = HIGH folgt Q dem Eingang D, bei LE = LOW wird der Wert gehalten. Ausgänge abschaltbar (/OE)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74373",
+"name": "74373 / 74HC373",
+"titel": "8-Bit-Latch (transparent) mit Tri-State",
+"kurz": "Acht D-Latches: solange LE = HIGH folgt Q dem Eingang D, bei LE = LOW wird der Wert gehalten. Ausgänge abschaltbar (/OE).",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-20",
+"pins": [
+"/OE:i",
+"1Q:o",
+"1D:i",
+"2D:i",
+"2Q:o",
+"3Q:o",
+"3D:i",
+"4D:i",
+"4Q:o",
+"GND:g",
+"LE:i",
+"5Q:o",
+"5D:i",
+"6D:i",
+"6Q:o",
+"7Q:o",
+"7D:i",
+"8D:i",
+"8Q:o",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V.",
+"hinweise": [
+"Typisch zum Zwischenspeichern der unteren Adressen bei Mikroprozessor-Bussen.",
+"Pinbelegung wie 74573 nur anders angeordnet – nicht verwechseln (373 hat Ein-/Ausgänge abwechselnd).",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "latch 8 bit tri-state 373 bus",
+"kat": "speicher",
+"uid": "speicher:74373"
+}
+}
+],
+"siehe": [
+"bt_ic:speicher_74573",
+"bt_ic:speicher_74374"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "speicher_74374",
+"titel": "74374 / 74HC374",
+"kurz": "8-Bit-D-Flip-Flop (taktgesteuert) mit Tri-State",
+"tags": [
+"flip",
+"flop",
+"register",
+"8",
+"bit",
+"tri-state",
+"374",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-20",
+"74374",
+"/",
+"74HC374",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie 74373, aber mit Flip-Flops: die Daten werden bei der steigenden Flanke an CLK übernommen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74374",
+"name": "74374 / 74HC374",
+"titel": "8-Bit-D-Flip-Flop (taktgesteuert) mit Tri-State",
+"kurz": "Wie 74373, aber mit Flip-Flops: die Daten werden bei der steigenden Flanke an CLK übernommen.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-20",
+"pins": [
+"/OE:i",
+"1Q:o",
+"1D:i",
+"2D:i",
+"2Q:o",
+"3Q:o",
+"3D:i",
+"4D:i",
+"4Q:o",
+"GND:g",
+"CLK:i",
+"5Q:o",
+"5D:i",
+"6D:i",
+"6Q:o",
+"7Q:o",
+"7D:i",
+"8D:i",
+"8Q:o",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V.",
+"hinweise": [
+"Gleiche Anordnung wie 74373, nur Pin 11 ist Takt statt LE.",
+"Pinbelegung wie 74574, nur anders angeordnet.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "flip flop register 8 bit tri-state 374",
+"zeit": "dff",
+"kat": "speicher",
+"uid": "speicher:74374"
+}
+}
+],
+"siehe": [
+"bt_ic:speicher_74574",
+"bt_ic:speicher_74373"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "speicher_74194",
+"titel": "74194 / 74HC194",
+"kurz": "4-Bit-Schieberegister (universal, 2 Richtungen)",
+"tags": [
+"schieberegister",
+"universal",
+"194",
+"shift",
+"register",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"74194",
+"/",
+"74HC194",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Schiebt nach rechts, links, lädt parallel oder hält – je nach Modus-Eingängen S0 / S1."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74194",
+"name": "74194 / 74HC194",
+"titel": "4-Bit-Schieberegister (universal, 2 Richtungen)",
+"kurz": "Schiebt nach rechts, links, lädt parallel oder hält – je nach Modus-Eingängen S0 / S1.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"/CLR:i",
+"SR:i",
+"A:i",
+"B:i",
+"C:i",
+"D:i",
+"SL:i",
+"GND:g",
+"S1:i",
+"S0:i",
+"CLK:i",
+"QD:o",
+"QC:o",
+"QB:o",
+"QA:o",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V.",
+"hinweise": [
+"Modus S1 S0: 00 halten, 01 rechts schieben (QA→QD), 10 links schieben (QD→QA), 11 parallel laden.",
+"Takt: steigende Flanke.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "schieberegister universal 194 shift register",
+"zeit": "schiebe",
+"kat": "speicher",
+"uid": "speicher:74194"
+}
+}
+],
+"siehe": [
+"bt_ic:speicher_74164",
+"bt_ic:speicher_74595"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "speicher_4094",
+"titel": "CD4094 / 74HC4094",
+"kurz": "8-Bit-Schieberegister mit Ausgangsspeicher (Strobe)",
+"tags": [
+"schieberegister",
+"4094",
+"serien",
+"parallel",
+"strobe",
+"CMOS",
+"4000",
+"DIP-16",
+"CD4094",
+"/",
+"74HC4094",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie 74HC595: seriell hinein, parallel heraus, mit Strobe-Ausgangsregister. Pin-Belegung aber anders."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4094",
+"name": "CD4094 / 74HC4094",
+"titel": "8-Bit-Schieberegister mit Ausgangsspeicher (Strobe)",
+"kurz": "Wie 74HC595: seriell hinein, parallel heraus, mit Strobe-Ausgangsregister. Pin-Belegung aber anders.",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-16",
+"pins": [
+"STR:i",
+"D:i",
+"CLK:i",
+"Q1:o",
+"Q2:o",
+"Q3:o",
+"Q4:o",
+"VSS:g",
+"QS1:o",
+"QS2:o",
+"Q8:o",
+"Q7:o",
+"Q6:o",
+"Q5:o",
+"OE:i",
+"VDD:v"
+],
+"spannung": "3–15 V (CD4094B), 74HC4094: 2–6 V.",
+"hinweise": [
+"Strobe = HIGH übernimmt die Schieberegister-Werte an die Ausgänge, OE = HIGH schaltet die Ausgänge frei.",
+"QS1 / QS2 sind serielle Ausgänge zum Kaskadieren.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "schieberegister 4094 serien parallel strobe",
+"zeit": "schiebe",
+"kat": "speicher",
+"uid": "speicher:4094"
+}
+}
+],
+"siehe": [
+"bt_ic:speicher_74595"
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "speicher_4020",
+"titel": "CD4020",
+"kurz": "14-Stufen-Binärzähler",
+"tags": [
+"zähler",
+"teiler",
+"4020",
+"ripple",
+"CMOS",
+"4000",
+"DIP-16",
+"CD4020",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Teilt die Taktfrequenz durch 2, 4, …, 16384. Ausgänge Q1…Q14 (Q2, Q3 stehen nicht nach außen)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4020",
+"name": "CD4020",
+"titel": "14-Stufen-Binärzähler",
+"kurz": "Teilt die Taktfrequenz durch 2, 4, …, 16384. Ausgänge Q1…Q14 (Q2, Q3 stehen nicht nach außen).",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-16",
+"pins": [
+"Q12:o",
+"Q13:o",
+"Q14:o",
+"Q6:o",
+"Q5:o",
+"Q7:o",
+"Q4:o",
+"VSS:g",
+"Q1:o",
+"CLK:i",
+"RST:i",
+"Q9:o",
+"Q8:o",
+"Q10:o",
+"Q11:o",
+"VDD:v"
+],
+"spannung": "3–15 V.",
+"hinweise": [
+"Zählt bei der FALLENDEN Taktflanke.",
+"RESET = HIGH setzt alle Ausgänge auf 0.",
+"Am Pin Q14 hat man f/16384: aus 32,768 kHz ergibt das 2 Hz.",
+"Q2 und Q3 sind nicht herausgeführt.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "zähler teiler 4020 ripple",
+"zeit": "zaehler",
+"kat": "speicher",
+"uid": "speicher:4020"
+}
+}
+],
+"siehe": [
+"bt_ic:speicher_4040",
+"bt_ic:speicher_4060"
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "speicher_4040",
+"titel": "CD4040",
+"kurz": "12-Stufen-Binärzähler",
+"tags": [
+"zähler",
+"teiler",
+"4040",
+"ripple",
+"binär",
+"CMOS",
+"4000",
+"DIP-16",
+"CD4040",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Teilt die Taktfrequenz durch 2 bis 4096, alle zwölf Teilerstufen Q1…Q12 sind herausgeführt."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4040",
+"name": "CD4040",
+"titel": "12-Stufen-Binärzähler",
+"kurz": "Teilt die Taktfrequenz durch 2 bis 4096, alle zwölf Teilerstufen Q1…Q12 sind herausgeführt.",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-16",
+"pins": [
+"Q12:o",
+"Q6:o",
+"Q5:o",
+"Q7:o",
+"Q4:o",
+"Q3:o",
+"Q2:o",
+"VSS:g",
+"Q1:o",
+"CLK:i",
+"RST:i",
+"Q9:o",
+"Q8:o",
+"Q10:o",
+"Q11:o",
+"VDD:v"
+],
+"spannung": "3–15 V.",
+"hinweise": [
+"Zählt bei der FALLENDEN Taktflanke.",
+"RESET = HIGH setzt alle Ausgänge auf 0.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "zähler teiler 4040 ripple binär",
+"zeit": "zaehler",
+"kat": "speicher",
+"uid": "speicher:4040"
+}
+}
+],
+"siehe": [
+"bt_ic:speicher_4020"
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "speicher_4060",
+"titel": "CD4060",
+"kurz": "14-Stufen-Zähler mit eingebautem Oszillator",
+"tags": [
+"zähler",
+"oszillator",
+"quarz",
+"4060",
+"teiler",
+"CMOS",
+"4000",
+"DIP-16",
+"CD4060",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Mit einem Quarz (z. B. 32,768 kHz) oder RC-Glied wird daraus ein einfacher Taktgenerator mit vielen geteilten Ausgängen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4060",
+"name": "CD4060",
+"titel": "14-Stufen-Zähler mit eingebautem Oszillator",
+"kurz": "Mit einem Quarz (z. B. 32,768 kHz) oder RC-Glied wird daraus ein einfacher Taktgenerator mit vielen geteilten Ausgängen.",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-16",
+"pins": [
+"Q12:o",
+"Q13:o",
+"Q14:o",
+"Q6:o",
+"Q5:o",
+"Q7:o",
+"Q4:o",
+"VSS:g",
+"/O0:o",
+"O0:o",
+"I:i",
+"RST:i",
+"Q9:o",
+"Q8:o",
+"Q10:o",
+"VDD:v"
+],
+"spannung": "3–15 V.",
+"hinweise": [
+"Pin 9 / 10 / 11: Oszillator-Beschaltung (mit Quarz oder RC) – Schaltung laut Datenblatt aufbauen.",
+"Die Ausgänge Q1 … Q3 und Q11 sind nicht herausgeführt.",
+"RESET = HIGH setzt den Zähler zurück.",
+"Pinbelegung bitte mit dem Datenblatt deines Herstellers gegenprüfen."
+],
+"tags": "zähler oszillator quarz 4060 teiler",
+"zeit": "zaehler",
+"kat": "speicher",
+"uid": "speicher:4060"
+}
+}
+],
+"siehe": [
+"bt_ic:speicher_4020"
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "speicher_latch-vergleich",
+"titel": "Latch ↔ Flip-Flop",
+"kurz": "Unterschied zwischen Latch und Flip-Flop",
+"tags": [
+"latch",
+"flip",
+"flop",
+"unterschied",
+"flanke",
+"pegel",
+"transparent",
+"Grundlagen",
+"Latch",
+"↔",
+"Flip-Flop",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Latch: „transparent“, solange Enable aktiv ist. Flip-Flop: übernimmt den Wert nur bei einer Taktflanke."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "latch-vergleich",
+"name": "Latch ↔ Flip-Flop",
+"titel": "Unterschied zwischen Latch und Flip-Flop",
+"kurz": "Latch: „transparent“, solange Enable aktiv ist. Flip-Flop: übernimmt den Wert nur bei einer Taktflanke.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Latch (z. B. 74573): Ausgang folgt dem Eingang, solange LE = HIGH. Gut zum Zwischenspeichern von Busdaten.",
+"Flip-Flop (z. B. 74574): Ausgang ändert sich nur an der Taktflanke – robuster in synchronen Schaltungen.",
+"Setup- und Hold-Zeit des Datenblatts einhalten, sonst kann das Flip-Flop metastabil werden."
+],
+"tags": "latch flip flop unterschied flanke pegel transparent",
+"tabelle": {
+"kopf": [
+"Merkmal",
+"Latch",
+"Flip-Flop"
+],
+"zeilen": [
+[
+"Steuerung",
+"Pegel (Enable)",
+"Flanke (Takt)"
+],
+[
+"Verhalten",
+"transparent",
+"übernimmt kurz"
+],
+[
+"Beispiel",
+"74573 / 74373",
+"74574 / 7474"
+],
+[
+"Verwendung",
+"Adressen halten",
+"Zähler, Register"
+]
+]
+},
+"kat": "speicher",
+"uid": "speicher:latch-vergleich"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "decoder_74138",
+"titel": "74HC138",
+"kurz": "3-zu-8-Dekoder / Demultiplexer",
+"tags": [
+"decoder",
+"dekoder",
+"3",
+"zu",
+"8",
+"adress",
+"demultiplexer",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"74HC138",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Aus 3 Adress-Bits (A, B, C) wird genau EIN von 8 Ausgängen aktiv (LOW). Die drei Freigabeeingänge machen es leicht, mehrere Chips zu kombinieren. Klassiker für Adress-Dekodierung."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74138",
+"name": "74HC138",
+"titel": "3-zu-8-Dekoder / Demultiplexer",
+"kurz": "Aus 3 Adress-Bits (A, B, C) wird genau EIN von 8 Ausgängen aktiv (LOW). Die drei Freigabeeingänge machen es leicht, mehrere Chips zu kombinieren. Klassiker für Adress-Dekodierung.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"A:i",
+"B:i",
+"C:i",
+"/G2A:i",
+"/G2B:i",
+"G1:i",
+"/Y7:o",
+"GND:g",
+"/Y6:o",
+"/Y5:o",
+"/Y4:o",
+"/Y3:o",
+"/Y2:o",
+"/Y1:o",
+"/Y0:o",
+"VCC:v"
+],
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Alle Ausgänge sind aktiv LOW: der gewählte Ausgang geht auf LOW, alle anderen bleiben HIGH.",
+"Freigegeben ist der Chip nur bei G1 = HIGH, /G2A = LOW und /G2B = LOW. Sonst sind alle Ausgänge HIGH.",
+"A ist das niederwertigste Bit (LSB), C das höchste.",
+"Mit G1 als Dateneingang wird er zum Demultiplexer.",
+"100-nF-Kondensator zwischen VCC und GND, nah am Chip."
+],
+"tags": "decoder dekoder 3 zu 8 adress demultiplexer",
+"tabelle": {
+"kopf": [
+"G1",
+"/G2",
+"C B A",
+"aktiver Ausgang (LOW)"
+],
+"zeilen": [
+[
+"0",
+"X",
+"X X X",
+"keiner (alle HIGH)"
+],
+[
+"X",
+"1",
+"X X X",
+"keiner (alle HIGH)"
+],
+[
+"1",
+"0",
+"0 0 0",
+"/Y0"
+],
+[
+"1",
+"0",
+"0 0 1",
+"/Y1"
+],
+[
+"1",
+"0",
+"0 1 0",
+"/Y2"
+],
+[
+"1",
+"0",
+"0 1 1",
+"/Y3"
+],
+[
+"1",
+"0",
+"1 0 0",
+"/Y4"
+],
+[
+"1",
+"0",
+"1 0 1",
+"/Y5"
+],
+[
+"1",
+"0",
+"1 1 0",
+"/Y6"
+],
+[
+"1",
+"0",
+"1 1 1",
+"/Y7"
+]
+]
+},
+"kat": "decoder",
+"uid": "decoder:74138"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "decoder_74139",
+"titel": "74HC139",
+"kurz": "2 × 2-zu-4-Dekoder",
+"tags": [
+"decoder",
+"dekoder",
+"2",
+"zu",
+"4",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"74HC139",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zwei getrennte Dekoder im Gehäuse: aus 2 Adress-Bits wird einer von 4 Ausgängen aktiv (LOW)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74139",
+"name": "74HC139",
+"titel": "2 × 2-zu-4-Dekoder",
+"kurz": "Zwei getrennte Dekoder im Gehäuse: aus 2 Adress-Bits wird einer von 4 Ausgängen aktiv (LOW).",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"1/G:i",
+"1A:i",
+"1B:i",
+"1/Y0:o",
+"1/Y1:o",
+"1/Y2:o",
+"1/Y3:o",
+"GND:g",
+"2/Y3:o",
+"2/Y2:o",
+"2/Y1:o",
+"2/Y0:o",
+"2B:i",
+"2A:i",
+"2/G:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Freigabe /G ist aktiv LOW. Bei /G = HIGH sind alle Ausgänge HIGH.",
+"A ist das niederwertigste Bit."
+],
+"tags": "decoder dekoder 2 zu 4",
+"tabelle": {
+"kopf": [
+"/G",
+"B A",
+"aktiver Ausgang (LOW)"
+],
+"zeilen": [
+[
+"1",
+"X X",
+"keiner"
+],
+[
+"0",
+"0 0",
+"/Y0"
+],
+[
+"0",
+"0 1",
+"/Y1"
+],
+[
+"0",
+"1 0",
+"/Y2"
+],
+[
+"0",
+"1 1",
+"/Y3"
+]
+]
+},
+"kat": "decoder",
+"uid": "decoder:74139"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "decoder_74148",
+"titel": "74148",
+"kurz": "8-zu-3-Prioritäts-Codierer",
+"tags": [
+"encoder",
+"codierer",
+"prioritaet",
+"tasten",
+"8",
+"zu",
+"3",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"74148",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Das Gegenstück zum Dekoder: 8 Eingänge (Tasten) werden zu einer 3-Bit-Zahl. Sind mehrere Eingänge aktiv, gewinnt der mit der HÖCHSTEN Nummer."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74148",
+"name": "74148",
+"titel": "8-zu-3-Prioritäts-Codierer",
+"kurz": "Das Gegenstück zum Dekoder: 8 Eingänge (Tasten) werden zu einer 3-Bit-Zahl. Sind mehrere Eingänge aktiv, gewinnt der mit der HÖCHSTEN Nummer.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"4:i",
+"5:i",
+"6:i",
+"7:i",
+"/EI:i",
+"/A2:o",
+"/A1:o",
+"GND:g",
+"/A0:o",
+"0:i",
+"1:i",
+"2:i",
+"3:i",
+"/GS:o",
+"/EO:o",
+"VCC:v"
+],
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Alle Ein- und Ausgänge sind aktiv LOW (Eingang 7 aktiv = LOW, Ausgang als invertierter Binärwert).",
+"/EI = Freigabe (LOW = aktiv). /GS zeigt LOW, wenn irgendein Eingang aktiv ist. /EO ermöglicht das Kaskadieren.",
+"Typisch für Tastaturen und Interrupt-Steuerungen."
+],
+"tags": "encoder codierer prioritaet tasten 8 zu 3",
+"kat": "decoder",
+"uid": "decoder:74148"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "decoder_74151",
+"titel": "74HC151",
+"kurz": "8-zu-1-Multiplexer",
+"tags": [
+"multiplexer",
+"mux",
+"8",
+"zu",
+"1",
+"daten",
+"auswahl",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"74HC151",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wählt mit 3 Adress-Bits (A, B, C) einen von 8 Dateneingängen (D0…D7) und gibt ihn am Ausgang Y aus (W = invertiert)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74151",
+"name": "74HC151",
+"titel": "8-zu-1-Multiplexer",
+"kurz": "Wählt mit 3 Adress-Bits (A, B, C) einen von 8 Dateneingängen (D0…D7) und gibt ihn am Ausgang Y aus (W = invertiert).",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"D3:i",
+"D2:i",
+"D1:i",
+"D0:i",
+"Y:o",
+"W:o",
+"/G:i",
+"GND:g",
+"C:i",
+"B:i",
+"A:i",
+"D7:i",
+"D6:i",
+"D5:i",
+"D4:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"/G (Enable) auf LOW für Betrieb; bei HIGH ist Y = LOW.",
+"Ein Multiplexer kann auch jede beliebige Logikfunktion von 3 Variablen erzeugen (Dn auf 0 oder 1 legen).",
+"A ist das niederwertigste Bit."
+],
+"tags": "multiplexer mux 8 zu 1 daten auswahl",
+"tabelle": {
+"kopf": [
+"/G",
+"C B A",
+"Y"
+],
+"zeilen": [
+[
+"1",
+"X X X",
+"0"
+],
+[
+"0",
+"0 0 0",
+"D0"
+],
+[
+"0",
+"0 0 1",
+"D1"
+],
+[
+"0",
+"0 1 0",
+"D2"
+],
+[
+"0",
+"0 1 1",
+"D3"
+],
+[
+"0",
+"1 0 0",
+"D4"
+],
+[
+"0",
+"1 0 1",
+"D5"
+],
+[
+"0",
+"1 1 0",
+"D6"
+],
+[
+"0",
+"1 1 1",
+"D7"
+]
+]
+},
+"kat": "decoder",
+"uid": "decoder:74151"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "decoder_74157",
+"titel": "74HC157",
+"kurz": "4 × 2-zu-1-Multiplexer",
+"tags": [
+"multiplexer",
+"mux",
+"2",
+"zu",
+"1",
+"umschalter",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"74HC157",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Vier Umschalter mit gemeinsamem Auswahleingang: A/B = LOW leitet die A-Eingänge durch, HIGH die B-Eingänge."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74157",
+"name": "74HC157",
+"titel": "4 × 2-zu-1-Multiplexer",
+"kurz": "Vier Umschalter mit gemeinsamem Auswahleingang: A/B = LOW leitet die A-Eingänge durch, HIGH die B-Eingänge.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"A/B:i",
+"1A:i",
+"1B:i",
+"1Y:o",
+"2A:i",
+"2B:i",
+"2Y:o",
+"GND:g",
+"3Y:o",
+"3B:i",
+"3A:i",
+"4Y:o",
+"4B:i",
+"4A:i",
+"/G:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"/G (Enable) auf LOW für Betrieb; bei HIGH sind alle Ausgänge LOW.",
+"Der 74HC158 ist gleich, aber mit invertierten Ausgängen."
+],
+"tags": "multiplexer mux 2 zu 1 umschalter",
+"tabelle": {
+"kopf": [
+"/G",
+"A/B",
+"Y"
+],
+"zeilen": [
+[
+"1",
+"X",
+"0"
+],
+[
+"0",
+"0",
+"A"
+],
+[
+"0",
+"1",
+"B"
+]
+]
+},
+"kat": "decoder",
+"uid": "decoder:74157"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "decoder_7447",
+"titel": "7447",
+"kurz": "BCD-zu-7-Segment-Dekoder/Treiber (gemeinsame Anode)",
+"tags": [
+"7",
+"segment",
+"anzeige",
+"bcd",
+"dekoder",
+"treiber",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"7447",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wandelt eine 4-Bit-BCD-Zahl in die sieben Segmente einer Anzeige um. Die Ausgänge sind LOW-aktiv und Open-Collector: für 7-Segment-Anzeigen mit GEMEINSAMER ANODE."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7447",
+"name": "7447",
+"titel": "BCD-zu-7-Segment-Dekoder/Treiber (gemeinsame Anode)",
+"kurz": "Wandelt eine 4-Bit-BCD-Zahl in die sieben Segmente einer Anzeige um. Die Ausgänge sind LOW-aktiv und Open-Collector: für 7-Segment-Anzeigen mit GEMEINSAMER ANODE.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"B:i",
+"C:i",
+"/LT:i",
+"/BI/RBO:x",
+"/RBI:i",
+"D:i",
+"A:i",
+"GND:g",
+"e:o",
+"d:o",
+"c:o",
+"b:o",
+"a:o",
+"g:o",
+"f:o",
+"VCC:v"
+],
+"spannung": "7447: 5 V.",
+"hinweise": [
+"Ausgang LOW = Segment leuchtet. Vorwiderstand (ca. 220–330 Ω) pro Segment nicht vergessen.",
+"/LT (Lampentest) auf HIGH, /BI und /RBI auf HIGH im Normalbetrieb.",
+"Für Anzeigen mit gemeinsamer KATHODE nimmt man den 7448 oder den CD4511.",
+"Die Form der Ziffern 6, 7 und 9 ist je nach Chip unterschiedlich: im Datenblatt prüfen."
+],
+"tags": "7 segment anzeige bcd dekoder treiber",
+"tabelle": {
+"kopf": [
+"Ziffer",
+"a",
+"b",
+"c",
+"d",
+"e",
+"f",
+"g"
+],
+"zeilen": [
+[
+"0",
+"L",
+"L",
+"L",
+"L",
+"L",
+"L",
+"H"
+],
+[
+"1",
+"H",
+"L",
+"L",
+"H",
+"H",
+"H",
+"H"
+],
+[
+"2",
+"L",
+"L",
+"H",
+"L",
+"L",
+"H",
+"L"
+],
+[
+"3",
+"L",
+"L",
+"L",
+"L",
+"H",
+"H",
+"L"
+],
+[
+"4",
+"H",
+"L",
+"L",
+"H",
+"H",
+"L",
+"L"
+],
+[
+"5",
+"L",
+"H",
+"L",
+"L",
+"H",
+"L",
+"L"
+],
+[
+"6",
+"H",
+"H",
+"L",
+"L",
+"L",
+"L",
+"L"
+],
+[
+"7",
+"L",
+"L",
+"L",
+"H",
+"H",
+"H",
+"H"
+],
+[
+"8",
+"L",
+"L",
+"L",
+"L",
+"L",
+"L",
+"L"
+],
+[
+"9",
+"L",
+"L",
+"L",
+"H",
+"H",
+"L",
+"L"
+]
+]
+},
+"kat": "decoder",
+"uid": "decoder:7447"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "decoder_4511",
+"titel": "CD4511",
+"kurz": "BCD-zu-7-Segment-Dekoder/Treiber (gemeinsame Kathode)",
+"tags": [
+"7",
+"segment",
+"anzeige",
+"bcd",
+"dekoder",
+"treiber",
+"cmos",
+"CMOS",
+"4000",
+"DIP-16",
+"CD4511",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wandelt BCD in sieben Segmente um, mit Zwischenspeicher (LE). Ausgänge HIGH-aktiv, bis etwa 25 mA: für Anzeigen mit GEMEINSAMER KATHODE direkt (mit Vorwiderstand)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4511",
+"name": "CD4511",
+"titel": "BCD-zu-7-Segment-Dekoder/Treiber (gemeinsame Kathode)",
+"kurz": "Wandelt BCD in sieben Segmente um, mit Zwischenspeicher (LE). Ausgänge HIGH-aktiv, bis etwa 25 mA: für Anzeigen mit GEMEINSAMER KATHODE direkt (mit Vorwiderstand).",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-16",
+"pins": [
+"B:i",
+"C:i",
+"/LT:i",
+"/BI:i",
+"LE:i",
+"D:i",
+"A:i",
+"VSS:g",
+"e:o",
+"d:o",
+"c:o",
+"b:o",
+"a:o",
+"g:o",
+"f:o",
+"VDD:v"
+],
+"spannung": "CD4511: 5–15 V.",
+"hinweise": [
+"Ausgang HIGH = Segment leuchtet. Vorwiderstand pro Segment (220–330 Ω bei 5 V).",
+"/LT und /BI auf HIGH, LE auf LOW (transparent) im Normalbetrieb. LE auf HIGH hält die angezeigte Ziffer fest.",
+"Eingangswerte größer als 9 schalten die Anzeige dunkel.",
+"Typische Zusammenschaltung: CD4017 oder 74HC161 liefert die Zahl, der 4511 zeigt sie an."
+],
+"tags": "7 segment anzeige bcd dekoder treiber cmos",
+"tabelle": {
+"kopf": [
+"Ziffer",
+"a",
+"b",
+"c",
+"d",
+"e",
+"f",
+"g"
+],
+"zeilen": [
+[
+"0",
+"1",
+"1",
+"1",
+"1",
+"1",
+"1",
+"0"
+],
+[
+"1",
+"0",
+"1",
+"1",
+"0",
+"0",
+"0",
+"0"
+],
+[
+"2",
+"1",
+"1",
+"0",
+"1",
+"1",
+"0",
+"1"
+],
+[
+"3",
+"1",
+"1",
+"1",
+"1",
+"0",
+"0",
+"1"
+],
+[
+"4",
+"0",
+"1",
+"1",
+"0",
+"0",
+"1",
+"1"
+],
+[
+"5",
+"1",
+"0",
+"1",
+"1",
+"0",
+"1",
+"1"
+],
+[
+"6",
+"0",
+"0",
+"1",
+"1",
+"1",
+"1",
+"1"
+],
+[
+"7",
+"1",
+"1",
+"1",
+"0",
+"0",
+"0",
+"0"
+],
+[
+"8",
+"1",
+"1",
+"1",
+"1",
+"1",
+"1",
+"1"
+],
+[
+"9",
+"1",
+"1",
+"1",
+"0",
+"0",
+"1",
+"1"
+]
+]
+},
+"kat": "decoder",
+"uid": "decoder:4511"
+}
+}
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "decoder_74245",
+"titel": "74HC245",
+"kurz": "8-Bit-Bus-Transceiver (3-State)",
+"tags": [
+"bus",
+"transceiver",
+"pegelwandler",
+"level",
+"shifter",
+"3.3",
+"5",
+"v",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-20",
+"74HC245",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Treibt 8 Leitungen in beide Richtungen. DIR bestimmt die Richtung (A → B oder B → A), /OE schaltet alles hochohmig. Beliebt als Pegelwandler zwischen 3,3 V und 5 V."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74245",
+"name": "74HC245",
+"titel": "8-Bit-Bus-Transceiver (3-State)",
+"kurz": "Treibt 8 Leitungen in beide Richtungen. DIR bestimmt die Richtung (A → B oder B → A), /OE schaltet alles hochohmig. Beliebt als Pegelwandler zwischen 3,3 V und 5 V.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-20",
+"pins": [
+"DIR:i",
+"A1:x",
+"A2:x",
+"A3:x",
+"A4:x",
+"A5:x",
+"A6:x",
+"A7:x",
+"A8:x",
+"GND:g",
+"B8:x",
+"B7:x",
+"B6:x",
+"B5:x",
+"B4:x",
+"B3:x",
+"B2:x",
+"B1:x",
+"/OE:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Als Pegelwandler: 74HCT245 mit 5 V versorgen: 3,3-V-Signale werden als HIGH erkannt, Ausgänge liefern 5 V. Für 5 V → 3,3 V den 74LVC245 mit 3,3 V versorgen (verträgt 5-V-Eingänge).",
+"/OE auf GND (aktiv), DIR fest für die gewünschte Richtung.",
+"Nicht benutzte Pins auf einer Seite nicht offen lassen."
+],
+"tags": "bus transceiver pegelwandler level shifter 3.3 5 v",
+"tabelle": {
+"kopf": [
+"/OE",
+"DIR",
+"Richtung"
+],
+"zeilen": [
+[
+"0",
+"0",
+"B → A"
+],
+[
+"0",
+"1",
+"A → B"
+],
+[
+"1",
+"X",
+"beide hochohmig"
+]
+]
+},
+"kat": "decoder",
+"uid": "decoder:74245"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "decoder_74541",
+"titel": "74HC541",
+"kurz": "8-fach Puffer/Treiber (3-State), nicht invertierend",
+"tags": [
+"puffer",
+"treiber",
+"buffer",
+"bus",
+"pegelwandler",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-20",
+"74HC541",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Verstärkt acht Signale in eine Richtung. Zwei Freigabeeingänge (/OE1, /OE2), beide müssen LOW sein."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74541",
+"name": "74HC541",
+"titel": "8-fach Puffer/Treiber (3-State), nicht invertierend",
+"kurz": "Verstärkt acht Signale in eine Richtung. Zwei Freigabeeingänge (/OE1, /OE2), beide müssen LOW sein.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-20",
+"pins": [
+"/OE1:i",
+"A1:i",
+"A2:i",
+"A3:i",
+"A4:i",
+"A5:i",
+"A6:i",
+"A7:i",
+"A8:i",
+"GND:g",
+"Y8:o",
+"Y7:o",
+"Y6:o",
+"Y5:o",
+"Y4:o",
+"Y3:o",
+"Y2:o",
+"Y1:o",
+"/OE2:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V (4,75–5,25). 74HC: 2–6 V. 74HCT: 4,5–5,5 V.",
+"hinweise": [
+"Zum Treiben von LED-Zeilen oder zum Entkoppeln von Bus-Leitungen.",
+"Der 74HCT541 setzt 3,3-V-Pegel auf 5 V um."
+],
+"tags": "puffer treiber buffer bus pegelwandler",
+"kat": "decoder",
+"uid": "decoder:74541"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "decoder_4051",
+"titel": "CD4051",
+"kurz": "8-Kanal-Analog-Multiplexer / Demultiplexer",
+"tags": [
+"multiplexer",
+"analog",
+"8",
+"kanal",
+"adc",
+"erweiterung",
+"CMOS",
+"4000",
+"DIP-16",
+"CD4051",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein Analog-Schalter, der mit 3 Adress-Bits einen von 8 Kanälen (CH0…CH7) mit dem gemeinsamen Anschluss COM verbindet. Funktioniert für analoge UND digitale Signale in beide Richtungen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4051",
+"name": "CD4051",
+"titel": "8-Kanal-Analog-Multiplexer / Demultiplexer",
+"kurz": "Ein Analog-Schalter, der mit 3 Adress-Bits einen von 8 Kanälen (CH0…CH7) mit dem gemeinsamen Anschluss COM verbindet. Funktioniert für analoge UND digitale Signale in beide Richtungen.",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-16",
+"pins": [
+"CH4:x",
+"CH6:x",
+"COM:x",
+"CH7:x",
+"CH5:x",
+"INH:i",
+"VEE:g",
+"VSS:g",
+"C:i",
+"B:i",
+"A:i",
+"CH3:x",
+"CH0:x",
+"CH1:x",
+"CH2:x",
+"VDD:v"
+],
+"spannung": "VDD 3–15 V; VEE ≤ VSS.",
+"hinweise": [
+"Ein Pi-Analogeingang für 8 Sensoren: Pi → A/B/C (3 GPIO) + ADC an COM.",
+"INH (Inhibit) auf LOW = aktiv, HIGH = alle Kanäle aus.",
+"VEE und VSS auf GND bei Single-Supply (nur positive Signale). Das Signal darf nicht über VDD oder unter VEE.",
+"Typischer Durchlasswiderstand ca. 100–200 Ω bei 5 V: nicht für niederohmige Lasten."
+],
+"tags": "multiplexer analog 8 kanal adc erweiterung",
+"tabelle": {
+"kopf": [
+"INH",
+"C B A",
+"COM verbunden mit"
+],
+"zeilen": [
+[
+"1",
+"X X X",
+"keinem"
+],
+[
+"0",
+"0 0 0",
+"CH0"
+],
+[
+"0",
+"0 0 1",
+"CH1"
+],
+[
+"0",
+"0 1 0",
+"CH2"
+],
+[
+"0",
+"0 1 1",
+"CH3"
+],
+[
+"0",
+"1 0 0",
+"CH4"
+],
+[
+"0",
+"1 0 1",
+"CH5"
+],
+[
+"0",
+"1 1 0",
+"CH6"
+],
+[
+"0",
+"1 1 1",
+"CH7"
+]
+]
+},
+"kat": "decoder",
+"uid": "decoder:4051"
+}
+}
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "decoder_4066",
+"titel": "CD4066",
+"kurz": "4 × analoger Schalter (bilateral)",
+"tags": [
+"analog",
+"schalter",
+"switch",
+"bilateral",
+"CMOS",
+"4000",
+"DIP-14",
+"CD4066",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Vier unabhängige elektronische Schalter. Steuereingang HIGH = Schalter geschlossen (ca. 80 Ω), LOW = offen. Beide Richtungen, analog und digital."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4066",
+"name": "CD4066",
+"titel": "4 × analoger Schalter (bilateral)",
+"kurz": "Vier unabhängige elektronische Schalter. Steuereingang HIGH = Schalter geschlossen (ca. 80 Ω), LOW = offen. Beide Richtungen, analog und digital.",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-14",
+"pins": [
+"I/O A:x",
+"O/I A:x",
+"O/I B:x",
+"I/O B:x",
+"CTRL B:i",
+"CTRL C:i",
+"VSS:g",
+"I/O C:x",
+"O/I C:x",
+"O/I D:x",
+"I/O D:x",
+"CTRL D:i",
+"CTRL A:i",
+"VDD:v"
+],
+"spannung": "VDD 3–15 V.",
+"hinweise": [
+"Signal muss zwischen VSS und VDD bleiben.",
+"Steuereingänge nicht offen lassen.",
+"Nicht für Leistung geeignet (wenige mA)."
+],
+"tags": "analog schalter switch bilateral",
+"kat": "decoder",
+"uid": "decoder:4066"
+}
+}
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "decoder_mcp3008",
+"titel": "MCP3008",
+"kurz": "8-Kanal-10-Bit-AD-Wandler mit SPI",
+"tags": [
+"adc",
+"analog",
+"wandler",
+"spi",
+"raspberry",
+"sensor",
+"AD-/DA-Wandler",
+"DIP-16",
+"MCP3008",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Bringt 8 analoge Eingänge (0…VREF) an den Raspberry Pi, der selbst keinen ADC hat. Auflösung 10 Bit (0…1023), SPI-Schnittstelle."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "mcp3008",
+"name": "MCP3008",
+"titel": "8-Kanal-10-Bit-AD-Wandler mit SPI",
+"kurz": "Bringt 8 analoge Eingänge (0…VREF) an den Raspberry Pi, der selbst keinen ADC hat. Auflösung 10 Bit (0…1023), SPI-Schnittstelle.",
+"familie": "AD-/DA-Wandler",
+"gehaeuse": "DIP-16",
+"pins": [
+"CH0:x",
+"CH1:x",
+"CH2:x",
+"CH3:x",
+"CH4:x",
+"CH5:x",
+"CH6:x",
+"CH7:x",
+"DGND:g",
+"/CS:i",
+"DIN:i",
+"DOUT:o",
+"CLK:i",
+"AGND:g",
+"VREF:i",
+"VDD:v"
+],
+"spannung": "VDD 2,7–5,5 V. Mit 3,3 V am Pi: VDD und VREF = 3,3 V.",
+"hinweise": [
+"Anschluss am Pi (SPI0): CLK → GPIO11, DOUT → GPIO9 (MISO), DIN → GPIO10 (MOSI), /CS → GPIO8 (CE0).",
+"VDD und VREF an 3,3 V, AGND und DGND an GND. Eingangsspannung nie über VREF.",
+"Spannung = Wert / 1023 · VREF. Bei VREF = 3,3 V ist 1 Schritt ca. 3,2 mV.",
+"SPI am Pi mit raspi-config einschalten (Interface Options)."
+],
+"tags": "adc analog wandler spi raspberry sensor",
+"kat": "decoder",
+"uid": "decoder:mcp3008"
+}
+}
+],
+"familie": "AD-/DA-Wandler"
+},
+{
+"id": "decoder_adc0804",
+"titel": "ADC0804",
+"kurz": "8-Bit-AD-Wandler, paralleler Ausgang",
+"tags": [
+"adc",
+"analog",
+"wandler",
+"parallel",
+"8",
+"bit",
+"AD-/DA-Wandler",
+"DIP-20",
+"ADC0804",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Klassischer 8-Bit-Wandler (Successive Approximation) mit parallelem 8-Bit-Ausgang. Braucht nur wenige Bauteile und einen RC-Takt."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "adc0804",
+"name": "ADC0804",
+"titel": "8-Bit-AD-Wandler, paralleler Ausgang",
+"kurz": "Klassischer 8-Bit-Wandler (Successive Approximation) mit parallelem 8-Bit-Ausgang. Braucht nur wenige Bauteile und einen RC-Takt.",
+"familie": "AD-/DA-Wandler",
+"gehaeuse": "DIP-20",
+"pins": [
+"/CS:i",
+"/RD:i",
+"/WR:i",
+"CLK IN:i",
+"/INTR:o",
+"VIN(+):x",
+"VIN(−):x",
+"AGND:g",
+"VREF/2:x",
+"DGND:g",
+"DB7:o",
+"DB6:o",
+"DB5:o",
+"DB4:o",
+"DB3:o",
+"DB2:o",
+"DB1:o",
+"DB0:o",
+"CLK R:x",
+"VCC:v"
+],
+"spannung": "VCC 4,5–6,3 V.",
+"hinweise": [
+"Takt: Widerstand 10 kΩ zwischen CLK R (19) und CLK IN (4), 150 pF von CLK IN nach GND → ca. 640 kHz.",
+"Eingangsbereich 0…5 V, wenn VREF/2 offen ist. Auflösung 5 V / 256 ≈ 19,5 mV.",
+"Eine Wandlung starten: /CS und /WR kurz auf LOW; fertig, wenn /INTR auf LOW geht; dann /RD auf LOW liest das Ergebnis.",
+"Ausgang ist 5 V: am Raspberry Pi Pegelwandler (Spannungsteiler) verwenden."
+],
+"tags": "adc analog wandler parallel 8 bit",
+"kat": "decoder",
+"uid": "decoder:adc0804"
+}
+}
+],
+"familie": "AD-/DA-Wandler"
+},
+{
+"id": "decoder_dac0808",
+"titel": "DAC0808",
+"kurz": "8-Bit-DA-Wandler (Stromausgang)",
+"tags": [
+"dac",
+"digital",
+"analog",
+"wandler",
+"AD-/DA-Wandler",
+"DIP-16",
+"DAC0808",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wandelt 8 parallele Bits in einen Ausgangsstrom um. Mit einem Operationsverstärker (Strom → Spannung) entsteht eine Spannung 0…5 V."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "dac0808",
+"name": "DAC0808",
+"titel": "8-Bit-DA-Wandler (Stromausgang)",
+"kurz": "Wandelt 8 parallele Bits in einen Ausgangsstrom um. Mit einem Operationsverstärker (Strom → Spannung) entsteht eine Spannung 0…5 V.",
+"familie": "AD-/DA-Wandler",
+"gehaeuse": "DIP-16",
+"pins": [
+"NC:n",
+"GND:g",
+"VEE:g",
+"IO:o",
+"A1 (MSB):i",
+"A2:i",
+"A3:i",
+"A4:i",
+"A5:i",
+"A6:i",
+"A7:i",
+"A8 (LSB):i",
+"VCC:v",
+"VREF(+):x",
+"VREF(−):x",
+"COMP:x"
+],
+"spannung": "VCC +5 V, VEE −5…−15 V.",
+"hinweise": [
+"Referenzstrom über einen Widerstand an VREF(+), VREF(−) über Widerstand nach GND (meist 2 mA).",
+"Ausgang IO ist ein Strom: mit einem Operationsverstärker + Rückkopplungswiderstand in Spannung umwandeln.",
+"Braucht eine negative Versorgung (VEE). Für den Raspberry Pi einfacher: MCP4921 (SPI) oder PWM + Tiefpass."
+],
+"tags": "dac digital analog wandler",
+"kat": "decoder",
+"uid": "decoder:dac0808"
+}
+}
+],
+"familie": "AD-/DA-Wandler"
+},
+{
+"id": "decoder_7485",
+"titel": "7485 / 74HC85",
+"kurz": "4-Bit-Größenvergleicher (Komparator)",
+"tags": [
+"komparator",
+"vergleicher",
+"größer",
+"kleiner",
+"gleich",
+"7485",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"7485",
+"/",
+"74HC85",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Vergleicht zwei 4-Bit-Zahlen A und B und meldet größer, gleich oder kleiner. Kaskadierbar für mehr Bits."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7485",
+"name": "7485 / 74HC85",
+"titel": "4-Bit-Größenvergleicher (Komparator)",
+"kurz": "Vergleicht zwei 4-Bit-Zahlen A und B und meldet größer, gleich oder kleiner. Kaskadierbar für mehr Bits.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"B3:i",
+"A<B:i",
+"A=B:i",
+"A>B:i",
+"A>B:o",
+"A=B:o",
+"A<B:o",
+"GND:g",
+"B0:i",
+"A0:i",
+"B1:i",
+"A1:i",
+"A2:i",
+"B2:i",
+"A3:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V.",
+"hinweise": [
+"Pins 2–4 sind die Kaskadeneingänge: bei einem einzelnen Baustein A=B-Eingang (Pin 3) auf HIGH, A<B und A>B auf LOW legen.",
+"Pins 5–7 sind die Ergebnis-Ausgänge.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "komparator vergleicher größer kleiner gleich 7485",
+"kat": "decoder",
+"uid": "decoder:7485"
+}
+}
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "decoder_7483",
+"titel": "7483",
+"kurz": "4-Bit-Volladdierer",
+"tags": [
+"addierer",
+"volladdierer",
+"7483",
+"rechnen",
+"summe",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"7483",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Addiert zwei 4-Bit-Zahlen (A + B + C0) und liefert vier Summenbits plus Übertrag C4."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7483",
+"name": "7483",
+"titel": "4-Bit-Volladdierer",
+"kurz": "Addiert zwei 4-Bit-Zahlen (A + B + C0) und liefert vier Summenbits plus Übertrag C4.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"A4:i",
+"S3:o",
+"A3:i",
+"B3:i",
+"VCC:v",
+"S2:o",
+"B2:i",
+"A2:i",
+"S1:o",
+"A1:i",
+"B1:i",
+"GND:g",
+"C0:i",
+"C4:o",
+"S4:o",
+"B4:i"
+],
+"spannung": "5 V.",
+"hinweise": [
+"Achtung: Die Pinreihenfolge ist ungewöhnlich (Summen und Eingänge sind gemischt). Ein 74283 hat eine ANDERE Pinbelegung.",
+"VCC liegt an Pin 5, GND an Pin 12 (nicht in den Ecken).",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "addierer volladdierer 7483 rechnen summe",
+"kat": "decoder",
+"uid": "decoder:7483"
+}
+}
+],
+"siehe": [
+"bt_ic:decoder_74283"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "decoder_74283",
+"titel": "74283 / 74HC283",
+"kurz": "4-Bit-Volladdierer (Standard-Pinbelegung)",
+"tags": [
+"addierer",
+"volladdierer",
+"283",
+"rechnen",
+"summe",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"74283",
+"/",
+"74HC283",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie 7483, aber mit der „normalen“ Pinbelegung: VCC an Pin 16, GND an Pin 8. Heute die übliche Wahl."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74283",
+"name": "74283 / 74HC283",
+"titel": "4-Bit-Volladdierer (Standard-Pinbelegung)",
+"kurz": "Wie 7483, aber mit der „normalen“ Pinbelegung: VCC an Pin 16, GND an Pin 8. Heute die übliche Wahl.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"S2:o",
+"B2:i",
+"A2:i",
+"S1:o",
+"A1:i",
+"B1:i",
+"C0:i",
+"GND:g",
+"C4:o",
+"S4:o",
+"B4:i",
+"A4:i",
+"S3:o",
+"A3:i",
+"B3:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V.",
+"hinweise": [
+"Kaskadieren: C4 der unteren Stufe an C0 der oberen.",
+"Subtrahieren: B invertieren (XOR mit 1) und C0 = 1 → A − B (Zweierkomplement).",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "addierer volladdierer 283 rechnen summe",
+"kat": "decoder",
+"uid": "decoder:74283"
+}
+}
+],
+"siehe": [
+"bt_ic:decoder_7483"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "decoder_7442",
+"titel": "7442 / 74HC42",
+"kurz": "BCD-zu-Dezimal-Dekoder (1-aus-10)",
+"tags": [
+"dekoder",
+"bcd",
+"dezimal",
+"1",
+"aus",
+"10",
+"7442",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"7442",
+"/",
+"74HC42",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wandelt eine 4-Bit-BCD-Zahl in eine von zehn Leitungen um. Der angewählte Ausgang ist LOW (active low)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7442",
+"name": "7442 / 74HC42",
+"titel": "BCD-zu-Dezimal-Dekoder (1-aus-10)",
+"kurz": "Wandelt eine 4-Bit-BCD-Zahl in eine von zehn Leitungen um. Der angewählte Ausgang ist LOW (active low).",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"/0:o",
+"/1:o",
+"/2:o",
+"/3:o",
+"/4:o",
+"/5:o",
+"/6:o",
+"GND:g",
+"/7:o",
+"/8:o",
+"/9:o",
+"D:i",
+"C:i",
+"B:i",
+"A:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V.",
+"hinweise": [
+"Ausgänge sind active LOW: der gewählte Ausgang geht auf 0, alle anderen bleiben 1.",
+"Eingänge A (Bit 0) … D (Bit 3). Werte 10…15 aktivieren keinen Ausgang.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "dekoder bcd dezimal 1 aus 10 7442",
+"kat": "decoder",
+"uid": "decoder:7442"
+}
+}
+],
+"siehe": [
+"bt_ic:decoder_74138",
+"bt_ic:decoder_74154"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "decoder_74154",
+"titel": "74154",
+"kurz": "4-zu-16-Dekoder",
+"tags": [
+"dekoder",
+"4",
+"zu",
+"16",
+"demultiplexer",
+"74154",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-24",
+"74154",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Vier Adressleitungen wählen eine von 16 Ausgängen (active LOW). Zwei Freigabe-Eingänge."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74154",
+"name": "74154",
+"titel": "4-zu-16-Dekoder",
+"kurz": "Vier Adressleitungen wählen eine von 16 Ausgängen (active LOW). Zwei Freigabe-Eingänge.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-24",
+"pins": [
+"/0:o",
+"/1:o",
+"/2:o",
+"/3:o",
+"/4:o",
+"/5:o",
+"/6:o",
+"/7:o",
+"/8:o",
+"/9:o",
+"/10:o",
+"GND:g",
+"/11:o",
+"/12:o",
+"/13:o",
+"/14:o",
+"/15:o",
+"/G1:i",
+"/G2:i",
+"D:i",
+"C:i",
+"B:i",
+"A:i",
+"VCC:v"
+],
+"spannung": "5 V.",
+"hinweise": [
+"Beide Freigaben (/G1 und /G2) müssen LOW sein, sonst sind alle Ausgänge HIGH.",
+"Gehäuse DIP-24 (breit, 600 mil).",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "dekoder 4 zu 16 demultiplexer 74154",
+"kat": "decoder",
+"uid": "decoder:74154"
+}
+}
+],
+"siehe": [
+"bt_ic:decoder_74138"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "decoder_74153",
+"titel": "74153 / 74HC153",
+"kurz": "2 × 4-zu-1-Multiplexer",
+"tags": [
+"multiplexer",
+"4",
+"zu",
+"1",
+"153",
+"mux",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"74153",
+"/",
+"74HC153",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zwei unabhängige Multiplexer mit je vier Dateneingängen, gemeinsame Auswahlleitungen A, B."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74153",
+"name": "74153 / 74HC153",
+"titel": "2 × 4-zu-1-Multiplexer",
+"kurz": "Zwei unabhängige Multiplexer mit je vier Dateneingängen, gemeinsame Auswahlleitungen A, B.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"/1G:i",
+"B:i",
+"1C3:i",
+"1C2:i",
+"1C1:i",
+"1C0:i",
+"1Y:o",
+"GND:g",
+"2Y:o",
+"2C0:i",
+"2C1:i",
+"2C2:i",
+"2C3:i",
+"A:i",
+"/2G:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V.",
+"hinweise": [
+"Auswahl: A (Bit 0), B (Bit 1). /G = LOW gibt den jeweiligen Multiplexer frei.",
+"Als Funktionsgenerator nutzbar: jede Logikfunktion mit drei Variablen.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "multiplexer 4 zu 1 153 mux",
+"kat": "decoder",
+"uid": "decoder:74153"
+}
+}
+],
+"siehe": [
+"bt_ic:decoder_74151",
+"bt_ic:decoder_74157"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "decoder_74251",
+"titel": "74251 / 74HC251",
+"kurz": "8-zu-1-Multiplexer mit Tri-State-Ausgang",
+"tags": [
+"multiplexer",
+"8",
+"zu",
+"1",
+"tri",
+"state",
+"251",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"74251",
+"/",
+"74HC251",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie 74151, aber der Ausgang kann hochohmig geschaltet werden (/OE)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74251",
+"name": "74251 / 74HC251",
+"titel": "8-zu-1-Multiplexer mit Tri-State-Ausgang",
+"kurz": "Wie 74151, aber der Ausgang kann hochohmig geschaltet werden (/OE).",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"D3:i",
+"D2:i",
+"D1:i",
+"D0:i",
+"Y:o",
+"W:o",
+"/OE:i",
+"GND:g",
+"C:i",
+"B:i",
+"A:i",
+"D7:i",
+"D6:i",
+"D5:i",
+"D4:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V.",
+"hinweise": [
+"Y ist der normale Ausgang, W der invertierte.",
+"Auswahl: A (Bit 0), B, C (Bit 2).",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "multiplexer 8 zu 1 tri state 251",
+"kat": "decoder",
+"uid": "decoder:74251"
+}
+}
+],
+"siehe": [
+"bt_ic:decoder_74151"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "decoder_74244",
+"titel": "74244 / 74HC244",
+"kurz": "8-Bit-Bus-Treiber (nicht invertierend, Tri-State)",
+"tags": [
+"bus",
+"treiber",
+"puffer",
+"tri",
+"state",
+"244",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-20",
+"74244",
+"/",
+"74HC244",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zwei Gruppen zu je vier Puffern mit getrennten Freigaben. Standardbaustein für Adress- und Steuerleitungen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74244",
+"name": "74244 / 74HC244",
+"titel": "8-Bit-Bus-Treiber (nicht invertierend, Tri-State)",
+"kurz": "Zwei Gruppen zu je vier Puffern mit getrennten Freigaben. Standardbaustein für Adress- und Steuerleitungen.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-20",
+"pins": [
+"/1OE:i",
+"1A1:i",
+"2Y4:o",
+"1A2:i",
+"2Y3:o",
+"1A3:i",
+"2Y2:o",
+"1A4:i",
+"2Y1:o",
+"GND:g",
+"2A1:i",
+"1Y4:o",
+"2A2:i",
+"1Y3:o",
+"2A3:i",
+"1Y2:o",
+"2A4:i",
+"1Y1:o",
+"/2OE:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V.",
+"hinweise": [
+"Gruppen: 1A→1Y mit /1OE, 2A→2Y mit /2OE (Pin 19).",
+"Einrichtungs-Treiber. Für beide Richtungen (Daten-Bus) den 74245 nehmen.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "bus treiber puffer tri state 244",
+"kat": "decoder",
+"uid": "decoder:74244"
+}
+}
+],
+"siehe": [
+"bt_ic:decoder_74245",
+"bt_ic:decoder_74541"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "decoder_74240",
+"titel": "74240 / 74HC240",
+"kurz": "8-Bit-Bus-Treiber (invertierend, Tri-State)",
+"tags": [
+"bus",
+"treiber",
+"invertierend",
+"240",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-20",
+"74240",
+"/",
+"74HC240",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie 74244, aber alle Ausgänge sind invertiert."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "74240",
+"name": "74240 / 74HC240",
+"titel": "8-Bit-Bus-Treiber (invertierend, Tri-State)",
+"kurz": "Wie 74244, aber alle Ausgänge sind invertiert.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-20",
+"pins": [
+"/1OE:i",
+"1A1:i",
+"2Y4:o",
+"1A2:i",
+"2Y3:o",
+"1A3:i",
+"2Y2:o",
+"1A4:i",
+"2Y1:o",
+"GND:g",
+"2A1:i",
+"1Y4:o",
+"2A2:i",
+"1Y3:o",
+"2A3:i",
+"1Y2:o",
+"2A4:i",
+"1Y1:o",
+"/2OE:i",
+"VCC:v"
+],
+"spannung": "74LS: 5 V. 74HC: 2–6 V.",
+"hinweise": [
+"Pinbelegung wie 74244, Ausgänge invertieren (Y = ¬A).",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "bus treiber invertierend 240",
+"kat": "decoder",
+"uid": "decoder:74240"
+}
+}
+],
+"siehe": [
+"bt_ic:decoder_74244"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "decoder_7448",
+"titel": "7448",
+"kurz": "BCD-zu-7-Segment-Dekoder (für Common-Kathode)",
+"tags": [
+"7",
+"segment",
+"bcd",
+"dekoder",
+"common",
+"kathode",
+"7448",
+"anzeige",
+"74xx",
+"(LS",
+"/",
+"HC",
+"/",
+"HCT)",
+"DIP-16",
+"7448",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Gegenstück zum 7447: Ausgänge sind active HIGH und treiben Anzeigen mit gemeinsamer Kathode."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "7448",
+"name": "7448",
+"titel": "BCD-zu-7-Segment-Dekoder (für Common-Kathode)",
+"kurz": "Gegenstück zum 7447: Ausgänge sind active HIGH und treiben Anzeigen mit gemeinsamer Kathode.",
+"familie": "74xx (LS / HC / HCT)",
+"gehaeuse": "DIP-16",
+"pins": [
+"B:i",
+"C:i",
+"/LT:i",
+"/BI/RBO:x",
+"/RBI:i",
+"D:i",
+"A:i",
+"GND:g",
+"e:o",
+"d:o",
+"c:o",
+"b:o",
+"a:o",
+"g:o",
+"f:o",
+"VCC:v"
+],
+"spannung": "5 V.",
+"hinweise": [
+"/LT = Lampentest (LOW: alle Segmente an), /BI//RBO = Ausblenden bzw. Ausgang der Nullunterdrückung, /RBI = Nullunterdrückung (führende Nullen ausblenden).",
+"Für Common-Anode-Anzeigen den 7447 nehmen.",
+"100-nF-Kondensator zwischen Versorgung und GND, nah am Chip."
+],
+"tags": "7 segment bcd dekoder common kathode 7448 anzeige",
+"kat": "decoder",
+"uid": "decoder:7448"
+}
+}
+],
+"siehe": [
+"bt_ic:decoder_7447",
+"bt_ic:decoder_4511"
+],
+"familie": "74xx (LS / HC / HCT)"
+},
+{
+"id": "decoder_4052",
+"titel": "CD4052",
+"kurz": "2 × 4-Kanal-Analog-Multiplexer",
+"tags": [
+"analog",
+"multiplexer",
+"4052",
+"CMOS",
+"4000",
+"DIP-16",
+"CD4052",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zwei Analogschalter-Gruppen zu je vier Kanälen, gemeinsame Adresse A, B. Für Analog- und Digitalsignale."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4052",
+"name": "CD4052",
+"titel": "2 × 4-Kanal-Analog-Multiplexer",
+"kurz": "Zwei Analogschalter-Gruppen zu je vier Kanälen, gemeinsame Adresse A, B. Für Analog- und Digitalsignale.",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-16",
+"pins": [
+"0Y:x",
+"2Y:x",
+"Y:x",
+"3Y:x",
+"1Y:x",
+"INH:i",
+"VEE:v",
+"VSS:g",
+"B:i",
+"A:i",
+"3X:x",
+"0X:x",
+"X:x",
+"1X:x",
+"2X:x",
+"VDD:v"
+],
+"spannung": "3–15 V (VDD−VEE).",
+"hinweise": [
+"X und Y sind zwei getrennte 4-zu-1-Multiplexer; Pins 3 und 13 sind die Gemeinsamen.",
+"INH = HIGH schaltet alle Kanäle ab.",
+"Für bipolare Signale VEE an negative Spannung, sonst VEE = VSS = GND."
+],
+"tags": "analog multiplexer 4052",
+"kat": "decoder",
+"uid": "decoder:4052"
+}
+}
+],
+"siehe": [
+"bt_ic:decoder_4051",
+"bt_ic:decoder_4066"
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "decoder_4046",
+"titel": "CD4046 / 74HC4046",
+"kurz": "PLL (Phasenregelschleife) mit VCO",
+"tags": [
+"pll",
+"phasenregelschleife",
+"vco",
+"4046",
+"demodulator",
+"CMOS",
+"4000",
+"DIP-16",
+"CD4046",
+"/",
+"74HC4046",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Enthält Phasen-Komparator, spannungsgesteuerten Oszillator (VCO) und Zener. Anwendungen: Frequenz-Vervielfachung, Demodulation, Frequenzgeneratoren."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "4046",
+"name": "CD4046 / 74HC4046",
+"titel": "PLL (Phasenregelschleife) mit VCO",
+"kurz": "Enthält Phasen-Komparator, spannungsgesteuerten Oszillator (VCO) und Zener. Anwendungen: Frequenz-Vervielfachung, Demodulation, Frequenzgeneratoren.",
+"familie": "CMOS 4000",
+"gehaeuse": "DIP-16",
+"pins": [
+"PCPout:o",
+"PC1out:o",
+"CMPin:i",
+"VCOout:o",
+"INH:i",
+"C1A:x",
+"C1B:x",
+"VSS:g",
+"VCOin:i",
+"DEMout:o",
+"R1:x",
+"R2:x",
+"PC2out:o",
+"SIGin:i",
+"ZENER:x",
+"VDD:v"
+],
+"spannung": "3–15 V (HC4046: 3–6 V).",
+"hinweise": [
+"Pinbelegung: 14 = Signaleingang, 3 = Vergleichseingang (vom VCO zurück), 4 = VCO-Ausgang, 9 = VCO-Steuereingang.",
+"Frequenzbereich über R1, R2, C1 festgelegt.",
+"Pinbelegung bitte mit dem Datenblatt deines Herstellers gegenprüfen."
+],
+"tags": "pll phasenregelschleife vco 4046 demodulator",
+"kat": "decoder",
+"uid": "decoder:4046"
+}
+}
+],
+"siehe": [
+"bt_ic:speicher_4060"
+],
+"familie": "CMOS 4000"
+},
+{
+"id": "decoder_max232",
+"titel": "MAX232",
+"kurz": "RS-232-Pegelwandler (TTL ↔ ±10 V)",
+"tags": [
+"rs232",
+"uart",
+"pegelwandler",
+"max232",
+"seriell",
+"Schnittstellen-IC",
+"DIP-16",
+"MAX232",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wandelt 5-V-UART-Pegel in RS-232-Pegel und zurück. Braucht fünf kleine Kondensatoren (je 1 µF…10 µF) für die interne Ladungspumpe."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "max232",
+"name": "MAX232",
+"titel": "RS-232-Pegelwandler (TTL ↔ ±10 V)",
+"kurz": "Wandelt 5-V-UART-Pegel in RS-232-Pegel und zurück. Braucht fünf kleine Kondensatoren (je 1 µF…10 µF) für die interne Ladungspumpe.",
+"familie": "Schnittstellen-IC",
+"gehaeuse": "DIP-16",
+"pins": [
+"C1+:x",
+"V+:x",
+"C1−:x",
+"C2+:x",
+"C2−:x",
+"V−:x",
+"T2OUT:o",
+"R2IN:i",
+"R2OUT:o",
+"T2IN:i",
+"T1IN:i",
+"R1OUT:o",
+"R1IN:i",
+"T1OUT:o",
+"GND:g",
+"VCC:v"
+],
+"spannung": "5 V (MAX3232: 3–5,5 V).",
+"hinweise": [
+"Kondensatoren: C1 an Pin 1/3, C2 an Pin 4/5, C3 von Pin 2 nach VCC, C4 von Pin 6 nach GND, C5 100 nF an VCC.",
+"Für 3,3 V (z. B. Raspberry Pi) MAX3232 nehmen.",
+"T = Sender (TTL → RS-232), R = Empfänger (RS-232 → TTL)."
+],
+"tags": "rs232 uart pegelwandler max232 seriell",
+"kat": "decoder",
+"uid": "decoder:max232"
+}
+}
+],
+"siehe": [
+"bt_module:bus_rs232",
+"bt_module:bus_uart"
+],
+"familie": "Schnittstellen-IC"
+},
+{
+"id": "decoder_pcf8591",
+"titel": "PCF8591",
+"kurz": "8-Bit-AD/DA-Wandler (I²C)",
+"tags": [
+"adc",
+"dac",
+"i2c",
+"pcf8591",
+"analog",
+"wandler",
+"AD-/DA-Wandler",
+"DIP-16",
+"PCF8591",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Vier Analogeingänge (8 Bit) und ein Analogausgang (DAC), alles über I²C."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "pcf8591",
+"name": "PCF8591",
+"titel": "8-Bit-AD/DA-Wandler (I²C)",
+"kurz": "Vier Analogeingänge (8 Bit) und ein Analogausgang (DAC), alles über I²C.",
+"familie": "AD-/DA-Wandler",
+"gehaeuse": "DIP-16",
+"pins": [
+"AIN0:i",
+"AIN1:i",
+"AIN2:i",
+"AIN3:i",
+"A0:i",
+"A1:i",
+"A2:i",
+"VSS:g",
+"SDA:x",
+"SCL:i",
+"OSC:x",
+"EXT:i",
+"AGND:g",
+"VREF:i",
+"AOUT:o",
+"VDD:v"
+],
+"spannung": "2,5–6 V.",
+"hinweise": [
+"Standard-Adresse 0x48 (A0…A2 an GND), A0…A2 legen die Adresse fest.",
+"Langsam (ca. 11 kSample/s), für einfache Messaufgaben ok.",
+"Pins OSC/EXT: EXT an GND legen, OSC offen lassen (interner Oszillator)."
+],
+"tags": "adc dac i2c pcf8591 analog wandler",
+"kat": "decoder",
+"uid": "decoder:pcf8591"
+}
+}
+],
+"siehe": [
+"bt_ic:decoder_mcp3008"
+],
+"familie": "AD-/DA-Wandler"
+},
+{
+"id": "decoder_mcp3208",
+"titel": "MCP3208",
+"kurz": "12-Bit-ADC, 8 Kanäle (SPI)",
+"tags": [
+"adc",
+"spi",
+"12",
+"bit",
+"mcp3208",
+"AD-/DA-Wandler",
+"DIP-16",
+"MCP3208",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wie MCP3008, aber mit 12 Bit Auflösung (4096 Stufen). Gleiche Pinbelegung und gleiche SPI-Ansteuerung bis auf die längeren Datenworte."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "mcp3208",
+"name": "MCP3208",
+"titel": "12-Bit-ADC, 8 Kanäle (SPI)",
+"kurz": "Wie MCP3008, aber mit 12 Bit Auflösung (4096 Stufen). Gleiche Pinbelegung und gleiche SPI-Ansteuerung bis auf die längeren Datenworte.",
+"familie": "AD-/DA-Wandler",
+"gehaeuse": "DIP-16",
+"pins": [
+"CH0:i",
+"CH1:i",
+"CH2:i",
+"CH3:i",
+"CH4:i",
+"CH5:i",
+"CH6:i",
+"CH7:i",
+"DGND:g",
+"/CS:i",
+"DIN:i",
+"DOUT:o",
+"CLK:i",
+"AGND:g",
+"VREF:i",
+"VDD:v"
+],
+"spannung": "2,7–5,5 V.",
+"hinweise": [
+"Nicht mit dem MCP3008 verwechseln (10 Bit).",
+"Bei 3,3 V: VREF = 3,3 V → eine Stufe entspricht ca. 0,8 mV.",
+"Raspberry Pi: SPI0, /CS an CE0."
+],
+"tags": "adc spi 12 bit mcp3208",
+"kat": "decoder",
+"uid": "decoder:mcp3208"
+}
+}
+],
+"siehe": [
+"bt_ic:decoder_mcp3008"
+],
+"familie": "AD-/DA-Wandler"
+}
+]
+}

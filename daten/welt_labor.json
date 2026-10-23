@@ -1,0 +1,2552 @@
+{
+ "id": "labor",
+ "name": "Labor",
+ "untertitel": "Messplatz: Pins, I²C, Messen, Seriell, Logik, PWM, Sensoren, Rechner",
+ "farbe": "himmel",
+ "symbol": "amperemeter",
+ "reihenfolge": 25,
+ "seiten": [
+  {
+   "id": "werkzeuge",
+   "titel": "Labor-Übersicht",
+   "kurz": "Alle Labor-Werkzeuge und das Nachschlagewissen",
+   "tags": [
+    "labor",
+    "messplatz",
+    "pins",
+    "i2c",
+    "pwm",
+    "seriell",
+    "logic analyzer",
+    "messen"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": "Das **Labor** ist dein Messplatz im Atlas. Oben in der Liste (Gruppe „Messplatz (live)“) liegen die Werkzeuge, die direkt auf die Hardware zugreifen. Darunter stehen das Nachschlagewissen und die Sensoren-Datenblätter."
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Werkzeug",
+      "Was es macht"
+     ],
+     "zeilen": [
+      [
+       "Pins",
+       "Die 40 Pins als Bild lesen und schalten (Eingang/Ausgang, hoch/tief, Pull-up/Pull-down)."
+      ],
+      [
+       "I²C-Scanner",
+       "Bus scannen: welche Adressen antworten, was sitzt dort meist."
+      ],
+      [
+       "Messen",
+       "Live-Diagramm von Temperatur, Last, RAM, Takt, DS18B20, Netzteil-Spannung; Aufzeichnen als CSV."
+      ],
+      [
+       "Seriell-Monitor",
+       "Text von ESP32, Arduino, GPS live sehen, Befehle senden, Zahlen als Diagramm."
+      ],
+      [
+       "Logik-Analysator",
+       "Bis zu 4 GPIO-Pins aufnehmen: Signalverlauf, Frequenz, Tastgrad."
+      ],
+      [
+       "PWM & Servo",
+       "Servo- oder PWM-Signal an einem GPIO."
+      ],
+      [
+       "Sensoren suchen",
+       "Verdrahtung, Adresse, Software – und „Am Bus suchen“."
+      ],
+      [
+       "Rechner",
+       "Farbcode, Ohm, LED-Vorwiderstand, Spannungsteiler, RC-Filter."
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Die Werkzeuge brauchen nur Programme, die auf dem Pi schon da sind: `pinctrl`, `i2cdetect` (Paket i2c-tools), `vcgencmd`. Fehlt eines, steht auf der Seite, was zu tun ist."
+    }
+   ],
+   "siehe": [
+    "labor:pinout",
+    "labor:i2cadr",
+    "labor:sensoren"
+   ],
+   "symbol": "amperemeter",
+   "gruppe": "Messplatz (live)"
+  },
+  {
+   "id": "l_pins",
+   "titel": "Pins",
+   "kurz": "Die 40 Pins des Raspberry Pi – lesen und schalten",
+   "tags": "gpio, pins, pinctrl, header, pull-up, pull-down",
+   "siehe": [
+    "labor:werkzeuge"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": "Die 40 Pins des Raspberry Pi als Bild. **Farbe** = Zustand (hoch/tief), **Ring** = Ausgang oder Sonderfunktion. Pin antippen: Eingang/Ausgang, hoch/tief setzen, Pull-up/Pull-down. Belegte Pins (I²C, UART …) ändert er nur nach einer zweiten Bestätigung."
+    },
+    {
+     "t": "labor",
+     "tool": "pins",
+     "h": 640
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Braucht `pinctrl` – das ist auf dem Pi schon da."
+    }
+   ],
+   "gruppe": "Messplatz (live)"
+  },
+  {
+   "id": "l_i2c",
+   "titel": "I²C-Scanner",
+   "kurz": "Bus scannen und sehen, was an welcher Adresse sitzt",
+   "tags": "i2c, scan, i2cdetect, adresse",
+   "siehe": [
+    "labor:werkzeuge"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": "Scannt den I²C-Bus und zeigt alle gefundenen Adressen – und was dort meist sitzt (OLED 0x3C, BME280 0x76 …). Die Liste aller bekannten Adressen steht auf der Seite „I²C-Adressen“."
+    },
+    {
+     "t": "labor",
+     "tool": "i2c",
+     "h": 520
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Fehlt `i2cdetect`: `sudo apt install i2c-tools`. I²C muss im Pi aktiviert sein."
+    }
+   ],
+   "gruppe": "Messplatz (live)"
+  },
+  {
+   "id": "l_messen",
+   "titel": "Messen",
+   "kurz": "Live-Diagramm: Temperatur, Last, RAM, Takt, Fühler",
+   "tags": "messen, diagramm, temperatur, csv, ds18b20, vcgencmd",
+   "siehe": [
+    "labor:werkzeuge"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": "Live-Diagramm je Messgröße: CPU-Temperatur, Last, RAM, Takt, 1-Wire-Fühler (DS18B20) und Spannung am Netzteil-Eingang. „Aufzeichnen“ legt eine CSV-Datei an (`~/Oratio_Messungen/messung_<Zeit>.csv`)."
+    },
+    {
+     "t": "labor",
+     "tool": "messen",
+     "h": 640
+    }
+   ],
+   "gruppe": "Messplatz (live)"
+  },
+  {
+   "id": "l_seriell",
+   "titel": "Seriell-Monitor",
+   "kurz": "Text von ESP32, Arduino, GPS & Co. live sehen und Befehle senden",
+   "tags": "seriell, uart, usb, esp32, arduino, gps, monitor, pyserial",
+   "siehe": [
+    "labor:werkzeuge"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": "Serieller Monitor für alles, was per USB/UART Text schickt: ESP32, Arduino, GPS, Sensor-Module. Zeigt die Zeilen live, sendet Befehle, zeichnet Zahlen (auch `temp:23.5,hum:40`) als Diagramm und speichert auf Wunsch eine CSV-Datei (`~/Oratio_Messungen/seriell_<Zeit>.csv`)."
+    },
+    {
+     "t": "labor",
+     "tool": "seriell",
+     "h": 680
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Braucht das Paket `pyserial`. Wähle oben den Port (meist `/dev/ttyUSB0` oder `/dev/ttyACM0`)."
+    }
+   ],
+   "gruppe": "Messplatz (live)"
+  },
+  {
+   "id": "l_logik",
+   "titel": "Logik-Analysator",
+   "kurz": "Bis zu 4 GPIO-Pins aufnehmen: Signalverlauf, Frequenz, Tastgrad",
+   "tags": "logik, analyzer, signal, frequenz, tastgrad, lgpio",
+   "siehe": [
+    "labor:werkzeuge"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": "Logic Analyzer light: bis zu 4 GPIO-Pins aufnehmen, Signalverlauf ansehen, Frequenz und Tastgrad ablesen."
+    },
+    {
+     "t": "labor",
+     "tool": "logik",
+     "h": 640
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Braucht das Paket `python3-lgpio`."
+    }
+   ],
+   "gruppe": "Messplatz (live)"
+  },
+  {
+   "id": "l_pwm",
+   "titel": "PWM & Servo",
+   "kurz": "Servo- oder PWM-Signal an einem GPIO",
+   "tags": "pwm, servo, gpio, schieber",
+   "siehe": [
+    "labor:werkzeuge"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": "Erzeugt ein Servo- oder PWM-Signal an einem GPIO. Du stellst es mit dem Schieber ein."
+    },
+    {
+     "t": "labor",
+     "tool": "pwm",
+     "h": 560
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Angeschlossene Last nie direkt am Pin betreiben – Servos brauchen eine eigene 5-V-Versorgung (Masse verbinden)."
+    }
+   ],
+   "gruppe": "Messplatz (live)"
+  },
+  {
+   "id": "l_sensoren",
+   "titel": "Sensoren suchen",
+   "kurz": "Nachschlagewerk mit „Am Bus suchen“",
+   "tags": "sensoren, i2c, bus, verdrahtung, adresse, software",
+   "siehe": [
+    "labor:werkzeuge"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": "Nachschlagewerk: Verdrahtung, Adresse, Software. „Am Bus suchen“ prüft, ob ein I²C-Sensor wirklich da ist. Ausführliche Datenblätter stehen darunter in der Gruppe „Sensoren“."
+    },
+    {
+     "t": "labor",
+     "tool": "sensoren",
+     "h": 640
+    }
+   ],
+   "gruppe": "Messplatz (live)"
+  },
+  {
+   "id": "l_rechner",
+   "titel": "Rechner",
+   "kurz": "Farbcode, Ohm, LED-Vorwiderstand, Spannungsteiler, RC-Filter",
+   "tags": "rechner, ohm, farbcode, led, vorwiderstand, teiler, rc",
+   "siehe": [
+    "labor:werkzeuge"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": "Die Elektroniker-Rechner: Farbcode, Ohm, LED-Vorwiderstand, Spannungsteiler, RC-Filter. Schreibweise: 4k7, 10u, 2,2M, 100n."
+    },
+    {
+     "t": "labor",
+     "tool": "rechner",
+     "h": 600
+    }
+   ],
+   "gruppe": "Messplatz (live)"
+  },
+  {
+   "id": "pinout",
+   "titel": "Pi-Pinout: 40 Pins",
+   "kurz": "Pin, Name, BCM-Nummer und Art – Header des Raspberry Pi",
+   "tags": [
+    "pinout",
+    "gpio",
+    "header",
+    "pin",
+    "bcm",
+    "40-pin",
+    "belegung",
+    "raspberry"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Der 40-polige Header (Pi 3/4/5, Zero). Linke Spalte = ungerade Pins (außen am Rand der Platine), rechts gerade. **BCM** ist die GPIO-Nummer, die in Software (gpiozero, pinctrl) gilt."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Pin",
+      "Name",
+      "Art",
+      "BCM",
+      "Pin",
+      "Name",
+      "Art",
+      "BCM"
+     ],
+     "zeilen": [
+      [
+       "1",
+       "3V3",
+       "3,3 V",
+       "–",
+       "2",
+       "5V",
+       "5 V",
+       "–"
+      ],
+      [
+       "3",
+       "GPIO2 SDA",
+       "GPIO",
+       "2",
+       "4",
+       "5V",
+       "5 V",
+       "–"
+      ],
+      [
+       "5",
+       "GPIO3 SCL",
+       "GPIO",
+       "3",
+       "6",
+       "GND",
+       "GND",
+       "–"
+      ],
+      [
+       "7",
+       "GPIO4",
+       "GPIO",
+       "4",
+       "8",
+       "GPIO14 TXD",
+       "GPIO",
+       "14"
+      ],
+      [
+       "9",
+       "GND",
+       "GND",
+       "–",
+       "10",
+       "GPIO15 RXD",
+       "GPIO",
+       "15"
+      ],
+      [
+       "11",
+       "GPIO17",
+       "GPIO",
+       "17",
+       "12",
+       "GPIO18 PWM",
+       "GPIO",
+       "18"
+      ],
+      [
+       "13",
+       "GPIO27",
+       "GPIO",
+       "27",
+       "14",
+       "GND",
+       "GND",
+       "–"
+      ],
+      [
+       "15",
+       "GPIO22",
+       "GPIO",
+       "22",
+       "16",
+       "GPIO23",
+       "GPIO",
+       "23"
+      ],
+      [
+       "17",
+       "3V3",
+       "3,3 V",
+       "–",
+       "18",
+       "GPIO24",
+       "GPIO",
+       "24"
+      ],
+      [
+       "19",
+       "GPIO10 MOSI",
+       "GPIO",
+       "10",
+       "20",
+       "GND",
+       "GND",
+       "–"
+      ],
+      [
+       "21",
+       "GPIO9 MISO",
+       "GPIO",
+       "9",
+       "22",
+       "GPIO25",
+       "GPIO",
+       "25"
+      ],
+      [
+       "23",
+       "GPIO11 SCLK",
+       "GPIO",
+       "11",
+       "24",
+       "GPIO8 CE0",
+       "GPIO",
+       "8"
+      ],
+      [
+       "25",
+       "GND",
+       "GND",
+       "–",
+       "26",
+       "GPIO7 CE1",
+       "GPIO",
+       "7"
+      ],
+      [
+       "27",
+       "GPIO0 ID_SD",
+       "GPIO",
+       "0",
+       "28",
+       "GPIO1 ID_SC",
+       "GPIO",
+       "1"
+      ],
+      [
+       "29",
+       "GPIO5",
+       "GPIO",
+       "5",
+       "30",
+       "GND",
+       "GND",
+       "–"
+      ],
+      [
+       "31",
+       "GPIO6",
+       "GPIO",
+       "6",
+       "32",
+       "GPIO12 PWM",
+       "GPIO",
+       "12"
+      ],
+      [
+       "33",
+       "GPIO13 PWM",
+       "GPIO",
+       "13",
+       "34",
+       "GND",
+       "GND",
+       "–"
+      ],
+      [
+       "35",
+       "GPIO19",
+       "GPIO",
+       "19",
+       "36",
+       "GPIO16",
+       "GPIO",
+       "16"
+      ],
+      [
+       "37",
+       "GPIO26",
+       "GPIO",
+       "26",
+       "38",
+       "GPIO20",
+       "GPIO",
+       "20"
+      ],
+      [
+       "39",
+       "GND",
+       "GND",
+       "–",
+       "40",
+       "GPIO21",
+       "GPIO",
+       "21"
+      ]
+     ],
+     "mono": [
+      0,
+      3,
+      4,
+      7
+     ],
+     "fett": true,
+     "titel": "Header-Belegung"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Zum Anklicken und Farben ansehen: Welt **Pi & Microcontroller**, Seite GPIO."
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "GPIO-Pins vertragen **3,3 V**. 5 V an einem Eingang kann den Pi zerstören (Spannungsteiler oder Pegelwandler benutzen). Pro Pin maximal ca. 16 mA, insgesamt wenige 10 mA."
+    }
+   ],
+   "siehe": [
+    "mikro:gpio",
+    "labor:werkzeuge"
+   ],
+   "symbol": "gehaeuse",
+   "gruppe": "Nachschlagen"
+  },
+  {
+   "id": "i2cadr",
+   "titel": "I²C-Adressen",
+   "kurz": "Welche Chips sitzen auf welcher Adresse?",
+   "tags": [
+    "i2c",
+    "adresse",
+    "i2cdetect",
+    "scanner",
+    "oled",
+    "bme280",
+    "ds3231",
+    "ads1115"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Nach dem Scan (`i2cdetect -y 1`) zeigt dir die Tabelle, was an einer Adresse **meist** sitzt. Mehrere Chips teilen sich Adressen – im Zweifel Datenblatt oder Chip-ID prüfen."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Adresse",
+      "Meist …"
+     ],
+     "zeilen": [
+      [
+       "0x20",
+       "PCF8574 / MCP23017 (Port-Erweiterung)"
+      ],
+      [
+       "0x21",
+       "PCF8574 / MCP23017"
+      ],
+      [
+       "0x22",
+       "PCF8574 / MCP23017"
+      ],
+      [
+       "0x23",
+       "BH1750 (Licht) / PCF8574"
+      ],
+      [
+       "0x24",
+       "PCF8574"
+      ],
+      [
+       "0x25",
+       "PCF8574"
+      ],
+      [
+       "0x26",
+       "PCF8574"
+      ],
+      [
+       "0x27",
+       "LCD-Adapter (PCF8574)"
+      ],
+      [
+       "0x29",
+       "VL53L0X (Abstand) / TSL2561"
+      ],
+      [
+       "0x38",
+       "PCF8574A / AHT10 / FT6236 (Touch)"
+      ],
+      [
+       "0x39",
+       "TSL2561"
+      ],
+      [
+       "0x3C",
+       "OLED SSD1306 / SH1106"
+      ],
+      [
+       "0x3D",
+       "OLED SSD1306"
+      ],
+      [
+       "0x3F",
+       "LCD-Adapter (PCF8574A)"
+      ],
+      [
+       "0x40",
+       "INA219 / PCA9685 / HTU21D / SI7021"
+      ],
+      [
+       "0x41",
+       "INA219 / PCA9685"
+      ],
+      [
+       "0x44",
+       "SHT31 / INA219"
+      ],
+      [
+       "0x45",
+       "SHT31 / INA219"
+      ],
+      [
+       "0x48",
+       "ADS1115 / PCF8591 / TMP102"
+      ],
+      [
+       "0x49",
+       "ADS1115 / TSL2561"
+      ],
+      [
+       "0x4A",
+       "ADS1115"
+      ],
+      [
+       "0x4B",
+       "ADS1115"
+      ],
+      [
+       "0x50",
+       "EEPROM 24Cxx"
+      ],
+      [
+       "0x51",
+       "EEPROM / PCF8563 (Uhr)"
+      ],
+      [
+       "0x52",
+       "EEPROM / Nunchuk"
+      ],
+      [
+       "0x53",
+       "ADXL345 / EEPROM"
+      ],
+      [
+       "0x57",
+       "EEPROM (DS3231-Modul)"
+      ],
+      [
+       "0x58",
+       "SGP30"
+      ],
+      [
+       "0x5A",
+       "CCS811 / MLX90614"
+      ],
+      [
+       "0x5C",
+       "AM2320 / BH1750"
+      ],
+      [
+       "0x62",
+       "SCD30 / MCP4725"
+      ],
+      [
+       "0x68",
+       "DS3231 / DS1307 (Uhr) / MPU6050"
+      ],
+      [
+       "0x69",
+       "MPU6050 / ICM20948"
+      ],
+      [
+       "0x70",
+       "TCA9548A (I2C-Umschalter) / HT16K33"
+      ],
+      [
+       "0x76",
+       "BME280 / BMP280 / BME680"
+      ],
+      [
+       "0x77",
+       "BME280 / BMP180 / BME680"
+      ]
+     ],
+     "mono": [
+      0
+     ],
+     "fett": true,
+     "titel": "Bekannte Adressen"
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Zwei Module mit gleicher Adresse am selben Bus? Adresse per Lötbrücke/ADDR-Pin ändern oder einen Umschalter **TCA9548A (0x70)** verwenden."
+    },
+    {
+     "t": "hinweis",
+     "typ": "merke",
+     "text": "Adressen im 7-Bit-Format, wie sie `i2cdetect` zeigt. Manche Datenblätter nennen 8-Bit-Adressen (Schreib-/Lese-Bit): 0x3C (7 Bit) = 0x78 (8 Bit)."
+    }
+   ],
+   "siehe": [
+    "schnittstellen:i2c",
+    "labor:sensoren"
+   ],
+   "symbol": "gehaeuse",
+   "gruppe": "Nachschlagen"
+  },
+  {
+   "id": "sensoren",
+   "titel": "Sensoren-Übersicht",
+   "kurz": "23 Sensoren mit Bus, Adresse und Spannung",
+   "tags": [
+    "sensoren",
+    "sensor",
+    "bme280",
+    "dht22",
+    "ds18b20",
+    "mpu6050",
+    "ina219",
+    "ads1115",
+    "hc-sr04",
+    "pir",
+    "gps"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "Die Sensoren aus dem Labor-Nachschlagewerk. Jede Zeile hat eine eigene Seite mit Verdrahtung und Software-Installation (links in der Liste)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Sensor",
+      "Misst",
+      "Anschluss",
+      "I²C-Adresse",
+      "Spannung"
+     ],
+     "zeilen": [
+      [
+       "BME280",
+       "Temperatur, Luftfeuchte, Luftdruck",
+       "I²C",
+       "0x76, 0x77",
+       "3,3 V"
+      ],
+      [
+       "BMP280",
+       "Temperatur, Luftdruck",
+       "I²C",
+       "0x76, 0x77",
+       "3,3 V"
+      ],
+      [
+       "SHT31",
+       "Temperatur, Luftfeuchte (genau)",
+       "I²C",
+       "0x44, 0x45",
+       "3,3 V"
+      ],
+      [
+       "AHT20",
+       "Temperatur, Luftfeuchte",
+       "I²C",
+       "0x38",
+       "3,3 V"
+      ],
+      [
+       "DHT22 / AM2302",
+       "Temperatur, Luftfeuchte",
+       "1 Leitung (eigenes Protokoll)",
+       "–",
+       "3,3-5 V"
+      ],
+      [
+       "DS18B20",
+       "Temperatur (wasserfest erhältlich)",
+       "1-Wire",
+       "–",
+       "3,3-5 V"
+      ],
+      [
+       "MPU6050",
+       "Beschleunigung + Drehrate (6 Achsen)",
+       "I²C",
+       "0x68, 0x69",
+       "3,3 V (Modul oft 5 V tolerant)"
+      ],
+      [
+       "BH1750",
+       "Helligkeit (Lux)",
+       "I²C",
+       "0x23, 0x5C",
+       "3,3 V"
+      ],
+      [
+       "VL53L0X",
+       "Abstand per Laser (bis ca. 1-2 m)",
+       "I²C",
+       "0x29",
+       "3,3 V"
+      ],
+      [
+       "INA219",
+       "Spannung + Strom + Leistung (bis 26 V)",
+       "I²C",
+       "0x40, 0x41, 0x44, 0x45",
+       "3,3-5 V"
+      ],
+      [
+       "ADS1115",
+       "Analog-Digital-Wandler 16 Bit, 4 Eingänge",
+       "I²C",
+       "0x48, 0x49, 0x4A, 0x4B",
+       "3,3 V"
+      ],
+      [
+       "MCP3008",
+       "Analog-Digital-Wandler 10 Bit, 8 Eingänge",
+       "SPI",
+       "–",
+       "3,3 V"
+      ],
+      [
+       "PCF8574",
+       "8 zusätzliche Ein-/Ausgänge",
+       "I²C",
+       "0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27",
+       "3,3-5 V"
+      ],
+      [
+       "PCA9685",
+       "16 Servo-/PWM-Kanäle",
+       "I²C",
+       "0x40",
+       "VCC 3,3 V · Servos extern 5-6 V"
+      ],
+      [
+       "SSD1306 OLED",
+       "Display 128×64 oder 128×32",
+       "I²C",
+       "0x3C, 0x3D",
+       "3,3 V"
+      ],
+      [
+       "QMC5883L / HMC5883L",
+       "Kompass (Magnetfeld)",
+       "I²C",
+       "0x0D, 0x1E",
+       "3,3 V"
+      ],
+      [
+       "MCP9808",
+       "Temperatur (±0,25 °C)",
+       "I²C",
+       "0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F",
+       "3,3 V"
+      ],
+      [
+       "APDS9960",
+       "Farbe, Nähe, Gesten",
+       "I²C",
+       "0x39",
+       "3,3 V"
+      ],
+      [
+       "TCS34725",
+       "Farbsensor (RGB + Helligkeit)",
+       "I²C",
+       "0x29",
+       "3,3 V"
+      ],
+      [
+       "MAX30102",
+       "Puls + Sauerstoffsättigung",
+       "I²C",
+       "0x57",
+       "3,3 V (LEDs 5 V je nach Modul)"
+      ],
+      [
+       "HC-SR04",
+       "Abstand per Ultraschall",
+       "2 Pins (Trigger/Echo)",
+       "–",
+       "5 V"
+      ],
+      [
+       "PIR HC-SR501",
+       "Bewegung",
+       "1 Pin (digital)",
+       "–",
+       "5 V"
+      ],
+      [
+       "NEO-6M GPS",
+       "Position, Zeit",
+       "UART",
+       "–",
+       "3,3-5 V (je nach Modul)"
+      ]
+     ],
+     "mono": [],
+     "fett": true,
+     "titel": "Alle Sensoren"
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "Die meisten Module vertragen **3,3 V** am Pi. Bei 5-V-Modulen mit Signalausgang (z. B. HC-SR04 Echo) immer Spannungsteiler oder Pegelwandler benutzen."
+    }
+   ],
+   "siehe": [
+    "labor:i2cadr",
+    "labor:pinout",
+    "sensoren:sensoren"
+   ],
+   "symbol": "ntc",
+   "gruppe": "Nachschlagen"
+  },
+  {
+   "id": "s_bme280",
+   "titel": "BME280",
+   "kurz": "Temperatur, Luftfeuchte, Luftdruck",
+   "tags": [
+    "BME280",
+    "Temperatur, Luftfeuchte, Luftdruck",
+    "I²C",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**BME280** – Temperatur, Luftfeuchte, Luftdruck."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Temperatur, Luftfeuchte, Luftdruck"
+      ],
+      [
+       "Anschluss",
+       "I²C"
+      ],
+      [
+       "I²C-Adresse",
+       "0x76, 0x77"
+      ],
+      [
+       "Spannung",
+       "3,3 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1 (3V3)  ·  GND → Pin 6 (GND)  ·  SDA → Pin 3 (GPIO2)  ·  SCL → Pin 5 (GPIO3)"
+      ],
+      [
+       "Software",
+       "sudo apt install python3-smbus2 · pip3 install RPi.bme280 --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Adresse 0x76 oder 0x77 je nach SDO-Pin. Das BMP280 sieht gleich aus, kann aber keine Luftfeuchte."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:i2cadr"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_bmp280",
+   "titel": "BMP280",
+   "kurz": "Temperatur, Luftdruck",
+   "tags": [
+    "BMP280",
+    "Temperatur, Luftdruck",
+    "I²C",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**BMP280** – Temperatur, Luftdruck."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Temperatur, Luftdruck"
+      ],
+      [
+       "Anschluss",
+       "I²C"
+      ],
+      [
+       "I²C-Adresse",
+       "0x76, 0x77"
+      ],
+      [
+       "Spannung",
+       "3,3 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1 (3V3)  ·  GND → Pin 6 (GND)  ·  SDA → Pin 3 (GPIO2)  ·  SCL → Pin 5 (GPIO3)"
+      ],
+      [
+       "Software",
+       "pip3 install adafruit-circuitpython-bmp280 --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Kein Feuchtefühler. Oft mit BME280 verwechselt - Chip-ID prüfen (BMP280 = 0x58, BME280 = 0x60)."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:i2cadr"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_sht31",
+   "titel": "SHT31",
+   "kurz": "Temperatur, Luftfeuchte (genau)",
+   "tags": [
+    "SHT31",
+    "Temperatur, Luftfeuchte (genau)",
+    "I²C",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**SHT31** – Temperatur, Luftfeuchte (genau)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Temperatur, Luftfeuchte (genau)"
+      ],
+      [
+       "Anschluss",
+       "I²C"
+      ],
+      [
+       "I²C-Adresse",
+       "0x44, 0x45"
+      ],
+      [
+       "Spannung",
+       "3,3 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1 (3V3)  ·  GND → Pin 6 (GND)  ·  SDA → Pin 3 (GPIO2)  ·  SCL → Pin 5 (GPIO3)"
+      ],
+      [
+       "Software",
+       "pip3 install adafruit-circuitpython-sht31d --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Sehr genau, Heizung zum Abtrocknen eingebaut."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:i2cadr"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_aht20",
+   "titel": "AHT20",
+   "kurz": "Temperatur, Luftfeuchte",
+   "tags": [
+    "AHT20",
+    "Temperatur, Luftfeuchte",
+    "I²C",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**AHT20** – Temperatur, Luftfeuchte."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Temperatur, Luftfeuchte"
+      ],
+      [
+       "Anschluss",
+       "I²C"
+      ],
+      [
+       "I²C-Adresse",
+       "0x38"
+      ],
+      [
+       "Spannung",
+       "3,3 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1 (3V3)  ·  GND → Pin 6 (GND)  ·  SDA → Pin 3 (GPIO2)  ·  SCL → Pin 5 (GPIO3)"
+      ],
+      [
+       "Software",
+       "pip3 install adafruit-circuitpython-ahtx0 --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Günstig und klein. Adresse fest 0x38."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:i2cadr"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_dht22_am2302",
+   "titel": "DHT22 / AM2302",
+   "kurz": "Temperatur, Luftfeuchte",
+   "tags": [
+    "DHT22 / AM2302",
+    "Temperatur, Luftfeuchte",
+    "1 Leitung (eigenes Protokoll)",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**DHT22 / AM2302** – Temperatur, Luftfeuchte."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Temperatur, Luftfeuchte"
+      ],
+      [
+       "Anschluss",
+       "1 Leitung (eigenes Protokoll)"
+      ],
+      [
+       "I²C-Adresse",
+       "–"
+      ],
+      [
+       "Spannung",
+       "3,3-5 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1 (3V3)  ·  GND → Pin 6  ·  DATA → Pin 7 (GPIO4)  ·  4,7 kΩ von DATA nach VCC"
+      ],
+      [
+       "Software",
+       "pip3 install adafruit-circuitpython-dht --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Langsam (alle 2 s eine Messung), manchmal Lesefehler - dann einfach nochmal lesen."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:pinout"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_ds18b20",
+   "titel": "DS18B20",
+   "kurz": "Temperatur (wasserfest erhältlich)",
+   "tags": [
+    "DS18B20",
+    "Temperatur (wasserfest erhältlich)",
+    "1-Wire",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**DS18B20** – Temperatur (wasserfest erhältlich)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Temperatur (wasserfest erhältlich)"
+      ],
+      [
+       "Anschluss",
+       "1-Wire"
+      ],
+      [
+       "I²C-Adresse",
+       "–"
+      ],
+      [
+       "Spannung",
+       "3,3-5 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC (rot) → Pin 1  ·  GND (schwarz) → Pin 6  ·  DATA (gelb) → Pin 7 (GPIO4)  ·  4,7 kΩ von DATA nach VCC"
+      ],
+      [
+       "Software",
+       "In /boot/firmware/config.txt:  dtoverlay=w1-gpio  → neu starten. Taucht danach im Labor unter „Messen“ von selbst auf."
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Mehrere Fühler können am gleichen Draht hängen (jeder hat eine eigene Adresse)."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:pinout"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_mpu6050",
+   "titel": "MPU6050",
+   "kurz": "Beschleunigung + Drehrate (6 Achsen)",
+   "tags": [
+    "MPU6050",
+    "Beschleunigung + Drehrate (6 Achsen)",
+    "I²C",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**MPU6050** – Beschleunigung + Drehrate (6 Achsen)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Beschleunigung + Drehrate (6 Achsen)"
+      ],
+      [
+       "Anschluss",
+       "I²C"
+      ],
+      [
+       "I²C-Adresse",
+       "0x68, 0x69"
+      ],
+      [
+       "Spannung",
+       "3,3 V (Modul oft 5 V tolerant)"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1 (3V3)  ·  GND → Pin 6 (GND)  ·  SDA → Pin 3 (GPIO2)  ·  SCL → Pin 5 (GPIO3)"
+      ],
+      [
+       "Software",
+       "pip3 install mpu6050-raspberrypi --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "AD0-Pin an 3V3 → Adresse 0x69. Das Modul GY-521 hat meist einen Spannungsregler."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:i2cadr"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_bh1750",
+   "titel": "BH1750",
+   "kurz": "Helligkeit (Lux)",
+   "tags": [
+    "BH1750",
+    "Helligkeit (Lux)",
+    "I²C",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**BH1750** – Helligkeit (Lux)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Helligkeit (Lux)"
+      ],
+      [
+       "Anschluss",
+       "I²C"
+      ],
+      [
+       "I²C-Adresse",
+       "0x23, 0x5C"
+      ],
+      [
+       "Spannung",
+       "3,3 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1 (3V3)  ·  GND → Pin 6 (GND)  ·  SDA → Pin 3 (GPIO2)  ·  SCL → Pin 5 (GPIO3)"
+      ],
+      [
+       "Software",
+       "pip3 install adafruit-circuitpython-bh1750 --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "ADDR-Pin hoch → 0x5C."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:i2cadr"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_vl53l0x",
+   "titel": "VL53L0X",
+   "kurz": "Abstand per Laser (bis ca. 1-2 m)",
+   "tags": [
+    "VL53L0X",
+    "Abstand per Laser (bis ca. 1-2 m)",
+    "I²C",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**VL53L0X** – Abstand per Laser (bis ca. 1-2 m)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Abstand per Laser (bis ca. 1-2 m)"
+      ],
+      [
+       "Anschluss",
+       "I²C"
+      ],
+      [
+       "I²C-Adresse",
+       "0x29"
+      ],
+      [
+       "Spannung",
+       "3,3 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1 (3V3)  ·  GND → Pin 6 (GND)  ·  SDA → Pin 3 (GPIO2)  ·  SCL → Pin 5 (GPIO3)"
+      ],
+      [
+       "Software",
+       "pip3 install adafruit-circuitpython-vl53l0x --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Mit XSHUT lässt sich die Adresse ändern, wenn man mehrere benutzt."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:i2cadr"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_ina219",
+   "titel": "INA219",
+   "kurz": "Spannung + Strom + Leistung (bis 26 V)",
+   "tags": [
+    "INA219",
+    "Spannung + Strom + Leistung (bis 26 V)",
+    "I²C",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**INA219** – Spannung + Strom + Leistung (bis 26 V)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Spannung + Strom + Leistung (bis 26 V)"
+      ],
+      [
+       "Anschluss",
+       "I²C"
+      ],
+      [
+       "I²C-Adresse",
+       "0x40, 0x41, 0x44, 0x45"
+      ],
+      [
+       "Spannung",
+       "3,3-5 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1 (3V3)  ·  GND → Pin 6 (GND)  ·  SDA → Pin 3 (GPIO2)  ·  SCL → Pin 5 (GPIO3)  ·  Messstrecke über VIN+ / VIN-"
+      ],
+      [
+       "Software",
+       "pip3 install pi-ina219 --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Perfekt, um den Verbrauch eines Projekts zu messen. Messung in Reihe (nicht parallel!) schalten."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:i2cadr"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_ads1115",
+   "titel": "ADS1115",
+   "kurz": "Analog-Digital-Wandler 16 Bit, 4 Eingänge",
+   "tags": [
+    "ADS1115",
+    "Analog-Digital-Wandler 16 Bit, 4 Eingänge",
+    "I²C",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**ADS1115** – Analog-Digital-Wandler 16 Bit, 4 Eingänge."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Analog-Digital-Wandler 16 Bit, 4 Eingänge"
+      ],
+      [
+       "Anschluss",
+       "I²C"
+      ],
+      [
+       "I²C-Adresse",
+       "0x48, 0x49, 0x4A, 0x4B"
+      ],
+      [
+       "Spannung",
+       "3,3 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1 (3V3)  ·  GND → Pin 6 (GND)  ·  SDA → Pin 3 (GPIO2)  ·  SCL → Pin 5 (GPIO3)"
+      ],
+      [
+       "Software",
+       "pip3 install adafruit-circuitpython-ads1x15 --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Der Pi hat KEINEN eigenen analogen Eingang - dafür ist dieser Chip da."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:i2cadr"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_mcp3008",
+   "titel": "MCP3008",
+   "kurz": "Analog-Digital-Wandler 10 Bit, 8 Eingänge",
+   "tags": [
+    "MCP3008",
+    "Analog-Digital-Wandler 10 Bit, 8 Eingänge",
+    "SPI",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**MCP3008** – Analog-Digital-Wandler 10 Bit, 8 Eingänge."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Analog-Digital-Wandler 10 Bit, 8 Eingänge"
+      ],
+      [
+       "Anschluss",
+       "SPI"
+      ],
+      [
+       "I²C-Adresse",
+       "–"
+      ],
+      [
+       "Spannung",
+       "3,3 V"
+      ],
+      [
+       "Verdrahtung",
+       "VDD/VREF → Pin 1  ·  AGND/DGND → Pin 6  ·  CLK → Pin 23 (GPIO11)  ·  DOUT → Pin 21 (GPIO9)  ·  DIN → Pin 19 (GPIO10)  ·  CS → Pin 24 (GPIO8)"
+      ],
+      [
+       "Software",
+       "SPI einschalten (raspi-config) · pip3 install gpiozero spidev --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Günstiger Wandler für Potis und analoge Sensoren."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:pinout"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_pcf8574",
+   "titel": "PCF8574",
+   "kurz": "8 zusätzliche Ein-/Ausgänge",
+   "tags": [
+    "PCF8574",
+    "8 zusätzliche Ein-/Ausgänge",
+    "I²C",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**PCF8574** – 8 zusätzliche Ein-/Ausgänge."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "8 zusätzliche Ein-/Ausgänge"
+      ],
+      [
+       "Anschluss",
+       "I²C"
+      ],
+      [
+       "I²C-Adresse",
+       "0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27"
+      ],
+      [
+       "Spannung",
+       "3,3-5 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1 (3V3)  ·  GND → Pin 6 (GND)  ·  SDA → Pin 3 (GPIO2)  ·  SCL → Pin 5 (GPIO3)"
+      ],
+      [
+       "Software",
+       "pip3 install smbus2 --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Adresse über A0-A2. Oft hinten an LCD-Modulen (Adresse meist 0x27 oder 0x3F)."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:i2cadr"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_pca9685",
+   "titel": "PCA9685",
+   "kurz": "16 Servo-/PWM-Kanäle",
+   "tags": [
+    "PCA9685",
+    "16 Servo-/PWM-Kanäle",
+    "I²C",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**PCA9685** – 16 Servo-/PWM-Kanäle."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "16 Servo-/PWM-Kanäle"
+      ],
+      [
+       "Anschluss",
+       "I²C"
+      ],
+      [
+       "I²C-Adresse",
+       "0x40"
+      ],
+      [
+       "Spannung",
+       "VCC 3,3 V · Servos extern 5-6 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1 (3V3)  ·  GND → Pin 6 (GND)  ·  SDA → Pin 3 (GPIO2)  ·  SCL → Pin 5 (GPIO3)  ·  Servo-Strom über V+ (eigenes Netzteil!)"
+      ],
+      [
+       "Software",
+       "pip3 install adafruit-circuitpython-servokit --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "Servos NIE am Pi-5-V-Pin betreiben, nur über ein eigenes Netzteil mit gemeinsamer Masse."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:i2cadr"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_ssd1306_oled",
+   "titel": "SSD1306 OLED",
+   "kurz": "Display 128×64 oder 128×32",
+   "tags": [
+    "SSD1306 OLED",
+    "Display 128×64 oder 128×32",
+    "I²C",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**SSD1306 OLED** – Display 128×64 oder 128×32."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Display 128×64 oder 128×32"
+      ],
+      [
+       "Anschluss",
+       "I²C"
+      ],
+      [
+       "I²C-Adresse",
+       "0x3C, 0x3D"
+      ],
+      [
+       "Spannung",
+       "3,3 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1 (3V3)  ·  GND → Pin 6 (GND)  ·  SDA → Pin 3 (GPIO2)  ·  SCL → Pin 5 (GPIO3)"
+      ],
+      [
+       "Software",
+       "(dein Projekt hat dafür schon den OLED-Dienst)"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Die Adresse 0x3C ist die häufigste."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:i2cadr"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_qmc5883l_hmc5883l",
+   "titel": "QMC5883L / HMC5883L",
+   "kurz": "Kompass (Magnetfeld)",
+   "tags": [
+    "QMC5883L / HMC5883L",
+    "Kompass (Magnetfeld)",
+    "I²C",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**QMC5883L / HMC5883L** – Kompass (Magnetfeld)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Kompass (Magnetfeld)"
+      ],
+      [
+       "Anschluss",
+       "I²C"
+      ],
+      [
+       "I²C-Adresse",
+       "0x0D, 0x1E"
+      ],
+      [
+       "Spannung",
+       "3,3 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1 (3V3)  ·  GND → Pin 6 (GND)  ·  SDA → Pin 3 (GPIO2)  ·  SCL → Pin 5 (GPIO3)"
+      ],
+      [
+       "Software",
+       "pip3 install py-qmc5883l --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "Achtung: Viele „HMC5883L“-Module enthalten in Wirklichkeit den QMC5883L (Adresse 0x0D)."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:i2cadr"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_mcp9808",
+   "titel": "MCP9808",
+   "kurz": "Temperatur (±0,25 °C)",
+   "tags": [
+    "MCP9808",
+    "Temperatur (±0,25 °C)",
+    "I²C",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**MCP9808** – Temperatur (±0,25 °C)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Temperatur (±0,25 °C)"
+      ],
+      [
+       "Anschluss",
+       "I²C"
+      ],
+      [
+       "I²C-Adresse",
+       "0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F"
+      ],
+      [
+       "Spannung",
+       "3,3 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1 (3V3)  ·  GND → Pin 6 (GND)  ·  SDA → Pin 3 (GPIO2)  ·  SCL → Pin 5 (GPIO3)"
+      ],
+      [
+       "Software",
+       "pip3 install adafruit-circuitpython-mcp9808 --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:i2cadr"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_apds9960",
+   "titel": "APDS9960",
+   "kurz": "Farbe, Nähe, Gesten",
+   "tags": [
+    "APDS9960",
+    "Farbe, Nähe, Gesten",
+    "I²C",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**APDS9960** – Farbe, Nähe, Gesten."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Farbe, Nähe, Gesten"
+      ],
+      [
+       "Anschluss",
+       "I²C"
+      ],
+      [
+       "I²C-Adresse",
+       "0x39"
+      ],
+      [
+       "Spannung",
+       "3,3 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1 (3V3)  ·  GND → Pin 6 (GND)  ·  SDA → Pin 3 (GPIO2)  ·  SCL → Pin 5 (GPIO3)"
+      ],
+      [
+       "Software",
+       "pip3 install adafruit-circuitpython-apds9960 --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:i2cadr"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_tcs34725",
+   "titel": "TCS34725",
+   "kurz": "Farbsensor (RGB + Helligkeit)",
+   "tags": [
+    "TCS34725",
+    "Farbsensor (RGB + Helligkeit)",
+    "I²C",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**TCS34725** – Farbsensor (RGB + Helligkeit)."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Farbsensor (RGB + Helligkeit)"
+      ],
+      [
+       "Anschluss",
+       "I²C"
+      ],
+      [
+       "I²C-Adresse",
+       "0x29"
+      ],
+      [
+       "Spannung",
+       "3,3 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1 (3V3)  ·  GND → Pin 6 (GND)  ·  SDA → Pin 3 (GPIO2)  ·  SCL → Pin 5 (GPIO3)"
+      ],
+      [
+       "Software",
+       "pip3 install adafruit-circuitpython-tcs34725 --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Gleiche Adresse 0x29 wie der VL53L0X - nicht beide ohne Umadressieren am gleichen Bus."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:i2cadr"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_max30102",
+   "titel": "MAX30102",
+   "kurz": "Puls + Sauerstoffsättigung",
+   "tags": [
+    "MAX30102",
+    "Puls + Sauerstoffsättigung",
+    "I²C",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**MAX30102** – Puls + Sauerstoffsättigung."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Puls + Sauerstoffsättigung"
+      ],
+      [
+       "Anschluss",
+       "I²C"
+      ],
+      [
+       "I²C-Adresse",
+       "0x57"
+      ],
+      [
+       "Spannung",
+       "3,3 V (LEDs 5 V je nach Modul)"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1 (3V3)  ·  GND → Pin 6 (GND)  ·  SDA → Pin 3 (GPIO2)  ·  SCL → Pin 5 (GPIO3)"
+      ],
+      [
+       "Software",
+       "pip3 install max30102 --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Fingerauflegen, keine medizinische Genauigkeit."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:i2cadr"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_hc_sr04",
+   "titel": "HC-SR04",
+   "kurz": "Abstand per Ultraschall",
+   "tags": [
+    "HC-SR04",
+    "Abstand per Ultraschall",
+    "2 Pins (Trigger/Echo)",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**HC-SR04** – Abstand per Ultraschall."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Abstand per Ultraschall"
+      ],
+      [
+       "Anschluss",
+       "2 Pins (Trigger/Echo)"
+      ],
+      [
+       "I²C-Adresse",
+       "–"
+      ],
+      [
+       "Spannung",
+       "5 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 2 (5V)  ·  GND → Pin 6  ·  TRIG → Pin 16 (GPIO23)  ·  ECHO → über Spannungsteiler (1 kΩ + 2 kΩ) → Pin 18 (GPIO24)"
+      ],
+      [
+       "Software",
+       "pip3 install gpiozero --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "warn",
+     "text": "ACHTUNG: ECHO liefert 5 V, der Pi verträgt nur 3,3 V! Immer Spannungsteiler benutzen."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:pinout"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_pir_hc_sr501",
+   "titel": "PIR HC-SR501",
+   "kurz": "Bewegung",
+   "tags": [
+    "PIR HC-SR501",
+    "Bewegung",
+    "1 Pin (digital)",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**PIR HC-SR501** – Bewegung."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Bewegung"
+      ],
+      [
+       "Anschluss",
+       "1 Pin (digital)"
+      ],
+      [
+       "I²C-Adresse",
+       "–"
+      ],
+      [
+       "Spannung",
+       "5 V"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 2 (5V)  ·  GND → Pin 6  ·  OUT → Pin 11 (GPIO17)  (OUT ist 3,3 V - passt)"
+      ],
+      [
+       "Software",
+       "pip3 install gpiozero --break-system-packages"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Zwei Potis: Empfindlichkeit und Haltezeit."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:pinout"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  },
+  {
+   "id": "s_neo_6m_gps",
+   "titel": "NEO-6M GPS",
+   "kurz": "Position, Zeit",
+   "tags": [
+    "NEO-6M GPS",
+    "Position, Zeit",
+    "UART",
+    "sensor",
+    "verdrahtung"
+   ],
+   "bloecke": [
+    {
+     "t": "text",
+     "text": [
+      "**NEO-6M GPS** – Position, Zeit."
+     ]
+    },
+    {
+     "t": "tabelle",
+     "kopf": [
+      "Eigenschaft",
+      "Wert"
+     ],
+     "zeilen": [
+      [
+       "Misst / Funktion",
+       "Position, Zeit"
+      ],
+      [
+       "Anschluss",
+       "UART"
+      ],
+      [
+       "I²C-Adresse",
+       "–"
+      ],
+      [
+       "Spannung",
+       "3,3-5 V (je nach Modul)"
+      ],
+      [
+       "Verdrahtung",
+       "VCC → Pin 1  ·  GND → Pin 6  ·  TX (Modul) → Pin 10 (RXD, GPIO15)  ·  RX (Modul) → Pin 8 (TXD, GPIO14)"
+      ],
+      [
+       "Software",
+       "UART einschalten (raspi-config > Schnittstellen > Seriell: Konsole AUS, Port AN) · sudo apt install gpsd gpsd-clients"
+      ]
+     ],
+     "mono": [],
+     "fett": true
+    },
+    {
+     "t": "hinweis",
+     "typ": "tipp",
+     "text": "Im Labor-Reiter „Seriell“ siehst du die NMEA-Zeilen direkt (Anschluss /dev/serial0 oder /dev/ttyAMA0, 9600 Baud)."
+    },
+    {
+     "t": "hinweis",
+     "typ": "info",
+     "text": "Ob der Sensor am Bus hängt, zeigt der Reiter **I2C** in der Labor-App (und „Am Bus suchen“ im Reiter Sensoren)."
+    }
+   ],
+   "siehe": [
+    "labor:sensoren",
+    "labor:pinout"
+   ],
+   "gruppe": "Sensoren (Datenblätter)"
+  }
+ ]
+}

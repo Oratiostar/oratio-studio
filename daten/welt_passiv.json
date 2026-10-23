@@ -1,0 +1,2189 @@
+{
+"id": "passiv",
+"name": "Passive Bauteile",
+"untertitel": "Widerstand, Kondensator, Spule",
+"farbe": "gruen",
+"symbol": "kondensator",
+"reihenfolge": 2,
+"seiten": [
+{
+"id": "farbcode",
+"titel": "Widerstands-Farbcode",
+"kurz": "Ringe anklicken – Wert, Toleranz, Temperaturkoeffizient",
+"tags": [
+"farbcode",
+"widerstand",
+"ringe",
+"color code"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Bedrahtete Widerstände tragen farbige Ringe. **Klicke unten die Ringe an** – oder tippe einen Wert ein (z. B. `4k7`) und sieh die Farben."
+]
+},
+{
+"t": "spezial",
+"name": "farbcode"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Farbe",
+"Ziffer",
+"Multiplikator",
+"Toleranz",
+"TK (ppm/K)"
+],
+"zeilen": [
+[
+"@#222222|schwarz",
+"0",
+"×1",
+"–",
+"250"
+],
+[
+"@#8b4a1c|braun",
+"1",
+"×10",
+"±1 %",
+"100"
+],
+[
+"@#e0242c|rot",
+"2",
+"×100",
+"±2 %",
+"50"
+],
+[
+"@#ff8c1a|orange",
+"3",
+"×1 k",
+"–",
+"15"
+],
+[
+"@#ffd23f|gelb",
+"4",
+"×10 k",
+"–",
+"25"
+],
+[
+"@#3ddc84|grün",
+"5",
+"×100 k",
+"±0,5 %",
+"–"
+],
+[
+"@#2e86ff|blau",
+"6",
+"×1 M",
+"±0,25 %",
+"10"
+],
+[
+"@#9b5de5|violett",
+"7",
+"×10 M",
+"±0,1 %",
+"5"
+],
+[
+"@#8c93a8|grau",
+"8",
+"×100 M",
+"±0,05 %",
+"1"
+],
+[
+"@#ffffff|weiß",
+"9",
+"×1 G",
+"–",
+"–"
+],
+[
+"@#d4af37|gold",
+"–",
+"×0,1",
+"±5 %",
+"–"
+],
+[
+"@#c0c0c0|silber",
+"–",
+"×0,01",
+"±10 %",
+"–"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Farbtabelle"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Ringe",
+"Aufbau"
+],
+"zeilen": [
+[
+"4 Ringe",
+"Ziffer 1 · Ziffer 2 · Multiplikator · Toleranz (Standard, E12/E24)"
+],
+[
+"5 Ringe",
+"Ziffer 1 · 2 · 3 · Multiplikator · Toleranz (Präzision, E48/E96)"
+],
+[
+"6 Ringe",
+"wie 5 Ringe + Temperaturkoeffizient"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "**Leserichtung:** Der Toleranzring (gold/silber) steht rechts und ist meist etwas abgesetzt. Beginne am Ende, das **näher** am ersten Ring liegt. Eselsbrücke für die Ziffern: **S**chwarz **B**raun **R**ot **O**range **G**elb **G**rün **B**lau **V**iolett **G**rau **W**eiß."
+},
+{
+"t": "hinweis",
+"typ": "fun",
+"text": "Ein Widerstand mit nur einem schwarzen Ring ist eine **Drahtbrücke (0 Ω)**."
+}
+],
+"siehe": [
+"passiv:ereihen",
+"passiv:smd"
+],
+"symbol": "widerstand"
+},
+{
+"id": "ereihen",
+"titel": "E-Reihen (Normwerte)",
+"kurz": "E3 bis E96 – welche Widerstandswerte es gibt",
+"tags": [
+"e-reihe",
+"e12",
+"e24",
+"normwerte",
+"e96",
+"widerstandswerte"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Widerstände und Kondensatoren gibt es nicht in beliebigen Werten, sondern in **Normreihen** nach IEC 60063. Jede Dekade (1–10) ist in gleich große **logarithmische** Schritte geteilt, sodass benachbarte Werte im Rahmen der Toleranz überlappen."
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Reihe",
+"Werte / Dekade",
+"Toleranz",
+"Typisch"
+],
+"zeilen": [
+[
+"E3",
+"3",
+"±40 %",
+"Elkos (veraltet)"
+],
+[
+"E6",
+"6",
+"±20 %",
+"Elkos, Trimmer"
+],
+[
+"E12",
+"12",
+"±10 %",
+"Kondensatoren, Kohle"
+],
+[
+"E24",
+"24",
+"±5 %",
+"Standardwiderstände (gold)"
+],
+[
+"E48",
+"48",
+"±2 %",
+"Metallfilm"
+],
+[
+"E96",
+"96",
+"±1 %",
+"Präzision (braun)"
+],
+[
+"E192",
+"192",
+"±0,5 % und besser",
+"Messtechnik"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"E12-Werte (×10ⁿ)",
+"",
+"",
+"",
+"",
+""
+],
+"zeilen": [
+[
+"1,00",
+"1,20",
+"1,50",
+"1,80",
+"2,20",
+"2,70"
+],
+[
+"3,30",
+"3,90",
+"4,70",
+"5,60",
+"6,80",
+"8,20"
+]
+],
+"mono": [
+0,
+1,
+2,
+3,
+4,
+5
+],
+"fett": false,
+"titel": "E12 – 1,0 bis 8,2"
+},
+{
+"t": "tabelle",
+"kopf": [
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+""
+],
+"zeilen": [
+[
+"1,00",
+"1,10",
+"1,20",
+"1,30",
+"1,50",
+"1,60",
+"1,80",
+"2,00"
+],
+[
+"2,20",
+"2,40",
+"2,70",
+"3,00",
+"3,30",
+"3,60",
+"3,90",
+"4,30"
+],
+[
+"4,70",
+"5,10",
+"5,60",
+"6,20",
+"6,80",
+"7,50",
+"8,20",
+"9,10"
+]
+],
+"mono": [
+0,
+1,
+2,
+3,
+4,
+5,
+6,
+7
+],
+"fett": false,
+"titel": "E24 (zusätzlich zu E12: 1,1  1,3  1,6  2,0  2,4  3,0  3,6  4,3  5,1  6,2  7,5  9,1)"
+},
+{
+"t": "tabelle",
+"kopf": [
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+""
+],
+"zeilen": [
+[
+"1,00",
+"1,05",
+"1,10",
+"1,15",
+"1,21",
+"1,27",
+"1,33",
+"1,40"
+],
+[
+"1,47",
+"1,54",
+"1,62",
+"1,69",
+"1,78",
+"1,87",
+"1,96",
+"2,05"
+],
+[
+"2,15",
+"2,26",
+"2,37",
+"2,49",
+"2,61",
+"2,74",
+"2,87",
+"3,01"
+],
+[
+"3,16",
+"3,32",
+"3,48",
+"3,65",
+"3,83",
+"4,02",
+"4,22",
+"4,42"
+],
+[
+"4,64",
+"4,87",
+"5,11",
+"5,36",
+"5,62",
+"5,90",
+"6,19",
+"6,49"
+],
+[
+"6,81",
+"7,15",
+"7,50",
+"7,87",
+"8,25",
+"8,66",
+"9,09",
+"9,53"
+]
+],
+"mono": [
+0,
+1,
+2,
+3,
+4,
+5,
+6,
+7
+],
+"fett": false,
+"titel": "E48"
+},
+{
+"t": "tabelle",
+"kopf": [
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+""
+],
+"zeilen": [
+[
+"1,00",
+"1,02",
+"1,05",
+"1,07",
+"1,10",
+"1,13",
+"1,15",
+"1,18"
+],
+[
+"1,21",
+"1,24",
+"1,27",
+"1,30",
+"1,33",
+"1,37",
+"1,40",
+"1,43"
+],
+[
+"1,47",
+"1,50",
+"1,54",
+"1,58",
+"1,62",
+"1,65",
+"1,69",
+"1,74"
+],
+[
+"1,78",
+"1,82",
+"1,87",
+"1,91",
+"1,96",
+"2,00",
+"2,05",
+"2,10"
+],
+[
+"2,15",
+"2,21",
+"2,26",
+"2,32",
+"2,37",
+"2,43",
+"2,49",
+"2,55"
+],
+[
+"2,61",
+"2,67",
+"2,74",
+"2,80",
+"2,87",
+"2,94",
+"3,01",
+"3,09"
+],
+[
+"3,16",
+"3,24",
+"3,32",
+"3,40",
+"3,48",
+"3,57",
+"3,65",
+"3,74"
+],
+[
+"3,83",
+"3,92",
+"4,02",
+"4,12",
+"4,22",
+"4,32",
+"4,42",
+"4,53"
+],
+[
+"4,64",
+"4,75",
+"4,87",
+"4,99",
+"5,11",
+"5,23",
+"5,36",
+"5,49"
+],
+[
+"5,62",
+"5,76",
+"5,90",
+"6,04",
+"6,19",
+"6,34",
+"6,49",
+"6,65"
+],
+[
+"6,81",
+"6,98",
+"7,15",
+"7,32",
+"7,50",
+"7,68",
+"7,87",
+"8,06"
+],
+[
+"8,25",
+"8,45",
+"8,66",
+"8,87",
+"9,09",
+"9,31",
+"9,53",
+"9,76"
+]
+],
+"mono": [
+0,
+1,
+2,
+3,
+4,
+5,
+6,
+7
+],
+"fett": false,
+"titel": "E96"
+},
+{
+"t": "rechner",
+"titel": "Nächster Normwert",
+"felder": [
+[
+"w",
+"Gewünschter Wert",
+"Ω",
+"3k3"
+]
+],
+"ergebnis": [
+[
+"a",
+"E6",
+"E6(w)",
+"Ω"
+],
+[
+"b",
+"E12",
+"E12(w)",
+"Ω"
+],
+[
+"c",
+"E24",
+"E24(w)",
+"Ω"
+],
+[
+"d",
+"E48",
+"E48(w)",
+"Ω"
+],
+[
+"e",
+"E96",
+"E96(w)",
+"Ω"
+]
+]
+},
+{
+"t": "rechner",
+"titel": "Zwei E12-Werte für einen krummen Wert (Reihe)",
+"felder": [
+[
+"w",
+"Ziel",
+"Ω",
+"3200"
+]
+],
+"ergebnis": [
+[
+"a",
+"Großer Wert (E12 unter dem Ziel)",
+"E12(w*0.7)",
+"Ω"
+],
+[
+"b",
+"Rest",
+"w-E12(w*0.7)",
+"Ω"
+],
+[
+"c",
+"Rest als E24",
+"E24(w-E12(w*0.7))",
+"Ω"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Im Bastelalltag reichen **E12** (und für Teiler/Filter **E24**). Die Werte **1 kΩ, 2,2 kΩ, 4,7 kΩ, 10 kΩ, 47 kΩ, 100 kΩ** hat man immer im Sortiment."
+}
+],
+"siehe": [
+"passiv:farbcode"
+],
+"symbol": "widerstand"
+},
+{
+"id": "smd",
+"titel": "SMD-Codes & Bauformen",
+"kurz": "3-Ziffern-, 4-Ziffern- und EIA-96-Code, Baugrößen",
+"tags": [
+"smd",
+"code",
+"bauform",
+"0805",
+"0603",
+"gehäuse"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Winzige SMD-Widerstände tragen aufgedruckte Codes. **Letzte Ziffer = Anzahl Nullen** (bei 3 und 4 Ziffern)."
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Aufdruck",
+"Wert",
+"Regel"
+],
+"zeilen": [
+[
+"472",
+"4,7 kΩ",
+"47 · 10² = 4700 Ω"
+],
+[
+"103",
+"10 kΩ",
+"10 · 10³"
+],
+[
+"104",
+"100 kΩ",
+""
+],
+[
+"221",
+"220 Ω",
+""
+],
+[
+"100",
+"10 Ω",
+"10 · 10⁰"
+],
+[
+"4R7",
+"4,7 Ω",
+"R = Komma"
+],
+[
+"0R1",
+"0,1 Ω",
+""
+],
+[
+"R010",
+"0,01 Ω",
+"Shunt"
+],
+[
+"1002",
+"10 kΩ (1 %)",
+"4 Ziffern: 100 · 10²"
+],
+[
+"01C",
+"100 Ω",
+"EIA-96: 01 = 100, C = ×100 → 10 kΩ"
+],
+[
+"000",
+"0 Ω",
+"Brücke"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "rechner",
+"titel": "SMD-Code → Wert",
+"felder": [
+[
+"z",
+"Aufdruck (3 oder 4 Ziffern, ohne R)",
+"",
+"472"
+]
+],
+"ergebnis": [
+[
+"w",
+"Widerstand",
+"(int(str(int(z))[:-1])*10**int(str(int(z))[-1]))",
+"Ω"
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Bauform (inch)",
+"metrisch",
+"Maße L×B (mm)",
+"Leistung",
+"Verwendung"
+],
+"zeilen": [
+[
+"01005",
+"0402M",
+"0,4 × 0,2",
+"31 mW",
+"Smartphones"
+],
+[
+"0201",
+"0603M",
+"0,6 × 0,3",
+"50 mW",
+"sehr dicht"
+],
+[
+"0402",
+"1005M",
+"1,0 × 0,5",
+"62,5 mW",
+"Handlöten schwierig"
+],
+[
+"0603",
+"1608M",
+"1,6 × 0,8",
+"100 mW",
+"Handlöten möglich"
+],
+[
+"0805",
+"2012M",
+"2,0 × 1,25",
+"125 mW",
+"Bastler-Standard"
+],
+[
+"1206",
+"3216M",
+"3,2 × 1,6",
+"250 mW",
+"einfach zu löten"
+],
+[
+"1210",
+"3225M",
+"3,2 × 2,5",
+"500 mW",
+""
+],
+[
+"2010",
+"5025M",
+"5,0 × 2,5",
+"750 mW",
+""
+],
+[
+"2512",
+"6332M",
+"6,3 × 3,2",
+"1 W",
+"Shunts"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Gehäuse",
+"Bedeutung"
+],
+"zeilen": [
+[
+"SOT-23",
+"Kleintransistor, 3 Pins"
+],
+[
+"SOT-223",
+"Regler/Transistor mit großer Kühlfahne"
+],
+[
+"SOIC-8",
+"IC, 1,27 mm Raster"
+],
+[
+"TSSOP",
+"IC, schmale Pins (0,65 mm)"
+],
+[
+"QFN",
+"IC ohne Beine, Pad unten"
+],
+[
+"LQFP",
+"IC mit Beinen an 4 Seiten"
+],
+[
+"BGA",
+"Kugelraster, nur mit Reflow"
+],
+[
+"DIP",
+"durchsteckbar, 2,54 mm"
+],
+[
+"TO-92",
+"Transistor, 3 Beine"
+],
+[
+"TO-220",
+"Leistungsbauteil mit Kühlfahne"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Häufige Gehäuse"
+}
+],
+"siehe": [
+"passiv:farbcode"
+],
+"symbol": "widerstand"
+},
+{
+"id": "kond",
+"titel": "Kondensator-Codes & Typen",
+"kurz": "Aufdrucke 104, 22p, 4µ7; Spannungsklassen",
+"tags": [
+"kondensator",
+"code",
+"104",
+"mlcc",
+"x7r",
+"elko",
+"keramik"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Kleine Kondensatoren sind in **pF** codiert: zwei Ziffern + Nullen-Anzahl (wie bei SMD-Widerständen)."
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Aufdruck",
+"Wert",
+"Rechnung"
+],
+"zeilen": [
+[
+"101",
+"100 pF",
+"10 · 10¹"
+],
+[
+"102",
+"1 nF",
+"10 · 10²"
+],
+[
+"103",
+"10 nF",
+""
+],
+[
+"104",
+"100 nF",
+"10 · 10⁴ pF = 100 000 pF"
+],
+[
+"105",
+"1 µF",
+""
+],
+[
+"224",
+"220 nF",
+""
+],
+[
+"22",
+"22 pF",
+""
+],
+[
+"4n7",
+"4,7 nF",
+"n als Komma"
+],
+[
+"µ47",
+"0,47 µF",
+""
+],
+[
+"R47",
+"0,47 µF",
+""
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Buchstabe",
+"Toleranz"
+],
+"zeilen": [
+[
+"B",
+"±0,1 pF"
+],
+[
+"C",
+"±0,25 pF"
+],
+[
+"D",
+"±0,5 pF"
+],
+[
+"F",
+"±1 %"
+],
+[
+"G",
+"±2 %"
+],
+[
+"J",
+"±5 %"
+],
+[
+"K",
+"±10 %"
+],
+[
+"M",
+"±20 %"
+],
+[
+"Z",
+"+80 / −20 %"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "rechner",
+"titel": "Code → Kapazität (pF-Code)",
+"felder": [
+[
+"z",
+"3 Ziffern",
+"",
+"104"
+]
+],
+"ergebnis": [
+[
+"c",
+"Kapazität",
+"(int(str(int(z))[:-1])*10**int(str(int(z))[-1]))*1e-12",
+"F"
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Dielektrikum",
+"Eigenschaft",
+"Einsatz"
+],
+"zeilen": [
+[
+"C0G / NP0",
+"sehr stabil, wenig Kapazität",
+"Filter, Oszillatoren, Quarze"
+],
+[
+"X7R",
+"±15 % über Temperatur, bei DC-Spannung deutlich weniger",
+"Abblocken, Kopplung"
+],
+[
+"X5R",
+"wie X7R, kleinerer Bereich",
+"Smartphones"
+],
+[
+"Y5V / Z5U",
+"−80 % möglich",
+"nur Preis, besser meiden"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Keramik (EIA-Klassen)"
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Bei großen **MLCCs (z. B. 10 µF / 6,3 V)** bleibt an der Nennspannung oft nur die Hälfte der Kapazität. Nimm die **doppelte Spannungsklasse** und prüfe die DC-Bias-Kurve."
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "**Abblocken:** 100 nF (104) keramisch **direkt an jedem IC-Versorgungspin**, dazu pro Platine einige µF Elko/Tantal. Das fängt schnelle Stromspitzen ab."
+}
+],
+"siehe": [
+"grund:kondensator"
+],
+"symbol": "kondensator"
+},
+{
+"id": "poti",
+"titel": "Potentiometer & Trimmer",
+"kurz": "Kennlinien lin/log, Anschlüsse, Anwendung",
+"tags": [
+"poti",
+"potentiometer",
+"trimmer",
+"regler",
+"log",
+"linear"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein **Poti** ist ein einstellbarer Widerstand mit drei Anschlüssen: Anfang, Schleifer (Mitte), Ende. Als Spannungsteiler verwendet er alle drei, als variabler Widerstand nur zwei."
+]
+},
+{
+"t": "symbol",
+"key": "poti",
+"text": "Schaltzeichen: Pfeil = Schleifer."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Kennlinie",
+"Kürzel",
+"Verlauf",
+"Einsatz"
+],
+"zeilen": [
+[
+"linear",
+"B (EU) / A (US)",
+"Widerstand ∝ Drehwinkel",
+"Steuern, Einstellungen"
+],
+[
+"logarithmisch",
+"A (EU) / C (US)",
+"erst langsam, dann schnell",
+"Lautstärke (Gehör ist logarithmisch)"
+],
+[
+"antilogarithmisch",
+"C (EU)",
+"umgekehrt",
+"selten"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Aufdruck",
+"Wert"
+],
+"zeilen": [
+[
+"B10K",
+"10 kΩ, linear"
+],
+[
+"A100K",
+"100 kΩ, log (EU) – prüfe Hersteller!"
+],
+[
+"103",
+"10 kΩ (Trimmer)"
+],
+[
+"502",
+"5 kΩ"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Die Buchstaben **A/B/C** sind zwischen Europa und USA **vertauscht** (EU: A = log, USA: A = audio = log, B = linear in beiden; USA: C = log-reverse). Im Zweifel nachmessen."
+},
+{
+"t": "hinweis",
+"typ": "pi",
+"text": "Potis geben am Pi eine Spannung ab – der Pi hat **keine analogen Eingänge**. Nimm einen ADC (MCP3008, ADS1115) oder nutze einen Pico/Arduino."
+}
+],
+"siehe": [
+"grund:teiler"
+],
+"symbol": "poti"
+},
+{
+"id": "ntc",
+"titel": "NTC, PTC, LDR, VDR",
+"kurz": "Temperatur-, Licht- und Spannungsabhängige Widerstände",
+"tags": [
+"ntc",
+"ptc",
+"ldr",
+"vdr",
+"thermistor",
+"temperatur",
+"varistor",
+"fotowiderstand"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Abhängig von",
+"Verhalten",
+"Einsatz"
+],
+"zeilen": [
+[
+"NTC (Heißleiter)",
+"Temperatur",
+"Widerstand sinkt bei Wärme",
+"Temperaturmessung, Einschaltstrombegrenzer"
+],
+[
+"PTC (Kaltleiter)",
+"Temperatur",
+"Widerstand steigt (stark ab Schwelle)",
+"Überstromschutz (Polyfuse), Heizelemente"
+],
+[
+"LDR (Fotowiderstand)",
+"Licht",
+"Widerstand sinkt bei Helligkeit (1 MΩ dunkel … 1 kΩ hell)",
+"Dämmerungsschalter (langsam, ungenau)"
+],
+[
+"VDR (Varistor)",
+"Spannung",
+"wird ab einer Schwelle leitend",
+"Überspannungsschutz (Netz)"
+],
+[
+"KTY / PT100 / PT1000",
+"Temperatur",
+"fast linear, positiver TK",
+"Präzise Temperaturmessung"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "h2",
+"text": "NTC rechnen"
+},
+{
+"t": "formel",
+"name": "B-Wert-Gleichung",
+"f": "R(T) = R₂₅ · e^( B · (1/T − 1/T₂₅) )   (T in Kelvin)",
+"text": "T₂₅ = 298,15 K. Typische B-Werte: 3380 oder 3950 K."
+},
+{
+"t": "formel",
+"name": "Temperatur aus Widerstand",
+"f": "1/T = 1/T₂₅ + (1/B) · ln(R / R₂₅)",
+"text": ""
+},
+{
+"t": "rechner",
+"titel": "NTC → Temperatur",
+"felder": [
+[
+"r",
+"Gemessener Widerstand",
+"Ω",
+"10k"
+],
+[
+"r25",
+"R bei 25 °C",
+"Ω",
+"10k"
+],
+[
+"b",
+"B-Wert",
+"K",
+"3950"
+]
+],
+"ergebnis": [
+[
+"t",
+"Temperatur",
+"1/(1/298.15+log(r/r25)/b)-273.15",
+"°C",
+"zahl"
+]
+]
+},
+{
+"t": "rechner",
+"titel": "NTC → Widerstand bei Temperatur",
+"felder": [
+[
+"t",
+"Temperatur",
+"°C",
+"50"
+],
+[
+"r25",
+"R bei 25 °C",
+"Ω",
+"10k"
+],
+[
+"b",
+"B-Wert",
+"K",
+"3950"
+]
+],
+"ergebnis": [
+[
+"r",
+"Widerstand",
+"r25*exp(b*(1/(t+273.15)-1/298.15))",
+"Ω"
+]
+]
+},
+{
+"t": "rechner",
+"titel": "NTC im Spannungsteiler (ADC)",
+"felder": [
+[
+"u",
+"Versorgung",
+"V",
+"3,3"
+],
+[
+"rf",
+"Festwiderstand oben",
+"Ω",
+"10k"
+],
+[
+"r",
+"NTC unten",
+"Ω",
+"10k"
+],
+[
+"bits",
+"ADC-Bits",
+"",
+"12"
+]
+],
+"ergebnis": [
+[
+"ua",
+"Spannung am ADC",
+"u*r/(rf+r)",
+"V"
+],
+[
+"code",
+"ADC-Wert",
+"u*r/(rf+r)/u*(2**bits-1)",
+"",
+"ganz"
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"T (°C)",
+"10-kΩ-NTC (B = 3950)"
+],
+"zeilen": [
+[
+"−20",
+"≈ 97 kΩ"
+],
+[
+"0",
+"≈ 32,6 kΩ"
+],
+[
+"25",
+"10 kΩ"
+],
+[
+"50",
+"≈ 3,6 kΩ"
+],
+[
+"75",
+"≈ 1,5 kΩ"
+],
+[
+"100",
+"≈ 0,68 kΩ"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Richtwerte, genaue Kurve im Datenblatt"
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "**Selbsterwärmung:** Ein NTC erwärmt sich durch den Messstrom. Halte die Verlustleistung klein (z. B. < 0,1 mW) und miss nur kurz."
+}
+],
+"siehe": [
+"grund:teiler",
+"sensoren:temperatur"
+],
+"symbol": "ntc"
+},
+{
+"id": "spulen",
+"titel": "Spulen, Drosseln & Ferrite",
+"kurz": "Induktivitätscodes, Ferritperlen, Kernmaterial",
+"tags": [
+"spule",
+"drossel",
+"ferrit",
+"induktivität",
+"ringkern"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Bereich",
+"Anwendung"
+],
+"zeilen": [
+[
+"Ferritperle",
+"kΩ bei 100 MHz",
+"Entstörung von Leitungen"
+],
+[
+"SMD-Drossel (Power)",
+"1–470 µH",
+"DC/DC-Wandler"
+],
+[
+"Gleichtaktdrossel",
+"mH",
+"Netzfilter, USB, Ethernet"
+],
+[
+"Ringkerndrossel",
+"µH–mH",
+"Filter, Resonanz"
+],
+[
+"Luftspule",
+"nH–µH",
+"HF, Antennen"
+],
+[
+"Relais-Spule",
+"–",
+"mit Freilaufdiode!"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Aufdruck",
+"Wert"
+],
+"zeilen": [
+[
+"100",
+"10 µH (wie 3-Ziffern-Code, Ergebnis in µH)"
+],
+[
+"101",
+"100 µH"
+],
+[
+"102",
+"1 mH"
+],
+[
+"4R7",
+"4,7 µH"
+],
+[
+"R47",
+"0,47 µH"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Kernmaterial",
+"Eigenschaft",
+"Typ. Einsatz"
+],
+"zeilen": [
+[
+"Luft",
+"linear, kein Sättigen",
+"HF"
+],
+[
+"Eisenpulver (gelb/weiß/rot)",
+"stabil, Sättigung weich",
+"Filter, Drosseln"
+],
+[
+"Ferrit (Mn-Zn)",
+"hohe µr, bis ca. 1 MHz",
+"Schaltnetzteile"
+],
+[
+"Ferrit (Ni-Zn)",
+"bis > 100 MHz",
+"HF-Entstörung"
+],
+[
+"Silizium-Eisen",
+"bis 400 Hz",
+"Netztrafo"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Drosseln **sättigen**: Über dem Nennstrom (I_sat) bricht die Induktivität ein und der Strom schießt hoch. Wähle I_sat ≥ 1,3 × Spitzenstrom."
+}
+],
+"siehe": [
+"grund:spule"
+],
+"symbol": "spule"
+},
+{
+"id": "quarz",
+"titel": "Quarze & Oszillatoren",
+"kurz": "Frequenzen, Lastkapazität, typische Werte",
+"tags": [
+"quarz",
+"oszillator",
+"takt",
+"resonator",
+"ppm",
+"32768"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein Schwingquarz schwingt extrem stabil (± 10–50 ppm) auf seiner mechanischen Resonanzfrequenz. Mikrocontroller nutzen ihn als Taktgeber."
+]
+},
+{
+"t": "symbol",
+"key": "quarz",
+"text": "Schaltzeichen des Quarzes."
+},
+{
+"t": "formel",
+"name": "Lastkondensatoren",
+"f": "C_L = (C₁ · C₂) / (C₁ + C₂) + C_Streu",
+"text": "Typisch: C₁ = C₂ = 2·(C_L − C_Streu). Für 12 pF Last und 3 pF Streu: 18 pF."
+},
+{
+"t": "rechner",
+"titel": "Lastkondensatoren",
+"felder": [
+[
+"cl",
+"Lastkapazität laut Datenblatt",
+"F",
+"12p"
+],
+[
+"cs",
+"Streukapazität (≈ 3–5 pF)",
+"F",
+"3p"
+]
+],
+"ergebnis": [
+[
+"c",
+"Je Kondensator",
+"2*(cl-cs)",
+"F"
+],
+[
+"c24",
+"E12/E24",
+"E24(2*(cl-cs))",
+"F"
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Frequenz",
+"Verwendung"
+],
+"zeilen": [
+[
+"32,768 kHz",
+"Uhren-Quarz (RTC), = 2¹⁵ Hz"
+],
+[
+"4 / 8 / 16 / 20 MHz",
+"AVR/Arduino-Takt (Nano: 16 MHz)"
+],
+[
+"12 MHz",
+"Raspberry Pi Pico (RP2040) und USB-Geräte"
+],
+[
+"25 MHz",
+"Ethernet-PHY, Raspberry Pi 5"
+],
+[
+"26 / 40 MHz",
+"ESP32"
+],
+[
+"24,576 MHz",
+"Audio (I2S, 48 kHz × 512)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Genauigkeit",
+"Bemerkung"
+],
+"zeilen": [
+[
+"Quarz",
+"10–50 ppm",
+"braucht 2 Lastkondensatoren"
+],
+[
+"Keramikresonator",
+"0,5 %",
+"billig, ungenauer"
+],
+[
+"TCXO",
+"0,5–2 ppm",
+"temperaturkompensiert (GPS, Funk)"
+],
+[
+"OCXO",
+"< 0,01 ppm",
+"beheizt, Messtechnik"
+],
+[
+"RC-Oszillator (intern)",
+"1–5 %",
+"im Mikrocontroller"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "fun",
+"text": "Eine **ppm** (part per million) von 20 ppm bedeutet: 1,7 Sekunden Abweichung pro Tag."
+}
+],
+"siehe": [
+"mikro:takt"
+],
+"symbol": "quarz"
+},
+{
+"id": "sicherung",
+"titel": "Sicherungen & Überstromschutz",
+"kurz": "Bauformen, Charakteristik, Auswahl",
+"tags": [
+"sicherung",
+"fuse",
+"überstrom",
+"ls-schalter",
+"polyfuse"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Charakteristik",
+"Verwendung"
+],
+"zeilen": [
+[
+"F (flink)",
+"schaltet bei Überlast schnell",
+"Elektronik, empfindliche Schaltungen"
+],
+[
+"T (träge)",
+"verträgt Einschaltstrom",
+"Netzteile, Motoren"
+],
+[
+"FF / TT",
+"sehr flink / sehr träge",
+""
+],
+[
+"Polyfuse (PPTC)",
+"selbstrückstellend",
+"USB-Ports, Akkus"
+],
+[
+"Leitungsschutzschalter B/C/D",
+"thermisch + magnetisch",
+"Hausinstallation"
+],
+[
+"Schmelzsicherung 5×20 mm",
+"Glas, 250 V",
+"Geräteeinbau"
+],
+[
+"KFZ-Flachsicherung",
+"farbig, 12/24 V",
+"Auto"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Farbe (KFZ)",
+"Strom"
+],
+"zeilen": [
+[
+"@#a8683c|braun",
+"7,5 A"
+],
+[
+"@#ff4d5e|rot",
+"10 A"
+],
+[
+"@#2e86ff|blau",
+"15 A"
+],
+[
+"@#ffd23f|gelb",
+"20 A"
+],
+[
+"@#ffffff|weiß/klar",
+"25 A"
+],
+[
+"@#3ddc84|grün",
+"30 A"
+],
+[
+"@#ff8c1a|orange",
+"5 A"
+],
+[
+"@#c0c0c0|grau",
+"2 A"
+],
+[
+"@#d9a0ff|violett",
+"3 A"
+],
+[
+"@#f6dfa0|hellbraun",
+"7,5 A"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "rechner",
+"titel": "Sicherung auswählen",
+"felder": [
+[
+"p",
+"Leistung",
+"W",
+"50"
+],
+[
+"u",
+"Spannung",
+"V",
+"12"
+],
+[
+"m",
+"Sicherheitsfaktor",
+"",
+"1,25"
+]
+],
+"ergebnis": [
+[
+"i",
+"Betriebsstrom",
+"p/u",
+"A"
+],
+[
+"is",
+"Sicherung ≥",
+"p/u*m",
+"A"
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"LS-Charakteristik",
+"Auslösung magnetisch",
+"Typisch"
+],
+"zeilen": [
+[
+"B",
+"3–5 × I_N",
+"Wohnungen (lange Leitungen)"
+],
+[
+"C",
+"5–10 × I_N",
+"Gewerbe, Motoren"
+],
+[
+"D",
+"10–20 × I_N",
+"große Einschaltströme (Trafos)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "**Nie** eine Sicherung überbrücken oder durch eine größere ersetzen. Die Leitung ist auf die Sicherung ausgelegt, nicht umgekehrt. Sicherung immer **vor** dem Verbraucher, möglichst nahe an der Quelle."
+}
+],
+"siehe": [
+"messen:ip",
+"grund:leitungen"
+],
+"symbol": "sicherung"
+},
+{
+"id": "relais",
+"titel": "Relais, Schalter & Taster",
+"kurz": "Kontaktarten, Lasten, Ansteuerung",
+"tags": [
+"relais",
+"schalter",
+"taster",
+"kontakt",
+"ssr",
+"öffner",
+"schließer",
+"wechsler"
+],
+"bloecke": [
+{
+"t": "symbol",
+"key": "relais",
+"text": "Relais: links Spule, rechts Kontakt."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Kürzel",
+"Name",
+"Bedeutung",
+"Zeichen"
+],
+"zeilen": [
+[
+"NO / S",
+"Schließer",
+"offen im Ruhezustand",
+"taster"
+],
+[
+"NC / Ö",
+"Öffner",
+"geschlossen im Ruhezustand",
+"oeffner"
+],
+[
+"CO / W",
+"Wechsler",
+"COM + NO + NC",
+"wechsler"
+],
+[
+"SPST",
+"1 Pol, 1 Schaltstellung",
+"einfacher Schalter",
+""
+],
+[
+"SPDT",
+"1 Pol, 2 Stellungen",
+"Umschalter",
+""
+],
+[
+"DPDT",
+"2 Pole, 2 Stellungen",
+"Doppelumschalter",
+""
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Relaistyp",
+"Vorteil",
+"Nachteil"
+],
+"zeilen": [
+[
+"Elektromechanisch",
+"galvanische Trennung, beliebige Last (AC/DC)",
+"Kontaktprellen, Verschleiß, Klackern"
+],
+[
+"Halbleiterrelais (SSR)",
+"lautlos, schnell",
+"Leckstrom, Wärme, AC oder DC je nach Typ"
+],
+[
+"Reed-Relais",
+"klein, schnell",
+"kleine Ströme"
+],
+[
+"Bistabiles Relais",
+"hält Stellung ohne Strom",
+"braucht zwei Spulen/Impulse"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Last",
+"Faktor",
+"Hinweis"
+],
+"zeilen": [
+[
+"ohmsch (Heizung)",
+"× 1",
+"Nennstrom des Relais"
+],
+[
+"Motor / Spule",
+"× 3–5",
+"Anlaufstrom, induktive Spitzen"
+],
+[
+"Glühlampe",
+"× 10",
+"Kaltwiderstand klein"
+],
+[
+"Netzteil / Kondensator",
+"× 10–20",
+"Einschaltstromstoß"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "**Relaisspule ansteuern:** Transistor + Freilaufdiode (1N4148 / 1N4007 parallel zur Spule, Kathode am Pluspol). Der Pi-GPIO darf eine Spule **nie direkt** treiben (max. 16 mA)."
+}
+],
+"siehe": [
+"halbleiter:transistor",
+"sensoren:motoren"
+],
+"symbol": "relais"
+},
+{
+"id": "widerstandsarten",
+"titel": "Widerstandsarten & Bauformen",
+"kurz": "Kohle, Metallfilm, Draht, SMD, Shunt, Poti",
+"tags": [
+"widerstand",
+"metallfilm",
+"kohleschicht",
+"shunt",
+"bauform",
+"drahtwiderstand"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Art",
+"Toleranz",
+"Leistung",
+"Eigenschaft"
+],
+"zeilen": [
+[
+"Kohleschicht",
+"5 %",
+"¼–2 W",
+"billig, rauscht, Standard (beige)"
+],
+[
+"Metallfilm",
+"1 % (0,1 %)",
+"¼–1 W",
+"stabil, rauscharm (blau)"
+],
+[
+"Metalloxid",
+"2–5 %",
+"1–5 W",
+"robust, hitzefest"
+],
+[
+"Drahtwiderstand",
+"1–5 %",
+"2–100 W",
+"große Leistung, aber induktiv"
+],
+[
+"Dickschicht SMD",
+"1–5 %",
+"0,063–1 W",
+"Standard auf Platinen"
+],
+[
+"Dünnschicht SMD",
+"0,1 %",
+"–",
+"Präzision, geringer TK"
+],
+[
+"Zement-/Keramik",
+"5 %",
+"5–20 W",
+"weiß, Lastwiderstand"
+],
+[
+"Shunt (0,01–0,1 Ω)",
+"1 %",
+"0,5–3 W",
+"Strommessung per Spannungsabfall"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Leistung",
+"Gehäuse (bedrahtet)",
+"Länge × Ø (mm)"
+],
+"zeilen": [
+[
+"¼ W",
+"0207",
+"6,3 × 2,3"
+],
+[
+"½ W",
+"0309",
+"9 × 3,2"
+],
+[
+"1 W",
+"0411",
+"11 × 4,2"
+],
+[
+"2 W",
+"0614",
+"14 × 6"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "rechner",
+"titel": "Shunt-Strommessung",
+"felder": [
+[
+"u",
+"Gemessene Spannung am Shunt",
+"V",
+"50m"
+],
+[
+"r",
+"Shunt-Widerstand",
+"Ω",
+"0,1"
+]
+],
+"ergebnis": [
+[
+"i",
+"Strom",
+"u/r",
+"A"
+],
+[
+"p",
+"Verlust im Shunt",
+"u*u/r",
+"W"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Zum **Strommessen am Pi/ESP** nimm einen INA219/INA226-Baustein: Shunt + Verstärker + ADC fertig auf einer Platine (I²C)."
+}
+],
+"siehe": [
+"passiv:farbcode"
+],
+"symbol": "widerstand"
+}
+]
+}

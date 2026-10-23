@@ -1,0 +1,7412 @@
+{
+ "marken": [
+  "Apple",
+  "Samsung",
+  "Sony",
+  "Xiaomi",
+  "Oppo",
+  "Vivo",
+  "Google"
+ ],
+ "ersetzt": [
+  "p_ip1",
+  "p_ip3g",
+  "p_ip3gs",
+  "p_ip4",
+  "p_ip4s",
+  "p_ip5",
+  "p_ip5s",
+  "p_ip6",
+  "p_ip6s",
+  "p_ipse1",
+  "p_ip7",
+  "p_ip8",
+  "p_ipx",
+  "p_ipxs",
+  "p_ip11",
+  "p_ipse2",
+  "p_ip12",
+  "p_ip13",
+  "p_ipse3",
+  "p_ip14",
+  "p_ip15",
+  "p_ip16",
+  "p_ip16e",
+  "p_ip17",
+  "p_s1",
+  "p_s2",
+  "p_s3",
+  "p_s4",
+  "p_s5",
+  "p_s6",
+  "p_s7",
+  "p_s8",
+  "p_s9",
+  "p_s10",
+  "p_s20",
+  "p_s21",
+  "p_s22",
+  "p_s23",
+  "p_s24",
+  "p_s25",
+  "p_s26"
+ ],
+ "geraete": [
+  {
+   "marke": "Apple",
+   "name": "iPhone (1. Generation)",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2007"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Samsung S5L8900 (ARM11), 412 MHz"
+    ],
+    [
+     "Arbeitsspeicher",
+     "128 MB"
+    ],
+    [
+     "Display",
+     "3,5″ LCD, 480×320 (163 ppi)"
+    ],
+    [
+     "Kamera (hinten)",
+     "2 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "1400 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "2,5 W (USB, 5 V / 0,5 A)"
+    ],
+    [
+     "Anschluss",
+     "30-Pin-Dock"
+    ],
+    [
+     "Gewicht",
+     "135 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "499 $ (4 GB) / 599 $ (8 GB)"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iPhone OS 1 bis iOS 3.1.3"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 3G",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2008"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Samsung S5L8900, 412 MHz"
+    ],
+    [
+     "Arbeitsspeicher",
+     "128 MB"
+    ],
+    [
+     "Display",
+     "3,5″ LCD, 480×320"
+    ],
+    [
+     "Kamera (hinten)",
+     "2 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "1150 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 2,5 W, kein Schnellladen"
+    ],
+    [
+     "Anschluss",
+     "30-Pin-Dock"
+    ],
+    [
+     "Gewicht",
+     "133 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "199 $ (8 GB, mit Vertrag)"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iPhone OS 2 bis iOS 4.2.1"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 3GS",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2009"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Samsung S5PC100 (Cortex-A8), 600 MHz"
+    ],
+    [
+     "Arbeitsspeicher",
+     "256 MB"
+    ],
+    [
+     "Display",
+     "3,5″ LCD, 480×320"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 MP, Autofokus, Video"
+    ],
+    [
+     "Akku (ca.)",
+     "1219 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 2,5 W, kein Schnellladen"
+    ],
+    [
+     "Anschluss",
+     "30-Pin-Dock"
+    ],
+    [
+     "Gewicht",
+     "135 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "199 $ (16 GB, mit Vertrag)"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 3 bis iOS 6.1.6"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 4",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2010"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A4, 1 GHz"
+    ],
+    [
+     "Arbeitsspeicher",
+     "512 MB"
+    ],
+    [
+     "Display",
+     "3,5″ „Retina“-LCD, 960×640 (326 ppi)"
+    ],
+    [
+     "Kamera (hinten)",
+     "5 MP + Front-VGA"
+    ],
+    [
+     "Akku (ca.)",
+     "1420 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 2,5 W, kein Schnellladen"
+    ],
+    [
+     "Anschluss",
+     "30-Pin-Dock"
+    ],
+    [
+     "Gewicht",
+     "137 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "199 $ / 299 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 4 bis iOS 7.1.2"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 4S",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2011"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A5 (Dual-Core), 800 MHz"
+    ],
+    [
+     "Arbeitsspeicher",
+     "512 MB"
+    ],
+    [
+     "Display",
+     "3,5″ Retina-LCD"
+    ],
+    [
+     "Kamera (hinten)",
+     "8 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "1432 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 2,5 W, kein Schnellladen"
+    ],
+    [
+     "Anschluss",
+     "30-Pin-Dock"
+    ],
+    [
+     "Gewicht",
+     "140 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "199 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 5 bis iOS 9.3.6"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 5",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2012"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A6"
+    ],
+    [
+     "Arbeitsspeicher",
+     "1 GB"
+    ],
+    [
+     "Display",
+     "4″ Retina-LCD, 1136×640"
+    ],
+    [
+     "Kamera (hinten)",
+     "8 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "1440 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "5 W (bis ca. 10 W mit iPad-Netzteil)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "112 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "199 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 6 bis iOS 10.3.4"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 5s",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2013"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A7"
+    ],
+    [
+     "Arbeitsspeicher",
+     "1 GB"
+    ],
+    [
+     "Display",
+     "4″ LCD, 1136×640"
+    ],
+    [
+     "Kamera (hinten)",
+     "8 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "1570 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "5 W (bis ca. 10 W mit iPad-Netzteil)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "112 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "649 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 7"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 5c",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2013"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A6"
+    ],
+    [
+     "Arbeitsspeicher",
+     "1 GB"
+    ],
+    [
+     "Display",
+     "4″ LCD, 1136×640"
+    ],
+    [
+     "Kamera (hinten)",
+     "8 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "1510 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "5 W (bis ca. 10 W mit iPad-Netzteil)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "132 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "549 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 7"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 6",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2014"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A8"
+    ],
+    [
+     "Arbeitsspeicher",
+     "1 GB"
+    ],
+    [
+     "Display",
+     "4,7″ LCD, 1334×750"
+    ],
+    [
+     "Kamera (hinten)",
+     "8 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "1810 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "5 W (bis ca. 12 W mit iPad-Netzteil)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "129 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "649 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 8"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 6 Plus",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2014"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A8"
+    ],
+    [
+     "Arbeitsspeicher",
+     "1 GB"
+    ],
+    [
+     "Display",
+     "5,5″ LCD, 1920×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "8 MP (mit Bildstabilisator)"
+    ],
+    [
+     "Akku (ca.)",
+     "2915 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "5 W (bis ca. 12 W mit iPad-Netzteil)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "172 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "749 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 8"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 6s",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2015"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A9"
+    ],
+    [
+     "Arbeitsspeicher",
+     "2 GB"
+    ],
+    [
+     "Display",
+     "4,7″ LCD, 1334×750"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "1715 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "5 W (bis ca. 12 W mit iPad-Netzteil)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "143 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "649 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 9"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 6s Plus",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2015"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A9"
+    ],
+    [
+     "Arbeitsspeicher",
+     "2 GB"
+    ],
+    [
+     "Display",
+     "5,5″ LCD, 1920×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 MP (mit Bildstabilisator)"
+    ],
+    [
+     "Akku (ca.)",
+     "2750 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "5 W (bis ca. 12 W mit iPad-Netzteil)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "192 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "749 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 9"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 7",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2016"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A10 Fusion"
+    ],
+    [
+     "Arbeitsspeicher",
+     "2 GB"
+    ],
+    [
+     "Display",
+     "4,7″ LCD, 1334×750"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 MP (mit Bildstabilisator)"
+    ],
+    [
+     "Akku (ca.)",
+     "1960 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "5 W (bis ca. 12 W mit iPad-Netzteil)"
+    ],
+    [
+     "Anschluss",
+     "Lightning (kein Kopfhöreranschluss)"
+    ],
+    [
+     "Gewicht",
+     "138 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "649 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 10"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 7 Plus",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2016"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A10 Fusion"
+    ],
+    [
+     "Arbeitsspeicher",
+     "3 GB"
+    ],
+    [
+     "Display",
+     "5,5″ LCD, 1920×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "2 × 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "2900 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "5 W (bis ca. 12 W mit iPad-Netzteil)"
+    ],
+    [
+     "Anschluss",
+     "Lightning (kein Kopfhöreranschluss)"
+    ],
+    [
+     "Gewicht",
+     "188 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "769 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 10"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone SE (1. Generation)",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2016"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A9"
+    ],
+    [
+     "Arbeitsspeicher",
+     "2 GB"
+    ],
+    [
+     "Display",
+     "4″ Retina-LCD"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "1624 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "5 W (bis ca. 12 W mit iPad-Netzteil)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "113 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "399 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 9.3 bis iOS 15.8.x"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 8",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2017"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A11 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "2 GB"
+    ],
+    [
+     "Display",
+     "4,7″ LCD, 1334×750"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "1821 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "bis ca. 18 W (Kabel), 7,5 W kabellos (Qi)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "148 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "699 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 11"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 8 Plus",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2017"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A11 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "3 GB"
+    ],
+    [
+     "Display",
+     "5,5″ LCD, 1920×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "2 × 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "2691 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "bis ca. 18 W (Kabel), 7,5 W kabellos (Qi)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "202 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "799 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 11"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone X",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2017"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A11 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "3 GB"
+    ],
+    [
+     "Display",
+     "5,8″ OLED, 2436×1125 (458 ppi)"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 MP, 2 Kameras"
+    ],
+    [
+     "Akku (ca.)",
+     "2716 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "bis ca. 18 W (Kabel), 7,5 W kabellos (Qi)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "174 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 11 bis iOS 16"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone XS",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2018"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A12 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "4 GB"
+    ],
+    [
+     "Display",
+     "5,8″ OLED, 2436×1125"
+    ],
+    [
+     "Kamera (hinten)",
+     "2 × 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "2658 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "bis ca. 18 W (Kabel), 7,5 W kabellos (Qi)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "177 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 12"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone XS Max",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2018"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A12 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "4 GB"
+    ],
+    [
+     "Display",
+     "6,5″ OLED, 2688×1242"
+    ],
+    [
+     "Kamera (hinten)",
+     "2 × 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "3174 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "bis ca. 18 W (Kabel), 7,5 W kabellos (Qi)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "208 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1099 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 12"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone XR",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2018"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A12 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "3 GB"
+    ],
+    [
+     "Display",
+     "6,1″ LCD, 1792×828"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "2942 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "bis ca. 18 W (Kabel), 7,5 W kabellos (Qi)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "194 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "749 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 12"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 11",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2019"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A13 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "4 GB"
+    ],
+    [
+     "Display",
+     "6,1″ LCD, 1792×828"
+    ],
+    [
+     "Kamera (hinten)",
+     "2 × 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "3110 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "bis ca. 18 W (Kabel), 7,5 W kabellos (Qi)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "194 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "699 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 13"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 11 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2019"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A13 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "4 GB"
+    ],
+    [
+     "Display",
+     "5,8″ OLED, 2436×1125"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 × 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "3046 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "bis ca. 18 W (Kabel), 7,5 W kabellos (Qi)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "188 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 13"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 11 Pro Max",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2019"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A13 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "4 GB"
+    ],
+    [
+     "Display",
+     "6,5″ OLED, 2688×1242"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 × 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "3969 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "bis ca. 18 W (Kabel), 7,5 W kabellos (Qi)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "226 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1099 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 13"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone SE (2. Generation)",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2020"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A13 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "3 GB"
+    ],
+    [
+     "Display",
+     "4,7″ Retina-LCD"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "1821 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "bis ca. 18 W (Kabel), 7,5 W kabellos (Qi)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "148 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "399 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 13 bis iOS 18"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 12 mini",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2020"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A14 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "4 GB"
+    ],
+    [
+     "Display",
+     "5,4″ OLED, 2340×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "2 × 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "2227 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 20 W (Kabel), 12 W kabellos (MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "135 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "699 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 14"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 12",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2020"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A14 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "4 GB"
+    ],
+    [
+     "Display",
+     "6,1″ OLED, 2532×1170"
+    ],
+    [
+     "Kamera (hinten)",
+     "2 × 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "2815 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 20 W (Kabel), 15 W kabellos (MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "164 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "799 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 14"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 12 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2020"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A14 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "6 GB"
+    ],
+    [
+     "Display",
+     "6,1″ OLED, 2532×1170"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 × 12 MP (mit LiDAR)"
+    ],
+    [
+     "Akku (ca.)",
+     "2815 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 20 W (Kabel), 15 W kabellos (MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "189 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 14"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 12 Pro Max",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2020"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A14 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "6 GB"
+    ],
+    [
+     "Display",
+     "6,7″ OLED, 2778×1284"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 × 12 MP (mit LiDAR)"
+    ],
+    [
+     "Akku (ca.)",
+     "3687 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 20 W (Kabel), 15 W kabellos (MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "228 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1099 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 14"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 13 mini",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2021"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A15 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "4 GB"
+    ],
+    [
+     "Display",
+     "5,4″ OLED, 2340×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "2 × 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "2406 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 20 W (Kabel), 12 W kabellos (MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "141 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "699 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 15"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 13",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2021"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A15 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "4 GB"
+    ],
+    [
+     "Display",
+     "6,1″ OLED, 2532×1170"
+    ],
+    [
+     "Kamera (hinten)",
+     "2 × 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "3227 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 20 W (Kabel), 15 W kabellos (MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "174 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "799 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 15"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 13 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2021"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A15 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "6 GB"
+    ],
+    [
+     "Display",
+     "6,1″ OLED, 120 Hz, 2532×1170"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 × 12 MP (mit LiDAR)"
+    ],
+    [
+     "Akku (ca.)",
+     "3095 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 27 W (Kabel), 15 W kabellos (MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "204 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 15"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 13 Pro Max",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2021"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A15 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "6 GB"
+    ],
+    [
+     "Display",
+     "6,7″ OLED, 120 Hz, 2778×1284"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 × 12 MP (mit LiDAR)"
+    ],
+    [
+     "Akku (ca.)",
+     "4352 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 27 W (Kabel), 15 W kabellos (MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "240 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1099 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 15"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 14",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2022"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A15 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "6 GB"
+    ],
+    [
+     "Display",
+     "6,1″ OLED, 2532×1170"
+    ],
+    [
+     "Kamera (hinten)",
+     "2 × 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "3279 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 20 W (Kabel), 15 W kabellos (MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "172 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "799 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 16"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 14 Plus",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2022"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A15 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "6 GB"
+    ],
+    [
+     "Display",
+     "6,7″ OLED, 2778×1284"
+    ],
+    [
+     "Kamera (hinten)",
+     "2 × 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4325 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 20 W (Kabel), 15 W kabellos (MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "203 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "899 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 16"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 14 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2022"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A16 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "6 GB"
+    ],
+    [
+     "Display",
+     "6,1″ OLED, 120 Hz, 2556×1179"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 12 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "3200 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 27 W (Kabel), 15 W kabellos (MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "206 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 16"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 14 Pro Max",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2022"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A16 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "6 GB"
+    ],
+    [
+     "Display",
+     "6,7″ OLED, 120 Hz, 2796×1290"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 12 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4323 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 27 W (Kabel), 15 W kabellos (MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "240 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1099 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 16"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone SE (3. Generation)",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2022"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A15 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "4 GB"
+    ],
+    [
+     "Display",
+     "4,7″ Retina-LCD"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "2018 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "bis ca. 18 W (Kabel), 7,5 W kabellos (Qi)"
+    ],
+    [
+     "Anschluss",
+     "Lightning"
+    ],
+    [
+     "Gewicht",
+     "144 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "429 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 15 bis aktuell"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 15",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2023"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A16 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "6 GB"
+    ],
+    [
+     "Display",
+     "6,1″ OLED, 2556×1179"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "3349 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 27 W (Kabel), 15 W kabellos (Qi2/MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "171 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "799 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 17"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 15 Plus",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2023"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A16 Bionic"
+    ],
+    [
+     "Arbeitsspeicher",
+     "6 GB"
+    ],
+    [
+     "Display",
+     "6,7″ OLED, 2796×1290"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4383 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 27 W (Kabel), 15 W kabellos (Qi2/MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "201 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "899 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 17"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 15 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2023"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A17 Pro"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,1″ OLED, 120 Hz, 2556×1179"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 12 + 12 MP (3× Tele)"
+    ],
+    [
+     "Akku (ca.)",
+     "3274 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 27 W (Kabel), 15 W kabellos (Qi2/MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "USB-C (USB 3)"
+    ],
+    [
+     "Gewicht",
+     "187 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 17"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 15 Pro Max",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2023"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A17 Pro"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,7″ OLED, 120 Hz, 2796×1290"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 12 + 12 MP (5× Tele)"
+    ],
+    [
+     "Akku (ca.)",
+     "4422 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 27 W (Kabel), 15 W kabellos (Qi2/MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "USB-C (USB 3)"
+    ],
+    [
+     "Gewicht",
+     "221 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1199 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 17"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 16",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2024"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A18"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,1″ OLED, 2556×1179"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "3561 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 25 W (Kabel), 25 W kabellos (MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "170 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "799 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 18"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 16 Plus",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2024"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A18"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,7″ OLED, 2796×1290"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4674 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 25 W (Kabel), 25 W kabellos (MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "199 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "899 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 18"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 16 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2024"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A18 Pro"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,3″ OLED, 120 Hz, 2622×1206"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 48 + 12 MP (5× Tele)"
+    ],
+    [
+     "Akku (ca.)",
+     "3582 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 30 W (Kabel), 25 W kabellos (MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "USB-C (USB 3)"
+    ],
+    [
+     "Gewicht",
+     "199 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 18"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 16 Pro Max",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2024"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A18 Pro"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,9″ OLED, 120 Hz, 2868×1320"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 48 + 12 MP (5× Tele)"
+    ],
+    [
+     "Akku (ca.)",
+     "4685 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 30 W (Kabel), 25 W kabellos (MagSafe)"
+    ],
+    [
+     "Anschluss",
+     "USB-C (USB 3)"
+    ],
+    [
+     "Gewicht",
+     "227 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1199 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 18"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 17",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2025"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A19"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,3″ OLED, 120 Hz, 2622×1206"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 48 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "ca. 3700 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "bis ca. 40 W (Kabel), bis 25 W kabellos (Qi2)"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "177 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "799 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 26"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone Air",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2025"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A19 Pro"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,5″ OLED, 120 Hz, 2736×1260"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "ca. 3150 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 20 W (Kabel), ca. 20 W kabellos (Qi2)"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "165 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 26"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 17 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2025"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A19 Pro"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,3″ OLED, 120 Hz, 2622×1206"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 48 + 48 MP (4× / 8× Tele)"
+    ],
+    [
+     "Akku (ca.)",
+     "ca. 4250 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "bis ca. 40 W (Kabel), bis 25 W kabellos (Qi2)"
+    ],
+    [
+     "Anschluss",
+     "USB-C (USB 3)"
+    ],
+    [
+     "Gewicht",
+     "206 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1099 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 26"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 17 Pro Max",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2025"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A19 Pro"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,9″ OLED, 120 Hz, 2868×1320"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 48 + 48 MP (4× / 8× Tele)"
+    ],
+    [
+     "Akku (ca.)",
+     "ca. 5000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "bis ca. 40 W (Kabel), bis 25 W kabellos (Qi2)"
+    ],
+    [
+     "Anschluss",
+     "USB-C (USB 3)"
+    ],
+    [
+     "Gewicht",
+     "233 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1199 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 26"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 16e",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2025"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A18"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,1″ OLED"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 MP (eine Kamera)"
+    ],
+    [
+     "Akku (ca.)",
+     "4005 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 20 W (Kabel), 7,5 W kabellos (Qi)"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "167 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "599 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 18 bis aktuell"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2010"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Samsung Hummingbird, 1 GHz"
+    ],
+    [
+     "Arbeitsspeicher",
+     "512 MB"
+    ],
+    [
+     "Display",
+     "4″ Super AMOLED, 800×480"
+    ],
+    [
+     "Kamera (hinten)",
+     "5 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "1500 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 5 W (USB)"
+    ],
+    [
+     "Anschluss",
+     "Micro-USB"
+    ],
+    [
+     "Gewicht",
+     "119 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 2.1 bis 2.3"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S II",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2011"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Samsung Exynos 4210 (Dual-Core), 1,2 GHz"
+    ],
+    [
+     "Arbeitsspeicher",
+     "1 GB"
+    ],
+    [
+     "Display",
+     "4,3″ Super AMOLED Plus"
+    ],
+    [
+     "Kamera (hinten)",
+     "8 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "1650 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 5–10 W"
+    ],
+    [
+     "Anschluss",
+     "Micro-USB"
+    ],
+    [
+     "Gewicht",
+     "116 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 2.3 bis 4.1"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S III",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2012"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Exynos 4412 (Quad-Core), 1,4 GHz"
+    ],
+    [
+     "Arbeitsspeicher",
+     "1 GB"
+    ],
+    [
+     "Display",
+     "4,8″ Super AMOLED, 1280×720"
+    ],
+    [
+     "Kamera (hinten)",
+     "8 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "2100 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 10 W (5 V / 2 A)"
+    ],
+    [
+     "Anschluss",
+     "Micro-USB"
+    ],
+    [
+     "Gewicht",
+     "133 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 4.0 bis 4.3"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S4",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2013"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Exynos 5410 (Octa) oder Snapdragon 600"
+    ],
+    [
+     "Arbeitsspeicher",
+     "2 GB"
+    ],
+    [
+     "Display",
+     "5″ Super AMOLED, 1080p"
+    ],
+    [
+     "Kamera (hinten)",
+     "13 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "2600 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 10 W, kabellos optional (Qi)"
+    ],
+    [
+     "Anschluss",
+     "Micro-USB"
+    ],
+    [
+     "Gewicht",
+     "130 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 4.2 bis 5.0"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S5",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2014"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 801 oder Exynos 5422"
+    ],
+    [
+     "Arbeitsspeicher",
+     "2 GB"
+    ],
+    [
+     "Display",
+     "5,1″ Super AMOLED, 1080p"
+    ],
+    [
+     "Kamera (hinten)",
+     "16 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "2800 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 10 W (Quick Charge 2.0)"
+    ],
+    [
+     "Anschluss",
+     "Micro-USB"
+    ],
+    [
+     "Gewicht",
+     "145 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 4.4 bis 6.0"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S6",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2015"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Exynos 7420"
+    ],
+    [
+     "Arbeitsspeicher",
+     "3 GB"
+    ],
+    [
+     "Display",
+     "5,1″ Super AMOLED, 2560×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "16 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "2550 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 15 W (Kabel), ca. 10 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "Micro-USB"
+    ],
+    [
+     "Gewicht",
+     "138 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 5.0"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S6 edge",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2015"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Exynos 7420"
+    ],
+    [
+     "Arbeitsspeicher",
+     "3 GB"
+    ],
+    [
+     "Display",
+     "5,1″ Super AMOLED, 2560×1440 (Doppelkante)"
+    ],
+    [
+     "Kamera (hinten)",
+     "16 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "2600 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 15 W (Kabel), ca. 10 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "Micro-USB"
+    ],
+    [
+     "Gewicht",
+     "132 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 5.0"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S7",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2016"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 820 oder Exynos 8890"
+    ],
+    [
+     "Arbeitsspeicher",
+     "4 GB"
+    ],
+    [
+     "Display",
+     "5,1″ Super AMOLED, 2560×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 MP (Dual Pixel)"
+    ],
+    [
+     "Akku (ca.)",
+     "3000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 15 W (Kabel), ca. 10 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "Micro-USB"
+    ],
+    [
+     "Gewicht",
+     "152 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 6.0"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S7 edge",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2016"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 820 oder Exynos 8890"
+    ],
+    [
+     "Arbeitsspeicher",
+     "4 GB"
+    ],
+    [
+     "Display",
+     "5,5″ Super AMOLED, 2560×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 MP (Dual Pixel)"
+    ],
+    [
+     "Akku (ca.)",
+     "3600 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 15 W (Kabel), ca. 10 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "Micro-USB"
+    ],
+    [
+     "Gewicht",
+     "157 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 6.0"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S8",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2017"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 835 oder Exynos 8895"
+    ],
+    [
+     "Arbeitsspeicher",
+     "4 GB"
+    ],
+    [
+     "Display",
+     "5,8″ Super AMOLED, 2960×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "3000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 15 W (Kabel), ca. 10 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "155 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 7.0"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S8+",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2017"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 835 oder Exynos 8895"
+    ],
+    [
+     "Arbeitsspeicher",
+     "4 GB"
+    ],
+    [
+     "Display",
+     "6,2″ Super AMOLED, 2960×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "3500 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 15 W (Kabel), ca. 10 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "173 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 7.0"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S9",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2018"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 845 oder Exynos 9810"
+    ],
+    [
+     "Arbeitsspeicher",
+     "4 GB"
+    ],
+    [
+     "Display",
+     "5,8″ Super AMOLED, 2960×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 MP (variable Blende)"
+    ],
+    [
+     "Akku (ca.)",
+     "3000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 15 W (Kabel), ca. 10 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "163 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 8.0"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S9+",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2018"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 845 oder Exynos 9810"
+    ],
+    [
+     "Arbeitsspeicher",
+     "6 GB"
+    ],
+    [
+     "Display",
+     "6,2″ Super AMOLED, 2960×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "2 × 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "3500 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 15 W (Kabel), ca. 10 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "189 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 8.0"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S10e",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2019"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 855 oder Exynos 9820"
+    ],
+    [
+     "Arbeitsspeicher",
+     "6 GB"
+    ],
+    [
+     "Display",
+     "5,8″ AMOLED, 2280×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 + 16 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "3100 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "15 W (Kabel), 12 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "150 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "749 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 9"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S10",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2019"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 855 oder Exynos 9820"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,1″ AMOLED, 3040×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 + 12 + 16 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "3400 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "15 W (Kabel), 12 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "157 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "899 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 9"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S10+",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2019"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 855 oder Exynos 9820"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,4″ AMOLED, 3040×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 + 12 + 16 MP (+ Tiefensensor)"
+    ],
+    [
+     "Akku (ca.)",
+     "4100 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "15 W (Kabel), 12 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "175 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 9"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S20",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2020"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Exynos 990 oder Snapdragon 865"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,2″ AMOLED, 120 Hz, 3200×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 + 64 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "25 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "163 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 10"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S20+",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2020"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Exynos 990 oder Snapdragon 865"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,7″ AMOLED, 120 Hz, 3200×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 + 64 + 12 MP (+ ToF)"
+    ],
+    [
+     "Akku (ca.)",
+     "4500 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "25 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "186 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1199 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 10"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S20 Ultra",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2020"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Exynos 990 oder Snapdragon 865"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,9″ AMOLED, 120 Hz, 3200×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "108 + 48 + 12 MP (+ ToF)"
+    ],
+    [
+     "Akku (ca.)",
+     "5000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "45 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "220 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1399 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 10"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S21",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2021"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Exynos 2100 oder Snapdragon 888"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,2″ AMOLED, 120 Hz, 2400×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 + 64 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "25 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "169 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "799 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 11"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S21+",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2021"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Exynos 2100 oder Snapdragon 888"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,7″ AMOLED, 120 Hz, 2400×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "12 + 64 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4800 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "25 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "200 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 11"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S21 Ultra",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2021"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Exynos 2100 oder Snapdragon 888"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,8″ AMOLED, 120 Hz, 3200×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "108 + 10 + 10 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "5000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "25 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "227 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1199 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 11"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S22",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2022"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 1 oder Exynos 2200"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,1″ AMOLED, 120 Hz, 2340×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 12 + 10 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "3700 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "25 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "167 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "799 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 12"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S22+",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2022"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 1 oder Exynos 2200"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,6″ AMOLED, 120 Hz, 2340×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 12 + 10 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4500 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "45 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "196 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 12"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S22 Ultra",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2022"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 1 oder Exynos 2200"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 oder 12 GB"
+    ],
+    [
+     "Display",
+     "6,8″ AMOLED, 120 Hz, 3088×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "108 + 12 + 10 + 10 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "5000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "45 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "228 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1199 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 12"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S23",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2023"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 2 for Galaxy"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,1″ AMOLED, 120 Hz, 2340×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 12 + 10 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "3900 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "25 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "168 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "799 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 13"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S23+",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2023"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 2 for Galaxy"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,6″ AMOLED, 120 Hz, 2340×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 12 + 10 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4700 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "45 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "195 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 13"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S23 Ultra",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2023"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 2 for Galaxy"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 oder 12 GB"
+    ],
+    [
+     "Display",
+     "6,8″ AMOLED, 120 Hz, 3088×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "200 + 12 + 10 + 10 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "5000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "45 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "234 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1199 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 13"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S24",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2024"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Exynos 2400 oder Snapdragon 8 Gen 3"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,2″ AMOLED, 120 Hz, 2340×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 12 + 10 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "25 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "167 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "799 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 14"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S24+",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2024"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Exynos 2400 oder Snapdragon 8 Gen 3"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,7″ AMOLED, 120 Hz, 3120×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 12 + 10 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4900 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "45 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "196 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 14"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S24 Ultra",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2024"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 3 for Galaxy"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,8″ AMOLED, 120 Hz, 3120×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "200 + 50 + 10 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "5000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "45 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "232 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1299 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 14"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S25",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2025"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Elite for Galaxy"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,2″ AMOLED, 120 Hz, 2340×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 12 + 10 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "25 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "162 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "799 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 15"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S25+",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2025"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Elite for Galaxy"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,7″ AMOLED, 120 Hz, 3120×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 12 + 10 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4900 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "45 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "190 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 15"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S25 Ultra",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2025"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Elite for Galaxy"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,9″ AMOLED, 120 Hz, 3120×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "200 + 50 + 50 + 10 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "5000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "45 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "218 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1299 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 15"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S25 Edge",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2025"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Elite for Galaxy"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,7″ AMOLED, 120 Hz, 3120×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "200 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "3900 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "25 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "163 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1099 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 15"
+    ]
+   ]
+  },
+  {
+   "marke": "Sony",
+   "name": "Xperia 1 II",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Sony"
+    ],
+    [
+     "Erschienen",
+     "2020"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 865"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,5″ OLED 4K, 21:9"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 × 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 21 W (Kabel), 11 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C (Kopfhöreranschluss)"
+    ],
+    [
+     "Gewicht",
+     "181 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1199 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 10"
+    ]
+   ]
+  },
+  {
+   "marke": "Sony",
+   "name": "Xperia 1 III",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Sony"
+    ],
+    [
+     "Erschienen",
+     "2021"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 888"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,5″ OLED 4K, 120 Hz, 21:9"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 × 12 MP (variabler Tele)"
+    ],
+    [
+     "Akku (ca.)",
+     "4500 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "30 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C (Kopfhöreranschluss)"
+    ],
+    [
+     "Gewicht",
+     "186 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1299 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 11"
+    ]
+   ]
+  },
+  {
+   "marke": "Sony",
+   "name": "Xperia 1 IV",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Sony"
+    ],
+    [
+     "Erschienen",
+     "2022"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 1"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,5″ OLED 4K, 120 Hz, 21:9"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 × 12 MP (stufenloser Zoom)"
+    ],
+    [
+     "Akku (ca.)",
+     "5000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "30 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C (Kopfhöreranschluss)"
+    ],
+    [
+     "Gewicht",
+     "185 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1599 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 12"
+    ]
+   ]
+  },
+  {
+   "marke": "Sony",
+   "name": "Xperia 1 V",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Sony"
+    ],
+    [
+     "Erschienen",
+     "2023"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 2"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,5″ OLED 4K, 120 Hz, 21:9"
+    ],
+    [
+     "Kamera (hinten)",
+     "52 + 12 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "5000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "30 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C (Kopfhöreranschluss)"
+    ],
+    [
+     "Gewicht",
+     "187 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1399 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 13"
+    ]
+   ]
+  },
+  {
+   "marke": "Sony",
+   "name": "Xperia 1 VI",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Sony"
+    ],
+    [
+     "Erschienen",
+     "2024"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 3"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,5″ LTPO-OLED Full HD+, 120 Hz, 21:9"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 12 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "5000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "30 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C (Kopfhöreranschluss)"
+    ],
+    [
+     "Gewicht",
+     "192 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1399 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 14"
+    ]
+   ]
+  },
+  {
+   "marke": "Sony",
+   "name": "Xperia 1 VII",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Sony"
+    ],
+    [
+     "Erschienen",
+     "2025"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Elite"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,5″ LTPO-OLED Full HD+, 120 Hz, 21:9"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 48 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "5000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "30 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C (Kopfhöreranschluss)"
+    ],
+    [
+     "Gewicht",
+     "197 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1499 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 15"
+    ]
+   ]
+  },
+  {
+   "marke": "Xiaomi",
+   "name": "Xiaomi 12",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Xiaomi"
+    ],
+    [
+     "Erschienen",
+     "2021"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 1"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,28″ AMOLED, 120 Hz, 2400×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 13 + 5 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4500 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "67 W (Kabel), 50 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "180 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 12"
+    ]
+   ]
+  },
+  {
+   "marke": "Xiaomi",
+   "name": "Xiaomi 12 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Xiaomi"
+    ],
+    [
+     "Erschienen",
+     "2021"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 1"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 oder 12 GB"
+    ],
+    [
+     "Display",
+     "6,73″ AMOLED, 120 Hz, 3200×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 × 50 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4600 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "120 W (Kabel), 50 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "205 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 12"
+    ]
+   ]
+  },
+  {
+   "marke": "Xiaomi",
+   "name": "Xiaomi 13",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Xiaomi"
+    ],
+    [
+     "Erschienen",
+     "2022"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 2"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 oder 12 GB"
+    ],
+    [
+     "Display",
+     "6,36″ AMOLED, 120 Hz, 2400×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 10 + 12 MP (Leica)"
+    ],
+    [
+     "Akku (ca.)",
+     "4500 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "67 W (Kabel), 50 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "189 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 €"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 13"
+    ]
+   ]
+  },
+  {
+   "marke": "Xiaomi",
+   "name": "Xiaomi 13 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Xiaomi"
+    ],
+    [
+     "Erschienen",
+     "2022"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 2"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,73″ AMOLED, 120 Hz, 3200×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 × 50 MP (1″-Sensor, Leica)"
+    ],
+    [
+     "Akku (ca.)",
+     "4820 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "120 W (Kabel), 50 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "229 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1299 €"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 13"
+    ]
+   ]
+  },
+  {
+   "marke": "Xiaomi",
+   "name": "Xiaomi 14",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Xiaomi"
+    ],
+    [
+     "Erschienen",
+     "2023"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 3"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,36″ AMOLED, 120 Hz, 2670×1200"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 × 50 MP (Leica)"
+    ],
+    [
+     "Akku (ca.)",
+     "4610 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "90 W (Kabel), 50 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "193 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 €"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 14"
+    ]
+   ]
+  },
+  {
+   "marke": "Xiaomi",
+   "name": "Xiaomi 14 Ultra",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Xiaomi"
+    ],
+    [
+     "Erschienen",
+     "2024"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 3"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 oder 16 GB"
+    ],
+    [
+     "Display",
+     "6,73″ AMOLED, 120 Hz, 3200×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "4 × 50 MP (1″-Sensor, Leica)"
+    ],
+    [
+     "Akku (ca.)",
+     "5000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "90 W (Kabel), 80 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "219 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1499 €"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 14"
+    ]
+   ]
+  },
+  {
+   "marke": "Xiaomi",
+   "name": "Xiaomi 15",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Xiaomi"
+    ],
+    [
+     "Erschienen",
+     "2024"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Elite"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,36″ AMOLED, 120 Hz, 2670×1200"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 × 50 MP (Leica)"
+    ],
+    [
+     "Akku (ca.)",
+     "5240 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "90 W (Kabel), 50 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "191 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 €"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 15"
+    ]
+   ]
+  },
+  {
+   "marke": "Xiaomi",
+   "name": "Xiaomi 15 Ultra",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Xiaomi"
+    ],
+    [
+     "Erschienen",
+     "2025"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Elite"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 oder 16 GB"
+    ],
+    [
+     "Display",
+     "6,73″ AMOLED, 120 Hz, 3200×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 50 + 50 + 200 MP (Leica)"
+    ],
+    [
+     "Akku (ca.)",
+     "5410 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "90 W (Kabel), 80 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "226 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1499 €"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 15"
+    ]
+   ]
+  },
+  {
+   "marke": "Oppo",
+   "name": "Oppo Find X3 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Oppo"
+    ],
+    [
+     "Erschienen",
+     "2021"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 888"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,7″ LTPO-AMOLED, 120 Hz, 3216×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 50 + 13 + 3 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4500 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "65 W (Kabel), 30 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "193 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 11"
+    ]
+   ]
+  },
+  {
+   "marke": "Oppo",
+   "name": "Oppo Find X5 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Oppo"
+    ],
+    [
+     "Erschienen",
+     "2022"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 1"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,7″ LTPO-AMOLED, 120 Hz, 3216×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 50 + 13 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "5000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "80 W (Kabel), 50 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "218 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 12"
+    ]
+   ]
+  },
+  {
+   "marke": "Oppo",
+   "name": "Oppo Find X6 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Oppo"
+    ],
+    [
+     "Erschienen",
+     "2023"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 2"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 oder 16 GB"
+    ],
+    [
+     "Display",
+     "6,82″ LTPO-AMOLED, 120 Hz, 3168×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 × 50 MP (1″-Sensor)"
+    ],
+    [
+     "Akku (ca.)",
+     "5000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "100 W (Kabel), 50 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "224 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 13"
+    ]
+   ]
+  },
+  {
+   "marke": "Oppo",
+   "name": "Oppo Find X7 Ultra",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Oppo"
+    ],
+    [
+     "Erschienen",
+     "2024"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 3"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 oder 16 GB"
+    ],
+    [
+     "Display",
+     "6,82″ LTPO-AMOLED, 120 Hz, 3168×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "4 × 50 MP (2 Tele-Kameras)"
+    ],
+    [
+     "Akku (ca.)",
+     "5000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "100 W (Kabel), 50 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "221 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 14"
+    ]
+   ]
+  },
+  {
+   "marke": "Oppo",
+   "name": "Oppo Find X8",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Oppo"
+    ],
+    [
+     "Erschienen",
+     "2024"
+    ],
+    [
+     "Prozessor (SoC)",
+     "MediaTek Dimensity 9400"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 oder 16 GB"
+    ],
+    [
+     "Display",
+     "6,59″ AMOLED, 120 Hz, 2760×1256"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 × 50 MP (Hasselblad)"
+    ],
+    [
+     "Akku (ca.)",
+     "5630 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "80 W (Kabel), 50 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "193 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "899 €"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 15"
+    ]
+   ]
+  },
+  {
+   "marke": "Oppo",
+   "name": "Oppo Find X8 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Oppo"
+    ],
+    [
+     "Erschienen",
+     "2024"
+    ],
+    [
+     "Prozessor (SoC)",
+     "MediaTek Dimensity 9400"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 oder 16 GB"
+    ],
+    [
+     "Display",
+     "6,78″ LTPO-AMOLED, 120 Hz, 2780×1264"
+    ],
+    [
+     "Kamera (hinten)",
+     "4 × 50 MP (2 Tele-Kameras, Hasselblad)"
+    ],
+    [
+     "Akku (ca.)",
+     "5910 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "80 W (Kabel), 50 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "215 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1199 €"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 15"
+    ]
+   ]
+  },
+  {
+   "marke": "Vivo",
+   "name": "Vivo X80 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Vivo"
+    ],
+    [
+     "Erschienen",
+     "2022"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Gen 1 oder Dimensity 9000"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,78″ LTPO-AMOLED, 120 Hz, 3200×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 48 + 12 + 8 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4700 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "80 W (Kabel), 50 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "219 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 12"
+    ]
+   ]
+  },
+  {
+   "marke": "Vivo",
+   "name": "Vivo X90 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Vivo"
+    ],
+    [
+     "Erschienen",
+     "2022"
+    ],
+    [
+     "Prozessor (SoC)",
+     "MediaTek Dimensity 9200"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,78″ AMOLED, 120 Hz, 2800×1260"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 (1″-Sensor) + 50 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4870 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "120 W (Kabel), 50 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "214 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 13"
+    ]
+   ]
+  },
+  {
+   "marke": "Vivo",
+   "name": "Vivo X100 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Vivo"
+    ],
+    [
+     "Erschienen",
+     "2023"
+    ],
+    [
+     "Prozessor (SoC)",
+     "MediaTek Dimensity 9300"
+    ],
+    [
+     "Arbeitsspeicher",
+     "16 GB"
+    ],
+    [
+     "Display",
+     "6,78″ LTPO-AMOLED, 120 Hz, 2800×1260"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 × 50 MP (Zeiss)"
+    ],
+    [
+     "Akku (ca.)",
+     "5400 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "100 W (Kabel), 50 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "225 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 14"
+    ]
+   ]
+  },
+  {
+   "marke": "Vivo",
+   "name": "Vivo X200",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Vivo"
+    ],
+    [
+     "Erschienen",
+     "2024"
+    ],
+    [
+     "Prozessor (SoC)",
+     "MediaTek Dimensity 9400"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,67″ AMOLED, 120 Hz, 2800×1260"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 × 50 MP (Zeiss)"
+    ],
+    [
+     "Akku (ca.)",
+     "5800 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "90 W (Kabel), 40 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "197 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 15"
+    ]
+   ]
+  },
+  {
+   "marke": "Vivo",
+   "name": "Vivo X200 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Vivo"
+    ],
+    [
+     "Erschienen",
+     "2024"
+    ],
+    [
+     "Prozessor (SoC)",
+     "MediaTek Dimensity 9400"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 oder 16 GB"
+    ],
+    [
+     "Display",
+     "6,78″ LTPO-AMOLED, 120 Hz, 2800×1260"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 50 + 200 MP (Zeiss)"
+    ],
+    [
+     "Akku (ca.)",
+     "6000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "90 W (Kabel), 30 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "223 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1199 €"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 15"
+    ]
+   ]
+  },
+  {
+   "marke": "Vivo",
+   "name": "Vivo X200 Ultra",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Vivo"
+    ],
+    [
+     "Erschienen",
+     "2025"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Elite"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 oder 16 GB"
+    ],
+    [
+     "Display",
+     "6,82″ LTPO-AMOLED, 120 Hz, 3168×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 50 + 200 MP (Zeiss)"
+    ],
+    [
+     "Akku (ca.)",
+     "6000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "90 W (Kabel), 40 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "229 g"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 15"
+    ]
+   ]
+  },
+  {
+   "marke": "Google",
+   "name": "Pixel 6",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Google"
+    ],
+    [
+     "Erschienen",
+     "2021"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Google Tensor"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,4″ AMOLED, 90 Hz, 2400×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4614 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 21 W (Kabel), 21 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "207 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "599 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 12"
+    ]
+   ]
+  },
+  {
+   "marke": "Google",
+   "name": "Pixel 6 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Google"
+    ],
+    [
+     "Erschienen",
+     "2021"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Google Tensor"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,7″ LTPO-AMOLED, 120 Hz, 3120×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 12 + 48 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "5003 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 23 W (Kabel), 23 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "210 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "899 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 12"
+    ]
+   ]
+  },
+  {
+   "marke": "Google",
+   "name": "Pixel 7",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Google"
+    ],
+    [
+     "Erschienen",
+     "2022"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Google Tensor G2"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,3″ AMOLED, 90 Hz, 2400×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4355 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 20 W (Kabel), 20 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "197 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "599 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 13"
+    ]
+   ]
+  },
+  {
+   "marke": "Google",
+   "name": "Pixel 7 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Google"
+    ],
+    [
+     "Erschienen",
+     "2022"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Google Tensor G2"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,7″ LTPO-AMOLED, 120 Hz, 3120×1440"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 12 + 48 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "5000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 23 W (Kabel), 23 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "212 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "899 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 13"
+    ]
+   ]
+  },
+  {
+   "marke": "Google",
+   "name": "Pixel 8",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Google"
+    ],
+    [
+     "Erschienen",
+     "2023"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Google Tensor G3"
+    ],
+    [
+     "Arbeitsspeicher",
+     "8 GB"
+    ],
+    [
+     "Display",
+     "6,2″ AMOLED, 120 Hz, 2400×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 12 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4575 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 27 W (Kabel), 18 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "187 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "699 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 14"
+    ]
+   ]
+  },
+  {
+   "marke": "Google",
+   "name": "Pixel 8 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Google"
+    ],
+    [
+     "Erschienen",
+     "2023"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Google Tensor G3"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,7″ LTPO-AMOLED, 120 Hz, 2992×1344"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 48 + 48 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "5050 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 30 W (Kabel), 23 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "213 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 14"
+    ]
+   ]
+  },
+  {
+   "marke": "Google",
+   "name": "Pixel 9",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Google"
+    ],
+    [
+     "Erschienen",
+     "2024"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Google Tensor G4"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,3″ AMOLED, 120 Hz, 2424×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 48 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4700 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 27 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "198 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "799 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 14"
+    ]
+   ]
+  },
+  {
+   "marke": "Google",
+   "name": "Pixel 9 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Google"
+    ],
+    [
+     "Erschienen",
+     "2024"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Google Tensor G4"
+    ],
+    [
+     "Arbeitsspeicher",
+     "16 GB"
+    ],
+    [
+     "Display",
+     "6,3″ LTPO-AMOLED, 120 Hz, 2856×1280"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 48 + 48 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4700 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 27 W (Kabel), 21 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "199 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 14"
+    ]
+   ]
+  },
+  {
+   "marke": "Google",
+   "name": "Pixel 9 Pro XL",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Google"
+    ],
+    [
+     "Erschienen",
+     "2024"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Google Tensor G4"
+    ],
+    [
+     "Arbeitsspeicher",
+     "16 GB"
+    ],
+    [
+     "Display",
+     "6,8″ LTPO-AMOLED, 120 Hz, 2992×1344"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 48 + 48 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "5060 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 37 W (Kabel), 21 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "221 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1099 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 14"
+    ]
+   ]
+  },
+  {
+   "marke": "Google",
+   "name": "Pixel 10",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Google"
+    ],
+    [
+     "Erschienen",
+     "2025"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Google Tensor G5"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,3″ AMOLED, 120 Hz, 2424×1080"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 13 + 11 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "ca. 4970 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "ca. 30 W (Kabel), 15 W kabellos (Qi2)"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "204 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "799 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 16"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 18 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2026"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A20 Pro (2 nm)"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB (laut Dritt-Quellen)"
+    ],
+    [
+     "Display",
+     "6,3″ OLED, 120 Hz"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 48 + 48 MP (4× Tele, variable Blende)"
+    ],
+    [
+     "Akku (ca.)",
+     "von Apple nicht genannt"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "50 % in ca. 15 Min (Kabel, 60-W-Netzteil), bis 25 W kabellos (Qi2)"
+    ],
+    [
+     "Anschluss",
+     "USB-C (USB 3)"
+    ],
+    [
+     "Gewicht",
+     "211 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1199 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 27"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone 18 Pro Max",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2026"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A20 Pro (2 nm)"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB (laut Dritt-Quellen)"
+    ],
+    [
+     "Display",
+     "6,9″ OLED, 120 Hz, 2868×1320"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 48 + 48 MP (4× Tele, variable Blende)"
+    ],
+    [
+     "Akku (ca.)",
+     "von Apple nicht genannt (Dritt-Quellen: ca. 5567 mAh)"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "50 % in ca. 15 Min (Kabel, 60-W-Netzteil), bis 25 W kabellos (Qi2)"
+    ],
+    [
+     "Anschluss",
+     "USB-C (USB 3)"
+    ],
+    [
+     "Gewicht",
+     "249 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1299 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 27"
+    ]
+   ]
+  },
+  {
+   "marke": "Apple",
+   "name": "iPhone Duo (faltbar)",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Apple"
+    ],
+    [
+     "Erschienen",
+     "2026"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Apple A20 Pro (2 nm)"
+    ],
+    [
+     "Arbeitsspeicher",
+     "von Apple nicht genannt"
+    ],
+    [
+     "Display",
+     "7,6″ innen + 5,4″ außen, OLED, 120 Hz"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 48 MP (kein extra Tele)"
+    ],
+    [
+     "Akku (ca.)",
+     "von Apple nicht genannt (bis ca. 24 h gemischte Nutzung)"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "50 % in ca. 20 Min (Kabel), ca. 30 Min kabellos (MagSafe/Qi2)"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "254 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1999 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "iOS 27 (mind. 27.1)"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S26",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2026"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Exynos 2600 (Europa), Snapdragon 8 Elite Gen 5 (USA, China)"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,3″ AMOLED"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 12 + 10 MP (3× Tele)"
+    ],
+    [
+     "Akku (ca.)",
+     "4300 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "25 W (Kabel), 15 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "167 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "nicht bestätigt"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 16 (One UI 8.5)"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S26+",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2026"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Exynos 2600 (Europa), Snapdragon 8 Elite Gen 5 (USA, China)"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,7″ AMOLED"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 12 + 10 MP (3× Tele)"
+    ],
+    [
+     "Akku (ca.)",
+     "4900 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "45 W (Kabel), 20 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "190 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "nicht bestätigt"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 16 (One UI 8.5)"
+    ]
+   ]
+  },
+  {
+   "marke": "Samsung",
+   "name": "Galaxy S26 Ultra",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Samsung"
+    ],
+    [
+     "Erschienen",
+     "2026"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Elite Gen 5 for Galaxy"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB (16 GB bei 1 TB)"
+    ],
+    [
+     "Display",
+     "6,9″ LTPO-AMOLED, 120 Hz"
+    ],
+    [
+     "Kamera (hinten)",
+     "200 + 50 + 10 (3× Tele) + 50 MP (5× Tele)"
+    ],
+    [
+     "Akku (ca.)",
+     "5000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "60 W (Kabel), 25 W kabellos (Qi2.2)"
+    ],
+    [
+     "Anschluss",
+     "USB-C 3.2"
+    ],
+    [
+     "Gewicht",
+     "214 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "nicht bestätigt"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 16 (One UI 8.5)"
+    ]
+   ]
+  },
+  {
+   "marke": "Google",
+   "name": "Pixel 11",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Google"
+    ],
+    [
+     "Erschienen",
+     "2026"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Google Tensor G6"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,3″ AMOLED, 60–120 Hz"
+    ],
+    [
+     "Kamera (hinten)",
+     "48 + 13 + 10,8 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4985 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "30 W (Kabel), 25 W kabellos (Qi2.2)"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "195,6 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "899 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 17"
+    ]
+   ]
+  },
+  {
+   "marke": "Google",
+   "name": "Pixel 11 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Google"
+    ],
+    [
+     "Erschienen",
+     "2026"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Google Tensor G6"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 oder 16 GB"
+    ],
+    [
+     "Display",
+     "6,3″ LTPO-AMOLED, 1–120 Hz"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 48 + 48 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "4850 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "30 W (Kabel), 25 W kabellos (Qi2.2)"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "204,1 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1099 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 17"
+    ]
+   ]
+  },
+  {
+   "marke": "Google",
+   "name": "Pixel 11 Pro XL",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Google"
+    ],
+    [
+     "Erschienen",
+     "2026"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Google Tensor G6"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 oder 16 GB"
+    ],
+    [
+     "Display",
+     "6,8″ LTPO-AMOLED, 1–120 Hz"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 48 + 48 MP"
+    ],
+    [
+     "Akku (ca.)",
+     "5115 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "45 W (Kabel), 25 W kabellos (Qi2.2)"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "226,7 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1299 $"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 17"
+    ]
+   ]
+  },
+  {
+   "marke": "Oppo",
+   "name": "Oppo Find X9",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Oppo"
+    ],
+    [
+     "Erschienen",
+     "2025"
+    ],
+    [
+     "Prozessor (SoC)",
+     "MediaTek Dimensity 9500"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 GB"
+    ],
+    [
+     "Display",
+     "6,59″ AMOLED, 120 Hz"
+    ],
+    [
+     "Kamera (hinten)",
+     "3 × 50 MP (Hasselblad)"
+    ],
+    [
+     "Akku (ca.)",
+     "7025 mAh (global)"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "Quelle nennt keine Wattzahl"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "k. A."
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "999 € (UK: 899 £)"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 16 (ColorOS 16)"
+    ]
+   ]
+  },
+  {
+   "marke": "Oppo",
+   "name": "Oppo Find X9 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Oppo"
+    ],
+    [
+     "Erschienen",
+     "2025"
+    ],
+    [
+     "Prozessor (SoC)",
+     "MediaTek Dimensity 9500"
+    ],
+    [
+     "Arbeitsspeicher",
+     "16 GB"
+    ],
+    [
+     "Display",
+     "6,78″ LTPO-AMOLED, 120 Hz, 2772×1272"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 50 + 200 MP (3× Tele, Hasselblad)"
+    ],
+    [
+     "Akku (ca.)",
+     "7500 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "Quelle nennt keine Wattzahl"
+    ],
+    [
+     "Anschluss",
+     "USB-C (PD)"
+    ],
+    [
+     "Gewicht",
+     "224 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1299 €"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 16 (ColorOS 16)"
+    ]
+   ]
+  },
+  {
+   "marke": "Xiaomi",
+   "name": "Xiaomi 17",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Xiaomi"
+    ],
+    [
+     "Erschienen",
+     "2025 (zuerst China)"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Elite Gen 5"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 oder 16 GB"
+    ],
+    [
+     "Display",
+     "6,3″ AMOLED"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 MP, dreifach (Leica)"
+    ],
+    [
+     "Akku (ca.)",
+     "7000 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "100 W (Kabel), 50 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "k. A."
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "4499 Yuan (China)"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "HyperOS 3 (Android 16)"
+    ]
+   ]
+  },
+  {
+   "marke": "Xiaomi",
+   "name": "Xiaomi 17 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Xiaomi"
+    ],
+    [
+     "Erschienen",
+     "2025 (zuerst China)"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Elite Gen 5"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 oder 16 GB"
+    ],
+    [
+     "Display",
+     "6,3″ AMOLED, 120 Hz + 2,7″ Rückdisplay"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 50 + 50 MP (5× Tele)"
+    ],
+    [
+     "Akku (ca.)",
+     "6300 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "100 W (Kabel), 50 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "k. A."
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "4999 Yuan (China)"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "HyperOS 3 (Android 16)"
+    ]
+   ]
+  },
+  {
+   "marke": "Xiaomi",
+   "name": "Xiaomi 17 Pro Max",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Xiaomi"
+    ],
+    [
+     "Erschienen",
+     "2025 (zuerst China)"
+    ],
+    [
+     "Prozessor (SoC)",
+     "Snapdragon 8 Elite Gen 5"
+    ],
+    [
+     "Arbeitsspeicher",
+     "12 oder 16 GB"
+    ],
+    [
+     "Display",
+     "6,9″ AMOLED, 120 Hz + 2,9″ Rückdisplay"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 50 + 50 MP (5× Tele)"
+    ],
+    [
+     "Akku (ca.)",
+     "7500 mAh"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "100 W (Kabel), 50 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "k. A."
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "5999 Yuan (China)"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "HyperOS 3 (Android 16)"
+    ]
+   ]
+  },
+  {
+   "marke": "Vivo",
+   "name": "Vivo X300",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Vivo"
+    ],
+    [
+     "Erschienen",
+     "2025"
+    ],
+    [
+     "Prozessor (SoC)",
+     "MediaTek Dimensity 9500"
+    ],
+    [
+     "Arbeitsspeicher",
+     "16 GB"
+    ],
+    [
+     "Display",
+     "6,31″ LTPO-AMOLED, 1–120 Hz"
+    ],
+    [
+     "Kamera (hinten)",
+     "200 + 50 + 50 MP (3× Tele)"
+    ],
+    [
+     "Akku (ca.)",
+     "5360 mAh (Europa; China 6040 mAh)"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "90 W (Kabel), 40 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C"
+    ],
+    [
+     "Gewicht",
+     "190 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1049 €"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 16 (OriginOS 6)"
+    ]
+   ]
+  },
+  {
+   "marke": "Vivo",
+   "name": "Vivo X300 Pro",
+   "zeilen": [
+    [
+     "Hersteller",
+     "Vivo"
+    ],
+    [
+     "Erschienen",
+     "2025"
+    ],
+    [
+     "Prozessor (SoC)",
+     "MediaTek Dimensity 9500"
+    ],
+    [
+     "Arbeitsspeicher",
+     "16 GB"
+    ],
+    [
+     "Display",
+     "6,78″ LTPO-AMOLED, 1–120 Hz"
+    ],
+    [
+     "Kamera (hinten)",
+     "50 + 50 + 200 MP (3,7× Tele)"
+    ],
+    [
+     "Akku (ca.)",
+     "5440 mAh (Europa; China 6510 mAh)"
+    ],
+    [
+     "Laden (max., Richtwert)",
+     "90 W (Kabel), 40 W kabellos"
+    ],
+    [
+     "Anschluss",
+     "USB-C 3.2"
+    ],
+    [
+     "Gewicht",
+     "226 g"
+    ],
+    [
+     "Startpreis (Markteinführung)",
+     "1399 €"
+    ],
+    [
+     "Betriebssystem (ab Werk)",
+     "Android 16 (OriginOS 6)"
+    ]
+   ]
+  }
+ ]
+}

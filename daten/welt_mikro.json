@@ -1,0 +1,917 @@
+{
+"id": "mikro",
+"name": "Pi & Mikrocontroller",
+"untertitel": "GPIO, PWM, ADC, Boards",
+"farbe": "rot",
+"symbol": "quarz",
+"reihenfolge": 8,
+"seiten": [
+{
+"id": "gpio",
+"titel": "Raspberry Pi GPIO-Leiste",
+"kurz": "40-Pin-Header anklicken: Funktion, Alternativfunktionen",
+"tags": [
+"gpio",
+"pi",
+"raspberry",
+"pinout",
+"header",
+"40 pin",
+"bcm"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Klicke auf einen Pin, um Funktion, Nummer (BCM/Board) und Alternativfunktionen zu sehen. **Alle GPIOs arbeiten mit 3,3 V**, nicht 5 V-tolerant!"
+]
+},
+{
+"t": "spezial",
+"name": "gpio"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Funktion",
+"BCM-Pins",
+"Board-Pins"
+],
+"zeilen": [
+[
+"I²C1 (SDA, SCL)",
+"GPIO2, GPIO3",
+"3, 5"
+],
+[
+"SPI0 (MOSI, MISO, SCLK, CE0, CE1)",
+"10, 9, 11, 8, 7",
+"19, 21, 23, 24, 26"
+],
+[
+"UART0 (TX, RX)",
+"GPIO14, GPIO15",
+"8, 10"
+],
+[
+"PWM0 / PWM1",
+"GPIO12/18 · GPIO13/19",
+"32/12 · 33/35"
+],
+[
+"1-Wire (Standard)",
+"GPIO4",
+"7"
+],
+[
+"PCM / I2S (BCLK, LRCLK, DIN, DOUT)",
+"18, 19, 20, 21",
+"12, 35, 38, 40"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Grenzwert",
+"Wert"
+],
+"zeilen": [
+[
+"Spannung an GPIO",
+"3,3 V (nicht 5 V!)"
+],
+[
+"Strom pro Pin",
+"max. 16 mA (empfohlen ≤ 8 mA)"
+],
+[
+"Strom gesamt (alle GPIO)",
+"ca. 50 mA"
+],
+[
+"3,3-V-Pin",
+"ca. 50–500 mA (Gesamtlast beachten)"
+],
+[
+"5-V-Pin",
+"Rest vom Netzteil minus Pi (ca. 1,5 A)"
+],
+[
+"Pull-Up/Down intern",
+"ca. 50 kΩ"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "pi",
+"text": "Mit Pi 5 heißt die Bibliothek `gpiod`/`gpiozero`; **RPi.GPIO funktioniert auf Pi 5 nicht** (anderer Chip RP1). Nutze `gpiozero` oder `lgpio`."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Nie 5 V auf einen GPIO-Eingang legen, nie 2 Pins mit unterschiedlichem Pegel kurzschließen. Bei Unsicherheit **Pegelwandler** (BSS138-Modul)."
+}
+],
+"siehe": [
+"mikro:pwm",
+"schnittstellen:i2c"
+],
+"symbol": "gehaeuse"
+},
+{
+"id": "boards",
+"titel": "Boards im Vergleich",
+"kurz": "Pi, Pico, Arduino, ESP32 – wer kann was",
+"tags": [
+"pi",
+"pico",
+"arduino",
+"esp32",
+"vergleich",
+"board",
+"mikrocontroller",
+"stm32"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Board",
+"CPU",
+"Takt",
+"RAM",
+"Flash",
+"Logikpegel",
+"Besonderheit"
+],
+"zeilen": [
+[
+"Raspberry Pi 5",
+"4× Cortex-A76",
+"2,4 GHz",
+"4–16 GB",
+"SD / NVMe",
+"3,3 V",
+"Linux, PCIe, RP1"
+],
+[
+"Raspberry Pi 4",
+"4× Cortex-A72",
+"1,5 GHz",
+"1–8 GB",
+"SD",
+"3,3 V",
+"Linux"
+],
+[
+"Pi Zero 2 W",
+"4× Cortex-A53",
+"1 GHz",
+"512 MB",
+"SD",
+"3,3 V",
+"klein, WLAN"
+],
+[
+"Raspberry Pi Pico (RP2040)",
+"2× Cortex-M0+",
+"133 MHz",
+"264 kB",
+"2 MB",
+"3,3 V",
+"PIO, 26 GPIO"
+],
+[
+"Pico 2 (RP2350)",
+"2× M33 / RISC-V",
+"150 MHz",
+"520 kB",
+"4 MB",
+"3,3 V",
+""
+],
+[
+"Arduino Uno R3",
+"ATmega328P (8 Bit)",
+"16 MHz",
+"2 kB",
+"32 kB",
+"5 V",
+"klassisch"
+],
+[
+"Arduino Nano",
+"ATmega328P",
+"16 MHz",
+"2 kB",
+"32 kB",
+"5 V",
+"klein"
+],
+[
+"Arduino Mega",
+"ATmega2560",
+"16 MHz",
+"8 kB",
+"256 kB",
+"5 V",
+"54 I/O"
+],
+[
+"ESP32",
+"2× Xtensa LX6",
+"240 MHz",
+"520 kB",
+"4 MB",
+"3,3 V",
+"WLAN + BT"
+],
+[
+"ESP32-C3",
+"RISC-V",
+"160 MHz",
+"400 kB",
+"4 MB",
+"3,3 V",
+"WLAN + BLE, günstig"
+],
+[
+"ESP8266",
+"Tensilica",
+"80 MHz",
+"80 kB",
+"4 MB",
+"3,3 V",
+"WLAN, alt"
+],
+[
+"STM32F103 (Blue Pill)",
+"Cortex-M3",
+"72 MHz",
+"20 kB",
+"64 kB",
+"3,3 V",
+"Industrie"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Aufgabe",
+"Wähle"
+],
+"zeilen": [
+[
+"Echtzeit, hartes Timing, Akku",
+"Pico / Arduino / STM32"
+],
+[
+"WLAN-Sensor (billig, klein)",
+"ESP32 / ESP32-C3"
+],
+[
+"Webserver, Datenbank, Kamera, KI",
+"Raspberry Pi"
+],
+[
+"Anfänger Elektronik",
+"Arduino Uno"
+],
+[
+"Mehrere schnelle Protokolle",
+"Pico (PIO)"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Entscheidungshilfe"
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "Ein Mikrocontroller (MCU) ist ein **Echtzeit-Spezialist** ohne Betriebssystem. Ein Pi ist ein vollständiger Computer: flexibel, aber nicht echtzeitfähig und mit Bootzeit."
+}
+],
+"siehe": [
+"mikro:gpio"
+],
+"symbol": "gehaeuse"
+},
+{
+"id": "pwm",
+"titel": "PWM & Timer",
+"kurz": "Tastverhältnis, Frequenz, Auflösung",
+"tags": [
+"pwm",
+"tastverhältnis",
+"duty",
+"timer",
+"dimmen",
+"servo",
+"frequenz"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"**PWM** (Pulsweitenmodulation) schaltet ein Signal schnell ein und aus. Das **Tastverhältnis** (Duty Cycle) bestimmt den Mittelwert: 25 % an → im Mittel 25 % der Spannung."
+]
+},
+{
+"t": "formel",
+"name": "Mittelwert und Frequenz",
+"f": "U_mittel = U · D        f = 1 / T        D = t_ein / T",
+"text": ""
+},
+{
+"t": "rechner",
+"titel": "PWM-Rechner",
+"felder": [
+[
+"u",
+"Spannung",
+"V",
+"3,3"
+],
+[
+"d",
+"Tastverhältnis",
+"%",
+"25"
+],
+[
+"f",
+"Frequenz",
+"Hz",
+"1k"
+]
+],
+"ergebnis": [
+[
+"um",
+"Mittelwert",
+"u*d/100",
+"V"
+],
+[
+"t",
+"Periodendauer",
+"1/f",
+"s"
+],
+[
+"ton",
+"Einschaltzeit",
+"d/100/f",
+"s"
+]
+]
+},
+{
+"t": "rechner",
+"titel": "Timer → PWM-Frequenz (AVR / Arduino)",
+"felder": [
+[
+"fcpu",
+"CPU-Takt",
+"Hz",
+"16M"
+],
+[
+"pre",
+"Vorteiler",
+"",
+"64"
+],
+[
+"n",
+"Zählerbreite (Bits)",
+"",
+"8"
+]
+],
+"ergebnis": [
+[
+"f",
+"PWM-Frequenz (Fast PWM)",
+"fcpu/(pre*2**n)",
+"Hz"
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Anwendung",
+"Frequenz",
+"Hinweis"
+],
+"zeilen": [
+[
+"LED-Dimmen",
+"500 Hz – 20 kHz",
+"> 100 Hz flimmerfrei, > 20 kHz unhörbar"
+],
+[
+"Servo",
+"50 Hz",
+"1–2 ms"
+],
+[
+"DC-Motor",
+"1–20 kHz",
+"unhörbar > 20 kHz"
+],
+[
+"Lüfter (4-Pin)",
+"25 kHz",
+"Intel-Spec"
+],
+[
+"Netzteil (Buck)",
+"100 kHz – 2 MHz",
+"Schaltfrequenz"
+],
+[
+"Audio-DAC (PWM)",
+"> 100 kHz + Filter",
+"Tiefpass nötig"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Pi-Hardware-PWM",
+"Pins"
+],
+"zeilen": [
+[
+"PWM0 Kanal 0",
+"GPIO12, GPIO18"
+],
+[
+"PWM0 Kanal 1",
+"GPIO13, GPIO19"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Hardware-PWM (stabil), Rest per Software"
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Mit PWM-Pins dimmt man **LED-Streifen** über einen MOSFET. Auflösung mit 8 Bit = 256 Stufen, 10 Bit = 1024, 12 Bit = 4096."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "PWM an induktiven Lasten (Motor): Freilaufdiode nicht vergessen und Frequenz oberhalb des Hörbereichs wählen, sonst **pfeift** der Motor."
+}
+],
+"siehe": [
+"halbleiter:mosfet",
+"sensoren:motoren"
+],
+"symbol": "sinus"
+},
+{
+"id": "adc",
+"titel": "ADC & DAC",
+"kurz": "Auflösung, LSB, Referenz, Abtasttheorem",
+"tags": [
+"adc",
+"dac",
+"auflösung",
+"mcp3008",
+"ads1115",
+"abtast",
+"nyquist",
+"analog"
+],
+"bloecke": [
+{
+"t": "formel",
+"name": "Auflösung (LSB)",
+"f": "LSB = U_ref / 2ⁿ",
+"text": ""
+},
+{
+"t": "formel",
+"name": "Messwert",
+"f": "Code = U_in / U_ref · (2ⁿ − 1)",
+"text": ""
+},
+{
+"t": "rechner",
+"titel": "ADC-Rechner",
+"felder": [
+[
+"u",
+"Eingangsspannung",
+"V",
+""
+],
+[
+"ur",
+"Referenz",
+"V",
+"3,3"
+],
+[
+"n",
+"Bits",
+"",
+"12"
+],
+[
+"c",
+"ADC-Code",
+"",
+"2048"
+]
+],
+"formeln": {
+"u": [
+"c/(2**n-1)*ur"
+],
+"c": [
+"u/ur*(2**n-1)"
+]
+},
+"text": "Lass ein Feld leer – es wird aus den anderen berechnet. Schreibweise: 4k7, 10u, 2,2M, 100n."
+},
+{
+"t": "rechner",
+"titel": "Auflösung",
+"felder": [
+[
+"ur",
+"Referenz",
+"V",
+"3,3"
+],
+[
+"n",
+"Bits",
+"",
+"12"
+]
+],
+"ergebnis": [
+[
+"lsb",
+"1 LSB",
+"ur/2**n",
+"V"
+],
+[
+"s",
+"Stufen",
+"2**n",
+"",
+"ganz"
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"ADC",
+"Bits",
+"Kanäle",
+"Schnittstelle",
+"Hinweis"
+],
+"zeilen": [
+[
+"Arduino Uno intern",
+"10",
+"6",
+"–",
+"0–5 V"
+],
+[
+"ESP32 intern",
+"12",
+"18",
+"–",
+"nicht linear!"
+],
+[
+"Pico intern",
+"12",
+"3 + Temp",
+"–",
+"ENOB ≈ 9"
+],
+[
+"MCP3008",
+"10",
+"8",
+"SPI",
+"Pi-Standard, günstig"
+],
+[
+"MCP3208",
+"12",
+"8",
+"SPI",
+""
+],
+[
+"ADS1115",
+"16",
+"4",
+"I²C",
+"mit PGA, differentiell"
+],
+[
+"ADS1015",
+"12",
+"4",
+"I²C",
+"schneller"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"DAC",
+"Bits",
+"Schnittstelle"
+],
+"zeilen": [
+[
+"MCP4725",
+"12",
+"I²C"
+],
+[
+"MCP4921",
+"12",
+"SPI"
+],
+[
+"PCM5102",
+"32 (Audio)",
+"I²S"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "DAC-Bausteine"
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "**Abtasttheorem (Nyquist):** Abtastrate f_s > 2 · f_max des Signals. Sonst entstehen **Aliasing**-Fehler (falsche Frequenzen). Bei Audio: 44,1 kHz für 20 kHz."
+},
+{
+"t": "hinweis",
+"typ": "pi",
+"text": "Der Pi hat **keinen ADC**. Nimm MCP3008 (SPI) oder ADS1115 (I²C) oder lass einen Pico/Arduino die analogen Messwerte liefern."
+}
+],
+"siehe": [
+"passiv:ntc",
+"schnittstellen:spi"
+],
+"symbol": "voltmeter"
+},
+{
+"id": "takt",
+"titel": "Takt, Baudrate & Zeit",
+"kurz": "Teiler, Timer, Baudraten-Fehler",
+"tags": [
+"takt",
+"baudrate",
+"uart",
+"timer",
+"teiler",
+"frequenz",
+"prescaler"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Baudrate",
+"Bit-Dauer",
+"Bytes/s (8N1)"
+],
+"zeilen": [
+[
+"9600",
+"104,2 µs",
+"960"
+],
+[
+"19200",
+"52,1 µs",
+"1 920"
+],
+[
+"38400",
+"26,0 µs",
+"3 840"
+],
+[
+"57600",
+"17,4 µs",
+"5 760"
+],
+[
+"115200",
+"8,68 µs",
+"11 520"
+],
+[
+"230400",
+"4,34 µs",
+"23 040"
+],
+[
+"921600",
+"1,085 µs",
+"92 160"
+],
+[
+"1 000 000",
+"1 µs",
+"100 000"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "UART (8 Datenbits, kein Paritätsbit, 1 Stopbit = 10 Bits pro Byte)"
+},
+{
+"t": "rechner",
+"titel": "UART-Übertragungszeit",
+"felder": [
+[
+"b",
+"Baudrate",
+"",
+"115200"
+],
+[
+"n",
+"Bytes",
+"",
+"1000"
+]
+],
+"ergebnis": [
+[
+"t",
+"Dauer (10 Bits/Byte)",
+"n*10/b",
+"s"
+],
+[
+"bps",
+"Nutzdaten",
+"b*8/10",
+"Bit/s"
+]
+]
+},
+{
+"t": "rechner",
+"titel": "Baudratenfehler (AVR)",
+"felder": [
+[
+"f",
+"CPU-Takt",
+"Hz",
+"16M"
+],
+[
+"b",
+"Baudrate",
+"",
+"115200"
+]
+],
+"ergebnis": [
+[
+"ubrr",
+"UBRR (gerundet)",
+"round(f/(16*b)-1)",
+"",
+"zahl"
+],
+[
+"real",
+"Tatsächliche Baudrate",
+"f/(16*(round(f/(16*b)-1)+1))",
+"",
+"zahl"
+],
+[
+"err",
+"Fehler",
+"(f/(16*(round(f/(16*b)-1)+1))-b)/b",
+"",
+"proz"
+]
+]
+},
+{
+"t": "formel",
+"name": "Timer-Überlauf",
+"f": "T = (2ⁿ · Vorteiler) / f_CPU",
+"text": "Für 16 Bit, 16 MHz, Vorteiler 1024: 4,19 s."
+},
+{
+"t": "rechner",
+"titel": "Timer",
+"felder": [
+[
+"f",
+"CPU-Takt",
+"Hz",
+"16M"
+],
+[
+"n",
+"Zählerbits",
+"",
+"16"
+],
+[
+"p",
+"Vorteiler",
+"",
+"1024"
+]
+],
+"ergebnis": [
+[
+"t",
+"Überlaufzeit",
+"2**n*p/f",
+"s"
+],
+[
+"fo",
+"Überlauf-Frequenz",
+"f/(2**n*p)",
+"Hz"
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Fehler UART",
+"Bewertung"
+],
+"zeilen": [
+[
+"< 2 %",
+"in Ordnung"
+],
+[
+"2–3 %",
+"grenzwertig"
+],
+[
+"> 3 %",
+"Übertragungsfehler wahrscheinlich"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Probleme mit Zeichenmüll (zufällige Zeichen) auf der seriellen Schnittstelle: **Baudrate falsch**, Pegel falsch (5 V ↔ 3,3 V) oder TX/RX nicht gekreuzt."
+}
+],
+"siehe": [
+"passiv:quarz",
+"schnittstellen:uart"
+],
+"symbol": "quarz"
+}
+]
+}

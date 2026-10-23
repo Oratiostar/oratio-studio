@@ -1,0 +1,885 @@
+{
+"id": "netzwerk",
+"name": "Netzwerk & Funk",
+"untertitel": "OSI, Subnetting, Ports, WLAN",
+"farbe": "himmel",
+"symbol": "antenne",
+"reihenfolge": 10,
+"seiten": [
+{
+"id": "osi",
+"titel": "OSI- und TCP/IP-Modell",
+"kurz": "7 Schichten anklicken, Protokolle, PDUs",
+"tags": [
+"osi",
+"tcp/ip",
+"schichten",
+"layer",
+"modell"
+],
+"bloecke": [
+{
+"t": "spezial",
+"name": "osi"
+},
+{
+"t": "tabelle",
+"kopf": [
+"TCP/IP",
+"OSI",
+"Beispiele"
+],
+"zeilen": [
+[
+"Anwendung",
+"5–7",
+"HTTP, DNS, SSH, MQTT, SMTP"
+],
+[
+"Transport",
+"4",
+"TCP, UDP"
+],
+[
+"Internet",
+"3",
+"IP, ICMP, ARP*"
+],
+[
+"Netzzugang",
+"1–2",
+"Ethernet, WLAN"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Vergleich"
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "Eselsbrücke (von unten): **P**lease **D**o **N**ot **T**hrow **S**ausage **P**izza **A**way – Physical, Data link, Network, Transport, Session, Presentation, Application."
+}
+],
+"siehe": [
+"netzwerk:subnetz",
+"netzwerk:ports"
+],
+"symbol": "antenne"
+},
+{
+"id": "subnetz",
+"titel": "IPv4 & Subnetting",
+"kurz": "Rechner, Masken, private Bereiche",
+"tags": [
+"ip",
+"subnetz",
+"netzmaske",
+"cidr",
+"ipv4",
+"private",
+"192.168",
+"broadcast"
+],
+"bloecke": [
+{
+"t": "spezial",
+"name": "subnetz"
+},
+{
+"t": "tabelle",
+"kopf": [
+"CIDR",
+"Maske",
+"Hosts",
+"Beispiel"
+],
+"zeilen": [
+[
+"/8",
+"255.0.0.0",
+"16 777 214",
+"10.0.0.0/8"
+],
+[
+"/16",
+"255.255.0.0",
+"65 534",
+"172.16.0.0/16"
+],
+[
+"/20",
+"255.255.240.0",
+"4 094",
+""
+],
+[
+"/24",
+"255.255.255.0",
+"254",
+"192.168.1.0/24"
+],
+[
+"/25",
+"255.255.255.128",
+"126",
+""
+],
+[
+"/26",
+"255.255.255.192",
+"62",
+""
+],
+[
+"/27",
+"255.255.255.224",
+"30",
+""
+],
+[
+"/28",
+"255.255.255.240",
+"14",
+""
+],
+[
+"/29",
+"255.255.255.248",
+"6",
+""
+],
+[
+"/30",
+"255.255.255.252",
+"2",
+"Punkt-zu-Punkt"
+],
+[
+"/31",
+"255.255.255.254",
+"2 (RFC 3021)",
+""
+],
+[
+"/32",
+"255.255.255.255",
+"1",
+"Einzelrechner"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Bereich",
+"Zweck"
+],
+"zeilen": [
+[
+"10.0.0.0/8",
+"privat (Klasse A)"
+],
+[
+"172.16.0.0 – 172.31.255.255",
+"privat (/12)"
+],
+[
+"192.168.0.0/16",
+"privat (Heimnetz)"
+],
+[
+"127.0.0.0/8",
+"Loopback (localhost)"
+],
+[
+"169.254.0.0/16",
+"Link-Local (APIPA)"
+],
+[
+"100.64.0.0/10",
+"Carrier-grade NAT"
+],
+[
+"224.0.0.0/4",
+"Multicast"
+],
+[
+"0.0.0.0",
+"'alle' / unbekannt"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Spezielle Adressen"
+},
+{
+"t": "rechner",
+"titel": "Hosts für /n",
+"felder": [
+[
+"n",
+"Präfixlänge",
+"",
+"24"
+]
+],
+"ergebnis": [
+[
+"h",
+"nutzbare Hosts",
+"2**(32-n)-2",
+"",
+"ganz"
+],
+[
+"s",
+"Subnetz-Größe",
+"2**(32-n)",
+"",
+"ganz"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "**Faustregel:** Adressen = 2^(32−Präfix). Netz- und Broadcast-Adresse sind nicht nutzbar (−2). **/24** = 256 Adressen = 254 Hosts."
+},
+{
+"t": "hinweis",
+"typ": "pi",
+"text": "Pi im Heimnetz: `hostname -I` zeigt die IP, `ip a` alle Schnittstellen, `ip route` die Standardroute (Gateway)."
+}
+],
+"siehe": [
+"netzwerk:osi",
+"netzwerk:ports"
+],
+"symbol": "antenne"
+},
+{
+"id": "ports",
+"titel": "Wichtige Ports",
+"kurz": "Standard-Portnummern von A bis Z",
+"tags": [
+"port",
+"ssh",
+"http",
+"https",
+"dns",
+"dhcp",
+"mqtt",
+"smb",
+"rdp",
+"vnc"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Port",
+"Prot.",
+"Dienst"
+],
+"zeilen": [
+[
+"20/21",
+"TCP",
+"FTP (Daten / Steuerung)"
+],
+[
+"22",
+"TCP",
+"SSH, SFTP"
+],
+[
+"23",
+"TCP",
+"Telnet (unsicher!)"
+],
+[
+"25",
+"TCP",
+"SMTP (Mail senden)"
+],
+[
+"53",
+"UDP/TCP",
+"DNS"
+],
+[
+"67/68",
+"UDP",
+"DHCP"
+],
+[
+"69",
+"UDP",
+"TFTP"
+],
+[
+"80",
+"TCP",
+"HTTP"
+],
+[
+"110",
+"TCP",
+"POP3"
+],
+[
+"123",
+"UDP",
+"NTP (Zeit)"
+],
+[
+"143",
+"TCP",
+"IMAP"
+],
+[
+"161/162",
+"UDP",
+"SNMP"
+],
+[
+"389",
+"TCP",
+"LDAP"
+],
+[
+"443",
+"TCP",
+"HTTPS"
+],
+[
+"445",
+"TCP",
+"SMB (Windows-Freigaben)"
+],
+[
+"465/587",
+"TCP",
+"SMTP (verschlüsselt)"
+],
+[
+"514",
+"UDP",
+"Syslog"
+],
+[
+"631",
+"TCP",
+"CUPS (Drucker)"
+],
+[
+"993",
+"TCP",
+"IMAPS"
+],
+[
+"995",
+"TCP",
+"POP3S"
+],
+[
+"1194",
+"UDP",
+"OpenVPN"
+],
+[
+"1883",
+"TCP",
+"MQTT"
+],
+[
+"8883",
+"TCP",
+"MQTT über TLS"
+],
+[
+"3306",
+"TCP",
+"MySQL / MariaDB"
+],
+[
+"3389",
+"TCP",
+"RDP (Remote-Desktop)"
+],
+[
+"5432",
+"TCP",
+"PostgreSQL"
+],
+[
+"5900",
+"TCP",
+"VNC"
+],
+[
+"6379",
+"TCP",
+"Redis"
+],
+[
+"8080",
+"TCP",
+"HTTP alternativ / Proxy"
+],
+[
+"8123",
+"TCP",
+"Home Assistant"
+],
+[
+"11434",
+"TCP",
+"Ollama"
+],
+[
+"27017",
+"TCP",
+"MongoDB"
+],
+[
+"51820",
+"UDP",
+"WireGuard"
+]
+],
+"mono": [
+0
+],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Bereich",
+"Name"
+],
+"zeilen": [
+[
+"0–1023",
+"Well-known (privilegiert)"
+],
+[
+"1024–49151",
+"registriert"
+],
+[
+"49152–65535",
+"dynamisch / temporär"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Prüfen, was lauscht: `ss -tulpn`. Port von außen testen: `nc -vz host 22`."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Dienste wie Telnet (23) oder FTP (21) senden Passwörter im **Klartext**. Verwende SSH/SFTP."
+}
+],
+"siehe": [
+"netzwerk:subnetz"
+],
+"symbol": "antenne"
+},
+{
+"id": "http",
+"titel": "HTTP-Statuscodes & Methoden",
+"kurz": "200, 301, 404 … auf einen Blick",
+"tags": [
+"http",
+"status",
+"404",
+"500",
+"curl",
+"rest",
+"api"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Code",
+"Bedeutung"
+],
+"zeilen": [
+[
+"200",
+"OK"
+],
+[
+"201",
+"Created"
+],
+[
+"204",
+"No Content"
+],
+[
+"301",
+"Moved Permanently"
+],
+[
+"302",
+"Found (temporäre Weiterleitung)"
+],
+[
+"304",
+"Not Modified"
+],
+[
+"400",
+"Bad Request"
+],
+[
+"401",
+"Unauthorized (Login nötig)"
+],
+[
+"403",
+"Forbidden (keine Rechte)"
+],
+[
+"404",
+"Not Found"
+],
+[
+"405",
+"Method Not Allowed"
+],
+[
+"408",
+"Request Timeout"
+],
+[
+"418",
+"I'm a teapot 🫖"
+],
+[
+"429",
+"Too Many Requests"
+],
+[
+"500",
+"Internal Server Error"
+],
+[
+"502",
+"Bad Gateway"
+],
+[
+"503",
+"Service Unavailable"
+],
+[
+"504",
+"Gateway Timeout"
+]
+],
+"mono": [
+0
+],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Methode",
+"Zweck",
+"Idempotent"
+],
+"zeilen": [
+[
+"GET",
+"Daten lesen",
+"ja"
+],
+[
+"POST",
+"Daten anlegen / senden",
+"nein"
+],
+[
+"PUT",
+"Ressource ersetzen",
+"ja"
+],
+[
+"PATCH",
+"teilweise ändern",
+"nein"
+],
+[
+"DELETE",
+"löschen",
+"ja"
+],
+[
+"HEAD",
+"nur Header",
+"ja"
+],
+[
+"OPTIONS",
+"erlaubte Methoden",
+"ja"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Klasse",
+"Bedeutung"
+],
+"zeilen": [
+[
+"1xx",
+"Information"
+],
+[
+"2xx",
+"Erfolg"
+],
+[
+"3xx",
+"Umleitung"
+],
+[
+"4xx",
+"Client-Fehler"
+],
+[
+"5xx",
+"Server-Fehler"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Mit `curl -I https://beispiel.de` siehst du nur den Statuscode und die Header."
+}
+],
+"siehe": [
+"netzwerk:ports"
+],
+"symbol": "antenne"
+},
+{
+"id": "wlan",
+"titel": "WLAN & Funk",
+"kurz": "Standards, Kanäle, Reichweite",
+"tags": [
+"wlan",
+"wifi",
+"wi-fi",
+"bluetooth",
+"lora",
+"zigbee",
+"funk",
+"kanal",
+"antenne",
+"433"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Standard",
+"Name",
+"Band",
+"Max. Rate"
+],
+"zeilen": [
+[
+"802.11b",
+"–",
+"2,4 GHz",
+"11 MBit/s"
+],
+[
+"802.11g",
+"–",
+"2,4 GHz",
+"54 MBit/s"
+],
+[
+"802.11n",
+"Wi-Fi 4",
+"2,4 / 5 GHz",
+"600 MBit/s"
+],
+[
+"802.11ac",
+"Wi-Fi 5",
+"5 GHz",
+"6,9 GBit/s"
+],
+[
+"802.11ax",
+"Wi-Fi 6/6E",
+"2,4 / 5 / 6 GHz",
+"9,6 GBit/s"
+],
+[
+"802.11be",
+"Wi-Fi 7",
+"2,4 / 5 / 6 GHz",
+"46 GBit/s"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"2,4-GHz-Kanal",
+"Mittenfrequenz"
+],
+"zeilen": [
+[
+"1",
+"2412 MHz"
+],
+[
+"6",
+"2437 MHz"
+],
+[
+"11",
+"2462 MHz"
+],
+[
+"13",
+"2472 MHz"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Überschneidungsfrei: 1, 6, 11 (Europa 1, 5, 9, 13)"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Funk",
+"Frequenz",
+"Reichweite",
+"Einsatz"
+],
+"zeilen": [
+[
+"Bluetooth LE",
+"2,4 GHz",
+"10–50 m",
+"Sensoren, Wearables"
+],
+[
+"Zigbee",
+"2,4 GHz",
+"10–100 m",
+"Smarthome, Mesh"
+],
+[
+"Z-Wave",
+"868 MHz",
+"30 m",
+"Smarthome"
+],
+[
+"LoRa",
+"868 MHz",
+"2–15 km",
+"Sensoren, wenig Daten"
+],
+[
+"433-MHz-Module",
+"433 MHz",
+"20–100 m",
+"Fernbedienungen"
+],
+[
+"NFC / RFID",
+"13,56 MHz / 125 kHz",
+"< 10 cm",
+"Karten"
+],
+[
+"GPS",
+"1575 MHz",
+"weltweit",
+"Position"
+],
+[
+"Thread/Matter",
+"2,4 GHz",
+"Mesh",
+"Smarthome"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "formel",
+"name": "Wellenlänge",
+"f": "λ = c / f",
+"text": "Bei 2,4 GHz: ca. 12,5 cm → Viertelwellen-Antenne ca. 3,1 cm."
+},
+{
+"t": "rechner",
+"titel": "Antennenlänge (λ/4)",
+"felder": [
+[
+"f",
+"Frequenz",
+"Hz",
+"433M"
+]
+],
+"ergebnis": [
+[
+"l",
+"Viertelwelle",
+"299792458/f/4",
+"m"
+],
+[
+"lv",
+"mit Verkürzung 0,95",
+"299792458/f/4*0.95",
+"m"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "2,4 GHz: **besser Reichweite**, aber überlaufen. 5 GHz: **schneller**, aber schlechter durch Wände."
+}
+],
+"siehe": [
+"netzwerk:subnetz"
+],
+"symbol": "antenne"
+}
+]
+}

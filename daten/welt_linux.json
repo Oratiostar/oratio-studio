@@ -1,0 +1,1074 @@
+{
+"id": "linux",
+"name": "Linux & Terminal",
+"untertitel": "Befehle, Rechte, systemd, Git",
+"farbe": "braun",
+"symbol": "gehaeuse",
+"reihenfolge": 13,
+"seiten": [
+{
+"id": "befehle",
+"titel": "Terminal-Befehle",
+"kurz": "Dateien, Text, Prozesse – die wichtigsten",
+"tags": [
+"befehl",
+"terminal",
+"linux",
+"bash",
+"ls",
+"grep",
+"find",
+"shell",
+"kommandozeile"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Befehl",
+"Wirkung",
+"Beispiel"
+],
+"zeilen": [
+[
+"ls -la",
+"Dateien mit Details & versteckte",
+"ls -la /etc"
+],
+[
+"cd",
+"Verzeichnis wechseln",
+"cd ~/Apps; cd .."
+],
+[
+"pwd",
+"aktuelles Verzeichnis",
+""
+],
+[
+"cp -r",
+"kopieren (rekursiv)",
+"cp -r a b"
+],
+[
+"mv",
+"verschieben/umbenennen",
+"mv alt neu"
+],
+[
+"rm -r",
+"löschen (kein Papierkorb!)",
+"rm -r ordner"
+],
+[
+"mkdir -p",
+"Ordner anlegen",
+"mkdir -p a/b/c"
+],
+[
+"touch",
+"leere Datei / Zeit setzen",
+"touch x.txt"
+],
+[
+"cat / less",
+"anzeigen",
+"less /var/log/syslog"
+],
+[
+"head / tail -f",
+"Anfang / Ende / live mitlesen",
+"tail -f log.txt"
+],
+[
+"grep -rin",
+"Text suchen",
+"grep -rin 'fehler' ."
+],
+[
+"find",
+"Dateien suchen",
+"find / -name '*.py'"
+],
+[
+"du -sh *",
+"Größe der Einträge",
+""
+],
+[
+"df -h",
+"Speicherplatz der Laufwerke",
+""
+],
+[
+"free -h",
+"RAM-Nutzung",
+""
+],
+[
+"top / htop",
+"Prozesse live",
+""
+],
+[
+"ps aux",
+"alle Prozesse",
+"ps aux | grep python"
+],
+[
+"kill / killall",
+"Prozess beenden",
+"kill -9 1234"
+],
+[
+"nano / vim",
+"Editor",
+"nano datei"
+],
+[
+"history",
+"letzte Befehle",
+"!!  (letzter)"
+],
+[
+"man",
+"Handbuch",
+"man ls"
+],
+[
+"tar -czf / -xzf",
+"Archiv packen / entpacken",
+"tar -czf b.tgz ordner"
+],
+[
+"zip / unzip",
+"ZIP",
+"unzip a.zip"
+],
+[
+"wget / curl",
+"herunterladen",
+"curl -O URL"
+],
+[
+"ln -s",
+"symbolischer Link",
+"ln -s ziel link"
+]
+],
+"mono": [
+0
+],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Zeichen",
+"Bedeutung"
+],
+"zeilen": [
+[
+"|",
+"Ausgabe weiterleiten: ls | wc -l"
+],
+[
+">",
+"Ausgabe in Datei (überschreibt)"
+],
+[
+">>",
+"anhängen"
+],
+[
+"<",
+"Datei als Eingabe"
+],
+[
+"&&",
+"nur wenn der vorige erfolgreich war"
+],
+[
+"&",
+"im Hintergrund starten"
+],
+[
+"~",
+"Home-Verzeichnis"
+],
+[
+"*",
+"Platzhalter (beliebig viele Zeichen)"
+],
+[
+"Strg+C",
+"abbrechen"
+],
+[
+"Strg+R",
+"Befehlsverlauf suchen"
+],
+[
+"Tab",
+"automatisch vervollständigen"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Shell-Zeichen"
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "`rm -rf /` oder ein **Leerzeichen zu viel** (`rm -rf / ordner`) löscht das System. Vor Löschbefehlen mit `ls` prüfen. Kein Papierkorb im Terminal."
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "`sudo !!` wiederholt den letzten Befehl mit Root-Rechten."
+}
+],
+"siehe": [
+"linux:chmod",
+"linux:pi"
+],
+"symbol": "gehaeuse"
+},
+{
+"id": "chmod",
+"titel": "Dateirechte (chmod)",
+"kurz": "rwx anklicken, Oktalwert, Beispiele",
+"tags": [
+"chmod",
+"rechte",
+"berechtigung",
+"chown",
+"rwx",
+"755",
+"644",
+"ausführbar"
+],
+"bloecke": [
+{
+"t": "spezial",
+"name": "chmod"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Oktal",
+"Symbol",
+"Bedeutung"
+],
+"zeilen": [
+[
+"755",
+"rwxr-xr-x",
+"Programme, Skripte (Eigentümer alles, andere lesen/ausführen)"
+],
+[
+"644",
+"rw-r--r--",
+"normale Dateien"
+],
+[
+"600",
+"rw-------",
+"private Schlüssel (SSH), nur Eigentümer"
+],
+[
+"700",
+"rwx------",
+"privater Ordner"
+],
+[
+"777",
+"rwxrwxrwx",
+"alle dürfen alles – meist ein Fehler"
+],
+[
+"400",
+"r--------",
+"nur lesen"
+],
+[
+"664",
+"rw-rw-r--",
+"Gruppenarbeit"
+]
+],
+"mono": [
+0,
+1
+],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Wert",
+"Recht"
+],
+"zeilen": [
+[
+"4",
+"r (lesen)"
+],
+[
+"2",
+"w (schreiben)"
+],
+[
+"1",
+"x (ausführen / Ordner betreten)"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Bitwerte (addieren)"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Befehl",
+"Wirkung"
+],
+"zeilen": [
+[
+"chmod +x skript.sh",
+"ausführbar machen"
+],
+[
+"chmod 600 key",
+"nur Eigentümer lesen/schreiben"
+],
+[
+"chmod -R 755 ordner",
+"rekursiv"
+],
+[
+"chown user:gruppe datei",
+"Besitzer ändern"
+],
+[
+"sudo chown -R oratio: /home/oratio/x",
+"Besitzer rekursiv"
+],
+[
+"ls -l",
+"Rechte anzeigen"
+],
+[
+"umask 022",
+"Standardrechte für neue Dateien"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "`chmod -R 777` auf Systemordnern ist gefährlich und beheben die Probleme nicht. Rechte **gezielt** setzen; SSH verweigert Schlüssel mit 644."
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Bei Ordnern bedeutet **x** = hineingehen dürfen, **r** = Inhalt auflisten."
+}
+],
+"siehe": [
+"linux:befehle"
+],
+"symbol": "gehaeuse"
+},
+{
+"id": "pi",
+"titel": "Raspberry-Pi-Befehle",
+"kurz": "vcgencmd, raspi-config, pinctrl, Pi-Tools",
+"tags": [
+"pi",
+"raspberry",
+"vcgencmd",
+"raspi-config",
+"pinctrl",
+"temperatur",
+"config.txt",
+"throttle"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Befehl",
+"Zweck"
+],
+"zeilen": [
+[
+"vcgencmd measure_temp",
+"CPU-Temperatur"
+],
+[
+"vcgencmd get_throttled",
+"Unterspannung/Drosselung (0x0 = gut)"
+],
+[
+"vcgencmd measure_clock arm",
+"CPU-Takt"
+],
+[
+"vcgencmd measure_volts",
+"Spannungen"
+],
+[
+"pinctrl get 17",
+"GPIO-Zustand lesen (Pi 5)"
+],
+[
+"pinctrl set 17 op dh",
+"GPIO 17 Ausgang High"
+],
+[
+"raspi-config",
+"Konfigurationsmenü (I²C, SPI, Boot …)"
+],
+[
+"rpi-update",
+"Firmware (nur im Notfall)"
+],
+[
+"rpicam-hello",
+"Kamera testen (Pi OS Bookworm)"
+],
+[
+"rpicam-still -o a.jpg",
+"Foto"
+],
+[
+"i2cdetect -y 1",
+"I²C-Geräte"
+],
+[
+"gpioinfo",
+"GPIO-Belegung (gpiod)"
+],
+[
+"cat /proc/cpuinfo",
+"Modell/CPU"
+],
+[
+"cat /sys/firmware/devicetree/base/model",
+"genaues Pi-Modell"
+],
+[
+"hostnamectl",
+"Systeminfo"
+],
+[
+"lsusb / lspci",
+"USB-/PCIe-Geräte"
+],
+[
+"dmesg -w",
+"Kernel-Meldungen live"
+],
+[
+"journalctl -u dienst -f",
+"Dienst-Log live"
+]
+],
+"mono": [
+0
+],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Datei",
+"Zweck"
+],
+"zeilen": [
+[
+"/boot/firmware/config.txt",
+"Pi-Konfiguration (Bookworm); früher /boot/config.txt"
+],
+[
+"/boot/firmware/cmdline.txt",
+"Kernel-Parameter"
+],
+[
+"/etc/fstab",
+"Laufwerke beim Boot"
+],
+[
+"/etc/hostname",
+"Rechnername"
+],
+[
+"/etc/wpa_supplicant/",
+"WLAN (älter; Bookworm: NetworkManager)"
+],
+[
+"~/.config/autostart/",
+"Autostart GUI"
+],
+[
+"/etc/systemd/system/",
+"eigene Dienste"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"`get_throttled`",
+"Bedeutung"
+],
+"zeilen": [
+[
+"0x1",
+"Unterspannung jetzt"
+],
+[
+"0x2",
+"Takt begrenzt"
+],
+[
+"0x4",
+"gedrosselt"
+],
+[
+"0x8",
+"Temperaturlimit aktiv"
+],
+[
+"0x10000",
+"Unterspannung seit Boot"
+],
+[
+"0x50005",
+"Unterspannung + gedrosselt (häufig!)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Pi wird heiß? Über 80 °C drosselt der Prozessor. Aktivkühler (Pi 5) hält ca. 50–60 °C."
+},
+{
+"t": "hinweis",
+"typ": "pi",
+"text": "Wichtig bei einem **frischen System**: `sudo apt update && sudo apt full-upgrade`, dann Neustart. Danach `raspi-config` (Standort, WLAN-Land, Interfaces)."
+}
+],
+"siehe": [
+"linux:befehle",
+"mikro:gpio"
+],
+"symbol": "gehaeuse"
+},
+{
+"id": "apt",
+"titel": "apt, pip & Pakete",
+"kurz": "Installieren, aktualisieren, aufräumen",
+"tags": [
+"apt",
+"pip",
+"paket",
+"install",
+"venv",
+"update",
+"upgrade",
+"dpkg"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Befehl",
+"Wirkung"
+],
+"zeilen": [
+[
+"sudo apt update",
+"Paketlisten aktualisieren"
+],
+[
+"sudo apt upgrade",
+"installierte Pakete aktualisieren"
+],
+[
+"sudo apt full-upgrade",
+"wie upgrade, aber mit neuen Abhängigkeiten"
+],
+[
+"sudo apt install paket",
+"installieren"
+],
+[
+"sudo apt remove paket",
+"deinstallieren (Konfig bleibt)"
+],
+[
+"sudo apt purge paket",
+"deinstallieren inkl. Konfig"
+],
+[
+"sudo apt autoremove",
+"unbenutzte Abhängigkeiten entfernen"
+],
+[
+"apt search wort",
+"Pakete suchen"
+],
+[
+"apt show paket",
+"Details"
+],
+[
+"dpkg -i datei.deb",
+".deb installieren"
+],
+[
+"dpkg -l | grep x",
+"installierte Pakete filtern"
+]
+],
+"mono": [
+0
+],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Befehl",
+"Wirkung"
+],
+"zeilen": [
+[
+"python3 -m venv .venv",
+"virtuelle Umgebung"
+],
+[
+"source .venv/bin/activate",
+"aktivieren"
+],
+[
+"pip install paket",
+"installieren (in venv)"
+],
+[
+"pip install --break-system-packages paket",
+"systemweit (Bookworm blockiert sonst, PEP 668)"
+],
+[
+"pip list / pip freeze",
+"installierte Pakete"
+],
+[
+"pip install -r requirements.txt",
+"aus Liste"
+],
+[
+"pipx install tool",
+"Programme isoliert"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "Auf Pi OS Bookworm gilt **PEP 668**: `pip install` systemweit ist gesperrt. Lösung: **venv** (sauber) oder `apt install python3-xyz`."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "`apt upgrade` auf einem lief­enden System mit Kernel-Update braucht einen **Neustart**. Nicht mitten in einer Aufnahme/einem Backup ausführen."
+}
+],
+"siehe": [
+"linux:befehle"
+],
+"symbol": "gehaeuse"
+},
+{
+"id": "systemd",
+"titel": "systemd-Dienste & Cron",
+"kurz": "Autostart, Timer, Zeitpläne",
+"tags": [
+"systemd",
+"systemctl",
+"dienst",
+"service",
+"cron",
+"crontab",
+"autostart",
+"journalctl",
+"timer"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Befehl",
+"Wirkung"
+],
+"zeilen": [
+[
+"systemctl status dienst",
+"Status + letzte Logs"
+],
+[
+"sudo systemctl start/stop/restart dienst",
+"steuern"
+],
+[
+"sudo systemctl enable --now dienst",
+"Autostart + sofort starten"
+],
+[
+"sudo systemctl disable dienst",
+"Autostart aus"
+],
+[
+"systemctl list-units --failed",
+"fehlgeschlagene Dienste"
+],
+[
+"sudo systemctl daemon-reload",
+"nach Änderung einer .service-Datei"
+],
+[
+"journalctl -u dienst -b",
+"Log seit Boot"
+],
+[
+"journalctl -p err -b",
+"Fehler seit Boot"
+],
+[
+"systemctl reboot / poweroff",
+"Neustart / Herunterfahren"
+]
+],
+"mono": [
+0
+],
+"fett": true
+},
+{
+"t": "formel",
+"name": "Eigener Dienst (/etc/systemd/system/mein.service)",
+"f": "[Unit]\nDescription=Mein Skript\nAfter=network.target\n[Service]\nExecStart=/usr/bin/python3 /home/oratio/skript.py\nRestart=on-failure\nUser=oratio\n[Install]\nWantedBy=multi-user.target",
+"text": ""
+},
+{
+"t": "tabelle",
+"kopf": [
+"Feld",
+"Bedeutung"
+],
+"zeilen": [
+[
+"Minute",
+"0–59"
+],
+[
+"Stunde",
+"0–23"
+],
+[
+"Tag",
+"1–31"
+],
+[
+"Monat",
+"1–12"
+],
+[
+"Wochentag",
+"0–7 (0 und 7 = Sonntag)"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Cron (`crontab -e`): fünf Felder + Befehl"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Ausdruck",
+"Wann"
+],
+"zeilen": [
+[
+"*/5 * * * *",
+"alle 5 Minuten"
+],
+[
+"0 3 * * *",
+"täglich 03:00"
+],
+[
+"30 7 * * 1-5",
+"Mo–Fr 07:30"
+],
+[
+"0 0 1 * *",
+"am 1. jeden Monats"
+],
+[
+"@reboot",
+"bei jedem Start"
+]
+],
+"mono": [
+0
+],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Cron hat **kaum Umgebungsvariablen**: absolute Pfade verwenden und Ausgabe loggen (`>> /tmp/log 2>&1`)."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Ein Dienst mit `Restart=always` ohne Pause kann bei Fehler in einer **Endlosschleife** CPU und Log fressen – `RestartSec=5` ergänzen."
+}
+],
+"siehe": [
+"linux:befehle"
+],
+"symbol": "gehaeuse"
+},
+{
+"id": "ssh",
+"titel": "SSH, SCP & rsync",
+"kurz": "Fernzugriff, Schlüssel, Kopieren",
+"tags": [
+"ssh",
+"scp",
+"rsync",
+"sftp",
+"schlüssel",
+"fernzugriff",
+"tunnel",
+"key"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Befehl",
+"Wirkung"
+],
+"zeilen": [
+[
+"ssh user@host",
+"anmelden"
+],
+[
+"ssh -p 2222 user@host",
+"anderer Port"
+],
+[
+"ssh-keygen -t ed25519",
+"Schlüsselpaar erzeugen"
+],
+[
+"ssh-copy-id user@host",
+"öffentlichen Schlüssel eintragen"
+],
+[
+"scp datei user@host:/pfad",
+"kopieren"
+],
+[
+"scp -r ordner user@host:",
+"Ordner kopieren"
+],
+[
+"rsync -avh --progress a/ user@host:b/",
+"synchronisieren"
+],
+[
+"ssh -L 8080:localhost:80 user@host",
+"Port-Weiterleitung (Tunnel)"
+],
+[
+"ssh -N -D 1080 user@host",
+"SOCKS-Proxy"
+],
+[
+"sftp user@host",
+"interaktiver Dateitransfer"
+]
+],
+"mono": [
+0
+],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Datei",
+"Zweck"
+],
+"zeilen": [
+[
+"~/.ssh/id_ed25519",
+"privater Schlüssel (geheim, 600!)"
+],
+[
+"~/.ssh/id_ed25519.pub",
+"öffentlicher Schlüssel"
+],
+[
+"~/.ssh/authorized_keys",
+"erlaubte Schlüssel auf dem Server"
+],
+[
+"~/.ssh/config",
+"Kurznamen: Host pi → HostName 192.168.x.x"
+],
+[
+"/etc/ssh/sshd_config",
+"Serverkonfiguration"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "„REMOTE HOST IDENTIFICATION HAS CHANGED“: Entweder Gerät neu aufgesetzt (dann `ssh-keygen -R host`) oder jemand sitzt dazwischen. Erst prüfen, dann löschen."
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Auf dem Pi aktivieren: `sudo raspi-config` → Interface Options → SSH. Danach `ssh oratio@raspberrypi.local`."
+}
+],
+"siehe": [
+"netzwerk:ports"
+],
+"symbol": "gehaeuse"
+},
+{
+"id": "git",
+"titel": "Git",
+"kurz": "Die wichtigsten Befehle und Workflows",
+"tags": [
+"git",
+"versionsverwaltung",
+"commit",
+"branch",
+"github",
+"merge",
+"push"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Befehl",
+"Wirkung"
+],
+"zeilen": [
+[
+"git init",
+"Repository anlegen"
+],
+[
+"git clone URL",
+"Repo kopieren"
+],
+[
+"git status",
+"Änderungen anzeigen"
+],
+[
+"git add .  /  git add datei",
+"für Commit vormerken"
+],
+[
+"git commit -m \"Text\"",
+"Commit erstellen"
+],
+[
+"git push / git pull",
+"hochladen / holen"
+],
+[
+"git log --oneline --graph",
+"Verlauf"
+],
+[
+"git diff",
+"Änderungen anzeigen"
+],
+[
+"git branch name / git switch name",
+"Branch anlegen / wechseln"
+],
+[
+"git merge name",
+"zusammenführen"
+],
+[
+"git stash / git stash pop",
+"Änderungen zwischenlagern"
+],
+[
+"git restore datei",
+"Änderungen in Datei verwerfen"
+],
+[
+"git reset --soft HEAD~1",
+"letzten Commit zurücknehmen, Änderungen behalten"
+],
+[
+"git remote -v",
+"Remote-Adressen"
+],
+[
+"git tag v1.0",
+"Version markieren"
+]
+],
+"mono": [
+0
+],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "`git reset --hard` und `git push --force` **vernichten Arbeit**. Vorher `git status` / `git log` prüfen."
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "`.gitignore` für Dateien, die nicht ins Repo sollen (Passwörter, `.venv`, `__pycache__`). **Niemals Passwörter/Tokens committen.**"
+}
+],
+"siehe": [
+"linux:befehle"
+],
+"symbol": "gehaeuse"
+}
+]
+}

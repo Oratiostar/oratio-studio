@@ -1,0 +1,1749 @@
+{
+"id": "bt_wissen",
+"name": "Bauteile-Wissen",
+"untertitel": "Grundlagen und Merksätze zu Bauteilen",
+"farbe": "braun",
+"symbol": "lampe",
+"reihenfolge": 24,
+"seiten": [
+{
+"id": "wissen_bool",
+"titel": "Boolesche Algebra",
+"kurz": "Die wichtigsten Regeln der Logik",
+"tags": [
+"boolesche",
+"algebra",
+"de",
+"morgan",
+"logik",
+"gesetze",
+"nand",
+"nor",
+"Grundlagen",
+"Boolesche",
+"Algebra",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Logik rechnet mit nur zwei Werten: 0 (LOW, falsch) und 1 (HIGH, wahr). Verknüpfungen: UND (·), ODER (+), NICHT (Strich über dem Zeichen)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "bool",
+"name": "Boolesche Algebra",
+"titel": "Die wichtigsten Regeln der Logik",
+"kurz": "Logik rechnet mit nur zwei Werten: 0 (LOW, falsch) und 1 (HIGH, wahr). Verknüpfungen: UND (·), ODER (+), NICHT (Strich über dem Zeichen).",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"hinweise": [
+"De Morgan: NICHT(A UND B) = NICHT A ODER NICHT B  und  NICHT(A ODER B) = NICHT A UND NICHT B. Damit wird ein NAND zu einem ODER mit invertierten Eingängen.",
+"A UND 0 = 0,  A UND 1 = A,  A ODER 0 = A,  A ODER 1 = 1,  A UND A = A,  A ODER A = A,  A UND NICHT A = 0,  A ODER NICHT A = 1.",
+"XOR: A ⊕ B = A·B̅ + A̅·B. Ergibt 1, wenn A und B verschieden sind.",
+"NAND und NOR sind Universal-Gatter: Jede andere Schaltung lässt sich nur mit NANDs (oder nur mit NORs) bauen.",
+"NICHT aus NAND: beide Eingänge zusammenschalten. UND aus NAND: NAND + NAND als Inverter."
+],
+"tags": "boolesche algebra de morgan logik gesetze nand nor",
+"spannung": "",
+"tabelle": {
+"kopf": [
+"A",
+"B",
+"UND",
+"ODER",
+"XOR",
+"NAND",
+"NOR",
+"XNOR"
+],
+"zeilen": [
+[
+"0",
+"0",
+"0",
+"0",
+"0",
+"1",
+"1",
+"1"
+],
+[
+"0",
+"1",
+"0",
+"1",
+"1",
+"1",
+"0",
+"0"
+],
+[
+"1",
+"0",
+"0",
+"1",
+"1",
+"1",
+"0",
+"0"
+],
+[
+"1",
+"1",
+"1",
+"1",
+"0",
+"0",
+"0",
+"1"
+]
+]
+},
+"kat": "wissen",
+"uid": "wissen:bool"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_zahlen",
+"titel": "Zahlensysteme",
+"kurz": "Dezimal, Binär und Hexadezimal umrechnen",
+"tags": [
+"binär",
+"hex",
+"dezimal",
+"zahlensystem",
+"umrechnen",
+"bit",
+"byte",
+"Grundlagen",
+"Zahlensysteme",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Rechner und ICs arbeiten binär. Vier Bit = ein Hexadezimal-Zeichen (0…F). Trage eine Zahl in EINEM Feld ein, die anderen werden berechnet."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "zahlen",
+"name": "Zahlensysteme",
+"titel": "Dezimal, Binär und Hexadezimal umrechnen",
+"kurz": "Rechner und ICs arbeiten binär. Vier Bit = ein Hexadezimal-Zeichen (0…F). Trage eine Zahl in EINEM Feld ein, die anderen werden berechnet.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"hinweise": [
+"Binär: Stellenwerte 1, 2, 4, 8, 16, 32, 64, 128 …  Beispiel: 1011₂ = 8 + 2 + 1 = 11.",
+"Hexadezimal: 0–9 und A–F (A = 10 … F = 15). 0xFF = 255.",
+"8 Bit = 1 Byte (0…255), 10 Bit (ADC) = 0…1023, 12 Bit = 0…4095, 16 Bit = 0…65535.",
+"Zweierkomplement (negative Zahlen): alle Bits invertieren und 1 addieren. 8 Bit: −1 = 11111111."
+],
+"tags": "binär hex dezimal zahlensystem umrechnen bit byte",
+"spannung": "",
+"rechner": "zahlen",
+"kat": "wissen",
+"uid": "wissen:zahlen"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_familien",
+"titel": "Logikfamilien",
+"kurz": "74LS, 74HC, 74HCT, CD4000 und 74LVC im Vergleich",
+"tags": [
+"logikfamilien",
+"ttl",
+"cmos",
+"ls",
+"hc",
+"hct",
+"lvc",
+"pegel",
+"spannung",
+"3.3",
+"5",
+"v",
+"Grundlagen",
+"Logikfamilien",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Gleiche Nummer, aber andere Technik: Spannungsbereich, Schaltschwellen, Geschwindigkeit und Stromverbrauch sind verschieden. Typische Werte, die Datenblätter genau angeben."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "familien",
+"name": "Logikfamilien",
+"titel": "74LS, 74HC, 74HCT, CD4000 und 74LVC im Vergleich",
+"kurz": "Gleiche Nummer, aber andere Technik: Spannungsbereich, Schaltschwellen, Geschwindigkeit und Stromverbrauch sind verschieden. Typische Werte, die Datenblätter genau angeben.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"hinweise": [
+"LS = Low-Power Schottky (TTL, alt, braucht 5 V, zieht mehr Strom). HC = High-Speed CMOS (2–6 V, wenig Strom). HCT = HC mit TTL-kompatiblen Eingangsschwellen.",
+"Mischen: 74HCT darf von 3,3-V-Logik angesteuert werden (VIH 2 V), wenn der HCT mit 5 V läuft. Der HCT-Ausgang liefert dann aber 5 V: nicht an einen Pi-Eingang.",
+"Raspberry Pi und 5 V: GPIO sind NICHT 5-V-fest. Pegelwandler (74LVC245, TXS0108E) oder Spannungsteiler nutzen.",
+"CD4000 (CMOS) schalten langsam (ca. 100 ns bei 5 V), aber verbrauchen im Ruhezustand fast nichts und vertragen bis 15 V.",
+"Eingänge nie offen lassen (bei CMOS), freie Eingänge an GND/VCC. Immer 100 nF Abblockkondensator pro IC."
+],
+"tags": "logikfamilien ttl cmos ls hc hct lvc pegel spannung 3.3 5 v",
+"spannung": "",
+"tabelle": {
+"kopf": [
+"Familie",
+"Versorgung",
+"Eingang HIGH ab",
+"Eingang LOW bis",
+"Ausgangsstrom"
+],
+"zeilen": [
+[
+"74LS",
+"5 V ±5 %",
+"2,0 V",
+"0,8 V",
+"8 mA low / 0,4 mA high"
+],
+[
+"74HC",
+"2…6 V",
+"3,5 V (bei 5 V)",
+"1,5 V (bei 5 V)",
+"±4 mA (bis 6 mA)"
+],
+[
+"74HCT",
+"5 V ±10 %",
+"2,0 V",
+"0,8 V",
+"±4 mA"
+],
+[
+"CD4000B",
+"3…15 V",
+"3,5 V bei 5 V; 7 V bei 10 V",
+"1,5 V bei 5 V; 3 V bei 10 V",
+"wenige mA (bei 5 V ca. 1 mA)"
+],
+[
+"74LVC",
+"1,65…3,6 V",
+"2,0 V (bei 3,3 V)",
+"0,8 V (bei 3,3 V)",
+"±24 mA, Eingänge 5-V-fest"
+]
+]
+},
+"kat": "wissen",
+"uid": "wissen:familien"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_pegel",
+"titel": "3,3 V und 5 V am Raspberry Pi",
+"kurz": "Pegel anpassen – was sicher ist",
+"tags": [
+"pegel",
+"raspberry",
+"pi",
+"gpio",
+"3.3",
+"5",
+"v",
+"level",
+"shifter",
+"sicher",
+"Grundlagen",
+"3,3",
+"V",
+"und",
+"5",
+"V",
+"am",
+"Raspberry",
+"Pi",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Alle GPIO-Pins des Raspberry Pi arbeiten mit 3,3 V und sind NICHT 5-V-tolerant. Ein 5-V-Signal an einem GPIO-Eingang kann den Pi zerstören."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "pegel",
+"name": "3,3 V und 5 V am Raspberry Pi",
+"titel": "Pegel anpassen – was sicher ist",
+"kurz": "Alle GPIO-Pins des Raspberry Pi arbeiten mit 3,3 V und sind NICHT 5-V-tolerant. Ein 5-V-Signal an einem GPIO-Eingang kann den Pi zerstören.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"hinweise": [
+"5 V → 3,3 V (Signal zum Pi): Spannungsteiler (z. B. 1,8 kΩ + 3,3 kΩ), Pegelwandler (74LVC245 mit 3,3 V, TXS0108E, BSS138-Modul) oder Open-Collector + Pull-up auf 3,3 V.",
+"3,3 V → 5 V (Signal vom Pi): 74HCT245/74HCT-Gatter an 5 V (erkennt 3,3 V als HIGH), oder Pegelwandlermodul.",
+"I²C: BSS138-Wandler mit Pull-ups auf beiden Seiten (bidirektional). Ein Spannungsteiler geht hier nicht.",
+"Strombegrenzung: Pro GPIO-Pin max. 16 mA (empfohlen deutlich weniger), insgesamt ca. 50 mA. Für LEDs, Relais, Motoren einen Transistor, MOSFET oder ULN2003 nehmen."
+],
+"tags": "pegel raspberry pi gpio 3.3 5 v level shifter sicher",
+"spannung": "",
+"kat": "wissen",
+"uid": "wissen:pegel"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_pull",
+"titel": "Pull-up und Pull-down",
+"kurz": "Offene Eingänge vermeiden",
+"tags": [
+"pull",
+"up",
+"down",
+"widerstand",
+"taster",
+"entprellen",
+"offener",
+"eingang",
+"Grundlagen",
+"Pull-up",
+"und",
+"Pull-down",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein Eingang, der mit nichts verbunden ist, nimmt zufällige Pegel an. Ein Widerstand nach VCC (Pull-up) oder GND (Pull-down) gibt ihm einen sicheren Ruhezustand."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "pull",
+"name": "Pull-up und Pull-down",
+"titel": "Offene Eingänge vermeiden",
+"kurz": "Ein Eingang, der mit nichts verbunden ist, nimmt zufällige Pegel an. Ein Widerstand nach VCC (Pull-up) oder GND (Pull-down) gibt ihm einen sicheren Ruhezustand.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"hinweise": [
+"Taster gegen GND: Pull-up (ca. 10 kΩ nach VCC). Taster gedrückt = LOW.",
+"Taster gegen VCC: Pull-down (ca. 10 kΩ nach GND). Taster gedrückt = HIGH.",
+"Der Raspberry Pi hat eingebaute Pull-up/Pull-down (ca. 50 kΩ), die man per Software einschaltet (Labor → Pins → Pin antippen).",
+"I²C braucht Pull-ups (typisch 4,7 kΩ nach 3,3 V); der Pi hat auf SDA/SCL schon 1,8 kΩ.",
+"Zu klein: viel Strom im Ruhezustand. Zu groß: Störanfällig, langsame Flanken."
+],
+"tags": "pull up down widerstand taster entprellen offener eingang",
+"spannung": "",
+"kat": "wissen",
+"uid": "wissen:pull"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_oc",
+"titel": "Open-Collector, Open-Drain und Tri-State",
+"kurz": "Drei Arten von Ausgängen",
+"tags": [
+"open",
+"collector",
+"open",
+"drain",
+"tri",
+"state",
+"totem",
+"pole",
+"bus",
+"pull",
+"up",
+"Grundlagen",
+"Open-Collector,",
+"Open-Drain",
+"und",
+"Tri-State",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Normale (Totem-Pole) Ausgänge treiben HIGH und LOW selbst. Open-Collector kann nur nach GND ziehen, Tri-State kann zusätzlich ganz abschalten (hochohmig)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "oc",
+"name": "Open-Collector, Open-Drain und Tri-State",
+"titel": "Drei Arten von Ausgängen",
+"kurz": "Normale (Totem-Pole) Ausgänge treiben HIGH und LOW selbst. Open-Collector kann nur nach GND ziehen, Tri-State kann zusätzlich ganz abschalten (hochohmig).",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"hinweise": [
+"Open-Collector / Open-Drain (7406, 7407, LM393, I²C): braucht einen Pull-up-Widerstand für HIGH. Mehrere Ausgänge dürfen zusammengeschaltet werden (Wired-AND).",
+"Tri-State (74125, 74245, 74573): zusätzlicher Zustand Z = hochohmig. Mehrere Chips teilen sich so einen Bus; immer nur einer darf aktiv sein.",
+"Totem-Pole-Ausgänge dürfen NIE zusammengeschaltet werden, wenn einer HIGH und einer LOW zieht (Kurzschluss)."
+],
+"tags": "open collector open drain tri state totem pole bus pull up",
+"spannung": "",
+"kat": "wissen",
+"uid": "wissen:oc"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_schmitt",
+"titel": "Schmitt-Trigger",
+"kurz": "Warum zwei Schwellen sauberer schalten",
+"tags": [
+"schmitt",
+"trigger",
+"hysterese",
+"entprellen",
+"oszillator",
+"Grundlagen",
+"Schmitt-Trigger",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Normale Gatter schalten bei EINER Schwelle. Ein langsames oder verrauschtes Signal um diese Schwelle lässt den Ausgang flattern. Der Schmitt-Trigger hat zwei Schwellen (Hysterese): nach oben bei VT+, nach unten bei VT−."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "schmitt",
+"name": "Schmitt-Trigger",
+"titel": "Warum zwei Schwellen sauberer schalten",
+"kurz": "Normale Gatter schalten bei EINER Schwelle. Ein langsames oder verrauschtes Signal um diese Schwelle lässt den Ausgang flattern. Der Schmitt-Trigger hat zwei Schwellen (Hysterese): nach oben bei VT+, nach unten bei VT−.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"hinweise": [
+"Aufbau mit Opamp: Mitkopplung vom Ausgang an den +Eingang (siehe Schaltungen).",
+"Fertige ICs: 74HC14 (6 Inverter), 74HC132 / CD4093 (NAND), 74HC7014.",
+"Einsatz: Taster entprellen (RC + Schmitt), Sensorsignale bereinigen, RC-Oszillator (R vom Ausgang nach Eingang, C nach Masse).",
+"Die Hysterese (VT+ − VT−) ist der Abstand, den eine Störung überwinden müsste, um den Ausgang zu bewegen."
+],
+"tags": "schmitt trigger hysterese entprellen oszillator",
+"spannung": "",
+"kat": "wissen",
+"uid": "wissen:schmitt"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_flanke",
+"titel": "Takt, Flanken und Setup-Zeit",
+"kurz": "Wann ein Flip-Flop liest",
+"tags": [
+"takt",
+"flanke",
+"setup",
+"hold",
+"latch",
+"flip",
+"flop",
+"metastabil",
+"synchron",
+"Grundlagen",
+"Takt,",
+"Flanken",
+"und",
+"Setup-Zeit",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Flip-Flops übernehmen ihre Daten nur im Moment der Taktflanke. Latches folgen dem Eingang, solange der Freigabe-Eingang aktiv ist (pegelgesteuert)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "flanke",
+"name": "Takt, Flanken und Setup-Zeit",
+"titel": "Wann ein Flip-Flop liest",
+"kurz": "Flip-Flops übernehmen ihre Daten nur im Moment der Taktflanke. Latches folgen dem Eingang, solange der Freigabe-Eingang aktiv ist (pegelgesteuert).",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"hinweise": [
+"Steigende Flanke: Übergang LOW → HIGH (↑). Fallende Flanke: HIGH → LOW (↓).",
+"Setup-Zeit: Die Daten müssen kurz VOR der Flanke stabil sein. Hold-Zeit: kurz NACH der Flanke noch stabil.",
+"Asynchrone Eingänge (Set/Reset/Clear) wirken sofort, ohne Takt. Synchrone wirken erst mit der Taktflanke.",
+"Metastabilität: Ein asynchrones Signal (z. B. Taster) sollte über zwei Flip-Flops hintereinander synchronisiert werden."
+],
+"tags": "takt flanke setup hold latch flip flop metastabil synchron",
+"spannung": "",
+"kat": "wissen",
+"uid": "wissen:flanke"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_ohm",
+"titel": "Ohmsches Gesetz und Leistung",
+"kurz": "Die wichtigsten Formeln",
+"tags": [
+"ohm",
+"gesetz",
+"leistung",
+"formeln",
+"kirchhoff",
+"reihe",
+"parallel",
+"kondensator",
+"zeitkonstante",
+"dezibel",
+"Grundlagen",
+"Ohmsches",
+"Gesetz",
+"und",
+"Leistung",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Spannung, Strom, Widerstand und Leistung hängen eng zusammen. Das Labor hat dafür einen eigenen Rechner (Labor → Rechner)."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "ohm",
+"name": "Ohmsches Gesetz und Leistung",
+"titel": "Die wichtigsten Formeln",
+"kurz": "Spannung, Strom, Widerstand und Leistung hängen eng zusammen. Das Labor hat dafür einen eigenen Rechner (Labor → Rechner).",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"hinweise": [
+"U = R · I",
+"P = U · I = I² · R = U² / R",
+"Reihenschaltung: Rges = R1 + R2 + …",
+"Parallelschaltung: 1/Rges = 1/R1 + 1/R2 + …  (zwei Widerstände: Rges = R1·R2 / (R1 + R2))",
+"Kirchhoff Maschen: Summe aller Spannungen in einer Masche = 0. Knoten: Summe der Ströme in einen Knoten = 0.",
+"Kondensator: Q = C · U, Zeitkonstante τ = R · C (nach 5 τ ca. 99 % geladen). Spule: UL = L · dI/dt.",
+"Dezibel: dB = 20 · log10(U2 / U1) bei Spannungen; −3 dB ≙ Faktor 0,707."
+],
+"tags": "ohm gesetz leistung formeln kirchhoff reihe parallel kondensator zeitkonstante dezibel",
+"spannung": "",
+"kat": "wissen",
+"uid": "wissen:ohm"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_abblock",
+"titel": "Abblockkondensatoren",
+"kurz": "Warum jeder Chip einen 100 nF braucht",
+"tags": [
+"abblock",
+"kondensator",
+"100nf",
+"stuetz",
+"versorgung",
+"störung",
+"Grundlagen",
+"Abblockkondensatoren",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Digitale Schaltungen ziehen bei jeder Umschaltung kurze Stromspitzen. Ein Kondensator direkt am Chip liefert diese Spitzen und hält die Versorgung ruhig."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "abblock",
+"name": "Abblockkondensatoren",
+"titel": "Warum jeder Chip einen 100 nF braucht",
+"kurz": "Digitale Schaltungen ziehen bei jeder Umschaltung kurze Stromspitzen. Ein Kondensator direkt am Chip liefert diese Spitzen und hält die Versorgung ruhig.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"hinweise": [
+"100 nF (keramisch) zwischen VCC und GND, so nah wie möglich an den Pins des ICs.",
+"Zusätzlich je Platine oder Baugruppe ein Elko (10…100 µF).",
+"Bei Opamps: je 100 nF an beiden Versorgungspins nach GND.",
+"Fehlen sie, treten Störungen auf: zufällige Resets, Zählfehler, Rauschen im Audio."
+],
+"tags": "abblock kondensator 100nf stuetz versorgung störung",
+"spannung": "",
+"kat": "wissen",
+"uid": "wissen:abblock"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_vorsilben",
+"titel": "Einheiten und Vorsilben",
+"kurz": "p, n, µ, m, k, M, G – Zehnerpotenzen",
+"tags": [
+"einheiten",
+"vorsilben",
+"pico",
+"nano",
+"mikro",
+"milli",
+"kilo",
+"mega",
+"giga",
+"si",
+"Grundlagen",
+"Einheiten",
+"und",
+"Vorsilben",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Alle Vorsilben, wie sie in Elektronik-Schaltplänen vorkommen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "vorsilben",
+"name": "Einheiten und Vorsilben",
+"titel": "p, n, µ, m, k, M, G – Zehnerpotenzen",
+"kurz": "Alle Vorsilben, wie sie in Elektronik-Schaltplänen vorkommen.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Merksatz: 1 µF = 1000 nF = 1.000.000 pF.",
+"In Schaltplänen steht oft 4k7 statt 4,7k (das „k“ ersetzt das Komma): 4k7 = 4,7 kΩ, 2u2 = 2,2 µF, 100n = 100 nF."
+],
+"tags": "einheiten vorsilben pico nano mikro milli kilo mega giga si",
+"tabelle": {
+"kopf": [
+"Zeichen",
+"Name",
+"Faktor"
+],
+"zeilen": [
+[
+"p",
+"Piko",
+"10⁻¹²"
+],
+[
+"n",
+"Nano",
+"10⁻⁹"
+],
+[
+"µ",
+"Mikro",
+"10⁻⁶"
+],
+[
+"m",
+"Milli",
+"10⁻³"
+],
+[
+"k",
+"Kilo",
+"10³"
+],
+[
+"M",
+"Mega",
+"10⁶"
+],
+[
+"G",
+"Giga",
+"10⁹"
+]
+]
+},
+"kat": "wissen",
+"uid": "wissen:vorsilben"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_formeln",
+"titel": "Formelsammlung",
+"kurz": "Die wichtigsten Formeln der Elektronik",
+"tags": [
+"formeln",
+"formelsammlung",
+"ohm",
+"leistung",
+"kondensator",
+"spule",
+"resonanz",
+"filter",
+"Grundlagen",
+"Formelsammlung",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Zum Nachschlagen: Ohm, Leistung, Kondensator, Spule, Resonanz, Filter, Verstärker."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "formeln",
+"name": "Formelsammlung",
+"titel": "Die wichtigsten Formeln der Elektronik",
+"kurz": "Zum Nachschlagen: Ohm, Leistung, Kondensator, Spule, Resonanz, Filter, Verstärker.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Alle Spannungen in V, Ströme in A, Widerstände in Ω, Kapazitäten in F, Induktivitäten in H, Frequenzen in Hz."
+],
+"tags": "formeln formelsammlung ohm leistung kondensator spule resonanz filter",
+"formeln": [
+"Ohm: U = R · I",
+"Leistung: P = U · I = I² · R = U² / R",
+"Spannungsteiler: U2 = U · R2 / (R1 + R2)",
+"Reihe: R = R1 + R2   |   Parallel: R = R1·R2 / (R1 + R2)",
+"RC-Zeitkonstante: τ = R · C",
+"RC-Grenzfrequenz: fg = 1 / (2π · R · C)",
+"Kondensator: XC = 1 / (2π · f · C)",
+"Spule: XL = 2π · f · L",
+"Schwingkreis: f0 = 1 / (2π · √(L · C))",
+"Invertierender Opamp: V = −Rf / R1",
+"Nicht-inv. Opamp: V = 1 + Rf / Rg",
+"Dezibel: dB = 20 · log10(U2 / U1)",
+"Energie im Kondensator: E = ½ · C · U²",
+"Ladung: Q = C · U = I · t",
+"Batterielaufzeit: t = Kapazität (Ah) / Strom (A)"
+],
+"kat": "wissen",
+"uid": "wissen:formeln"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_pegelwandeln",
+"titel": "Pegel anpassen 3,3 V ↔ 5 V",
+"kurz": "Vier Methoden im Vergleich",
+"tags": [
+"pegel",
+"3,3v",
+"5v",
+"pegelwandler",
+"level",
+"shifter",
+"mischen",
+"spannungsteiler",
+"Grundlagen",
+"Pegel",
+"anpassen",
+"3,3",
+"V",
+"↔",
+"5",
+"V",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Raspberry Pi und ESP32 arbeiten mit 3,3 V, Arduino Uno / Nano mit 5 V. Wer beides mischt, muss auf Pegel achten."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "pegelwandeln",
+"name": "Pegel anpassen 3,3 V ↔ 5 V",
+"titel": "Vier Methoden im Vergleich",
+"kurz": "Raspberry Pi und ESP32 arbeiten mit 3,3 V, Arduino Uno / Nano mit 5 V. Wer beides mischt, muss auf Pegel achten.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"5 V → 3,3 V (Eingang des Pi): Spannungsteiler (z. B. 1 kΩ + 2 kΩ) reicht für langsame Signale.",
+"3,3 V → 5 V (Eingang eines 5-V-Chips): bei HC-Logik reicht 3,3 V oft nicht – 74HCT-Typen (z. B. 74HCT125) verstehen 3,3 V als HIGH.",
+"Bidirektional (I²C): BSS138-Wandler oder PCA9306 / TXS0102.",
+"Viele Kanäle: 74LVC245 / TXB0108 / 74AHCT-Reihe."
+],
+"tags": "pegel 3,3v 5v pegelwandler level shifter mischen spannungsteiler",
+"tabelle": {
+"kopf": [
+"Methode",
+"Richtung",
+"Geschwindigkeit",
+"Bemerkung"
+],
+"zeilen": [
+[
+"Spannungsteiler",
+"5 → 3,3 V",
+"langsam",
+"billig, einfach"
+],
+[
+"74HCT125 / AHCT",
+"3,3 → 5 V",
+"schnell",
+"kein Pegelproblem"
+],
+[
+"BSS138-Wandler",
+"beide",
+"bis ca. 400 kHz",
+"ideal für I²C"
+],
+[
+"TXS0108 / TXB0108",
+"beide",
+"schnell",
+"8 Kanäle, nicht für I²C ohne Zusatz"
+],
+[
+"74LVC245",
+"5 → 3,3 V",
+"sehr schnell",
+"Eingänge 5-V-tolerant"
+]
+]
+},
+"kat": "wissen",
+"uid": "wissen:pegelwandeln"
+}
+}
+],
+"siehe": [
+"bt_wissen:wissen_pegel",
+"bt_katalog:bauteile_bss138"
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_pi-strom",
+"titel": "GPIO-Strombelastung",
+"kurz": "Wie viel Strom darf ein Pin liefern?",
+"tags": [
+"gpio",
+"strom",
+"belastung",
+"pin",
+"mikrocontroller",
+"limit",
+"mA",
+"led",
+"Grundlagen",
+"GPIO-Strombelastung",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Mikrocontroller-Pins sind keine Leistungsausgänge. Immer die Stromgrenze beachten."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "pi-strom",
+"name": "GPIO-Strombelastung",
+"titel": "Wie viel Strom darf ein Pin liefern?",
+"kurz": "Mikrocontroller-Pins sind keine Leistungsausgänge. Immer die Stromgrenze beachten.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Raspberry Pi: ca. 16 mA pro GPIO, ca. 50 mA insgesamt (empfohlen). Pico: bis ca. 12 mA pro Pin (konfigurierbar). Arduino Uno: 20 mA empfohlen (40 mA absolut max).",
+"Größere Lasten über Transistor / MOSFET schalten (siehe „MOSFET-Schalter“).",
+"LED mit Vorwiderstand: bei 3,3 V und 5 mA reichen oft 330 Ω.",
+"Niemals einen Pin direkt an +U oder GND kurzschließen."
+],
+"tags": "gpio strom belastung pin mikrocontroller limit mA led",
+"kat": "wissen",
+"uid": "wissen:pi-strom"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_entprellen",
+"titel": "Entprellen",
+"kurz": "Mechanische Kontakte prellen",
+"tags": [
+"entprellen",
+"taster",
+"prellen",
+"debounce",
+"Grundlagen",
+"Entprellen",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Beim Schließen eines Tasters schwankt der Kontakt einige Millisekunden – ein Mikrocontroller sieht viele Flanken."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "entprellen",
+"name": "Entprellen",
+"titel": "Mechanische Kontakte prellen",
+"kurz": "Beim Schließen eines Tasters schwankt der Kontakt einige Millisekunden – ein Mikrocontroller sieht viele Flanken.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Software: nach der ersten Flanke 10–20 ms warten und dann den Pegel neu lesen.",
+"Hardware: RC-Glied + Schmitt-Trigger (74HC14), siehe Schaltungen.",
+"SR-Latch (zwei NAND): entprellt Wechsler-Taster perfekt."
+],
+"tags": "entprellen taster prellen debounce",
+"kat": "wissen",
+"uid": "wissen:entprellen"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_masse",
+"titel": "Masse und Erdung",
+"kurz": "GND richtig führen",
+"tags": [
+"masse",
+"gnd",
+"erdung",
+"sternpunkt",
+"groundplane",
+"brummschleife",
+"Grundlagen",
+"Masse",
+"und",
+"Erdung",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Eine saubere Masse ist die Grundlage jeder stabilen Schaltung."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "masse",
+"name": "Masse und Erdung",
+"titel": "GND richtig führen",
+"kurz": "Eine saubere Masse ist die Grundlage jeder stabilen Schaltung.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Alle Teilschaltungen sollen eine gemeinsame Masse haben (sonst Pegel unklar).",
+"Hohe Ströme (Motoren) und empfindliche Signale (ADC, Audio) möglichst nur an EINEM Punkt (Sternpunkt) verbinden.",
+"Massefläche (Groundplane) auf Platinen verwenden.",
+"Schutzleiter (PE) ist nicht gleich Signal-GND."
+],
+"tags": "masse gnd erdung sternpunkt groundplane brummschleife",
+"kat": "wissen",
+"uid": "wissen:masse"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_esd",
+"titel": "ESD-Schutz",
+"kurz": "Statische Entladung und Schäden",
+"tags": [
+"esd",
+"statische",
+"entladung",
+"cmos",
+"schutz",
+"tvs",
+"Grundlagen",
+"ESD-Schutz",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Bauteile (besonders CMOS und MOSFETs) können durch statische Elektrizität sterben – oft unbemerkt."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "esd",
+"name": "ESD-Schutz",
+"titel": "Statische Entladung und Schäden",
+"kurz": "Bauteile (besonders CMOS und MOSFETs) können durch statische Elektrizität sterben – oft unbemerkt.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Vor dem Anfassen von Platinen Gehäuse oder Heizkörper berühren (Potenzialausgleich).",
+"ESD-Beutel für Lagerung, kein normales Plastik.",
+"Eingänge von CMOS-ICs nie offen lassen.",
+"TVS-Dioden an Steckern und Tastern (z. B. USB)."
+],
+"tags": "esd statische entladung cmos schutz tvs",
+"kat": "wissen",
+"uid": "wissen:esd"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_mm-tipps",
+"titel": "Messen mit dem Multimeter",
+"kurz": "Spannung, Strom, Widerstand, Durchgang",
+"tags": [
+"multimeter",
+"messen",
+"spannung",
+"strom",
+"widerstand",
+"durchgang",
+"diodentest",
+"Messpraxis",
+"Messen",
+"mit",
+"dem",
+"Multimeter",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Die wichtigsten Handgriffe beim Multimeter und typische Fehler."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "mm-tipps",
+"name": "Messen mit dem Multimeter",
+"titel": "Spannung, Strom, Widerstand, Durchgang",
+"kurz": "Die wichtigsten Handgriffe beim Multimeter und typische Fehler.",
+"familie": "Messpraxis",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Spannung (V): parallel zum Bauteil messen. Strom (A): das Messgerät in Reihe in die Leitung einfügen – niemals einen Spannungs-Querschluss über die Strombuchsen! (Sicherung brennt.)",
+"Widerstand (Ω): nur an stromlosen Bauteilen und ausgelötet bzw. im spannungsfreien Zustand.",
+"Durchgangsprüfung: Piepton bei < ca. 30 Ω.",
+"Diodentest: zeigt Flussspannung (Si ≈ 0,6 V, Schottky ≈ 0,2–0,4 V, LED 1,8–3 V).",
+"Immer erst den größten Messbereich wählen."
+],
+"tags": "multimeter messen spannung strom widerstand durchgang diodentest",
+"kat": "wissen",
+"uid": "wissen:mm-tipps"
+}
+}
+],
+"familie": "Messpraxis"
+},
+{
+"id": "wissen_oszi",
+"titel": "Oszilloskop-Tipps",
+"kurz": "Erste Messungen und Tastkopf",
+"tags": [
+"oszilloskop",
+"oszi",
+"tastkopf",
+"trigger",
+"messen",
+"messpraxis",
+"Messpraxis",
+"Oszilloskop-Tipps",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein Oszilloskop zeigt Spannung über der Zeit – unverzichtbar bei digitalen Signalen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "oszi",
+"name": "Oszilloskop-Tipps",
+"titel": "Erste Messungen und Tastkopf",
+"kurz": "Ein Oszilloskop zeigt Spannung über der Zeit – unverzichtbar bei digitalen Signalen.",
+"familie": "Messpraxis",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Tastkopf auf ×10 stellen und am Oszi „10×“ einstellen; mit dem Kompensationssignal (Rechteck) abgleichen.",
+"Massekrokodil nahe am Messpunkt anschließen (kurze Leitung = weniger Störung).",
+"Trigger auf steigende Flanke bei ca. 50 % des Signals.",
+"Bei Netzspannung nie mit geerdetem Oszi direkt messen – Trenntrafo oder Differenztastkopf."
+],
+"tags": "oszilloskop oszi tastkopf trigger messen messpraxis",
+"kat": "wissen",
+"uid": "wissen:oszi"
+}
+}
+],
+"familie": "Messpraxis"
+},
+{
+"id": "wissen_loeten",
+"titel": "Löten – Tipps",
+"kurz": "Temperatur, Lot, Fehler",
+"tags": [
+"löten",
+"lötkolben",
+"lot",
+"temperatur",
+"kalte",
+"lötstelle",
+"smd",
+"Messpraxis",
+"Löten",
+"–",
+"Tipps",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Saubere Lötstellen vermeiden die meisten Fehler."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "loeten",
+"name": "Löten – Tipps",
+"titel": "Temperatur, Lot, Fehler",
+"kurz": "Saubere Lötstellen vermeiden die meisten Fehler.",
+"familie": "Messpraxis",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Bleihaltiges Lot (63/37) schmilzt bei ca. 183 °C → Kolben 300–330 °C. Bleifrei (SAC305) ca. 217 °C → Kolben 330–370 °C.",
+"Erst Kolben an Pad UND Anschluss, nach 1–2 s Lot dazu, nach 1 s Kolben weg.",
+"Glänzende, kegelförmige Lötstelle = gut. Matt und kugelig = kalte Lötstelle.",
+"Flussmittel hilft bei SMD, Entlötlitze zum Entfernen.",
+"Lötrauch absaugen. Händewaschen nach bleihaltigem Lot."
+],
+"tags": "löten lötkolben lot temperatur kalte lötstelle smd",
+"kat": "wissen",
+"uid": "wissen:loeten"
+}
+}
+],
+"familie": "Messpraxis"
+},
+{
+"id": "wissen_fehlersuche",
+"titel": "Fehlersuche-Checkliste",
+"kurz": "Wenn es nicht funktioniert",
+"tags": [
+"fehlersuche",
+"debug",
+"problem",
+"checkliste",
+"funktioniert",
+"nicht",
+"Messpraxis",
+"Fehlersuche-Checkliste",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Systematisch vorgehen, statt zu raten."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "fehlersuche",
+"name": "Fehlersuche-Checkliste",
+"titel": "Wenn es nicht funktioniert",
+"kurz": "Systematisch vorgehen, statt zu raten.",
+"familie": "Messpraxis",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"1. Spannung messen: liegt die Versorgung wirklich an VCC und GND des Chips?",
+"2. Steckbrett: Kontakte locker? Falsche Reihe? Brücke vergessen?",
+"3. Pinbelegung mit dem Datenblatt vergleichen (Pin 1 markiert?).",
+"4. Pegel prüfen: 3,3 V ↔ 5 V Mix, Pull-ups vorhanden?",
+"5. Masse gemeinsam verbunden?",
+"6. Software: richtige Pin-Nummer (GPIO vs. Pin), richtige Adresse (i2cdetect)?",
+"7. Das Teil einzeln testen (LED blinken lassen), dann erweitern."
+],
+"tags": "fehlersuche debug problem checkliste funktioniert nicht",
+"kat": "wissen",
+"uid": "wissen:fehlersuche"
+}
+}
+],
+"familie": "Messpraxis"
+},
+{
+"id": "wissen_regler-vergleich",
+"titel": "Linear- oder Schaltregler?",
+"kurz": "Spannungsregler im Vergleich",
+"tags": [
+"spannungsregler",
+"linear",
+"ldo",
+"schaltregler",
+"buck",
+"boost",
+"wirkungsgrad",
+"vergleich",
+"Grundlagen",
+"Linear-",
+"oder",
+"Schaltregler?",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Es gibt drei Wege, aus einer Spannung eine andere zu machen."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "regler-vergleich",
+"name": "Linear- oder Schaltregler?",
+"titel": "Spannungsregler im Vergleich",
+"kurz": "Es gibt drei Wege, aus einer Spannung eine andere zu machen.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Linear (7805): einfach, rauscharm, aber Verlust = (Uin − Uout) · I als Wärme.",
+"LDO (AMS1117, MCP1700): wie Linear, aber kleine Dropout-Spannung – gut für Akkus.",
+"Schaltregler (Buck / LM2596 / MP1584): effizient (80–95 %), aber Störungen und Bauteile (Spule, Diode).",
+"Faustregel: Differenz > 3 V und Strom > 200 mA → Schaltregler."
+],
+"tags": "spannungsregler linear ldo schaltregler buck boost wirkungsgrad vergleich",
+"tabelle": {
+"kopf": [
+"Typ",
+"Wirkungsgrad",
+"Rauschen",
+"Bauteile"
+],
+"zeilen": [
+[
+"Linear",
+"niedrig",
+"sehr gering",
+"2 Kondensatoren"
+],
+[
+"LDO",
+"mittel",
+"gering",
+"2 Kondensatoren"
+],
+[
+"Buck (Schalt)",
+"hoch",
+"höher",
+"Spule, Diode, Kondensatoren"
+]
+]
+},
+"kat": "wissen",
+"uid": "wissen:regler-vergleich"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_transistor-vergl",
+"titel": "BJT oder MOSFET?",
+"kurz": "Transistor als Schalter wählen",
+"tags": [
+"transistor",
+"bjt",
+"mosfet",
+"vergleich",
+"schalter",
+"basis",
+"gate",
+"Grundlagen",
+"BJT",
+"oder",
+"MOSFET?",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Beide schalten Lasten. Der Bipolartransistor wird mit Strom gesteuert, der MOSFET mit Spannung."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "transistor-vergl",
+"name": "BJT oder MOSFET?",
+"titel": "Transistor als Schalter wählen",
+"kurz": "Beide schalten Lasten. Der Bipolartransistor wird mit Strom gesteuert, der MOSFET mit Spannung.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"BJT: Basisstrom nötig (IB ≈ IC / 10 für Sättigung), UCE sat ≈ 0,1–0,3 V.",
+"MOSFET: nur Spannung am Gate, RDS(on) oft wenige mΩ – ideal für große Ströme.",
+"Logic-Level-MOSFET wählen, wenn das Gate von 3,3 V / 5 V gesteuert wird.",
+"Gate hat Kapazität → Gate-Widerstand nicht vergessen."
+],
+"tags": "transistor bjt mosfet vergleich schalter basis gate",
+"tabelle": {
+"kopf": [
+"",
+"BJT (NPN)",
+"MOSFET (N)"
+],
+"zeilen": [
+[
+"Steuerung",
+"Strom (Basis)",
+"Spannung (Gate)"
+],
+[
+"Verlust",
+"UCE ≈ 0,2 V",
+"RDS(on)"
+],
+[
+"Geschwindigkeit",
+"mittel",
+"schnell"
+],
+[
+"Beispiel",
+"BC337",
+"IRLZ44N"
+]
+]
+},
+"kat": "wissen",
+"uid": "wissen:transistor-vergl"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_hbruecke",
+"titel": "H-Brücke",
+"kurz": "Motor in beide Richtungen drehen",
+"tags": [
+"h-brücke",
+"motor",
+"richtung",
+"treiber",
+"l293d",
+"l298",
+"tb6612",
+"Grundlagen",
+"H-Brücke",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Vier Schalter (Transistoren / MOSFETs) bilden ein H. Schaltet man diagonal, fließt der Strom in die eine oder andere Richtung durch den Motor."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "hbruecke",
+"name": "H-Brücke",
+"titel": "Motor in beide Richtungen drehen",
+"kurz": "Vier Schalter (Transistoren / MOSFETs) bilden ein H. Schaltet man diagonal, fließt der Strom in die eine oder andere Richtung durch den Motor.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Niemals beide Transistoren einer Seite gleichzeitig einschalten (Kurzschluss!).",
+"Fertige Treiber: L293D (0,6 A), L298 (2 A), TB6612, DRV8833.",
+"Bremsen: beide unteren Schalter schließen.",
+"Freilaufdioden an jedem Schalter."
+],
+"tags": "h-brücke motor richtung treiber l293d l298 tb6612",
+"tabelle": {
+"kopf": [
+"Links oben",
+"Rechts unten",
+"Links unten",
+"Rechts oben",
+"Motor"
+],
+"zeilen": [
+[
+"EIN",
+"EIN",
+"aus",
+"aus",
+"vorwärts"
+],
+[
+"aus",
+"aus",
+"EIN",
+"EIN",
+"rückwärts"
+],
+[
+"aus",
+"EIN",
+"EIN",
+"aus",
+"bremst"
+],
+[
+"aus",
+"aus",
+"aus",
+"aus",
+"frei"
+]
+]
+},
+"kat": "wissen",
+"uid": "wissen:hbruecke"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_glossar",
+"titel": "Abkürzungen (Glossar)",
+"kurz": "Begriffe, die in Datenblättern vorkommen",
+"tags": [
+"glossar",
+"abkürzungen",
+"begriffe",
+"datenblatt",
+"vcc",
+"vdd",
+"gnd",
+"oe",
+"cs",
+"mosi",
+"miso",
+"msb",
+"lsb",
+"ttl",
+"cmos",
+"Grundlagen",
+"Abkürzungen",
+"(Glossar)",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Was bedeuten die vielen Abkürzungen? Nachschlagen statt raten."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "glossar",
+"name": "Abkürzungen (Glossar)",
+"titel": "Begriffe, die in Datenblättern vorkommen",
+"kurz": "Was bedeuten die vielen Abkürzungen? Nachschlagen statt raten.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [],
+"tags": "glossar abkürzungen begriffe datenblatt vcc vdd gnd oe cs mosi miso msb lsb ttl cmos",
+"tabelle": {
+"kopf": [
+"Kürzel",
+"Bedeutung"
+],
+"zeilen": [
+[
+"VCC / VDD",
+"positive Versorgung"
+],
+[
+"GND / VSS",
+"Masse (0 V)"
+],
+[
+"OE / /OE",
+"Output Enable (Ausgang freigeben)"
+],
+[
+"CS / /CS",
+"Chip Select (aktiv LOW)"
+],
+[
+"CLK",
+"Takt"
+],
+[
+"MOSI / MISO",
+"SPI-Daten (Master → Slave / zurück)"
+],
+[
+"SDA / SCL",
+"I²C-Daten / Takt"
+],
+[
+"MSB / LSB",
+"höchstwertiges / niedrigstwertiges Bit"
+],
+[
+"TTL / CMOS",
+"Logikfamilien"
+],
+[
+"OC / Open Drain",
+"Ausgang zieht nur nach GND"
+],
+[
+"Tri-State",
+"dritter Zustand: hochohmig"
+],
+[
+"Fan-out",
+"Anzahl Eingänge, die ein Ausgang treiben kann"
+],
+[
+"Setup / Hold",
+"Zeit vor / nach Taktflanke"
+],
+[
+"ESR",
+"Serienwiderstand eines Kondensators"
+],
+[
+"RDS(on)",
+"Durchlasswiderstand eines MOSFET"
+],
+[
+"GBW",
+"Verstärkungs-Bandbreite-Produkt"
+],
+[
+"PWM",
+"Pulsweitenmodulation"
+],
+[
+"ADC / DAC",
+"Analog-Digital- / Digital-Analog-Wandler"
+]
+]
+},
+"kat": "wissen",
+"uid": "wissen:glossar"
+}
+}
+],
+"familie": "Grundlagen"
+},
+{
+"id": "wissen_logikcodes",
+"titel": "Logik-Namen entschlüsseln",
+"kurz": "74LS, 74HC, 74HCT, 74LVC, CD4000",
+"tags": [
+"74ls",
+"74hc",
+"74hct",
+"74lvc",
+"74ac",
+"cd4000",
+"familien",
+"logik",
+"namen",
+"Grundlagen",
+"Logik-Namen",
+"entschlüsseln",
+"bauteil"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Die Buchstaben zwischen 74 und der Nummer sagen, welche Technologie im Chip steckt."
+]
+},
+{
+"t": "bauteil",
+"e": {
+"id": "logikcodes",
+"name": "Logik-Namen entschlüsseln",
+"titel": "74LS, 74HC, 74HCT, 74LVC, CD4000",
+"kurz": "Die Buchstaben zwischen 74 und der Nummer sagen, welche Technologie im Chip steckt.",
+"familie": "Grundlagen",
+"gehaeuse": "",
+"pins": [],
+"spannung": "",
+"hinweise": [
+"Alle Typen mit gleicher Nummer sind pinkompatibel: 7400 = 74LS00 = 74HC00.",
+"Nicht mischen ohne Pegelprüfung: LS-Ausgänge sind nur ca. 3,4 V HIGH, HC / LVC bis VCC."
+],
+"tags": "74ls 74hc 74hct 74lvc 74ac cd4000 familien logik namen",
+"tabelle": {
+"kopf": [
+"Name",
+"Technik",
+"VCC",
+"Bemerkung"
+],
+"zeilen": [
+[
+"74LS",
+"TTL (Schottky)",
+"5 V",
+"alt, hoher Strom"
+],
+[
+"74HC",
+"CMOS",
+"2–6 V",
+"Standard, sparsam"
+],
+[
+"74HCT",
+"CMOS, TTL-Eingänge",
+"5 V",
+"versteht TTL-Pegel"
+],
+[
+"74LVC",
+"CMOS niedrige Spannung",
+"1,65–5,5 V",
+"5-V-tolerant"
+],
+[
+"74AHC",
+"CMOS schnell",
+"2–5,5 V",
+"schneller als HC"
+],
+[
+"CD4000",
+"CMOS alt",
+"3–15 V",
+"langsam, breite Spannung"
+]
+]
+},
+"kat": "wissen",
+"uid": "wissen:logikcodes"
+}
+}
+],
+"familie": "Grundlagen"
+}
+]
+}

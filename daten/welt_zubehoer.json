@@ -1,0 +1,798 @@
+{
+"id": "zubehoer",
+"name": "Pi-Zubehör",
+"untertitel": "Raspberry-Pi-Modelle, Netzteil, Kühlung, SSD, HATs, Displays, Kameras",
+"farbe": "gold",
+"symbol": "gehaeuse",
+"reihenfolge": 33,
+"seiten": [
+{
+"id": "pi_modelle",
+"titel": "Raspberry-Pi-Modelle im Überblick",
+"kurz": "Von Pi 1 (2012) bis Pi 500 und CM5",
+"tags": [
+"pi",
+"raspberry",
+"modelle",
+"pi 5",
+"pi 4",
+"zero"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Modell",
+"Jahr",
+"CPU",
+"RAM",
+"Besonderheit"
+],
+"zeilen": [
+[
+"Pi 1 B",
+"2012",
+"ARM1176, 700 MHz",
+"512 MB",
+"Das Original, 1 Kern"
+],
+[
+"Pi 2 B",
+"2015",
+"Cortex-A7, 4 Kerne, 900 MHz",
+"1 GB",
+"Erster Quad-Core"
+],
+[
+"Pi Zero",
+"2015",
+"ARM1176, 1 GHz",
+"512 MB",
+"5-Dollar-Rechner"
+],
+[
+"Pi 3 B",
+"2016",
+"Cortex-A53, 4 Kerne, 1,2 GHz",
+"1 GB",
+"WLAN + Bluetooth eingebaut"
+],
+[
+"Pi Zero W",
+"2017",
+"ARM1176, 1 GHz",
+"512 MB",
+"Zero mit WLAN"
+],
+[
+"Pi 3 B+",
+"2018",
+"Cortex-A53, 1,4 GHz",
+"1 GB",
+"Schnelleres WLAN, 300-Mbit-LAN"
+],
+[
+"Pi 4 B",
+"2019",
+"Cortex-A72, 4 Kerne, 1,5 GHz",
+"1 / 2 / 4 / 8 GB",
+"USB 3, Gigabit-LAN, 2× HDMI (4K)"
+],
+[
+"Pi 400",
+"2020",
+"Cortex-A72, 1,8 GHz",
+"4 GB",
+"Pi 4 in der Tastatur"
+],
+[
+"Pi Zero 2 W",
+"2021",
+"Cortex-A53, 4 Kerne, 1 GHz",
+"512 MB",
+"Winzig, 4 Kerne"
+],
+[
+"Pi 5",
+"2023",
+"Cortex-A76, 4 Kerne, 2,4 GHz",
+"2 / 4 / 8 / 16 GB",
+"PCIe, RP1-I/O-Chip, Ein/Aus-Taste, RTC-Anschluss"
+],
+[
+"Compute Module 5",
+"2024",
+"wie Pi 5",
+"bis 16 GB",
+"Zum Einbauen in eigene Platinen"
+],
+[
+"Pi 500",
+"2025",
+"Cortex-A76, 2,4 GHz",
+"8 GB",
+"Pi 5 in der Tastatur"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Alle Modelle (Auswahl)"
+},
+{
+"t": "hinweis",
+"typ": "info",
+"text": "Die RAM-Größen 2 GB und 16 GB beim Pi 5 kamen später (2024 und Januar 2025)."
+}
+],
+"siehe": [
+"zubehoer:pi_netzteil",
+"speicher:ram"
+],
+"symbol": "gehaeuse",
+"gruppe": "Modelle & Strom"
+},
+{
+"id": "pi_netzteil",
+"titel": "Netzteil & Stromversorgung",
+"kurz": "5 V, 5 A und warum Unterspannung Probleme macht",
+"tags": [
+"netzteil",
+"strom",
+"unterspannung",
+"usb-pd",
+"throttled"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Modell",
+"Empfohlenes Netzteil"
+],
+"zeilen": [
+[
+"Pi Zero 2 W",
+"5 V / 2,5 A (micro-USB)"
+],
+[
+"Pi 3 B+",
+"5 V / 2,5 A (micro-USB)"
+],
+[
+"Pi 4",
+"5,1 V / 3 A (USB-C)"
+],
+[
+"Pi 5",
+"5 V / 5 A (27 W, USB-C PD)"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Netzteile"
+},
+{
+"t": "text",
+"text": [
+"Der Pi 5 verlangt ein Netzteil, das **5 V mit 5 A** (25 W) über USB-PD liefert. Mit einem 3-A-Netzteil startet er, begrenzt aber die Stromabgabe der USB-Ports auf insgesamt 600 mA (ohne Warnung des Netzteils)."
+]
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Unterspannung zeigt sich als Blitz-Symbol oder in `vcgencmd get_throttled` (0x0 = alles gut). Dann zuerst Netzteil und Kabel tauschen."
+},
+{
+"t": "formel",
+"name": "Leistung",
+"f": "P = U × I",
+"text": "5 V × 5 A = 25 W."
+}
+],
+"siehe": [
+"zubehoer:pi_kuehlung",
+"zubehoer:pi_modelle"
+],
+"symbol": "batterie",
+"gruppe": "Modelle & Strom"
+},
+{
+"id": "pi_kuehlung",
+"titel": "Kühlung",
+"kurz": "Aktiv oder passiv, und wie man Drosselung verhindert",
+"tags": [
+"kühlung",
+"lüfter",
+"kühlkörper",
+"temperatur",
+"drosselung"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Kühlung",
+"Wirkung",
+"Beispiel"
+],
+"zeilen": [
+[
+"Passiver Kühlkörper",
+"Hilft bei leichter Last",
+"Aluminium-Gehäuse (Argon NEO, FLIRC)"
+],
+[
+"Aktiver Kühler (Lüfter + Kühlkörper)",
+"Hält den Pi 5 unter ca. 60 °C bei Dauerlast",
+"Raspberry Pi Active Cooler (offiziell)"
+],
+[
+"Gehäuse mit Lüfter",
+"Gut für Pi 4 und 5",
+"Argon ONE, offizielle Gehäuse"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Möglichkeiten"
+},
+{
+"t": "text",
+"text": [
+"Der Pi 5 beginnt bei ca. 80 °C, die Taktfrequenz zu senken (Drosselung). Ohne Kühlung erreicht er bei Dauerlast schnell diese Grenze."
+]
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Temperatur prüfen: `vcgencmd measure_temp`. In der Labor-Welt dieses Atlas zeigt „Messen“ die CPU-Temperatur live."
+},
+{
+"t": "formel",
+"name": "Temperatur-Anstieg",
+"f": "ΔT = P × R_th",
+"text": "Beispiel: 6 W × 5 K/W = 30 K Anstieg über Umgebung."
+}
+],
+"siehe": [
+"zubehoer:pi_netzteil",
+"labor:l_messen"
+],
+"symbol": "gehaeuse",
+"gruppe": "Modelle & Strom"
+},
+{
+"id": "pi_gehaeuse",
+"titel": "Gehäuse und Montage",
+"kurz": "Was man beim Einbau beachtet",
+"tags": [
+"gehäuse",
+"case",
+"argon",
+"rack"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Beispiel",
+"Eigenschaft"
+],
+"zeilen": [
+[
+"Offizielles Gehäuse",
+"Pi 5 Case",
+"Passt, mit Lüfter-Option"
+],
+[
+"Aluminium (passiv)",
+"FLIRC, Argon NEO",
+"Lautlos, nur bei geringer Last"
+],
+[
+"Mit SSD",
+"Argon ONE M.2, Pimoroni NVMe Base",
+"Direkt für NVMe"
+],
+[
+"19-Zoll-Rack",
+"UCTRONICS, GeeekPi",
+"Mehrere Pis im Serverschrank"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Gehäuse"
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Gehäuse mit dichtem Boden brauchen eine Kühlung. Zugang zu USB, Ethernet und Reset-Taste vor dem Kauf prüfen."
+}
+],
+"siehe": [
+"zubehoer:pi_kuehlung"
+],
+"symbol": "gehaeuse",
+"gruppe": "Modelle & Strom"
+},
+{
+"id": "pi_speicher",
+"titel": "Speicher: microSD, SSD, NVMe",
+"kurz": "Schneller booten und weniger Verschleiß",
+"tags": [
+"ssd",
+"nvme",
+"microsd",
+"m.2",
+"hat+",
+"pcie"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Medium",
+"Anschluss",
+"Lesen (ca.)",
+"Haltbarkeit",
+"Anmerkung"
+],
+"zeilen": [
+[
+"microSD (A1/A2)",
+"SD-Slot",
+"bis ca. 100 MB/s",
+"Begrenzte Schreibzyklen",
+"Günstig, Standard"
+],
+[
+"USB-SSD",
+"USB 3",
+"300–400 MB/s",
+"Gut",
+"Einfach per USB am Pi 4/5"
+],
+[
+"NVMe-SSD",
+"PCIe (M.2 HAT+, Pi 5)",
+"450 MB/s (Gen 2) bis ca. 900 MB/s (Gen 3)",
+"Sehr gut",
+"Beste Wahl für Pi 5"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Vergleich"
+},
+{
+"t": "text",
+"text": [
+"Der Pi 5 offeriert **einen PCIe-2.0-x1-Anschluss** (offiziell Gen 2, mit Einstellung `dtparam=pciex1_gen=3` auch Gen 3). Die offizielle **M.2 HAT+** setzt darauf eine NVMe-SSD."
+]
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Wer von SSD bootet: Reihenfolge im Bootloader prüfen (`sudo raspi-config`, Advanced Options, Boot Order)."
+},
+{
+"t": "hinweis",
+"typ": "info",
+"text": "Mehr zu Bandbreiten und Latenz: Welt „Speicher & Bandbreiten“."
+}
+],
+"siehe": [
+"speicher:ram",
+"zubehoer:pi_hats"
+],
+"symbol": "gehaeuse",
+"gruppe": "Erweiterungen"
+},
+{
+"id": "pi_hats",
+"titel": "HATs und Erweiterungen",
+"kurz": "Aufsteckplatinen für den Pi",
+"tags": [
+"hat",
+"hat+",
+"ai hat",
+"poe",
+"rtc",
+"sense hat"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"HAT / Zubehör",
+"Zweck",
+"Anmerkung"
+],
+"zeilen": [
+[
+"M.2 HAT+",
+"NVMe-SSD (PCIe)",
+"Für Pi 5"
+],
+[
+"AI HAT+ (13 / 26 TOPS)",
+"KI-Beschleuniger (Hailo-8L / Hailo-8)",
+"Für Bilderkennung, Pi 5"
+],
+[
+"AI Kit",
+"KI-Beschleuniger (Hailo-8L) + M.2",
+"Vorgänger des AI HAT+"
+],
+[
+"PoE+ HAT",
+"Stromversorgung über Ethernet",
+"Für Pi 4 und 5 (PoE+)"
+],
+[
+"Sense HAT",
+"Sensoren (Temperatur, Lage …) + LED-Matrix",
+"Ältere HATs mit 40-Pin-Header"
+],
+[
+"RTC-Batterie",
+"Echtzeituhr",
+"Pi 5: Anschluss J5 auf der Platine"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Offizielles Zubehör"
+},
+{
+"t": "text",
+"text": [
+"Ein **HAT** (Hardware Attached on Top) enthält einen kleinen EEPROM-Speicher (ID-EEPROM) mit Beschreibung, damit der Pi die Platine erkennt. Er nutzt die I²C-Leitungen `ID_SD`/`ID_SC` (GPIO0/GPIO1)."
+]
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Aufgesteckte HATs ändern die Belegung der GPIO-Pins. Vorher die Pinbelegung des HATs prüfen, sonst gibt es Doppelbelegungen."
+}
+],
+"siehe": [
+"labor:pinout",
+"zubehoer:pi_speicher"
+],
+"symbol": "gehaeuse",
+"gruppe": "Erweiterungen"
+},
+{
+"id": "pi_display",
+"titel": "Displays für den Pi",
+"kurz": "HDMI, DSI, SPI und I²C-OLED",
+"tags": [
+"display",
+"touch",
+"dsi",
+"oled",
+"tft",
+"spi"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Anschluss",
+"Auflösung (Beispiel)",
+"Vorteil",
+"Nachteil"
+],
+"zeilen": [
+[
+"HDMI-Monitor",
+"HDMI",
+"bis 4K",
+"Normales Bild",
+"Größer, braucht Netzteil"
+],
+[
+"Raspberry Pi Touch Display 2 (5″ / 7″)",
+"DSI (Flachband)",
+"720×1280",
+"Touch, kein HDMI-Kabel",
+"Nur Pi mit DSI-Port"
+],
+[
+"SPI-TFT (z. B. ILI9341)",
+"SPI",
+"320×240",
+"Günstig, klein",
+"Langsam, braucht Treiber"
+],
+[
+"I²C-OLED (SSD1306)",
+"I²C",
+"128×64",
+"Nur 2 Leitungen",
+"Sehr klein, monochrom"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Möglichkeiten"
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Das SSD1306-OLED sitzt meist auf I²C-Adresse 0x3C – im I²C-Scanner des Labors zu sehen."
+},
+{
+"t": "hinweis",
+"typ": "info",
+"text": "Der Pi 5 hat zwei 4-Lane-MIPI-Anschlüsse, die sich zwischen Kamera (CSI) und Display (DSI) umschalten lassen."
+}
+],
+"siehe": [
+"labor:l_i2c",
+"labor:i2cadr"
+],
+"symbol": "gehaeuse",
+"gruppe": "Erweiterungen"
+},
+{
+"id": "pi_kameras",
+"titel": "Kameras für den Pi",
+"kurz": "Camera Module 3, HQ, Global Shutter, AI",
+"tags": [
+"kamera",
+"camera",
+"csi",
+"imx708",
+"hq",
+"global shutter"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Kamera",
+"Sensor",
+"Auflösung",
+"Besonderheit"
+],
+"zeilen": [
+[
+"Camera Module 3",
+"Sony IMX708",
+"12 MP",
+"Autofokus, HDR, Weitwinkel-Variante"
+],
+[
+"HQ Camera",
+"Sony IMX477",
+"12,3 MP",
+"Wechselobjektiv (C/CS-Mount)"
+],
+[
+"Global Shutter Camera",
+"Sony IMX296",
+"1,6 MP",
+"Alle Pixel gleichzeitig – keine Verzerrung bei Bewegung"
+],
+[
+"AI Camera",
+"Sony IMX500",
+"12 MP",
+"KI-Verarbeitung im Sensor"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Offizielle Kameras"
+},
+{
+"t": "text",
+"text": [
+"Die Kameras werden per Flachbandkabel an den **CSI**-Anschluss (MIPI) angeschlossen. Der Pi 5 nutzt kleinere 22-polige Stecker, ältere Modelle 15-polige – ein Adapterkabel verbindet beide."
+]
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Fotos mit `rpicam-still -o bild.jpg` (früher `libcamera-still`). In der Toolbox dieses Systems gibt es fertige Befehle unter Kamera."
+}
+],
+"siehe": [
+"zubehoer:pi_display"
+],
+"symbol": "gehaeuse",
+"gruppe": "Erweiterungen"
+},
+{
+"id": "pi_audio",
+"titel": "Audio für den Pi",
+"kurz": "Klinke, HDMI, USB und I²S-DAC",
+"tags": [
+"audio",
+"dac",
+"i2s",
+"klinke",
+"hifiberry"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Ausgabe",
+"Qualität",
+"Anmerkung"
+],
+"zeilen": [
+[
+"HDMI",
+"Digital, gut",
+"Über Monitor/TV"
+],
+[
+"USB-Soundkarte",
+"Gut",
+"Einfach und billig"
+],
+[
+"I²S-DAC-HAT (z. B. HiFiBerry)",
+"Sehr gut",
+"Digital direkt an den DAC"
+],
+[
+"Klinkenbuchse (Pi 3/4)",
+"Mittel",
+"Pi 5 hat keine Klinke mehr"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Möglichkeiten"
+},
+{
+"t": "hinweis",
+"typ": "info",
+"text": "Der Pi 5 hat **keine 3,5-mm-Buchse** mehr. Für Kopfhörer gibt es USB-Adapter oder HATs."
+}
+],
+"siehe": [
+"zubehoer:pi_netzteil"
+],
+"symbol": "gehaeuse",
+"gruppe": "Erweiterungen"
+},
+{
+"id": "pi_gpio_zub",
+"titel": "GPIO-Zubehör",
+"kurz": "Breadboard, Kabel, Pegelwandler, Relais",
+"tags": [
+"gpio",
+"breadboard",
+"relais",
+"adc",
+"pegelwandler",
+"expander"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Teil",
+"Zweck"
+],
+"zeilen": [
+[
+"T-Cobbler / Breakout",
+"40 Pin auf Breadboard herausführen"
+],
+[
+"Jumper-Kabel (m/f, m/m)",
+"Verbindungen"
+],
+[
+"Pegelwandler (BSS138, TXB0108)",
+"3,3 V ↔ 5 V"
+],
+[
+"Relaismodul (optokoppler-getrennt)",
+"Netzspannung schalten (nur wenn du dich auskennst)"
+],
+[
+"Motortreiber (L298N, DRV8833)",
+"Motoren"
+],
+[
+"ADC-Modul (ADS1115, MCP3008)",
+"Pi hat keine analogen Eingänge"
+],
+[
+"GPIO-Expander (PCF8574, MCP23017)",
+"Mehr Pins per I²C"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Nützliche Teile"
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Der Pi hat **keine analogen Eingänge** – für Sensoren mit Spannungsausgang brauchst du einen ADC (ADS1115 per I²C oder MCP3008 per SPI)."
+},
+{
+"t": "hinweis",
+"typ": "info",
+"text": "Die Sensoren-Seiten im Labor zeigen Verdrahtung und Adressen der gängigen Chips."
+}
+],
+"siehe": [
+"labor:pinout",
+"labor:sensoren"
+],
+"symbol": "gehaeuse",
+"gruppe": "Erweiterungen"
+},
+{
+"id": "pi_netz",
+"titel": "Netzwerk-Zubehör",
+"kurz": "LAN, WLAN, PoE und Zugriff aus der Ferne",
+"tags": [
+"netzwerk",
+"ssh",
+"vnc",
+"poe",
+"wlan"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Thema",
+"Möglichkeit",
+"Anmerkung"
+],
+"zeilen": [
+[
+"Kabel",
+"Gigabit-Ethernet (Pi 4/5)",
+"Stabil, kein Verlust"
+],
+[
+"WLAN",
+"Eingebaut (2,4 + 5 GHz)",
+"Schwächer in Metallgehäusen"
+],
+[
+"PoE",
+"PoE+ HAT oder Splitter",
+"Strom und Daten in einem Kabel"
+],
+[
+"Fernzugriff",
+"SSH, VNC, Raspberry Pi Connect",
+"SSH ist die einfachste Variante"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Netzwerk"
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Weitere Details zu IP, DNS, SSH: Welt „Netzwerk & Funk“."
+}
+],
+"siehe": [
+"netzwerk:osi",
+"netzwerk:wlan"
+],
+"symbol": "gehaeuse",
+"gruppe": "Erweiterungen"
+}
+]
+}

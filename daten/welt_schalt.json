@@ -1,0 +1,564 @@
+{
+"id": "schalt",
+"name": "Schaltzeichen",
+"untertitel": "Symbole und Schaltpläne",
+"farbe": "gruen",
+"symbol": "widerstand",
+"reihenfolge": 15,
+"seiten": [
+{
+"id": "galerie",
+"titel": "Schaltzeichen-Galerie",
+"kurz": "Alle Symbole zum Anklicken (DIN/IEC)",
+"tags": [
+"schaltzeichen",
+"symbole",
+"schaltplan",
+"zeichen",
+"din",
+"iec"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Tippe ein Symbol an, um Name und Beschreibung zu sehen. Die Zeichnung ist die europäische Schreibweise (IEC 60617), wo es Unterschiede gibt, steht die US-Variante dabei."
+]
+},
+{
+"t": "spezial",
+"name": "symbole",
+"arg": [
+[
+"widerstand",
+"Widerstand",
+"Rechteck (IEC), Zickzack (US)"
+],
+[
+"poti",
+"Potentiometer",
+"Widerstand mit Schleiferpfeil"
+],
+[
+"ntc",
+"NTC",
+"temperaturabhängig, Heißleiter"
+],
+[
+"ptc",
+"PTC",
+"temperaturabhängig, Kaltleiter"
+],
+[
+"ldr",
+"LDR",
+"lichtabhängig"
+],
+[
+"vdr",
+"VDR",
+"spannungsabhängig"
+],
+[
+"kondensator",
+"Kondensator",
+"zwei Platten"
+],
+[
+"elko",
+"Elko",
+"gepolt, + beachten"
+],
+[
+"spule",
+"Spule",
+"Induktivität"
+],
+[
+"spule_kern",
+"Spule mit Kern",
+"Eisen-/Ferritkern"
+],
+[
+"trafo",
+"Transformator",
+"zwei Spulen"
+],
+[
+"diode",
+"Diode",
+"Anode → Kathode"
+],
+[
+"zdiode",
+"Z-Diode",
+"Stabilisierung"
+],
+[
+"schottky",
+"Schottky-Diode",
+"geringe Flussspannung"
+],
+[
+"led",
+"LED",
+"Leuchtdiode"
+],
+[
+"fotodiode",
+"Fotodiode",
+"lichtempfindlich"
+],
+[
+"bruecke",
+"Brückengleichrichter",
+"4 Dioden"
+],
+[
+"npn",
+"NPN-Transistor",
+"Pfeil nach außen"
+],
+[
+"pnp",
+"PNP-Transistor",
+"Pfeil nach innen"
+],
+[
+"nmos",
+"N-MOSFET",
+"Gate isoliert"
+],
+[
+"pmos",
+"P-MOSFET",
+""
+],
+[
+"thyristor",
+"Thyristor",
+""
+],
+[
+"triac",
+"Triac",
+""
+],
+[
+"opamp",
+"Operationsverstärker",
+"+ / −"
+],
+[
+"optokoppler",
+"Optokoppler",
+"galvanische Trennung"
+],
+[
+"quarz",
+"Quarz",
+"Taktgeber"
+],
+[
+"schalter",
+"Schalter",
+"Schließer, einrastend"
+],
+[
+"taster",
+"Taster",
+"Schließer, tastend"
+],
+[
+"oeffner",
+"Öffner",
+""
+],
+[
+"wechsler",
+"Wechsler",
+""
+],
+[
+"relais",
+"Relais",
+"Spule + Kontakt"
+],
+[
+"sicherung",
+"Sicherung",
+""
+],
+[
+"batterie",
+"Batterie",
+"lang = Plus"
+],
+[
+"gleichspannung",
+"Gleichspannungsquelle",
+""
+],
+[
+"wechselspannung",
+"Wechselspannungsquelle",
+""
+],
+[
+"stromquelle",
+"Stromquelle",
+""
+],
+[
+"generator",
+"Generator",
+""
+],
+[
+"motor",
+"Motor",
+""
+],
+[
+"lampe",
+"Lampe",
+""
+],
+[
+"lautsprecher",
+"Lautsprecher",
+""
+],
+[
+"mikrofon",
+"Mikrofon",
+""
+],
+[
+"summer",
+"Summer / Buzzer",
+""
+],
+[
+"antenne",
+"Antenne",
+""
+],
+[
+"masse",
+"Masse",
+"0-V-Bezug"
+],
+[
+"gehaeuse",
+"Gehäuse / Erde",
+""
+],
+[
+"voltmeter",
+"Voltmeter",
+"V parallel"
+],
+[
+"amperemeter",
+"Amperemeter",
+"A in Reihe"
+],
+[
+"ohmmeter",
+"Ohmmeter",
+""
+],
+[
+"wattmeter",
+"Leistungsmesser",
+""
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "**Leitungskreuzung:** ohne Punkt = keine Verbindung; **Punkt** = Verbindung (Knoten). Neuere Schaltpläne vermeiden Kreuzungen mit Punkt vollständig."
+}
+],
+"siehe": [
+"schalt:gatter"
+],
+"symbol": "widerstand"
+},
+{
+"id": "gatter",
+"titel": "Gattersymbole",
+"kurz": "DIN 40700 und IEC / US im Vergleich",
+"tags": [
+"gatter",
+"din",
+"iec",
+"us",
+"logik",
+"symbol"
+],
+"bloecke": [
+{
+"t": "spezial",
+"name": "gatter",
+"arg": [
+"NOT",
+"AND",
+"OR",
+"NAND",
+"NOR",
+"XOR",
+"XNOR"
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Gatter",
+"DIN (Rechteck)",
+"US (Form)",
+"Funktion"
+],
+"zeilen": [
+[
+"NOT",
+"Rechteck „1“ mit Kreis",
+"Dreieck + Kreis",
+"invertiert"
+],
+[
+"AND",
+"„&“",
+"D-Form",
+"alle Eingänge 1"
+],
+[
+"OR",
+"„≥1“",
+"Schild-Form",
+"mindestens ein Eingang 1"
+],
+[
+"NAND",
+"„&“ + Kreis",
+"D + Kreis",
+"AND invertiert"
+],
+[
+"NOR",
+"„≥1“ + Kreis",
+"Schild + Kreis",
+"OR invertiert"
+],
+[
+"XOR",
+"„=1“",
+"Schild + Doppellinie",
+"genau ein Eingang 1 (ungerade Anzahl)"
+],
+[
+"XNOR",
+"„=“",
+"XOR + Kreis",
+"gleiche Eingänge"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Der **Kreis** am Ausgang = Invertierung. Kreis am Eingang = invertierter (aktiv-Low) Eingang."
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "Weitere Wahrheitstabellen und KV-Diagramme: Welt **Digitaltechnik**."
+}
+],
+"siehe": [
+"digital:gatter"
+],
+"symbol": "led"
+},
+{
+"id": "regeln",
+"titel": "Schaltplan lesen",
+"kurz": "Bezeichnungen, Kennzeichnung, Aufbau",
+"tags": [
+"schaltplan",
+"kennbuchstabe",
+"bezeichnung",
+"lesen",
+"vcc",
+"gnd",
+"netz",
+"dip"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Kennbuchstabe",
+"Bauteil"
+],
+"zeilen": [
+[
+"R",
+"Widerstand"
+],
+[
+"C",
+"Kondensator"
+],
+[
+"L",
+"Spule"
+],
+[
+"D",
+"Diode / LED"
+],
+[
+"Q / T",
+"Transistor"
+],
+[
+"U / IC",
+"integrierter Schaltkreis"
+],
+[
+"X / J / P",
+"Steckverbinder"
+],
+[
+"F",
+"Sicherung"
+],
+[
+"S / SW",
+"Schalter, Taster"
+],
+[
+"K / RL",
+"Relais"
+],
+[
+"Y / X",
+"Quarz"
+],
+[
+"B / BT",
+"Batterie"
+],
+[
+"TP",
+"Testpunkt"
+],
+[
+"FB",
+"Ferritperle"
+],
+[
+"LS / SP",
+"Lautsprecher"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Netzname",
+"Bedeutung"
+],
+"zeilen": [
+[
+"GND",
+"Masse (0 V Bezug)"
+],
+[
+"VCC / VDD",
+"positive Versorgung (digital)"
+],
+[
+"VSS / VEE",
+"negative Versorgung / Masse"
+],
+[
+"3V3 / 5V",
+"Spannungsschiene"
+],
+[
+"/RESET, RESET#, RESET̅",
+"aktiv Low"
+],
+[
+"CLK",
+"Takt"
+],
+[
+"SCL / SDA",
+"I²C"
+],
+[
+"TX / RX",
+"UART (kreuzen!)"
+],
+[
+"EN",
+"Enable (Freigabe)"
+],
+[
+"NC",
+"nicht angeschlossen (not connected)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Pin-Nummerierung (DIP)",
+"Regel"
+],
+"zeilen": [
+[
+"Kerbe / Punkt",
+"oben/Pin 1 markiert"
+],
+[
+"Zählrichtung",
+"gegen den Uhrzeigersinn von oben, links unten startend (Pin 1)"
+],
+[
+"14-Pin IC",
+"Pin 7 = GND, Pin 14 = VCC (74xx)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Schaltpläne werden von **links nach rechts**, mit **Plus oben** und **Masse unten** gezeichnet. Signale laufen von Eingang (links) nach Ausgang (rechts)."
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "**Bypass-Kondensatoren** (100 nF) sind in jedem Schaltplan an VCC/GND jedes ICs – zeichnerisch oft nur ein kleiner Kondensator neben dem Chip."
+}
+],
+"siehe": [
+"schalt:galerie"
+],
+"symbol": "gehaeuse"
+}
+]
+}

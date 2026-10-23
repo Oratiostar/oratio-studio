@@ -1,0 +1,3350 @@
+{
+"id": "grund",
+"name": "Grundlagen",
+"untertitel": "Ohm, Leistung, Filter, Rechner",
+"farbe": "orange",
+"symbol": "batterie",
+"reihenfolge": 1,
+"seiten": [
+{
+"id": "einheiten",
+"titel": "Einheiten & Vorsätze",
+"kurz": "SI-Einheiten der Elektrotechnik, Zehnerpotenzen, Umrechnen",
+"tags": [
+"einheit",
+"vorsatz",
+"si",
+"kilo",
+"milli",
+"mikro",
+"nano"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Alle elektrischen Größen lassen sich auf die **sieben SI-Basiseinheiten** zurückführen. In der Praxis rechnest du fast immer mit **Vorsätzen** (kilo, milli, mikro …), damit die Zahlen handlich bleiben."
+]
+},
+{
+"t": "h2",
+"text": "Elektrische Größen"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Größe",
+"Formelzeichen",
+"Einheit",
+"Zeichen",
+"Zusammenhang"
+],
+"zeilen": [
+[
+"Spannung",
+"U",
+"Volt",
+"V",
+"1 V = 1 W / 1 A"
+],
+[
+"Strom",
+"I",
+"Ampere",
+"A",
+"SI-Basiseinheit"
+],
+[
+"Widerstand",
+"R",
+"Ohm",
+"Ω",
+"1 Ω = 1 V / 1 A"
+],
+[
+"Leitwert",
+"G",
+"Siemens",
+"S",
+"1 S = 1 / 1 Ω"
+],
+[
+"Leistung",
+"P",
+"Watt",
+"W",
+"1 W = 1 V · 1 A"
+],
+[
+"Energie / Arbeit",
+"W, E",
+"Joule",
+"J",
+"1 J = 1 W · 1 s"
+],
+[
+"Ladung",
+"Q",
+"Coulomb",
+"C",
+"1 C = 1 A · 1 s"
+],
+[
+"Kapazität",
+"C",
+"Farad",
+"F",
+"1 F = 1 C / 1 V"
+],
+[
+"Induktivität",
+"L",
+"Henry",
+"H",
+"1 H = 1 V·s / 1 A"
+],
+[
+"Frequenz",
+"f",
+"Hertz",
+"Hz",
+"1 Hz = 1 / s"
+],
+[
+"Magn. Flussdichte",
+"B",
+"Tesla",
+"T",
+"1 T = 1 V·s / m²"
+],
+[
+"Magn. Fluss",
+"Φ",
+"Weber",
+"Wb",
+"1 Wb = 1 V·s"
+],
+[
+"Elektr. Feldstärke",
+"E",
+"Volt pro Meter",
+"V/m",
+""
+],
+[
+"Temperatur",
+"T, ϑ",
+"Kelvin / °C",
+"K / °C",
+"0 °C = 273,15 K"
+],
+[
+"Zeit",
+"t",
+"Sekunde",
+"s",
+"SI-Basiseinheit"
+],
+[
+"Länge",
+"l",
+"Meter",
+"m",
+"SI-Basiseinheit"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "SI-Einheiten",
+"breite": [
+22,
+14,
+22,
+12,
+30
+]
+},
+{
+"t": "h2",
+"text": "Vorsätze (Zehnerpotenzen)"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Name",
+"Zeichen",
+"Faktor",
+"Beispiel"
+],
+"zeilen": [
+[
+"Tera",
+"T",
+"10¹² = 1 000 000 000 000",
+"2 TB Festplatte"
+],
+[
+"Giga",
+"G",
+"10⁹ = 1 000 000 000",
+"2,4 GHz Prozessor"
+],
+[
+"Mega",
+"M",
+"10⁶ = 1 000 000",
+"4,7 MΩ Widerstand"
+],
+[
+"Kilo",
+"k",
+"10³ = 1 000",
+"10 kΩ, 5 kHz"
+],
+[
+"–",
+"–",
+"10⁰ = 1",
+"5 V"
+],
+[
+"Milli",
+"m",
+"10⁻³ = 0,001",
+"20 mA LED-Strom"
+],
+[
+"Mikro",
+"µ",
+"10⁻⁶ = 0,000 001",
+"100 µF Elko"
+],
+[
+"Nano",
+"n",
+"10⁻⁹",
+"100 nF Abblock-C"
+],
+[
+"Pico",
+"p",
+"10⁻¹²",
+"22 pF Quarz-C"
+],
+[
+"Femto",
+"f",
+"10⁻¹⁵",
+"Leckströme"
+]
+],
+"mono": [
+2
+],
+"fett": true,
+"titel": "Vorsätze"
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Im **Rechner** auf diesen Seiten kannst du Zahlen so schreiben: `4k7` = 4,7 kΩ, `10u` = 10 µ, `2,2M`, `100n`, `1e-3`. Ergebnisse werden automatisch mit dem passenden Vorsatz angezeigt."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "**m** heißt Milli (0,001), **M** heißt Mega (1 000 000). Ein „1 m“ statt „1 M“ ist ein Faktor von einer Milliarde! Auch **mF** (Millifarad) und **mH** sind echte, aber selten gebrauchte Werte."
+},
+{
+"t": "rechner",
+"titel": "Zahl in Technikschreibweise",
+"felder": [
+[
+"x",
+"Wert (reine Zahl)",
+"",
+"0,0047"
+]
+],
+"ergebnis": [
+[
+"a",
+"Technikschreibweise",
+"si(x)",
+""
+],
+[
+"b",
+"Wissenschaftlich",
+"'%.3e' % x",
+"",
+"text"
+]
+],
+"text": "Tippe eine beliebige Zahl, z. B. 4700 oder 2,2e-7."
+}
+],
+"siehe": [
+"grund:ohm",
+"mathe:potenzen"
+],
+"symbol": "widerstand"
+},
+{
+"id": "ohm",
+"titel": "Ohmsches Gesetz",
+"kurz": "U = R · I – die wichtigste Formel",
+"tags": [
+"ohm",
+"u=r*i",
+"strom",
+"spannung",
+"widerstand",
+"leistung"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Das Ohmsche Gesetz verbindet **Spannung**, **Strom** und **Widerstand**: Je größer der Widerstand, desto weniger Strom fließt bei gleicher Spannung."
+]
+},
+{
+"t": "formel",
+"name": "Ohmsches Gesetz",
+"f": "U = R · I\nI = U / R\nR = U / I",
+"text": "Gilt für ohmsche Widerstände (Kennlinie = Gerade). Nicht für Dioden, LEDs, Glühlampen (kalt/warm) und Transistoren."
+},
+{
+"t": "rechner",
+"titel": "Ohm + Leistung",
+"felder": [
+[
+"U",
+"Spannung U",
+"V",
+"12"
+],
+[
+"I",
+"Strom I",
+"A",
+""
+],
+[
+"R",
+"Widerstand R",
+"Ω",
+"470"
+],
+[
+"P",
+"Leistung P",
+"W",
+""
+]
+],
+"formeln": {
+"U": [
+"R*I",
+"P/I",
+"sqrt(P*R)"
+],
+"I": [
+"U/R",
+"P/U",
+"sqrt(P/R)"
+],
+"R": [
+"U/I",
+"U*U/P",
+"P/(I*I)"
+],
+"P": [
+"U*I",
+"I*I*R",
+"U*U/R"
+]
+},
+"text": "Lass ein Feld leer – es wird aus den anderen berechnet. Schreibweise: 4k7, 10u, 2,2M, 100n."
+},
+{
+"t": "h2",
+"text": "Merkhilfe: das Ohm-Dreieck"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Gesucht",
+"Formel",
+"Beispiel"
+],
+"zeilen": [
+[
+"Spannung U",
+"U = R · I",
+"470 Ω · 25 mA = 11,75 V"
+],
+[
+"Strom I",
+"I = U / R",
+"12 V / 470 Ω = 25,5 mA"
+],
+[
+"Widerstand R",
+"R = U / I",
+"12 V / 25 mA = 480 Ω"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "h2",
+"text": "Typische Werte"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Verbraucher",
+"Spannung",
+"Strom",
+"Widerstand"
+],
+"zeilen": [
+[
+"LED rot, normal",
+"≈ 2 V",
+"10–20 mA",
+"(U_b – 2 V) / I als Vorwiderstand"
+],
+[
+"Glühlampe 60 W",
+"230 V",
+"0,26 A",
+"ca. 880 Ω (heiß), ca. 70 Ω (kalt)"
+],
+[
+"Raspberry Pi 5 (Last)",
+"5 V",
+"bis 5 A",
+"≈ 1–2 Ω effektiv"
+],
+[
+"Mensch (trocken)",
+"–",
+"ab 30 mA gefährlich (AC)",
+"1–100 kΩ, je nach Haut"
+],
+[
+"Kupferdraht 1 m, 1,5 mm²",
+"–",
+"–",
+"≈ 12 mΩ"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "Bei **doppelter Spannung** fließt der **doppelte Strom**. Bei **doppeltem Widerstand** fließt **halber Strom**."
+}
+],
+"siehe": [
+"grund:leistung",
+"grund:reihe",
+"halbleiter:led"
+],
+"symbol": "widerstand"
+},
+{
+"id": "leistung",
+"titel": "Leistung, Arbeit & Energie",
+"kurz": "P = U·I, Kilowattstunden, Wirkungsgrad",
+"tags": [
+"leistung",
+"watt",
+"kwh",
+"wirkungsgrad",
+"energie",
+"stromkosten"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"**Leistung** ist die pro Sekunde umgesetzte Energie. Elektrisch gilt: Leistung = Spannung mal Strom."
+]
+},
+{
+"t": "formel",
+"name": "Leistung",
+"f": "P = U · I = I² · R = U² / R",
+"text": "Die drei Formen folgen aus dem Ohmschen Gesetz. Bei Wärme in Widerständen ist **I² · R** besonders nützlich."
+},
+{
+"t": "formel",
+"name": "Arbeit / Energie",
+"f": "W = P · t\n1 kWh = 3,6 MJ = 3 600 000 J",
+"text": "Die Stromrechnung bezahlt Kilowattstunden (kWh)."
+},
+{
+"t": "formel",
+"name": "Wirkungsgrad",
+"f": "η = P_ab / P_zu  (· 100 %)",
+"text": "Die Verlustleistung P_v = P_zu − P_ab wird zu Wärme."
+},
+{
+"t": "rechner",
+"titel": "Stromkosten",
+"felder": [
+[
+"P",
+"Leistung",
+"W",
+"25"
+],
+[
+"t",
+"Betriebszeit pro Tag",
+"h",
+"24"
+],
+[
+"c",
+"Preis",
+"ct/kWh",
+"35"
+]
+],
+"ergebnis": [
+[
+"kwh",
+"Verbrauch pro Tag",
+"P*t/1000",
+"kWh",
+"zahl"
+],
+[
+"jahr",
+"Verbrauch pro Jahr",
+"P*t*365/1000",
+"kWh",
+"zahl"
+],
+[
+"eur",
+"Kosten pro Jahr",
+"P*t*365/1000*c/100",
+"€",
+"zahl"
+]
+],
+"text": "Beispiel: Ein Mini-PC mit 25 W Dauerbetrieb."
+},
+{
+"t": "rechner",
+"titel": "Leistung (alle Formen)",
+"felder": [
+[
+"U",
+"Spannung",
+"V",
+""
+],
+[
+"I",
+"Strom",
+"A",
+"2"
+],
+[
+"R",
+"Widerstand",
+"Ω",
+"47"
+],
+[
+"P",
+"Leistung",
+"W",
+""
+]
+],
+"formeln": {
+"U": [
+"R*I",
+"P/I",
+"sqrt(P*R)"
+],
+"I": [
+"U/R",
+"P/U",
+"sqrt(P/R)"
+],
+"R": [
+"U/I",
+"U*U/P",
+"P/(I*I)"
+],
+"P": [
+"U*I",
+"I*I*R",
+"U*U/R"
+]
+},
+"text": "Lass ein Feld leer – es wird aus den anderen berechnet. Schreibweise: 4k7, 10u, 2,2M, 100n."
+},
+{
+"t": "rechner",
+"titel": "Wirkungsgrad & Verlust",
+"felder": [
+[
+"pzu",
+"Zugeführte Leistung",
+"W",
+"10"
+],
+[
+"pab",
+"Abgegebene Leistung",
+"W",
+"8,5"
+]
+],
+"ergebnis": [
+[
+"eta",
+"Wirkungsgrad",
+"pab/pzu*100",
+"%",
+"proz"
+],
+[
+"pv",
+"Verlustleistung (Wärme)",
+"pzu-pab",
+"W"
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Gerät",
+"typische Leistung",
+"Bemerkung"
+],
+"zeilen": [
+[
+"LED (5 mm)",
+"30–60 mW",
+"20 mA · 2–3 V"
+],
+[
+"Raspberry Pi 5",
+"3–12 W",
+"Netzteil mit 27 W (5 V/5 A) empfohlen"
+],
+[
+"Raspberry Pi Zero",
+"0,5–1,5 W",
+""
+],
+[
+"Arduino Nano",
+"0,2–0,5 W",
+""
+],
+[
+"Laptop",
+"15–65 W",
+""
+],
+[
+"Wasserkocher",
+"2 000–3 000 W",
+""
+],
+[
+"Steckdose (16 A)",
+"max. 3 680 W",
+"230 V · 16 A"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Widerstände haben eine **maximale Verlustleistung** (z. B. ¼ W, ½ W, 1 W). Rechne immer nach: P = I² · R oder (ΔU)² / R – und nimm das **Doppelte** als Sicherheit."
+}
+],
+"siehe": [
+"grund:ohm",
+"energie:akku"
+],
+"symbol": "wattmeter"
+},
+{
+"id": "reihe",
+"titel": "Reihen- und Parallelschaltung",
+"kurz": "Gesamtwiderstand, -kapazität und -induktivität",
+"tags": [
+"reihe",
+"parallel",
+"reihenschaltung",
+"parallelschaltung",
+"gesamtwiderstand"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"In einer **Reihenschaltung** fließt überall derselbe Strom, die Spannungen addieren sich. In einer **Parallelschaltung** liegt an allen Zweigen dieselbe Spannung, die Ströme addieren sich."
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"",
+"Reihe",
+"Parallel"
+],
+"zeilen": [
+[
+"Widerstand R",
+"R = R₁ + R₂ + …",
+"1/R = 1/R₁ + 1/R₂ + …"
+],
+[
+"Zwei Widerstände",
+"R₁ + R₂",
+"R₁·R₂ / (R₁ + R₂)"
+],
+[
+"Kapazität C",
+"1/C = 1/C₁ + 1/C₂ + …",
+"C = C₁ + C₂ + …"
+],
+[
+"Induktivität L",
+"L = L₁ + L₂ + …",
+"1/L = 1/L₁ + 1/L₂ + …"
+],
+[
+"Spannung",
+"Teilspannungen addieren sich",
+"überall gleich"
+],
+[
+"Strom",
+"überall gleich",
+"Teilströme addieren sich"
+],
+[
+"Leitwert G",
+"1/G = 1/G₁ + 1/G₂",
+"G = G₁ + G₂"
+]
+],
+"mono": [
+1,
+2
+],
+"fett": true,
+"titel": "Merke: Kondensatoren verhalten sich umgekehrt wie Widerstände!"
+},
+{
+"t": "rechner",
+"titel": "Bis zu 4 Widerstände",
+"felder": [
+[
+"a",
+"R₁",
+"Ω",
+"1k"
+],
+[
+"b",
+"R₂",
+"Ω",
+"2k2"
+],
+[
+"c",
+"R₃",
+"Ω",
+""
+],
+[
+"d",
+"R₄",
+"Ω",
+""
+]
+],
+"ergebnis": [
+[
+"rs",
+"Reihe",
+"a+b+c+d",
+"Ω"
+],
+[
+"rs3",
+"Reihe (nur R₁–R₃)",
+"a+b+c",
+"Ω"
+],
+[
+"rs2",
+"Reihe (nur R₁–R₂)",
+"a+b",
+"Ω"
+],
+[
+"rp4",
+"Parallel (alle vier)",
+"1/(1/a+1/b+1/c+1/d)",
+"Ω"
+],
+[
+"rp3",
+"Parallel (R₁–R₃)",
+"1/(1/a+1/b+1/c)",
+"Ω"
+],
+[
+"rp2",
+"Parallel (R₁–R₂)",
+"1/(1/a+1/b)",
+"Ω"
+]
+],
+"text": "Nur ausgefüllte Felder zählen: Ergebnis-Zeilen mit –, wenn ein Wert fehlt. Nimm die passende Zeile für die Anzahl deiner Widerstände."
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Zwei **gleiche** Widerstände parallel ergeben **die Hälfte**. Zehn gleiche parallel ein **Zehntel**. Der Gesamtwert ist parallel immer **kleiner als der kleinste** Einzelwiderstand."
+},
+{
+"t": "hinweis",
+"typ": "pi",
+"text": "Willst du einen krummen Widerstandswert (z. B. 3,2 kΩ), nimm zwei Standardwerte in **Reihe** oder **parallel** – z. B. 2,2 kΩ + 1 kΩ = 3,2 kΩ."
+},
+{
+"t": "rechner",
+"titel": "Zwei parallel / in Reihe",
+"felder": [
+[
+"a",
+"Wert 1",
+"",
+"1k"
+],
+[
+"b",
+"Wert 2",
+"",
+"4k7"
+]
+],
+"ergebnis": [
+[
+"rs",
+"In Reihe (R oder L) = Parallel (C)",
+"a+b",
+""
+],
+[
+"rp",
+"Parallel (R oder L) = in Reihe (C)",
+"a*b/(a+b)",
+""
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Schaltung",
+"R₁",
+"R₂",
+"Ergebnis"
+],
+"zeilen": [
+[
+"Reihe",
+"1 kΩ",
+"1 kΩ",
+"2 kΩ"
+],
+[
+"Parallel",
+"1 kΩ",
+"1 kΩ",
+"500 Ω"
+],
+[
+"Parallel",
+"10 kΩ",
+"100 Ω",
+"99 Ω (≈ der kleinere)"
+],
+[
+"Parallel",
+"4,7 kΩ",
+"4,7 kΩ",
+"2,35 kΩ"
+]
+],
+"mono": [],
+"fett": true
+}
+],
+"siehe": [
+"grund:teiler",
+"passiv:ereihen"
+],
+"symbol": "widerstand"
+},
+{
+"id": "teiler",
+"titel": "Spannungsteiler & Stromteiler",
+"kurz": "Die Grundschaltung schlechthin",
+"tags": [
+"teiler",
+"spannungsteiler",
+"stromteiler",
+"poti",
+"pegel"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein **Spannungsteiler** aus zwei Widerständen liefert aus einer höheren Spannung eine niedrigere. Er ist die Basis von Sensor-Eingängen, Pegelwandlern und Einstellungen mit Poti."
+]
+},
+{
+"t": "formel",
+"name": "Spannungsteiler (unbelastet)",
+"f": "U₂ = U · R₂ / (R₁ + R₂)",
+"text": "R₁ liegt zwischen Eingang und Abgriff, R₂ zwischen Abgriff und Masse."
+},
+{
+"t": "rechner",
+"titel": "Spannungsteiler",
+"felder": [
+[
+"U",
+"Eingangsspannung U",
+"V",
+"5"
+],
+[
+"R1",
+"R₁ (oben)",
+"Ω",
+"10k"
+],
+[
+"R2",
+"R₂ (unten)",
+"Ω",
+"20k"
+],
+[
+"U2",
+"Ausgang U₂",
+"V",
+""
+]
+],
+"formeln": {
+"U2": [
+"U*R2/(R1+R2)"
+],
+"U": [
+"U2*(R1+R2)/R2"
+],
+"R1": [
+"R2*(U-U2)/U2"
+],
+"R2": [
+"R1*U2/(U-U2)"
+]
+},
+"text": "Lass ein Feld leer – es wird aus den anderen berechnet. Schreibweise: 4k7, 10u, 2,2M, 100n."
+},
+{
+"t": "rechner",
+"titel": "Belasteter Teiler",
+"felder": [
+[
+"U",
+"Eingang",
+"V",
+"5"
+],
+[
+"R1",
+"R₁",
+"Ω",
+"10k"
+],
+[
+"R2",
+"R₂",
+"Ω",
+"10k"
+],
+[
+"RL",
+"Last RL",
+"Ω",
+"10k"
+]
+],
+"ergebnis": [
+[
+"u0",
+"Ausgang ohne Last",
+"U*R2/(R1+R2)",
+"V"
+],
+[
+"u1",
+"Ausgang mit Last",
+"U*(R2*RL/(R2+RL))/(R1+R2*RL/(R2+RL))",
+"V"
+],
+[
+"abw",
+"Einbruch durch Last",
+"(U*R2/(R1+R2)-U*(R2*RL/(R2+RL))/(R1+R2*RL/(R2+RL)))/(U*R2/(R1+R2))*100",
+"%",
+"proz"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Ein Teiler ist **nur dann stabil**, wenn die Last **mindestens 10-mal größer** ist als R₂. Er ist **kein Netzteil** – zum Versorgen von Schaltungen nimm einen Spannungsregler!"
+},
+{
+"t": "formel",
+"name": "Stromteiler (zwei Zweige parallel)",
+"f": "I₁ = I · R₂ / (R₁ + R₂)\nI₂ = I · R₁ / (R₁ + R₂)",
+"text": "Der größere Strom fließt durch den **kleineren** Widerstand."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Anwendung",
+"Typische Werte",
+"Bemerkung"
+],
+"zeilen": [
+[
+"5 V → 3,3 V (Pegelwandlung)",
+"R₁ = 1 kΩ, R₂ = 2 kΩ",
+"ergibt 3,33 V; nur für langsame Signale, 3,3 V → 5 V braucht echte Pegelwandler"
+],
+[
+"Akku messen (ADC)",
+"100 kΩ / 47 kΩ",
+"ADC-Eingang des Pi Pico/ESP32 verträgt nur 3,3 V"
+],
+[
+"LED-Helligkeit mit Poti",
+"Poti 10 kΩ",
+"Poti ist ein einstellbarer Spannungsteiler"
+],
+[
+"NTC-Temperaturmessung",
+"R_fest = R_NTC bei 25 °C",
+"Teiler → ADC → Steinhart-Hart"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "symbol",
+"key": "poti",
+"text": "Ein Potentiometer ist ein Spannungsteiler mit verschiebbarem Abgriff."
+}
+],
+"siehe": [
+"grund:ohm",
+"passiv:poti"
+],
+"symbol": "poti"
+},
+{
+"id": "kirchhoff",
+"titel": "Kirchhoff & Netzwerke",
+"kurz": "Knoten, Maschen, Brücke, Stern-Dreieck",
+"tags": [
+"kirchhoff",
+"knoten",
+"masche",
+"brücke",
+"wheatstone",
+"stern",
+"dreieck"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Mit den beiden **Kirchhoffschen Regeln** lässt sich jedes Netzwerk berechnen."
+]
+},
+{
+"t": "formel",
+"name": "Knotenregel (1. Kirchhoff)",
+"f": "Σ I_zu = Σ I_ab",
+"text": "In jedem Knoten ist die Summe der zufließenden gleich der Summe der abfließenden Ströme."
+},
+{
+"t": "formel",
+"name": "Maschenregel (2. Kirchhoff)",
+"f": "Σ U = 0 (in einer Masche)",
+"text": "Alle Spannungen in einem geschlossenen Umlauf ergeben null – Quellen und Verbraucher mit Vorzeichen."
+},
+{
+"t": "h2",
+"text": "Wheatstone-Messbrücke"
+},
+{
+"t": "text",
+"text": [
+"Zwei Spannungsteiler nebeneinander. Die Brücke ist **abgeglichen** (Brückenspannung = 0 V), wenn die Verhältnisse gleich sind."
+]
+},
+{
+"t": "formel",
+"name": "Abgleichbedingung",
+"f": "R₁ / R₂ = R₃ / R₄",
+"text": ""
+},
+{
+"t": "rechner",
+"titel": "Brückenspannung",
+"felder": [
+[
+"U",
+"Speisung",
+"V",
+"5"
+],
+[
+"R1",
+"R₁",
+"Ω",
+"1k"
+],
+[
+"R2",
+"R₂",
+"Ω",
+"1k"
+],
+[
+"R3",
+"R₃",
+"Ω",
+"1k"
+],
+[
+"R4",
+"R₄",
+"Ω",
+"1k1"
+]
+],
+"ergebnis": [
+[
+"ub",
+"Brückenspannung",
+"U*(R2/(R1+R2)-R4/(R3+R4))",
+"V"
+]
+],
+"text": "Spannungsteiler R₁/R₂ gegen R₃/R₄ (Abgriff jeweils am unteren Widerstand). Typisch bei Dehnungsmessstreifen und Sensoren."
+},
+{
+"t": "h2",
+"text": "Stern ↔ Dreieck"
+},
+{
+"t": "formel",
+"name": "Dreieck → Stern",
+"f": "R_a = R_ab · R_ac / (R_ab + R_bc + R_ac)",
+"text": "Jeder Sternwiderstand = Produkt der beiden anliegenden Dreieckswiderstände / Summe aller drei."
+},
+{
+"t": "formel",
+"name": "Stern → Dreieck",
+"f": "R_ab = R_a + R_b + R_a · R_b / R_c",
+"text": ""
+},
+{
+"t": "rechner",
+"titel": "Dreieck → Stern (gleich)",
+"felder": [
+[
+"rd",
+"Dreiecks-Widerstand (alle gleich)",
+"Ω",
+"30"
+]
+],
+"ergebnis": [
+[
+"rs",
+"Stern-Widerstand",
+"rd/3",
+"Ω"
+]
+],
+"text": "Bei gleichen Widerständen gilt: R_Stern = R_Dreieck / 3."
+},
+{
+"t": "h2",
+"text": "Berechnungsverfahren"
+},
+{
+"t": "tabelle",
+"kopf": [
+"Verfahren",
+"Wann sinnvoll"
+],
+"zeilen": [
+[
+"Reihen-/Parallel zusammenfassen",
+"einfache Netzwerke"
+],
+[
+"Spannungs-/Stromteiler",
+"Teilnetzwerke"
+],
+[
+"Überlagerung (Superposition)",
+"mehrere Quellen, nur lineare Bauteile"
+],
+[
+"Maschenstromverfahren",
+"größere Netzwerke, Gleichungssystem"
+],
+[
+"Knotenpotentialverfahren",
+"viele Knoten – auch in Simulatoren (SPICE)"
+],
+[
+"Thevenin / Norton",
+"Ersatzquelle für Teilschaltung"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "fun",
+"text": "Alle SPICE-Simulatoren (LTspice, ngspice) rechnen intern das **Knotenpotentialverfahren** – genau wie die Strom-Insel in der Akademie."
+}
+],
+"siehe": [
+"grund:reihe"
+],
+"symbol": "knoten"
+},
+{
+"id": "kondensator",
+"titel": "Kondensator rechnen",
+"kurz": "Ladung, Energie, Zeitkonstante",
+"tags": [
+"kondensator",
+"kapazität",
+"rc",
+"zeitkonstante",
+"laden",
+"entladen",
+"elko"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein Kondensator speichert Ladung im elektrischen Feld. Beim Laden und Entladen über einen Widerstand folgt die Spannung einer **e-Funktion**."
+]
+},
+{
+"t": "formel",
+"name": "Grundgleichungen",
+"f": "Q = C · U\nE = ½ · C · U²\nI = C · dU/dt",
+"text": ""
+},
+{
+"t": "formel",
+"name": "Zeitkonstante",
+"f": "τ = R · C",
+"text": "Nach 1 τ sind 63,2 % erreicht; nach 5 τ ist der Kondensator praktisch voll (99,3 %)."
+},
+{
+"t": "formel",
+"name": "Laden / Entladen",
+"f": "u_C(t) = U · (1 − e^(−t/τ))\nu_C(t) = U₀ · e^(−t/τ)",
+"text": ""
+},
+{
+"t": "tabelle",
+"kopf": [
+"Zeit",
+"Laden: erreicht",
+"Entladen: verbleibend"
+],
+"zeilen": [
+[
+"0,69 τ",
+"50 %",
+"50 %"
+],
+[
+"1 τ",
+"63,2 %",
+"36,8 %"
+],
+[
+"2 τ",
+"86,5 %",
+"13,5 %"
+],
+[
+"3 τ",
+"95,0 %",
+"5,0 %"
+],
+[
+"4 τ",
+"98,2 %",
+"1,8 %"
+],
+[
+"5 τ",
+"99,3 %",
+"0,7 %"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "rechner",
+"titel": "RC-Zeitglied",
+"felder": [
+[
+"R",
+"Widerstand R",
+"Ω",
+"10k"
+],
+[
+"C",
+"Kapazität C",
+"F",
+"100u"
+],
+[
+"U",
+"Spannung U",
+"V",
+"5"
+],
+[
+"t",
+"Zeit t",
+"s",
+"1"
+]
+],
+"ergebnis": [
+[
+"tau",
+"Zeitkonstante τ",
+"R*C",
+"s"
+],
+[
+"t5",
+"Voll geladen nach 5 τ",
+"5*R*C",
+"s"
+],
+[
+"uc",
+"Spannung nach t (Laden)",
+"U*(1-exp(-t/(R*C)))",
+"V"
+],
+[
+"ue",
+"Spannung nach t (Entladen)",
+"U*exp(-t/(R*C))",
+"V"
+],
+[
+"e",
+"Energie im Kondensator",
+"0.5*C*U*U",
+"J"
+],
+[
+"q",
+"Ladung",
+"C*U",
+"C"
+]
+]
+},
+{
+"t": "rechner",
+"titel": "Kapazität zum Überbrücken",
+"felder": [
+[
+"i",
+"Laststrom",
+"A",
+"100m"
+],
+[
+"dt",
+"Überbrückungszeit",
+"s",
+"50m"
+],
+[
+"du",
+"Erlaubter Spannungsabfall",
+"V",
+"0,5"
+]
+],
+"ergebnis": [
+[
+"c",
+"Benötigte Kapazität (C = I·Δt/ΔU)",
+"i*dt/du",
+"F"
+]
+],
+"text": "Beispiel: Stützkondensator für einen Pi-Pico beim Wegfall der Versorgung."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Elkos speichern bei hoher Spannung **gefährliche Energie**: Vor dem Anfassen mit einem Widerstand (z. B. 1 kΩ, nicht Schraubenzieher!) entladen. Falsch gepolt oder überspannt kann ein Elko **platzen**."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Typ",
+"Kapazität",
+"Spannung",
+"Einsatz"
+],
+"zeilen": [
+[
+"Keramik (MLCC) X7R",
+"10 pF – 100 µF",
+"6–100 V",
+"Abblocken, Filter; Kapazität sinkt bei DC-Vorspannung!"
+],
+[
+"Folie (MKT/MKP)",
+"1 nF – 10 µF",
+"63–630 V",
+"Audio, Netzentstörung"
+],
+[
+"Elko Aluminium",
+"1 µF – 100 mF",
+"6,3–450 V",
+"Siebung, Netzteile; gepolt"
+],
+[
+"Tantal",
+"0,1 µF – 1 mF",
+"4–50 V",
+"kompakt; gepolt; kann bei Überstrom brennen"
+],
+[
+"Superkondensator",
+"0,1 – 3000 F",
+"2,7 V",
+"Pufferung, nicht für Netzspannung"
+]
+],
+"mono": [],
+"fett": true
+}
+],
+"siehe": [
+"passiv:kond",
+"grund:filter"
+],
+"symbol": "kondensator"
+},
+{
+"id": "spule",
+"titel": "Spule & Induktivität",
+"kurz": "Induktionsgesetz, Zeitkonstante, Luftspule",
+"tags": [
+"spule",
+"induktivität",
+"drossel",
+"freilaufdiode",
+"rl"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Eine Spule speichert Energie im **Magnetfeld**. Sie wehrt sich gegen Stromänderungen: Ein plötzlich abgeschalteter Spulenstrom erzeugt eine **Spannungsspitze** (Freilaufdiode nötig!)."
+]
+},
+{
+"t": "formel",
+"name": "Spannung an der Spule",
+"f": "u_L = L · di/dt",
+"text": ""
+},
+{
+"t": "formel",
+"name": "Energie",
+"f": "E = ½ · L · I²",
+"text": ""
+},
+{
+"t": "formel",
+"name": "Zeitkonstante (RL)",
+"f": "τ = L / R",
+"text": "Der Strom steigt wie 1 − e^(−t/τ) auf I_max = U/R."
+},
+{
+"t": "formel",
+"name": "Luftspule (lang)",
+"f": "L = µ₀ · µr · N² · A / l",
+"text": "µ₀ = 4π · 10⁻⁷ H/m; N = Windungen; A = Querschnitt; l = Länge"
+},
+{
+"t": "rechner",
+"titel": "Spule / RL-Glied",
+"felder": [
+[
+"L",
+"Induktivität",
+"H",
+"10m"
+],
+[
+"R",
+"Widerstand",
+"Ω",
+"10"
+],
+[
+"U",
+"Spannung",
+"V",
+"5"
+],
+[
+"i",
+"Strom (für Energie)",
+"A",
+"0,5"
+]
+],
+"ergebnis": [
+[
+"tau",
+"Zeitkonstante τ = L/R",
+"L/R",
+"s"
+],
+[
+"imax",
+"Endstrom U/R",
+"U/R",
+"A"
+],
+[
+"e",
+"Energie bei Strom i",
+"0.5*L*i*i",
+"J"
+]
+]
+},
+{
+"t": "rechner",
+"titel": "Luftspule berechnen",
+"felder": [
+[
+"N",
+"Windungen",
+"",
+"100"
+],
+[
+"d",
+"Durchmesser",
+"m",
+"10m"
+],
+[
+"l",
+"Länge",
+"m",
+"20m"
+],
+[
+"mr",
+"µr (Luft = 1)",
+"",
+"1"
+]
+],
+"ergebnis": [
+[
+"l",
+"Induktivität",
+"4e-7*pi*mr*N*N*(pi*(d/2)**2)/l",
+"H"
+]
+],
+"text": "Gilt für lange, dünne Spulen. Für Ringkerne nimm den A_L-Wert des Kerns: L = A_L · N²."
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "**Freilaufdiode** parallel zur Relaisspule (Kathode zum Pluspol)! Sonst entstehen beim Abschalten Spannungsspitzen von hunderten Volt, die Transistoren, GPIO-Pins und Pi zerstören."
+},
+{
+"t": "tabelle",
+"kopf": [
+"Bauform",
+"Typischer Bereich",
+"Verwendung"
+],
+"zeilen": [
+[
+"Luftspule",
+"nH – µH",
+"HF, Antennen"
+],
+[
+"Ferrit-Drossel",
+"µH – mH",
+"Entstörung, Schaltregler"
+],
+[
+"Ringkern",
+"µH – H",
+"Netzfilter, Wandler"
+],
+[
+"Eisenkern",
+"mH – H",
+"Netzteil, Trafo"
+],
+[
+"SMD-Speicherdrossel",
+"1 µH – 100 µH",
+"Buck/Boost-Wandler"
+]
+],
+"mono": [],
+"fett": true
+}
+],
+"siehe": [
+"passiv:spulen"
+],
+"symbol": "spule"
+},
+{
+"id": "wechselstrom",
+"titel": "Wechselstrom & Effektivwert",
+"kurz": "Sinus, f, T, ω, Blindwiderstände, Resonanz",
+"tags": [
+"wechselstrom",
+"sinus",
+"effektivwert",
+"scheitelwert",
+"blindwiderstand",
+"resonanz",
+"frequenz",
+"ac"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Wechselspannung ändert periodisch Betrag und Richtung. In der Steckdose liegen **230 V effektiv** bei **50 Hz** – der Scheitelwert ist **325 V**."
+]
+},
+{
+"t": "spezial",
+"name": "sinus"
+},
+{
+"t": "formel",
+"name": "Zusammenhänge Sinus",
+"f": "T = 1 / f\nω = 2π · f\nU_eff = Û / √2 ≈ 0,707 · Û\nU_ss = 2 · Û",
+"text": ""
+},
+{
+"t": "formel",
+"name": "Blindwiderstände",
+"f": "X_C = 1 / (ω · C) = 1 / (2π f C)\nX_L = ω · L = 2π f L",
+"text": "Kondensator: **hoher Frequenz = kleiner Widerstand**. Spule: hohe Frequenz = großer Widerstand."
+},
+{
+"t": "formel",
+"name": "Resonanzfrequenz (Schwingkreis)",
+"f": "f₀ = 1 / (2π · √(L · C))",
+"text": "Bei f₀ ist X_L = X_C."
+},
+{
+"t": "formel",
+"name": "Scheinwiderstand (R in Reihe mit X)",
+"f": "Z = √(R² + X²)\ntan φ = X / R",
+"text": ""
+},
+{
+"t": "rechner",
+"titel": "Blindwiderstände & Resonanz",
+"felder": [
+[
+"f",
+"Frequenz",
+"Hz",
+"1k"
+],
+[
+"C",
+"Kapazität",
+"F",
+"100n"
+],
+[
+"L",
+"Induktivität",
+"H",
+"10m"
+],
+[
+"R",
+"Widerstand (für Z)",
+"Ω",
+"1k"
+]
+],
+"ergebnis": [
+[
+"xc",
+"X_C",
+"1/(2*pi*f*C)",
+"Ω"
+],
+[
+"xl",
+"X_L",
+"2*pi*f*L",
+"Ω"
+],
+[
+"f0",
+"Resonanzfrequenz f₀ (L, C)",
+"1/(2*pi*sqrt(L*C))",
+"Hz"
+],
+[
+"zrc",
+"Z der Reihe R–C",
+"sqrt(R*R+(1/(2*pi*f*C))**2)",
+"Ω"
+],
+[
+"zrl",
+"Z der Reihe R–L",
+"sqrt(R*R+(2*pi*f*L)**2)",
+"Ω"
+],
+[
+"phi",
+"Phasenwinkel R–C",
+"atan(-1/(2*pi*f*C)/R)*180/pi",
+"°",
+"zahl"
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Netz",
+"Spannung",
+"Frequenz"
+],
+"zeilen": [
+[
+"Europa",
+"230 V (Leiter–Neutral), 400 V (Leiter–Leiter)",
+"50 Hz"
+],
+[
+"USA",
+"120 V / 240 V",
+"60 Hz"
+],
+[
+"Japan",
+"100 V",
+"50 / 60 Hz (je nach Region)"
+],
+[
+"Bordnetz Auto",
+"12 V DC (ca. 14,4 V beim Laden)",
+"–"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Ein Multimeter im **AC-Bereich** zeigt bei Sinus den Effektivwert an. Billige Geräte (nicht „TRMS“) messen bei verzerrten Signalen **falsch**."
+}
+],
+"siehe": [
+"grund:filter",
+"grund:drehstrom"
+],
+"symbol": "wechselspannung"
+},
+{
+"id": "filter",
+"titel": "RC-Filter & Grenzfrequenz",
+"kurz": "Tiefpass, Hochpass, Bandpass, Bode-Werte",
+"tags": [
+"filter",
+"tiefpass",
+"hochpass",
+"grenzfrequenz",
+"bode",
+"rc",
+"dezibel"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein **RC-Glied** lässt je nach Schaltung tiefe oder hohe Frequenzen durch. Die **Grenzfrequenz** f_g ist die Frequenz, bei der das Signal auf 70,7 % (−3 dB) fällt."
+]
+},
+{
+"t": "formel",
+"name": "Grenzfrequenz",
+"f": "f_g = 1 / (2π · R · C) = 1 / (2π · τ)",
+"text": ""
+},
+{
+"t": "tabelle",
+"kopf": [
+"Filter",
+"Schaltung",
+"lässt durch",
+"Verwendung"
+],
+"zeilen": [
+[
+"Tiefpass",
+"R in Reihe, C nach Masse",
+"tiefe Frequenzen",
+"Glätten, Entprellen, Anti-Aliasing, PWM → Gleichspannung"
+],
+[
+"Hochpass",
+"C in Reihe, R nach Masse",
+"hohe Frequenzen",
+"Gleichanteil abtrennen (Audio-Koppelkondensator)"
+],
+[
+"Bandpass",
+"Hoch- + Tiefpass",
+"ein Frequenzband",
+"Radio, Messtechnik"
+],
+[
+"Bandsperre (Notch)",
+"Parallelschwingkreis / Twin-T",
+"alles außer einem Band",
+"50-Hz-Brummen entfernen"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "rechner",
+"titel": "RC-Filter",
+"felder": [
+[
+"R",
+"Widerstand",
+"Ω",
+"1k"
+],
+[
+"C",
+"Kapazität",
+"F",
+"100n"
+],
+[
+"f",
+"Signalfrequenz",
+"Hz",
+"5k"
+]
+],
+"ergebnis": [
+[
+"fg",
+"Grenzfrequenz f_g",
+"1/(2*pi*R*C)",
+"Hz"
+],
+[
+"tau",
+"Zeitkonstante",
+"R*C",
+"s"
+],
+[
+"a",
+"Dämpfung Tiefpass bei f",
+"-10*log10(1+(f*2*pi*R*C)**2)",
+"dB",
+"zahl"
+],
+[
+"ph",
+"Phase Tiefpass bei f",
+"-atan(f*2*pi*R*C)*180/pi",
+"°",
+"zahl"
+]
+]
+},
+{
+"t": "rechner",
+"titel": "R für gewünschtes f_g",
+"felder": [
+[
+"fg",
+"Gewünschte f_g",
+"Hz",
+"1k"
+],
+[
+"C",
+"Gewählter Kondensator",
+"F",
+"100n"
+]
+],
+"ergebnis": [
+[
+"r",
+"Benötigter Widerstand",
+"1/(2*pi*fg*C)",
+"Ω"
+],
+[
+"r12",
+"Nächster E12-Wert",
+"E12(1/(2*pi*fg*C))",
+"Ω"
+]
+]
+},
+{
+"t": "h2",
+"text": "Bode-Tabelle Tiefpass 1. Ordnung"
+},
+{
+"t": "tabelle",
+"kopf": [
+"f / f_g",
+"Betrag",
+"Dämpfung",
+"Phase"
+],
+"zeilen": [
+[
+"0,1",
+"0,995",
+"−0,04 dB",
+"−5,7°"
+],
+[
+"0,5",
+"0,894",
+"−0,97 dB",
+"−26,6°"
+],
+[
+"1",
+"0,707",
+"−3,01 dB",
+"−45°"
+],
+[
+"2",
+"0,447",
+"−6,99 dB",
+"−63,4°"
+],
+[
+"5",
+"0,196",
+"−14,1 dB",
+"−78,7°"
+],
+[
+"10",
+"0,0995",
+"−20,04 dB",
+"−84,3°"
+],
+[
+"100",
+"0,01",
+"−40 dB",
+"−89,4°"
+]
+],
+"mono": [],
+"fett": true,
+"fuss": "Ein Tiefpass 1. Ordnung fällt mit −20 dB pro Dekade (−6 dB pro Oktave)."
+},
+{
+"t": "hinweis",
+"typ": "pi",
+"text": "**PWM glätten:** Ein Tiefpass mit f_g ≪ PWM-Frequenz macht aus PWM eine Gleichspannung (z. B. 10 kΩ + 1 µF bei 1 kHz PWM)."
+}
+],
+"siehe": [
+"grund:kondensator",
+"grund:dezibel"
+],
+"symbol": "kondensator"
+},
+{
+"id": "drehstrom",
+"titel": "Drehstrom (3 Phasen)",
+"kurz": "Außenleiter, Stern/Dreieck, Leistung",
+"tags": [
+"drehstrom",
+"dreiphasig",
+"400v",
+"stern",
+"dreieck",
+"wirkleistung",
+"scheinleistung"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Das öffentliche Netz liefert **drei um 120° versetzte** Wechselspannungen: L1, L2, L3 – plus Neutralleiter N und Schutzleiter PE."
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Größe",
+"Wert (Europa)",
+"Bemerkung"
+],
+"zeilen": [
+[
+"Strangspannung (L–N)",
+"230 V",
+"Steckdose, Beleuchtung"
+],
+[
+"Leiterspannung (L–L)",
+"400 V",
+"= √3 · 230 V"
+],
+[
+"Frequenz",
+"50 Hz",
+""
+],
+[
+"Phasenverschiebung",
+"120°",
+""
+],
+[
+"Drehfeld-Reihenfolge",
+"L1 → L2 → L3",
+"rechtes Drehfeld (Motor dreht „vorwärts“)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "formel",
+"name": "Verkettung",
+"f": "U_L = √3 · U_Str\nStern: I_L = I_Str   U_L = √3 · U_Str\nDreieck: U_L = U_Str   I_L = √3 · I_Str",
+"text": ""
+},
+{
+"t": "formel",
+"name": "Leistung",
+"f": "P = √3 · U_L · I_L · cos φ\nS = √3 · U_L · I_L\nQ = √3 · U_L · I_L · sin φ",
+"text": ""
+},
+{
+"t": "rechner",
+"titel": "Drehstromleistung",
+"felder": [
+[
+"U",
+"Leiterspannung",
+"V",
+"400"
+],
+[
+"I",
+"Leiterstrom",
+"A",
+"10"
+],
+[
+"cp",
+"cos φ",
+"",
+"0,85"
+]
+],
+"ergebnis": [
+[
+"s",
+"Scheinleistung S",
+"sqrt(3)*U*I",
+"VA"
+],
+[
+"p",
+"Wirkleistung P",
+"sqrt(3)*U*I*cp",
+"W"
+],
+[
+"q",
+"Blindleistung Q",
+"sqrt(3)*U*I*sqrt(1-cp*cp)",
+"var"
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Leiter",
+"Farbe (Europa, neu)",
+"alt"
+],
+"zeilen": [
+[
+"L1",
+"braun",
+"schwarz"
+],
+[
+"L2",
+"schwarz",
+"schwarz"
+],
+[
+"L3",
+"grau",
+"schwarz"
+],
+[
+"N",
+"blau",
+"blau"
+],
+[
+"PE",
+"grün-gelb",
+"grün-gelb"
+]
+],
+"mono": [],
+"fett": true,
+"titel": "Adernfarben im Drehstromnetz"
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "**Arbeiten am 230/400-V-Netz nur für Elektrofachkräfte** (VDE 0100/0105). Die 5 Sicherheitsregeln: freischalten, gegen Wiedereinschalten sichern, Spannungsfreiheit feststellen, erden und kurzschließen, benachbarte Teile abdecken."
+}
+],
+"siehe": [
+"grund:blind"
+],
+"symbol": "generator"
+},
+{
+"id": "leitungen",
+"titel": "Leitungen & Spannungsfall",
+"kurz": "Widerstand von Draht, Querschnitt, Temperatur",
+"tags": [
+"leitung",
+"kabel",
+"spannungsfall",
+"querschnitt",
+"widerstand",
+"kupfer",
+"temperatur"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Jede Leitung hat einen Widerstand – bei langen oder dünnen Leitungen und hohen Strömen entsteht ein **Spannungsfall** und **Wärme**."
+]
+},
+{
+"t": "formel",
+"name": "Leiterwiderstand",
+"f": "R = ρ · l / A = l / (κ · A)",
+"text": "ρ in Ω·mm²/m, l in m, A in mm². Kupfer: ρ = 0,0178; κ = 56 m/(Ω·mm²)"
+},
+{
+"t": "formel",
+"name": "Spannungsfall (Hin- und Rückleiter)",
+"f": "ΔU = 2 · ρ · l · I / A",
+"text": ""
+},
+{
+"t": "formel",
+"name": "Temperaturabhängigkeit",
+"f": "R(T) = R₂₀ · (1 + α · ΔT)",
+"text": "Kupfer α ≈ 0,0039 /K"
+},
+{
+"t": "rechner",
+"titel": "Leitungswiderstand und Spannungsfall",
+"felder": [
+[
+"rho",
+"ρ (Cu = 0,0178)",
+"Ω·mm²/m",
+"0,0178"
+],
+[
+"l",
+"Länge (einfach)",
+"m",
+"5"
+],
+[
+"a",
+"Querschnitt",
+"mm²",
+"0,5"
+],
+[
+"i",
+"Strom",
+"A",
+"5"
+],
+[
+"u",
+"Versorgung",
+"V",
+"5"
+]
+],
+"ergebnis": [
+[
+"r",
+"Widerstand (eine Ader)",
+"rho*l/a",
+"Ω"
+],
+[
+"du",
+"Spannungsfall (hin + zurück)",
+"2*rho*l*i/a",
+"V"
+],
+[
+"p",
+"Verlustleistung in der Leitung",
+"(2*rho*l/a)*i*i",
+"W"
+],
+[
+"rest",
+"Spannung am Ende",
+"u-2*rho*l*i/a",
+"V"
+]
+],
+"text": "Beispiel: 5 V / 5 A über 5 m dünnes Kabel – es bleiben nur noch wenige Volt!"
+},
+{
+"t": "rechner",
+"titel": "Leiterquerschnitt für max. Spannungsfall",
+"felder": [
+[
+"rho",
+"ρ",
+"Ω·mm²/m",
+"0,0178"
+],
+[
+"l",
+"Länge (einfach)",
+"m",
+"10"
+],
+[
+"i",
+"Strom",
+"A",
+"10"
+],
+[
+"du",
+"erlaubter Fall",
+"V",
+"0,5"
+]
+],
+"ergebnis": [
+[
+"a",
+"Mindestquerschnitt",
+"2*rho*l*i/du",
+"mm²",
+"zahl"
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Werkstoff",
+"ρ bei 20 °C (Ω·mm²/m)",
+"κ (m/Ω·mm²)",
+"Bemerkung"
+],
+"zeilen": [
+[
+"Silber",
+"0,0159",
+"62,9",
+"bester Leiter"
+],
+[
+"Kupfer",
+"0,0178",
+"56",
+"Standard für Kabel"
+],
+[
+"Gold",
+"0,022",
+"45,5",
+"korrosionsfrei, Kontakte"
+],
+[
+"Aluminium",
+"0,0287",
+"34,8",
+"Freileitungen, leichter"
+],
+[
+"Eisen",
+"0,10",
+"10",
+""
+],
+[
+"Konstantan",
+"0,50",
+"2",
+"Messwiderstände (temperaturstabil)"
+],
+[
+"Nickelin / CuNi",
+"0,4",
+"2,5",
+""
+],
+[
+"Wolfram",
+"0,055",
+"18",
+"Glühfäden"
+]
+],
+"mono": [
+1,
+2
+],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "pi",
+"text": "Der Pi 5 braucht 5 V / 5 A: Ein **zu langes USB-C-Kabel mit dünnen Adern** führt zu Unterspannung (Blitz-Symbol, Abstürze). Kurze Kabel mit dicken Leitern (≥ 0,5 mm² für die Stromadern) verwenden."
+}
+],
+"siehe": [
+"messen:awg",
+"grund:ohm"
+],
+"symbol": "sicherung"
+},
+{
+"id": "dezibel",
+"titel": "Dezibel & Pegel",
+"kurz": "dB, dBm, dBV, Verstärkung",
+"tags": [
+"dezibel",
+"db",
+"dbm",
+"pegel",
+"verstärkung",
+"dämpfung",
+"logarithmus"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Das **Dezibel** ist ein logarithmisches Verhältnismaß. Es macht riesige Spannungsbereiche übersichtlich: Verstärkung, Dämpfung, Rauschabstand, Pegel."
+]
+},
+{
+"t": "formel",
+"name": "Leistungsverhältnis",
+"f": "a = 10 · log₁₀(P₂ / P₁)  dB",
+"text": ""
+},
+{
+"t": "formel",
+"name": "Spannungs-/Stromverhältnis",
+"f": "a = 20 · log₁₀(U₂ / U₁)  dB",
+"text": "Beide Spannungen am gleichen Widerstand betrachtet."
+},
+{
+"t": "rechner",
+"titel": "Dezibel umrechnen",
+"felder": [
+[
+"v",
+"Verhältnis (z. B. Uaus/Uein)",
+"",
+"10"
+],
+[
+"db",
+"Dezibel",
+"dB",
+""
+]
+],
+"ergebnis": [
+[
+"u",
+"Spannungsverhältnis → dB",
+"20*log10(v)",
+"dB",
+"zahl"
+],
+[
+"p",
+"Leistungsverhältnis → dB",
+"10*log10(v)",
+"dB",
+"zahl"
+],
+[
+"vu",
+"dB → Spannungsverhältnis",
+"10**(db/20)",
+"",
+"zahl"
+],
+[
+"vp",
+"dB → Leistungsverhältnis",
+"10**(db/10)",
+"",
+"zahl"
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"dB",
+"Spannungs-Verhältnis",
+"Leistungs-Verhältnis"
+],
+"zeilen": [
+[
+"−60",
+"0,001",
+"10⁻⁶"
+],
+[
+"−40",
+"0,01",
+"10⁻⁴"
+],
+[
+"−20",
+"0,1",
+"0,01"
+],
+[
+"−10",
+"0,316",
+"0,1"
+],
+[
+"−6",
+"0,501 (≈ ½)",
+"0,251 (≈ ¼)"
+],
+[
+"−3",
+"0,708",
+"0,501 (½)"
+],
+[
+"0",
+"1",
+"1"
+],
+[
+"+3",
+"1,414 (√2)",
+"2"
+],
+[
+"+6",
+"1,995 (≈ 2)",
+"3,98 (≈ 4)"
+],
+[
+"+10",
+"3,16",
+"10"
+],
+[
+"+20",
+"10",
+"100"
+],
+[
+"+40",
+"100",
+"10 000"
+],
+[
+"+60",
+"1 000",
+"10⁶"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "tabelle",
+"kopf": [
+"Pegel",
+"Bezug",
+"Wert 0 dB"
+],
+"zeilen": [
+[
+"dBm",
+"1 mW",
+"1 mW an 50 Ω (HF) bzw. 600 Ω (Audio)"
+],
+[
+"dBV",
+"1 V",
+"1 V Effektiv"
+],
+[
+"dBu",
+"0,775 V",
+"0,775 V = 1 mW an 600 Ω"
+],
+[
+"dBµV",
+"1 µV",
+"HF-/Antennenpegel"
+],
+[
+"dBc",
+"Träger",
+"relativ zum Träger"
+],
+[
+"dBi",
+"isotroper Strahler",
+"Antennengewinn"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "merke",
+"text": "**+3 dB ≈ doppelte Leistung**, **+6 dB ≈ doppelte Spannung**, **+10 dB = 10-fache Leistung**, **+20 dB = 10-fache Spannung**."
+}
+],
+"siehe": [
+"grund:filter"
+],
+"symbol": "opamp"
+},
+{
+"id": "blind",
+"titel": "Wirk-, Blind- & Scheinleistung",
+"kurz": "cos φ, Kompensation",
+"tags": [
+"blindleistung",
+"wirkleistung",
+"scheinleistung",
+"cos phi",
+"pfc",
+"kompensation"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Bei Wechselstrom mit Spulen oder Kondensatoren sind Strom und Spannung **phasenverschoben**. Dann gibt es drei Leistungen:"
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Leistung",
+"Zeichen",
+"Einheit",
+"Bedeutung"
+],
+"zeilen": [
+[
+"Wirkleistung",
+"P",
+"W",
+"wird in Wärme/Arbeit umgesetzt"
+],
+[
+"Blindleistung",
+"Q",
+"var",
+"pendelt zwischen Quelle und Spule/Kondensator"
+],
+[
+"Scheinleistung",
+"S",
+"VA",
+"Belastung für Leitung und Generator"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "formel",
+"name": "Leistungsdreieck",
+"f": "S² = P² + Q²\nP = S · cos φ\nQ = S · sin φ\ncos φ = P / S  (Leistungsfaktor)",
+"text": ""
+},
+{
+"t": "rechner",
+"titel": "Leistungsdreieck",
+"felder": [
+[
+"p",
+"Wirkleistung",
+"W",
+"800"
+],
+[
+"cp",
+"cos φ",
+"",
+"0,8"
+],
+[
+"u",
+"Spannung",
+"V",
+"230"
+]
+],
+"ergebnis": [
+[
+"s",
+"Scheinleistung",
+"p/cp",
+"VA"
+],
+[
+"q",
+"Blindleistung",
+"p/cp*sqrt(1-cp*cp)",
+"var"
+],
+[
+"i",
+"Strom",
+"p/cp/u",
+"A"
+]
+]
+},
+{
+"t": "rechner",
+"titel": "Kompensations-Kondensator",
+"felder": [
+[
+"p",
+"Wirkleistung",
+"W",
+"1000"
+],
+[
+"c1",
+"cos φ vorher",
+"",
+"0,7"
+],
+[
+"c2",
+"cos φ nachher",
+"",
+"0,95"
+],
+[
+"u",
+"Spannung",
+"V",
+"230"
+],
+[
+"f",
+"Frequenz",
+"Hz",
+"50"
+]
+],
+"ergebnis": [
+[
+"qc",
+"Benötigte Blindleistung",
+"p*(tan(acos(c1))-tan(acos(c2)))",
+"var"
+],
+[
+"c",
+"Kondensator",
+"p*(tan(acos(c1))-tan(acos(c2)))/(2*pi*f*u*u)",
+"F"
+]
+]
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "Schaltnetzteile ohne PFC haben einen schlechten Leistungsfaktor (≈ 0,5–0,6), größere haben eine aktive **PFC**-Stufe (≈ 0,99)."
+}
+],
+"siehe": [
+"grund:wechselstrom",
+"grund:drehstrom"
+],
+"symbol": "wattmeter"
+},
+{
+"id": "trafo",
+"titel": "Transformator",
+"kurz": "Übersetzung, Ströme, Wirkungsgrad",
+"tags": [
+"trafo",
+"transformator",
+"übersetzung",
+"ü",
+"windungen"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Ein Transformator überträgt Wechselspannung zwischen Wicklungen (galvanisch getrennt). Er funktioniert **nur mit Wechselspannung**."
+]
+},
+{
+"t": "formel",
+"name": "Übersetzungsverhältnis",
+"f": "ü = N₁ / N₂ = U₁ / U₂ = I₂ / I₁",
+"text": ""
+},
+{
+"t": "rechner",
+"titel": "Trafo",
+"felder": [
+[
+"u1",
+"Primärspannung",
+"V",
+"230"
+],
+[
+"n1",
+"Windungen primär",
+"",
+"1000"
+],
+[
+"n2",
+"Windungen sekundär",
+"",
+"52"
+],
+[
+"i2",
+"Sekundärstrom",
+"A",
+"1"
+],
+[
+"eta",
+"Wirkungsgrad",
+"%",
+"85"
+]
+],
+"ergebnis": [
+[
+"u2",
+"Sekundärspannung",
+"u1*n2/n1",
+"V"
+],
+[
+"u",
+"Übersetzung ü",
+"n1/n2",
+"",
+"zahl"
+],
+[
+"ps",
+"Sekundärleistung",
+"u1*n2/n1*i2",
+"W"
+],
+[
+"pp",
+"Primärleistung",
+"u1*n2/n1*i2/(eta/100)",
+"W"
+],
+[
+"ip",
+"Primärstrom",
+"u1*n2/n1*i2/(eta/100)/u1",
+"A"
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Trafo-Art",
+"Eigenschaft",
+"Einsatz"
+],
+"zeilen": [
+[
+"Netztrafo (50 Hz)",
+"Eisenkern, schwer, robust",
+"Netzteil-Eingang"
+],
+[
+"Ringkerntrafo",
+"geringes Streufeld, effizient",
+"Audio, Labornetzgeräte"
+],
+[
+"Übertrager (HF)",
+"Ferritkern",
+"Schaltnetzteile, Ethernet-Magnetics"
+],
+[
+"Spartrafo",
+"eine Wicklung, keine Trennung",
+"Stelltrafo (Variac) – **nicht** sicher getrennt"
+],
+[
+"Sicherheitstrafo",
+"verstärkte Isolierung",
+"Schutzkleinspannung (SELV)"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "warn",
+"text": "Ein Trafo ohne Last hat nur kleine Verluste, aber **Kurzschluss auf der Sekundärseite** lässt den Primärstrom hochschnellen. Immer mit Sicherung absichern!"
+}
+],
+"siehe": [
+"grund:leitungen"
+],
+"symbol": "trafo"
+},
+{
+"id": "fehler",
+"titel": "Toleranzen & Messfehler",
+"kurz": "Wie genau ist das Ergebnis?",
+"tags": [
+"toleranz",
+"fehler",
+"messfehler",
+"worst case",
+"genauigkeit"
+],
+"bloecke": [
+{
+"t": "text",
+"text": [
+"Jedes Bauteil und jedes Messgerät hat eine **Toleranz**. Gute Schaltungen funktionieren auch im ungünstigsten Fall (**Worst-Case**)."
+]
+},
+{
+"t": "formel",
+"name": "Absoluter / relativer Fehler",
+"f": "F_abs = Messwert − Sollwert\nF_rel = F_abs / Sollwert · 100 %",
+"text": ""
+},
+{
+"t": "rechner",
+"titel": "Toleranzbereich",
+"felder": [
+[
+"w",
+"Nennwert",
+"",
+"4k7"
+],
+[
+"t",
+"Toleranz",
+"%",
+"5"
+]
+],
+"ergebnis": [
+[
+"min",
+"Minimalwert",
+"w*(1-t/100)",
+""
+],
+[
+"max",
+"Maximalwert",
+"w*(1+t/100)",
+""
+]
+]
+},
+{
+"t": "rechner",
+"titel": "Spannungsteiler im Worst-Case",
+"felder": [
+[
+"u",
+"Eingang",
+"V",
+"5"
+],
+[
+"r1",
+"R₁",
+"Ω",
+"10k"
+],
+[
+"r2",
+"R₂",
+"Ω",
+"10k"
+],
+[
+"t",
+"Toleranz der Widerstände",
+"%",
+"5"
+]
+],
+"ergebnis": [
+[
+"a",
+"Ausgang nominal",
+"u*r2/(r1+r2)",
+"V"
+],
+[
+"b",
+"Ausgang minimal",
+"u*r2*(1-t/100)/(r1*(1+t/100)+r2*(1-t/100))",
+"V"
+],
+[
+"c",
+"Ausgang maximal",
+"u*r2*(1+t/100)/(r1*(1-t/100)+r2*(1+t/100))",
+"V"
+]
+]
+},
+{
+"t": "rechner",
+"titel": "Multimeter-Genauigkeit (±% v. M. + Digits)",
+"felder": [
+[
+"m",
+"Messwert",
+"",
+"5"
+],
+[
+"p",
+"% vom Messwert",
+"%",
+"0,5"
+],
+[
+"d",
+"Digits",
+"",
+"3"
+],
+[
+"st",
+"Stellenwert (Auflösung)",
+"",
+"0,001"
+]
+],
+"ergebnis": [
+[
+"f",
+"Messfehler ±",
+"m*p/100+d*st",
+""
+],
+[
+"lo",
+"Wahrer Wert min",
+"m-(m*p/100+d*st)",
+""
+],
+[
+"hi",
+"Wahrer Wert max",
+"m+(m*p/100+d*st)",
+""
+]
+]
+},
+{
+"t": "tabelle",
+"kopf": [
+"Toleranzklasse",
+"Bauteil",
+"Bedeutung"
+],
+"zeilen": [
+[
+"±20 %",
+"Elko (Standard)",
+"Kapazität kann um ein Fünftel abweichen"
+],
+[
+"±10 %",
+"Keramik X7R, Kohle",
+""
+],
+[
+"±5 %",
+"Kohleschicht, E24",
+"goldener Ring"
+],
+[
+"±1 %",
+"Metallfilm, E96",
+"brauner Ring"
+],
+[
+"±0,1 %",
+"Präzisionswiderstand",
+"Messtechnik"
+]
+],
+"mono": [],
+"fett": true
+},
+{
+"t": "hinweis",
+"typ": "tipp",
+"text": "**Referenz in der Praxis:** Die interne Referenz von ADCs und Spannungsreglern (z. B. 3,3 V ±3 %) bestimmt oft die Messgenauigkeit stärker als die Auflösung (12 Bit ≠ 12 Bit genau)."
+}
+],
+"siehe": [
+"messen:multimeter",
+"passiv:farbcode"
+],
+"symbol": "voltmeter"
+},
+{
+"id": "formeln",
+"titel": "Formelsammlung kompakt",
+"kurz": "Die 30 wichtigsten Formeln auf einen Blick",
+"tags": [
+"formeln",
+"formel",
+"tabellenbuch",
+"übersicht"
+],
+"bloecke": [
+{
+"t": "tabelle",
+"kopf": [
+"Thema",
+"Formel",
+"Bemerkung"
+],
+"zeilen": [
+[
+"Ohm",
+"U = R·I",
+""
+],
+[
+"Leistung",
+"P = U·I = I²R = U²/R",
+""
+],
+[
+"Energie",
+"W = P·t",
+"1 kWh = 3,6 MJ"
+],
+[
+"Ladung",
+"Q = I·t = C·U",
+""
+],
+[
+"R in Reihe",
+"R = R₁ + R₂",
+""
+],
+[
+"R parallel",
+"R = R₁R₂/(R₁+R₂)",
+""
+],
+[
+"C in Reihe",
+"1/C = 1/C₁ + 1/C₂",
+""
+],
+[
+"C parallel",
+"C = C₁ + C₂",
+""
+],
+[
+"Spannungsteiler",
+"U₂ = U·R₂/(R₁+R₂)",
+"unbelastet"
+],
+[
+"Stromteiler",
+"I₁ = I·R₂/(R₁+R₂)",
+""
+],
+[
+"Zeitkonstante RC",
+"τ = R·C",
+"63 % nach τ"
+],
+[
+"Zeitkonstante RL",
+"τ = L/R",
+""
+],
+[
+"Energie C",
+"E = ½CU²",
+""
+],
+[
+"Energie L",
+"E = ½LI²",
+""
+],
+[
+"Kondensator-Reaktanz",
+"X_C = 1/(2πfC)",
+""
+],
+[
+"Spulen-Reaktanz",
+"X_L = 2πfL",
+""
+],
+[
+"Grenzfrequenz RC",
+"f_g = 1/(2πRC)",
+""
+],
+[
+"Resonanz",
+"f₀ = 1/(2π√(LC))",
+""
+],
+[
+"Effektivwert Sinus",
+"U = Û/√2",
+""
+],
+[
+"Periode",
+"T = 1/f",
+""
+],
+[
+"Drehstrom",
+"P = √3·U·I·cos φ",
+""
+],
+[
+"Trafo",
+"U₁/U₂ = N₁/N₂",
+""
+],
+[
+"Dezibel (U)",
+"a = 20·log₁₀(U₂/U₁)",
+""
+],
+[
+"Leiterwiderstand",
+"R = ρ·l/A",
+""
+],
+[
+"LED-Vorwiderstand",
+"R = (U_b − U_F)/I_F",
+""
+],
+[
+"Basiswiderstand",
+"R_B = (U_b − 0,7 V)/(I_C/β·2…5)",
+"Transistor als Schalter"
+],
+[
+"Verstärkung invertierend",
+"V = −R₂/R₁",
+"Opamp"
+],
+[
+"Verstärkung nichtinvert.",
+"V = 1 + R₂/R₁",
+"Opamp"
+],
+[
+"555 astabil",
+"f = 1,44/((R₁+2R₂)·C)",
+""
+],
+[
+"ADC-Auflösung",
+"LSB = U_ref / 2ⁿ",
+""
+]
+],
+"mono": [
+1
+],
+"fett": true,
+"breite": [
+28,
+38,
+34
+]
+}
+],
+"siehe": [
+"grund:ohm",
+"mathe:umstellen"
+],
+"symbol": "widerstand"
+}
+]
+}
