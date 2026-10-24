@@ -70,3 +70,4 @@ main{padding-bottom:max(60px,calc(env(safe-area-inset-bottom) + 50px))}
   .btn.sm{padding:5px 10px}
   main{padding-bottom:max(110px,calc(env(safe-area-inset-bottom) + 100px))}
 }
+.crumb{font-size:14px;color:var(--muted);margin:0 0 8px}.crumb a{color:var(--muted)}

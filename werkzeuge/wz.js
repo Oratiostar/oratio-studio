@@ -45,16 +45,15 @@ window.WZ = {
   },
   kopf: function(aktiv){
     var h = document.createElement("header");
-    h.innerHTML = '<div class="bar"><a class="logo" href="index.html"><img src="icon.png" alt=""><span>Oratio</span></a>' +
-      '<nav class="nav"><a href="werkzeuge.html"' + (aktiv==="hub"?' class="on"':'') + '>Werkzeuge</a>' +
-      '<a href="icon-werkstatt.html"' + (aktiv==="icon"?' class="on"':'') + '>Icon-Werkstatt</a>' +
-      '<a href="datei-werkstatt.html"' + (aktiv==="datei"?' class="on"':'') + '>Datei-Werkstatt</a></nav>' +
+    h.innerHTML = '<div class="bar"><a class="logo" href="index.html#/studio"><img src="icon.png" alt=""><span>Oratio Studio</span></a>' +
       '<span class="sp"></span><button class="btn sm" id="wzLang" aria-label="Sprache / Langue"></button> <button class="btn sm" id="wzTheme" aria-label="Hell/Dunkel"></button></div>';
     document.body.insertBefore(h, document.body.firstChild);
+    var nm = aktiv === "icon" ? "Icon-Werkstatt" : aktiv === "datei" ? "Datei-Werkstatt" : null, m = document.querySelector("main");
+    if (nm && m) { var c = document.createElement("div"); c.className = "crumb"; c.innerHTML = '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Studio</a> › ' + nm; m.insertBefore(c, m.firstChild); }
     var b = h.querySelector("#wzTheme"), bl = h.querySelector("#wzLang");
     bl.textContent = WZ.lang === "fr" ? "DE" : "FR";
     bl.onclick = function(){ try { localStorage.setItem("lang", WZ.lang === "fr" ? "de" : "fr"); } catch(e){} location.reload(); };
-    function zeige(){ var a = document.documentElement.getAttribute("data-theme"); b.textContent = a==="dark" ? "☀ Hell" : a==="light" ? "☾ Dunkel" : "◐ Auto"; }
+    function zeige(){ var a = document.documentElement.getAttribute("data-theme"); b.textContent = a==="dark" ? "🌙 Dunkel" : a==="light" ? "☀️ Hell" : "🖥️ Auto"; }
     b.onclick = function(){
       var a = document.documentElement.getAttribute("data-theme");
       var n = a==="dark" ? "light" : a==="light" ? null : "dark";
