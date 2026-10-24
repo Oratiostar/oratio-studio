@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Werkzeuge – Oratio Studio</title>
+<meta name="description" content="Kostenlose Werkzeuge im Browser: Icon-Werkstatt und Datei-Werkstatt (PDF, Word, Bilder, ZIP). Ohne Upload, ohne Anmeldung.">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="werkzeuge/wz.css">
+<style>
+.hub{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.big{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);transition:transform .12s}
+.big:hover{transform:translateY(-3px)}
+.big .k{padding:20px;color:#fff;display:flex;gap:14px;align-items:center}
+.big .k .ic{flex:none;width:56px;height:56px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:30px;box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.big .k b{font-size:22px;line-height:1.2}
+.big .t{padding:14px 20px 18px;color:var(--muted)}
+.big ul{margin:8px 0 0;padding-left:20px;color:var(--fg);font-size:14.5px}
+</style>
+</head>
+<body>
+<main>
+<h1>Werkzeuge</h1>
+<p class="sub">Kleine, vollständige Helfer für den Alltag. Sie laufen komplett in deinem Browser – kein Hochladen, keine Anmeldung, keine Werbung.</p>
+<div class="hub">
+  <a class="big" href="icon-werkstatt.html"><div class="k" style="background:linear-gradient(135deg,#2f66d0,#8a5ad8)"><div class="ic">🎨</div><b>Icon-Werkstatt</b></div>
+    <div class="t">Bild in Form bringen, zuschneiden und als Symbol speichern.<ul><li>Formen: Kreis, iPhone-Symbol, Sechseck, Stern, Herz, eigene Stanze</li><li>Abstand, Rand, Schatten, Helligkeit</li><li>PNG, JPG, WebP, ICO – und Pakete für Favicon, Android, iOS, Windows</li></ul></div></a>
+  <a class="big" href="datei-werkstatt.html"><div class="k" style="background:linear-gradient(135deg,#e0703a,#e0527a)"><div class="ic">🗂️</div><b>Datei-Werkstatt</b></div>
+    <div class="t">PDF, Word, Bilder und ZIP – alles an einem Ort.<ul><li>PDF zusammenfügen, teilen, sortieren, komprimieren</li><li>PDF → Word, Word → PDF, PDF → Bilder, Bilder → PDF</li><li>Seitenzahlen, Wasserzeichen, Fotos verkleinern, ZIP</li></ul></div></a>
+</div>
+<p class="hint" style="margin-top:18px">Datenschutz: Die Dateien werden mit Programmen verarbeitet, die auf dieser Seite selbst liegen. Es gibt keinen Server, der deine Dateien sieht.</p>
+</main>
+<script src="werkzeuge/wz.js"></script>
+<script>WZ.kopf("hub");</script>
+</body>
+</html>

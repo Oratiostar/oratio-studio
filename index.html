@@ -125,6 +125,7 @@ footer a{color:var(--muted)}
 <header><div class="bar">
   <a class="logo" href="#/"><img src="icon.png" alt=""><span>Oratio Studio</span></a>
   <input id="q" type="search" autocomplete="off" enterkeyhint="search">
+  <a href="werkzeuge.html" class="btn" style="text-decoration:none" id="bWz">🧰 Werkzeuge</a>
   <span class="sp"></span>
   <button class="btn" id="bLang" aria-label="Sprache / Langue"></button>
   <button class="btn" id="bTheme"></button>
@@ -392,7 +393,7 @@ function bannerHTML(w, titel, kurz, sym){
 function startseite(){
   document.title = "Oratio Studio";
   app.innerHTML = '<h1>Oratio Studio</h1><p class="sub">'+U("startsub")+'</p><div class="grid">'+INDEX.welten.map(w =>
-    '<a class="welt" href="#/w/'+w.id+'"><div class="kopf'+(hell(w.farbe)?" light":"")+'" style="background:'+hexOf(w.farbe)+'"><div class="ic">'+symbol(w.symbol)+'</div><b>'+esc(T(w.name))+'</b></div><div class="t"><div class="n">'+w.seiten.length+' '+U("seiten")+'</div>'+esc(T(w.untertitel))+'</div></a>').join("")+'</div>';
+    '<a class="welt" href="#/w/'+w.id+'"><div class="kopf'+(hell(w.farbe)?" light":"")+'" style="background:'+hexOf(w.farbe)+'"><div class="ic">'+symbol(w.symbol)+'</div><b>'+esc(T(w.name))+'</b></div><div class="t"><div class="n">'+w.seiten.length+' '+U("seiten")+'</div>'+esc(T(w.untertitel))+'</div></a>').join("")+'<a class="welt" href="werkzeuge.html"><div class="kopf" style="background:#e0703a"><div class="ic">🧰</div><b>Werkzeuge</b></div><div class="t"><div class="n">2 Werkzeuge</div>Icon-Werkstatt und Datei-Werkstatt (PDF, Word, Bilder, ZIP) – direkt im Browser, ohne Upload.</div></a></div>';
 }
 function weltseite(id){
   const w = weltInfo(id); if (!w) return nichts();

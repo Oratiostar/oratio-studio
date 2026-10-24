@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Icon-Werkstatt – Oratio Studio</title>
+<meta name="description" content="Icon-Werkstatt: Bilder in Form bringen (rund, iPhone-Symbol, Herz …), zuschneiden und als PNG, JPG, WebP oder ICO speichern. Läuft komplett im Browser.">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="werkzeuge/wz.css">
+<style>
+.wrap{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:16px;align-items:start}
+.stagebox{position:sticky;top:64px}
+#stage{width:100%;height:min(66vh,620px);min-height:300px;display:block;border-radius:16px;border:1px solid var(--line);background:var(--card);touch-action:none;cursor:grab;box-shadow:var(--shadow)}
+#stage.drag{cursor:grabbing}
+.tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.zoomrow{display:flex;gap:10px;align-items:center;margin-top:10px}
+.zoomrow input{flex:1}
+.info{font-size:14px;color:var(--muted);margin-top:8px}
+.panel .page{display:none}.panel .page.on{display:block}
+.sizes{display:flex;gap:10px;align-items:flex-end;margin:8px 0;min-height:70px;padding:8px;border-radius:12px;background:repeating-conic-gradient(var(--chk) 0 25%,var(--chk2) 0 50%) 0 0/14px 14px}
+.sizes canvas{display:block}
+.acts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:12px 0 6px}
+.acts .btn{padding:7px 4px;font-size:14px}
+.menu{position:relative}
+.menu .pop{display:none;position:absolute;right:0;bottom:calc(100% + 6px);z-index:10;min-width:230px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.25);overflow:hidden}
+.menu.open .pop{display:block}
+.menu .pop button{display:block;width:100%;text-align:left;border:none;border-top:1px solid var(--line);background:transparent;color:var(--fg);padding:10px 14px;font:inherit;cursor:pointer}
+.menu .pop button:first-child{border-top:none}
+.menu .pop button:hover{background:var(--soft)}
+.menu .pop small{display:block;color:var(--muted)}
+.colorrow{display:flex;gap:8px;align-items:center}
+input[type=color]{width:44px;height:36px;border:2px solid var(--line);border-radius:10px;background:var(--input);padding:2px}
+@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr)}.stagebox{position:static}#stage{height:min(56vh,420px)}}
+</style>
+</head>
+<body>
+<main>
+<h1>Icon-Werkstatt</h1>
+<p class="sub">Bild öffnen oder hineinziehen, in die gewünschte Form bringen, zuschneiden und speichern – als PNG, JPG, WebP oder Windows-ICO, auch als fertiges Paket für Favicon, Android, iOS und Windows. Alles passiert in deinem Browser; das Bild wird nirgendwohin gesendet.</p>
+<div class="wrap">
+  <div class="stagebox">
+    <canvas id="stage"></canvas>
+    <div class="tools">
+      <button class="btn sm" id="bOpen">Öffnen</button>
+      <button class="btn sm" id="bPaste">Einfügen</button>
+      <button class="btn sm" id="bFit">Einpassen</button>
+      <button class="btn sm" id="bOne">1:1</button>
+      <button class="btn sm" id="bRot" title="90° drehen">⟳ Drehen</button>
+      <button class="btn sm" id="bFlip" title="Spiegeln">⇆ Spiegeln</button>
+      <input type="file" id="file" accept="image/*" hidden>
+      <input type="file" id="maskfile" accept="image/*" hidden>
+    </div>
+    <div class="zoomrow"><span>Zoom</span><input type="range" id="zoom" min="0" max="1000" value="0"><span id="zoomL" style="min-width:56px;text-align:right"></span></div>
+    <div class="info" id="info">Noch kein Bild geöffnet. Ziehen verschiebt, Mausrad oder zwei Finger zoomen, Doppelklick passt ein.</div>
+  </div>
+  <div class="card panel">
+    <div class="tabs"><button class="btn on" data-p="0">Form</button><button class="btn" data-p="1">Effekte</button><button class="btn" data-p="2">Ausgabe</button></div>
+
+    <div class="page on" data-p="0">
+      <label class="l" for="shape">Form</label>
+      <select class="in" id="shape">
+        <option value="kreis">Kreis / Oval</option><option value="quadrat">Quadrat / Rechteck</option>
+        <option value="iphone" selected>iPhone-Symbol</option><option value="rund">Abgerundet (frei)</option>
+        <option value="sechseck">Sechseck</option><option value="stern">Stern</option><option value="herz">Herz</option>
+        <option value="eigene">Eigene Stanze (PNG)</option>
+      </select>
+      <div id="rundBox">
+        <div class="rg"><span>Rundung</span><input type="range" id="radius" min="0" max="50" value="22"><output id="radiusO"></output></div>
+        <div class="rg"><span>Glätte</span><input type="range" id="smooth" min="0" max="100" value="60"><output id="smoothO"></output></div>
+      </div>
+      <div id="maskBox" hidden><button class="btn sm" id="bMask" style="margin-top:8px">Stanze laden …</button><p class="hint">Transparenz der PNG = Form. Ohne Transparenz: hell = drin, dunkel = draußen.</p></div>
+      <label class="l" for="ratio">Seitenverhältnis</label>
+      <select class="in" id="ratio"><option>1:1</option><option>4:3</option><option>3:2</option><option>16:9</option><option>3:4</option><option>2:3</option><option>9:16</option><option>Eigenes</option></select>
+      <div class="row" id="ratioC" hidden style="margin-top:6px"><input class="in" type="number" id="rw" min="1" max="100" value="4" style="width:80px"> : <input class="in" type="number" id="rh" min="1" max="100" value="3" style="width:80px"></div>
+      <label class="l" for="bg">Hintergrund</label>
+      <select class="in" id="bg"><option value="transparent">Transparent</option><option value="white">Weiß</option><option value="black">Schwarz</option><option value="custom">Eigene Farbe …</option></select>
+      <div class="colorrow" id="bgC" hidden style="margin-top:6px"><input type="color" id="bgcol" value="#ffffff"><span class="muted">Farbe wählen</span></div>
+    </div>
+
+    <div class="page" data-p="1">
+      <div class="rg"><span>Abstand</span><input type="range" id="pad" min="0" max="25" value="0"><output id="padO"></output></div>
+      <div class="rg"><span>Rand</span><input type="range" id="rand" min="0" max="20" value="0"><output id="randO"></output></div>
+      <div class="rg"><span>Schatten</span><input type="range" id="sch" min="0" max="100" value="0"><output id="schO"></output></div>
+      <div class="rg"><span>Helligkeit</span><input type="range" id="hell" min="-50" max="50" value="0"><output id="hellO"></output></div>
+      <div class="colorrow" style="margin:8px 0"><input type="color" id="randcol" value="#ffffff"><span class="muted">Randfarbe</span></div>
+      <button class="btn sm" id="bFx">Effekte zurücksetzen</button>
+      <p class="hint">„Abstand“ lässt Luft um die Form (wie bei App-Symbolen). Der Schatten braucht Abstand, sonst ist kein Platz dafür.</p>
+    </div>
+
+    <div class="page" data-p="2">
+      <label class="l" for="fmt">Format</label>
+      <select class="in" id="fmt"><option value="png">PNG (mit Transparenz)</option><option value="jpg">JPG (kleiner, ohne Transparenz)</option><option value="webp">WebP</option><option value="ico">ICO (Windows-Symbol)</option></select>
+      <label class="l" for="sizeSel">Größe (längste Seite)</label>
+      <select class="in" id="sizeSel"></select>
+      <input class="in" type="number" id="sizeN" min="8" max="4096" value="512" style="margin-top:6px" hidden>
+      <div class="rg" id="qRow"><span>Qualität</span><input type="range" id="qual" min="1" max="100" value="90"><output id="qualO"></output></div>
+      <div class="info" id="sizeInfo"></div>
+      <label class="l">Kleinansicht (64 · 32 · 16 px)</label>
+      <div class="sizes" id="probe"></div>
+    </div>
+
+    <div class="acts">
+      <button class="btn" id="bCopy" title="Fertiges Bild in die Zwischenablage">Kopieren</button>
+      <div class="menu" id="packMenu"><button class="btn" id="bPack" style="width:100%">Paket ▾</button>
+        <div class="pop">
+          <button data-k="favicon">Favicon (Webseite)<small>16, 32, 48, 180, 192, 512 px – ZIP</small></button>
+          <button data-k="android">Android<small>48 bis 512 px – ZIP</small></button>
+          <button data-k="ios">iOS / iPhone<small>60 bis 1024 px – ZIP</small></button>
+          <button data-k="windows">Windows-ICO<small>eine Datei mit 7 Größen</small></button>
+        </div></div>
+      <button class="btn" id="bAll" title="Alle gängigen Größen als ZIP">Alle Größen</button>
+    </div>
+    <button class="btn go" id="bSave" style="width:100%">Speichern</button>
+    <div class="status" id="status"></div>
+  </div>
+</div>
+</main>
+<script src="werkzeuge/wz.js"></script>
+<script src="werkzeuge/lib/jszip.min.js"></script>
+<script>
+WZ.kopf("icon");
+const $ = s => document.querySelector(s);
+const PAKETE = {favicon:[16,32,48,180,192,512], android:[48,72,96,144,192,512], ios:[60,76,120,152,167,180,1024], windows:[16,24,32,48,64,128,256]};
+const ALLE = [1024,512,256,192,128,96,64,48,32,16];
+const cfgKey = "wz-icon-cfg";
+const cfg = Object.assign({shape:"iphone",ratio:"1:1",rw:4,rh:3,radius:22,smooth:60,bg:"transparent",bgcol:"#ffffff",pad:0,rand:0,randcol:"#ffffff",sch:0,hell:0,fmt:"png",size:512,qual:90}, (()=>{try{return JSON.parse(localStorage.getItem(cfgKey))||{}}catch(e){return {}}})());
+function sichern(){ try{ localStorage.setItem(cfgKey, JSON.stringify(cfg)); }catch(e){} }
+
+// ------------------------------------------------------------ Formen
+function squircle(w,h,radius,smooth){
+  const p = new Path2D();
+  radius = Math.max(0, Math.min(radius, Math.min(w,h)/2));
+  if (radius < 0.01){ p.rect(0,0,w,h); return p; }
+  if (smooth < 0.001){ p.roundRect(0,0,w,h,radius); return p; }
+  const budget = Math.min(w,h)/2;
+  let pp = (1+smooth)*radius;
+  if (pp > budget){ smooth = Math.max(0, Math.min(smooth, budget/radius - 1)); pp = Math.min(pp, budget); }
+  const rad = d => d*Math.PI/180;
+  const arcDeg = 90*(1-smooth);
+  const arcLen = Math.sin(rad(arcDeg/2))*radius*Math.SQRT2;
+  const alpha = (90-arcDeg)/2;
+  const p34 = radius*Math.tan(rad(alpha/2));
+  const beta = 45*smooth;
+  const c = p34*Math.cos(rad(beta));
+  const d = c*Math.tan(rad(beta));
+  const b = (pp - arcLen - c - d)/3;
+  const a = 2*b;
+  const corners = [[[w,0],[1,0],[0,1]],[[w,h],[0,1],[-1,0]],[[0,h],[-1,0],[0,-1]],[[0,0],[0,-1],[1,0]]];
+  let first = true;
+  for (const [[cx,cy],[ux,uy],[vx,vy]] of corners){
+    const P = (x,y) => [cx + x*ux + y*vx, cy + x*uy + y*vy];
+    const s = P(-pp,0);
+    if (first){ p.moveTo(s[0],s[1]); first = false; } else p.lineTo(s[0],s[1]);
+    const e1 = [-pp+a+b+c, d];
+    let q1 = P(-pp+a,0), q2 = P(-pp+a+b,0), q3 = P(e1[0],e1[1]);
+    p.bezierCurveTo(q1[0],q1[1],q2[0],q2[1],q3[0],q3[1]);
+    const th = rad(arcDeg), h0 = rad(beta);
+    const k = th > 1e-6 ? 4/3*Math.tan(th/4)*radius : 0;
+    const e2 = [e1[0]+arcLen, e1[1]+arcLen];
+    const h1 = h0 + th;
+    q1 = P(e1[0]+k*Math.cos(h0), e1[1]+k*Math.sin(h0)); q2 = P(e2[0]-k*Math.cos(h1), e2[1]-k*Math.sin(h1)); q3 = P(e2[0],e2[1]);
+    p.bezierCurveTo(q1[0],q1[1],q2[0],q2[1],q3[0],q3[1]);
+    q1 = P(e2[0]+d, e2[1]+c); q2 = P(e2[0]+d, e2[1]+b+c); q3 = P(e2[0]+d, e2[1]+a+b+c);
+    p.bezierCurveTo(q1[0],q1[1],q2[0],q2[1],q3[0],q3[1]);
+  }
+  p.closePath();
+  return p;
+}
+function fitPoints(pts,w,h){
+  const xs = pts.map(q=>q[0]), ys = pts.map(q=>q[1]);
+  const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+  const sx = x1>x0 ? w/(x1-x0) : 1, sy = y1>y0 ? h/(y1-y0) : 1;
+  const p = new Path2D();
+  pts.forEach((q,i)=>{ const x=(q[0]-x0)*sx, y=(q[1]-y0)*sy; i ? p.lineTo(x,y) : p.moveTo(x,y); });
+  p.closePath(); return p;
+}
+function shapePath(kind,w,h,radiusPct,smoothPct){
+  w = Math.max(1,w); h = Math.max(1,h);
+  if (kind==="kreis"){ const p = new Path2D(); p.ellipse(w/2,h/2,w/2,h/2,0,0,Math.PI*2); return p; }
+  if (kind==="quadrat"){ const p = new Path2D(); p.rect(0,0,w,h); return p; }
+  if (kind==="iphone") return squircle(w,h,0.2237*Math.min(w,h),0.60);
+  if (kind==="rund") return squircle(w,h,radiusPct/100*Math.min(w,h),smoothPct/100);
+  if (kind==="sechseck"){ const pts=[]; for(let i=0;i<6;i++){ const a=(-90+60*i)*Math.PI/180; pts.push([Math.cos(a),Math.sin(a)]); } return fitPoints(pts,w,h); }
+  if (kind==="stern"){ const pts=[]; for(let i=0;i<10;i++){ const r=i%2?0.42:1, a=(-90+36*i)*Math.PI/180; pts.push([r*Math.cos(a),r*Math.sin(a)]); } return fitPoints(pts,w,h); }
+  if (kind==="herz"){ const pts=[]; for(let i=0;i<240;i++){ const t=2*Math.PI*i/240; pts.push([16*Math.pow(Math.sin(t),3), -(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))]); } return fitPoints(pts,w,h); }
+  return null;
+}
+
+// ------------------------------------------------------------ Zustand
+const S = {src:null, prev:null, name:"Bild", zoom:1, cx:.5, cy:.5, mask:null};
+const stage = $("#stage"), sctx = stage.getContext("2d");
+let dpr = window.devicePixelRatio || 1;
+
+function ratioWH(){ const t = $("#ratio").value; if (t==="Eigenes") return [Math.max(1,+$("#rw").value||1), Math.max(1,+$("#rh").value||1)]; const [a,b]=t.split(":").map(Number); return [a,b]; }
+function outSize(){ const [rw,rh] = ratioWH(); let L = +cfg.size || 512; if (cfg.fmt==="ico") L = Math.min(L,256); return rw>=rh ? [L, Math.max(1,Math.round(L*rh/rw))] : [Math.max(1,Math.round(L*rw/rh)), L]; }
+function bgColor(){ const k = cfg.bg; return k==="white" ? "#ffffff" : k==="black" ? "#000000" : k==="custom" ? cfg.bgcol : null; }
+function padPx(w,h){ return Math.round(Math.min(w,h)*cfg.pad/100); }
+function newCanvas(w,h){ const c = document.createElement("canvas"); c.width = Math.max(1,Math.round(w)); c.height = Math.max(1,Math.round(h)); return c; }
+
+// grosse Verkleinerung: schrittweise halbieren (scharf, ruhig)
+const scaleCache = new Map();
+function drawScaled(ctx, img, dx,dy,dw,dh){
+  const sw = img.width, sh = img.height;
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high";
+  if (dw >= sw*0.6 || dh >= sh*0.6){ ctx.drawImage(img,dx,dy,dw,dh); return; }
+  const key = Math.round(dw)+"x"+Math.round(dh);
+  let cache = scaleCache.get(img);
+  if (!cache){ cache = new Map(); scaleCache.clear(); scaleCache.set(img,cache); }
+  let out = cache.get(key);
+  if (!out){
+    let cur = img, cw = sw, ch = sh;
+    while (cw*0.5 > dw*1.0 && ch*0.5 > dh*1.0){
+      const nw = Math.max(1,Math.round(cw/2)), nh = Math.max(1,Math.round(ch/2));
+      const t = newCanvas(nw,nh), tc = t.getContext("2d"); tc.imageSmoothingQuality = "high"; tc.drawImage(cur,0,0,nw,nh); cur = t; cw = nw; ch = nh;
+    }
+    out = newCanvas(dw,dh); const oc = out.getContext("2d"); oc.imageSmoothingQuality = "high"; oc.drawImage(cur,0,0,out.width,out.height);
+    if (cache.size > 6) cache.clear();
+    cache.set(key,out);
+  }
+  ctx.drawImage(out,dx,dy,dw,dh);
+}
+
+function maskCanvas(w,h){
+  const m = newCanvas(w,h), c = m.getContext("2d");
+  if (cfg.shape==="eigene"){
+    if (!S.mask){ c.fillStyle="#000"; c.fillRect(0,0,w,h); return m; }
+    c.drawImage(S.mask,0,0,w,h);
+    const d = c.getImageData(0,0,w,h), px = d.data;
+    let alphaFound = false;
+    for (let i=3;i<px.length;i+=4*Math.max(1,(px.length/4/600)|0)) if (px[i] < 250){ alphaFound = true; break; }
+    if (!alphaFound){ for (let i=0;i<px.length;i+=4){ const lum = (px[i]*299+px[i+1]*587+px[i+2]*114)/1000; px[i]=px[i+1]=px[i+2]=0; px[i+3]=lum; } }
+    else { for (let i=0;i<px.length;i+=4){ px[i]=px[i+1]=px[i+2]=0; } }
+    c.putImageData(d,0,0); return m;
+  }
+  c.fillStyle = "#000"; c.fill(shapePath(cfg.shape,w,h,cfg.radius,cfg.smooth)); return m;
+}
+
+function renderCore(w,h,preview){
+  const out = newCanvas(w,h), c = out.getContext("2d");
+  const bg = bgColor(); if (bg){ c.fillStyle = bg; c.fillRect(0,0,w,h); }
+  const src = preview ? S.prev : S.src;
+  if (src){
+    const iw = S.zoom*w, ih = iw*src.height/src.width;
+    drawScaled(c, src, S.cx*w-iw/2, S.cy*h-ih/2, iw, ih);
+  }
+  c.globalCompositeOperation = "destination-in";
+  c.drawImage(maskCanvas(out.width,out.height),0,0);
+  return out;
+}
+function render(w,h,preview){
+  const pad = padPx(w,h), iw = Math.max(1,w-2*pad), ih = Math.max(1,h-2*pad);
+  const inner = renderCore(iw,ih,preview), ic = inner.getContext("2d");
+  if (cfg.hell){ ic.globalCompositeOperation = "source-atop"; ic.fillStyle = cfg.hell>0 ? `rgba(255,255,255,${cfg.hell*2.2/255})` : `rgba(0,0,0,${-cfg.hell*2.2/255})`; ic.fillRect(0,0,iw,ih); ic.globalCompositeOperation="source-over"; }
+  if (cfg.rand && cfg.shape!=="eigene"){
+    const bw = Math.max(1, Math.min(iw,ih)*cfg.rand/200);
+    ic.save(); const path = shapePath(cfg.shape,iw,ih,cfg.radius,cfg.smooth); ic.clip(path); ic.strokeStyle = cfg.randcol; ic.lineWidth = bw*2; ic.stroke(path); ic.restore();
+  }
+  if (!pad && !cfg.sch) return inner;
+  const out = newCanvas(w,h), c = out.getContext("2d");
+  if (cfg.sch && pad){
+    let sd = newCanvas(w,h); const sc = sd.getContext("2d");
+    sc.drawImage(inner,pad,pad+Math.max(1,Math.floor(pad*0.3)));
+    sc.globalCompositeOperation = "source-in"; sc.fillStyle = "#000"; sc.fillRect(0,0,w,h);
+    for (const f of [6,3]){ const t = newCanvas(Math.max(2,w/f),Math.max(2,h/f)); const tc = t.getContext("2d"); tc.imageSmoothingQuality="high"; tc.drawImage(sd,0,0,t.width,t.height); sd = t; }
+    c.globalAlpha = Math.min(1,cfg.sch/70); c.imageSmoothingQuality = "high"; c.drawImage(sd,0,0,w,h); c.globalAlpha = 1;
+  }
+  c.drawImage(inner,pad,pad);
+  return out;
+}
+function finalCanvas(w,h,fmt){
+  const img = render(w,h,false);
+  if (fmt!=="jpg") return img;
+  const flat = newCanvas(w,h), fc = flat.getContext("2d");
+  fc.fillStyle = bgColor() || "#ffffff"; fc.fillRect(0,0,w,h); fc.drawImage(img,0,0); return flat;
+}
+
+// ------------------------------------------------------------ Buehne
+let FR = {x:0,y:0,w:100,h:100};
+function frame(){
+  const W = stage.width/dpr, H = stage.height/dpr, [rw,rh] = ratioWH(), m = 16;
+  let w = W-2*m, h = w*rh/rw; if (h > H-2*m){ h = H-2*m; w = h*rw/rh; }
+  return {x:(W-w)/2, y:(H-h)/2, w, h};
+}
+function sizeStage(){
+  dpr = window.devicePixelRatio || 1;
+  const r = stage.getBoundingClientRect();
+  stage.width = Math.max(10,Math.round(r.width*dpr)); stage.height = Math.max(10,Math.round(r.height*dpr));
+  draw();
+}
+let pending = false;
+function draw(){ if (pending) return; pending = true; requestAnimationFrame(()=>{ pending = false; paintStage(); }); }
+function paintStage(){
+  const c = sctx; c.setTransform(dpr,0,0,dpr,0,0);
+  const W = stage.width/dpr, H = stage.height/dpr;
+  c.clearRect(0,0,W,H);
+  FR = frame(); const fr = FR, pad = padPx(fr.w,fr.h);
+  const fg = getComputedStyle(document.body).color;
+  if (S.prev){
+    c.save(); c.globalAlpha = .33;
+    const iw = S.zoom*(fr.w-2*pad), ih = iw*S.prev.height/S.prev.width;
+    drawScaled(c, S.prev, fr.x+pad+S.cx*(fr.w-2*pad)-iw/2, fr.y+pad+S.cy*(fr.h-2*pad)-ih/2, iw, ih);
+    c.restore();
+  }
+  const rw = Math.max(1,Math.round(fr.w*dpr)), rh = Math.max(1,Math.round(fr.h*dpr));
+  // Schachbrett bei Transparenz
+  const path = cfg.shape==="eigene" ? null : (()=>{ const p = new Path2D(); p.addPath(shapePath(cfg.shape,fr.w-2*pad,fr.h-2*pad,cfg.radius,cfg.smooth),new DOMMatrix([1,0,0,1,fr.x+pad,fr.y+pad])); return p; })();
+  if (!bgColor()){
+    c.save(); if (path) c.clip(path); else { c.beginPath(); c.rect(fr.x,fr.y,fr.w,fr.h); c.clip(); }
+    const s = 10, a = "rgba(120,120,124,.35)", b = "rgba(200,200,205,.35)";
+    for (let y=0;y<fr.h;y+=s) for (let x=0;x<fr.w;x+=s){ c.fillStyle = ((x/s|0)+(y/s|0))%2 ? b : a; c.fillRect(fr.x+x,fr.y+y,s,s); }
+    c.restore();
+  }
+  if (S.prev) c.drawImage(render(rw,rh,true), fr.x, fr.y, fr.w, fr.h);
+  if (path){ c.save(); c.strokeStyle = fg; c.globalAlpha = .75; c.lineWidth = 1.5; c.stroke(path); c.restore(); }
+  else { c.save(); c.strokeStyle = fg; c.globalAlpha=.5; c.setLineDash([6,5]); c.strokeRect(fr.x,fr.y,fr.w,fr.h); c.restore(); }
+  if (!S.prev){
+    c.fillStyle = fg; c.globalAlpha = .75; c.font = "600 "+Math.max(14,Math.min(22,fr.w/20))+"px system-ui,sans-serif"; c.textAlign = "center";
+    const t = ["Bild hierher ziehen","oder „Öffnen“ tippen","(auch Strg+V / Einfügen)"];
+    t.forEach((l,i)=>c.fillText(l, fr.x+fr.w/2, fr.y+fr.h/2+(i-1)*28)); c.globalAlpha = 1;
+  }
+  updateProbe();
+}
+
+// ------------------------------------------------------------ Bild laden
+async function ladeBlob(blob, name){
+  try {
+    let bmp;
+    try { bmp = await createImageBitmap(blob, {imageOrientation:"from-image"}); }
+    catch(e){ bmp = await new Promise((ok,err)=>{ const i = new Image(); i.onload=()=>ok(i); i.onerror=()=>err(new Error("kein Bild")); i.src = URL.createObjectURL(blob); }); }
+    let w = bmp.width||bmp.naturalWidth, h = bmp.height||bmp.naturalHeight;
+    const MAXP = 64e6, MAXS = 8192; let f = Math.min(1, Math.sqrt(MAXP/(w*h)), MAXS/Math.max(w,h));
+    const full = newCanvas(w*f,h*f); full.getContext("2d").drawImage(bmp,0,0,full.width,full.height);
+    S.src = full; S.name = WZ.sauber(name||"Bild");
+    const big = Math.max(full.width,full.height), pf = big>2048 ? 2048/big : 1;
+    if (pf<1){ const p = newCanvas(full.width*pf,full.height*pf); const pc = p.getContext("2d"); pc.imageSmoothingQuality="high"; pc.drawImage(full,0,0,p.width,p.height); S.prev = p; } else S.prev = full;
+    scaleCache.clear(); fit(true); say("„"+S.name+"“ geöffnet ("+full.width+"×"+full.height+").");
+  } catch(e){ say("Dieses Bild konnte nicht geöffnet werden.", "bad"); }
+}
+function say(t,k){ const s = $("#status"); s.textContent = t; s.className = "status "+(k||""); }
+function coverZoom(){ const [iw,ih] = innerWH(); const fa = iw/ih, ia = S.src.width/S.src.height; return ia>=fa ? ia/fa : 1; }
+function containZoom(){ const [iw,ih] = innerWH(); const fa = iw/ih, ia = S.src.width/S.src.height; return ia>=fa ? 1 : ia/fa; }
+function innerWH(){ const [ow,oh] = outSize(); const p = padPx(ow,oh); return [Math.max(1,ow-2*p),Math.max(1,oh-2*p)]; }
+function fit(cover){ if(!S.src) return; S.zoom = cover ? coverZoom() : containZoom(); S.cx = S.cy = .5; zoomUI(); draw(); }
+function oneOne(){ if(!S.src) return; const [iw] = innerWH(); S.zoom = S.src.width/iw; S.cx = S.cy = .5; zoomUI(); draw(); }
+function zoomRange(){ const lo = Math.min(containZoom(),coverZoom())*0.5, hi = (S.src.width/innerWH()[0])*4; return [lo, Math.max(hi, coverZoom()*4)]; }
+function zoomUI(){
+  const z = $("#zoom"), l = $("#zoomL"), i = $("#info");
+  if (!S.src){ l.textContent=""; return; }
+  const [lo,hi] = zoomRange(); z.value = Math.round(1000*Math.log(S.zoom/lo)/Math.log(hi/lo));
+  const [iw] = innerWH(), sc = S.zoom*iw/S.src.width*100; l.textContent = sc.toFixed(0)+" %";
+  const [ow,oh] = outSize(); i.textContent = S.name+" · Original "+S.src.width+"×"+S.src.height+" · Ausgabe "+ow+"×"+oh+" · Maßstab "+sc.toFixed(0)+" % (100 % = 1:1)";
+}
+function zoomBy(f, ax, ay){
+  if (!S.src) return; const [lo,hi] = zoomRange(); const nz = Math.min(hi,Math.max(lo,S.zoom*f)); const k = nz/S.zoom;
+  S.cx = ax + (S.cx-ax)*k; S.cy = ay + (S.cy-ay)*k; S.zoom = nz; zoomUI(); draw();
+}
+$("#zoom").oninput = e => { if(!S.src) return; const [lo,hi] = zoomRange(); const nz = lo*Math.pow(hi/lo, e.target.value/1000); const k = nz/S.zoom; S.cx = .5+(S.cx-.5)*k; S.cy = .5+(S.cy-.5)*k; S.zoom = nz; zoomUI(); draw(); };
+
+// Maus / Finger
+const ptrs = new Map(); let lastDist = 0;
+stage.addEventListener("pointerdown", e => { stage.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY}); stage.classList.add("drag"); lastDist = 0; });
+stage.addEventListener("pointermove", e => {
+  const p = ptrs.get(e.pointerId); if (!p || !S.src) return;
+  const dx = e.clientX-p.x, dy = e.clientY-p.y; p.x = e.clientX; p.y = e.clientY;
+  if (ptrs.size===1){ const pad = padPx(FR.w,FR.h); S.cx += dx/(FR.w-2*pad); S.cy += dy/(FR.h-2*pad); draw(); }
+  else if (ptrs.size===2){
+    const [a,b] = [...ptrs.values()]; const d = Math.hypot(a.x-b.x,a.y-b.y);
+    if (lastDist){ const r = stage.getBoundingClientRect(); zoomBy(d/lastDist, ((a.x+b.x)/2-r.left-FR.x)/FR.w, ((a.y+b.y)/2-r.top-FR.y)/FR.h); }
+    lastDist = d;
+  }
+});
+const ende = e => { ptrs.delete(e.pointerId); lastDist = 0; if (!ptrs.size) stage.classList.remove("drag"); };
+stage.addEventListener("pointerup", ende); stage.addEventListener("pointercancel", ende);
+stage.addEventListener("wheel", e => { if (!S.src) return; e.preventDefault(); const r = stage.getBoundingClientRect(); zoomBy(e.deltaY<0?1.1:1/1.1, (e.clientX-r.left-FR.x)/FR.w, (e.clientY-r.top-FR.y)/FR.h); }, {passive:false});
+stage.addEventListener("dblclick", () => fit(true));
+stage.tabIndex = 0;
+stage.addEventListener("keydown", e => {
+  if (!S.src) return; const st = .01; let u = true;
+  if (e.key==="ArrowLeft") S.cx -= st; else if (e.key==="ArrowRight") S.cx += st; else if (e.key==="ArrowUp") S.cy -= st; else if (e.key==="ArrowDown") S.cy += st;
+  else if (e.key==="+"||e.key==="=") zoomBy(1.08,.5,.5); else if (e.key==="-") zoomBy(1/1.08,.5,.5); else if (e.key==="0") fit(true); else if (e.key==="1") oneOne(); else u = false;
+  if (u){ e.preventDefault(); draw(); }
+});
+// Dateien: Knopf, Ziehen, Einfuegen
+$("#bOpen").onclick = () => $("#file").click();
+$("#file").onchange = e => { const f = e.target.files[0]; if (f) ladeBlob(f, f.name); e.target.value = ""; };
+["dragenter","dragover"].forEach(t => document.addEventListener(t, e => { if (e.dataTransfer && [...e.dataTransfer.types].includes("Files")){ e.preventDefault(); stage.style.borderColor = "var(--acc)"; } }));
+["dragleave","drop"].forEach(t => document.addEventListener(t, e => { stage.style.borderColor = ""; }));
+document.addEventListener("drop", e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f && f.type.startsWith("image/")) ladeBlob(f,f.name); else if (f) say("Das ist keine Bilddatei.","bad"); });
+document.addEventListener("paste", e => { const it = [...(e.clipboardData?.items||[])].find(i=>i.type.startsWith("image/")); if (it){ const f = it.getAsFile(); ladeBlob(f,"Zwischenablage"); } });
+$("#bPaste").onclick = async () => { try { const items = await navigator.clipboard.read(); for (const it of items){ const t = it.types.find(x=>x.startsWith("image/")); if (t){ ladeBlob(await it.getType(t),"Zwischenablage"); return; } } say("In der Zwischenablage ist kein Bild.","bad"); } catch(e){ say("Einfügen mit Strg+V (oder Cmd+V) – der Browser erlaubt hier keinen direkten Zugriff.","bad"); } };
+$("#bFit").onclick = () => fit(true); $("#bOne").onclick = oneOne;
+function umformen(fn){ if(!S.src) return; const same = S.src===S.prev; const a = fn(S.src); S.prev = same ? a : fn(S.prev); S.src = a; scaleCache.clear(); }
+$("#bRot").onclick = () => { umformen(s => { const t = newCanvas(s.height,s.width), c = t.getContext("2d"); c.translate(t.width,0); c.rotate(Math.PI/2); c.drawImage(s,0,0); return t; }); if (S.src) fit(true); };
+$("#bFlip").onclick = () => { umformen(s => { const t = newCanvas(s.width,s.height), c = t.getContext("2d"); c.translate(t.width,0); c.scale(-1,1); c.drawImage(s,0,0); return t; }); draw(); };
+
+// ------------------------------------------------------------ Einstellungen
+document.querySelectorAll(".tabs .btn").forEach(b => b.onclick = () => { document.querySelectorAll(".tabs .btn").forEach(x=>x.classList.toggle("on",x===b)); document.querySelectorAll(".panel .page").forEach(p=>p.classList.toggle("on",p.dataset.p===b.dataset.p)); if (b.dataset.p==="2"){ sizeInfo(); updateProbe(); } });
+function controls(){
+  $("#rundBox").hidden = cfg.shape!=="rund"; $("#maskBox").hidden = cfg.shape!=="eigene";
+  $("#ratioC").hidden = $("#ratio").value!=="Eigenes"; $("#bgC").hidden = cfg.bg!=="custom";
+  $("#sizeN").hidden = $("#sizeSel").value!=="0"; $("#qRow").hidden = !(cfg.fmt==="jpg"||cfg.fmt==="webp");
+  $("#radiusO").textContent = cfg.radius+" %"; $("#smoothO").textContent = cfg.smooth+" %"; $("#padO").textContent = cfg.pad+" %";
+  $("#randO").textContent = cfg.rand; $("#schO").textContent = cfg.sch; $("#hellO").textContent = (cfg.hell>0?"+":"")+cfg.hell; $("#qualO").textContent = cfg.qual;
+}
+function bind(id, key, num, after){ const el = $("#"+id); el.value = cfg[key]; el.addEventListener("input", () => { cfg[key] = num ? +el.value : el.value; sichern(); controls(); (after||(()=>{}))(); if (S.src) zoomUI(); draw(); sizeSoon(); }); }
+bind("shape","shape"); bind("radius","radius",1); bind("smooth","smooth",1); bind("bg","bg"); bind("bgcol","bgcol"); bind("pad","pad",1); bind("rand","rand",1); bind("sch","sch",1); bind("hell","hell",1); bind("randcol","randcol"); bind("qual","qual",1); bind("fmt","fmt");
+$("#ratio").value = cfg.ratio; $("#rw").value = cfg.rw; $("#rh").value = cfg.rh;
+["ratio","rw","rh"].forEach(id => $("#"+id).addEventListener("input", () => { cfg.ratio = $("#ratio").value; cfg.rw = +$("#rw").value; cfg.rh = +$("#rh").value; sichern(); controls(); if (S.src){ fit(true); } draw(); sizeSoon(); }));
+$("#shape").addEventListener("input", () => { if (cfg.shape==="eigene" && !S.mask) say("Wähle eine PNG als Stanze (Transparenz = Form)."); });
+$("#bFx").onclick = () => { for (const k of ["pad","rand","sch","hell"]){ cfg[k] = 0; $("#"+k).value = 0; } sichern(); controls(); draw(); sizeSoon(); };
+$("#bMask").onclick = () => $("#maskfile").click();
+$("#maskfile").onchange = async e => { const f = e.target.files[0]; e.target.value = ""; if(!f) return; try { S.mask = await createImageBitmap(f); say("Eigene Stanze geladen."); draw(); sizeSoon(); } catch(x){ say("Die Stanze konnte nicht gelesen werden.","bad"); } };
+// Groessen
+const sel = $("#sizeSel"); [2048,1024,512,256,192,128,96,64,48,32,16].forEach(s => sel.add(new Option(s+" px", s))); sel.add(new Option("Eigene …","0"));
+sel.value = [...sel.options].some(o=>o.value==cfg.size) ? cfg.size : "0"; $("#sizeN").value = cfg.size;
+sel.addEventListener("input", () => { if (sel.value!=="0"){ cfg.size = +sel.value; $("#sizeN").value = cfg.size; } sichern(); controls(); if (S.src) zoomUI(); draw(); sizeSoon(); });
+$("#sizeN").addEventListener("input", () => { cfg.size = Math.max(8,Math.min(4096,+$("#sizeN").value||512)); sichern(); if (S.src) zoomUI(); draw(); sizeSoon(); });
+$("#fmt").addEventListener("input", () => { if (cfg.fmt==="ico" && cfg.size>256) say("ICO ist höchstens 256 px groß."); });
+
+// Vorschau klein + Dateigroesse
+function updateProbe(){
+  const box = $("#probe"); if (!$("[data-p='2']").classList.contains("on")) return;
+  if (!S.prev){ box.innerHTML = ""; return; }
+  if (box.children.length!==3){ box.innerHTML = ""; for (let i=0;i<3;i++) box.appendChild(document.createElement("canvas")); }
+  [64,32,16].forEach((s,i) => { const c = box.children[i]; c.width = s; c.height = s; const x = c.getContext("2d"); x.clearRect(0,0,s,s); x.drawImage(render(s,s,true),0,0); });
+}
+let sizeT = 0; function sizeSoon(){ clearTimeout(sizeT); sizeT = setTimeout(sizeInfo, 400); updateProbe(); }
+async function blobOf(cv, fmt){
+  const type = fmt==="jpg" ? "image/jpeg" : fmt==="webp" ? "image/webp" : "image/png";
+  const b = await new Promise(r => cv.toBlob(r, type, cfg.qual/100));
+  if (b && fmt==="webp" && b.type!=="image/webp") throw new Error("Dieser Browser kann kein WebP speichern – bitte PNG oder JPG wählen.");
+  return b;
+}
+async function pngBytes(cv){ return new Uint8Array(await (await blobOf(cv,"png")).arrayBuffer()); }
+function icoBytes(entries){ // entries: [{size, data:Uint8Array(PNG)}]
+  const n = entries.length, head = 6+16*n; let off = head, total = head; entries.forEach(e => total += e.data.length);
+  const out = new Uint8Array(total), dv = new DataView(out.buffer); dv.setUint16(0,0,true); dv.setUint16(2,1,true); dv.setUint16(4,n,true);
+  entries.forEach((e,i) => { const o = 6+16*i; out[o] = e.w%256; out[o+1] = e.h%256; out[o+2] = 0; out[o+3] = 0; dv.setUint16(o+4,1,true); dv.setUint16(o+6,32,true); dv.setUint32(o+8,e.data.length,true); dv.setUint32(o+12,off,true); out.set(e.data,off); off += e.data.length; });
+  return out;
+}
+async function encode(w,h,fmt){ // -> Uint8Array
+  const cv = finalCanvas(w,h,fmt);
+  if (fmt==="ico"){ const L = Math.max(w,h); return icoBytes([{w,h,data:await pngBytes(cv)}]); }
+  return new Uint8Array(await (await blobOf(cv,fmt)).arrayBuffer());
+}
+async function sizeInfo(){
+  const [w,h] = outSize(); let t = "Ausgabe: "+w+"×"+h+" px";
+  if (S.src && Math.max(w,h)<=1024){ try { t += "  ·  ≈ "+WZ.groesse((await encode(w,h,cfg.fmt)).length); } catch(e){ t += "  ·  "+e.message; } }
+  else if (S.src) t += "  ·  Dateigröße wird beim Speichern berechnet";
+  if (cfg.fmt==="ico" && cfg.size>256) t += "  ·  ICO höchstens 256 px";
+  $("#sizeInfo").textContent = t;
+}
+
+// ------------------------------------------------------------ Speichern
+function dateiname(w,h,ext){ return S.name+"_"+cfg.shape+"_"+w+"x"+h+"."+ext; }
+$("#bSave").onclick = async () => {
+  if (!S.src) return say("Zuerst ein Bild öffnen.","bad");
+  try { const [w,h] = outSize(), data = await encode(w,h,cfg.fmt); const ext = cfg.fmt==="jpg"?"jpg":cfg.fmt; WZ.speichern(new Blob([data],{type:"application/octet-stream"}), dateiname(w,h,ext)); say("Gespeichert: "+dateiname(w,h,ext)+" ("+WZ.groesse(data.length)+")","ok"); }
+  catch(e){ say(e.message,"bad"); }
+};
+$("#bCopy").onclick = async () => {
+  if (!S.src) return say("Zuerst ein Bild öffnen.","bad");
+  try { const [w,h] = outSize(); const b = await blobOf(finalCanvas(w,h,"png"),"png"); await navigator.clipboard.write([new ClipboardItem({"image/png":b})]); say("Kopiert ("+w+"×"+h+") – woanders mit Strg+V einfügen.","ok"); }
+  catch(e){ say("Der Browser erlaubt das Kopieren hier nicht – bitte stattdessen speichern.","bad"); }
+};
+async function zipSizes(sizes, name, fmt, fn){
+  const zip = new JSZip(), [rw,rh] = ratioWH(); let n = 0;
+  for (const s of sizes){
+    if (fmt==="ico" && s>256) continue;
+    const w = rw>=rh ? s : Math.max(1,Math.round(s*rw/rh)), h = rw>=rh ? Math.max(1,Math.round(s*rh/rw)) : s;
+    zip.file(fn(s,w,h), await encode(w,h,fmt)); n++;
+    $("#status").textContent = "Berechne … "+n+" / "+sizes.length; await WZ.warte();
+  }
+  const blob = await zip.generateAsync({type:"blob"}); WZ.speichern(blob, name+".zip"); say(n+" Größen als "+name+".zip gespeichert ("+WZ.groesse(blob.size)+").","ok");
+}
+$("#bAll").onclick = async () => { if (!S.src) return say("Zuerst ein Bild öffnen.","bad"); try { await zipSizes(ALLE, S.name+"_alle_Groessen", cfg.fmt, (s,w,h)=>S.name+"_"+w+"x"+h+"."+(cfg.fmt==="jpg"?"jpg":cfg.fmt)); } catch(e){ say(e.message,"bad"); } };
+$("#bPack").onclick = e => { e.stopPropagation(); $("#packMenu").classList.toggle("open"); };
+document.addEventListener("click", () => $("#packMenu").classList.remove("open"));
+$("#packMenu").querySelectorAll(".pop button").forEach(b => b.onclick = async () => {
+  $("#packMenu").classList.remove("open"); if (!S.src) return say("Zuerst ein Bild öffnen.","bad");
+  const k = b.dataset.k;
+  try {
+    if (k==="windows"){ const [rw,rh]=[1,1]; const ents = []; for (const s of PAKETE.windows) ents.push({w:s,h:s,data:await pngBytes(finalCanvas(s,s,"png"))}); const data = icoBytes(ents); WZ.speichern(new Blob([data]), S.name+".ico"); say("Windows-ICO mit "+ents.length+" Größen gespeichert ("+WZ.groesse(data.length)+").","ok"); return; }
+    const pre = k==="favicon" ? "favicon-" : "icon-";
+    await zipSizes(PAKETE[k], S.name+"_"+k, "png", (s,w,h)=>pre+w+(w!==h?"x"+h:"")+".png");
+  } catch(e){ say(e.message,"bad"); }
+});
+
+window.addEventListener("resize", sizeStage);
+new ResizeObserver(sizeStage).observe(stage);
+controls(); sizeStage(); zoomUI();
+</script>
+</body>
+</html>

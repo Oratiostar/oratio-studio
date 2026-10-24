@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Datei-Werkstatt – Oratio Studio</title>
+<meta name="description" content="Datei-Werkstatt: PDF zusammenfügen, teilen, komprimieren, PDF in Word und Word in PDF umwandeln, Bilder verkleinern, ZIP packen. Alles im Browser, ohne Upload.">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="werkzeuge/wz.css">
+<style>
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:0 0 18px}
+.tcard{display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:inherit;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:12px;box-shadow:var(--shadow);transition:transform .12s,border-color .12s}
+.tcard:hover{transform:translateY(-2px);border-color:var(--acc)}
+.tcard.on{border-color:var(--acc);background:var(--soft)}
+.tcard b{display:block;font-size:16px;line-height:1.25}
+.tcard small{display:block;color:var(--muted);font-size:13px;line-height:1.35;margin-top:2px}
+.ts{flex:none;display:inline-grid;place-items:center;width:40px;height:40px;border-radius:12px;color:#fff;font-size:20px;box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.toolcard h2{display:flex;gap:10px;align-items:center;font-size:22px}
+.toolcard h2 .ts{width:36px;height:36px;font-size:18px}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+.cols2>div{min-width:0}
+.chk{display:flex;gap:8px;align-items:center;margin:12px 0 4px;font-weight:600;font-size:15px;cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--acc)}
+.flist{margin-top:8px}
+.frow{display:flex;gap:8px;align-items:center;padding:6px 4px;border-bottom:1px solid var(--line)}
+.frow .fn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.frow .muted{font-size:13px;white-space:nowrap}
+.frow.res{background:var(--soft);border-radius:10px;border:none;margin-top:6px;padding:8px 10px}
+.frow.res .muted{white-space:normal;text-align:right;max-width:55%}
+.org-bar{background:var(--soft);border-radius:14px;padding:10px 12px;margin:12px 0}
+.org-bar .row .sp{flex:1}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin:8px 0 12px}
+.th{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:6px;text-align:center;cursor:grab;position:relative}
+.th.del{opacity:.4}
+.th .cv{height:150px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:6px;background:var(--soft)}
+.th canvas{max-width:100%;max-height:150px;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.th .tn{font-size:13px;font-weight:700;margin-top:4px}.th .tn small{color:var(--muted);font-weight:500}
+.th .tb{display:flex;gap:6px;justify-content:center;margin-top:2px}
+.th .tb button{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px;cursor:pointer;width:32px;height:28px;font-size:15px}
+.th .tb button:hover{border-color:var(--acc)}
+.tabs.t2{max-width:360px}
+@media (max-width:560px){.cols2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<h1>Datei-Werkstatt</h1>
+<p class="sub">PDFs zusammenfügen, teilen und verkleinern, PDF ↔ Word, PDF ↔ Bilder, Fotos verkleinern, ZIP packen. Alles läuft in deinem Browser – deine Dateien werden <b>nicht hochgeladen</b> und bleiben auf deinem Gerät.</p>
+<div class="tgrid" id="toolgrid"></div>
+<div id="toolhost"></div>
+</main>
+<script src="werkzeuge/wz.js"></script>
+<script src="werkzeuge/lib/jszip.min.js"></script>
+<script src="werkzeuge/lib/pdf-lib.min.js"></script>
+<script src="werkzeuge/docx.js"></script>
+<script src="werkzeuge/datei.js"></script>
+<script>WZ.kopf("datei"); DateiWerkstatt.start();</script>
+</body>
+</html>
