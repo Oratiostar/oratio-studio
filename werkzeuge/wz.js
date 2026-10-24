@@ -45,7 +45,7 @@ window.WZ = {
   },
   kopf: function(aktiv){
     var h = document.createElement("header");
-    h.innerHTML = '<div class="bar"><a class="logo" href="index.html#/studio"><img src="icon.png" alt=""><span>Oratio Studio</span></a>' +
+    h.innerHTML = '<div class="bar"><a class="logo" href="index.html"><img src="logo-place.png" alt=""><span>Oratio Place</span></a>' +
       '<span class="sp"></span><button class="btn sm" id="wzLang" aria-label="Sprache / Langue"></button> <button class="btn sm" id="wzTheme" aria-label="Hell/Dunkel"></button></div>';
     document.body.insertBefore(h, document.body.firstChild);
     var nm = aktiv === "icon" ? "Icon-Werkstatt" : aktiv === "datei" ? "Datei-Werkstatt" : null, m = document.querySelector("main");

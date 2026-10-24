@@ -410,10 +410,7 @@ const WKAT = {
 };
 const weltKat = id => WKAT[id] || ["elektronik"];
 let KATWAHL = "alle";
-function brand(wo){
-  const l = $("#logo"), b = {place:["logo-place.png","Oratio Place","#/"], studio:["icon.png","Oratio Studio","#/studio"], lifestyle:["logo-place.png","Oratio Lifestyle","#/lifestyle"]}[wo];
-  l.href = b[2]; l.querySelector("img").src = b[0]; l.querySelector("span").textContent = b[1];
-}
+function brand(){ /* Kopf bleibt immer Oratio Place (Home) */ }
 function placeseite(){
   document.title = "Oratio Place"; brand("place");
   const n = INDEX.welten.length + 2;

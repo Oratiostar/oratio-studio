@@ -9,26 +9,45 @@ main{max-width:760px;margin:0 auto;padding:20px max(16px,env(safe-area-inset-rig
 a{color:var(--link)} h1{font-size:26px} h2{font-size:19px;margin-top:26px}
 .box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px}
 .todo{border:2px dashed #e0364a;border-radius:12px;padding:10px 14px;margin:14px 0;color:#e0364a;font-weight:700}
+[lang=fr] .de,[lang=de] .fr{display:none}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:99px;padding:5px 14px;font:inherit;font-weight:700;cursor:pointer}
 </style></head><body><main>
-<p><a href="index.html">← Oratio Place</a></p>
+<div class="top"><a href="index.html">← Oratio Place</a><button class="btn" id="bl"></button></div>
+
+<div class="de">
 <h1>Impressum & Datenschutz</h1>
-<div class="todo">VORLAGE – bitte vor dem Veröffentlichen ausfüllen bzw. prüfen: Die Platzhalter in [eckigen Klammern] mit deinen eigenen Angaben ersetzen. Das ist keine Rechtsberatung.</div>
-
-<h2>Angaben zum Betreiber</h2>
-<div class="box">
-[Vor- und Nachname]<br>
-[Straße und Hausnummer]<br>
-[PLZ Ort]<br>
-E-Mail: [deine E-Mail-Adresse]
-</div>
+<div class="todo">Zum Ausfüllen: Name und E-Mail unten eintragen (Platzhalter in [eckigen Klammern]). Das ist keine Rechtsberatung.</div>
+<h2>Verantwortlich</h2>
+<div class="box">[Vor- und Nachname]<br>E-Mail: [E-Mail-Adresse]</div>
 <p>Privates, nicht kommerzielles Hobbyprojekt. Es werden keine Waren oder Dienstleistungen verkauft und keine Werbung gezeigt.</p>
-
 <h2>Inhalte und Haftung</h2>
 <p>Die Angaben (Bauteile, Geräte-Daten, Vergleiche, Rechner) wurden mit Sorgfalt zusammengestellt, aber ohne Gewähr auf Richtigkeit, Vollständigkeit und Aktualität. Einige Werte stammen aus eigener Zusammenstellung und können Fehler enthalten. Für Schaltungen und Rechenergebnisse gilt: bitte immer im Datenblatt des Herstellers gegenprüfen. Produkt- und Markennamen gehören ihren jeweiligen Inhabern und werden nur zur Beschreibung genannt.</p>
-
 <h2>Datenschutz</h2>
 <p>Diese Seite setzt <b>keine Cookies</b>, nutzt <b>kein Tracking</b>, keine Statistik-Dienste und lädt <b>keine Schriften oder Skripte von fremden Servern</b>. Es gibt keine Formulare und keine Anmeldung.</p>
-<p><b>Werkzeuge (Icon-Werkstatt, Datei-Werkstatt):</b> Bilder, PDFs und andere Dateien, die du dort auswählst, werden ausschließlich in deinem Browser auf deinem Gerät verarbeitet. Sie werden nicht hochgeladen und nicht an uns oder Dritte gesendet. Die dafür nötigen Programmbibliotheken (pdf.js, pdf-lib, JSZip) liegen auf dieser Seite selbst; ihre Lizenzdateien liegen im Ordner werkzeuge/lib. Im Browser werden dafür nur Einstellungen (z. B. gewählte Form, Hell/Dunkel) lokal gemerkt.</p>
-<p>Im Browser werden nur zwei Einstellungen lokal gespeichert (Sprache und Hell/Dunkel). Sie verlassen dein Gerät nicht und können jederzeit in den Browser-Einstellungen gelöscht werden.</p>
-<p>Beim Aufruf der Seite verarbeitet der Hosting-Anbieter technisch notwendige Zugriffsdaten (z. B. IP-Adresse, Zeitpunkt) in Server-Logfiles. Anbieter: [Name des Hosters, z. B. GitHub Pages / Cloudflare / IONOS – bitte eintragen und dessen Datenschutzerklärung verlinken].</p>
+<p><b>Werkzeuge (Icon-Werkstatt, Datei-Werkstatt):</b> Bilder, PDFs und andere Dateien, die du dort auswählst, werden ausschließlich in deinem Browser auf deinem Gerät verarbeitet. Sie werden nicht hochgeladen und nicht an Dritte gesendet. Die dafür nötigen Programmbibliotheken (pdf.js, pdf-lib, JSZip) liegen auf dieser Seite selbst; ihre Lizenzdateien liegen im Ordner werkzeuge/lib.</p>
+<p>Im Browser werden nur Einstellungen lokal gespeichert (Sprache, Hell/Dunkel, gewählte Form). Sie verlassen dein Gerät nicht und können jederzeit in den Browser-Einstellungen gelöscht werden.</p>
+<p><b>Hosting:</b> Die Seite wird über GitHub Pages ausgeliefert (GitHub, Inc., USA). Beim Aufruf verarbeitet der Anbieter technisch notwendige Zugriffsdaten wie die IP-Adresse und den Zeitpunkt in Server-Logfiles. Mehr dazu: <a href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">Datenschutzerklärung von GitHub</a>.</p>
+</div>
+
+<div class="fr">
+<h1>Mentions légales & confidentialité</h1>
+<div class="todo">À compléter : indiquer ci-dessous le nom et l’e-mail (espaces réservés entre [crochets]). Ceci n’est pas un conseil juridique.</div>
+<h2>Responsable</h2>
+<div class="box">[Prénom et nom]<br>E-mail : [adresse e-mail]</div>
+<p>Projet de loisir privé, non commercial. Aucun produit ni service n’est vendu et aucune publicité n’est affichée.</p>
+<h2>Contenu et responsabilité</h2>
+<p>Les informations (composants, données d’appareils, comparaisons, calculateurs) ont été rassemblées avec soin, mais sans garantie d’exactitude, d’exhaustivité ni d’actualité. Certaines valeurs proviennent d’une compilation personnelle et peuvent contenir des erreurs. Pour les montages et les résultats de calcul : vérifie toujours dans la fiche technique du fabricant. Les noms de produits et de marques appartiennent à leurs propriétaires respectifs et ne sont cités que pour la description.</p>
+<h2>Confidentialité</h2>
+<p>Ce site n’utilise <b>aucun cookie</b>, <b>aucun suivi</b>, aucun service de statistiques et ne charge <b>aucune police ni script depuis des serveurs tiers</b>. Il n’y a ni formulaire ni connexion.</p>
+<p><b>Outils (atelier d’icônes, atelier de fichiers) :</b> les images, PDF et autres fichiers que tu choisis sont traités uniquement dans ton navigateur, sur ton appareil. Ils ne sont pas envoyés et ne sont transmis à aucun tiers. Les bibliothèques nécessaires (pdf.js, pdf-lib, JSZip) sont hébergées sur ce site ; leurs licences se trouvent dans le dossier werkzeuge/lib.</p>
+<p>Seuls des réglages sont enregistrés localement dans le navigateur (langue, clair/sombre, forme choisie). Ils ne quittent pas ton appareil et peuvent être supprimés à tout moment dans les réglages du navigateur.</p>
+<p><b>Hébergement :</b> le site est diffusé via GitHub Pages (GitHub, Inc., États-Unis). À la consultation, l’hébergeur traite des données d’accès techniquement nécessaires, comme l’adresse IP et l’heure, dans des fichiers journaux. Plus d’informations : <a href="https://docs.github.com/fr/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">politique de confidentialité de GitHub</a>.</p>
+</div>
+<script>
+var L="de"; try{ L=localStorage.getItem("lang")||((navigator.language||"").indexOf("fr")===0?"fr":"de"); }catch(e){}
+function set(){ document.documentElement.lang=L; document.getElementById("bl").textContent = L==="fr"?"DE":"FR"; document.title = (L==="fr"?"Mentions légales & confidentialité":"Impressum & Datenschutz")+" – Oratio Place"; }
+document.getElementById("bl").onclick=function(){ L = L==="fr"?"de":"fr"; try{localStorage.setItem("lang",L);}catch(e){} set(); };
+set();
+</script>
 </main></body></html>
