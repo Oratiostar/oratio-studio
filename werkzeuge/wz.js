@@ -15,6 +15,47 @@ window.WZ = {
     }
     return s.replace(WZ._re, function(m){ return WZ_FR[m]; });
   },
+  selects: function(){
+    function bau(s){
+      if (s._sel || s.hasAttribute("data-nsel")) return;
+      var w = document.createElement("div"); w.className = "sel";
+      var b = document.createElement("button"); b.type = "button"; b.className = "selbtn";
+      var p = document.createElement("div"); p.className = "pop";
+      w.appendChild(b); w.appendChild(p); s.parentNode.insertBefore(w, s); s.style.display = "none"; s._sel = w;
+      function label(){ var o = s.options[s.selectedIndex]; var t = o ? o.textContent : ""; if (b.textContent !== t) b.textContent = t; }
+      function zu(){ w.classList.remove("open"); }
+      function fuelle(){
+        p.innerHTML = "";
+        Array.prototype.forEach.call(s.options, function(o, i){
+          var x = document.createElement("button"); x.type = "button"; x.className = "opt" + (i === s.selectedIndex ? " cur" : ""); x.textContent = o.textContent; x.disabled = o.disabled;
+          x.onclick = function(){ s.selectedIndex = i; s.dispatchEvent(new Event("input", {bubbles:true})); s.dispatchEvent(new Event("change", {bubbles:true})); label(); zu(); b.focus(); };
+          p.appendChild(x);
+        });
+      }
+      b.onclick = function(e){
+        e.stopPropagation();
+        var offen = w.classList.contains("open");
+        document.querySelectorAll(".sel.open").forEach(function(o){ o.classList.remove("open"); });
+        if (offen) return;
+        fuelle(); w.classList.remove("up");
+        w.classList.add("open");
+        var r = w.getBoundingClientRect(), h = Math.min(300, p.scrollHeight + 14);
+        if (r.bottom + h + 10 > innerHeight && r.top > h + 10) w.classList.add("up");
+        var c = p.querySelector(".cur"); if (c) p.scrollTop = Math.max(0, c.offsetTop - 60);
+      };
+      b.onkeydown = function(e){
+        if (e.key === "Escape") zu();
+        else if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); var n = s.selectedIndex + (e.key === "ArrowDown" ? 1 : -1); if (n >= 0 && n < s.options.length && !s.options[n].disabled) { s.selectedIndex = n; s.dispatchEvent(new Event("input", {bubbles:true})); s.dispatchEvent(new Event("change", {bubbles:true})); label(); } }
+      };
+      s.addEventListener("change", label);
+      s._label = label; label();
+    }
+    function alle(){ document.querySelectorAll("select").forEach(bau); document.querySelectorAll("select").forEach(function(s){ if (s._label) s._label(); }); }
+    document.addEventListener("click", function(e){ if (!e.target.closest(".sel")) document.querySelectorAll(".sel.open").forEach(function(o){ o.classList.remove("open"); }); });
+    new MutationObserver(alle).observe(document.body, {childList:true, subtree:true});
+    setInterval(function(){ document.querySelectorAll("select").forEach(function(s){ if (s._label) s._label(); }); }, 400);
+    alle();
+  },
   uebersetze: function(){
     if (WZ.lang !== "fr" || !window.WZ_FR) return;
     document.documentElement.lang = "fr";
@@ -51,7 +92,7 @@ window.WZ = {
     var nm = aktiv === "icon" ? "Icon-Werkstatt" : aktiv === "datei" ? "Datei-Werkstatt" : null, m = document.querySelector("main");
     if (nm && m) { var c = document.createElement("div"); c.className = "crumb"; c.innerHTML = '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Studio</a> › ' + nm; m.insertBefore(c, m.firstChild); }
     var b = h.querySelector("#wzTheme"), bl = h.querySelector("#wzLang");
-    bl.textContent = WZ.lang === "fr" ? "DE" : "FR";
+    bl.textContent = WZ.lang === "fr" ? "🇩🇪 DE" : "🇫🇷 FR";
     bl.onclick = function(){ try { localStorage.setItem("lang", WZ.lang === "fr" ? "de" : "fr"); } catch(e){} location.reload(); };
     function zeige(){ var a = document.documentElement.getAttribute("data-theme"); b.textContent = a==="dark" ? "🌙 Dunkel" : a==="light" ? "☀️ Hell" : "🖥️ Auto"; }
     b.onclick = function(){
@@ -66,6 +107,7 @@ window.WZ = {
     f.innerHTML = 'Alles läuft in deinem Browser – deine Dateien werden nicht hochgeladen. · Hobbyprojekt, ohne Gewähr. · <a href="impressum.html">Impressum &amp; Datenschutz</a>';
     document.body.appendChild(f);
     WZ.uebersetze();
+    WZ.selects();
   },
   groesse: function(n){ return n < 1024 ? n + " B" : n < 1048576 ? (n/1024).toFixed(0) + " KB" : (n/1048576).toFixed(2) + " MB"; },
   speichern: function(blob, name){
