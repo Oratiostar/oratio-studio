@@ -57,3 +57,16 @@ footer a{color:var(--muted)}
 .toolcard{scroll-margin-top:64px}
 .nav{display:flex;gap:2px;flex-wrap:wrap}
 @media (max-width:560px){h1{font-size:23px}.logo span{display:none}.nav a{padding:6px 8px;font-size:15px}}
+
+/* Handy: Kopf scrollt mit (nimmt sonst viel Platz weg), nichts klebt fest, unten Luft fuer die iPhone-Leiste */
+footer{padding-bottom:max(30px,calc(env(safe-area-inset-bottom) + 24px))}
+main{padding-bottom:max(60px,calc(env(safe-area-inset-bottom) + 50px))}
+@media (max-width:700px){
+  header{position:static}
+  .stagebox{position:static!important}
+  .bar{gap:6px}
+  .nav a{padding:6px 9px;font-size:14px}
+  .logo span{display:none}
+  .btn.sm{padding:5px 10px}
+  main{padding-bottom:max(110px,calc(env(safe-area-inset-bottom) + 100px))}
+}
