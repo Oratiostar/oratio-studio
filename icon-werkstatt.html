@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Icon-Werkstatt – Oratio Studio</title>
+<title>Icon-Werkstatt – Oratio</title>
 <meta name="description" content="Icon-Werkstatt: Bilder in Form bringen (rund, iPhone-Symbol, Herz …), zuschneiden und als PNG, JPG, WebP oder ICO speichern. Läuft komplett im Browser.">
 <link rel="icon" href="icon.png">
 <link rel="stylesheet" href="werkzeuge/wz.css">
@@ -116,6 +116,7 @@ input[type=color]{width:44px;height:36px;border:2px solid var(--line);border-rad
 </div>
 </main>
 <script src="werkzeuge/wz.js"></script>
+<script src="werkzeuge/fr.js"></script>
 <script src="werkzeuge/lib/jszip.min.js"></script>
 <script>
 WZ.kopf("icon");
@@ -316,7 +317,7 @@ function paintStage(){
   if (!S.prev){
     c.fillStyle = fg; c.globalAlpha = .75; c.font = "600 "+Math.max(14,Math.min(22,fr.w/20))+"px system-ui,sans-serif"; c.textAlign = "center";
     const t = ["Bild hierher ziehen","oder „Öffnen“ tippen","(auch Strg+V / Einfügen)"];
-    t.forEach((l,i)=>c.fillText(l, fr.x+fr.w/2, fr.y+fr.h/2+(i-1)*28)); c.globalAlpha = 1;
+    t.forEach((l,i)=>c.fillText(WZ.t(l), fr.x+fr.w/2, fr.y+fr.h/2+(i-1)*28)); c.globalAlpha = 1;
   }
   updateProbe();
 }

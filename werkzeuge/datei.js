@@ -337,7 +337,7 @@ function start(){
     if (!t) { host.innerHTML = '<p class="muted">Wähle oben ein Werkzeug. Deine Dateien bleiben die ganze Zeit auf deinem Gerät.</p>'; return; }
     const card = document.createElement("div"); card.className = "card toolcard"; card.innerHTML = '<h2 style="margin-top:0"><span class="ts" style="background:' + t.farbe + '">' + t.sym + '</span> ' + esc(t.titel) + '</h2><p class="sub" style="margin-bottom:12px">' + esc(t.text) + '</p><div class="sec"></div>';
     host.appendChild(card); try { t.build($(".sec", card)); } catch (e) { console.error(e); $(".sec", card).textContent = "Fehler beim Aufbau: " + e.message; }
-    document.title = t.titel + " – Datei-Werkstatt – Oratio Studio";
+    document.title = t.titel + " – Datei-Werkstatt – Oratio";
     if (history.state !== "x") card.scrollIntoView({ behavior: "smooth", block: "start" });
   }
   window.addEventListener("hashchange", () => zeige(location.hash.slice(1)));

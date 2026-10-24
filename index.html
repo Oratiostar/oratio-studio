@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Oratio Studio</title>
-<meta name="description" content="Oratio Studio: Nachschlagewerk für Elektronik, Bauteile, Handys, Kameras und Konsolen.">
+<title>Oratio</title>
+<meta name="description" content="Oratio: Nachschlagewerk für Elektronik, Bauteile, Handys, Kameras und Konsolen.">
 <link rel="icon" href="icon.png">
 <style>
 :root{
@@ -38,6 +38,11 @@ h1{margin:6px 0 4px;font-size:28px;line-height:1.2;text-wrap:balance}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
 .welt{display:block;text-decoration:none;color:inherit;background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);transition:transform .12s}
 .welt:hover{transform:translateY(-3px)}
+.welt[hidden]{display:none}
+.kats{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.kat{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:99px;padding:6px 16px;font:inherit;font-size:14.5px;font-weight:700;cursor:pointer}
+.kat:hover{border-color:#27a3df}
+.kat.on{background:#27a3df;border-color:#27a3df;color:#fff}
 .welt .kopf{display:flex;align-items:center;gap:10px;padding:14px;color:#fff;min-height:74px}
 .welt .ic{flex:none;width:44px;height:44px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:23px;box-shadow:0 2px 0 rgba(0,0,0,.15)}
 .welt b{font-size:17px;line-height:1.2}
@@ -123,9 +128,8 @@ footer a{color:var(--muted)}
 </head>
 <body>
 <header><div class="bar">
-  <a class="logo" href="#/"><img src="icon.png" alt=""><span>Oratio Studio</span></a>
+  <a class="logo" href="#/"><img src="icon.png" alt=""><span>Oratio</span></a>
   <input id="q" type="search" autocomplete="off" enterkeyhint="search">
-  <a href="werkzeuge.html" class="btn" style="text-decoration:none" id="bWz">🧰 Werkzeuge</a>
   <span class="sp"></span>
   <button class="btn" id="bLang" aria-label="Sprache / Langue"></button>
   <button class="btn" id="bTheme"></button>
@@ -151,7 +155,8 @@ try { LANG = localStorage.getItem("lang") || ((navigator.language||"").startsWit
 function T(s){ if (LANG !== "fr" || FR === null || typeof s !== "string") return s; const r = FR[s]; return r === undefined ? s : r; }
 
 const UI = {
-  de:{suche:"Suchen: Bauteil, Handy, Begriff …",welten:"Alle Welten",seiten:"Seiten",startsub:"Nachschlagewerk für Elektronik, Bauteile und Technik. Wähle eine Welt oder suche oben.",
+  de:{katAlle:"Alle",kat:{elektronik:"Elektronik",informatik:"Informatik",geraete:"Geräte",labor:"Labor",werkzeuge:"Werkzeuge"},wzName:"Werkzeuge",wzN:"2 Werkzeuge",wzT:"Icon-Werkstatt und Datei-Werkstatt (PDF, Word, Bilder, ZIP) – direkt im Browser, ohne Upload.",
+      suche:"Suchen: Bauteil, Handy, Begriff …",welten:"Alle Welten",seiten:"Seiten",startsub:"Nachschlagewerk für Elektronik, Bauteile und Technik. Wähle eine Welt oder suche oben.",
       filter:"In dieser Welt filtern …",home:"Start",treffer:"Treffer",keine:"Nichts gefunden.",weg:"Seite nicht gefunden.",siehe:"Siehe auch",
       hinzu:"+ Hinzufügen",leerV:"Füge mindestens zwei Einträge hinzu, um sie zu vergleichen (höchstens %n).",gelb:"Gelb hinterlegt = Unterschied.",waehle:"Eintrag wählen",finde:"Suchen …",
       rechner:"RECHNER",leerR:"Lass ein Feld leer – es wird aus den anderen berechnet.",mehrR:"Trage genug Werte ein (schreibe z. B. 4k7, 10u, 2,2M). Das leere Feld wird berechnet.",
@@ -160,7 +165,8 @@ const UI = {
       pin:{i:"Eingang",o:"Ausgang",x:"Ein-/Ausgang",g:"Masse",v:"Versorgung",n:"nicht belegt"},
       dunkel:"Dunkel",hellm:"Hell",auto:"Auto",imp:"Impressum & Datenschutz",stand:"Hobbyprojekt, Angaben ohne Gewähr. Bitte wichtige Werte im Datenblatt prüfen.",
       zeit:"Zeitdiagramm",kreis:"Schaltbild",ver:"Versorgung / Werte",geh:"Gehäuse",ans:"Anschlüsse"},
-  fr:{suche:"Rechercher : composant, téléphone, terme …",welten:"Tous les mondes",seiten:"pages",startsub:"Ouvrage de référence pour l’électronique, les composants et la technique. Choisis un monde ou recherche ci-dessus.",
+  fr:{katAlle:"Tous",kat:{elektronik:"Électronique",informatik:"Informatique",geraete:"Appareils",labor:"Laboratoire",werkzeuge:"Outils"},wzName:"Outils",wzN:"2 outils",wzT:"Atelier d’icônes et atelier de fichiers (PDF, Word, images, ZIP) – directement dans le navigateur, sans envoi.",
+      suche:"Rechercher : composant, téléphone, terme …",welten:"Tous les mondes",seiten:"pages",startsub:"Ouvrage de référence pour l’électronique, les composants et la technique. Choisis un monde ou recherche ci-dessus.",
       filter:"Filtrer dans ce monde …",home:"Accueil",treffer:"résultats",keine:"Aucun résultat.",weg:"Page introuvable.",siehe:"Voir aussi",
       hinzu:"+ Ajouter",leerV:"Ajoute au moins deux entrées pour les comparer (maximum %n).",gelb:"Surligné en jaune = différence.",waehle:"Choisir une entrée",finde:"Rechercher …",
       rechner:"CALCULATEUR",leerR:"Laisse un champ vide : il sera calculé à partir des autres.",mehrR:"Saisis assez de valeurs (par ex. 4k7, 10u, 2,2M). Le champ vide sera calculé.",
@@ -390,14 +396,33 @@ const app = $("#app");
 function bannerHTML(w, titel, kurz, sym){
   return '<div class="banner'+(hell(w.farbe)?" light":"")+'" style="background:'+hexOf(w.farbe)+'"><div class="ic">'+symbol(sym||w.symbol)+'</div><div><h1>'+esc(T(titel))+'</h1>'+(kurz?'<p>'+esc(T(kurz))+'</p>':'')+'</div></div>';
 }
+/* Kategorien fuer die Startseite: Welt-ID -> Kategorien (eine Welt kann in mehreren stehen) */
+const KATS = ["elektronik","informatik","geraete","labor","werkzeuge"];
+const WKAT = {
+  prog:["informatik"], linux:["informatik"], zahlen:["informatik","elektronik"], netzwerk:["informatik"], mathe:["informatik","elektronik"],
+  konsolen:["geraete"], handys:["geraete"], kameras:["geraete"], mikro:["geraete","informatik"], mcu:["geraete"], zubehoer:["geraete"],
+  fehler:["geraete","informatik"], glossar:["elektronik","informatik"], labor:["labor"]
+};
+const weltKat = id => WKAT[id] || ["elektronik"];
+let KATWAHL = "alle";
 function startseite(){
-  document.title = "Oratio Studio";
-  app.innerHTML = '<h1>Oratio Studio</h1><p class="sub">'+U("startsub")+'</p><div class="grid">'+INDEX.welten.map(w =>
-    '<a class="welt" href="#/w/'+w.id+'"><div class="kopf'+(hell(w.farbe)?" light":"")+'" style="background:'+hexOf(w.farbe)+'"><div class="ic">'+symbol(w.symbol)+'</div><b>'+esc(T(w.name))+'</b></div><div class="t"><div class="n">'+w.seiten.length+' '+U("seiten")+'</div>'+esc(T(w.untertitel))+'</div></a>').join("")+'<a class="welt" href="werkzeuge.html"><div class="kopf" style="background:#e0703a"><div class="ic">🧰</div><b>Werkzeuge</b></div><div class="t"><div class="n">2 Werkzeuge</div>Icon-Werkstatt und Datei-Werkstatt (PDF, Word, Bilder, ZIP) – direkt im Browser, ohne Upload.</div></a></div>';
+  document.title = "Oratio";
+  const chips = '<div class="kats" role="tablist">'+["alle"].concat(KATS).map(k =>
+    '<button class="kat'+(k===KATWAHL?" on":"")+'" data-k="'+k+'">'+esc(k==="alle" ? U("katAlle") : U("kat")[k])+'</button>').join("")+'</div>';
+  const karten = INDEX.welten.map(w =>
+    '<a class="welt" data-k="'+weltKat(w.id).join(" ")+'" href="#/w/'+w.id+'"><div class="kopf'+(hell(w.farbe)?" light":"")+'" style="background:'+hexOf(w.farbe)+'"><div class="ic">'+symbol(w.symbol)+'</div><b>'+esc(T(w.name))+'</b></div><div class="t"><div class="n">'+w.seiten.length+' '+U("seiten")+'</div>'+esc(T(w.untertitel))+'</div></a>').join("")
+    + '<a class="welt" data-k="werkzeuge" href="werkzeuge.html"><div class="kopf" style="background:#e0703a"><div class="ic">🧰</div><b>'+esc(U("wzName"))+'</b></div><div class="t"><div class="n">'+esc(U("wzN"))+'</div>'+esc(U("wzT"))+'</div></a>';
+  app.innerHTML = '<h1>Oratio</h1><p class="sub">'+U("startsub")+'</p>'+chips+'<div class="grid">'+karten+'</div>';
+  const filtere = () => {
+    document.querySelectorAll(".kat").forEach(b => b.classList.toggle("on", b.dataset.k === KATWAHL));
+    document.querySelectorAll(".grid .welt").forEach(a => { a.hidden = !(KATWAHL === "alle" || a.dataset.k.split(" ").includes(KATWAHL)); });
+  };
+  document.querySelectorAll(".kat").forEach(b => b.onclick = () => { KATWAHL = b.dataset.k; filtere(); });
+  filtere();
 }
 function weltseite(id){
   const w = weltInfo(id); if (!w) return nichts();
-  document.title = T(w.name)+" – Oratio Studio";
+  document.title = T(w.name)+" – Oratio";
   const grp = new Map(); w.seiten.forEach(s => { const g = s.gruppe || ""; if(!grp.has(g)) grp.set(g, []); grp.get(g).push(s); });
   const offen = grp.size <= 3;
   let h = '<div class="crumb"><a href="#/">'+U("home")+'</a> › '+esc(T(w.name))+'</div>'+bannerHTML(w, w.name, w.untertitel)+'<input class="in" id="wf" placeholder="'+esc(U("filter"))+'" style="margin-bottom:6px">';
@@ -410,7 +435,7 @@ function weltseite(id){
 async function seitenansicht(wid, sid){
   const w = weltInfo(wid); if (!w) return nichts();
   const wd = await welt(wid), s = wd.seiten.find(p => p.id === sid); if (!s) return nichts();
-  document.title = T(s.titel)+" – Oratio Studio";
+  document.title = T(s.titel)+" – Oratio";
   let h = '<div class="crumb"><a href="#/">'+U("home")+'</a> › <a href="#/w/'+w.id+'">'+esc(T(w.name))+'</a> › '+esc(T(s.titel))+'</div>'+bannerHTML(w, s.titel, s.kurz, s.symbol);
   if (s.tags && s.tags.length) h += '<div class="tags">'+s.tags.filter(t=>t.length>2&&!/[\/()]/.test(t)).slice(0,10).map(t=>'<span class="tag">'+esc(t)+'</span>').join("")+'</div>';
   for (const b of s.bloecke){ const f = BAUSTEIN[b.t]; try { h += f ? f(b, w.farbe) : ""; } catch(e){ h += '<div class="platz">'+esc(b.t)+': '+esc(e.message)+'</div>'; } }
@@ -422,7 +447,7 @@ async function seitenansicht(wid, sid){
 }
 async function sucheAnzeigen(q){
   q = decodeURIComponent(q||"").trim();
-  document.title = q+" – Oratio Studio";
+  document.title = q+" – Oratio";
   if (!SUCHE) SUCHE = await holen("daten/suche.json");
   const worte = q.toLowerCase().split(/\s+/).filter(Boolean), res = [];
   if (worte.length) for (const [wid, sid, text] of SUCHE){
