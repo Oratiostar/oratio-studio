@@ -13,11 +13,12 @@
 .stagewrap{grid-column:1;grid-row:1;position:relative;align-self:stretch;min-height:340px}
 .below{grid-column:1;grid-row:2}
 .wrap>.panel{grid-column:2;grid-row:1;align-self:stretch;display:flex;flex-direction:column}
-.panel .page.on{display:flex;flex-direction:column;flex:1 1 auto}
-.panel .page.on>label.l{margin-top:auto;padding-top:12px}
-.panel .page.on>.rg,.panel .page.on>.info{margin-top:auto}
-.panel .page.on>#rundBox{margin-top:auto}
-.panel .acts{margin:auto 0 8px;padding-top:10px}
+.panel .page.on{display:flex;flex-direction:column;flex:1 1 auto;justify-content:space-evenly;gap:12px}
+.panel .page.on>*{margin-top:0!important;margin-bottom:0!important}
+.panel .g>label.l:first-child{margin-top:0}
+.panel .g>.in+.row,.panel .g>.in+.colorrow{margin-top:8px}
+.panel .acts{margin:12px 0 6px}
+.panel .tabs{margin-bottom:12px}
 .panel .status:empty{display:none}
 .panel #bSave{flex:none}
 .wrap>.farbbox{grid-column:2;grid-row:2;margin-top:0}
@@ -70,7 +71,7 @@
     <div class="tabs"><button class="btn on" data-p="0">Form</button><button class="btn" data-p="1">Effekte</button><button class="btn" data-p="2">Ausgabe</button></div>
 
     <div class="page on" data-p="0">
-      <label class="l" for="shape">Form</label>
+      <div class="g"><label class="l" for="shape">Form</label>
       <select class="in" id="shape">
         <option value="kreis">Kreis / Oval</option><option value="quadrat">Quadrat / Rechteck</option>
         <option value="iphone" selected>iPhone-Symbol</option><option value="rund">Abgerundet (frei)</option>
@@ -82,12 +83,15 @@
         <div class="rg"><span>Glätte</span><input type="range" id="smooth" min="0" max="100" value="60"><output id="smoothO"></output></div>
       </div>
       <div id="maskBox" hidden><button class="btn sm" id="bMask" style="margin-top:8px">Stanze laden …</button><p class="hint">Transparenz der PNG = Form. Ohne Transparenz: hell = drin, dunkel = draußen.</p></div>
-      <label class="l" for="ratio">Seitenverhältnis</label>
+      </div>
+      <div class="g"><label class="l" for="ratio">Seitenverhältnis</label>
       <select class="in" id="ratio"><option>1:1</option><option>4:3</option><option>3:2</option><option>16:9</option><option>3:4</option><option>2:3</option><option>9:16</option><option>Eigenes</option></select>
       <div class="row" id="ratioC" hidden style="margin-top:6px"><input class="in" type="number" id="rw" min="1" max="100" value="4" style="width:80px"> : <input class="in" type="number" id="rh" min="1" max="100" value="3" style="width:80px"></div>
-      <label class="l" for="bg">Hintergrund</label>
+      </div>
+      <div class="g"><label class="l" for="bg">Hintergrund</label>
       <select class="in" id="bg"><option value="transparent">Transparent</option><option value="white">Weiß</option><option value="black">Schwarz</option><option value="custom">Eigene Farbe …</option></select>
       <div class="colorrow" id="bgC" hidden style="margin-top:6px"><input type="color" id="bgcol" value="#ffffff"><span class="muted">Farbe wählen</span></div>
+      </div>
     </div>
 
     <div class="page" data-p="1">
@@ -101,15 +105,17 @@
     </div>
 
     <div class="page" data-p="2">
-      <label class="l" for="fmt">Format</label>
+      <div class="g"><label class="l" for="fmt">Format</label>
       <select class="in" id="fmt"><option value="png">PNG (mit Transparenz)</option><option value="jpg">JPG (kleiner, ohne Transparenz)</option><option value="webp">WebP</option><option value="ico">ICO (Windows-Symbol)</option></select>
-      <label class="l" for="sizeSel">Größe (längste Seite)</label>
+      </div>
+      <div class="g"><label class="l" for="sizeSel">Größe (längste Seite)</label>
       <select class="in" id="sizeSel"></select>
       <input class="in" type="number" id="sizeN" min="8" max="4096" value="512" style="margin-top:6px" hidden>
+      </div>
       <div class="rg" id="qRow"><span>Qualität</span><input type="range" id="qual" min="1" max="100" value="90"><output id="qualO"></output></div>
       <div class="info" id="sizeInfo"></div>
-      <label class="l">Kleinansicht (64 · 32 · 16 px)</label>
-      <div class="sizes" id="probe"></div>
+      <div class="g"><label class="l">Kleinansicht (64 · 32 · 16 px)</label>
+      <div class="sizes" id="probe"></div></div>
     </div>
 
     <div class="acts">
