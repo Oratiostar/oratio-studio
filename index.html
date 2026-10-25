@@ -188,7 +188,7 @@ try { LANG = localStorage.getItem("lang") || ((navigator.language||"").startsWit
 function T(s){ if (LANG !== "fr" || FR === null || typeof s !== "string") return s; const r = FR[s]; return r === undefined ? s : r; }
 
 const UI = {
-  de:{placeSub:"Alles an einem Ort – wähle einen Bereich.",studio:"Oratio Studio",studioT:"Nachschlagewerk und Werkzeuge für Elektronik, Informatik, Geräte und Labor.",lifestyle:"Lifestyle",lifeT:"Alltag, Genuss und Freizeit.",bald:"Weitere Bereiche folgen bald.",xmN:"Weihnachtswelt",xmZ:"27 Werkzeuge",xmT:"Karten, Wünsche, Post für Kunden und Team, Rezepte, Wichteln, Adventskalender, Quiz und viele Ideen zum Verschenken und Teilen.",deN:"Deutschkurs",deZ:"66 Lektionen · A1 bis C1",deT:"Deutsch lernen Schritt für Schritt – Aussprache, Wortschatz, Grammatik und Übungen.",deH:"Kommt bald",deP1:"Aussprache und Alphabet",deP2:"Grundwortschatz nach Themen",deP3:"Grammatik leicht erklärt",deP4:"Übungen und kleine Tests",deP5:"Hörverstehen und Dialoge",place:"Oratio Place",welten2:"Welten",
+  de:{placeSub:"Alles an einem Ort – wähle einen Bereich.",werkzeug:"Werkzeug",teilw:"teilweise passend",studio:"Circuit Studio",studioT:"Nachschlagewerk und Werkzeuge für Elektronik, Informatik, Geräte und Labor.",lifestyle:"Lifestyle",lifeT:"Alltag, Genuss und Freizeit.",bald:"Weitere Bereiche folgen bald.",xmN:"Weihnachtswelt",xmZ:"27 Werkzeuge",xmT:"Karten, Wünsche, Post für Kunden und Team, Rezepte, Wichteln, Adventskalender, Quiz und viele Ideen zum Verschenken und Teilen.",deN:"Deutschkurs",deZ:"66 Lektionen · A1 bis C1",deT:"Deutsch lernen Schritt für Schritt – Aussprache, Wortschatz, Grammatik und Übungen.",deH:"Kommt bald",deP1:"Aussprache und Alphabet",deP2:"Grundwortschatz nach Themen",deP3:"Grammatik leicht erklärt",deP4:"Übungen und kleine Tests",deP5:"Hörverstehen und Dialoge",place:"Oratio Place",welten2:"Welten",
       icN:"Icon-Werkstatt",icT:"Bild in Form bringen, zuschneiden und als Symbol speichern (PNG, JPG, WebP, ICO).",icZ:"Werkzeug",dtN:"Datei-Werkstatt",dtT:"PDF, Word, Bilder und ZIP: zusammenfügen, umwandeln, komprimieren – direkt im Browser, ohne Upload.",
       katAlle:"Alle",kat:{elektronik:"Elektronik",informatik:"Informatik",geraete:"Geräte",labor:"Labor",werkzeuge:"Werkzeuge"},wzName:"Werkzeuge",wzN:"2 Werkzeuge",wzT:"Icon-Werkstatt und Datei-Werkstatt (PDF, Word, Bilder, ZIP) – direkt im Browser, ohne Upload.",
       suche:"Alles durchsuchen …",welten:"Alle Welten",seiten:"Seiten",startsub:"Nachschlagewerk für Elektronik, Bauteile und Technik. Wähle eine Welt oder suche oben.",
@@ -200,7 +200,7 @@ const UI = {
       pin:{i:"Eingang",o:"Ausgang",x:"Ein-/Ausgang",g:"Masse",v:"Versorgung",n:"nicht belegt"},
       dunkel:"Dunkel",hellm:"Hell",auto:"Auto",imp:"Impressum & Datenschutz",stand:"Hobbyprojekt, Angaben ohne Gewähr. Bitte wichtige Werte im Datenblatt prüfen.",
       zeit:"Zeitdiagramm",kreis:"Schaltbild",ver:"Versorgung / Werte",geh:"Gehäuse",ans:"Anschlüsse"},
-  fr:{placeSub:"Tout au même endroit – choisis un domaine.",studio:"Oratio Studio",studioT:"Ouvrage de référence et outils pour l’électronique, l’informatique, les appareils et le laboratoire.",lifestyle:"Lifestyle",lifeT:"Quotidien, plaisirs et loisirs.",bald:"D’autres domaines arrivent bientôt.",xmN:"Le monde de Noël",xmZ:"27 outils",xmT:"Cartes, vœux, courrier pour clients et équipe, recettes, Secret Santa, calendrier de l’Avent, quiz et beaucoup d’idées à offrir et à partager.",deN:"Cours d’allemand",deZ:"66 leçons · A1 à C1",deT:"Apprendre l’allemand pas à pas : prononciation, vocabulaire, grammaire et exercices.",deH:"Bientôt disponible",deP1:"Prononciation et alphabet",deP2:"Vocabulaire de base par thèmes",deP3:"Grammaire expliquée simplement",deP4:"Exercices et petits tests",deP5:"Compréhension orale et dialogues",place:"Oratio Place",welten2:"mondes",
+  fr:{placeSub:"Tout au même endroit – choisis un domaine.",werkzeug:"Outil",teilw:"résultats partiels",studio:"Circuit Studio",studioT:"Ouvrage de référence et outils pour l’électronique, l’informatique, les appareils et le laboratoire.",lifestyle:"Lifestyle",lifeT:"Quotidien, plaisirs et loisirs.",bald:"D’autres domaines arrivent bientôt.",xmN:"Le monde de Noël",xmZ:"27 outils",xmT:"Cartes, vœux, courrier pour clients et équipe, recettes, Secret Santa, calendrier de l’Avent, quiz et beaucoup d’idées à offrir et à partager.",deN:"Cours d’allemand",deZ:"66 leçons · A1 à C1",deT:"Apprendre l’allemand pas à pas : prononciation, vocabulaire, grammaire et exercices.",deH:"Bientôt disponible",deP1:"Prononciation et alphabet",deP2:"Vocabulaire de base par thèmes",deP3:"Grammaire expliquée simplement",deP4:"Exercices et petits tests",deP5:"Compréhension orale et dialogues",place:"Oratio Place",welten2:"mondes",
       icN:"Atelier d’icônes",icT:"Mettre une image en forme, la recadrer et l’enregistrer comme icône (PNG, JPG, WebP, ICO).",icZ:"Outil",dtN:"Atelier de fichiers",dtT:"PDF, Word, images et ZIP : fusionner, convertir, compresser – directement dans le navigateur, sans envoi.",
       katAlle:"Tous",kat:{elektronik:"Électronique",informatik:"Informatique",geraete:"Appareils",labor:"Laboratoire",werkzeuge:"Outils"},wzName:"Outils",wzN:"2 outils",wzT:"Atelier d’icônes et atelier de fichiers (PDF, Word, images, ZIP) – directement dans le navigateur, sans envoi.",
       suche:"Tout rechercher …",welten:"Tous les mondes",seiten:"pages",startsub:"Ouvrage de référence pour l’électronique, les composants et la technique. Choisis un monde ou recherche ci-dessus.",
@@ -465,14 +465,14 @@ function deutschseite(){
     '<div class="card" style="max-width:560px"><h2 style="margin-top:0">'+esc(U("deH"))+'</h2><ul style="line-height:1.9;padding-left:20px;margin:0">'+[1,2,3,4,5].map(i=>'<li>'+esc(U("deP"+i))+'</li>').join("")+'</ul></div>';
 }
 function startseite(){
-  document.title = "Oratio Studio"; brand("studio");
+  document.title = "Circuit Studio"; brand("studio");
   const chips = '<div class="kats" role="tablist">'+["alle"].concat(KATS).map(k =>
     '<button class="kat'+(k===KATWAHL?" on":"")+'" data-k="'+k+'">'+esc(k==="alle" ? U("katAlle") : U("kat")[k])+'</button>').join("")+'</div>';
   const karten = INDEX.welten.map(w =>
     '<a class="welt" data-k="'+weltKat(w.id).join(" ")+'" href="#/w/'+w.id+'"><div class="kopf'+(hell(w.farbe)?" light":"")+'" style="background:'+hexOf(w.farbe)+'"><div class="ic">'+weltSym(w)+'</div><b>'+esc(T(w.name))+'</b></div><div class="t"><div class="n">'+w.seiten.length+' '+U("seiten")+'</div>'+esc(T(w.untertitel))+'</div></a>').join("")
     + [["icon-werkstatt.html","🎨","linear-gradient(135deg,#2f66d0,#8a5ad8)","icN","icT"],["datei-werkstatt.html","🗂️","linear-gradient(135deg,#e0703a,#e0527a)","dtN","dtT"]].map(x =>
       '<a class="welt" data-k="werkzeuge" href="'+x[0]+'"><div class="kopf" style="background:'+x[2]+'"><div class="ic">'+x[1]+'</div><b>'+esc(U(x[3]))+'</b></div><div class="t"><div class="n">'+esc(U("icZ"))+'</div>'+esc(U(x[4]))+'</div></a>').join("");
-  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("studio"))+'</div><h1>Oratio Studio</h1><p class="sub">'+U("startsub")+'</p>'+chips+'<div class="grid">'+karten+'</div>';
+  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("studio"))+'</div><h1>Circuit Studio</h1><p class="sub">'+U("startsub")+'</p>'+chips+'<div class="grid">'+karten+'</div>';
   const filtere = () => {
     document.querySelectorAll(".kat").forEach(b => b.classList.toggle("on", b.dataset.k === KATWAHL));
     document.querySelectorAll(".grid .welt").forEach(a => { a.hidden = !(KATWAHL === "alle" || a.dataset.k.split(" ").includes(KATWAHL)); });
@@ -482,7 +482,7 @@ function startseite(){
 }
 function weltseite(id){
   const w = weltInfo(id); if (!w) return nichts();
-  document.title = T(w.name)+" – Oratio Studio";brand("studio");
+  document.title = T(w.name)+" – Circuit Studio";brand("studio");
   const grp = new Map(); w.seiten.forEach(s => { const g = s.gruppe || ""; if(!grp.has(g)) grp.set(g, []); grp.get(g).push(s); });
   const offen = grp.size <= 3;
   let h = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › <a href="#/studio">'+esc(U("studio"))+'</a> › '+esc(T(w.name))+'</div>'+bannerHTML(w, w.name, w.untertitel)+'<input class="in" id="wf" placeholder="'+esc(U("filter"))+'" style="margin-bottom:6px">';
@@ -495,7 +495,7 @@ function weltseite(id){
 async function seitenansicht(wid, sid){
   const w = weltInfo(wid); if (!w) return nichts();
   const wd = await welt(wid), s = wd.seiten.find(p => p.id === sid); if (!s) return nichts();
-  document.title = T(s.titel)+" – Oratio Studio";brand("studio");
+  document.title = T(s.titel)+" – Circuit Studio";brand("studio");
   let h = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › <a href="#/studio">'+esc(U("studio"))+'</a> › <a href="#/w/'+w.id+'">'+esc(T(w.name))+'</a> › '+esc(T(s.titel))+'</div>'+bannerHTML(w, s.titel, s.kurz, s.symbol);
   if (s.tags && s.tags.length) h += '<div class="tags">'+s.tags.filter(t=>t.length>2&&!/[\/()]/.test(t)).slice(0,10).map(t=>'<span class="tag">'+esc(t)+'</span>').join("")+'</div>';
   for (const b of s.bloecke){ const f = BAUSTEIN[b.t]; try { h += f ? f(b, w.farbe) : ""; } catch(e){ h += '<div class="platz">'+esc(b.t)+': '+esc(e.message)+'</div>'; } }
@@ -508,27 +508,89 @@ async function seitenansicht(wid, sid){
 let EXTRA = null;
 const WNAME = {de:["Deutschkurs","Cours d’allemand"], xm:["Weihnachtswelt","Monde de Noël"], rz:["Rezepte","Recettes"]};
 const WFARBE = {de:"linear-gradient(135deg,#ff9f1a,#ff3b8a 50%,#7a4dff)", xm:"linear-gradient(135deg,#c4162b,#e08a2c)", rz:"linear-gradient(135deg,#e08a2c,#1d7a47)"};
+/* ---- Intelligente Suche: Umlaute, Tippfehler, Verwandtes, Werkzeuge ---- */
+const WTOOLS = [
+ ["datei-werkstatt.html#merge","➕","PDF zusammenfügen","Fusionner des PDF","Mehrere PDFs zu einer Datei verbinden, Seiten sortieren, drehen oder löschen.","Fusionner plusieurs PDF en un seul fichier.","pdf zusammenfuegen vereinen verbinden mergen kombinieren fusionner join combine"],
+ ["datei-werkstatt.html#split","✂️","PDF teilen & sortieren","Diviser et trier un PDF","Seiten auswählen, löschen, drehen, umsortieren – oder jede Seite einzeln speichern.","Choisir, supprimer, pivoter, réordonner des pages.","pdf teilen trennen aufteilen seiten loeschen drehen sortieren extrahieren split diviser"],
+ ["datei-werkstatt.html#compress","🗜️","PDF komprimieren","Compresser un PDF","Große PDFs kleiner machen – in drei Stufen, mit Vorher/Nachher-Größe.","Réduire la taille des PDF en trois niveaux.","pdf komprimieren verkleinern kleiner groesse dateigroesse reduzieren compress optimieren"],
+ ["datei-werkstatt.html#pdf2img","🖼️","PDF → Bilder","PDF → images","Jede Seite als PNG oder JPG speichern – in wählbarer Auflösung.","Enregistrer chaque page en PNG ou JPG.","pdf bild bilder png jpg jpeg foto umwandeln konvertieren image"],
+ ["datei-werkstatt.html#img2pdf","📄","Bilder → PDF","Images → PDF","Fotos oder Scans in eine PDF-Datei packen – in deiner Reihenfolge.","Mettre photos ou scans dans un PDF.","pdf bild bilder foto scan jpg png umwandeln konvertieren image"],
+ ["datei-werkstatt.html#pdf2word","📝","PDF → Word","PDF → Word","Text und Überschriften aus einer PDF in ein bearbeitbares Word-Dokument (.docx) übernehmen.","Convertir un PDF en document Word modifiable (.docx).","pdf word docx dokument umwandeln konvertieren bearbeiten office text"],
+ ["datei-werkstatt.html#word2pdf","📘","Word / Text → PDF","Word / texte → PDF","Word-Dokumente (.docx) oder Textdateien (.txt) in PDF umwandeln.","Convertir Word (.docx) ou texte (.txt) en PDF.","word docx doc txt text pdf dokument umwandeln konvertieren office"],
+ ["datei-werkstatt.html#pdf2txt","🔤","PDF → Text","PDF → texte","Den Text aus einer PDF herausziehen – zum Kopieren oder als .txt-Datei.","Extraire le texte d’un PDF.","pdf text txt kopieren auslesen extrahieren ocr"],
+ ["datei-werkstatt.html#stamp","🔖","Seitenzahlen & Wasserzeichen","Numéros de page et filigrane","Seitenzahlen einfügen, ein Wasserzeichen aufdrucken oder Dateiinfos entfernen.","Ajouter numéros de page, filigrane, effacer les métadonnées.","pdf seitenzahl seitenzahlen nummerieren wasserzeichen stempel metadaten datenschutz"],
+ ["datei-werkstatt.html#bilder","📷","Bilder verkleinern & umwandeln","Réduire et convertir des images","Fotos kleiner machen und in JPG, PNG oder WebP umwandeln – viele auf einmal.","Réduire des photos et les convertir en JPG, PNG, WebP.","bild bilder foto fotos verkleinern groesse komprimieren jpg jpeg png webp umwandeln konvertieren image picture"],
+ ["datei-werkstatt.html#zip","📦","ZIP packen & entpacken","Créer et ouvrir un ZIP","Dateien zu einem ZIP bündeln oder ein ZIP öffnen und einzelne Dateien herausholen.","Regrouper des fichiers en ZIP ou ouvrir un ZIP.","zip packen entpacken archiv rar komprimieren datei dateien auspacken"],
+ ["datei-werkstatt.html","🗂️","Datei-Werkstatt","Atelier de fichiers","PDF, Word, Bilder und ZIP: zusammenfügen, umwandeln, komprimieren – direkt im Browser, ohne Upload.","PDF, Word, images et ZIP, sans envoi.","datei werkstatt pdf word zip bilder werkzeug tool"],
+ ["icon-werkstatt.html","🎨","Icon-Werkstatt","Atelier d’icônes","Bild in Form bringen, zuschneiden und als Symbol speichern (PNG, JPG, WebP, ICO).","Mettre une image en forme et l’enregistrer comme icône.","icon symbol logo favicon ico app icon bild zuschneiden rund form png webp werkstatt"]
+];
+const SYN = {
+ word:["docx","dokument"], wait:["word","docx"], wort:["word"], docx:["word"], doc:["word","docx"], dokument:["word","docx"],
+ bild:["foto","image"], bilder:["foto","images","image"], foto:["bild","image"], fotos:["bilder"], image:["bild"], images:["bilder"], picture:["bild"], jpeg:["jpg"],
+ pdfs:["pdf"], archiv:["zip"], rar:["zip"], entpacken:["zip"], packen:["zip"],
+ widerstand:["resistor","ohm"], resistor:["widerstand"], kondensator:["capacitor","cap"], capacitor:["kondensator"], spule:["induktivitaet","inductor"], inductor:["spule"],
+ led:["leuchtdiode","diode"], leuchtdiode:["led"], transistor:["mosfet","bjt"], mosfet:["transistor","fet"], akku:["batterie","accu","lipo"], batterie:["akku"],
+ rezept:["rezepte","kochen"], kochen:["rezept"], essen:["rezept","menue"], handy:["smartphone","telefon"], smartphone:["handy"], telefon:["handy"],
+ kamera:["camera","foto"], camera:["kamera"], konsole:["playstation","xbox","switch"], strom:["current","ampere"], spannung:["volt","voltage"],
+ arduino:["mikrocontroller","esp32"], mikrocontroller:["mcu","arduino"], mcu:["mikrocontroller"], raspberry:["pi"], grammatik:["deutsch"], verb:["verben"], verben:["verb"],
+ geschenk:["geschenke","wichteln"], geschenke:["geschenk"], wunsch:["wuensche","wunschtext"], karte:["weihnachtskarte"],
+ mot:["wort"], recette:["rezept"], recettes:["rezepte"], fichier:["datei"], image_:["bild"]
+};
+let DOCS = null, VOCAB = null;
+const nrm = t => String(t||"").toLowerCase().replace(/ä/g,"a").replace(/ö/g,"o").replace(/ü/g,"u").replace(/ß/g,"ss").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/ae/g,"a").replace(/oe/g,"o").replace(/ue/g,"u");
+function lev(a,b,m){ if (Math.abs(a.length-b.length)>m) return m+1; let p=[...Array(b.length+1).keys()]; for(let i=1;i<=a.length;i++){ const c=[i]; let mn=i; for(let j=1;j<=b.length;j++){ c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1)); if(c[j]<mn) mn=c[j]; } if(mn>m) return m+1; p=c; } return p[b.length]; }
+async function sucheVorbereiten(){
+  if (DOCS) return;
+  if (!SUCHE) SUCHE = await holen("daten/suche.json");
+  if (!EXTRA) { try { EXTRA = await holen("daten/suche-extra.json"); } catch(e){ EXTRA = []; } }
+  DOCS = [];
+  for (const [wid, sid, text] of SUCHE){
+    const w = weltInfo(wid); const s = w && w.seiten.find(p => p.id === sid); if (!s) continue;
+    DOCS.push({t:nrm(s.titel+" "+(T(s.titel))), k:nrm((s.kurz||"")+" "+T(s.kurz||"")+" "+(w.name?T(w.name):"")), b:nrm(text), w:1, mk:()=>({chip:T(w.name), bg:hexOf(w.farbe), light:hell(w.farbe), titel:T(s.titel), kurz:s.kurz?T(s.kurz):"", href:'#/s/'+w.id+'/'+encodeURIComponent(s.id)})});
+  }
+  for (const [k, lv, href, t1, t2, s1, s2, text] of EXTRA)
+    DOCS.push({t:nrm(t1+" "+t2), k:nrm(s1+" "+s2), b:nrm(text), w:1, mk:()=>({chip:(WNAME[k]||[k,k])[LANG==="fr"?1:0]+(lv?" · "+lv:""), bg:WFARBE[k]||"#555", light:false, titel:LANG==="fr"?t2:t1, kurz:LANG==="fr"?s2:s1, href})});
+  for (const [href, sym, t1, t2, s1, s2, kw] of WTOOLS)
+    DOCS.push({t:nrm(t1+" "+t2), k:nrm(s1+" "+s2), b:nrm(kw), kw:nrm(kw), w:3, mk:()=>({chip:U("werkzeug"), bg:"linear-gradient(135deg,#e0703a,#e0527a)", light:false, titel:sym+" "+(LANG==="fr"?t2:t1), kurz:LANG==="fr"?s2:s1, href})});
+  VOCAB = new Set(); const rx=/[a-z0-9]{4,}/g;
+  for (const d of DOCS){ for (const part of [d.t,d.k]) (part.match(rx)||[]).forEach(x=>VOCAB.add(x)); }
+}
+function varianten(w){
+  const v = new Set([w]); (SYN[w]||[]).forEach(x=>v.add(nrm(x)));
+  if (w.length>=4){ const m = w.length>=7?2:1; for (const x of VOCAB){ if (x.startsWith(w)||w.startsWith(x)&&x.length>=4){ v.add(x); continue; } if (w.length>=5 && Math.abs(x.length-w.length)<=m && lev(w,x,m)<=m) v.add(x); } }
+  return [...v].slice(0,24);
+}
+function bewerte(d, vars){ // vars: Array je Suchwort -> Varianten; gibt {sc, hit} zurück
+  let sc = 0, hit = 0;
+  for (const vs of vars){
+    let best = 0;
+    for (let i=0;i<vs.length;i++){ const x = vs[i], pen = i===0?1:0.6;
+      let s = 0;
+      if (d.t.includes(x)) s = new RegExp("(^|[^a-z0-9])"+x.replace(/[^a-z0-9]/g,"")).test(d.t)? 12 : 8;
+      else if (d.kw && d.kw.includes(x)) s = 9;
+      else if (d.k.includes(x)) s = 4;
+      else if (d.b.includes(x)) s = 1.5;
+      best = Math.max(best, s*pen);
+    }
+    if (best>0) hit++; sc += best;
+  }
+  return {sc: sc*d.w, hit};
+}
 async function sucheAnzeigen(q){
   q = decodeURIComponent(q||"").trim();
   document.title = q+" – Oratio Place";brand("place");
-  if (!SUCHE) SUCHE = await holen("daten/suche.json");
-  if (!EXTRA) { try { EXTRA = await holen("daten/suche-extra.json"); } catch(e){ EXTRA = []; } }
-  const worte = q.toLowerCase().split(/\s+/).filter(Boolean), res = [];
-  if (worte.length) for (const [wid, sid, text] of SUCHE){
-    const w = weltInfo(wid); const s = w && w.seiten.find(p => p.id === sid); if (!s) continue;
-    const titel = (T(s.titel)+" "+s.titel).toLowerCase(), kurz = (T(s.kurz||"")+" "+(s.kurz||"")).toLowerCase(), all = titel+" "+kurz+" "+text;
-    if (!worte.every(x => all.includes(x))) continue;
-    let sc = 0; worte.forEach(x => { if (titel.includes(x)) sc += 5; if (kurz.includes(x)) sc += 2; });
-    res.push({sc, chip:T(w.name), bg:hexOf(w.farbe), light:hell(w.farbe), titel:T(s.titel), kurz:s.kurz?T(s.kurz):"", href:'#/s/'+w.id+'/'+encodeURIComponent(s.id)});
+  await sucheVorbereiten();
+  const worte = nrm(q).split(/[^a-z0-9+#.]+/).filter(Boolean);
+  let res = [], teil = false;
+  if (worte.length){
+    const vars = worte.map(varianten);
+    const alle = DOCS.map(d => ({d, ...bewerte(d, vars)})).filter(x => x.hit>0);
+    let voll = alle.filter(x => x.hit===worte.length);
+    if (!voll.length) { teil = true; voll = alle; }
+    voll.sort((a,b) => (b.hit-a.hit) || (b.sc-a.sc));
+    res = voll.slice(0,100).map(x => x.d.mk());
   }
-  if (worte.length) for (const [k, lv, href, t1, t2, s1, s2, text] of EXTRA){
-    const titel = (t1+" "+t2).toLowerCase(), kurz = (s1+" "+s2).toLowerCase(), all = titel+" "+kurz+" "+text;
-    if (!worte.every(x => all.includes(x))) continue;
-    let sc = 0; worte.forEach(x => { if (titel.includes(x)) sc += 5; if (kurz.includes(x)) sc += 2; });
-    res.push({sc, chip:(WNAME[k]||[k,k])[LANG==="fr"?1:0]+(lv?" · "+lv:""), bg:WFARBE[k]||"#555", light:false, titel:LANG==="fr"?t2:t1, kurz:LANG==="fr"?s2:s1, href});
-  }
-  res.sort((a,b) => b.sc-a.sc);
-  app.innerHTML = '<h1>“'+esc(q)+'”</h1><p class="sub">'+res.length+' '+U("treffer")+'</p><div class="treffer">'+res.slice(0,100).map(r =>
+  app.innerHTML = '<h1>“'+esc(q)+'”</h1><p class="sub">'+res.length+' '+U("treffer")+(teil?' – '+U("teilw"):'')+'</p><div class="treffer">'+res.map(r =>
     '<a href="'+esc(r.href)+'"><span class="chip'+(r.light?" light":"")+'" style="background:'+r.bg+'">'+esc(r.chip)+'</span><b>'+esc(r.titel)+'</b>'+(r.kurz?'<small>'+esc(r.kurz)+'</small>':'')+'</a>').join("")+'</div>'
     + (res.length ? "" : '<p>'+U("keine")+'</p>');
   app.querySelectorAll('a[href*="?r="]').forEach(a => a.addEventListener("click", ev => { const m = a.getAttribute("href").match(/^(.*)\?r=(.*)$/); if (m) { ev.preventDefault(); try { sessionStorage.setItem("xm-rez", m[2]); } catch(e){} location.href = m[1]; } }));

@@ -94,7 +94,7 @@ window.WZ_FR = {
 "Rand":"Bordure","Form":"Forme","Format":"Format","Qualität":"Qualité","Zoom":"Zoom","Spiegeln":"Miroir","⇆ Spiegeln":"⇆ Miroir","⟳ Drehen":"⟳ Pivoter","90° drehen":"Pivoter de 90°",
 "Einpassen":"Ajuster","Einfügen":"Coller","Öffnen":"Ouvrir","Speichern":"Enregistrer","Paket ▾":"Lot ▾","Ausgabe":"Sortie","Transparent":"Transparent","Schwarz":"Noir","Weiß":"Blanc",
 "Sechseck":"Hexagone","Stern":"Étoile","Herz":"Cœur","kein Bild":"aucune image","Bild ":"Image ","Seite ":"Page ","Bild":"Image","Eigenes":"Perso",
-"Datei-Werkstatt – Oratio Studio":"Atelier de fichiers – Oratio","Icon-Werkstatt – Oratio Studio":"Atelier d’icônes – Oratio","Werkzeuge – Oratio Studio":"Outils – Oratio",
+"Datei-Werkstatt – Oratio Studio":"Atelier de fichiers – Oratio","Icon-Werkstatt – Oratio Studio":"Atelier d’icônes – Oratio","Werkzeuge – Oratio Studio":"Outils – Oratio","Circuit Studio":"Circuit Studio",
 "Datei-Werkstatt":"Atelier de fichiers","Icon-Werkstatt":"Atelier d’icônes","Werkzeuge":"Outils","Hell":"Clair","Dunkel":"Sombre","Auto":"Auto"
 ,
 "(kein Text)":"(pas de texte)",
