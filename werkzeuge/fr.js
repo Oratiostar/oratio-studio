@@ -134,4 +134,6 @@ window.WZ_FR = {
 "nicht":"pas"
 ,
 "Farbe":"Couleur","Blau":"Bleu","Grün":"Vert","Gelb":"Jaune","Rot":"Rouge","Schwarz":"Noir","Lila":"Violet","Rosa":"Rose","Türkis":"Turquoise"
+,
+"Abbrechen":"Annuler","Übernehmen":"Appliquer","Schließen":"Fermer"
 };

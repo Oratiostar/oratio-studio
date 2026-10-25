@@ -8,9 +8,13 @@
 <link rel="icon" href="icon.png">
 <link rel="stylesheet" href="werkzeuge/wz.css">
 <style>
-.wrap{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:16px;align-items:start}
-.stagebox{position:sticky;top:64px}
-#stage{width:100%;height:min(66vh,620px);min-height:300px;display:block;border-radius:16px;border:3px solid var(--acc);background:linear-gradient(135deg,rgba(var(--accrgb),.10),rgba(var(--accrgb),.04)),var(--card);touch-action:none;cursor:grab;box-shadow:var(--shadow)}
+.wrap{display:grid;grid-template-columns:minmax(0,1fr) 380px;grid-template-rows:auto auto;gap:16px;align-items:start}
+.stagebox{display:contents}
+.stagewrap{grid-column:1;grid-row:1;position:relative;align-self:stretch;min-height:340px}
+.below{grid-column:1;grid-row:2}
+.wrap>.panel{grid-column:2;grid-row:1}
+.wrap>.farbbox{grid-column:2;grid-row:2;margin-top:0}
+#stage{position:absolute;inset:0;width:100%;height:100%;display:block;border-radius:16px;border:3px solid var(--acc);background:linear-gradient(135deg,rgba(var(--accrgb),.10),rgba(var(--accrgb),.04)),var(--card);touch-action:none;cursor:grab;box-shadow:var(--shadow)}
 #stage.drag{cursor:grabbing}
 .tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .zoomrow{display:flex;gap:10px;align-items:center;margin-top:10px}
@@ -29,8 +33,8 @@
 .menu .pop button:hover{background:var(--soft)}
 .menu .pop small{display:block;color:var(--muted)}
 .colorrow{display:flex;gap:8px;align-items:center}
-input[type=color]{width:44px;height:36px;border:2px solid var(--line);border-radius:10px;background:var(--input);padding:2px}
-@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr)}.stagebox{position:static}#stage{height:min(56vh,420px)}}
+
+@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr)}.stagewrap,.below,.wrap>.panel,.wrap>.farbbox{grid-column:1;grid-row:auto}.stagewrap{min-height:0;height:min(56vh,420px)}.wrap>.farbbox{margin-top:0}}
 </style>
 </head>
 <body>
@@ -39,7 +43,8 @@ input[type=color]{width:44px;height:36px;border:2px solid var(--line);border-rad
 <p class="sub">Bild öffnen oder hineinziehen, in die gewünschte Form bringen, zuschneiden und speichern – als PNG, JPG, WebP oder Windows-ICO, auch als fertiges Paket für Favicon, Android, iOS und Windows. Alles passiert in deinem Browser; das Bild wird nirgendwohin gesendet.</p>
 <div class="wrap">
   <div class="stagebox">
-    <canvas id="stage"></canvas>
+    <div class="stagewrap"><canvas id="stage"></canvas></div>
+    <div class="below">
     <div class="tools">
       <button class="btn sm" id="bOpen">Öffnen</button>
       <button class="btn sm" id="bPaste">Einfügen</button>
@@ -52,6 +57,7 @@ input[type=color]{width:44px;height:36px;border:2px solid var(--line);border-rad
     </div>
     <div class="zoomrow"><span>Zoom</span><input type="range" id="zoom" min="0" max="1000" value="0"><span id="zoomL" style="min-width:56px;text-align:right"></span></div>
     <div class="info" id="info">Noch kein Bild geöffnet. Ziehen verschiebt, Mausrad oder zwei Finger zoomen, Doppelklick passt ein.</div>
+    </div>
   </div>
   <div class="card panel">
     <div class="tabs"><button class="btn on" data-p="0">Form</button><button class="btn" data-p="1">Effekte</button><button class="btn" data-p="2">Ausgabe</button></div>

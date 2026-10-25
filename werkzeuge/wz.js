@@ -20,6 +20,12 @@
   var n = null; try { n = localStorage.getItem("wz-farbe-icon"); } catch(e){}
   window.WZ_farbe(n || "blau");
 })();
+window.WZ_FLAGGE = function(l){
+  var s = l === "fr"
+    ? '<rect width="10" height="20" fill="#0055a4"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#ef4135"/>'
+    : '<rect width="30" height="7" fill="#000"/><rect y="7" width="30" height="6" fill="#dd0000"/><rect y="13" width="30" height="7" fill="#ffce00"/>';
+  return '<svg class="flag" viewBox="0 0 30 20" width="21" height="14" aria-hidden="true">' + s + '</svg>';
+};
 window.WZ = {
   lang: (function(){ var l = null; try { l = localStorage.getItem("lang"); } catch(e){} return l || ((navigator.language||"").indexOf("fr")===0 ? "fr" : "de"); })(),
   _re: null,
@@ -73,6 +79,66 @@ window.WZ = {
     setInterval(function(){ document.querySelectorAll("select").forEach(function(s){ if (s._label) s._label(); }); }, 400);
     alle();
   },
+  farbfelder: function(){
+    var pop = null, cur = null, st = {h:0,s:1,v:1}, orig = "#ffffff";
+    function hex2rgb(h){ h = h.replace("#",""); if (h.length === 3) h = h.replace(/./g, "$&$&"); var n = parseInt(h, 16); return [(n>>16)&255, (n>>8)&255, n&255]; }
+    function rgb2hex(r,g,b){ return "#" + [r,g,b].map(function(x){ return ("0" + Math.round(x).toString(16)).slice(-2); }).join(""); }
+    function hsv2rgb(h,s,v){ var f = function(n){ var k = (n + h/60) % 6; return v - v*s*Math.max(Math.min(k, 4-k, 1), 0); }; return [f(5)*255, f(3)*255, f(1)*255]; }
+    function rgb2hsv(r,g,b){ r/=255; g/=255; b/=255; var mx = Math.max(r,g,b), mn = Math.min(r,g,b), d = mx-mn, h = 0; if (d) { if (mx===r) h = ((g-b)/d)%6; else if (mx===g) h = (b-r)/d+2; else h = (r-g)/d+4; h *= 60; if (h<0) h += 360; } return {h:h, s: mx ? d/mx : 0, v: mx}; }
+    var PRE = ["#ffffff","#d9d9d9","#8c93a8","#2a2f3a","#000000","#ff4d5e","#e0364a","#ff8c1a","#e0703a","#ffd23f","#f2b705","#b8f04a","#55b52e","#3ddc84","#19c9b8","#7fd6ff","#27a3df","#2e86ff","#1b4fd0","#9b5de5","#8a5ad8","#ff7ac8","#e0527a","#a8683c"];
+    function bauePop(){
+      pop = document.createElement("div"); pop.className = "cpop"; pop.hidden = true;
+      pop.innerHTML = '<div class="ch"><b>Farbe wählen</b><button type="button" class="cx" aria-label="Schließen">✕</button></div>' +
+        '<canvas class="csv" width="240" height="160"></canvas>' +
+        '<input class="chue" type="range" min="0" max="360" value="0">' +
+        '<div class="crow"><span class="cprev"></span><input class="chex in" maxlength="7" spellcheck="false" data-nt></div>' +
+        '<div class="cpre">' + PRE.map(function(c){ return '<button type="button" data-c="' + c + '" style="background:' + c + '" aria-label="' + c + '" data-nt></button>'; }).join("") + '</div>' +
+        '<div class="cbt"><button type="button" class="btn sm ca">Abbrechen</button><button type="button" class="btn sm on cok">Übernehmen</button></div>';
+      document.body.appendChild(pop);
+      var cv = pop.querySelector(".csv"), cx = cv.getContext("2d");
+      function zeichne(){
+        var g = cx.createLinearGradient(0,0,cv.width,0); g.addColorStop(0,"#fff"); var hc = hsv2rgb(st.h,1,1); g.addColorStop(1, rgb2hex(hc[0],hc[1],hc[2]));
+        cx.fillStyle = g; cx.fillRect(0,0,cv.width,cv.height);
+        var g2 = cx.createLinearGradient(0,0,0,cv.height); g2.addColorStop(0,"rgba(0,0,0,0)"); g2.addColorStop(1,"#000"); cx.fillStyle = g2; cx.fillRect(0,0,cv.width,cv.height);
+        var x = st.s*cv.width, y = (1-st.v)*cv.height; cx.beginPath(); cx.arc(x,y,8,0,7); cx.lineWidth = 3; cx.strokeStyle = "#fff"; cx.stroke(); cx.beginPath(); cx.arc(x,y,9.5,0,7); cx.lineWidth = 1.5; cx.strokeStyle = "#000"; cx.stroke();
+      }
+      function anwenden(live){
+        var c = hsv2rgb(st.h,st.s,st.v), h = rgb2hex(c[0],c[1],c[2]);
+        pop.querySelector(".cprev").style.background = h; pop.querySelector(".chex").value = h; zeichne();
+        if (cur) { cur.value = h; cur._swatch.style.background = h; if (live) cur.dispatchEvent(new Event("input", {bubbles:true})); }
+      }
+      pop._an = anwenden;
+      function sv(e){ var r = cv.getBoundingClientRect(); st.s = Math.min(1, Math.max(0, (e.clientX-r.left)/r.width)); st.v = 1 - Math.min(1, Math.max(0, (e.clientY-r.top)/r.height)); anwenden(true); }
+      var down = false; cv.addEventListener("pointerdown", function(e){ down = true; cv.setPointerCapture(e.pointerId); sv(e); });
+      cv.addEventListener("pointermove", function(e){ if (down) sv(e); }); cv.addEventListener("pointerup", function(){ down = false; });
+      pop.querySelector(".chue").oninput = function(){ st.h = +this.value; anwenden(true); };
+      pop.querySelector(".chex").oninput = function(){ if (/^#[0-9a-f]{6}$/i.test(this.value)) { var c = hex2rgb(this.value); st = rgb2hsv(c[0],c[1],c[2]); pop.querySelector(".chue").value = st.h; anwenden(true); } };
+      pop.querySelectorAll(".cpre button").forEach(function(b){ b.onclick = function(){ var c = hex2rgb(b.dataset.c); st = rgb2hsv(c[0],c[1],c[2]); pop.querySelector(".chue").value = st.h; anwenden(true); }; });
+      function zu(){ pop.hidden = true; cur = null; }
+      pop.querySelector(".cx").onclick = pop.querySelector(".ca").onclick = function(){ if (cur) { cur.value = orig; cur._swatch.style.background = orig; cur.dispatchEvent(new Event("input", {bubbles:true})); cur.dispatchEvent(new Event("change", {bubbles:true})); } zu(); };
+      pop.querySelector(".cok").onclick = function(){ if (cur) cur.dispatchEvent(new Event("change", {bubbles:true})); zu(); };
+      document.addEventListener("keydown", function(e){ if (e.key === "Escape" && !pop.hidden) pop.querySelector(".ca").onclick(); });
+      document.addEventListener("pointerdown", function(e){ if (!pop.hidden && !pop.contains(e.target) && !(e.target.closest && e.target.closest(".cbtn"))) pop.querySelector(".cok").onclick(); });
+    }
+    function bau(inp){
+      if (inp._swatch) return;
+      var b = document.createElement("button"); b.type = "button"; b.className = "cbtn"; b.title = "Farbe wählen";
+      inp.parentNode.insertBefore(b, inp); inp.style.display = "none"; inp._swatch = b; b.style.background = inp.value;
+      b.onclick = function(e){
+        e.stopPropagation(); if (!pop) bauePop();
+        if (!pop.hidden && cur === inp) { pop.querySelector(".cok").onclick(); return; }
+        cur = inp; orig = inp.value; var c = hex2rgb(inp.value || "#ffffff"); st = rgb2hsv(c[0],c[1],c[2]);
+        pop.querySelector(".chue").value = st.h; pop._an(false); pop.hidden = false;
+        var r = b.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+        var x = Math.max(8, Math.min(innerWidth - w - 8, r.left)), y = r.bottom + 8; if (y + h > innerHeight - 8) y = Math.max(8, r.top - h - 8);
+        pop.style.left = x + "px"; pop.style.top = y + "px";
+      };
+      new MutationObserver(function(){ b.style.background = inp.value; }).observe(inp, {attributes:true, attributeFilter:["value"]});
+      setInterval(function(){ if (b.style.background !== inp.value && !(cur === inp)) b.style.background = inp.value; }, 500);
+    }
+    function alle(){ document.querySelectorAll("input[type=color]").forEach(bau); }
+    new MutationObserver(alle).observe(document.body, {childList:true, subtree:true}); alle();
+  },
   uebersetze: function(){
     if (WZ.lang !== "fr" || !window.WZ_FR) return;
     document.documentElement.lang = "fr";
@@ -111,12 +177,12 @@ window.WZ = {
     if (aktiv === "icon") {
       var p = document.querySelector(".panel"), fb = document.createElement("div"); fb.className = "farbbox";
       fb.innerHTML = '<span>Farbe</span><span class="farben">' + Object.keys(WZ_FARBEN).map(function(k){ return '<button type="button" data-f="' + k + '" style="background:' + (k === "schwarz" ? "#30343f" : WZ_FARBEN[k][0]) + '" title="' + k.charAt(0).toUpperCase() + k.slice(1) + '" aria-label="' + k + '" data-nt></button>'; }).join("") + '</span>';
-      if (p) { var col = document.createElement("div"); p.parentNode.insertBefore(col, p); col.appendChild(p); col.appendChild(fb); } else document.querySelector("main").appendChild(fb);
+      if (p) p.insertAdjacentElement("afterend", fb); else document.querySelector("main").appendChild(fb);
       fb.querySelectorAll(".farben button").forEach(function(x){ x.onclick = function(){ WZ_farbe(x.dataset.f, true); }; });
       WZ_farbe(WZ_farbname);
     }
     var b = h.querySelector("#wzTheme"), bl = h.querySelector("#wzLang");
-    bl.textContent = WZ.lang === "fr" ? "🇩🇪 DE" : "🇫🇷 FR";
+    bl.innerHTML = WZ_FLAGGE(WZ.lang === "fr" ? "de" : "fr") + " " + (WZ.lang === "fr" ? "DE" : "FR");
     bl.onclick = function(){ try { localStorage.setItem("lang", WZ.lang === "fr" ? "de" : "fr"); } catch(e){} location.reload(); };
     function zeige(){ var a = document.documentElement.getAttribute("data-theme"); b.textContent = a==="dark" ? "🌙 Dunkel" : a==="light" ? "☀️ Hell" : "🖥️ Auto"; }
     b.onclick = function(){
@@ -132,6 +198,7 @@ window.WZ = {
     document.body.appendChild(f);
     WZ.uebersetze();
     WZ.selects();
+    WZ.farbfelder();
   },
   groesse: function(n){ return n < 1024 ? n + " B" : n < 1048576 ? (n/1024).toFixed(0) + " KB" : (n/1048576).toFixed(2) + " MB"; },
   speichern: function(blob, name){
