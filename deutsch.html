@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Deutschkurs – Oratio Place</title>
+<meta name="description" content="Kostenloser Deutschkurs von A1 bis C1 für Französischsprachige: Erklärungen, Tabellen, Beispiele zum Anhören, Übungen und ein Nachschlage-Bereich. Cours d'allemand gratuit de A1 à C1.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Oratio Place">
+<meta property="og:title" content="Deutschkurs – Oratio Place">
+<meta property="og:description" content="Kostenloser Deutschkurs von A1 bis C1 – Cours d'allemand gratuit de A1 à C1.">
+<meta property="og:url" content="https://oratioplace.com/deutsch.html">
+<meta property="og:image" content="https://oratioplace.com/vorschau.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="logo-place.png">
+<link rel="apple-touch-icon" href="logo-place.png">
+<link rel="stylesheet" href="werkzeuge/wz.css">
+<style>
+:root{--acc:#2f5fd0;--acc2:#f2b705;--accrgb:47,95,208;--accfg:#3a2c00;--go:#2f5fd0;--gob:#244aa5;--gofg:#fff;--onacc:#fff}
+:root[data-theme="dark"]{--acc:#6d8df0;--accrgb:109,141,240}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--acc:#6d8df0;--accrgb:109,141,240}}
+.btn.go{background:var(--acc2);border-color:#c99400;color:var(--accfg)}
+.btn.go:hover:not(:disabled){background:#ffc928;border-color:#a87b00}
+.crumb{font-size:14px;margin:4px 0 12px;color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 0}
+.row a.btn,.nav a.btn{text-decoration:none;display:inline-block}
+.dhero{display:flex;gap:16px;justify-content:space-between;align-items:center;border-radius:20px;padding:22px;background:linear-gradient(135deg,#1c3f9e,#2f5fd0 55%,#f2b705);color:#fff;margin-bottom:14px;box-shadow:var(--shadow);overflow:hidden}
+.dhero h1{color:#fff;margin:0 0 8px;font-size:clamp(24px,5vw,34px)}
+.dhero p{margin:0 0 10px;max-width:60ch;line-height:1.5}
+.dh-s span{display:inline-block;background:rgba(255,255,255,.2);border-radius:99px;padding:4px 12px;font-weight:700;font-size:14px}
+.dh-f{display:flex;gap:6px;font:800 56px/1 Georgia,serif;opacity:.35}
+@media (max-width:640px){.dh-f{display:none}}
+.srch{margin-bottom:14px}
+.hits{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+.hits a{display:flex;gap:10px;align-items:center;padding:8px;border-radius:12px;border:1px solid var(--line);text-decoration:none;color:var(--fg)}
+.hits a:hover{border-color:var(--acc);background:rgba(var(--accrgb),.08)}
+.lvgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin-bottom:14px}
+.lvcard{display:flex;gap:12px;padding:14px;border-radius:18px;border:2px solid color-mix(in srgb,var(--lc) 50%,var(--card));background:linear-gradient(150deg,color-mix(in srgb,var(--lc) 14%,var(--card)),var(--card));color:var(--fg);text-decoration:none;transition:transform .15s,box-shadow .15s}
+.lvcard:hover,.lvcard:focus-visible{transform:translateY(-3px);box-shadow:0 8px 20px color-mix(in srgb,var(--lc) 30%,transparent);border-color:var(--lc)}
+.lvcard h2{margin:0 0 4px;font-size:18px}.lvcard p{margin:0 0 8px;font-size:14px;color:var(--muted);line-height:1.4}.lvcard small{color:var(--muted)}
+.lvcard>div{min-width:0}
+.lvb{flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:16px;background:var(--lc);color:#fff;font:800 20px/1 "Inter",system-ui,sans-serif;box-shadow:inset 0 2px 0 rgba(255,255,255,.3)}
+.pb{height:7px;border-radius:99px;background:var(--line);overflow:hidden;margin-bottom:5px}.pb i{display:block;height:100%;background:var(--lc)}
+.lvhead{display:flex;gap:14px;align-items:center;padding:16px;border-radius:18px;background:linear-gradient(150deg,color-mix(in srgb,var(--lc) 18%,var(--card)),var(--card));border:2px solid var(--lc);margin-bottom:14px}
+.lvhead h1{margin:0 0 4px;font-size:clamp(20px,4.5vw,28px);color:var(--fg)}.lvhead p{margin:0;color:var(--muted)}
+.llist{list-style:none;padding:0;margin:0 0 14px;display:grid;gap:8px}
+.lrow{display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--fg);text-decoration:none}
+.lrow:hover{border-color:var(--acc)}.lrow.done{border-color:#2f9e44;background:color-mix(in srgb,#2f9e44 8%,var(--card))}
+.lrow .ln{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(var(--accrgb),.15);font-weight:800}
+.lrow .lt{flex:1;min-width:0;display:flex;flex-direction:column}.lrow small{color:var(--muted)}.lrow .ls{font-weight:800;color:#2f9e44;white-space:nowrap}
+.les{line-height:1.6}.les h3{margin:22px 0 6px;color:var(--acclink)}.les h4,.xgp h4{margin:16px 0 6px}
+.les>*:first-child{margin-top:0}
+.les p{margin:8px 0}
+.note{display:flex;gap:10px;padding:10px 12px;border-radius:12px;margin:12px 0;border-left:5px solid}
+.note.tip{background:color-mix(in srgb,#f2b705 14%,var(--card));border-color:#f2b705}.note.warn{background:color-mix(in srgb,#e03131 9%,var(--card));border-color:#e03131}
+.note>div{min-width:0}
+.ul{margin:8px 0;padding-left:22px}.ul li{margin:4px 0}
+.tw{overflow-x:auto;margin:10px 0;border-radius:10px;border:1px solid var(--line)}
+.dt{border-collapse:collapse;width:100%;font-size:15px}
+.dt th{background:rgba(var(--accrgb),.14);text-align:left;padding:7px 10px;white-space:nowrap}
+.dt td{padding:6px 10px;border-top:1px solid var(--line);vertical-align:top}
+.dt tr:nth-child(even) td{background:rgba(var(--accrgb),.04)}
+.dt.voc td.de{font-weight:600;white-space:nowrap}.dt td.nt{color:var(--muted);font-size:14px}
+mark{background:color-mix(in srgb,var(--acc2) 55%,transparent);color:inherit;padding:0 3px;border-radius:4px;font-weight:700}
+.cap{font-size:14px;color:var(--muted);margin:-4px 0 10px}
+.exl{list-style:none;padding:0;margin:10px 0;display:grid;gap:6px}
+.exl li{padding:8px 12px;border-radius:12px;background:rgba(var(--accrgb),.07);border-left:4px solid var(--acc)}
+.exl .de,.dlg .de{font-weight:600}.tr{display:block;color:var(--muted);font-size:14.5px}.nt{display:block;font-size:14px;color:var(--muted);font-style:italic}
+.say{border:0;background:transparent;cursor:pointer;font-size:16px;padding:0 4px;border-radius:8px;vertical-align:middle}.say:hover{background:rgba(var(--accrgb),.18)}
+.dlg{display:grid;gap:6px;margin:10px 0}
+.ln{display:flex;gap:10px;padding:8px 12px;border-radius:14px;max-width:92%}
+.ln.a{background:rgba(var(--accrgb),.1);justify-self:start}.ln.b{background:color-mix(in srgb,var(--acc2) 20%,var(--card));justify-self:end}
+.ln>b{flex:none;min-width:2.2em}.ln>div{min-width:0}
+.exs .xgp{margin-bottom:18px}
+.ei{border:2px solid var(--line);border-radius:14px;padding:10px 12px;margin:8px 0;background:var(--card)}
+.ei.ok{border-color:#2f9e44}.ei.bad{border-color:#e03131}
+.ei .q{font-weight:600;margin-bottom:8px;line-height:1.6}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{border:2px solid var(--line);background:var(--card);color:var(--fg);border-radius:12px;padding:6px 14px;font:inherit;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--acc)}.opt.right{background:color-mix(in srgb,#2f9e44 25%,var(--card));border-color:#2f9e44}.opt.wrong{background:color-mix(in srgb,#e03131 22%,var(--card));border-color:#e03131}
+.gi{font:inherit;padding:3px 8px;margin:0 3px;border:0;border-bottom:3px solid var(--acc);background:rgba(var(--accrgb),.08);color:var(--fg);border-radius:6px 6px 0 0;max-width:100%}
+.gi:focus{outline:none;background:rgba(var(--accrgb),.18)}.gi.ok{border-color:#2f9e44;background:color-mix(in srgb,#2f9e44 18%,var(--card))}.gi.bad{border-color:#e03131;background:color-mix(in srgb,#e03131 15%,var(--card))}
+.ans,.bank{display:flex;flex-wrap:wrap;gap:6px;min-height:44px;padding:8px;border-radius:12px}
+.ans{border:2px dashed var(--line);margin-bottom:8px}
+.wd{border:2px solid var(--acc);background:var(--card);color:var(--fg);border-radius:10px;padding:5px 11px;font:inherit;font-weight:600;cursor:pointer}
+.wd:hover{background:rgba(var(--accrgb),.14)}
+.fb{margin-top:8px;font-weight:600}.fb.ok{color:#2b8a3e}.fb.bad{color:#c92a2a}.fb:empty{display:none}
+.why{font-weight:400;color:var(--fg);margin-top:4px;line-height:1.5}
+.mt{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mc{display:grid;gap:6px;align-content:start}
+.mi{border:2px solid var(--line);background:var(--card);color:var(--fg);border-radius:10px;padding:7px 10px;font:inherit;cursor:pointer;text-align:left}
+.mi.sel{border-color:var(--acc);background:rgba(var(--accrgb),.18)}.mi.fix{border-color:#2f9e44;background:color-mix(in srgb,#2f9e44 20%,var(--card));cursor:default}
+.mi.shake{animation:shk .4s;border-color:#e03131}@keyframes shk{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.res{margin-top:12px;font-size:17px}
+.nav{margin:16px 0}
+.kc{text-align:center;max-width:560px;margin:0 auto}
+.kcard{min-height:200px;display:grid;place-items:center;border-radius:20px;border:3px solid var(--acc);background:linear-gradient(150deg,rgba(var(--accrgb),.12),var(--card));cursor:pointer;margin:10px 0;padding:16px;user-select:none}
+.kcard.flip{background:linear-gradient(150deg,color-mix(in srgb,var(--acc2) 22%,var(--card)),var(--card))}
+.kf{display:flex;flex-direction:column;gap:8px;align-items:center}.kf b{font-size:clamp(24px,6vw,34px);overflow-wrap:anywhere}.kf small{color:var(--muted)}.kf small.h{font-size:13px}
+.kb{justify-content:center}.kp{font-weight:700;color:var(--muted)}
+@media (max-width:560px){.mt{grid-template-columns:1fr}.ln{max-width:100%}.dt.voc td.de{white-space:normal}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main id="de"></main>
+<script src="werkzeuge/wz.js"></script>
+<script src="werkzeuge/de_engine.js"></script>
+<script src="werkzeuge/de_a1.js"></script>
+<script src="werkzeuge/de_a1b.js"></script>
+<script src="werkzeuge/de_a2.js"></script>
+<script src="werkzeuge/de_a2b.js"></script>
+<script>
+WZ.kopf("deutsch");
+document.documentElement.lang = WZ.lang === "fr" ? "fr" : "de";
+DE.start();
+</script>
+</body>
+</html>
