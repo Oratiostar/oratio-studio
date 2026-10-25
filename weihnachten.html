@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Weihnachtswelt – Oratio Place</title>
+<meta name="description" content="Weihnachtswelt: Karten, Wünsche, Wichteln, Adventskalender, Quiz, Bingo und mehr – zum Verschenken und Teilen. Läuft im Browser, ohne Anmeldung.">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="werkzeuge/wz.css">
+<style>
+#xmSnow{position:fixed;inset:0;pointer-events:none;z-index:0}
+main{position:relative;z-index:1}
+.zahl{margin:0 0 14px;font-size:15px}
+.xgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:14px 0}
+.xcard{display:flex;flex-direction:column;gap:4px;padding:14px;border-radius:16px;border:2px solid var(--line);background:var(--card);color:var(--fg);text-decoration:none;box-shadow:var(--shadow);transition:transform .12s,border-color .12s}
+.xcard:hover{transform:translateY(-2px);border-color:var(--acc)}
+.xcard .xs{font-size:30px;line-height:1.1}
+.xcard b{font-size:17px}
+.xcard span:last-child{font-size:14px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+.chip{border:2px solid var(--line);background:var(--card);color:var(--fg);border-radius:99px;padding:5px 12px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.chip:hover{border-color:var(--acc)}
+.chip.on{background:var(--acc);border-color:var(--acc);color:var(--onacc,#fff)}
+.xtwo{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:860px){.xtwo{grid-template-columns:minmax(0,1fr)}}
+.xtwo>.card,.xtwo>div>.card{min-width:0}
+.cvwrap{width:100%;max-width:440px;margin:0 auto}
+.cvwrap.wide{max-width:640px}.cvwrap.tall{max-width:300px}
+.cvwrap canvas{display:block;width:100%;height:auto;border-radius:16px;box-shadow:var(--shadow);border:3px solid var(--acc)}
+textarea.in{resize:vertical;min-height:70px}
+.chk{display:flex;gap:8px;align-items:flex-start;margin:10px 0 0;font-size:14px}
+.chk input{margin-top:3px;accent-color:var(--acc)}
+.checks .chk{margin:4px 0}
+.sharebar{margin:6px 0}
+.sharebar .btn{text-decoration:none;display:inline-block}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#23304a;color:#fff;padding:10px 16px;border-radius:12px;z-index:200;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.vcard{max-width:640px;margin:0 auto;text-align:center}
+.vcard .cvwrap{margin-top:8px}
+.vlead{font-size:20px;font-weight:700;margin:8px 0}
+.vfoot{text-align:center;color:var(--muted);font-size:14px;margin-top:24px}
+.backl{margin-top:22px}
+.wlist{display:grid;gap:10px;margin-top:12px}
+.wi{display:flex;flex-direction:column;gap:10px}
+.wt{white-space:pre-wrap;line-height:1.5}
+.wrow{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.wrow:first-of-type{margin-top:8px}
+.wrow .btn{text-decoration:none;display:inline-block}
+.reveal{margin:14px auto;padding:22px 16px;border-radius:16px;border:3px dashed var(--acc);font-size:22px;font-weight:800;cursor:pointer;max-width:420px;user-select:none}
+.reveal.open{border-style:solid;background:var(--soft);color:var(--acc);font-size:34px;animation:pop .5s ease}
+@keyframes pop{0%{transform:scale(.7);opacity:.2}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+.doors{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:420px;margin:12px auto}
+.door{aspect-ratio:1;border-radius:12px;border:3px solid #7d0f1f;background:linear-gradient(145deg,#c4162b,#8f1020);color:#ffe9a8;font:800 24px/1 "Inter",system-ui,sans-serif;cursor:pointer;box-shadow:inset 0 0 0 3px rgba(255,224,138,.35),var(--shadow);transition:transform .15s}
+.door:hover{transform:scale(1.04)}
+.door.open{background:linear-gradient(145deg,#1d6a46,#0f4a2f);border-color:#0b3125;color:#d9ffe9}
+.door.shake{animation:shake .4s}
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.advtxt{max-width:420px;margin:10px auto;padding:12px 14px;border-radius:12px;background:var(--soft);border:2px solid var(--line);text-align:left}
+.advgrid{display:grid;gap:6px}
+.advrow{display:grid;grid-template-columns:28px 1fr;gap:8px;align-items:center}
+.advrow span{font-weight:800;color:var(--acc);text-align:right}
+.wzrow{display:grid;grid-template-columns:1fr 88px auto;gap:6px;margin-top:8px}
+.wzrow input:first-child{grid-column:1/-1}
+.wzl{list-style:none;padding:0;margin:10px 0;text-align:left}
+.wzl li{padding:10px 4px;border-bottom:1px solid var(--line)}
+.wzl .pr{color:var(--muted);margin-left:6px}
+.qz h2{margin-top:6px}
+.qn{color:var(--muted);font-weight:700;font-size:14px}
+.qo{display:grid;gap:8px;margin:12px 0}
+.qo .btn{text-align:left}
+.qo .btn.good{background:#2a9a4a;border-color:#1c7a36;color:#fff;opacity:1}
+.qo .btn.bad{background:var(--bad);border-color:var(--bad);color:#fff;opacity:1}
+.bingo{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;max-width:560px;margin:12px 0}
+.bc{aspect-ratio:1;padding:4px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--fg);font:600 11.5px/1.2 "Inter",system-ui,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;hyphens:auto;overflow-wrap:anywhere}
+.bc.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.bc.free{font-weight:800}
+@media (min-width:600px){.bc{font-size:13px}}
+@media (max-width:599px){.bingo{gap:4px}.bc{aspect-ratio:auto;min-height:92px;font-size:9.2px;line-height:1.15;padding:3px;overflow-wrap:anywhere;hyphens:auto;-webkit-hyphens:auto}}
+.orns{display:flex;flex-wrap:wrap;gap:6px}
+.orn{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);background:var(--card);color:var(--fg);border-radius:12px;padding:5px 10px;font:600 14px "Inter",system-ui,sans-serif;cursor:pointer}
+.orn i{display:inline-block;width:14px;height:14px;border-radius:50%;border:1px solid rgba(0,0,0,.3)}
+.orn.on{border-color:var(--acc);background:var(--soft)}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}
+.sw{width:30px;height:30px;border-radius:50%;border:3px solid var(--line);cursor:pointer;padding:0}
+.sw.on{border-color:var(--acc);box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--acc)}
+.drop{margin-bottom:10px}
+.piano{position:relative;height:150px;max-width:520px;margin:0 auto;user-select:none;touch-action:none}
+.pk{position:absolute;top:0;width:12.5%;height:100%;border:2px solid #9aa7ba;border-radius:0 0 8px 8px;background:linear-gradient(#fff,#e8eef7);cursor:pointer;padding:0}
+.pk.blk{width:8%;height:62%;background:linear-gradient(#2a2f3a,#0e1118);border-color:#0e1118;z-index:2}
+.pk.hit{background:var(--acc);border-color:var(--acc)}
+.burow{display:grid;grid-template-columns:1.4fr 1fr auto;gap:6px;margin-top:6px}
+.bbar{height:14px;border-radius:99px;background:var(--soft);overflow:hidden;margin:8px 0}
+.bbar i{display:block;height:100%;border-radius:99px;transition:width .2s}
+p.ok{color:var(--ok);font-weight:700}p.bad{color:var(--bad);font-weight:700}
+.et{width:100%;border-collapse:collapse;margin:8px 0}
+.et td{padding:8px 4px;border-bottom:1px solid var(--line)}.et td:last-child{text-align:right;font-weight:700;white-space:nowrap}
+@media print{
+  header,footer,#xmSnow,.crumb,.backl,.sharebar,.vfoot,.toast,.xtwo>.card,.row,.hint,.status,h1,.sub,.warn{display:none!important}
+  body{background:#fff}
+  main{padding:0}.xtwo{display:block}
+  .cvwrap canvas{box-shadow:none;border:none}
+  .bingo{max-width:none}
+  .bc{border:1px solid #000;color:#000;background:#fff;font-size:11pt}
+  .wzl li{color:#000}
+  body:not(.print-brief) .card{border:none;box-shadow:none}
+}
+</style>
+</head>
+<body>
+<main id="xm"></main>
+<script src="werkzeuge/wz.js"></script>
+<script src="werkzeuge/xmas_data1.js"></script>
+<script src="werkzeuge/xmas_data2.js"></script>
+<script src="werkzeuge/xmas.js"></script>
+<script src="werkzeuge/xmas_tools1.js"></script>
+<script src="werkzeuge/xmas_tools2.js"></script>
+<script>
+WZ.kopf("xmas");
+document.documentElement.lang = WZ.lang === "fr" ? "fr" : "de";
+XM.start();
+</script>
+</body>
+</html>

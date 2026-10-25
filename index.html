@@ -163,7 +163,7 @@ try { LANG = localStorage.getItem("lang") || ((navigator.language||"").startsWit
 function T(s){ if (LANG !== "fr" || FR === null || typeof s !== "string") return s; const r = FR[s]; return r === undefined ? s : r; }
 
 const UI = {
-  de:{placeSub:"Alles an einem Ort – wähle einen Bereich.",studio:"Oratio Studio",studioT:"Nachschlagewerk und Werkzeuge für Elektronik, Informatik, Geräte und Labor.",lifestyle:"Lifestyle",lifeT:"Kommt bald.",bald:"Noch kein Inhalt – hier kommt bald etwas.",place:"Oratio Place",welten2:"Welten",
+  de:{placeSub:"Alles an einem Ort – wähle einen Bereich.",studio:"Oratio Studio",studioT:"Nachschlagewerk und Werkzeuge für Elektronik, Informatik, Geräte und Labor.",lifestyle:"Lifestyle",lifeT:"Weihnachtswelt und mehr.",bald:"Weitere Bereiche folgen bald.",xmN:"Weihnachten",xmZ:"Lifestyle",xmT:"Karten, Wünsche, Wichteln, Adventskalender, Quiz, Bingo und viele Ideen zum Verschenken und Teilen.",place:"Oratio Place",welten2:"Welten",
       icN:"Icon-Werkstatt",icT:"Bild in Form bringen, zuschneiden und als Symbol speichern (PNG, JPG, WebP, ICO).",icZ:"Werkzeug",dtN:"Datei-Werkstatt",dtT:"PDF, Word, Bilder und ZIP: zusammenfügen, umwandeln, komprimieren – direkt im Browser, ohne Upload.",
       katAlle:"Alle",kat:{elektronik:"Elektronik",informatik:"Informatik",geraete:"Geräte",labor:"Labor",werkzeuge:"Werkzeuge"},wzName:"Werkzeuge",wzN:"2 Werkzeuge",wzT:"Icon-Werkstatt und Datei-Werkstatt (PDF, Word, Bilder, ZIP) – direkt im Browser, ohne Upload.",
       suche:"Suchen: Bauteil, Handy, Begriff …",welten:"Alle Welten",seiten:"Seiten",startsub:"Nachschlagewerk für Elektronik, Bauteile und Technik. Wähle eine Welt oder suche oben.",
@@ -175,7 +175,7 @@ const UI = {
       pin:{i:"Eingang",o:"Ausgang",x:"Ein-/Ausgang",g:"Masse",v:"Versorgung",n:"nicht belegt"},
       dunkel:"Dunkel",hellm:"Hell",auto:"Auto",imp:"Impressum & Datenschutz",stand:"Hobbyprojekt, Angaben ohne Gewähr. Bitte wichtige Werte im Datenblatt prüfen.",
       zeit:"Zeitdiagramm",kreis:"Schaltbild",ver:"Versorgung / Werte",geh:"Gehäuse",ans:"Anschlüsse"},
-  fr:{placeSub:"Tout au même endroit – choisis un domaine.",studio:"Oratio Studio",studioT:"Ouvrage de référence et outils pour l’électronique, l’informatique, les appareils et le laboratoire.",lifestyle:"Lifestyle",lifeT:"Bientôt disponible.",bald:"Pas encore de contenu – quelque chose arrive bientôt.",place:"Oratio Place",welten2:"mondes",
+  fr:{placeSub:"Tout au même endroit – choisis un domaine.",studio:"Oratio Studio",studioT:"Ouvrage de référence et outils pour l’électronique, l’informatique, les appareils et le laboratoire.",lifestyle:"Lifestyle",lifeT:"Le monde de Noël et plus.",bald:"D’autres domaines arrivent bientôt.",xmN:"Noël",xmZ:"Lifestyle",xmT:"Cartes, vœux, Secret Santa, calendrier de l’Avent, quiz, bingo et beaucoup d’idées à offrir et à partager.",place:"Oratio Place",welten2:"mondes",
       icN:"Atelier d’icônes",icT:"Mettre une image en forme, la recadrer et l’enregistrer comme icône (PNG, JPG, WebP, ICO).",icZ:"Outil",dtN:"Atelier de fichiers",dtT:"PDF, Word, images et ZIP : fusionner, convertir, compresser – directement dans le navigateur, sans envoi.",
       katAlle:"Tous",kat:{elektronik:"Électronique",informatik:"Informatique",geraete:"Appareils",labor:"Laboratoire",werkzeuge:"Outils"},wzName:"Outils",wzN:"2 outils",wzT:"Atelier d’icônes et atelier de fichiers (PDF, Word, images, ZIP) – directement dans le navigateur, sans envoi.",
       suche:"Rechercher : composant, téléphone, terme …",welten:"Tous les mondes",seiten:"pages",startsub:"Ouvrage de référence pour l’électronique, les composants et la technique. Choisis un monde ou recherche ci-dessus.",
@@ -430,7 +430,8 @@ function placeseite(){
 }
 function lifestyleseite(){
   document.title = "Oratio Lifestyle"; brand("lifestyle");
-  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("lifestyle"))+'</div><h1>'+esc(U("lifestyle"))+'</h1><p class="platz">'+esc(U("bald"))+'</p>';
+  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("lifestyle"))+'</div><h1>'+esc(U("lifestyle"))+'</h1><div class="grid">'+
+    '<a class="welt" href="weihnachten.html"><div class="kopf" style="background:linear-gradient(135deg,#c4162b,#1d6a46)"><div class="ic">🎄</div><b>'+esc(U("xmN"))+'</b></div><div class="t"><div class="n">'+esc(U("xmZ"))+'</div>'+esc(U("xmT"))+'</div></a></div><p class="platz">'+esc(U("bald"))+'</p>';
 }
 function startseite(){
   document.title = "Oratio Studio"; brand("studio");

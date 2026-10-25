@@ -8,10 +8,10 @@
   var P = {blau:["#27a3df","39,163,223","#1b86be","#fff"], gruen:["#55b52e","85,181,46","#3f9320","#fff"], gelb:["#f2b705","242,183,5","#c99700","#3a2c00"], rot:["#e0364a","224,54,74","#b82437","#fff"],
     schwarz:["light-dark(#30343f,#e6ecf6)","64,68,82","light-dark(#12141a,#ffffff)","light-dark(#fff,#12161f)"],
     lila:["#8a5ad8","138,90,216","#6d43b8","#fff"], orange:["#e0703a","224,112,58","#c05a28","#fff"], rosa:["#e0527a","224,82,122","#c13a60","#fff"], tuerkis:["#19b8a8","25,184,168","#10968a","#fff"]};
-  var ICON = /icon-werkstatt/.test(location.pathname);
+  var ICON = /icon-werkstatt/.test(location.pathname), XMAS = /weihnachten/.test(location.pathname);
   window.WZ_FARBEN = P;
   window.WZ_farbe = function(n, speichern){
-    if (!P[n] || !ICON) n = "blau"; var c = P[n], r = document.documentElement.style;
+    if (XMAS) n = "rot"; else if (!P[n] || !ICON) n = "blau"; var c = P[n], r = document.documentElement.style;
     r.setProperty("--acc", c[0]); r.setProperty("--accrgb", c[1]); r.setProperty("--go", c[0]); r.setProperty("--gob", c[2]); r.setProperty("--gofg", c[3]); r.setProperty("--onacc", c[3]);
     if (speichern) { try { localStorage.setItem("wz-farbe-icon", n); } catch(e){} }
     document.querySelectorAll(".farben button").forEach(function(b){ b.classList.toggle("on", b.dataset.f === n); });
