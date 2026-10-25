@@ -188,7 +188,7 @@ try { LANG = localStorage.getItem("lang") || ((navigator.language||"").startsWit
 function T(s){ if (LANG !== "fr" || FR === null || typeof s !== "string") return s; const r = FR[s]; return r === undefined ? s : r; }
 
 const UI = {
-  de:{placeSub:"Alles an einem Ort – wähle einen Bereich.",werkzeug:"Werkzeug",teilw:"teilweise passend",studio:"Circuit Studio",studioT:"Nachschlagewerk und Werkzeuge für Elektronik, Informatik, Geräte und Labor.",lifestyle:"Lifestyle",lifeT:"Alltag, Genuss und Freizeit.",bald:"Weitere Bereiche folgen bald.",xmN:"Weihnachtswelt",xmZ:"27 Werkzeuge",xmT:"Karten, Wünsche, Post für Kunden und Team, Rezepte, Wichteln, Adventskalender, Quiz und viele Ideen zum Verschenken und Teilen.",deN:"Deutschkurs",deZ:"66 Lektionen · A1 bis C1",deT:"Deutsch lernen Schritt für Schritt – Aussprache, Wortschatz, Grammatik und Übungen.",deH:"Kommt bald",deP1:"Aussprache und Alphabet",deP2:"Grundwortschatz nach Themen",deP3:"Grammatik leicht erklärt",deP4:"Übungen und kleine Tests",deP5:"Hörverstehen und Dialoge",place:"Oratio Place",welten2:"Welten",
+  de:{placeSub:"Alles an einem Ort – wähle einen Bereich.",werkzeug:"Werkzeug",teilw:"teilweise passend",studio:"Tech Studio",studioT:"Nachschlagewerk und Werkzeuge für Elektronik, Informatik, Geräte und Labor.",lifestyle:"Lifestyle",lifeT:"Alltag, Genuss und Freizeit.",bald:"Weitere Bereiche folgen bald.",xmN:"Weihnachtswelt",xmZ:"27 Werkzeuge",xmT:"Karten, Wünsche, Post für Kunden und Team, Rezepte, Wichteln, Adventskalender, Quiz und viele Ideen zum Verschenken und Teilen.",deN:"Deutschkurs",deZ:"66 Lektionen · A1 bis C1",deT:"Deutsch lernen Schritt für Schritt – Aussprache, Wortschatz, Grammatik und Übungen.",deH:"Kommt bald",deP1:"Aussprache und Alphabet",deP2:"Grundwortschatz nach Themen",deP3:"Grammatik leicht erklärt",deP4:"Übungen und kleine Tests",deP5:"Hörverstehen und Dialoge",place:"Oratio Place",welten2:"Welten",
       icN:"Icon-Werkstatt",icT:"Bild in Form bringen, zuschneiden und als Symbol speichern (PNG, JPG, WebP, ICO).",icZ:"Werkzeug",dtN:"Datei-Werkstatt",dtT:"PDF, Word, Bilder und ZIP: zusammenfügen, umwandeln, komprimieren – direkt im Browser, ohne Upload.",
       katAlle:"Alle",kat:{elektronik:"Elektronik",informatik:"Informatik",geraete:"Geräte",labor:"Labor",werkzeuge:"Werkzeuge"},wzName:"Werkzeuge",wzN:"2 Werkzeuge",wzT:"Icon-Werkstatt und Datei-Werkstatt (PDF, Word, Bilder, ZIP) – direkt im Browser, ohne Upload.",
       suche:"Alles durchsuchen …",welten:"Alle Welten",seiten:"Seiten",startsub:"Nachschlagewerk für Elektronik, Bauteile und Technik. Wähle eine Welt oder suche oben.",
@@ -200,7 +200,7 @@ const UI = {
       pin:{i:"Eingang",o:"Ausgang",x:"Ein-/Ausgang",g:"Masse",v:"Versorgung",n:"nicht belegt"},
       dunkel:"Dunkel",hellm:"Hell",auto:"Auto",imp:"Impressum & Datenschutz",stand:"Hobbyprojekt, Angaben ohne Gewähr. Bitte wichtige Werte im Datenblatt prüfen.",
       zeit:"Zeitdiagramm",kreis:"Schaltbild",ver:"Versorgung / Werte",geh:"Gehäuse",ans:"Anschlüsse"},
-  fr:{placeSub:"Tout au même endroit – choisis un domaine.",werkzeug:"Outil",teilw:"résultats partiels",studio:"Circuit Studio",studioT:"Ouvrage de référence et outils pour l’électronique, l’informatique, les appareils et le laboratoire.",lifestyle:"Lifestyle",lifeT:"Quotidien, plaisirs et loisirs.",bald:"D’autres domaines arrivent bientôt.",xmN:"Le monde de Noël",xmZ:"27 outils",xmT:"Cartes, vœux, courrier pour clients et équipe, recettes, Secret Santa, calendrier de l’Avent, quiz et beaucoup d’idées à offrir et à partager.",deN:"Cours d’allemand",deZ:"66 leçons · A1 à C1",deT:"Apprendre l’allemand pas à pas : prononciation, vocabulaire, grammaire et exercices.",deH:"Bientôt disponible",deP1:"Prononciation et alphabet",deP2:"Vocabulaire de base par thèmes",deP3:"Grammaire expliquée simplement",deP4:"Exercices et petits tests",deP5:"Compréhension orale et dialogues",place:"Oratio Place",welten2:"mondes",
+  fr:{placeSub:"Tout au même endroit – choisis un domaine.",werkzeug:"Outil",teilw:"résultats partiels",studio:"Tech Studio",studioT:"Ouvrage de référence et outils pour l’électronique, l’informatique, les appareils et le laboratoire.",lifestyle:"Lifestyle",lifeT:"Quotidien, plaisirs et loisirs.",bald:"D’autres domaines arrivent bientôt.",xmN:"Le monde de Noël",xmZ:"27 outils",xmT:"Cartes, vœux, courrier pour clients et équipe, recettes, Secret Santa, calendrier de l’Avent, quiz et beaucoup d’idées à offrir et à partager.",deN:"Cours d’allemand",deZ:"66 leçons · A1 à C1",deT:"Apprendre l’allemand pas à pas : prononciation, vocabulaire, grammaire et exercices.",deH:"Bientôt disponible",deP1:"Prononciation et alphabet",deP2:"Vocabulaire de base par thèmes",deP3:"Grammaire expliquée simplement",deP4:"Exercices et petits tests",deP5:"Compréhension orale et dialogues",place:"Oratio Place",welten2:"mondes",
       icN:"Atelier d’icônes",icT:"Mettre une image en forme, la recadrer et l’enregistrer comme icône (PNG, JPG, WebP, ICO).",icZ:"Outil",dtN:"Atelier de fichiers",dtT:"PDF, Word, images et ZIP : fusionner, convertir, compresser – directement dans le navigateur, sans envoi.",
       katAlle:"Tous",kat:{elektronik:"Électronique",informatik:"Informatique",geraete:"Appareils",labor:"Laboratoire",werkzeuge:"Outils"},wzName:"Outils",wzN:"2 outils",wzT:"Atelier d’icônes et atelier de fichiers (PDF, Word, images, ZIP) – directement dans le navigateur, sans envoi.",
       suche:"Tout rechercher …",welten:"Tous les mondes",seiten:"pages",startsub:"Ouvrage de référence pour l’électronique, les composants et la technique. Choisis un monde ou recherche ci-dessus.",
@@ -465,14 +465,14 @@ function deutschseite(){
     '<div class="card" style="max-width:560px"><h2 style="margin-top:0">'+esc(U("deH"))+'</h2><ul style="line-height:1.9;padding-left:20px;margin:0">'+[1,2,3,4,5].map(i=>'<li>'+esc(U("deP"+i))+'</li>').join("")+'</ul></div>';
 }
 function startseite(){
-  document.title = "Circuit Studio"; brand("studio");
+  document.title = "Tech Studio"; brand("studio");
   const chips = '<div class="kats" role="tablist">'+["alle"].concat(KATS).map(k =>
     '<button class="kat'+(k===KATWAHL?" on":"")+'" data-k="'+k+'">'+esc(k==="alle" ? U("katAlle") : U("kat")[k])+'</button>').join("")+'</div>';
   const karten = INDEX.welten.map(w =>
     '<a class="welt" data-k="'+weltKat(w.id).join(" ")+'" href="#/w/'+w.id+'"><div class="kopf'+(hell(w.farbe)?" light":"")+'" style="background:'+hexOf(w.farbe)+'"><div class="ic">'+weltSym(w)+'</div><b>'+esc(T(w.name))+'</b></div><div class="t"><div class="n">'+w.seiten.length+' '+U("seiten")+'</div>'+esc(T(w.untertitel))+'</div></a>').join("")
     + [["icon-werkstatt.html","🎨","linear-gradient(135deg,#2f66d0,#8a5ad8)","icN","icT"],["datei-werkstatt.html","🗂️","linear-gradient(135deg,#e0703a,#e0527a)","dtN","dtT"]].map(x =>
       '<a class="welt" data-k="werkzeuge" href="'+x[0]+'"><div class="kopf" style="background:'+x[2]+'"><div class="ic">'+x[1]+'</div><b>'+esc(U(x[3]))+'</b></div><div class="t"><div class="n">'+esc(U("icZ"))+'</div>'+esc(U(x[4]))+'</div></a>').join("");
-  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("studio"))+'</div><h1>Circuit Studio</h1><p class="sub">'+U("startsub")+'</p>'+chips+'<div class="grid">'+karten+'</div>';
+  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("studio"))+'</div><h1>Tech Studio</h1><p class="sub">'+U("startsub")+'</p>'+chips+'<div class="grid">'+karten+'</div>';
   const filtere = () => {
     document.querySelectorAll(".kat").forEach(b => b.classList.toggle("on", b.dataset.k === KATWAHL));
     document.querySelectorAll(".grid .welt").forEach(a => { a.hidden = !(KATWAHL === "alle" || a.dataset.k.split(" ").includes(KATWAHL)); });
@@ -482,7 +482,7 @@ function startseite(){
 }
 function weltseite(id){
   const w = weltInfo(id); if (!w) return nichts();
-  document.title = T(w.name)+" – Circuit Studio";brand("studio");
+  document.title = T(w.name)+" – Tech Studio";brand("studio");
   const grp = new Map(); w.seiten.forEach(s => { const g = s.gruppe || ""; if(!grp.has(g)) grp.set(g, []); grp.get(g).push(s); });
   const offen = grp.size <= 3;
   let h = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › <a href="#/studio">'+esc(U("studio"))+'</a> › '+esc(T(w.name))+'</div>'+bannerHTML(w, w.name, w.untertitel)+'<input class="in" id="wf" placeholder="'+esc(U("filter"))+'" style="margin-bottom:6px">';
@@ -495,7 +495,7 @@ function weltseite(id){
 async function seitenansicht(wid, sid){
   const w = weltInfo(wid); if (!w) return nichts();
   const wd = await welt(wid), s = wd.seiten.find(p => p.id === sid); if (!s) return nichts();
-  document.title = T(s.titel)+" – Circuit Studio";brand("studio");
+  document.title = T(s.titel)+" – Tech Studio";brand("studio");
   let h = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › <a href="#/studio">'+esc(U("studio"))+'</a> › <a href="#/w/'+w.id+'">'+esc(T(w.name))+'</a> › '+esc(T(s.titel))+'</div>'+bannerHTML(w, s.titel, s.kurz, s.symbol);
   if (s.tags && s.tags.length) h += '<div class="tags">'+s.tags.filter(t=>t.length>2&&!/[\/()]/.test(t)).slice(0,10).map(t=>'<span class="tag">'+esc(t)+'</span>').join("")+'</div>';
   for (const b of s.bloecke){ const f = BAUSTEIN[b.t]; try { h += f ? f(b, w.farbe) : ""; } catch(e){ h += '<div class="platz">'+esc(b.t)+': '+esc(e.message)+'</div>'; } }

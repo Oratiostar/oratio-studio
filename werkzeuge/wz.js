@@ -177,7 +177,7 @@ window.WZ = {
       '<span class="sp"></span><div class="seg" id="wzLang" role="group" aria-label="Sprache / Langue"></div> <div class="seg" id="wzTheme" role="group" aria-label="Hell / Dunkel"></div></div>';
     document.body.insertBefore(h, document.body.firstChild);
     var nm = aktiv === "icon" ? "Icon-Werkstatt" : aktiv === "datei" ? "Datei-Werkstatt" : null, m = document.querySelector("main");
-    if (nm && m) { var c = document.createElement("div"); c.className = "crumb"; c.innerHTML = '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Circuit Studio</a> › ' + nm; m.insertBefore(c, m.firstChild); }
+    if (nm && m) { var c = document.createElement("div"); c.className = "crumb"; c.innerHTML = '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Tech Studio</a> › ' + nm; m.insertBefore(c, m.firstChild); }
     if (aktiv === "icon") {
       var p = document.querySelector(".panel"), fb = document.createElement("div"); fb.className = "farbbox";
       fb.innerHTML = '<span>Farbe</span><span class="farben">' + Object.keys(WZ_FARBEN).map(function(k){ return '<button type="button" data-f="' + k + '" style="background:' + (k === "schwarz" ? "#30343f" : WZ_FARBEN[k][0]) + '" title="' + k.charAt(0).toUpperCase() + k.slice(1) + '" aria-label="' + k + '" data-nt></button>'; }).join("") + '</span>';
