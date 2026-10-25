@@ -174,7 +174,7 @@ window.WZ = {
   kopf: function(aktiv){
     var h = document.createElement("header");
     h.innerHTML = '<div class="bar"><a class="logo" href="index.html"><span class="lg"><svg class="lgO" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14.5" fill="none" stroke="#ffc21a" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(11 20 20)"/><circle cx="20" cy="20" r="14.5" fill="none" stroke="#ff5fa8" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(96 20 20)"/><circle cx="20" cy="20" r="14.5" fill="none" stroke="#2e86ff" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(181 20 20)"/><circle cx="20" cy="20" r="14.5" fill="none" stroke="#ff4b3a" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(266 20 20)"/></svg><b>ratio</b><i>Place</i></span></a>' +
-      '<span class="sp"></span><button class="btn sm" id="wzLang" aria-label="Sprache / Langue"></button> <button class="btn sm" id="wzTheme" aria-label="Hell/Dunkel"></button></div>';
+      '<span class="sp"></span><div class="seg" id="wzLang" role="group" aria-label="Sprache / Langue"></div> <div class="seg" id="wzTheme" role="group" aria-label="Hell / Dunkel"></div></div>';
     document.body.insertBefore(h, document.body.firstChild);
     var nm = aktiv === "icon" ? "Icon-Werkstatt" : aktiv === "datei" ? "Datei-Werkstatt" : null, m = document.querySelector("main");
     if (nm && m) { var c = document.createElement("div"); c.className = "crumb"; c.innerHTML = '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Studio</a> › ' + nm; m.insertBefore(c, m.firstChild); }
@@ -186,17 +186,9 @@ window.WZ = {
       WZ_farbe(WZ_farbname);
     }
     var b = h.querySelector("#wzTheme"), bl = h.querySelector("#wzLang");
-    bl.innerHTML = WZ_FLAGGE(WZ.lang === "fr" ? "de" : "fr") + " " + (WZ.lang === "fr" ? "DE" : "FR");
-    bl.onclick = function(){ try { localStorage.setItem("lang", WZ.lang === "fr" ? "de" : "fr"); } catch(e){} location.reload(); };
-    function zeige(){ var a = document.documentElement.getAttribute("data-theme"); b.textContent = a==="dark" ? "🌙 Dunkel" : a==="light" ? "☀️ Hell" : "🖥️ Auto"; }
-    b.onclick = function(){
-      var a = document.documentElement.getAttribute("data-theme");
-      var n = a==="dark" ? "light" : a==="light" ? null : "dark";
-      if (n) document.documentElement.setAttribute("data-theme", n); else document.documentElement.removeAttribute("data-theme");
-      try { n ? localStorage.setItem("wz-theme", n) : localStorage.removeItem("wz-theme"); } catch(e){}
-      zeige();
-    };
-    zeige();
+    function zeigeL(){ bl.innerHTML = ["de","fr"].map(function(l){ return '<button type="button" data-l="' + l + '" class="' + (WZ.lang === l ? "on" : "") + '" aria-pressed="' + (WZ.lang === l) + '">' + WZ_FLAGGE(l) + ' ' + l.toUpperCase() + '</button>'; }).join(""); bl.querySelectorAll("button").forEach(function(x){ x.onclick = function(){ if (WZ.lang === x.dataset.l) return; try { localStorage.setItem("lang", x.dataset.l); } catch(e){} location.reload(); }; }); }
+    function zeige(){ var a = document.documentElement.getAttribute("data-theme") || "auto"; b.innerHTML = [["auto", "🖥️", "Auto"], ["light", "☀️", "Hell"], ["dark", "🌙", "Dunkel"]].map(function(x){ return '<button type="button" data-t="' + x[0] + '" class="' + (a === x[0] ? "on" : "") + '" aria-pressed="' + (a === x[0]) + '" title="' + x[2] + '" aria-label="' + x[2] + '" data-nt>' + x[1] + '</button>'; }).join(""); b.querySelectorAll("button").forEach(function(x){ x.onclick = function(){ var n = x.dataset.t; if (n === "auto") document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme", n); try { if (n === "auto") { localStorage.removeItem("wz-theme"); localStorage.setItem("theme", "auto"); } else { localStorage.setItem("wz-theme", n); localStorage.setItem("theme", n); } } catch(e){} zeige(); }; }); }
+    zeigeL(); zeige();
     var f = document.createElement("footer");
     f.innerHTML = 'Alles läuft in deinem Browser – deine Dateien werden nicht hochgeladen. · Hobbyprojekt, ohne Gewähr. · <a href="impressum.html">Impressum &amp; Datenschutz</a>';
     document.body.appendChild(f);

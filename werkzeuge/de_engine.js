@@ -38,6 +38,7 @@ var LV = DE.LV = [
   ["B1", ["Mittelstufe", "Intermédiaire"], ["Relativsätze, Passiv, Konjunktiv II, Meinungen und Texte.", "Relatives, passif, subjonctif II, opinions et textes."], "#f08c00"],
   ["B2", ["Gute Mittelstufe", "Intermédiaire supérieur"], ["Konnektoren, indirekte Rede, Nominalisierung, Argumentieren.", "Connecteurs, discours indirect, nominalisation, argumentation."], "#e8590c"],
   ["C1", ["Fortgeschritten", "Avancé"], ["Stil, Register, feine Unterschiede, Rechtschreibung, Redewendungen.", "Style, registre, nuances, orthographe, expressions idiomatiques."], "#862e9c"],
+  ["G", ["Grammatik komplett", "Grammaire complète"], ["Die ganze deutsche Grammatik auf einen Blick – unabhängig vom Niveau, vom Satzbau bis zu Funktionsverbgefügen.", "Toute la grammaire allemande en un coup d'œil – quel que soit le niveau, de la syntaxe aux Funktionsverbgefüge."], "#d6336c"],
   ["R", ["Nachschlagen", "Référence"], ["Tabellen und Listen zum schnellen Nachschlagen – auch für Muttersprachler.", "Tableaux et listes pour consulter rapidement – aussi pour les germanophones."], "#0ca5a5"]
 ];
 function lvInfo(k){ return LV.filter(function(x){ return x[0] === k; })[0]; }
@@ -46,6 +47,7 @@ function lvInfo(k){ return LV.filter(function(x){ return x[0] === k; })[0]; }
 var prog = {};
 try { prog = JSON.parse(localStorage.getItem("de-prog") || "{}") || {}; } catch(e){ prog = {}; }
 function save(){ try { localStorage.setItem("de-prog", JSON.stringify(prog)); } catch(e){} }
+function isRef(k){ return k === "R" || k === "G"; }
 function lessonsOf(k){ return DE.lessons.filter(function(l){ return l.lv === k; }); }
 function byId(id){ return DE.lessons.filter(function(l){ return l.id === id; })[0]; }
 
@@ -133,15 +135,15 @@ function countItems(l){ return (l.x || []).reduce(function(a, g){ return a + g.i
 /* ---------- Ansichten ---------- */
 var root, cur = null;
 function crumb(parts){ return '<div class="crumb"><a href="index.html">Oratio Place</a> › ' + parts.map(function(p){ return p[1] ? '<a href="' + p[1] + '">' + esc(p[0]) + '</a>' : esc(p[0]); }).join(" › ") + '</div>'; }
-function badge(k){ var v = lvInfo(k); return '<span class="lvb" style="--lc:' + v[3] + '">' + (k === "R" ? "📚" : k) + '</span>'; }
+function badge(k){ var v = lvInfo(k); return '<span class="lvb" style="--lc:' + v[3] + '">' + (k === "R" ? "📚" : k === "G" ? "📘" : k) + '</span>'; }
 function pct(k){ var ls = lessonsOf(k); if (!ls.length) return 0; return Math.round(100 * ls.filter(function(l){ return prog[l.id] && prog[l.id].done; }).length / ls.length); }
 
 function home(){
-  var tot = DE.lessons.filter(function(l){ return l.lv !== "R"; }).length, dn = DE.lessons.filter(function(l){ return l.lv !== "R" && prog[l.id] && prog[l.id].done; }).length;
+  var tot = DE.lessons.filter(function(l){ return !isRef(l.lv); }).length, dn = DE.lessons.filter(function(l){ return !isRef(l.lv) && prog[l.id] && prog[l.id].done; }).length;
   root.innerHTML = crumb([[L("Deutschkurs", "Cours d'allemand")]]) +
-    '<section class="dhero"><div class="dh-t"><h1>' + L("Deutschkurs von A1 bis C1", "Cours d'allemand de A1 à C1") + '</h1><p>' + L("Ein kostenloser Kurs zum Lernen und Nachschlagen: Erklärungen, Tabellen, Beispiele zum Anhören und Übungen mit Sofort-Korrektur. Gemacht für Französischsprachige – die höheren Stufen und der Nachschlage-Bereich helfen auch Muttersprachlern.", "Un cours gratuit pour apprendre et consulter : explications, tableaux, exemples à écouter et exercices corrigés tout de suite. Conçu pour les francophones – les niveaux avancés et la section Référence aident aussi les germanophones.") + '</p><div class="dh-s"><span>' + dn + ' / ' + tot + ' ' + L("Lektionen geschafft", "leçons terminées") + '</span></div></div><div class="dh-f" aria-hidden="true"><svg viewBox="0 0 150 100" width="150" height="100"><g transform="rotate(-6 40 40)"><rect x="6" y="14" width="68" height="16" fill="#111"/><rect x="6" y="30" width="68" height="16" fill="#dd0000"/><rect x="6" y="46" width="68" height="16" fill="#ffce00"/></g><g transform="rotate(5 110 50)"><rect x="76" y="30" width="22" height="48" fill="#0055a4"/><rect x="98" y="30" width="22" height="48" fill="#fff"/><rect x="120" y="30" width="22" height="48" fill="#ef4135"/></g><text x="8" y="94" font-family="Georgia,serif" font-weight="800" font-size="26" fill="#fff">Ä ö ß ü</text></svg></div></section>' +
+    '<section class="dhero"><div class="dh-t"><h1>' + L("Deutschkurs von A1 bis C1", "Cours d'allemand de A1 à C1") + '</h1><p>' + L("Ein kostenloser Kurs zum Lernen und Nachschlagen: Erklärungen, Tabellen, Beispiele zum Anhören und Übungen mit Sofort-Korrektur. Gemacht für Französischsprachige – die höheren Stufen, die komplette Grammatik und der Nachschlage-Bereich helfen auch Muttersprachlern.", "Un cours gratuit pour apprendre et consulter : explications, tableaux, exemples à écouter et exercices corrigés tout de suite. Conçu pour les francophones – les niveaux avancés, la grammaire complète et la section Référence aident aussi les germanophones.") + '</p><div class="dh-s"><span>' + dn + ' / ' + tot + ' ' + L("Lektionen geschafft", "leçons terminées") + '</span></div></div><div class="dh-f" aria-hidden="true"><svg viewBox="0 0 150 100" width="150" height="100"><g transform="rotate(-6 40 40)"><rect x="6" y="14" width="68" height="16" fill="#111"/><rect x="6" y="30" width="68" height="16" fill="#dd0000"/><rect x="6" y="46" width="68" height="16" fill="#ffce00"/></g><g transform="rotate(5 110 50)"><rect x="76" y="30" width="22" height="48" fill="#0055a4"/><rect x="98" y="30" width="22" height="48" fill="#fff"/><rect x="120" y="30" width="22" height="48" fill="#ef4135"/></g><text x="8" y="94" font-family="Georgia,serif" font-weight="800" font-size="26" fill="#fff">Ä ö ß ü</text></svg></div></section>' +
     '<div class="card srch"><input id="dS" class="in" type="search" placeholder="' + L("Suchen: z. B. Dativ, Konjunktiv, Perfekt, weil, Artikel …", "Chercher : p. ex. datif, subjonctif, parfait, weil, article …") + '" aria-label="' + L("Suchen", "Chercher") + '"><div id="dSR"></div></div>' +
-    '<div class="lvgrid">' + LV.map(function(v){ var ls = lessonsOf(v[0]), p = pct(v[0]); return '<a class="lvcard" href="#/' + v[0] + '" style="--lc:' + v[3] + '">' + badge(v[0]) + '<div><h2>' + esc(v[1][I]) + '</h2><p>' + esc(v[2][I]) + '</p><div class="pb"><i style="width:' + p + '%"></i></div><small>' + (ls.length ? ls.length + ' ' + L(v[0] === "R" ? "Seiten" : "Lektionen", v[0] === "R" ? "pages" : "leçons") + (v[0] !== "R" ? ' · ' + p + ' %' : "") : L("Kommt bald", "Bientôt")) + '</small></div></a>'; }).join("") + '</div>' +
+    '<div class="lvgrid">' + LV.map(function(v){ var ls = lessonsOf(v[0]), p = pct(v[0]); return '<a class="lvcard" href="#/' + v[0] + '" style="--lc:' + v[3] + '">' + badge(v[0]) + '<div><h2>' + esc(v[1][I]) + '</h2><p>' + esc(v[2][I]) + '</p><div class="pb"><i style="width:' + p + '%"></i></div><small>' + (ls.length ? ls.length + ' ' + L(isRef(v[0]) ? "Seiten" : "Lektionen", isRef(v[0]) ? "pages" : "leçons") + (!isRef(v[0]) ? ' · ' + p + ' %' : "") : L("Kommt bald", "Bientôt")) + '</small></div></a>'; }).join("") + '</div>' +
     '<div class="card"><h2 style="margin-top:0">' + L("So lernst du am besten", "Comment bien apprendre") + '</h2><ul class="ul"><li>' + L("**Jeden Tag etwas** ist besser als einmal pro Woche viel: 15 bis 20 Minuten reichen.", "**Un peu chaque jour** vaut mieux que beaucoup une fois par semaine : 15 à 20 minutes suffisent.") + '</li><li>' + L("**Laut sprechen**: Drück auf 🔊, hör den Satz und sprich ihn nach.", "**Parler à voix haute** : appuie sur 🔊, écoute la phrase et répète-la.") + '</li><li>' + L("**Nomen immer mit Artikel lernen** – „der Tisch“, nicht nur „Tisch“.", "**Toujours apprendre les noms avec leur article** – « der Tisch », pas seulement « Tisch ».") + '</li><li>' + L("**Fehler sind normal.** Die Übungen zeigen dir sofort die richtige Lösung und den Grund.", "**Les erreurs sont normales.** Les exercices te montrent aussitôt la bonne réponse et la raison.") + '</li><li>' + L("Der Fortschritt wird nur in diesem Browser gespeichert – nichts wird hochgeladen.", "La progression est enregistrée uniquement dans ce navigateur – rien n'est envoyé.") + '</li></ul>' +
     '<div class="row"><a class="btn sm" href="#/k/all">🃏 ' + L("Vokabelkarten (alle)", "Cartes de vocabulaire (toutes)") + '</a><button class="btn sm" id="dRst">' + L("Fortschritt zurücksetzen", "Réinitialiser la progression") + '</button></div></div>';
   root.innerHTML = root.innerHTML.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
@@ -166,21 +168,21 @@ function level(k){
   var v = lvInfo(k); if (!v) return home();
   var ls = lessonsOf(k);
   root.innerHTML = crumb([[L("Deutschkurs", "Cours d'allemand"), "#/"], [k + " – " + v[1][I]]]) +
-    '<section class="lvhead" style="--lc:' + v[3] + '">' + badge(k) + '<div><h1>' + (k === "R" ? "" : k + " – ") + esc(v[1][I]) + '</h1><p>' + esc(v[2][I]) + '</p></div></section>' +
-    (ls.length ? '<ol class="llist">' + ls.map(function(l, i){ var d = prog[l.id] || {}; return '<li><a class="lrow' + (d.done ? " done" : "") + '" href="#/l/' + l.id + '"><span class="ln">' + (k === "R" ? "•" : i + 1) + '</span><span class="lt"><b>' + esc(l.t[I]) + '</b><small>' + esc(P(l.s || "")) + '</small></span><span class="ls">' + (d.done ? "✓" + (d.best != null ? " " + d.best + " %" : "") : "") + '</span></a></li>'; }).join("") + '</ol>' : '<div class="card"><p>' + L("Dieser Bereich wird gerade gebaut und kommt bald.", "Cette section est en cours de construction et arrive bientôt.") + '</p></div>') +
+    '<section class="lvhead" style="--lc:' + v[3] + '">' + badge(k) + '<div><h1>' + (isRef(k) ? "" : k + " – ") + esc(v[1][I]) + '</h1><p>' + esc(v[2][I]) + '</p></div></section>' +
+    (ls.length ? '<ol class="llist">' + ls.map(function(l, i){ var d = prog[l.id] || {}; return '<li><a class="lrow' + (d.done ? " done" : "") + '" href="#/l/' + l.id + '"><span class="ln">' + (isRef(k) ? "•" : i + 1) + '</span><span class="lt"><b>' + esc(l.t[I]) + '</b><small>' + esc(P(l.s || "")) + '</small></span><span class="ls">' + (d.done ? "✓" + (d.best != null ? " " + d.best + " %" : "") : "") + '</span></a></li>'; }).join("") + '</ol>' : '<div class="card"><p>' + L("Dieser Bereich wird gerade gebaut und kommt bald.", "Cette section est en cours de construction et arrive bientôt.") + '</p></div>') +
     '<p><a class="btn sm" href="#/">← ' + L("Zur Übersicht", "Retour à l'accueil") + '</a></p>';
 }
 
 function lesson(id){
   var l = byId(id); if (!l) return home();
   var v = lvInfo(l.lv), ls = lessonsOf(l.lv), ix = ls.indexOf(l), d = prog[l.id] || {}, total = countItems(l), correct = 0, answered = 0, voc = vocOf(l);
-  root.innerHTML = crumb([[L("Deutschkurs", "Cours d'allemand"), "#/"], [l.lv === "R" ? v[1][I] : l.lv + " – " + v[1][I], "#/" + l.lv], [l.t[I]]]) +
-    '<section class="lvhead" style="--lc:' + v[3] + '">' + badge(l.lv) + '<div><h1>' + (l.lv === "R" ? "" : (ix + 1) + ". ") + esc(l.t[I]) + '</h1><p>' + esc(P(l.s || "")) + '</p></div></section>' +
+  root.innerHTML = crumb([[L("Deutschkurs", "Cours d'allemand"), "#/"], [isRef(l.lv) ? v[1][I] : l.lv + " – " + v[1][I], "#/" + l.lv], [l.t[I]]]) +
+    '<section class="lvhead" style="--lc:' + v[3] + '">' + badge(l.lv) + '<div><h1>' + (isRef(l.lv) ? "" : (ix + 1) + ". ") + esc(l.t[I]) + '</h1><p>' + esc(P(l.s || "")) + '</p></div></section>' +
     '<article class="card les">' + (l.b || []).map(renderBlock).join("") + '</article>' +
     (total ? '<section class="card exs"><h2 style="margin-top:0">✏️ ' + L("Übungen", "Exercices") + '</h2><div id="dEx"></div><div id="dRes" class="res" aria-live="polite"></div></section>' : "") +
     '<div class="row nav">' + (ix > 0 ? '<a class="btn" href="#/l/' + ls[ix - 1].id + '">← ' + esc(ls[ix - 1].t[I]) + '</a>' : '<a class="btn" href="#/' + l.lv + '">← ' + L("Übersicht", "Aperçu") + '</a>') +
     (voc.length && I ? '<a class="btn" href="#/k/' + l.id + '">🃏 ' + L("Vokabelkarten", "Cartes de vocabulaire") + '</a>' : "") +
-    (l.lv !== "R" ? '<button class="btn" id="dDone">' + (d.done ? '✓ ' + L("Geschafft", "Terminé") : L("Als geschafft markieren", "Marquer comme terminé")) + '</button>' : "") +
+    (!isRef(l.lv) ? '<button class="btn" id="dDone">' + (d.done ? '✓ ' + L("Geschafft", "Terminé") : L("Als geschafft markieren", "Marquer comme terminé")) + '</button>' : "") +
     (ix < ls.length - 1 ? '<a class="btn go" href="#/l/' + ls[ix + 1].id + '">' + esc(ls[ix + 1].t[I]) + ' →</a>' : '<a class="btn go" href="#/' + l.lv + '">' + L("Zur Übersicht", "Retour à l'aperçu") + '</a>') + '</div>';
   var dd = $("#dDone"); if (dd) dd.onclick = function(){ var p = prog[l.id] || (prog[l.id] = {}); p.done = !p.done; save(); this.textContent = p.done ? "✓ " + L("Geschafft", "Terminé") : L("Als geschafft markieren", "Marquer comme terminé"); };
   if (total) {
@@ -236,7 +238,7 @@ function route(){
   var h = location.hash.replace(/^#\/?/, ""), m;
   if ((m = h.match(/^l\/([\w-]+)$/))) return lesson(m[1]);
   if ((m = h.match(/^k\/([\w-]+)$/))) return cards(m[1]);
-  if ((m = h.match(/^(A1|A2|B1|B2|C1|R)$/))) return level(m[1]);
+  if ((m = h.match(/^(A1|A2|B1|B2|C1|G|R)$/))) return level(m[1]);
   home();
 }
 DE.start = function(){
