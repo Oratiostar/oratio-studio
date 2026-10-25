@@ -76,7 +76,7 @@ main{padding-bottom:max(60px,calc(env(safe-area-inset-bottom) + 50px))}
 .crumb{font-size:14px;color:var(--muted);margin:0 0 8px}.crumb a{color:var(--muted)}
 
 /* ---------- Eine einzige Akzentfarbe (waehlbar oben im Kopf) ---------- */
-:root{--accrgb:39,163,223;--go:#8fd63f;--gob:#6fb12a;--gofg:#1a541e;--acclink:color-mix(in srgb,var(--acc) 72%,#000)}
+:root{--accrgb:39,163,223;--go:#27a3df;--gob:#1b86be;--gofg:#fff;--acclink:color-mix(in srgb,var(--acc) 72%,#000)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--acclink:color-mix(in srgb,var(--acc) 62%,#fff)}}
 :root[data-theme="dark"]{--acclink:color-mix(in srgb,var(--acc) 62%,#fff)}
 :root{--link:var(--acclink)}
@@ -87,7 +87,7 @@ h1{color:var(--acclink)}
 .btn{transition:background .12s,border-color .12s,transform .08s}
 .btn:active:not(:disabled){transform:translateY(1px)}
 .btn:hover:not(:disabled){background:rgba(var(--accrgb),.14);border-color:var(--acc)}
-.btn.on,.btn.on:hover:not(:disabled){background:var(--acc);border-color:var(--acc);color:#fff}
+.btn.on,.btn.on:hover:not(:disabled){background:var(--acc);border-color:var(--acc);color:var(--onacc,#fff)}
 .btn.on:hover:not(:disabled){filter:brightness(1.07)}
 .btn.go{background:var(--go);border-color:var(--gob);color:var(--gofg)}
 .btn.go:hover:not(:disabled){background:var(--go);border-color:var(--gob);filter:brightness(1.07)}
@@ -115,7 +115,7 @@ input[type=range]{accent-color:var(--acc)}
 .sel.open .pop{display:block}
 .sel .opt{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:9px 12px;border:none;border-radius:10px;background:transparent;color:var(--fg);font:inherit;font-weight:600;cursor:pointer}
 .sel .opt:hover,.sel .opt.hl{background:rgba(var(--accrgb),.2)}
-.sel .opt.cur{background:var(--acc);color:#fff}
+.sel .opt.cur{background:var(--acc);color:var(--onacc,#fff)}
 .sel .opt.cur::after{content:"✓";margin-left:auto;font-weight:800}
 .sel .opt:disabled{opacity:.4;cursor:default}
 
@@ -124,3 +124,6 @@ input[type=range]{accent-color:var(--acc)}
 .farben button{width:22px;height:22px;border-radius:50%;border:2px solid var(--card);box-shadow:0 0 0 2px var(--line);cursor:pointer;padding:0}
 .farben button.on{box-shadow:0 0 0 3px var(--fg)}
 .farben button:hover{transform:scale(1.12)}
+
+.farbbox{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px;padding:10px 14px;border:3px solid var(--acc);border-radius:16px;background:var(--card);font-weight:700}
+.farben button{width:26px;height:26px}

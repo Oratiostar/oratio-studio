@@ -132,4 +132,6 @@ window.WZ_FR = {
 "Datei(en) passen hier nicht (erlaubt:":"fichier(s) ne conviennent pas ici (autorisé :"
 ,
 "nicht":"pas"
+,
+"Farbe":"Couleur","Blau":"Bleu","Grün":"Vert","Gelb":"Jaune","Rot":"Rouge","Schwarz":"Noir","Lila":"Violet","Rosa":"Rose","Türkis":"Turquoise"
 };
