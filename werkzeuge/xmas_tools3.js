@@ -141,23 +141,32 @@ function zahl(n, einheit){
   return String(Math.round(n * 10) / 10).replace(".", I ? "," : ",");
 }
 function rezepte(host){
-  var cur = XD.REZ[0], n = cur.serv;
-  host.innerHTML = '<div class="card"><label class="l" style="margin-top:0">' + L("Rezept", "Recette") + '</label><div id="reC"></div></div><div id="reO"></div>';
-  XM.chips($("#reC"), XD.REZ.map(function(r){ return [r.id, r.sym + " " + r.name[I]]; }), cur.id, function(id){ cur = XD.REZ.filter(function(r){ return r.id === id; })[0]; n = cur.serv; show(); });
+  var cur = null, n = 0, cat = "alle", q = "";
+  function byId(id){ return XD.REZ.filter(function(r){ return r.id === id; })[0]; }
+  host.innerHTML = '<div class="card"><label class="l" style="margin-top:0">' + L("Kategorie", "Catégorie") + '</label><div id="reC"></div><input id="reQ" class="in" type="search" placeholder="' + L("Rezept suchen …", "Chercher une recette …") + '" style="margin-top:8px"></div><div id="reG" class="rgrid"></div><div id="reO"></div>';
+  XM.chips($("#reC"), XD.RCAT.map(function(c){ return [c[0], c[1][I]]; }), cat, function(v){ cat = v; grid(); });
+  $("#reQ").oninput = function(){ q = XM.norm(this.value).toLowerCase(); grid(); };
+  function pic(r, uid){ return '<div class="rpic">' + XM.dish(r, uid) + '<img src="bilder/rezepte/' + r.id + '.jpg" alt="" loading="lazy" onerror="this.remove()"></div>'; }
+  function grid(){
+    var list = XD.REZ.filter(function(r){ return (cat === "alle" || r.cat === cat) && (!q || (r.name[I] + " " + r.name[0]).toLowerCase().indexOf(q) >= 0); });
+    $("#reG").innerHTML = list.length ? list.map(function(r){ return '<button class="rtile' + (cur && cur.id === r.id ? ' on' : '') + '" data-id="' + r.id + '">' + pic(r, "g" + r.id) + '<span class="rtn">' + esc(r.name[I]) + '</span><span class="rtm">⏱ ' + esc(r.zeit[I]) + (r.level ? ' · ' + XD.RLV[r.level][I] : '') + '</span></button>'; }).join("") : '<p class="muted">' + L("Nichts gefunden.", "Rien trouvé.") + '</p>';
+    $$("#reG .rtile").forEach(function(b){ b.onclick = function(){ cur = byId(b.getAttribute("data-id")); n = cur.serv; show(); grid(); var o = $("#reO"); if (o.scrollIntoView) o.scrollIntoView({ behavior: "smooth", block: "start" }); }; });
+  }
   function show(){
+    if (!cur) { $("#reO").innerHTML = ""; return; }
     var step = cur.serv >= 20 ? 10 : 1, f = n / cur.serv;
     var lines = cur.ing.map(function(g){ var u = XD.REZU[g[1]][I], a = zahl(g[0] * f, g[1]); return [a + (u ? " " + u : ""), g[2][I]]; });
-    $("#reO").innerHTML = '<div class="xtwo keep"><div class="card"><h2 style="margin-top:0">' + cur.sym + ' ' + esc(cur.name[I]) + '</h2><p class="muted">⏱ ' + esc(cur.zeit[I]) + '</p>' +
+    $("#reO").innerHTML = '<div class="xtwo keep"><div class="card"><div class="rbig">' + pic(cur, "b" + cur.id) + '</div><h2 style="margin-top:10px">' + cur.sym + ' ' + esc(cur.name[I]) + '</h2><p class="muted">⏱ ' + esc(cur.zeit[I]) + (cur.level ? ' · ' + L("Schwierigkeit", "Difficulté") + ': ' + XD.RLV[cur.level][I] : '') + '</p>' +
       '<div class="row" style="margin:6px 0 10px"><b>' + esc(cur.einh[I].charAt(0).toUpperCase() + cur.einh[I].slice(1)) + ':</b><button class="btn sm" id="reM" aria-label="−">−</button><b id="reN" style="min-width:2ch;text-align:center">' + n + '</b><button class="btn sm" id="reP" aria-label="+">+</button></div>' +
       '<table class="et">' + lines.map(function(l){ return '<tr><td>' + esc(l[1]) + '</td><td>' + esc(l[0]) + '</td></tr>'; }).join("") + '</table><div class="row"><button class="btn sm" id="reK">' + L("Einkaufsliste kopieren", "Copier la liste de courses") + '</button><button class="btn sm" id="reD">' + L("Drucken", "Imprimer") + '</button></div></div>' +
-      '<div class="card"><h2 style="margin-top:0">' + L("Zubereitung", "Préparation") + '</h2><ol class="resteps">' + cur.st.map(function(s){ return '<li>' + esc(s[I]) + '</li>'; }).join("") + '</ol><p class="hint">' + L("Mengen sind Richtwerte. Backzeiten hängen vom Ofen ab – nach Sicht prüfen.", "Les quantités sont indicatives. Les temps de cuisson dépendent du four : vérifie à vue.") + '</p></div></div>';
+      '<div class="card"><h2 style="margin-top:0">' + L("Zubereitung", "Préparation") + '</h2><ol class="resteps">' + cur.st.map(function(s){ return '<li>' + esc(s[I]) + '</li>'; }).join("") + '</ol><p class="hint">' + L("Mengen sind Richtwerte. Backzeiten hängen vom Ofen ab – nach Sicht prüfen. Die Bilder sind gezeichnete Illustrationen.", "Les quantités sont indicatives. Les temps de cuisson dépendent du four : vérifie à vue. Les images sont des illustrations dessinées.") + '</p></div></div>';
     $("#reM").onclick = function(){ n = Math.max(step, n - step); show(); }; $("#reP").onclick = function(){ n = Math.min(cur.serv * 6, n + step); show(); };
     $("#reK").onclick = function(){ XM.copy(cur.name[I] + " (" + n + " " + cur.einh[I] + ")\n" + lines.map(function(l){ return "- " + l[0] + " " + l[1]; }).join("\n"), this); };
     $("#reD").onclick = function(){ window.print(); };
   }
-  show();
+  grid();
 }
-reg({ id: "rezepte", sym: "👩‍🍳", group: "plan", name: D("Festtagsrezepte", "Recettes de fête"), desc: D("Glühwein, Kinderpunsch, Vanillekipferl, Bratäpfel, Rotkohl, Bûche de Noël und mehr – mit Mengenrechner für die Personenzahl.", "Vin chaud, punch sans alcool, croissants à la vanille, pommes au four, chou rouge, bûche de Noël et plus – avec calculateur de quantités."), build: rezepte });
+reg({ id: "rezepte", sym: "👩‍🍳", group: "plan", name: D("Festtagsrezepte", "Recettes de fête"), desc: D("Über 30 Rezepte mit gezeichneten Bildern: Plätzchen, Gans, Rouladen, Lachs, Suppen, Beilagen, Desserts, Glühwein & Punsch – mit Mengenrechner und Einkaufsliste.", "Plus de 30 recettes illustrées : biscuits, oie, paupiettes, saumon, soupes, accompagnements, desserts, vin chaud et punch – avec calculateur et liste de courses."), build: rezepte });
 
 /* ---------- Weltgrüße ---------- */
 function welt(host){
