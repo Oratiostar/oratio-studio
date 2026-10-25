@@ -265,23 +265,24 @@ var grp = "alle";
 function lights(){ var cs = ["#e63946", "#f4a261", "#ffd23f", "#4cc36e", "#3fb0d8", "#b05cd6", "#f06cb0"], h = ""; for (var i = 0; i < 40; i++) h += '<i style="--c:' + cs[i % cs.length] + ';--d:' + ((i * 137) % 1900) / 1000 + 's"></i>'; return '<div class="lights" aria-hidden="true">' + h + '</div>'; }
 function hub(){
   document.title = L("Weihnachten – Oratio Place", "Noël – Oratio Place");
-  var c = count();
   root.innerHTML = '<div class="crumb"><a href="index.html">Oratio Place</a> › ' + L("Weihnachtswelt", "Le monde de Noël") + '</div>' +
     '<div class="hero"><div class="hero-bg">' + (XM.village ? XM.village("hv") : "") + '</div><div class="hero-t"><h1>' + L("Weihnachtswelt", "Le monde de Noël") + '</h1>' +
     '<p class="hero-s">' + L("Karten, Wünsche, Post für Kunden und Team, Rezepte, Wichteln, Adventskalender, Spiele und mehr – zum Verschenken, Teilen und Ausdrucken. Läuft im Browser, ohne Anmeldung.", "Cartes, vœux, courrier pour clients et équipe, recettes, Secret Santa, calendrier de l'Avent, jeux et plus – à offrir, partager et imprimer. Fonctionne dans le navigateur, sans inscription.") + '</p></div></div>' +
-    '<div class="hero-z"><span><b>' + nf(c.total) + '</b> ' + L("Ideen & Kombinationen", "idées et combinaisons") + '</span><span><b>' + XM.tools.length + '</b> ' + L("Werkzeuge", "outils") + '</span><span><b>' + nf(c.wuensche) + '</b> ' + L("Wunschtexte", "textes de vœux") + '</span><span><b>' + nf(c.namen) + '</b> ' + L("Weihnachtsnamen", "noms de Noël") + '</span></div>' +
     '<div id="xmChips"></div><div id="xmGrid"></div>' +
     '<p class="hint">' + L("Datenschutz: Was du eingibst, bleibt in deinem Browser. Beim Teilen steckt der Inhalt im Link (hinter dem #) – er wird nicht an einen Server gesendet.", "Confidentialité : ce que tu saisis reste dans ton navigateur. Lors du partage, le contenu est dans le lien (après le #) – il n'est pas envoyé à un serveur.") + '</p>';
-  XM.chips($("#xmChips"), GROUPS.map(function(g){ return [g[0], g[1][I]]; }), grp, function(v){ grp = v; grid(); });
+  var cs = [["alle", L("Alle", "Tout")]].concat(Object.keys(GMETA).map(function(k){ return [k, GMETA[k][0] + " " + GMETA[k][1][I]]; }));
   grid();
+  XM.chips($("#xmChips"), cs, "alle", function(v){
+    var el = v === "alle" ? $("#xmGrid") : $("#sec-" + v);
+    if (el) { var y = el.getBoundingClientRect().top + window.pageYOffset - (v === "alle" ? 70 : 12); window.scrollTo({ top: y, behavior: "smooth" }); }
+  });
 }
 function cardHtml(t){ var c = col(t); return '<a class="xcard" href="#/' + t.id + '" style="--c1:' + c[0] + ';--c2:' + c[1] + '"><span class="xs">' + t.sym + '</span><b>' + esc(t.name[I]) + '</b><span class="xd">' + esc(t.desc[I]) + '</span></a>'; }
 function grid(){
   var host = $("#xmGrid");
-  if (grp !== "alle") { host.innerHTML = '<div class="xgrid">' + XM.tools.filter(function(t){ return t.group === grp; }).map(cardHtml).join("") + '</div>'; return; }
   host.innerHTML = Object.keys(GMETA).map(function(k){
     var ts = XM.tools.filter(function(t){ return t.group === k; }); if (!ts.length) return "";
-    return '<section class="gsec g-' + k + '"><div class="gland">' + (XM.land ? XM.land(k, "g") : "") + '<h2 class="gh2"><span>' + GMETA[k][0] + '</span><b>' + esc(GMETA[k][1][I]) + '</b><small>' + esc(GMETA[k][2][I]) + '</small></h2></div><div class="xgrid">' + ts.map(cardHtml).join("") + '</div></section>';
+    return '<section id="sec-' + k + '" class="gsec g-' + k + '"><div class="gland">' + (XM.land ? XM.land(k, "g") : "") + '<h2 class="gh2"><span>' + GMETA[k][0] + '</span><b>' + esc(GMETA[k][1][I]) + '</b></h2></div><div class="xgrid">' + ts.map(cardHtml).join("") + '</div></section>';
   }).join("");
 }
 function tool(id){

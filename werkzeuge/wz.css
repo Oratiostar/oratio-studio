@@ -21,7 +21,7 @@ header{position:sticky;top:0;z-index:20;background:var(--head);border-bottom:1px
 .bar{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:8px max(14px,env(safe-area-inset-right)) 8px max(14px,env(safe-area-inset-left));flex-wrap:wrap}
 .logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--fg);font-weight:800;font-size:19px;letter-spacing:.2px}
 .logo img{width:34px;height:34px;border-radius:9px}
-.logo .lg,.lg{display:inline-flex;font-size:24px;align-items:center;font-weight:800;line-height:1;letter-spacing:.2px}.lg .lgO{width:36px;height:36px;flex:none;margin-right:-1px}.lg b{font-weight:800;background:linear-gradient(90deg,#1e7bff,#12b8a6);-webkit-background-clip:text;background-clip:text;color:transparent}.lg i{font-style:normal;margin-left:.28em;background:linear-gradient(90deg,#ff7a1a,#ff3b8a 60%,#8a4dff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo .lg,.lg{display:inline-flex;font-size:27px;align-items:center;font-weight:800;line-height:1;letter-spacing:.2px}.lg .lgO{width:40px;height:40px;flex:none;margin-right:-1px}.lg b{font-weight:800;background:linear-gradient(90deg,#1e7bff,#12b8a6);-webkit-background-clip:text;background-clip:text;color:transparent}.lg i{font-style:normal;margin-left:.28em;background:linear-gradient(90deg,#ff7a1a,#ff3b8a 60%,#8a4dff);-webkit-background-clip:text;background-clip:text;color:transparent}
 .sp{flex:1}
 .nav a{color:var(--fg);text-decoration:none;font-weight:700;padding:6px 10px;border-radius:10px}
 .nav a:hover,.nav a.on{background:var(--soft)}
@@ -153,3 +153,5 @@ input[type=range]{accent-color:var(--acc)}
 .cpop .cbt{display:flex;gap:8px;justify-content:flex-end}
 
 .cpop .ch{cursor:move;user-select:none;touch-action:none}.cpop .cx{cursor:pointer}
+
+@media (max-width:700px){.lg{font-size:24px}.lg .lgO{width:36px;height:36px}.seg{border-width:1.5px;border-radius:9px}.seg button{padding:3px 5px;font-size:11px;gap:3px;line-height:1.2}.seg button .e{font-size:12px}.seg button+button{border-left-width:1.5px}.seg .flag{width:16px;height:11px}}
