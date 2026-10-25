@@ -10,7 +10,7 @@
 <style>
 .wrap{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:16px;align-items:start}
 .stagebox{position:sticky;top:64px}
-#stage{width:100%;height:min(66vh,620px);min-height:300px;display:block;border-radius:16px;border:2px solid rgba(39,163,223,.35);background:linear-gradient(135deg,rgba(39,163,223,.10),rgba(143,214,63,.14)),var(--card);touch-action:none;cursor:grab;box-shadow:var(--shadow)}
+#stage{width:100%;height:min(66vh,620px);min-height:300px;display:block;border-radius:16px;border:3px solid var(--acc);background:linear-gradient(135deg,rgba(var(--accrgb),.10),rgba(var(--accrgb),.04)),var(--card);touch-action:none;cursor:grab;box-shadow:var(--shadow)}
 #stage.drag{cursor:grabbing}
 .tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .zoomrow{display:flex;gap:10px;align-items:center;margin-top:10px}

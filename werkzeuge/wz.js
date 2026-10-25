@@ -3,6 +3,19 @@
   var t = null; try { t = localStorage.getItem("wz-theme"); } catch(e){}
   if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
 })();
+(function(){
+  var P = {blau:["#27a3df","#8fd63f","#6fb12a","#1a541e"], gruen:["#55b52e","#8fd63f","#6fb12a","#1a541e"], lila:["#8a5ad8","#8a5ad8","#6d43b8","#fff"], orange:["#e0703a","#e0703a","#c05a28","#fff"], rosa:["#e0527a","#e0527a","#c13a60","#fff"], tuerkis:["#19b8a8","#19b8a8","#10968a","#fff"]};
+  window.WZ_FARBEN = P;
+  window.WZ_farbe = function(n, speichern){
+    if (!P[n]) n = "blau"; var c = P[n], r = document.documentElement.style;
+    r.setProperty("--acc", c[0]); r.setProperty("--accrgb", [1,3,5].map(function(i){ return parseInt(c[0].substr(i,2),16); }).join(","));
+    r.setProperty("--go", c[1]); r.setProperty("--gob", c[2]); r.setProperty("--gofg", c[3]);
+    if (speichern) { try { localStorage.setItem("wz-farbe", n); } catch(e){} }
+    document.querySelectorAll(".farben button").forEach(function(b){ b.classList.toggle("on", b.dataset.f === n); });
+  };
+  var n = null; try { n = localStorage.getItem("wz-farbe"); } catch(e){}
+  window.WZ_farbe(n || "blau");
+})();
 window.WZ = {
   lang: (function(){ var l = null; try { l = localStorage.getItem("lang"); } catch(e){} return l || ((navigator.language||"").indexOf("fr")===0 ? "fr" : "de"); })(),
   _re: null,
@@ -87,10 +100,12 @@ window.WZ = {
   kopf: function(aktiv){
     var h = document.createElement("header");
     h.innerHTML = '<div class="bar"><a class="logo" href="index.html"><img src="logo-place.png" alt=""><span>Oratio Place</span></a>' +
-      '<span class="sp"></span><button class="btn sm" id="wzLang" aria-label="Sprache / Langue"></button> <button class="btn sm" id="wzTheme" aria-label="Hell/Dunkel"></button></div>';
+      '<span class="sp"></span><span class="farben" title="Farbe / Couleur">' + Object.keys(WZ_FARBEN).map(function(k){ return '<button type="button" data-f="' + k + '" style="background:' + WZ_FARBEN[k][0] + '" aria-label="' + k + '" data-nt></button>'; }).join("") + '</span><button class="btn sm" id="wzLang" aria-label="Sprache / Langue"></button> <button class="btn sm" id="wzTheme" aria-label="Hell/Dunkel"></button></div>';
     document.body.insertBefore(h, document.body.firstChild);
     var nm = aktiv === "icon" ? "Icon-Werkstatt" : aktiv === "datei" ? "Datei-Werkstatt" : null, m = document.querySelector("main");
     if (nm && m) { var c = document.createElement("div"); c.className = "crumb"; c.innerHTML = '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Studio</a> › ' + nm; m.insertBefore(c, m.firstChild); }
+    h.querySelectorAll(".farben button").forEach(function(x){ x.onclick = function(){ WZ_farbe(x.dataset.f, true); }; });
+    WZ_farbe(document.documentElement.style.getPropertyValue("--acc") ? Object.keys(WZ_FARBEN).filter(function(k){ return WZ_FARBEN[k][0] === document.documentElement.style.getPropertyValue("--acc"); })[0] : "blau");
     var b = h.querySelector("#wzTheme"), bl = h.querySelector("#wzLang");
     bl.textContent = WZ.lang === "fr" ? "🇩🇪 DE" : "🇫🇷 FR";
     bl.onclick = function(){ try { localStorage.setItem("lang", WZ.lang === "fr" ? "de" : "fr"); } catch(e){} location.reload(); };
