@@ -114,6 +114,10 @@ window.WZ = {
       pop.querySelector(".chue").oninput = function(){ st.h = +this.value; anwenden(true); };
       pop.querySelector(".chex").oninput = function(){ if (/^#[0-9a-f]{6}$/i.test(this.value)) { var c = hex2rgb(this.value); st = rgb2hsv(c[0],c[1],c[2]); pop.querySelector(".chue").value = st.h; anwenden(true); } };
       pop.querySelectorAll(".cpre button").forEach(function(b){ b.onclick = function(){ var c = hex2rgb(b.dataset.c); st = rgb2hsv(c[0],c[1],c[2]); pop.querySelector(".chue").value = st.h; anwenden(true); }; });
+      var kopf = pop.querySelector(".ch"), dr = null;
+      kopf.addEventListener("pointerdown", function(e){ if (e.target.closest(".cx")) return; var r = pop.getBoundingClientRect(); dr = {x:e.clientX-r.left, y:e.clientY-r.top}; kopf.setPointerCapture(e.pointerId); e.preventDefault(); });
+      kopf.addEventListener("pointermove", function(e){ if (!dr) return; pop.style.left = Math.max(4, Math.min(innerWidth - pop.offsetWidth - 4, e.clientX-dr.x)) + "px"; pop.style.top = Math.max(4, Math.min(innerHeight - 40, e.clientY-dr.y)) + "px"; });
+      kopf.addEventListener("pointerup", function(){ dr = null; }); kopf.addEventListener("pointercancel", function(){ dr = null; });
       function zu(){ pop.hidden = true; cur = null; }
       pop.querySelector(".cx").onclick = pop.querySelector(".ca").onclick = function(){ if (cur) { cur.value = orig; cur._swatch.style.background = orig; cur.dispatchEvent(new Event("input", {bubbles:true})); cur.dispatchEvent(new Event("change", {bubbles:true})); } zu(); };
       pop.querySelector(".cok").onclick = function(){ if (cur) cur.dispatchEvent(new Event("change", {bubbles:true})); zu(); };

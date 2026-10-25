@@ -12,7 +12,14 @@
 .stagebox{display:contents}
 .stagewrap{grid-column:1;grid-row:1;position:relative;align-self:stretch;min-height:340px}
 .below{grid-column:1;grid-row:2}
-.wrap>.panel{grid-column:2;grid-row:1}
+.wrap>.panel{grid-column:2;grid-row:1;align-self:stretch;display:flex;flex-direction:column}
+.panel .page.on{display:flex;flex-direction:column;flex:1 1 auto}
+.panel .page.on>label.l{margin-top:auto;padding-top:12px}
+.panel .page.on>.rg,.panel .page.on>.info{margin-top:auto}
+.panel .page.on>#rundBox{margin-top:auto}
+.panel .acts{margin:auto 0 8px;padding-top:10px}
+.panel .status:empty{display:none}
+.panel #bSave{flex:none}
 .wrap>.farbbox{grid-column:2;grid-row:2;margin-top:0}
 #stage{position:absolute;inset:0;width:100%;height:100%;display:block;border-radius:16px;border:3px solid var(--acc);background:linear-gradient(135deg,rgba(var(--accrgb),.10),rgba(var(--accrgb),.04)),var(--card);touch-action:none;cursor:grab;box-shadow:var(--shadow)}
 #stage.drag{cursor:grabbing}
@@ -20,7 +27,7 @@
 .zoomrow{display:flex;gap:10px;align-items:center;margin-top:10px}
 .zoomrow input{flex:1}
 .info{font-size:14px;color:var(--muted);margin-top:8px}
-.panel .page{display:none}.panel .page.on{display:block}
+.panel .page{display:none}
 .sizes{display:flex;gap:10px;align-items:flex-end;margin:8px 0;min-height:70px;padding:8px;border-radius:12px;background:repeating-conic-gradient(var(--chk) 0 25%,var(--chk2) 0 50%) 0 0/14px 14px}
 .sizes canvas{display:block}
 .acts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:12px 0 6px}

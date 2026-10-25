@@ -148,3 +148,5 @@ input[type=range]{accent-color:var(--acc)}
 .cpop .cpre button{aspect-ratio:1;border-radius:8px;border:2px solid var(--line);cursor:pointer;padding:0}
 .cpop .cpre button:hover{transform:scale(1.12);border-color:var(--acc)}
 .cpop .cbt{display:flex;gap:8px;justify-content:flex-end}
+
+.cpop .ch{cursor:move;user-select:none;touch-action:none}.cpop .cx{cursor:pointer}
