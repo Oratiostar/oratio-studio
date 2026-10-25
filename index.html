@@ -163,7 +163,7 @@ try { LANG = localStorage.getItem("lang") || ((navigator.language||"").startsWit
 function T(s){ if (LANG !== "fr" || FR === null || typeof s !== "string") return s; const r = FR[s]; return r === undefined ? s : r; }
 
 const UI = {
-  de:{placeSub:"Alles an einem Ort – wähle einen Bereich.",studio:"Oratio Studio",studioT:"Nachschlagewerk und Werkzeuge für Elektronik, Informatik, Geräte und Labor.",lifestyle:"Lifestyle",lifeT:"Weihnachtswelt und mehr.",bald:"Weitere Bereiche folgen bald.",xmN:"Weihnachten",xmZ:"Lifestyle",xmT:"Karten, Wünsche, Wichteln, Adventskalender, Quiz, Bingo und viele Ideen zum Verschenken und Teilen.",place:"Oratio Place",welten2:"Welten",
+  de:{placeSub:"Alles an einem Ort – wähle einen Bereich.",studio:"Oratio Studio",studioT:"Nachschlagewerk und Werkzeuge für Elektronik, Informatik, Geräte und Labor.",lifestyle:"Lifestyle",lifeT:"Alltag, Genuss und Freizeit.",bald:"Weitere Bereiche folgen bald.",xmN:"Weihnachtswelt",xmZ:"27 Werkzeuge",xmT:"Karten, Wünsche, Post für Kunden und Team, Rezepte, Wichteln, Adventskalender, Quiz und viele Ideen zum Verschenken und Teilen.",deN:"Deutschkurs",deZ:"In Vorbereitung",deT:"Deutsch lernen Schritt für Schritt – Aussprache, Wortschatz, Grammatik und Übungen.",deH:"Kommt bald",deP1:"Aussprache und Alphabet",deP2:"Grundwortschatz nach Themen",deP3:"Grammatik leicht erklärt",deP4:"Übungen und kleine Tests",deP5:"Hörverstehen und Dialoge",place:"Oratio Place",welten2:"Welten",
       icN:"Icon-Werkstatt",icT:"Bild in Form bringen, zuschneiden und als Symbol speichern (PNG, JPG, WebP, ICO).",icZ:"Werkzeug",dtN:"Datei-Werkstatt",dtT:"PDF, Word, Bilder und ZIP: zusammenfügen, umwandeln, komprimieren – direkt im Browser, ohne Upload.",
       katAlle:"Alle",kat:{elektronik:"Elektronik",informatik:"Informatik",geraete:"Geräte",labor:"Labor",werkzeuge:"Werkzeuge"},wzName:"Werkzeuge",wzN:"2 Werkzeuge",wzT:"Icon-Werkstatt und Datei-Werkstatt (PDF, Word, Bilder, ZIP) – direkt im Browser, ohne Upload.",
       suche:"Suchen: Bauteil, Handy, Begriff …",welten:"Alle Welten",seiten:"Seiten",startsub:"Nachschlagewerk für Elektronik, Bauteile und Technik. Wähle eine Welt oder suche oben.",
@@ -175,7 +175,7 @@ const UI = {
       pin:{i:"Eingang",o:"Ausgang",x:"Ein-/Ausgang",g:"Masse",v:"Versorgung",n:"nicht belegt"},
       dunkel:"Dunkel",hellm:"Hell",auto:"Auto",imp:"Impressum & Datenschutz",stand:"Hobbyprojekt, Angaben ohne Gewähr. Bitte wichtige Werte im Datenblatt prüfen.",
       zeit:"Zeitdiagramm",kreis:"Schaltbild",ver:"Versorgung / Werte",geh:"Gehäuse",ans:"Anschlüsse"},
-  fr:{placeSub:"Tout au même endroit – choisis un domaine.",studio:"Oratio Studio",studioT:"Ouvrage de référence et outils pour l’électronique, l’informatique, les appareils et le laboratoire.",lifestyle:"Lifestyle",lifeT:"Le monde de Noël et plus.",bald:"D’autres domaines arrivent bientôt.",xmN:"Noël",xmZ:"Lifestyle",xmT:"Cartes, vœux, Secret Santa, calendrier de l’Avent, quiz, bingo et beaucoup d’idées à offrir et à partager.",place:"Oratio Place",welten2:"mondes",
+  fr:{placeSub:"Tout au même endroit – choisis un domaine.",studio:"Oratio Studio",studioT:"Ouvrage de référence et outils pour l’électronique, l’informatique, les appareils et le laboratoire.",lifestyle:"Lifestyle",lifeT:"Quotidien, plaisirs et loisirs.",bald:"D’autres domaines arrivent bientôt.",xmN:"Le monde de Noël",xmZ:"27 outils",xmT:"Cartes, vœux, courrier pour clients et équipe, recettes, Secret Santa, calendrier de l’Avent, quiz et beaucoup d’idées à offrir et à partager.",deN:"Cours d’allemand",deZ:"En préparation",deT:"Apprendre l’allemand pas à pas : prononciation, vocabulaire, grammaire et exercices.",deH:"Bientôt disponible",deP1:"Prononciation et alphabet",deP2:"Vocabulaire de base par thèmes",deP3:"Grammaire expliquée simplement",deP4:"Exercices et petits tests",deP5:"Compréhension orale et dialogues",place:"Oratio Place",welten2:"mondes",
       icN:"Atelier d’icônes",icT:"Mettre une image en forme, la recadrer et l’enregistrer comme icône (PNG, JPG, WebP, ICO).",icZ:"Outil",dtN:"Atelier de fichiers",dtT:"PDF, Word, images et ZIP : fusionner, convertir, compresser – directement dans le navigateur, sans envoi.",
       katAlle:"Tous",kat:{elektronik:"Électronique",informatik:"Informatique",geraete:"Appareils",labor:"Laboratoire",werkzeuge:"Outils"},wzName:"Outils",wzN:"2 outils",wzT:"Atelier d’icônes et atelier de fichiers (PDF, Word, images, ZIP) – directement dans le navigateur, sans envoi.",
       suche:"Rechercher : composant, téléphone, terme …",welten:"Tous les mondes",seiten:"pages",startsub:"Ouvrage de référence pour l’électronique, les composants et la technique. Choisis un monde ou recherche ci-dessus.",
@@ -426,12 +426,18 @@ function placeseite(){
   const n = INDEX.welten.length + 2;
   app.innerHTML = '<h1>Oratio Place</h1><p class="sub">'+esc(U("placeSub"))+'</p><div class="grid big2">'+
     '<a class="welt" href="#/studio"><div class="kopf" style="background:linear-gradient(135deg,#2e86ff,#19c9b8)"><div class="ic"><img src="icon.png" alt="" style="width:34px;height:34px;border-radius:8px"></div><b>'+esc(U("studio"))+'</b></div><div class="t"><div class="n">'+n+' '+esc(U("welten2"))+'</div>'+esc(U("studioT"))+'</div></a>'+
-    '<a class="welt" href="#/lifestyle"><div class="kopf" style="background:linear-gradient(135deg,#ff7ac8,#ff8c1a)"><div class="ic">🌿</div><b>'+esc(U("lifestyle"))+'</b></div><div class="t"><div class="n">'+esc(U("lifeT"))+'</div>'+esc(U("bald"))+'</div></a></div>';
+    '<a class="welt" href="weihnachten.html"><div class="kopf" style="background:linear-gradient(135deg,#c4162b,#e08a2c 55%,#1d7a47)"><div class="ic">🎄</div><b>'+esc(U("xmN"))+'</b></div><div class="t"><div class="n">'+esc(U("xmZ"))+'</div>'+esc(U("xmT"))+'</div></a>'+
+    '<a class="welt" href="#/lifestyle"><div class="kopf" style="background:linear-gradient(135deg,#ff7ac8,#ff8c1a)"><div class="ic">🌿</div><b>'+esc(U("lifestyle"))+'</b></div><div class="t"><div class="n">'+esc(U("lifeT"))+'</div>'+esc(U("bald"))+'</div></a>'+
+    '<a class="welt" href="#/deutsch"><div class="kopf" style="background:linear-gradient(135deg,#222 0%,#c4162b 50%,#f5c400 100%)"><div class="ic">📖</div><b>'+esc(U("deN"))+'</b></div><div class="t"><div class="n">'+esc(U("deZ"))+'</div>'+esc(U("deT"))+'</div></a></div>';
 }
 function lifestyleseite(){
   document.title = "Oratio Lifestyle"; brand("lifestyle");
-  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("lifestyle"))+'</div><h1>'+esc(U("lifestyle"))+'</h1><div class="grid">'+
-    '<a class="welt" href="weihnachten.html"><div class="kopf" style="background:linear-gradient(135deg,#c4162b,#1d6a46)"><div class="ic">🎄</div><b>'+esc(U("xmN"))+'</b></div><div class="t"><div class="n">'+esc(U("xmZ"))+'</div>'+esc(U("xmT"))+'</div></a></div><p class="platz">'+esc(U("bald"))+'</p>';
+  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("lifestyle"))+'</div><h1>'+esc(U("lifestyle"))+'</h1><p class="sub">'+esc(U("lifeT"))+'</p><p class="platz">'+esc(U("bald"))+'</p>';
+}
+function deutschseite(){
+  document.title = U("deN")+" – Oratio Place"; brand("deutsch");
+  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("deN"))+'</div><h1>📖 '+esc(U("deN"))+'</h1><p class="sub">'+esc(U("deT"))+'</p>'+
+    '<div class="card" style="max-width:560px"><h2 style="margin-top:0">'+esc(U("deH"))+'</h2><ul style="line-height:1.9;padding-left:20px;margin:0">'+[1,2,3,4,5].map(i=>'<li>'+esc(U("deP"+i))+'</li>').join("")+'</ul></div>';
 }
 function startseite(){
   document.title = "Oratio Studio"; brand("studio");
@@ -499,6 +505,7 @@ async function route(){
     if (!p.length) placeseite();
     else if (p[0] === "studio") startseite();
     else if (p[0] === "lifestyle") lifestyleseite();
+    else if (p[0] === "deutsch") deutschseite();
     else if (p[0] === "w") weltseite(p[1]);
     else if (p[0] === "s") await seitenansicht(p[1], p.slice(2).join("/"));
     else if (p[0] === "q") await sucheAnzeigen(p.slice(1).join("/"));

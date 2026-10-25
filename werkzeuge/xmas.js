@@ -266,7 +266,7 @@ function lights(){ var cs = ["#e63946", "#f4a261", "#ffd23f", "#4cc36e", "#3fb0d
 function hub(){
   document.title = L("Weihnachten – Oratio Place", "Noël – Oratio Place");
   var c = count();
-  root.innerHTML = lights() + '<div class="crumb"><a href="index.html">Oratio Place</a> › <a href="index.html#/lifestyle">Lifestyle</a> › ' + L("Weihnachten", "Noël") + '</div>' +
+  root.innerHTML = lights() + '<div class="crumb"><a href="index.html">Oratio Place</a> › ' + L("Weihnachtswelt", "Le monde de Noël") + '</div>' +
     '<div class="hero"><div class="hero-d" aria-hidden="true"><span>🎄</span><span>⭐</span><span>🎁</span><span>🕯️</span><span>❄️</span></div><h1>' + L("Weihnachtswelt", "Le monde de Noël") + '</h1>' +
     '<p class="hero-s">' + L("Karten, Wünsche, Post für Kunden und Team, Rezepte, Wichteln, Adventskalender, Spiele und mehr – zum Verschenken, Teilen und Ausdrucken. Läuft im Browser, ohne Anmeldung.", "Cartes, vœux, courrier pour clients et équipe, recettes, Secret Santa, calendrier de l'Avent, jeux et plus – à offrir, partager et imprimer. Fonctionne dans le navigateur, sans inscription.") + '</p>' +
     '<div class="hero-z"><span><b>' + nf(c.total) + '</b> ' + L("Ideen & Kombinationen", "idées et combinaisons") + '</span><span><b>' + XM.tools.length + '</b> ' + L("Werkzeuge", "outils") + '</span><span><b>' + nf(c.wuensche) + '</b> ' + L("Wunschtexte", "textes de vœux") + '</span><span><b>' + nf(c.namen) + '</b> ' + L("Weihnachtsnamen", "noms de Noël") + '</span></div></div>' +
@@ -289,7 +289,7 @@ function tool(id){
   if (!t) return hub();
   document.title = t.name[I] + " – " + L("Weihnachten", "Noël") + " – Oratio Place";
   var c = col(t);
-  root.innerHTML = lights() + '<div class="crumb"><a href="index.html">Oratio Place</a> › <a href="index.html#/lifestyle">Lifestyle</a> › <a href="#/">' + L("Weihnachten", "Noël") + '</a> › ' + esc(t.name[I]) + '</div>' +
+  root.innerHTML = lights() + '<div class="crumb"><a href="index.html">Oratio Place</a> › <a href="#/">' + L("Weihnachtswelt", "Le monde de Noël") + '</a> › ' + esc(t.name[I]) + '</div>' +
     '<div class="thead" style="--c1:' + c[0] + ';--c2:' + c[1] + '"><span class="tsym">' + t.sym + '</span><div><h1>' + esc(t.name[I]) + '</h1><p class="sub">' + esc(t.desc[I]) + '</p></div></div><div id="xmBody"></div>' +
     '<p class="backl"><a href="#/">← ' + L("Zurück zur Weihnachtswelt", "Retour au monde de Noël") + '</a></p>';
   t.build($("#xmBody"));
