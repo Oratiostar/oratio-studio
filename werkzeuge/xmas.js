@@ -257,7 +257,7 @@ function count(){
 XM.count = count;
 function nf(n){ return n.toLocaleString(I ? "fr-FR" : "de-DE"); }
 var GROUPS = [["alle", ["Alle", "Tout"]], ["geben", ["Verschenken", "Offrir"]], ["beruf", ["Beruf & Post", "Travail et courrier"]], ["plan", ["Planen & Essen", "Organiser et cuisiner"]], ["spiel", ["Spiele & Spaß", "Jeux et plaisir"]], ["kreativ", ["Kreativ & Musik", "Créatif et musique"]], ["wissen", ["Wissen & Welt", "Savoir et monde"]]];
-var GMETA = { geben: ["💌", ["Verschenken & Verschicken", "Offrir et envoyer"]], beruf: ["💼", ["Beruf & Post", "Travail et courrier"]], plan: ["📋", ["Planen, Kochen & Drucken", "Organiser, cuisiner et imprimer"]], spiel: ["🎲", ["Spiele & Spaß", "Jeux et plaisir"]], kreativ: ["🎨", ["Kreativ & Musik", "Créatif et musique"]], wissen: ["🌍", ["Wissen & Welt", "Savoir et monde"]] };
+var GMETA = { geben: ["💌", ["Postamt & Geschenke", "Poste et cadeaux"], ["Verschenken & Verschicken", "Offrir et envoyer"]], beruf: ["💼", ["Kontor & Kundenpost", "Bureau et courrier pro"], ["Beruf & Post", "Travail et courrier"]], plan: ["🍪", ["Backstube & Festtafel", "Boulangerie et table de fête"], ["Planen, Kochen & Drucken", "Organiser, cuisiner, imprimer"]], spiel: ["🎠", ["Eisbahn & Spielwiese", "Patinoire et jeux"], ["Spiele & Spaß", "Jeux et plaisir"]], kreativ: ["🧝", ["Wichtelwerkstatt", "Atelier des lutins"], ["Kreativ & Musik", "Créatif et musique"]], wissen: ["🔭", ["Sternwarte der Welt", "Observatoire du monde"], ["Wissen & Welt", "Savoir et monde"]] };
 // Farbpaare je Werkzeug (kräftig, damit weißer Text gut lesbar bleibt)
 XM.COL = { karte: ["#c4162b", "#f0527a"], wunsch: ["#b8590a", "#f0a020"], wichteln: ["#1d7a47", "#4cc36e"], advent: ["#6a2c91", "#b05cd6"], countdown: ["#1f5fb8", "#4aa3f0"], wunschzettel: ["#b8307a", "#f06cb0"], gutschein: ["#c2570c", "#f58a3a"], namen: ["#0f7f86", "#35c4c4"], gedicht: ["#5a3fb8", "#9a7cf0"], quiz: ["#2b4fc4", "#7a8cf5"], bingo: ["#2a8a2a", "#8ad03a"], baum: ["#1b6b3a", "#44b86a"], flocke: ["#1c78b8", "#6cd0f5"], muetze: ["#b81f2a", "#ff6b5a"], spruch: ["#a8700a", "#f2c230"], budget: ["#1d7a5a", "#40c49a"], essen: ["#b8420a", "#f08a3a"], geschenke: ["#b82f6a", "#f58ab0"], musik: ["#3a3fb8", "#7a8af5"], brief: ["#a81f2a", "#e8505a"], sprueche: ["#b0306a", "#e86a9a"], vorlagen: ["#1d4e89", "#4a8fd8"], planer: ["#1a7a6a", "#3fc0a8"], papier: ["#9a6b0a", "#e0b030"], rezepte: ["#b04a0a", "#e8803a"], welt: ["#1f6fa8", "#3fb0d8"], wissen: ["#6a35b0", "#a47ae0"] };
 function col(t){ var c = XM.COL[t.id] || ["#c4162b", "#f0527a"]; return c; }
@@ -266,10 +266,10 @@ function lights(){ var cs = ["#e63946", "#f4a261", "#ffd23f", "#4cc36e", "#3fb0d
 function hub(){
   document.title = L("Weihnachten – Oratio Place", "Noël – Oratio Place");
   var c = count();
-  root.innerHTML = lights() + '<div class="crumb"><a href="index.html">Oratio Place</a> › ' + L("Weihnachtswelt", "Le monde de Noël") + '</div>' +
-    '<div class="hero"><div class="hero-d" aria-hidden="true"><span>🎄</span><span>⭐</span><span>🎁</span><span>🕯️</span><span>❄️</span></div><h1>' + L("Weihnachtswelt", "Le monde de Noël") + '</h1>' +
-    '<p class="hero-s">' + L("Karten, Wünsche, Post für Kunden und Team, Rezepte, Wichteln, Adventskalender, Spiele und mehr – zum Verschenken, Teilen und Ausdrucken. Läuft im Browser, ohne Anmeldung.", "Cartes, vœux, courrier pour clients et équipe, recettes, Secret Santa, calendrier de l'Avent, jeux et plus – à offrir, partager et imprimer. Fonctionne dans le navigateur, sans inscription.") + '</p>' +
-    '<div class="hero-z"><span><b>' + nf(c.total) + '</b> ' + L("Ideen & Kombinationen", "idées et combinaisons") + '</span><span><b>' + XM.tools.length + '</b> ' + L("Werkzeuge", "outils") + '</span><span><b>' + nf(c.wuensche) + '</b> ' + L("Wunschtexte", "textes de vœux") + '</span><span><b>' + nf(c.namen) + '</b> ' + L("Weihnachtsnamen", "noms de Noël") + '</span></div></div>' +
+  root.innerHTML = '<div class="crumb"><a href="index.html">Oratio Place</a> › ' + L("Weihnachtswelt", "Le monde de Noël") + '</div>' +
+    '<div class="hero"><div class="hero-bg">' + (XM.village ? XM.village("hv") : "") + '</div><div class="hero-t"><h1>' + L("Weihnachtswelt", "Le monde de Noël") + '</h1>' +
+    '<p class="hero-s">' + L("Karten, Wünsche, Post für Kunden und Team, Rezepte, Wichteln, Adventskalender, Spiele und mehr – zum Verschenken, Teilen und Ausdrucken. Läuft im Browser, ohne Anmeldung.", "Cartes, vœux, courrier pour clients et équipe, recettes, Secret Santa, calendrier de l'Avent, jeux et plus – à offrir, partager et imprimer. Fonctionne dans le navigateur, sans inscription.") + '</p></div></div>' +
+    '<div class="hero-z"><span><b>' + nf(c.total) + '</b> ' + L("Ideen & Kombinationen", "idées et combinaisons") + '</span><span><b>' + XM.tools.length + '</b> ' + L("Werkzeuge", "outils") + '</span><span><b>' + nf(c.wuensche) + '</b> ' + L("Wunschtexte", "textes de vœux") + '</span><span><b>' + nf(c.namen) + '</b> ' + L("Weihnachtsnamen", "noms de Noël") + '</span></div>' +
     '<div id="xmChips"></div><div id="xmGrid"></div>' +
     '<p class="hint">' + L("Datenschutz: Was du eingibst, bleibt in deinem Browser. Beim Teilen steckt der Inhalt im Link (hinter dem #) – er wird nicht an einen Server gesendet.", "Confidentialité : ce que tu saisis reste dans ton navigateur. Lors du partage, le contenu est dans le lien (après le #) – il n'est pas envoyé à un serveur.") + '</p>';
   XM.chips($("#xmChips"), GROUPS.map(function(g){ return [g[0], g[1][I]]; }), grp, function(v){ grp = v; grid(); });
@@ -281,7 +281,7 @@ function grid(){
   if (grp !== "alle") { host.innerHTML = '<div class="xgrid">' + XM.tools.filter(function(t){ return t.group === grp; }).map(cardHtml).join("") + '</div>'; return; }
   host.innerHTML = Object.keys(GMETA).map(function(k){
     var ts = XM.tools.filter(function(t){ return t.group === k; }); if (!ts.length) return "";
-    return '<section class="gsec g-' + k + '"><h2 class="gh"><span>' + GMETA[k][0] + '</span> ' + esc(GMETA[k][1][I]) + '</h2><div class="xgrid">' + ts.map(cardHtml).join("") + '</div></section>';
+    return '<section class="gsec g-' + k + '"><div class="gland">' + (XM.land ? XM.land(k, "g") : "") + '<h2 class="gh2"><span>' + GMETA[k][0] + '</span><b>' + esc(GMETA[k][1][I]) + '</b><small>' + esc(GMETA[k][2][I]) + '</small></h2></div><div class="xgrid">' + ts.map(cardHtml).join("") + '</div></section>';
   }).join("");
 }
 function tool(id){
