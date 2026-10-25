@@ -56,6 +56,7 @@
     <div class="tools">
       <button class="btn sm" id="bOpen">Öffnen</button>
       <button class="btn sm" id="bPaste">Einfügen</button>
+      <button class="btn sm" id="bMove" hidden title="Ein Finger verschiebt das Bild oder scrollt die Seite">✋ Seite scrollen</button>
       <button class="btn sm" id="bFit">Einpassen</button>
       <button class="btn sm" id="bOne">1:1</button>
       <button class="btn sm" id="bRot" title="90° drehen">⟳ Drehen</button>
@@ -378,11 +379,14 @@ $("#zoom").oninput = e => { if(!S.src) return; const [lo,hi] = zoomRange(); cons
 
 // Maus / Finger
 const ptrs = new Map(); let lastDist = 0;
+// Handy: Standardmäßig scrollt ein Finger die Seite (auch über dem Bild); "Bild verschieben" schaltet auf Verschieben um. Zwei Finger zoomen immer.
+let fingerMove = false; const grob = matchMedia("(pointer:coarse)").matches;
+if (grob) { const bm = $("#bMove"); bm.hidden = false; stage.style.touchAction = "pan-y"; bm.onclick = () => { fingerMove = !fingerMove; stage.style.touchAction = fingerMove ? "none" : "pan-y"; bm.textContent = fingerMove ? "🖼️ Bild verschieben" : "✋ Seite scrollen"; bm.classList.toggle("on", fingerMove); }; }
 stage.addEventListener("pointerdown", e => { stage.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY}); stage.classList.add("drag"); lastDist = 0; });
 stage.addEventListener("pointermove", e => {
   const p = ptrs.get(e.pointerId); if (!p || !S.src) return;
   const dx = e.clientX-p.x, dy = e.clientY-p.y; p.x = e.clientX; p.y = e.clientY;
-  if (ptrs.size===1){ const pad = padPx(FR.w,FR.h); S.cx += dx/(FR.w-2*pad); S.cy += dy/(FR.h-2*pad); draw(); }
+  if (ptrs.size===1){ if (grob && !fingerMove && e.pointerType==="touch") return; const pad = padPx(FR.w,FR.h); S.cx += dx/(FR.w-2*pad); S.cy += dy/(FR.h-2*pad); draw(); }
   else if (ptrs.size===2){
     const [a,b] = [...ptrs.values()]; const d = Math.hypot(a.x-b.x,a.y-b.y);
     if (lastDist){ const r = stage.getBoundingClientRect(); zoomBy(d/lastDist, ((a.x+b.x)/2-r.left-FR.x)/FR.w, ((a.y+b.y)/2-r.top-FR.y)/FR.h); }

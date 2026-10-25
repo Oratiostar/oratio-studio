@@ -228,6 +228,15 @@ XM.chips = function(host, items, cur, onpick){
   items.forEach(function(it){ var b = document.createElement("button"); b.type = "button"; b.className = "chip" + (it[0] === cur ? " on" : ""); b.textContent = it[1]; b.onclick = function(){ $$(".chip", host).forEach(function(x){ x.classList.toggle("on", x === b); }); onpick(it[0]); }; host.appendChild(b); });
 };
 XM.themeChips = function(host, cur, onpick){ XM.chips(host, XM.themeKeys.map(function(k){ return [k, TH[k].n[I]]; }), cur, onpick); };
+// Handy: Zeichenflächen fangen sonst jede Wischgeste ab. Dieser Schalter lässt dazwischen wählen: Fläche bedienen oder Seite scrollen.
+XM.touchMode = function(cv, startOn, labOn, labOff){
+  var st = { on: true }; if (!matchMedia("(pointer:coarse)").matches) return st;
+  st.on = !!startOn; cv.style.touchAction = st.on ? "none" : "pan-y";
+  var b = document.createElement("button"); b.type = "button"; b.className = "btn sm tmode"; b.style.marginTop = "8px";
+  function lab(){ b.textContent = st.on ? labOn : labOff; b.classList.toggle("on", st.on); cv.style.touchAction = st.on ? "none" : "pan-y"; }
+  b.onclick = function(){ st.on = !st.on; lab(); }; lab();
+  var w = cv.parentNode; w.insertAdjacentElement("afterend", b); return st;
+};
 XM.field = function(label, html){ return '<label class="l">' + label + '</label>' + html; };
 
 /* ---------- Router ---------- */
@@ -236,41 +245,52 @@ XM.onLeave = function(f){ stopFns.push(f); };
 function leave(){ stopFns.forEach(function(f){ try { f(); } catch(e){} }); stopFns = []; }
 function count(){
   var W = XD.W, c = { wuensche: 0 };
-  ["herzlich", "lustig", "feierlich", "formell"].forEach(function(k){ c.wuensche += W[k].A.length * W[k].B.length * W[k].C.length; });
+  for (var k in W) { if (W[k].A) c.wuensche += W[k].A.length * W[k].B.length * W[k].C.length; }
   c.wuensche += W.kurz.K.length + W.reim.R.length * (W.reim.R.length - 1);
-  var bt = 0; for (var k in XD.N.B) bt += XD.N.B[k].length; c.namen = XD.N.A.length * bt;
-  c.rest = XD.Q.length + XD.B.length + XD.AD.length;
-  var g = 0; for (var kk in XD.G) g += XD.G[kk][1].length; c.geschenke = g;
-  c.total = c.wuensche + c.namen + c.rest + c.geschenke;
+  var bt = 0; for (var kk in XD.N.B) bt += XD.N.B[kk].length; c.namen = XD.N.A.length * bt;
+  var sp = 0; for (var g in XD.SP) sp += XD.SP[g].length; c.sprueche = sp;
+  c.rest = XD.Q.length + XD.B.length + XD.AD.length + XD.WELT.length + XD.WISS.length + XD.REZ.length + XD.VL.length * 4 + XD.PL.reduce(function(a, x){ return a + x[1].length; }, 0);
+  var gg = 0; for (var k3 in XD.G) gg += XD.G[k3][1].length; c.geschenke = gg;
+  c.total = c.wuensche + c.namen + c.sprueche + c.rest + c.geschenke;
   return c;
 }
 XM.count = count;
 function nf(n){ return n.toLocaleString(I ? "fr-FR" : "de-DE"); }
-var GROUPS = [["alle", ["Alle", "Tout"]], ["geben", ["Verschenken", "Offrir"]], ["spiel", ["Spiele & Spaß", "Jeux et plaisir"]], ["plan", ["Planen", "Organiser"]], ["kreativ", ["Kreativ", "Créatif"]]];
+var GROUPS = [["alle", ["Alle", "Tout"]], ["geben", ["Verschenken", "Offrir"]], ["beruf", ["Beruf & Post", "Travail et courrier"]], ["plan", ["Planen & Essen", "Organiser et cuisiner"]], ["spiel", ["Spiele & Spaß", "Jeux et plaisir"]], ["kreativ", ["Kreativ & Musik", "Créatif et musique"]], ["wissen", ["Wissen & Welt", "Savoir et monde"]]];
+var GMETA = { geben: ["💌", ["Verschenken & Verschicken", "Offrir et envoyer"]], beruf: ["💼", ["Beruf & Post", "Travail et courrier"]], plan: ["📋", ["Planen, Kochen & Drucken", "Organiser, cuisiner et imprimer"]], spiel: ["🎲", ["Spiele & Spaß", "Jeux et plaisir"]], kreativ: ["🎨", ["Kreativ & Musik", "Créatif et musique"]], wissen: ["🌍", ["Wissen & Welt", "Savoir et monde"]] };
+// Farbpaare je Werkzeug (kräftig, damit weißer Text gut lesbar bleibt)
+XM.COL = { karte: ["#c4162b", "#f0527a"], wunsch: ["#b8590a", "#f0a020"], wichteln: ["#1d7a47", "#4cc36e"], advent: ["#6a2c91", "#b05cd6"], countdown: ["#1f5fb8", "#4aa3f0"], wunschzettel: ["#b8307a", "#f06cb0"], gutschein: ["#c2570c", "#f58a3a"], namen: ["#0f7f86", "#35c4c4"], gedicht: ["#5a3fb8", "#9a7cf0"], quiz: ["#2b4fc4", "#7a8cf5"], bingo: ["#2a8a2a", "#8ad03a"], baum: ["#1b6b3a", "#44b86a"], flocke: ["#1c78b8", "#6cd0f5"], muetze: ["#b81f2a", "#ff6b5a"], spruch: ["#a8700a", "#f2c230"], budget: ["#1d7a5a", "#40c49a"], essen: ["#b8420a", "#f08a3a"], geschenke: ["#b82f6a", "#f58ab0"], musik: ["#3a3fb8", "#7a8af5"], brief: ["#a81f2a", "#e8505a"], sprueche: ["#b0306a", "#e86a9a"], vorlagen: ["#1d4e89", "#4a8fd8"], planer: ["#1a7a6a", "#3fc0a8"], papier: ["#9a6b0a", "#e0b030"], rezepte: ["#b04a0a", "#e8803a"], welt: ["#1f6fa8", "#3fb0d8"], wissen: ["#6a35b0", "#a47ae0"] };
+function col(t){ var c = XM.COL[t.id] || ["#c4162b", "#f0527a"]; return c; }
 var grp = "alle";
+function lights(){ var cs = ["#e63946", "#f4a261", "#ffd23f", "#4cc36e", "#3fb0d8", "#b05cd6", "#f06cb0"], h = ""; for (var i = 0; i < 40; i++) h += '<i style="--c:' + cs[i % cs.length] + ';--d:' + ((i * 137) % 1900) / 1000 + 's"></i>'; return '<div class="lights" aria-hidden="true">' + h + '</div>'; }
 function hub(){
   document.title = L("Weihnachten – Oratio Place", "Noël – Oratio Place");
   var c = count();
-  root.innerHTML = '<div class="crumb"><a href="index.html">Oratio Place</a> › <a href="index.html#/lifestyle">Lifestyle</a> › ' + L("Weihnachten", "Noël") + '</div>' +
-    '<h1>🎄 ' + L("Weihnachtswelt", "Le monde de Noël") + '</h1>' +
-    '<p class="sub">' + L("Karten, Wünsche, Wichteln, Adventskalender, Spiele und mehr – alles zum Verschenken und Weitergeben. Läuft im Browser, ohne Anmeldung.", "Cartes, vœux, Secret Santa, calendrier de l'Avent, jeux et plus – tout pour offrir et partager. Fonctionne dans le navigateur, sans inscription.") + '</p>' +
-    '<p class="zahl">' + L("Über <b>" + nf(c.total) + "</b> Ideen und Kombinationen: " + nf(c.wuensche) + " Wunschtexte, " + nf(c.namen) + " Weihnachtsnamen, " + c.rest + " Quizfragen, Bingo-Felder und Adventsideen, " + c.geschenke + " Geschenkideen – und " + XM.tools.length + " Werkzeuge.", "Plus de <b>" + nf(c.total) + "</b> idées et combinaisons : " + nf(c.wuensche) + " textes de vœux, " + nf(c.namen) + " noms de Noël, " + c.rest + " questions de quiz, cases de bingo et idées de l'Avent, " + c.geschenke + " idées de cadeaux – et " + XM.tools.length + " outils.") + '</p>' +
-    '<div id="xmChips"></div><div class="xgrid" id="xmGrid"></div>' +
+  root.innerHTML = lights() + '<div class="crumb"><a href="index.html">Oratio Place</a> › <a href="index.html#/lifestyle">Lifestyle</a> › ' + L("Weihnachten", "Noël") + '</div>' +
+    '<div class="hero"><div class="hero-d" aria-hidden="true"><span>🎄</span><span>⭐</span><span>🎁</span><span>🕯️</span><span>❄️</span></div><h1>' + L("Weihnachtswelt", "Le monde de Noël") + '</h1>' +
+    '<p class="hero-s">' + L("Karten, Wünsche, Post für Kunden und Team, Rezepte, Wichteln, Adventskalender, Spiele und mehr – zum Verschenken, Teilen und Ausdrucken. Läuft im Browser, ohne Anmeldung.", "Cartes, vœux, courrier pour clients et équipe, recettes, Secret Santa, calendrier de l'Avent, jeux et plus – à offrir, partager et imprimer. Fonctionne dans le navigateur, sans inscription.") + '</p>' +
+    '<div class="hero-z"><span><b>' + nf(c.total) + '</b> ' + L("Ideen & Kombinationen", "idées et combinaisons") + '</span><span><b>' + XM.tools.length + '</b> ' + L("Werkzeuge", "outils") + '</span><span><b>' + nf(c.wuensche) + '</b> ' + L("Wunschtexte", "textes de vœux") + '</span><span><b>' + nf(c.namen) + '</b> ' + L("Weihnachtsnamen", "noms de Noël") + '</span></div></div>' +
+    '<div id="xmChips"></div><div id="xmGrid"></div>' +
     '<p class="hint">' + L("Datenschutz: Was du eingibst, bleibt in deinem Browser. Beim Teilen steckt der Inhalt im Link (hinter dem #) – er wird nicht an einen Server gesendet.", "Confidentialité : ce que tu saisis reste dans ton navigateur. Lors du partage, le contenu est dans le lien (après le #) – il n'est pas envoyé à un serveur.") + '</p>';
   XM.chips($("#xmChips"), GROUPS.map(function(g){ return [g[0], g[1][I]]; }), grp, function(v){ grp = v; grid(); });
   grid();
 }
+function cardHtml(t){ var c = col(t); return '<a class="xcard" href="#/' + t.id + '" style="--c1:' + c[0] + ';--c2:' + c[1] + '"><span class="xs">' + t.sym + '</span><b>' + esc(t.name[I]) + '</b><span class="xd">' + esc(t.desc[I]) + '</span></a>'; }
 function grid(){
-  $("#xmGrid").innerHTML = XM.tools.filter(function(t){ return grp === "alle" || t.group === grp; }).map(function(t){
-    return '<a class="xcard" href="#/' + t.id + '"><span class="xs">' + t.sym + '</span><b>' + esc(t.name[I]) + '</b><span>' + esc(t.desc[I]) + '</span></a>';
+  var host = $("#xmGrid");
+  if (grp !== "alle") { host.innerHTML = '<div class="xgrid">' + XM.tools.filter(function(t){ return t.group === grp; }).map(cardHtml).join("") + '</div>'; return; }
+  host.innerHTML = Object.keys(GMETA).map(function(k){
+    var ts = XM.tools.filter(function(t){ return t.group === k; }); if (!ts.length) return "";
+    return '<section class="gsec g-' + k + '"><h2 class="gh"><span>' + GMETA[k][0] + '</span> ' + esc(GMETA[k][1][I]) + '</h2><div class="xgrid">' + ts.map(cardHtml).join("") + '</div></section>';
   }).join("");
 }
 function tool(id){
   var t = XM.tools.filter(function(x){ return x.id === id; })[0];
   if (!t) return hub();
   document.title = t.name[I] + " – " + L("Weihnachten", "Noël") + " – Oratio Place";
-  root.innerHTML = '<div class="crumb"><a href="index.html">Oratio Place</a> › <a href="index.html#/lifestyle">Lifestyle</a> › <a href="#/">' + L("Weihnachten", "Noël") + '</a> › ' + esc(t.name[I]) + '</div>' +
-    '<h1>' + t.sym + ' ' + esc(t.name[I]) + '</h1><p class="sub">' + esc(t.desc[I]) + '</p><div id="xmBody"></div>' +
+  var c = col(t);
+  root.innerHTML = lights() + '<div class="crumb"><a href="index.html">Oratio Place</a> › <a href="index.html#/lifestyle">Lifestyle</a> › <a href="#/">' + L("Weihnachten", "Noël") + '</a> › ' + esc(t.name[I]) + '</div>' +
+    '<div class="thead" style="--c1:' + c[0] + ';--c2:' + c[1] + '"><span class="tsym">' + t.sym + '</span><div><h1>' + esc(t.name[I]) + '</h1><p class="sub">' + esc(t.desc[I]) + '</p></div></div><div id="xmBody"></div>' +
     '<p class="backl"><a href="#/">← ' + L("Zurück zur Weihnachtswelt", "Retour au monde de Noël") + '</a></p>';
   t.build($("#xmBody"));
 }

@@ -18,7 +18,7 @@ XM.wish = function(style, name){
   else txt = pick(W.A)[I] + " " + pick(W.B)[I] + "\n\n" + pick(W.C)[I];
   return nameFix(txt, XM.norm(name));
 };
-var STYLES = [["herzlich", D("Herzlich", "Chaleureux")], ["lustig", D("Lustig", "Drôle")], ["feierlich", D("Feierlich", "Solennel")], ["kurz", D("Kurz & knapp", "Court")], ["reim", D("Als Reim", "En rimes")], ["formell", D("Förmlich (Sie)", "Formel (vous)")]];
+var STYLES = [["herzlich", D("Herzlich", "Chaleureux")], ["lustig", D("Lustig", "Drôle")], ["feierlich", D("Feierlich", "Solennel")], ["kurz", D("Kurz & knapp", "Court")], ["reim", D("Als Reim", "En rimes")], ["formell", D("Förmlich (Sie)", "Formel (vous)")], ["kunden", D("💼 Kunden & Partner", "💼 Clients et partenaires")], ["chef", D("💼 Vorgesetzte", "💼 Supérieurs")], ["team", D("💼 Team (ihr)", "💼 Équipe (vous)")], ["kollege", D("💼 Kollegen (du)", "💼 Collègues (tu)")], ["danke", D("🙏 Dankbar", "🙏 Reconnaissant")], ["neujahr", D("🎆 Mit Neujahr", "🎆 Avec Nouvel An")], ["besinnlich", D("🕯️ Besinnlich", "🕯️ Paisible")], ["liebe", D("❤️ Liebe", "❤️ Amour")], ["ferne", D("📞 Für die Ferne", "📞 À distance")]];
 
 /* ---------- Karte ---------- */
 function cardDraw(p){
@@ -80,7 +80,7 @@ function wunsch(host){
   }
   $("#wg").onclick = gen; $("#wn").oninput = gen; gen();
 }
-reg({ id: "wunsch", sym: "✨", group: "geben", name: D("Wunsch-Generator", "Générateur de vœux"), desc: D("Tausende Weihnachtswünsche: herzlich, lustig, feierlich, als Reim oder förmlich – mit Namen.", "Des milliers de vœux de Noël : chaleureux, drôles, solennels, en rimes ou formels – avec prénom."), build: wunsch });
+reg({ id: "wunsch", sym: "✨", group: "geben", name: D("Wunsch-Generator", "Générateur de vœux"), desc: D("Tausende Weihnachtswünsche in 15 Stilen: herzlich, lustig, als Reim, für Kunden, Kollegen, Chef, Partner und mehr – mit Namen.", "Des milliers de vœux de Noël en 15 styles : chaleureux, drôles, en rimes, pour clients, collègues, supérieurs, partenaire et plus – avec prénom."), build: wunsch });
 
 /* ---------- Wichteln ---------- */
 function derange(names, forb){
