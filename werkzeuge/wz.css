@@ -26,9 +26,9 @@ header{position:sticky;top:0;z-index:20;background:var(--head);border-bottom:1px
 .nav a{color:var(--fg);text-decoration:none;font-weight:700;padding:6px 10px;border-radius:10px}
 .nav a:hover,.nav a.on{background:var(--soft)}
 main{max-width:1180px;margin:0 auto;padding:18px max(14px,env(safe-area-inset-right)) 40px max(14px,env(safe-area-inset-left))}
-h1{margin:6px 0 4px;font-size:28px;line-height:1.2;text-wrap:balance}
+h1{margin:6px 0 4px;font-size:30px;font-weight:800;line-height:1.2;text-wrap:balance}
 h2{font-size:19px;margin:22px 0 8px}
-.sub{color:var(--muted);margin:0 0 16px}
+.sub{color:var(--muted);margin:0 0 16px;font-size:15px}
 .seg{display:inline-flex;border:2px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden;flex:none}.seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-weight:700;font-size:14px;padding:6px 10px;cursor:pointer;display:inline-flex;align-items:center;gap:5px}.seg button+button{border-left:2px solid var(--line)}.seg button.on{background:linear-gradient(135deg,#2e86ff,#8a4dff);color:#fff}.seg button:not(.on):hover{background:var(--soft);color:var(--fg)}
 .btn{border:2px solid var(--line);background:var(--card);color:var(--fg);border-radius:12px;padding:7px 14px;font:inherit;font-weight:700;cursor:pointer}
 .btn:hover:not(:disabled){border-color:var(--acc)}
