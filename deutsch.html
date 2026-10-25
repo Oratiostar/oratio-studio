@@ -16,6 +16,9 @@
 <link rel="apple-touch-icon" href="logo-place.png">
 <link rel="stylesheet" href="werkzeuge/wz.css">
 <style>
+header{border-bottom:0!important;position:sticky}header::after{content:"";display:block;height:5px;background:linear-gradient(90deg,#111 0 33.3%,#dd0000 0 66.6%,#ffce00 0)}
+body{background:linear-gradient(180deg,#fff3d6,#ffe3f0 40%,#e3ecff)!important;background-attachment:fixed}
+:root[data-theme="dark"] body{background:#14192b!important}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body{background:#14192b!important}}
 :root{--acc:#2f5fd0;--acc2:#f2b705;--accrgb:47,95,208;--accfg:#3a2c00;--go:#2f5fd0;--gob:#244aa5;--gofg:#fff;--onacc:#fff}
 :root[data-theme="dark"]{--acc:#6d8df0;--accrgb:109,141,240}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--acc:#6d8df0;--accrgb:109,141,240}}
@@ -24,11 +27,11 @@
 .crumb{font-size:14px;margin:4px 0 12px;color:var(--muted)}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 0}
 .row a.btn,.nav a.btn{text-decoration:none;display:inline-block}
-.dhero{display:flex;gap:16px;justify-content:space-between;align-items:center;border-radius:20px;padding:22px;background:linear-gradient(135deg,#1c3f9e,#2f5fd0 55%,#f2b705);color:#fff;margin-bottom:14px;box-shadow:var(--shadow);overflow:hidden}
+.dhero{display:flex;gap:16px;justify-content:space-between;align-items:center;border-radius:20px;padding:22px;background:linear-gradient(120deg,#ff9f1a,#ff3b8a 45%,#7a4dff 78%,#1e9bff);color:#fff;margin-bottom:14px;box-shadow:var(--shadow);overflow:hidden}
 .dhero h1{color:#fff;margin:0 0 8px;font-size:clamp(24px,5vw,34px)}
 .dhero p{margin:0 0 10px;max-width:60ch;line-height:1.5}
 .dh-s span{display:inline-block;background:rgba(255,255,255,.2);border-radius:99px;padding:4px 12px;font-weight:700;font-size:14px}
-.dh-f{display:flex;gap:6px;font:800 56px/1 Georgia,serif;opacity:.35}
+.dh-f{flex:none;display:flex;filter:drop-shadow(0 3px 6px rgba(0,0,0,.25))}
 @media (max-width:640px){.dh-f{display:none}}
 .srch{margin-bottom:14px}
 .hits{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}

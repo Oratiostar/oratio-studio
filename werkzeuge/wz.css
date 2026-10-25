@@ -21,6 +21,7 @@ header{position:sticky;top:0;z-index:20;background:var(--head);border-bottom:1px
 .bar{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:8px max(14px,env(safe-area-inset-right)) 8px max(14px,env(safe-area-inset-left));flex-wrap:wrap}
 .logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--fg);font-weight:800;font-size:19px;letter-spacing:.2px}
 .logo img{width:34px;height:34px;border-radius:9px}
+.logo .lg,.lg{display:inline-flex;font-size:24px;align-items:center;font-weight:800;line-height:1;letter-spacing:.2px}.lg .lgO{width:36px;height:36px;flex:none;margin-right:-1px}.lg b{font-weight:800;background:linear-gradient(90deg,#1e7bff,#12b8a6);-webkit-background-clip:text;background-clip:text;color:transparent}.lg i{font-style:normal;margin-left:.28em;background:linear-gradient(90deg,#ff7a1a,#ff3b8a 60%,#8a4dff);-webkit-background-clip:text;background-clip:text;color:transparent}
 .sp{flex:1}
 .nav a{color:var(--fg);text-decoration:none;font-weight:700;padding:6px 10px;border-radius:10px}
 .nav a:hover,.nav a.on{background:var(--soft)}
@@ -69,7 +70,7 @@ main{padding-bottom:max(60px,calc(env(safe-area-inset-bottom) + 50px))}
   .stagebox{position:static!important}
   .bar{gap:6px}
   .nav a{padding:6px 9px;font-size:14px}
-  .logo{font-size:17px;white-space:nowrap}.logo span{display:inline}
+  .logo{font-size:17px;white-space:nowrap}.logo>span:not(.lg){display:inline}.lg{font-size:20px}.lg .lgO{width:30px;height:30px}
   .bar{flex-wrap:nowrap}
   .btn.sm{padding:5px 10px}
   main{padding-bottom:max(110px,calc(env(safe-area-inset-bottom) + 100px))}

@@ -144,6 +144,7 @@ function rezepte(host){
   var cur = null, n = 0, cat = "alle", q = "";
   function byId(id){ return XD.REZ.filter(function(r){ return r.id === id; })[0]; }
   host.innerHTML = '<div class="card"><label class="l" style="margin-top:0">' + L("Kategorie", "Catégorie") + '</label><div id="reC"></div><input id="reQ" class="in" type="search" placeholder="' + L("Rezept suchen …", "Chercher une recette …") + '" style="margin-top:8px"></div><div id="reG" class="rgrid"></div><div id="reO"></div>';
+  try { var pre = sessionStorage.getItem("xm-rez"); if (pre) { sessionStorage.removeItem("xm-rez"); cur = byId(pre) || null; if (cur) n = cur.serv; } } catch(e){}
   XM.chips($("#reC"), XD.RCAT.map(function(c){ return [c[0], c[1][I]]; }), cat, function(v){ cat = v; grid(); });
   $("#reQ").oninput = function(){ q = XM.norm(this.value).toLowerCase(); grid(); };
   function pic(r, uid){ return '<div class="rpic">' + XM.dish(r, uid) + '<img src="bilder/rezepte/' + r.id + '.jpg" alt="" loading="lazy" onerror="this.remove()"></div>'; }
@@ -164,9 +165,9 @@ function rezepte(host){
     $("#reK").onclick = function(){ XM.copy(cur.name[I] + " (" + n + " " + cur.einh[I] + ")\n" + lines.map(function(l){ return "- " + l[0] + " " + l[1]; }).join("\n"), this); };
     $("#reD").onclick = function(){ window.print(); };
   }
-  grid();
+  grid(); if (cur) show();
 }
-reg({ id: "rezepte", sym: "👩‍🍳", group: "plan", name: D("Festtagsrezepte", "Recettes de fête"), desc: D("Über 30 Rezepte mit gezeichneten Bildern: Plätzchen, Gans, Rouladen, Lachs, Suppen, Beilagen, Desserts, Glühwein & Punsch – mit Mengenrechner und Einkaufsliste.", "Plus de 30 recettes illustrées : biscuits, oie, paupiettes, saumon, soupes, accompagnements, desserts, vin chaud et punch – avec calculateur et liste de courses."), build: rezepte });
+reg({ id: "rezepte", sym: "👩‍🍳", group: "plan", name: D("Festtagsrezepte", "Recettes de fête"), desc: D("Rund 40 Rezepte mit gezeichneten Bildern: Plätzchen, Gans, Rouladen, Lachs, Suppen, Beilagen, Desserts, Glühwein & Punsch – mit Mengenrechner und Einkaufsliste.", "Plus de 30 recettes illustrées : biscuits, oie, paupiettes, saumon, soupes, accompagnements, desserts, vin chaud et punch – avec calculateur et liste de courses."), build: rezepte });
 
 /* ---------- Weltgrüße ---------- */
 function welt(host){

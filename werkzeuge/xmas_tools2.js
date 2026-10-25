@@ -289,9 +289,11 @@ function budget(host){
 reg({ id: "budget", sym: "💶", group: "plan", name: D("Geschenkbudget", "Budget cadeaux"), desc: D("Wer bekommt was, was kostet es, was bleibt übrig? Mit Fortschrittsbalken.", "Qui reçoit quoi, combien ça coûte, que reste-t-il ? Avec barre de progression."), build: budget });
 
 /* ---------- Essen & Plätzchen ---------- */
+var DREZ = { gans: "gans", braten: "schweinebraten", ente: "entegz", pute: "pute", raclette: "raclette", fondue: "fleischfondue", kartoffelsalat: "kartoffelsalat" };
 var DISH = {
   gans: [D("Gänsebraten", "Oie rôtie"), [["Gans (mit Knochen, roh)", "Oie (avec os, crue)", 550, "g"], ["Kartoffeln / Klöße", "Pommes de terre / quenelles", 250, "g"], ["Rotkohl", "Chou rouge", 200, "g"], ["Soße", "Sauce", 100, "ml"]]],
   braten: [D("Braten (Schwein/Rind)", "Rôti (porc/bœuf)"), [["Braten ohne Knochen", "Rôti sans os", 200, "g"], ["Kartoffeln / Klöße", "Pommes de terre / quenelles", 250, "g"], ["Gemüse / Rotkohl", "Légumes / chou rouge", 200, "g"], ["Soße", "Sauce", 100, "ml"]]],
+  ente: [D("Ente (ganz)", "Canard (entier)"), [["Ente (küchenfertig, roh)", "Canard (prêt à cuire, cru)", 500, "g"], ["Kartoffeln / Klöße", "Pommes de terre / quenelles", 250, "g"], ["Rotkohl", "Chou rouge", 200, "g"], ["Soße", "Sauce", 100, "ml"]]],
   pute: [D("Pute / Truthahn", "Dinde"), [["Pute (mit Knochen, roh)", "Dinde (avec os, crue)", 450, "g"], ["Kartoffeln", "Pommes de terre", 250, "g"], ["Gemüse", "Légumes", 200, "g"], ["Soße", "Sauce", 100, "ml"]]],
   raclette: [D("Raclette", "Raclette"), [["Raclette-Käse", "Fromage à raclette", 200, "g"], ["Kartoffeln", "Pommes de terre", 300, "g"], ["Fleisch / Aufschnitt", "Viande / charcuterie", 150, "g"], ["Gemüse zum Überbacken", "Légumes à gratiner", 150, "g"]]],
   fondue: [D("Fondue (Fleisch)", "Fondue (viande)"), [["Fleisch", "Viande", 200, "g"], ["Brot / Beilagen", "Pain / accompagnements", 120, "g"], ["Soßen & Dips (zusammen)", "Sauces et dips (au total)", 80, "ml"], ["Salat", "Salade", 100, "g"]]],
@@ -306,7 +308,8 @@ function essen(host){
   function out(){
     if (tab === "e") {
       $("#esPo").textContent = pers; var rows = DISH[dish][1].map(function(r){ var v = r[2] * pers * hunger, u = r[3]; if (u === "Stück") return '<tr><td>' + esc(r[I]) + '</td><td>' + Math.ceil(v) + ' ' + L("Stück", "pièces") + '</td></tr>'; if (v >= 1000) return '<tr><td>' + esc(r[I]) + '</td><td>' + (v / 1000).toLocaleString(I ? "fr-FR" : "de-DE", { maximumFractionDigits: 1 }) + ' ' + (u === "g" ? "kg" : "l") + '</td></tr>'; return '<tr><td>' + esc(r[I]) + '</td><td>' + ger(Math.round(v / 10) * 10) + ' ' + u + '</td></tr>'; }).join("");
-      $("#esO").innerHTML = '<h2 style="margin-top:0">' + esc(DISH[dish][0][I]) + ' – ' + pers + ' ' + L("Personen", "personnes") + '</h2><table class="et">' + rows + '</table><p class="hint">' + L("Richtwerte aus der Alltagspraxis, keine Garantie. Bei Gästen mit großem Hunger oder Resten für den nächsten Tag lieber etwas mehr einplanen. Garzeiten stehen auf der Verpackung oder im Rezept.", "Valeurs indicatives de la pratique courante, sans garantie. Pour de gros appétits ou des restes pour le lendemain, prévois un peu plus. Les temps de cuisson figurent sur l'emballage ou dans la recette.") + '</p>';
+      $("#esO").innerHTML = '<h2 style="margin-top:0">' + esc(DISH[dish][0][I]) + ' – ' + pers + ' ' + L("Personen", "personnes") + '</h2><table class="et">' + rows + '</table><p class="hint">' + L("Richtwerte aus der Alltagspraxis, keine Garantie. Bei Gästen mit großem Hunger oder Resten für den nächsten Tag lieber etwas mehr einplanen. Garzeiten stehen auf der Verpackung oder im Rezept.", "Valeurs indicatives de la pratique courante, sans garantie. Pour de gros appétits ou des restes pour le lendemain, prévois un peu plus. Les temps de cuisson figurent sur l'emballage ou dans la recette.") + '</p>' + (DREZ[dish] ? '<p><button class="btn go" id="esRz">' + L("👩‍🍳 Zum Rezept", "👩‍🍳 Voir la recette") + '</button></p>' : '');
+      if ($("#esRz")) $("#esRz").onclick = function(){ try { sessionStorage.setItem("xm-rez", DREZ[dish]); } catch(e){} location.hash = "#/rezepte"; };
     } else {
       var m = +$("#plM").value; $("#plMo").textContent = m + " g"; var f = m / 300;
       $("#esO").innerHTML = '<h2 style="margin-top:0">' + L("Mürbeteig 3-2-1", "Pâte sablée 3-2-1") + '</h2><table class="et"><tr><td>' + L("Mehl", "Farine") + '</td><td>' + m + ' g</td></tr><tr><td>' + L("Butter (kalt, in Stücken)", "Beurre (froid, en morceaux)") + '</td><td>' + Math.round(m * 2 / 3) + ' g</td></tr><tr><td>' + L("Zucker", "Sucre") + '</td><td>' + Math.round(m / 3) + ' g</td></tr><tr><td>' + L("Eier", "Œufs") + '</td><td>' + (f < 1.3 ? "1" : (Math.round(f * 2) / 2).toString().replace(".", I ? "," : ",")) + '</td></tr><tr><td>' + L("Salz", "Sel") + '</td><td>' + L("1 Prise", "1 pincée") + '</td></tr></table>' +
@@ -319,7 +322,7 @@ function essen(host){
   $$(".tabs .btn", host).forEach(function(b){ b.onclick = function(){ tab = b.dataset.t; $$(".tabs .btn", host).forEach(function(x){ x.classList.toggle("on", x === b); }); $("#esE").hidden = tab !== "e"; $("#esP2").hidden = tab !== "p"; out(); }; });
   out();
 }
-reg({ id: "essen", sym: "🍽️", group: "plan", name: D("Festessen & Plätzchenteig", "Repas de fête et pâte à biscuits"), desc: D("Wie viel Gans, Raclette oder Kartoffeln für wie viele Personen? Dazu ein Mürbeteig zum Skalieren.", "Combien d'oie, de raclette ou de pommes de terre pour combien de personnes ? Avec une pâte sablée à adapter."), build: essen });
+reg({ id: "essen", sym: "🍽️", group: "plan", name: D("Festessen & Plätzchenteig", "Repas de fête et pâte à biscuits"), desc: D("Wie viel Gans, Ente, Braten, Raclette oder Kartoffeln für wie viele Personen – mit Link zum passenden Rezept? Dazu ein Mürbeteig zum Skalieren.", "Combien d'oie, de raclette ou de pommes de terre pour combien de personnes ? Avec une pâte sablée à adapter."), build: essen });
 
 /* ---------- Geschenkideen ---------- */
 function geschenke(host){

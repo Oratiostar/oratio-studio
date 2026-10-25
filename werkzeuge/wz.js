@@ -173,7 +173,7 @@ window.WZ = {
   },
   kopf: function(aktiv){
     var h = document.createElement("header");
-    h.innerHTML = '<div class="bar"><a class="logo" href="index.html"><img src="logo-place.png" alt=""><span>Oratio Place</span></a>' +
+    h.innerHTML = '<div class="bar"><a class="logo" href="index.html"><span class="lg"><svg class="lgO" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14.5" fill="none" stroke="#ffc21a" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(11 20 20)"/><circle cx="20" cy="20" r="14.5" fill="none" stroke="#ff5fa8" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(96 20 20)"/><circle cx="20" cy="20" r="14.5" fill="none" stroke="#2e86ff" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(181 20 20)"/><circle cx="20" cy="20" r="14.5" fill="none" stroke="#ff4b3a" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(266 20 20)"/></svg><b>ratio</b><i>Place</i></span></a>' +
       '<span class="sp"></span><button class="btn sm" id="wzLang" aria-label="Sprache / Langue"></button> <button class="btn sm" id="wzTheme" aria-label="Hell/Dunkel"></button></div>';
     document.body.insertBefore(h, document.body.firstChild);
     var nm = aktiv === "icon" ? "Icon-Werkstatt" : aktiv === "datei" ? "Datei-Werkstatt" : null, m = document.querySelector("main");
