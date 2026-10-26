@@ -222,7 +222,8 @@ body.sl main>h1,body.sl main>.sub{color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.4
 body.sl{min-height:100vh}
 body.sl footer,body.sl footer a{color:rgba(255,255,255,.92)}
 body.sl #app>.phsub{margin-top:8px}body.sl #app>.phsub em{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.45)}body.sl #app>.phsub .phw{display:none}
-.sc .sh b{overflow-wrap:anywhere;hyphens:auto}
+.sc .sh b{overflow-wrap:break-word}
+.emo{font-size:36px;line-height:1}.ph .emo{font-size:42px}@media (max-width:560px){.emo{font-size:30px}.ph .emo{font-size:34px}}
 </style>
 </head>
 <body>
@@ -581,8 +582,8 @@ function startseite(){
   const chips = '<div class="kats" role="tablist">'+["alle"].concat(KATS).map(k =>
     '<button class="kat'+(k===KATWAHL?" on":"")+'" data-k="'+k+'">'+esc(k==="alle" ? U("katAlle") : U("kat")[k])+'</button>').join("")+'</div>';
   const dk = w => hell(w.farbe) ? dunkler(w.farbe,.62) : hexOf(w.farbe);
-  const karte = (href, kat, col, sym, name, sub, n) => '<a class="sc" data-k="'+kat+'" href="'+href+'" style="--wc:'+col+'"><div class="sh"><b>'+esc(name)+'</b></div><div class="sbad">'+sym+'</div><p>'+esc(sub)+'</p><i class="sn">'+esc(n)+'</i></a>';
-  const karten = INDEX.welten.map(w => karte("#/w/"+w.id, weltKat(w.id).join(" "), dk(w), schSym(w.symbol && SCH[w.symbol] ? (WSCH[w.id]||w.symbol) : (WSCH[w.id]||"widerstand"), dk(w), 50), T(w.name), T(w.untertitel), w.seiten.length+" "+U("seiten"))).join("")
+  const karte = (href, kat, col, sym, name, sub, n) => '<a class="sc" data-k="'+kat+'" href="'+href+'" style="--wc:'+col+'"><div class="sh"><b'+(/\S{14,}/.test(name)?' style="font-size:12.5px;letter-spacing:0"':'')+'>'+esc(name)+'</b></div><div class="sbad">'+sym+'</div><p>'+esc(sub)+'</p><i class="sn">'+esc(n)+'</i></a>';
+  const karten = INDEX.welten.map(w => karte("#/w/"+w.id, weltKat(w.id).join(" "), dk(w), '<span class="emo">'+weltSym(w)+'</span>', T(w.name), T(w.untertitel), w.seiten.length+" "+U("seiten"))).join("")
     + [["icon-werkstatt.html","🎨","#6a4fd8","icN","icT"],["datei-werkstatt.html","🗂️","#e0527a","dtN","dtT"]].map(x => karte(x[0], "werkzeuge", x[2], '<span style="font-size:30px">'+x[1]+'</span>', U(x[3]), U(x[4]), U("icZ"))).join("");
   app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("studio"))+'</div><div class="ribwrap"><div class="ribbon">'+esc(U("studio"))+'</div><p class="ribsub">'+U("startsub")+'</p></div>'+chips+'<div class="scgrid">'+karten+'</div>';
   const filtere = () => {
@@ -594,8 +595,8 @@ function startseite(){
 }
 function pageHead(w, titel, kurz, sym, kopf){
   const c = hell(w.farbe) ? dunkler(w.farbe,.62) : hexOf(w.farbe);
-  const key = sym && SCH[sym] ? sym : (WSCH[w.id]||"widerstand");
-  return '<div class="ph" style="--wc:'+c+'"><div class="phbad">'+schSym(key, c, 54)+'</div><h1>'+esc(T(titel))+'</h1></div><div class="phsub"><span class="phw">'+esc(T(kopf||w.name))+'</span>'+(kurz?'<em>'+esc(T(kurz))+'</em>':'')+'</div>';
+  const em = sym ? symbol(sym) : weltSym(w);
+  return '<div class="ph" style="--wc:'+c+'"><div class="phbad"><span class="emo">'+em+'</span></div><h1>'+esc(T(titel))+'</h1></div><div class="phsub"><span class="phw">'+esc(T(kopf||w.name))+'</span>'+(kurz?'<em>'+esc(T(kurz))+'</em>':'')+'</div>';
 }
 function weltseite(id){
   const w = weltInfo(id); if (!w) return nichts();
