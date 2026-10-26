@@ -310,6 +310,20 @@ body.home .welt .t{font-size:15px;line-height:1.5;padding-bottom:16px}
 .isl{height:42px}.isl b{top:12px;right:3%;font-size:28px}
 body.home .grid.big2{max-width:1500px;width:100%;margin:0 auto}
 @media (max-width:560px){body.home main{justify-content:flex-start}body.home .welt .pic,body.home .welt .pic img{height:150px}}
+
+body.home .grid.big2{grid-template-columns:repeat(4,minmax(0,1fr));gap:34px 34px;max-width:1700px}
+@media (max-width:1180px){body.home .grid.big2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){body.home .grid.big2{grid-template-columns:1fr}}
+body.home .welt .pic,body.home .welt .pic img{height:auto}
+body.home .welt .pic img{aspect-ratio:1200/520;object-fit:cover;width:100%}
+.isw{padding-bottom:58px}
+.isl{position:absolute;left:-9%;right:-9%;bottom:-12px;height:auto;aspect-ratio:600/140;z-index:-1;background:none;box-shadow:none;border-radius:0}
+.isv{width:100%;height:100%;display:block;overflow:visible;filter:drop-shadow(0 10px 8px rgba(0,50,90,.28))}
+.isv .foam{transform-origin:300px 100px;animation:foam 5s ease-in-out infinite}
+@keyframes foam{50%{transform:scale(1.035);stroke-opacity:.35}}
+.isl b{display:none}
+.isw{display:flex;flex-direction:column}.isw .welt{flex:1}
+body.home{overflow-x:hidden}body.home main{overflow-x:clip}
 </style>
 </head>
 <body>
@@ -646,6 +660,32 @@ const WKAT = {
 const weltKat = id => WKAT[id] || ["elektronik"];
 let KATWAHL = "alle";
 function brand(){ /* Kopf bleibt immer Oratio Place (Home) */ }
+
+function inselSVG(k){
+  const id = "is"+k;
+  const palm = (x, y, sc, flip) => { const f = flip ? -1 : 1; let o = '<g transform="translate('+x+' '+y+') scale('+(f*sc)+' '+sc+')"><path d="M0 0 Q'+(8*1)+' -34 -2 -64 L5 -64 Q16 -34 9 0Z" fill="url(#'+id+'t)"/>';
+    for (let i=0;i<6;i++) o += '<path d="M2 -64 q'+(14+i*4)+' '+(-18+i*3)+' '+(34+i*3)+' '+(10+i*7)+' q-'+(18+i*2)+' '+(-10+i)+' -'+(34+i*3)+' '+(-10-i*7)+'z" fill="url(#'+id+'g)" transform="rotate('+(-70+i*28)+' 2 -64)"/>';
+    return o + '<circle cx="1" cy="-62" r="4" fill="#6b4a22"/><circle cx="7" cy="-60" r="3.6" fill="#5a3c1a"/></g>'; };
+  const fir = (x, y, sc) => '<g transform="translate('+x+' '+y+') scale('+sc+')"><rect x="-3" y="-8" width="6" height="14" fill="#5a3a1e"/><path d="M0 -70 L20 -34 L9 -34 L26 -6 L-26 -6 L-9 -34 L-20 -34Z" fill="#1d5a3a"/><path d="M0 -70 L10 -50 L-10 -50Z M0 -46 L14 -30 L-14 -30Z M0 -26 L20 -10 L-20 -10Z" fill="#fff" opacity=".92"/></g>';
+  const parasol = (x, y) => '<g transform="translate('+x+' '+y+')"><rect x="-1.5" y="-46" width="3" height="48" fill="#6b4a22"/><path d="M-34 -44 Q0 -78 34 -44 Q17 -50 0 -44 Q-17 -50 -34 -44Z" fill="#ff5a5a"/><path d="M-17 -60 Q0 -70 0 -44 Q-10 -50 -34 -44Q-30 -54 -17 -60Z" fill="#fff"/><path d="M17 -60 Q30 -54 34 -44 Q10 -50 0 -44 Q0 -70 17 -60Z" fill="#fff"/></g>';
+  const house = (x, y) => '<g transform="translate('+x+' '+y+')"><rect x="-22" y="-26" width="44" height="28" fill="#e9c58e"/><path d="M-28 -24 L0 -50 L28 -24Z" fill="#b8402e"/><rect x="-5" y="-14" width="10" height="16" fill="#6b3a1e"/><rect x="-16" y="-20" width="8" height="8" fill="#9ad8ff"/><rect x="8" y="-20" width="8" height="8" fill="#9ad8ff"/></g>';
+  const lite = (x, y) => '<g transform="translate('+x+' '+y+')"><path d="M-9 0 L-6 -46 L6 -46 L9 0Z" fill="#fff"/><path d="M-8 -14 L8 -14 L7 -24 L-7 -24Z M-6.5 -36 L6.5 -36 L6 -44 L-6 -44Z" fill="#e0364a"/><rect x="-8" y="-54" width="16" height="9" fill="#ffd34a"/><path d="M-11 -54 L0 -64 L11 -54Z" fill="#c4452c"/></g>';
+  const deco = k===0 ? palm(78,92,1.0,false)+lite(520,92)+palm(560,94,.85,true) : k===1 ? fir(80,96,1.15)+fir(118,98,.8)+fir(522,96,1.1)+fir(486,98,.75) : k===2 ? palm(76,92,1.0,false)+parasol(520,90)+palm(560,94,.8,true) : house(78,92)+palm(530,94,.95,true)+fir(116,98,.7);
+  const sandA = k===1 ? ["#ffffff","#dbe7f2"] : ["#ffeec2","#e3b878"];
+  return '<svg class="isv" viewBox="0 0 600 140" preserveAspectRatio="none" aria-hidden="true"><defs>'
+   +'<radialGradient id="'+id+'w" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#7ff0e6" stop-opacity=".95"/><stop offset=".62" stop-color="#34c7d6" stop-opacity=".75"/><stop offset="1" stop-color="#1b8fc4" stop-opacity="0"/></radialGradient>'
+   +'<linearGradient id="'+id+'s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+sandA[0]+'"/><stop offset="1" stop-color="'+sandA[1]+'"/></linearGradient>'
+   +'<linearGradient id="'+id+'e" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d0a265"/><stop offset="1" stop-color="#8c6128"/></linearGradient>'
+   +'<linearGradient id="'+id+'t" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8a5f2c"/><stop offset="1" stop-color="#5a3a18"/></linearGradient>'
+   +'<linearGradient id="'+id+'g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4fbf5a"/><stop offset="1" stop-color="#1f7a3a"/></linearGradient></defs>'
+   +'<ellipse cx="300" cy="104" rx="296" ry="34" fill="url(#'+id+'w)"/>'
+   +'<ellipse class="foam" cx="300" cy="100" rx="270" ry="30" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="3"/>'
+   +'<path d="M46 92 Q60 118 300 122 Q540 118 554 92 Q540 106 300 108 Q60 106 46 92Z" fill="url(#'+id+'e)"/>'
+   +'<ellipse cx="300" cy="90" rx="254" ry="27" fill="url(#'+id+'s)"/>'
+   +'<path d="M70 94 Q140 84 220 94 M300 100 Q380 90 460 98 M150 104 Q230 98 290 106" stroke="#c99a5c" stroke-opacity=".35" stroke-width="2" fill="none"/>'
+   +'<ellipse cx="300" cy="82" rx="210" ry="14" fill="#fff" opacity=".22"/>'
+   +deco+'</svg>';
+}
 function placeseite(){
   document.title = "Oratio Place"; brand("place");
   const n = INDEX.welten.length + 2;
@@ -655,7 +695,7 @@ function placeseite(){
     '<a class="welt" style="--wc:#d4243d" href="weihnachten.html"><div class="kopf" style="background:linear-gradient(135deg,#c4162b,#e08a2c 55%,#1d7a47)"><div class="ic">🎄</div><b>'+esc(U("xmN"))+'</b></div><div class="pic"><img src="bilder/weihnachten.jpg" alt="" loading="lazy"></div><div class="t"><div class="n">'+esc(U("xmZ"))+'</div>'+esc(U("xmT"))+'</div></a>'+
     '<a class="welt" style="--wc:#ff7a1a" href="#/lifestyle"><div class="kopf" style="background:linear-gradient(135deg,#ff7ac8,#ff8c1a)"><div class="ic">🌿</div><b>'+esc(U("lifestyle"))+'</b></div><div class="pic"><img src="bilder/lifestyle.jpg" alt="" loading="lazy"></div><div class="t"><div class="n">'+esc(U("lifeT"))+'</div>'+esc(U("bald"))+'</div></a>'+
     '<a class="welt" style="--wc:#8a4dff" href="deutsch.html"><div class="kopf" style="background:linear-gradient(135deg,#ff9f1a,#ff3b8a 50%,#7a4dff)"><div class="ic"><svg class="flag" viewBox="0 0 30 20" width="30" height="20"><rect width="30" height="7" fill="#111"/><rect y="7" width="30" height="6.5" fill="#dd0000"/><rect y="13.5" width="30" height="6.5" fill="#ffce00"/></svg></div><b>'+esc(U("deN"))+'</b></div><div class="pic"><img src="bilder/deutsch.jpg" alt="" loading="lazy"></div><div class="t"><div class="n">'+esc(U("deZ"))+'</div>'+esc(U("deT"))+'</div></a></div>';
-  app.querySelectorAll(".grid.big2 > a.welt").forEach((a, i) => { const w = document.createElement("div"); w.className = "isw i"+i; a.replaceWith(w); w.appendChild(a); w.insertAdjacentHTML("beforeend", '<i class="isl"><b>'+["🌴","🎄","🌺","🥨"][i]+'</b></i>'); });
+  app.querySelectorAll(".grid.big2 > a.welt").forEach((a, i) => { const w = document.createElement("div"); w.className = "isw i"+i; a.replaceWith(w); w.appendChild(a); w.insertAdjacentHTML("afterbegin", '<div class="isl">'+inselSVG(i)+'</div>'); });
 }
 function lifestyleseite(){
   document.title = "Oratio Lifestyle"; brand("lifestyle");

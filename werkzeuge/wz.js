@@ -179,7 +179,7 @@ window.WZ = {
     if (aktiv === "xmas" || aktiv === "deutsch") {
       var sc = aktiv === "xmas" ? "xm" : "de", fr = WZ.lang === "fr", wb = document.createElement("div"), inp;
       wb.className = "wbar";
-      wb.innerHTML = '<span class="wbn" data-nt>' + (sc === "xm" ? (fr ? "Monde de Noël" : "Weihnachtswelt") : (fr ? "Cours d’allemand" : "Deutschkurs")) + '</span><span class="sp"></span><input type="search" class="wzs" autocomplete="off" enterkeyhint="search" data-nt>';
+      wb.innerHTML = '<span class="sp"></span><input type="search" class="wzs" autocomplete="off" enterkeyhint="search" data-nt>';
       inp = wb.querySelector("input");
       inp.placeholder = sc === "xm" ? (fr ? "Rechercher dans le monde de Noël …" : "In der Weihnachtswelt suchen …") : (fr ? "Rechercher dans le cours …" : "Im Deutschkurs suchen …");
       inp.addEventListener("keydown", function(e){ if (e.key === "Enter" && inp.value.trim()) location.href = "index.html#/qs/" + sc + "/" + encodeURIComponent(inp.value.trim()); });
