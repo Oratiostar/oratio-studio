@@ -185,7 +185,7 @@ window.WZ = {
       inp.addEventListener("keydown", function(e){ if (e.key === "Enter" && inp.value.trim()) location.href = "index.html#/qs/" + sc + "/" + encodeURIComponent(inp.value.trim()); });
       h.parentNode.insertBefore(wb, h.nextSibling);
     }
-    var nm = aktiv === "icon" ? "Icon-Werkstatt" : aktiv === "datei" ? "Datei-Werkstatt" : null, m = document.querySelector("main");
+    var nm = aktiv === "icon" ? "Icon-Werkstatt" : aktiv === "datei" ? "Datei-Werkstatt" : aktiv === "alltag" ? (WZ.lang === "fr" ? "Assistants du quotidien" : "Alltags-Helfer") : null, m = document.querySelector("main");
     if (nm && m) { var c = document.createElement("div"); c.className = "crumb"; c.innerHTML = '<a href="index.html">Oratio Place</a> › <a href="index.html#/werkzeuge">' + (WZ.lang === "fr" ? "Outils" : "Werkzeuge") + '</a> › ' + nm; m.insertBefore(c, m.firstChild); }
     if (aktiv === "icon") {
       var p = document.querySelector(".panel"), fb = document.createElement("div"); fb.className = "farbbox";

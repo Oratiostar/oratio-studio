@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Alltags-Helfer – Oratio</title>
+<meta name="description" content="Alltags-Helfer: QR-Code, Passwort-Generator, Umrechner, Rechner, Text-Werkzeuge, Bild zuschneiden, Würfel, Stoppuhr und Farbwähler. Alles im Browser, nichts wird gesendet.">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="werkzeuge/wz.css">
+<style>
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:0 0 18px}
+.tcard{display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:inherit;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:12px;box-shadow:var(--shadow);transition:transform .12s,border-color .12s}
+@media (hover:hover){.tcard:hover{transform:translateY(-2px);border-color:var(--acc)}}
+.tcard.on{border-color:var(--acc);background:var(--soft)}
+.tcard b{display:block;font-size:16px;line-height:1.25}
+.tcard small{display:block;color:var(--muted);font-size:13px;line-height:1.35;margin-top:2px}
+.ts{flex:none;display:inline-grid;place-items:center;width:40px;height:40px;border-radius:12px;color:#fff;font-size:20px;box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.toolcard h2{display:flex;gap:10px;align-items:center;font-size:22px}
+.toolcard h2 .ts{width:36px;height:36px;font-size:18px}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+.cols2>div{min-width:0}
+.chk{display:flex;gap:8px;align-items:center;margin:12px 0 4px;font-weight:600;font-size:15px;cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--acc)}
+.tabs.t2{max-width:360px}
+@media (max-width:560px){.cols2{grid-template-columns:1fr}}
+.safe{margin:0 0 12px;padding:8px 12px;border-radius:12px;background:var(--soft);font-size:14px;font-weight:600}
+h3{font-size:16px;margin:16px 0 6px}
+.cols3{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.cols3>div{min-width:0}
+.resbox{margin:8px 0 4px;font-size:18px;line-height:1.5}.resbox:empty{display:none}
+.utab{border-collapse:collapse;width:100%;max-width:520px;margin-top:8px;font-size:15px}.utab td{padding:5px 8px;border-bottom:1px solid var(--line)}.utab td:last-child{text-align:right;font-variant-numeric:tabular-nums}.utab tr.me td{background:var(--soft);font-weight:700}
+.uall{margin-top:8px;max-height:340px;overflow:auto}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:8px;margin:10px 0}.stats>div{background:var(--soft);border-radius:12px;padding:8px 10px;text-align:center}.stats b{display:block;font-size:20px}.stats small{color:var(--muted);font-size:12.5px}
+.big{font-size:30px;font-weight:800;margin:12px 0 4px;font-variant-numeric:tabular-nums;word-break:break-word;min-height:1.3em}.big small{display:block;font-size:14px;font-weight:600;color:var(--muted)}
+.sub1 h3{margin-top:0}.cols2>.card{margin:0}
+.laps{padding-left:22px;margin:8px 0 0;max-height:160px;overflow:auto;font-variant-numeric:tabular-nums}
+.zl{max-height:420px;overflow:auto;margin-top:8px}
+.cv{margin-top:10px}.cvr{display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}.cvr b{width:52px}.cvr code{flex:1;min-width:0;word-break:break-all}
+.sw{display:flex;gap:6px;flex-wrap:wrap}.swc{width:62px;height:52px;border-radius:10px;border:2px solid var(--line);cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0;font:600 10px/1 ui-monospace,Menlo,monospace;color:#fff;text-shadow:0 0 3px #000,0 0 3px #000}.swc span{padding-bottom:3px}
+.ctr{padding:10px 12px;border-radius:10px;margin:6px 0;font-weight:700;border:1px solid var(--line)}
+canvas{display:block;margin:0 auto}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+<h1>Alltags-Helfer</h1>
+<p class="sub">QR-Code, Passwort, Umrechner, Rechner, Text, Bild, Zufall, Zeit und Farbe. Alles läuft in deinem Browser – nichts wird <b>hochgeladen, gesendet oder gespeichert</b>.</p>
+<div class="tgrid" id="toolgrid"></div>
+<div id="toolhost"></div>
+</main>
+<script src="werkzeuge/wz.js"></script>
+<script src="werkzeuge/fr.js"></script>
+<script src="werkzeuge/lib/qr.js"></script>
+<script src="werkzeuge/alltag.js"></script>
+<script>WZ.kopf("alltag"); Alltag.start();</script>
+</body>
+</html>
