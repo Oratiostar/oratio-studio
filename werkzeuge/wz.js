@@ -177,11 +177,13 @@ window.WZ = {
       '<span class="sp"></span><div class="seg" id="wzLang" role="group" aria-label="Sprache / Langue"></div> <div class="seg" id="wzTheme" role="group" aria-label="Hell / Dunkel"></div></div>';
     document.body.insertBefore(h, document.body.firstChild);
     if (aktiv === "xmas" || aktiv === "deutsch") {
-      var sc = aktiv === "xmas" ? "xm" : "de", fr = WZ.lang === "fr", inp = document.createElement("input");
-      inp.type = "search"; inp.className = "wzs"; inp.autocomplete = "off"; inp.setAttribute("data-nt", "");
+      var sc = aktiv === "xmas" ? "xm" : "de", fr = WZ.lang === "fr", wb = document.createElement("div"), inp;
+      wb.className = "wbar";
+      wb.innerHTML = '<span class="wbn" data-nt>' + (sc === "xm" ? (fr ? "Monde de Noël" : "Weihnachtswelt") : (fr ? "Cours d’allemand" : "Deutschkurs")) + '</span><span class="sp"></span><input type="search" class="wzs" autocomplete="off" enterkeyhint="search" data-nt>';
+      inp = wb.querySelector("input");
       inp.placeholder = sc === "xm" ? (fr ? "Rechercher dans le monde de Noël …" : "In der Weihnachtswelt suchen …") : (fr ? "Rechercher dans le cours …" : "Im Deutschkurs suchen …");
       inp.addEventListener("keydown", function(e){ if (e.key === "Enter" && inp.value.trim()) location.href = "index.html#/qs/" + sc + "/" + encodeURIComponent(inp.value.trim()); });
-      var spn = h.querySelector(".sp"); spn.parentNode.insertBefore(inp, spn);
+      h.parentNode.insertBefore(wb, h.nextSibling);
     }
     var nm = aktiv === "icon" ? "Icon-Werkstatt" : aktiv === "datei" ? "Datei-Werkstatt" : null, m = document.querySelector("main");
     if (nm && m) { var c = document.createElement("div"); c.className = "crumb"; c.innerHTML = '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › ' + nm; m.insertBefore(c, m.firstChild); }

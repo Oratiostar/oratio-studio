@@ -10,7 +10,7 @@
 <style>
 .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:0 0 18px}
 .tcard{display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:inherit;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:12px;box-shadow:var(--shadow);transition:transform .12s,border-color .12s}
-.tcard:hover{transform:translateY(-2px);border-color:var(--acc)}
+@media (hover:hover){.tcard:hover{transform:translateY(-2px);border-color:var(--acc)}}
 .tcard.on{border-color:var(--acc);background:var(--soft)}
 .tcard b{display:block;font-size:16px;line-height:1.25}
 .tcard small{display:block;color:var(--muted);font-size:13px;line-height:1.35;margin-top:2px}
@@ -37,7 +37,7 @@
 .th .tn{font-size:13px;font-weight:700;margin-top:4px}.th .tn small{color:var(--muted);font-weight:500}
 .th .tb{display:flex;gap:6px;justify-content:center;margin-top:2px}
 .th .tb button{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px;cursor:pointer;width:32px;height:28px;font-size:15px}
-.th .tb button:hover{border-color:var(--acc)}
+@media (hover:hover){.th .tb button:hover{border-color:var(--acc)}}
 .tabs.t2{max-width:360px}
 @media (max-width:560px){.cols2{grid-template-columns:1fr}}
 </style>
