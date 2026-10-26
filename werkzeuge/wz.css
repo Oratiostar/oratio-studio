@@ -155,3 +155,5 @@ input[type=range]{accent-color:var(--acc)}
 .cpop .ch{cursor:move;user-select:none;touch-action:none}.cpop .cx{cursor:pointer}
 
 @media (max-width:700px){.lg{font-size:24px}.lg .lgO{width:36px;height:36px}.seg{border-width:1.5px;border-radius:9px}.seg button{padding:3px 5px;font-size:11px;gap:3px;line-height:1.2}.seg button .e{font-size:12px}.seg button+button{border-left-width:1.5px}.seg .flag{width:16px;height:11px}}
+
+.wzs{flex:1 1 200px;min-width:0;max-width:340px;padding:8px 14px;border-radius:12px;border:2px solid var(--line);background:var(--input,var(--card));color:var(--fg);font:inherit;font-size:14px}.wzs:focus{outline:none;border-color:#27a3df}

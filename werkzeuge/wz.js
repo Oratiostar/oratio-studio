@@ -176,6 +176,13 @@ window.WZ = {
     h.innerHTML = '<div class="bar"><a class="logo" href="index.html"><span class="lg"><svg class="lgO" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14.5" fill="none" stroke="#ffc21a" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(11 20 20)"/><circle cx="20" cy="20" r="14.5" fill="none" stroke="#ff5fa8" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(96 20 20)"/><circle cx="20" cy="20" r="14.5" fill="none" stroke="#2e86ff" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(181 20 20)"/><circle cx="20" cy="20" r="14.5" fill="none" stroke="#ff4b3a" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(266 20 20)"/></svg><b>ratio</b><i>Place</i></span></a>' +
       '<span class="sp"></span><div class="seg" id="wzLang" role="group" aria-label="Sprache / Langue"></div> <div class="seg" id="wzTheme" role="group" aria-label="Hell / Dunkel"></div></div>';
     document.body.insertBefore(h, document.body.firstChild);
+    if (aktiv === "xmas" || aktiv === "deutsch") {
+      var sc = aktiv === "xmas" ? "xm" : "de", fr = WZ.lang === "fr", inp = document.createElement("input");
+      inp.type = "search"; inp.className = "wzs"; inp.autocomplete = "off"; inp.setAttribute("data-nt", "");
+      inp.placeholder = sc === "xm" ? (fr ? "Rechercher dans le monde de Noël …" : "In der Weihnachtswelt suchen …") : (fr ? "Rechercher dans le cours …" : "Im Deutschkurs suchen …");
+      inp.addEventListener("keydown", function(e){ if (e.key === "Enter" && inp.value.trim()) location.href = "index.html#/qs/" + sc + "/" + encodeURIComponent(inp.value.trim()); });
+      var spn = h.querySelector(".sp"); spn.parentNode.insertBefore(inp, spn);
+    }
     var nm = aktiv === "icon" ? "Icon-Werkstatt" : aktiv === "datei" ? "Datei-Werkstatt" : null, m = document.querySelector("main");
     if (nm && m) { var c = document.createElement("div"); c.className = "crumb"; c.innerHTML = '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › ' + nm; m.insertBefore(c, m.firstChild); }
     if (aktiv === "icon") {

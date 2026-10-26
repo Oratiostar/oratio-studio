@@ -162,7 +162,8 @@ body.sl .crumb a{color:#1f6fb8}
 :root[data-theme="dark"] body.sl .crumb{background:rgba(20,26,38,.8);color:#c8d4ea}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.sl .crumb{background:rgba(20,26,38,.8);color:#c8d4ea}}
 .ribwrap{text-align:center;margin:14px 0 8px}
-.ribbon{display:inline-block;position:relative;background:linear-gradient(#3cb8f2,#1f8fd0);color:#fff;font-weight:900;font-size:30px;letter-spacing:.03em;text-transform:uppercase;padding:8px 54px;border-radius:6px;box-shadow:0 5px 0 #145d8f,0 10px 18px rgba(0,0,0,.25);text-shadow:0 2px 0 rgba(10,50,90,.5)}
+.ribbon{display:inline-block;position:relative;background:linear-gradient(#3cb8f2,#1f8fd0);color:#fff;font-weight:900;font-size:22px;letter-spacing:.03em;text-transform:uppercase;padding:5px 46px;border-radius:3px;box-shadow:0 3px 6px rgba(0,0,0,.28);text-shadow:0 1px 0 rgba(10,50,90,.5);line-height:1.25}
+.ribbon::after{content:"";position:absolute;left:0;bottom:-9px;border-top:9px solid #145d8f;border-right:15px solid transparent}
 .ribsub{margin:12px 0 0;color:#fff;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.45)}
 body.sl .kats{justify-content:center}
 body.sl .kat{background:linear-gradient(#ffd84a,#ffae1a);border:2px solid #2a1740;color:#3a2200;box-shadow:0 3px 0 #2a1740;font-weight:800}
@@ -225,16 +226,40 @@ body.sl #app>.phsub{margin-top:8px}body.sl #app>.phsub em{color:#fff;text-shadow
 .sc .sh b{overflow-wrap:break-word}
 .emo{font-size:36px;line-height:1}.ph .emo{font-size:42px}@media (max-width:560px){.emo{font-size:30px}.ph .emo{font-size:34px}}
 
-.ribtop{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:14px 0 0}
-.ribtop em{font-style:normal;color:#fff;font-weight:700;font-size:13px;text-shadow:0 1px 3px rgba(0,0,0,.5)}
-.ribbon.s{font-size:19px;padding:6px 20px;box-shadow:0 3px 0 #145d8f,0 6px 10px rgba(0,0,0,.2)}
-.ribwrap{margin:22px 0 14px}
-.sc{border:2px solid rgba(255,255,255,.75)!important;box-shadow:0 3px 8px rgba(0,40,0,.28)!important}
-:root[data-theme="dark"] .sc{border-color:rgba(255,255,255,.28)!important}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sc{border-color:rgba(255,255,255,.28)!important}}
-body.sl .kat{border:1.5px solid rgba(255,255,255,.7);box-shadow:0 3px 0 rgba(0,0,0,.18)}
-body.sl .kat:hover{border-color:rgba(255,255,255,.9)}
-.sc .sbad{border-width:4px}
+
+/* ---- Studio-Leiste, Bänder, Designs, Roboter ---- */
+body.slocal #q{display:none}
+#sbar{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left))}
+#sbar[hidden]{display:none}
+#sbar .ribbon{text-decoration:none;font-size:17px;padding:5px 16px;margin-bottom:8px}
+#sbar em{font-style:normal;color:#fff;font-weight:700;font-size:13px;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+#sbar .sx{flex:1}
+#sq{width:min(285px,100%);padding:7px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.7);background:rgba(255,255,255,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#1b3a5a;font:inherit;font-size:14px;font-weight:600}
+#sq::placeholder{color:rgba(30,60,90,.6)}#sq:focus{outline:none;border-color:#fff;background:rgba(255,255,255,.8)}
+.dsw{display:inline-flex;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.7);background:rgba(255,255,255,.4);backdrop-filter:blur(6px)}
+.dsw button{border:0;background:transparent;padding:6px 8px;font:inherit;font-size:12.5px;font-weight:800;cursor:pointer;color:#1b3a5a;display:inline-flex;gap:4px;align-items:center}
+.dsw button.on{background:#1f8fd0;color:#fff}
+:root[data-theme="dark"] #sq{background:rgba(20,26,38,.6);color:#e6ecf6;border-color:rgba(255,255,255,.3)}:root[data-theme="dark"] #sq::placeholder{color:rgba(220,230,245,.55)}
+:root[data-theme="dark"] .dsw{background:rgba(20,26,38,.55);border-color:rgba(255,255,255,.3)}:root[data-theme="dark"] .dsw button{color:#dbe6f7}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #sq{background:rgba(20,26,38,.6);color:#e6ecf6;border-color:rgba(255,255,255,.3)}:root:not([data-theme="light"]) #sq::placeholder{color:rgba(220,230,245,.55)}:root:not([data-theme="light"]) .dsw{background:rgba(20,26,38,.55);border-color:rgba(255,255,255,.3)}:root:not([data-theme="light"]) .dsw button{color:#dbe6f7}}
+.bot{display:flex;align-items:flex-end;gap:10px;margin:26px 0 6px}
+.botb{border:0;background:none;padding:0;width:74px;height:78px;cursor:pointer;flex:none}.botb svg{width:100%;height:100%;filter:drop-shadow(0 3px 3px rgba(0,0,0,.3))}
+.botx{background:linear-gradient(#2aa3e6,#1678bd);color:#fff;font-weight:800;font-style:italic;font-size:13.5px;line-height:1.35;padding:12px 18px;border-radius:10px;max-width:520px;text-align:center;box-shadow:0 3px 6px rgba(0,0,0,.28);position:relative}
+.botx::before{content:"";position:absolute;left:-7px;bottom:14px;border-right:8px solid #1f8fd0;border-top:7px solid transparent;border-bottom:7px solid transparent}
+.ribwrap{margin:12px 0 14px}
+.ribwrap .ribbon{font-size:22px;padding:4px 48px}
+.sc{height:158px}.sc p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-right:12px}
+/* Design: Weiß */
+body.ds-weiss .sc{border:2px solid rgba(255,255,255,.85);box-shadow:0 3px 8px rgba(0,40,0,.28)}
+body.ds-weiss details.gr,body.ds-weiss .in,body.ds-weiss .treffer a{border-color:rgba(255,255,255,.85)}
+body.ds-weiss .kat{border:1.5px solid rgba(255,255,255,.8);box-shadow:0 3px 0 rgba(0,0,0,.18)}
+/* Design: Glas (wie im Original) */
+body.ds-glas .sc{border:1px solid rgba(255,255,255,.45);background:color-mix(in srgb,var(--sgl) 82%,transparent);-webkit-backdrop-filter:blur(8px) saturate(1.2);backdrop-filter:blur(8px) saturate(1.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.65),0 6px 14px -6px rgba(0,50,0,.5)}
+body.ds-glas details.gr,body.ds-glas .treffer a,body.ds-glas .in{border:1px solid rgba(255,255,255,.5);background:color-mix(in srgb,var(--sgl) 82%,transparent);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 5px 12px -6px rgba(0,50,0,.5)}
+body.ds-glas .kat{border:1px solid rgba(255,255,255,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 3px 6px -2px rgba(0,0,0,.3)}
+body.ds-glas .slmain{background:color-mix(in srgb,var(--sgl) 86%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 22px -10px rgba(0,50,0,.5);border:1px solid rgba(255,255,255,.5)}
+body.ds-glas .sc .sbad{box-shadow:0 2px 4px rgba(0,0,0,.2)}
+@media (max-width:560px){#sbar em{display:none}#sq{width:100%;order:3}.dsw button span{display:none}#sbar .sx{display:none}#sbar{gap:8px}.ribwrap .ribbon{font-size:18px;padding:4px 28px}.botb{width:58px;height:62px}.botx{font-size:12.5px}}
 </style>
 </head>
 <body>
@@ -245,6 +270,7 @@ body.sl .kat:hover{border-color:rgba(255,255,255,.9)}
   <div class="seg" id="bLang" role="group" aria-label="Sprache / Langue"></div>
   <div class="seg" id="bTheme" role="group" aria-label="Hell / Dunkel"></div>
 </div></header>
+<div id="sbar" hidden></div>
 <main id="app"></main>
 <footer id="fuss"></footer>
 <dialog id="dlg"></dialog>
@@ -315,7 +341,7 @@ const UI = {
   de:{placeSub:"Alles an einem Ort – wähle einen Bereich.",werkzeug:"Werkzeug",teilw:"teilweise passend",studio:"Oratio Tech Studio",studioT:"Nachschlagewerk und Werkzeuge für Elektronik, Informatik, Geräte und Labor.",lifestyle:"Lifestyle",lifeT:"Alltag, Genuss und Freizeit.",bald:"Weitere Bereiche folgen bald.",xmN:"Weihnachtswelt",xmZ:"27 Werkzeuge",xmT:"Karten, Wünsche, Post für Kunden und Team, Rezepte, Wichteln, Adventskalender, Quiz und viele Ideen zum Verschenken und Teilen.",deN:"Deutschkurs",deZ:"66 Lektionen · A1 bis C1",deT:"Deutsch lernen Schritt für Schritt – Aussprache, Wortschatz, Grammatik und Übungen.",deH:"Kommt bald",deP1:"Aussprache und Alphabet",deP2:"Grundwortschatz nach Themen",deP3:"Grammatik leicht erklärt",deP4:"Übungen und kleine Tests",deP5:"Hörverstehen und Dialoge",place:"Oratio Place",welten2:"Welten",
       icN:"Icon-Werkstatt",icT:"Bild in Form bringen, zuschneiden und als Symbol speichern (PNG, JPG, WebP, ICO).",icZ:"Werkzeug",dtN:"Datei-Werkstatt",dtT:"PDF, Word, Bilder und ZIP: zusammenfügen, umwandeln, komprimieren – direkt im Browser, ohne Upload.",
       katAlle:"Alle",kat:{elektronik:"Elektronik",informatik:"Informatik",geraete:"Geräte",labor:"Labor",werkzeuge:"Werkzeuge"},wzName:"Werkzeuge",wzN:"2 Werkzeuge",wzT:"Icon-Werkstatt und Datei-Werkstatt (PDF, Word, Bilder, ZIP) – direkt im Browser, ohne Upload.",
-      suche:"Alles durchsuchen …",welten:"Alle Welten",seiten:"Seiten",startsub:"Elektronik & Informatik zum Nachschlagen",weltW:"Wähle deine Welt",
+      suche:"Alles durchsuchen …",welten:"Alle Welten",seiten:"Seiten",startsub:"Elektronik & Informatik zum Nachschlagen",weltW:"Wähle deine Welt",sucheSt:"Suchen … z. B. 7400, I²C, chmod, Ohm",sucheXm:"In der Weihnachtswelt suchen …",sucheDe:"Im Deutschkurs suchen …",dsT:"Design",dsGlas:"Glas",dsSchwarz:"Schwarz",dsWeiss:"Weiß",tips:["Nicht jedes USB-C-Kabel kann alles: Es gibt reine Ladekabel (USB 2.0), Datenkabel (5/10/20 Gbit/s) und Videoübertragung (DisplayPort).","Eine LED braucht immer einen Vorwiderstand, sonst brennt sie durch.","Elkos sind gepolt: Der Streifen am Gehäuse markiert den Minuspol.","Die GPIO-Pins des Raspberry Pi vertragen nur 3,3 V – 5 V können ihn zerstören.","Parallelschaltung: Der Gesamtwiderstand ist immer kleiner als der kleinste Einzelwiderstand.","Ohmsches Gesetz: U = R × I – daraus folgen auch I = U / R und R = U / I.","Beim Löten erst die Spitze verzinnen, dann Pad und Anschlussbein gleichzeitig erwärmen.","I²C braucht zwei Pull-up-Widerstände, meist 4,7 kΩ nach VCC.","1 kB sind 1000 Byte, 1 KiB sind 1024 Byte.","Große Kondensatoren vor dem Anfassen über einen Widerstand entladen."],
       filter:"In dieser Welt filtern …",home:"Start",treffer:"Treffer",keine:"Nichts gefunden.",weg:"Seite nicht gefunden.",siehe:"Siehe auch",
       hinzu:"+ Hinzufügen",leerV:"Füge mindestens zwei Einträge hinzu, um sie zu vergleichen (höchstens %n).",gelb:"Gelb hinterlegt = Unterschied.",waehle:"Eintrag wählen",finde:"Suchen …",
       rechner:"RECHNER",leerR:"Lass ein Feld leer – es wird aus den anderen berechnet.",mehrR:"Trage genug Werte ein (schreibe z. B. 4k7, 10u, 2,2M). Das leere Feld wird berechnet.",
@@ -327,7 +353,7 @@ const UI = {
   fr:{placeSub:"Tout au même endroit – choisis un domaine.",werkzeug:"Outil",teilw:"résultats partiels",studio:"Oratio Tech Studio",studioT:"Ouvrage de référence et outils pour l’électronique, l’informatique, les appareils et le laboratoire.",lifestyle:"Lifestyle",lifeT:"Quotidien, plaisirs et loisirs.",bald:"D’autres domaines arrivent bientôt.",xmN:"Le monde de Noël",xmZ:"27 outils",xmT:"Cartes, vœux, courrier pour clients et équipe, recettes, Secret Santa, calendrier de l’Avent, quiz et beaucoup d’idées à offrir et à partager.",deN:"Cours d’allemand",deZ:"66 leçons · A1 à C1",deT:"Apprendre l’allemand pas à pas : prononciation, vocabulaire, grammaire et exercices.",deH:"Bientôt disponible",deP1:"Prononciation et alphabet",deP2:"Vocabulaire de base par thèmes",deP3:"Grammaire expliquée simplement",deP4:"Exercices et petits tests",deP5:"Compréhension orale et dialogues",place:"Oratio Place",welten2:"mondes",
       icN:"Atelier d’icônes",icT:"Mettre une image en forme, la recadrer et l’enregistrer comme icône (PNG, JPG, WebP, ICO).",icZ:"Outil",dtN:"Atelier de fichiers",dtT:"PDF, Word, images et ZIP : fusionner, convertir, compresser – directement dans le navigateur, sans envoi.",
       katAlle:"Tous",kat:{elektronik:"Électronique",informatik:"Informatique",geraete:"Appareils",labor:"Laboratoire",werkzeuge:"Outils"},wzName:"Outils",wzN:"2 outils",wzT:"Atelier d’icônes et atelier de fichiers (PDF, Word, images, ZIP) – directement dans le navigateur, sans envoi.",
-      suche:"Tout rechercher …",welten:"Tous les mondes",seiten:"pages",startsub:"Électronique & informatique à consulter",weltW:"Choisis ton monde",
+      suche:"Tout rechercher …",welten:"Tous les mondes",seiten:"pages",startsub:"Électronique & informatique à consulter",weltW:"Choisis ton monde",sucheSt:"Rechercher … p. ex. 7400, I²C, chmod, Ohm",sucheXm:"Rechercher dans le monde de Noël …",sucheDe:"Rechercher dans le cours …",dsT:"Design",dsGlas:"Verre",dsSchwarz:"Noir",dsWeiss:"Blanc",tips:["Tous les câbles USB-C ne font pas tout : câbles de charge seule (USB 2.0), câbles de données (5/10/20 Gbit/s) et vidéo (DisplayPort).","Une LED a toujours besoin d’une résistance en série, sinon elle grille.","Les condensateurs chimiques sont polarisés : la bande marque le pôle moins.","Les broches GPIO du Raspberry Pi ne supportent que 3,3 V – 5 V peut le détruire.","En parallèle, la résistance totale est toujours plus petite que la plus petite résistance.","Loi d’Ohm : U = R × I – donc I = U / R et R = U / I.","Pour souder : étamer la panne, puis chauffer en même temps pastille et patte.","L’I²C demande deux résistances de rappel, souvent 4,7 kΩ vers VCC.","1 ko = 1000 octets, 1 Kio = 1024 octets.","Décharge les gros condensateurs par une résistance avant de les toucher."],
       filter:"Filtrer dans ce monde …",home:"Accueil",treffer:"résultats",keine:"Aucun résultat.",weg:"Page introuvable.",siehe:"Voir aussi",
       hinzu:"+ Ajouter",leerV:"Ajoute au moins deux entrées pour les comparer (maximum %n).",gelb:"Surligné en jaune = différence.",waehle:"Choisir une entrée",finde:"Rechercher …",
       rechner:"CALCULATEUR",leerR:"Laisse un champ vide : il sera calculé à partir des autres.",mehrR:"Saisis assez de valeurs (par ex. 4k7, 10u, 2,2M). Le champ vide sera calculé.",
@@ -596,7 +622,7 @@ function startseite(){
   const karte = (href, kat, col, sym, name, sub, n) => '<a class="sc" data-k="'+kat+'" href="'+href+'" style="--wc:'+col+'"><div class="sh"><b'+(/\S{14,}/.test(name)?' style="font-size:12.5px;letter-spacing:0"':'')+'>'+esc(name)+'</b></div><div class="sbad">'+sym+'</div><p>'+esc(sub)+'</p><i class="sn">'+esc(n)+'</i></a>';
   const karten = INDEX.welten.map(w => karte("#/w/"+w.id, weltKat(w.id).join(" "), dk(w), '<span class="emo">'+weltSym(w)+'</span>', T(w.name), T(w.untertitel), w.seiten.length+" "+U("seiten"))).join("")
     + [["icon-werkstatt.html","🎨","#6a4fd8","icN","icT"],["datei-werkstatt.html","🗂️","#e0527a","dtN","dtT"]].map(x => karte(x[0], "werkzeuge", x[2], '<span style="font-size:30px">'+x[1]+'</span>', U(x[3]), U(x[4]), U("icZ"))).join("");
-  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("studio"))+'</div><div class="ribtop"><span class="ribbon s">'+esc(U("studio"))+'</span><em>'+U("startsub")+'</em></div><div class="ribwrap"><div class="ribbon">'+esc(U("weltW"))+'</div></div>'+chips+'<div class="scgrid">'+karten+'</div>';
+  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("studio"))+'</div><div class="ribwrap"><div class="ribbon">'+esc(U("weltW"))+'</div></div>'+chips+'<div class="scgrid">'+karten+'</div>';
   const filtere = () => {
     document.querySelectorAll(".kat").forEach(b => b.classList.toggle("on", b.dataset.k === KATWAHL));
     document.querySelectorAll(".scgrid .sc").forEach(a => { a.hidden = !(KATWAHL === "alle" || a.dataset.k.split(" ").includes(KATWAHL)); });
@@ -680,12 +706,12 @@ async function sucheVorbereiten(){
   DOCS = [];
   for (const [wid, sid, text] of SUCHE){
     const w = weltInfo(wid); const s = w && w.seiten.find(p => p.id === sid); if (!s) continue;
-    DOCS.push({t:nrm(s.titel+" "+(T(s.titel))), k:nrm((s.kurz||"")+" "+T(s.kurz||"")+" "+(w.name?T(w.name):"")), b:nrm(text), w:1, mk:()=>({chip:T(w.name), bg:hexOf(w.farbe), light:hell(w.farbe), titel:T(s.titel), kurz:s.kurz?T(s.kurz):"", href:'#/s/'+w.id+'/'+encodeURIComponent(s.id)})});
+    DOCS.push({s:"studio",t:nrm(s.titel+" "+(T(s.titel))), k:nrm((s.kurz||"")+" "+T(s.kurz||"")+" "+(w.name?T(w.name):"")), b:nrm(text), w:1, mk:()=>({chip:T(w.name), bg:hexOf(w.farbe), light:hell(w.farbe), titel:T(s.titel), kurz:s.kurz?T(s.kurz):"", href:'#/s/'+w.id+'/'+encodeURIComponent(s.id)})});
   }
   for (const [k, lv, href, t1, t2, s1, s2, text] of EXTRA)
-    DOCS.push({t:nrm(t1+" "+t2), k:nrm(s1+" "+s2), b:nrm(text), w:1, mk:()=>({chip:(WNAME[k]||[k,k])[LANG==="fr"?1:0]+(lv?" · "+lv:""), bg:WFARBE[k]||"#555", light:false, titel:LANG==="fr"?t2:t1, kurz:LANG==="fr"?s2:s1, href})});
+    DOCS.push({s:(k==="de"?"de":"xm"),t:nrm(t1+" "+t2), k:nrm(s1+" "+s2), b:nrm(text), w:1, mk:()=>({chip:(WNAME[k]||[k,k])[LANG==="fr"?1:0]+(lv?" · "+lv:""), bg:WFARBE[k]||"#555", light:false, titel:LANG==="fr"?t2:t1, kurz:LANG==="fr"?s2:s1, href})});
   for (const [href, sym, t1, t2, s1, s2, kw] of WTOOLS)
-    DOCS.push({t:nrm(t1+" "+t2), k:nrm(s1+" "+s2), b:nrm(kw), kw:nrm(kw), w:3, mk:()=>({chip:U("werkzeug"), bg:"linear-gradient(135deg,#e0703a,#e0527a)", light:false, titel:sym+" "+(LANG==="fr"?t2:t1), kurz:LANG==="fr"?s2:s1, href})});
+    DOCS.push({s:"studio",t:nrm(t1+" "+t2), k:nrm(s1+" "+s2), b:nrm(kw), kw:nrm(kw), w:3, mk:()=>({chip:U("werkzeug"), bg:"linear-gradient(135deg,#e0703a,#e0527a)", light:false, titel:sym+" "+(LANG==="fr"?t2:t1), kurz:LANG==="fr"?s2:s1, href})});
   VOCAB = new Set(); const rx=/[a-z0-9]{4,}/g;
   for (const d of DOCS){ for (const part of [d.t,d.k]) (part.match(rx)||[]).forEach(x=>VOCAB.add(x)); }
 }
@@ -710,30 +736,59 @@ function bewerte(d, vars){ // vars: Array je Suchwort -> Varianten; gibt {sc, hi
   }
   return {sc: sc*d.w, hit};
 }
-async function sucheAnzeigen(q){
+async function sucheAnzeigen(q, scope){
   q = decodeURIComponent(q||"").trim();
-  document.title = q+" – Oratio Place";brand("place");
+  document.title = q+" – Oratio Place";brand(scope==="studio"?"studio":"place");
   await sucheVorbereiten();
   const worte = nrm(q).split(/[^a-z0-9+#.]+/).filter(Boolean);
   let res = [], teil = false;
   if (worte.length){
     const vars = worte.map(varianten);
-    const alle = DOCS.map(d => ({d, ...bewerte(d, vars)})).filter(x => x.hit>0);
+    const alle = DOCS.filter(d => !scope || d.s===scope).map(d => ({d, ...bewerte(d, vars)})).filter(x => x.hit>0);
     let voll = alle.filter(x => x.hit===worte.length);
     if (!voll.length) { teil = true; voll = alle; }
     voll.sort((a,b) => (b.hit-a.hit) || (b.sc-a.sc));
     res = voll.slice(0,100).map(x => x.d.mk());
   }
-  app.innerHTML = '<h1>“'+esc(q)+'”</h1><p class="sub">'+res.length+' '+U("treffer")+(teil?' – '+U("teilw"):'')+'</p><div class="treffer">'+res.map(r =>
+  const lk = scope && scope!=="studio" ? '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › <a href="'+(scope==="de"?"deutsch.html":"weihnachten.html")+'">'+esc(scope==="de"?U("deN"):U("xmN"))+'</a></div><input id="lq" class="in" type="search" autocomplete="off" value="'+esc(q)+'" placeholder="'+esc(U(scope==="de"?"sucheDe":"sucheXm"))+'" style="margin:8px 0">' : '';
+  app.innerHTML = lk+'<h1>“'+esc(q)+'”</h1><p class="sub">'+res.length+' '+U("treffer")+(teil?' – '+U("teilw"):'')+'</p><div class="treffer">'+res.map(r =>
     '<a href="'+esc(r.href)+'"><span class="chip'+(r.light?" light":"")+'" style="background:'+r.bg+'">'+esc(r.chip)+'</span><b>'+esc(r.titel)+'</b>'+(r.kurz?'<small>'+esc(r.kurz)+'</small>':'')+'</a>').join("")+'</div>'
     + (res.length ? "" : '<p>'+U("keine")+'</p>');
+  const lq = $("#lq"); if (lq) { lq.addEventListener("input", () => { clearTimeout(st); const v = lq.value.trim(); st = setTimeout(() => { location.hash = v ? "#/qs/"+scope+"/"+encodeURIComponent(v) : "#/"; }, 320); }); }
   app.querySelectorAll('a[href*="?r="]').forEach(a => a.addEventListener("click", ev => { const m = a.getAttribute("href").match(/^(.*)\?r=(.*)$/); if (m) { ev.preventDefault(); try { sessionStorage.setItem("xm-rez", m[2]); } catch(e){} location.href = m[1]; } }));
 }
 function nichts(){ app.innerHTML = '<p>'+U("weg")+' <a href="#/studio">'+U("studio")+'</a></p>'; }
 
+/* ============================================================ Studio-Leiste, Design, Roboter */
+let DS = "glas"; try { DS = localStorage.getItem("ds") || "glas"; } catch(e){}
+function dsSetze(d){ DS = d; try { localStorage.setItem("ds", d); } catch(e){} document.body.classList.remove("ds-glas","ds-schwarz","ds-weiss"); document.body.classList.add("ds-"+d); document.querySelectorAll("#sbar .dsw button").forEach(b => b.classList.toggle("on", b.dataset.d === d)); }
+function sbar(an, q){
+  const b = $("#sbar"); b.hidden = !an; if (!an) return;
+  if (!b.dataset.ok){
+    b.dataset.ok = "1";
+    b.innerHTML = '<a class="ribbon s" href="#/studio" id="sbName"></a><em id="sbSub"></em><span class="sx"></span><input id="sq" type="search" autocomplete="off" enterkeyhint="search"><div class="dsw" role="group" aria-label="Design"></div>';
+    $("#sq").addEventListener("input", e => { clearTimeout(st); const v = e.target.value.trim(); st = setTimeout(() => { location.hash = v ? "#/qs/studio/"+encodeURIComponent(v) : "#/studio"; }, 280); });
+  }
+  $("#sbName").textContent = U("studio"); $("#sbSub").textContent = U("startsub"); $("#sq").placeholder = U("sucheSt");
+  if (q !== null && document.activeElement !== $("#sq")) $("#sq").value = q; else if (q === null && document.activeElement !== $("#sq")) $("#sq").value = "";
+  b.querySelector(".dsw").innerHTML = [["glas","🫧",U("dsGlas")],["schwarz","⬛",U("dsSchwarz")],["weiss","⬜",U("dsWeiss")]].map(x => '<button type="button" data-d="'+x[0]+'" title="'+U("dsT")+": "+x[2]+'" aria-label="'+x[2]+'" class="'+(DS===x[0]?"on":"")+'">'+x[1]+' <span>'+x[2]+'</span></button>').join("");
+  b.querySelectorAll(".dsw button").forEach(bt => bt.onclick = () => dsSetze(bt.dataset.d));
+}
+const ROBO = '<svg viewBox="0 0 80 84" aria-hidden="true"><line x1="40" y1="14" x2="40" y2="5" stroke="#3a3f55" stroke-width="3"/><circle cx="40" cy="5" r="4" fill="#ff8a3d" stroke="#3a3f55" stroke-width="2"/><rect x="6" y="36" width="9" height="20" rx="4" fill="#9aa3b8" stroke="#3a3f55" stroke-width="2.5"/><rect x="65" y="36" width="9" height="20" rx="4" fill="#9aa3b8" stroke="#3a3f55" stroke-width="2.5"/><rect x="12" y="14" width="56" height="58" rx="16" fill="#ffd54a" stroke="#3a3f55" stroke-width="3"/><circle cx="29" cy="40" r="9" fill="#fff" stroke="#3a3f55" stroke-width="2.5"/><circle cx="51" cy="40" r="9" fill="#fff" stroke="#3a3f55" stroke-width="2.5"/><circle cx="30" cy="41" r="4" fill="#3a3f55"/><circle cx="52" cy="41" r="4" fill="#3a3f55"/><circle cx="19" cy="55" r="4" fill="#ff9a8a" opacity=".7"/><circle cx="61" cy="55" r="4" fill="#ff9a8a" opacity=".7"/><path d="M29 58 Q40 67 51 58" fill="none" stroke="#3a3f55" stroke-width="3" stroke-linecap="round"/></svg>';
+let TIPI = Math.floor(Math.random()*10);
+function botZeigen(){
+  const t = U("tips");
+  app.insertAdjacentHTML("beforeend", '<div class="bot"><button type="button" class="botb" aria-label="Tipp">'+ROBO+'</button><div class="botx" id="botx">'+esc(t[TIPI % t.length])+'</div></div>');
+  app.querySelector(".botb").onclick = () => { TIPI++; $("#botx").textContent = t[TIPI % t.length]; };
+}
+document.body.classList.add("ds-"+DS);
+
 async function route(){
   const p = decodeURIComponent((location.hash || "#/").slice(1)).split("/").filter(Boolean);
-  document.body.classList.toggle("sl", ["studio","w","s","q"].includes(p[0]));
+  const imStudio = ["studio","w","s"].includes(p[0]) || (p[0]==="qs" && p[1]==="studio");
+  document.body.classList.toggle("sl", imStudio || p[0]==="q");
+  document.body.classList.toggle("slocal", imStudio);
+  sbar(imStudio, p[0]==="qs" ? decodeURIComponent(p.slice(2).join("/")) : null);
   if (!["w","s"].includes(p[0])) app.style.removeProperty("--wc");
   try {
     if (!p.length) placeseite();
@@ -743,9 +798,11 @@ async function route(){
     else if (p[0] === "w") weltseite(p[1]);
     else if (p[0] === "s") await seitenansicht(p[1], p.slice(2).join("/"));
     else if (p[0] === "q") await sucheAnzeigen(p.slice(1).join("/"));
+    else if (p[0] === "qs") await sucheAnzeigen(p.slice(2).join("/"), p[1]);
     else nichts();
   } catch(e){ app.innerHTML = '<p>'+esc(e.message)+'</p>'; }
   $("#q").placeholder = U("suche");
+  if (imStudio) botZeigen();
 }
 
 /* ============================================================ Kopfleiste */
