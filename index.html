@@ -284,7 +284,7 @@ body.home{background:none!important}
 .hr{margin:6px 0 4px;text-align:center}.hsub{text-align:center;color:#fff;font-weight:700;text-shadow:0 1px 4px rgba(0,60,100,.55);margin:14px 0 22px}
 body.home main{padding-top:10px}
 body.home .grid.big2{gap:30px 22px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
-.isw{position:relative;padding-bottom:30px;animation:bob 7s ease-in-out infinite}.isw.i1{animation-delay:-1.8s}.isw.i2{animation-delay:-3.6s}.isw.i3{animation-delay:-5.2s}
+.isw{position:relative;padding-bottom:30px;animation:bob 7s ease-in-out infinite}.isw.i1{animation-delay:-1.8s}.isw.i2{animation-delay:-3.6s}.isw.i3{animation-delay:-5.2s}.isw.i4{animation-delay:-2.7s}
 .isw .welt{animation:none}
 .isl{position:absolute;left:5%;right:5%;bottom:0;height:46px;border-radius:50%;z-index:-1;background:radial-gradient(ellipse at 50% 25%,#fff0c4,#f0cd88 55%,#cfa468);box-shadow:0 10px 18px rgba(0,50,90,.4),0 0 0 7px rgba(255,255,255,.28),0 0 0 15px rgba(255,255,255,.14)}
 .isl b{position:absolute;right:9%;top:-26px;font-size:30px;line-height:1;filter:drop-shadow(0 3px 2px rgba(0,0,0,.25))}
@@ -311,9 +311,11 @@ body.home .welt .t{font-size:15px;line-height:1.5;padding-bottom:16px}
 body.home .grid.big2{max-width:1500px;width:100%;margin:0 auto}
 @media (max-width:560px){body.home main{justify-content:flex-start}body.home .welt .pic,body.home .welt .pic img{height:150px}}
 
-body.home .grid.big2{grid-template-columns:repeat(4,minmax(0,1fr));gap:34px 34px;max-width:1700px}
-@media (max-width:1180px){body.home .grid.big2{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:640px){body.home .grid.big2{grid-template-columns:1fr}}
+body.home .grid.big2{grid-template-columns:repeat(6,minmax(0,1fr));gap:34px 34px;max-width:1700px}
+body.home .grid.big2 > .isw{grid-column:span 2}body.home .grid.big2 > .isw.i3{grid-column:2/4}body.home .grid.big2 > .isw.i4{grid-column:4/6}
+@media (min-width:1500px){body.home .grid.big2{grid-template-columns:repeat(5,minmax(0,1fr))}body.home .grid.big2 > .isw,body.home .grid.big2 > .isw.i3,body.home .grid.big2 > .isw.i4{grid-column:auto}}
+@media (max-width:1180px){body.home .grid.big2{grid-template-columns:repeat(2,minmax(0,1fr))}body.home .grid.big2 > .isw,body.home .grid.big2 > .isw.i3{grid-column:auto}body.home .grid.big2 > .isw.i4{grid-column:1/-1;justify-self:center;width:calc(50% - 17px)}}
+@media (max-width:640px){body.home .grid.big2{grid-template-columns:1fr}body.home .grid.big2 > .isw.i4{width:100%}}
 body.home .welt .pic,body.home .welt .pic img{height:auto}
 body.home .welt .pic img{aspect-ratio:1200/520;object-fit:cover;width:100%}
 .isw{padding-bottom:58px}
@@ -331,6 +333,12 @@ body.home{overflow-x:hidden}body.home main{overflow-x:clip}
 .isv .foam{animation:foamd 18s linear infinite}
 @keyframes foamd{to{stroke-dashoffset:-240}}
 .isl{aspect-ratio:600/170;bottom:-20px}.isw{padding-bottom:84px}
+.wzh{font-size:18px;margin:22px 0 12px}
+.wzg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.wzk{display:flex;flex-direction:column;gap:4px;padding:16px 16px 14px;border-radius:16px;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);box-shadow:0 6px 18px rgba(20,30,60,.12);transition:transform .15s}
+.wzk .wzs{font-size:28px;line-height:1}.wzk b{font-size:16px}.wzk small{opacity:.8;line-height:1.4}
+.wzk.gross{padding:20px;background:linear-gradient(135deg,rgba(255,154,60,.22),rgba(238,79,126,.2) 60%,rgba(107,79,224,.2))}.wzk.gross .wzs{font-size:40px}.wzk.gross b{font-size:19px}
+@media (hover:hover){.wzk:hover{transform:translateY(-3px)}}
 </style>
 </head>
 <body>
@@ -409,9 +417,9 @@ try { LANG = localStorage.getItem("lang") || ((navigator.language||"").startsWit
 function T(s){ if (LANG !== "fr" || FR === null || typeof s !== "string") return s; const r = FR[s]; return r === undefined ? s : r; }
 
 const UI = {
-  de:{placeSub:"Alles an einem Ort – wähle einen Bereich.",werkzeug:"Werkzeug",teilw:"teilweise passend",studio:"Oratio Tech Studio",studioT:"Nachschlagewerk und Werkzeuge für Elektronik, Informatik, Geräte und Labor.",lifestyle:"Lifestyle",lifeT:"Alltag, Genuss und Freizeit.",bald:"Weitere Bereiche folgen bald.",xmN:"Weihnachtswelt",xmZ:"27 Werkzeuge",xmT:"Karten, Wünsche, Post für Kunden und Team, Rezepte, Wichteln, Adventskalender, Quiz und viele Ideen zum Verschenken und Teilen.",deN:"Deutschkurs",deZ:"66 Lektionen · A1 bis C1",deT:"Deutsch lernen Schritt für Schritt – Aussprache, Wortschatz, Grammatik und Übungen.",deH:"Kommt bald",deP1:"Aussprache und Alphabet",deP2:"Grundwortschatz nach Themen",deP3:"Grammatik leicht erklärt",deP4:"Übungen und kleine Tests",deP5:"Hörverstehen und Dialoge",place:"Oratio Place",welten2:"Welten",
+  de:{placeSub:"Alles an einem Ort – wähle einen Bereich.",werkzeug:"Werkzeug",teilw:"teilweise passend",studio:"Oratio Tech Studio",studioT:"Nachschlagewerk für Elektronik, Informatik, Geräte und Labor.",lifestyle:"Lifestyle",lifeT:"Alltag, Genuss und Freizeit.",bald:"Weitere Bereiche folgen bald.",xmN:"Weihnachtswelt",xmZ:"27 Werkzeuge",xmT:"Karten, Wünsche, Post für Kunden und Team, Rezepte, Wichteln, Adventskalender, Quiz und viele Ideen zum Verschenken und Teilen.",deN:"Deutschkurs",deZ:"66 Lektionen · A1 bis C1",deT:"Deutsch lernen Schritt für Schritt – Aussprache, Wortschatz, Grammatik und Übungen.",deH:"Kommt bald",deP1:"Aussprache und Alphabet",deP2:"Grundwortschatz nach Themen",deP3:"Grammatik leicht erklärt",deP4:"Übungen und kleine Tests",deP5:"Hörverstehen und Dialoge",place:"Oratio Place",welten2:"Welten",
       icN:"Icon-Werkstatt",icT:"Bild in Form bringen, zuschneiden und als Symbol speichern (PNG, JPG, WebP, ICO).",icZ:"Werkzeug",dtN:"Datei-Werkstatt",dtT:"PDF, Word, Bilder und ZIP: zusammenfügen, umwandeln, komprimieren – direkt im Browser, ohne Upload.",
-      katAlle:"Alle",kat:{grundlagen:"Grundlagen",bauteile:"Bauteile",schaltungen:"Schaltungen",informatik:"Informatik",geraete:"Geräte",labor:"Labor",werkzeuge:"Werkzeuge"},fachW:"Wähle dein Fachgebiet",wzName:"Werkzeuge",wzN:"2 Werkzeuge",wzT:"Icon-Werkstatt und Datei-Werkstatt (PDF, Word, Bilder, ZIP) – direkt im Browser, ohne Upload.",
+      katAlle:"Alle",kat:{grundlagen:"Grundlagen",bauteile:"Bauteile",schaltungen:"Schaltungen",informatik:"Informatik",geraete:"Geräte",labor:"Labor"},fachW:"Wähle dein Fachgebiet",wzName:"Werkzeuge",wzN:"PDF · Word · Bilder · ZIP",wzT:"Für alle, ganz ohne Technikwissen: PDFs, Word-Dateien, Fotos, ZIP und Icons bearbeiten – direkt im Browser, ohne Upload.",wzSub:"Für alle – ganz ohne Technikwissen. Alles läuft direkt in deinem Browser, nichts wird hochgeladen.",wzSuche:"Werkzeug suchen … (z. B. PDF, Foto, ZIP)",wzDirekt:"Direkt loslegen",wzWerk:"Die zwei Werkstätten",wzKein:"Kein Werkzeug gefunden.",wzNg:"Werkzeuge",
       suche:"Alles durchsuchen …",welten:"Alle Welten",seiten:"Seiten",startsub:"Elektronik & Informatik zum Nachschlagen",weltW:"Wähle deine Welt",sucheSt:"Suchen … z. B. 7400, I²C, chmod, Ohm",sucheXm:"In der Weihnachtswelt suchen …",sucheDe:"Im Deutschkurs suchen …",dsT:"Design",dsGlas:"Glas",dsSchwarz:"Schwarz",dsWeiss:"Weiß",tips:["Nicht jedes USB-C-Kabel kann alles: Es gibt reine Ladekabel (USB 2.0), Datenkabel (5/10/20 Gbit/s) und Videoübertragung (DisplayPort).","Eine LED braucht immer einen Vorwiderstand, sonst brennt sie durch.","Elkos sind gepolt: Der Streifen am Gehäuse markiert den Minuspol.","Die GPIO-Pins des Raspberry Pi vertragen nur 3,3 V – 5 V können ihn zerstören.","Parallelschaltung: Der Gesamtwiderstand ist immer kleiner als der kleinste Einzelwiderstand.","Ohmsches Gesetz: U = R × I – daraus folgen auch I = U / R und R = U / I.","Beim Löten erst die Spitze verzinnen, dann Pad und Anschlussbein gleichzeitig erwärmen.","I²C braucht zwei Pull-up-Widerstände, meist 4,7 kΩ nach VCC.","1 kB sind 1000 Byte, 1 KiB sind 1024 Byte.","Große Kondensatoren vor dem Anfassen über einen Widerstand entladen."],
       filter:"In dieser Welt filtern …",home:"Start",treffer:"Treffer",keine:"Nichts gefunden.",weg:"Seite nicht gefunden.",siehe:"Siehe auch",
       hinzu:"+ Hinzufügen",leerV:"Füge mindestens zwei Einträge hinzu, um sie zu vergleichen (höchstens %n).",gelb:"Gelb hinterlegt = Unterschied.",waehle:"Eintrag wählen",finde:"Suchen …",
@@ -421,9 +429,9 @@ const UI = {
       pin:{i:"Eingang",o:"Ausgang",x:"Ein-/Ausgang",g:"Masse",v:"Versorgung",n:"nicht belegt"},
       dunkel:"Dunkel",hellm:"Hell",auto:"Auto",imp:"Impressum & Datenschutz",stand:"Hobbyprojekt, Angaben ohne Gewähr. Bitte wichtige Werte im Datenblatt prüfen.",
       zeit:"Zeitdiagramm",kreis:"Schaltbild",ver:"Versorgung / Werte",geh:"Gehäuse",ans:"Anschlüsse"},
-  fr:{placeSub:"Tout au même endroit – choisis un domaine.",werkzeug:"Outil",teilw:"résultats partiels",studio:"Oratio Tech Studio",studioT:"Ouvrage de référence et outils pour l’électronique, l’informatique, les appareils et le laboratoire.",lifestyle:"Lifestyle",lifeT:"Quotidien, plaisirs et loisirs.",bald:"D’autres domaines arrivent bientôt.",xmN:"Le monde de Noël",xmZ:"27 outils",xmT:"Cartes, vœux, courrier pour clients et équipe, recettes, Secret Santa, calendrier de l’Avent, quiz et beaucoup d’idées à offrir et à partager.",deN:"Cours d’allemand",deZ:"66 leçons · A1 à C1",deT:"Apprendre l’allemand pas à pas : prononciation, vocabulaire, grammaire et exercices.",deH:"Bientôt disponible",deP1:"Prononciation et alphabet",deP2:"Vocabulaire de base par thèmes",deP3:"Grammaire expliquée simplement",deP4:"Exercices et petits tests",deP5:"Compréhension orale et dialogues",place:"Oratio Place",welten2:"mondes",
+  fr:{placeSub:"Tout au même endroit – choisis un domaine.",werkzeug:"Outil",teilw:"résultats partiels",studio:"Oratio Tech Studio",studioT:"Ouvrage de référence pour l’électronique, l’informatique, les appareils et le laboratoire.",lifestyle:"Lifestyle",lifeT:"Quotidien, plaisirs et loisirs.",bald:"D’autres domaines arrivent bientôt.",xmN:"Le monde de Noël",xmZ:"27 outils",xmT:"Cartes, vœux, courrier pour clients et équipe, recettes, Secret Santa, calendrier de l’Avent, quiz et beaucoup d’idées à offrir et à partager.",deN:"Cours d’allemand",deZ:"66 leçons · A1 à C1",deT:"Apprendre l’allemand pas à pas : prononciation, vocabulaire, grammaire et exercices.",deH:"Bientôt disponible",deP1:"Prononciation et alphabet",deP2:"Vocabulaire de base par thèmes",deP3:"Grammaire expliquée simplement",deP4:"Exercices et petits tests",deP5:"Compréhension orale et dialogues",place:"Oratio Place",welten2:"mondes",
       icN:"Atelier d’icônes",icT:"Mettre une image en forme, la recadrer et l’enregistrer comme icône (PNG, JPG, WebP, ICO).",icZ:"Outil",dtN:"Atelier de fichiers",dtT:"PDF, Word, images et ZIP : fusionner, convertir, compresser – directement dans le navigateur, sans envoi.",
-      katAlle:"Tous",kat:{grundlagen:"Bases",bauteile:"Composants",schaltungen:"Circuits",informatik:"Informatique",geraete:"Appareils",labor:"Laboratoire",werkzeuge:"Outils"},fachW:"Choisis ton domaine",wzName:"Outils",wzN:"2 outils",wzT:"Atelier d’icônes et atelier de fichiers (PDF, Word, images, ZIP) – directement dans le navigateur, sans envoi.",
+      katAlle:"Tous",kat:{grundlagen:"Bases",bauteile:"Composants",schaltungen:"Circuits",informatik:"Informatique",geraete:"Appareils",labor:"Laboratoire"},fachW:"Choisis ton domaine",wzName:"Outils",wzN:"PDF · Word · Images · ZIP",wzT:"Pour tout le monde, sans connaissances techniques : modifier PDF, Word, photos, ZIP et icônes – directement dans le navigateur, sans envoi.",wzSub:"Pour tous – sans connaissances techniques. Tout se passe dans ton navigateur, rien n’est envoyé.",wzSuche:"Chercher un outil … (p. ex. PDF, photo, ZIP)",wzDirekt:"Commencer tout de suite",wzWerk:"Les deux ateliers",wzKein:"Aucun outil trouvé.",wzNg:"outils",
       suche:"Tout rechercher …",welten:"Tous les mondes",seiten:"pages",startsub:"Électronique & informatique à consulter",weltW:"Choisis ton monde",sucheSt:"Rechercher … p. ex. 7400, I²C, chmod, Ohm",sucheXm:"Rechercher dans le monde de Noël …",sucheDe:"Rechercher dans le cours …",dsT:"Design",dsGlas:"Verre",dsSchwarz:"Noir",dsWeiss:"Blanc",tips:["Tous les câbles USB-C ne font pas tout : câbles de charge seule (USB 2.0), câbles de données (5/10/20 Gbit/s) et vidéo (DisplayPort).","Une LED a toujours besoin d’une résistance en série, sinon elle grille.","Les condensateurs chimiques sont polarisés : la bande marque le pôle moins.","Les broches GPIO du Raspberry Pi ne supportent que 3,3 V – 5 V peut le détruire.","En parallèle, la résistance totale est toujours plus petite que la plus petite résistance.","Loi d’Ohm : U = R × I – donc I = U / R et R = U / I.","Pour souder : étamer la panne, puis chauffer en même temps pastille et patte.","L’I²C demande deux résistances de rappel, souvent 4,7 kΩ vers VCC.","1 ko = 1000 octets, 1 Kio = 1024 octets.","Décharge les gros condensateurs par une résistance avant de les toucher."],
       filter:"Filtrer dans ce monde …",home:"Accueil",treffer:"résultats",keine:"Aucun résultat.",weg:"Page introuvable.",siehe:"Voir aussi",
       hinzu:"+ Ajouter",leerV:"Ajoute au moins deux entrées pour les comparer (maximum %n).",gelb:"Surligné en jaune = différence.",waehle:"Choisir une entrée",finde:"Rechercher …",
@@ -658,15 +666,15 @@ function bannerHTML(w, titel, kurz, sym){
   return '<div class="banner'+(hell(w.farbe)?" light":"")+'" style="background:'+hexOf(w.farbe)+'"><div class="ic">'+(sym ? symbol(sym) : weltSym(w))+'</div><div><h1>'+esc(T(titel))+'</h1>'+(kurz?'<p>'+esc(T(kurz))+'</p>':'')+'</div></div>';
 }
 /* Kategorien fuer die Startseite: Welt-ID -> Kategorien (eine Welt kann in mehreren stehen) */
-const KATS = ["grundlagen","bauteile","schaltungen","informatik","geraete","labor","werkzeuge"];
+const KATS = ["grundlagen","bauteile","schaltungen","informatik","geraete","labor"];
 const WKAT = {
-  grund:["grundlagen","schaltungen"], passiv:["bauteile","schaltungen"], halbleiter:["bauteile","schaltungen"], messen:["labor"],
-  speicher:["informatik","geraete"], energie:["bauteile","geraete"], mathe:["grundlagen","informatik"], sensoren:["bauteile","geraete"],
-  mikro:["geraete","informatik"], schnittstellen:["schaltungen","informatik"], netzwerk:["informatik","geraete"], digital:["schaltungen","grundlagen"],
-  zahlen:["grundlagen","informatik"], linux:["informatik"], prog:["informatik"], schalt:["grundlagen","schaltungen"], fehler:["labor","geraete"],
-  glossar:["grundlagen","informatik"], bauteile:["bauteile"], bt_ic:["bauteile","schaltungen"], bt_analog:["schaltungen","bauteile"], bt_katalog:["bauteile"],
-  bt_module:["bauteile","geraete"], bt_wissen:["grundlagen","bauteile"], labor:["labor"], konsolen:["geraete"], mcu:["geraete","informatik"],
-  zubehoer:["geraete"], handys:["geraete"], kameras:["geraete"]
+  grund:["grundlagen","schaltungen"], mathe:["grundlagen"], zahlen:["grundlagen","informatik"], glossar:["grundlagen","informatik"], bt_wissen:["grundlagen","bauteile"],
+  passiv:["bauteile","schaltungen"], halbleiter:["bauteile","schaltungen"], sensoren:["bauteile"], energie:["bauteile"],
+  bauteile:["bauteile"], bt_ic:["bauteile","schaltungen"], bt_analog:["schaltungen","bauteile"], bt_katalog:["bauteile"], bt_module:["bauteile"],
+  digital:["schaltungen","grundlagen"], schalt:["schaltungen","grundlagen"],
+  speicher:["informatik"], mikro:["informatik","schaltungen"], schnittstellen:["informatik","schaltungen"], netzwerk:["informatik"], linux:["informatik"], prog:["informatik"],
+  messen:["labor"], labor:["labor"], fehler:["labor","informatik"],
+  konsolen:["geraete"], handys:["geraete"], kameras:["geraete"], mcu:["geraete"], zubehoer:["geraete"]
 };
 const weltKat = id => WKAT[id] || ["elektronik"];
 let KATWAHL = "alle";
@@ -681,7 +689,7 @@ function inselSVG(k){
       d += "C"+(p1[0]+(p2[0]-p0[0])/6).toFixed(1)+" "+(p1[1]+(p2[1]-p0[1])/6).toFixed(1)+" "+(p2[0]-(p3[0]-p1[0])/6).toFixed(1)+" "+(p2[1]-(p3[1]-p1[1])/6).toFixed(1)+" "+p2[0].toFixed(1)+" "+p2[1].toFixed(1); }
     return d+"Z"; };
   const snow = k===1;
-  const E = [["🌴","🌴"],["🎄","⛄"],["🌺","🌴"],["🥨","🍺"]][k];
+  const E = [["🌴","🌴"],["🎄","⛄"],["🌺","🌴"],["🥨","🍺"],["🧰","🔧"]][k];
   const sandA = snow ? ["#ffffff","#d6e4f2"] : ["#fff0c8","#e6bd7a"];
   let rocks = ""; for (let i=0;i<7;i++){ const x = 90+((i*83+k*37)%420), y = 98+((i*29+k*11)%14); rocks += '<ellipse cx="'+x+'" cy="'+y+'" rx="'+(3+(i%3)*2)+'" ry="'+(2+(i%2))+'" fill="'+(snow?"#c3d3e6":"#b99358")+'" opacity=".7"/>'; }
   return '<svg class="isv" viewBox="0 0 600 170" preserveAspectRatio="none" aria-hidden="true"><defs>'
@@ -702,14 +710,28 @@ function inselSVG(k){
 }
 function placeseite(){
   document.title = "Oratio Place"; brand("place");
-  const n = INDEX.welten.length + 2;
+  const n = INDEX.welten.length;
   document.title = "Oratio Place"; const hh = '<div class="hscene" aria-hidden="true"><i class="hsun"></i><i class="hstars"></i><i class="cl c1"></i><i class="cl c2"></i><i class="cl c3"></i><svg class="gull g1" viewBox="0 0 40 16"><path d="M2 12 Q10 0 20 10 Q30 0 38 12" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg><svg class="gull g2" viewBox="0 0 40 16"><path d="M2 12 Q10 0 20 10 Q30 0 38 12" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg><div class="hsea"><i class="wv w1"></i><i class="wv w2"></i><i class="wv w3"></i><div class="boat"><svg viewBox="0 0 110 100"><path d="M52 4 L52 66 L96 66 Z" fill="#fff"/><path d="M46 14 L46 66 L14 66 Z" fill="#ffd9a8"/><path d="M4 70 L106 70 Q96 92 78 92 L30 92 Q12 92 4 70Z" fill="#c4452c"/><path d="M4 70 L106 70 L103 76 L7 76Z" fill="#fff" opacity=".85"/><line x1="52" y1="2" x2="52" y2="70" stroke="#5a3a20" stroke-width="3"/><path d="M52 2 L66 8 L52 14z" fill="#ff4d5e"/></svg></div></div></div>';
   app.innerHTML = hh+'<div class="ribwrap hr"><div class="ribbon">'+esc(U("weltW"))+'</div></div><p class="sub hsub">'+esc(U("placeSub"))+'</p><div class="grid big2">'+
     '<a class="welt" style="--wc:#1e8fff" href="#/studio"><div class="kopf" style="background:linear-gradient(135deg,#2e86ff,#19c9b8)"><div class="ic"><img src="icon.png" alt="" style="width:34px;height:34px;border-radius:8px"></div><b>'+esc(U("studio"))+'</b></div><div class="pic"><img src="bilder/tech.jpg" alt="" loading="lazy"></div><div class="t"><div class="n">'+n+' '+esc(U("welten2"))+'</div>'+esc(U("studioT"))+'</div></a>'+
     '<a class="welt" style="--wc:#d4243d" href="weihnachten.html"><div class="kopf" style="background:linear-gradient(135deg,#c4162b,#e08a2c 55%,#1d7a47)"><div class="ic">🎄</div><b>'+esc(U("xmN"))+'</b></div><div class="pic"><img src="bilder/weihnachten.jpg" alt="" loading="lazy"></div><div class="t"><div class="n">'+esc(U("xmZ"))+'</div>'+esc(U("xmT"))+'</div></a>'+
     '<a class="welt" style="--wc:#ff7a1a" href="#/lifestyle"><div class="kopf" style="background:linear-gradient(135deg,#ff7ac8,#ff8c1a)"><div class="ic">🌿</div><b>'+esc(U("lifestyle"))+'</b></div><div class="pic"><img src="bilder/lifestyle.jpg" alt="" loading="lazy"></div><div class="t"><div class="n">'+esc(U("lifeT"))+'</div>'+esc(U("bald"))+'</div></a>'+
-    '<a class="welt" style="--wc:#8a4dff" href="deutsch.html"><div class="kopf" style="background:linear-gradient(135deg,#ff9f1a,#ff3b8a 50%,#7a4dff)"><div class="ic"><svg class="flag" viewBox="0 0 30 20" width="30" height="20"><rect width="30" height="7" fill="#111"/><rect y="7" width="30" height="6.5" fill="#dd0000"/><rect y="13.5" width="30" height="6.5" fill="#ffce00"/></svg></div><b>'+esc(U("deN"))+'</b></div><div class="pic"><img src="bilder/deutsch.jpg" alt="" loading="lazy"></div><div class="t"><div class="n">'+esc(U("deZ"))+'</div>'+esc(U("deT"))+'</div></a></div>';
+    '<a class="welt" style="--wc:#8a4dff" href="deutsch.html"><div class="kopf" style="background:linear-gradient(135deg,#ff9f1a,#ff3b8a 50%,#7a4dff)"><div class="ic"><svg class="flag" viewBox="0 0 30 20" width="30" height="20"><rect width="30" height="7" fill="#111"/><rect y="7" width="30" height="6.5" fill="#dd0000"/><rect y="13.5" width="30" height="6.5" fill="#ffce00"/></svg></div><b>'+esc(U("deN"))+'</b></div><div class="pic"><img src="bilder/deutsch.jpg" alt="" loading="lazy"></div><div class="t"><div class="n">'+esc(U("deZ"))+'</div>'+esc(U("deT"))+'</div></a>'+
+    '<a class="welt" style="--wc:#ee4f7e" href="#/werkzeuge"><div class="kopf" style="background:linear-gradient(135deg,#ff9a3c,#ee4f7e 55%,#6b4fe0)"><div class="ic">🧰</div><b>'+esc(U("wzName"))+'</b></div><div class="pic"><img src="bilder/werkzeuge.jpg" alt="" loading="lazy"></div><div class="t"><div class="n">'+esc(U("wzN"))+'</div>'+esc(U("wzT"))+'</div></a></div>';
   app.querySelectorAll(".grid.big2 > a.welt").forEach((a, i) => { const w = document.createElement("div"); w.className = "isw i"+i; a.replaceWith(w); w.appendChild(a); w.insertAdjacentHTML("afterbegin", '<div class="isl">'+inselSVG(i)+'</div>'); });
+}
+function werkzeugseite(){
+  document.title = U("wzName")+" – Oratio Place"; brand("wz");
+  const fin = (WTOOLS.slice(-2)), einz = WTOOLS.slice(0,-2);
+  const kachel = (x, gross) => { const [href,sym,t1,t2,s1,s2,kw] = x; return '<a class="wzk'+(gross?" gross":"")+'" href="'+esc(href)+'" data-t="'+esc(nrm(t1+" "+t2+" "+s1+" "+s2+" "+kw))+'"><span class="wzs">'+sym+'</span><b>'+esc(LANG==="fr"?t2:t1)+'</b><small>'+esc(LANG==="fr"?s2:s1)+'</small></a>'; };
+  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("wzName"))+'</div><h1>🧰 '+esc(U("wzName"))+'</h1><p class="sub">'+esc(U("wzSub"))+'</p>'
+    + '<input id="wzq" class="in" type="search" autocomplete="off" placeholder="'+esc(U("wzSuche"))+'" style="margin:6px 0 18px;max-width:560px">'
+    + '<h2 class="wzh">'+esc(U("wzWerk"))+'</h2><div class="wzg">'+fin.map(x => kachel(x,true)).join("")+'</div>'
+    + '<h2 class="wzh">'+esc(U("wzDirekt"))+'</h2><div class="wzg">'+einz.map(x => kachel(x,false)).join("")+'</div><p class="platz" id="wzk" hidden>'+esc(U("wzKein"))+'</p>';
+  $("#wzq").addEventListener("input", e => { const w = nrm(e.target.value).split(/\s+/).filter(Boolean); let n = 0;
+    app.querySelectorAll(".wzk").forEach(a => { const ok = w.every(t => a.dataset.t.includes(t)); a.style.display = ok ? "" : "none"; if (ok) n++; });
+    app.querySelectorAll(".wzh").forEach(h => { const g = h.nextElementSibling; h.style.display = g && [...g.children].some(c => c.style.display !== "none") ? "" : "none"; });
+    $("#wzk").hidden = n > 0; });
 }
 function lifestyleseite(){
   document.title = "Oratio Lifestyle"; brand("lifestyle");
@@ -726,8 +748,7 @@ function startseite(){
     '<button class="kat'+(k===KATWAHL?" on":"")+'" data-k="'+k+'">'+esc(k==="alle" ? U("katAlle") : U("kat")[k])+'</button>').join("")+'</div>';
   const dk = w => hell(w.farbe) ? dunkler(w.farbe,.62) : hexOf(w.farbe);
   const karte = (href, kat, col, sym, name, sub, n) => '<a class="sc" data-k="'+kat+'" href="'+href+'" style="--wc:'+col+'"><div class="sh"><b'+(/\S{14,}/.test(name)?' style="font-size:12.5px;letter-spacing:0"':'')+'>'+esc(name)+'</b></div><div class="sbad">'+sym+'</div><p>'+esc(sub)+'</p><i class="sn">'+esc(n)+'</i></a>';
-  const karten = INDEX.welten.map(w => karte("#/w/"+w.id, weltKat(w.id).join(" "), dk(w), '<span class="emo">'+weltSym(w)+'</span>', T(w.name), T(w.untertitel), w.seiten.length+" "+U("seiten"))).join("")
-    + [["icon-werkstatt.html","🎨","#6a4fd8","icN","icT"],["datei-werkstatt.html","🗂️","#e0527a","dtN","dtT"]].map(x => karte(x[0], "werkzeuge", x[2], '<span style="font-size:30px">'+x[1]+'</span>', U(x[3]), U(x[4]), U("icZ"))).join("");
+  const karten = INDEX.welten.map(w => karte("#/w/"+w.id, weltKat(w.id).join(" "), dk(w), '<span class="emo">'+weltSym(w)+'</span>', T(w.name), T(w.untertitel), w.seiten.length+" "+U("seiten"))).join("");
   app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("studio"))+'</div><div class="ribwrap"><div class="ribbon">'+esc(U("fachW"))+'</div></div>'+chips+'<div class="scgrid">'+karten+'</div>';
   const filtere = () => {
     document.querySelectorAll(".kat").forEach(b => b.classList.toggle("on", b.dataset.k === KATWAHL));
@@ -817,7 +838,7 @@ async function sucheVorbereiten(){
   for (const [k, lv, href, t1, t2, s1, s2, text] of EXTRA)
     DOCS.push({s:(k==="de"?"de":"xm"),t:nrm(t1+" "+t2), k:nrm(s1+" "+s2), b:nrm(text), w:1, mk:()=>({chip:(WNAME[k]||[k,k])[LANG==="fr"?1:0]+(lv?" · "+lv:""), bg:WFARBE[k]||"#555", light:false, titel:LANG==="fr"?t2:t1, kurz:LANG==="fr"?s2:s1, href})});
   for (const [href, sym, t1, t2, s1, s2, kw] of WTOOLS)
-    DOCS.push({s:"studio",t:nrm(t1+" "+t2), k:nrm(s1+" "+s2), b:nrm(kw), kw:nrm(kw), w:3, mk:()=>({chip:U("werkzeug"), bg:"linear-gradient(135deg,#e0703a,#e0527a)", light:false, titel:sym+" "+(LANG==="fr"?t2:t1), kurz:LANG==="fr"?s2:s1, href})});
+    DOCS.push({s:"wz",t:nrm(t1+" "+t2), k:nrm(s1+" "+s2), b:nrm(kw), kw:nrm(kw), w:3, mk:()=>({chip:U("werkzeug"), bg:"linear-gradient(135deg,#e0703a,#e0527a)", light:false, titel:sym+" "+(LANG==="fr"?t2:t1), kurz:LANG==="fr"?s2:s1, href})});
   VOCAB = new Set(); const rx=/[a-z0-9]{4,}/g;
   for (const d of DOCS){ for (const part of [d.t,d.k]) (part.match(rx)||[]).forEach(x=>VOCAB.add(x)); }
 }
@@ -909,6 +930,7 @@ async function route(){
     if (!p.length) placeseite();
     else if (p[0] === "studio") startseite();
     else if (p[0] === "lifestyle") lifestyleseite();
+    else if (p[0] === "werkzeuge") werkzeugseite();
     else if (p[0] === "deutsch") deutschseite();
     else if (p[0] === "w") weltseite(p[1]);
     else if (p[0] === "s") await seitenansicht(p[1], p.slice(2).join("/"));
