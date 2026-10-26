@@ -153,6 +153,76 @@ footer a{color:var(--muted)}
 @media (max-width:560px){h1{font-size:23px}.banner h1{font-size:25px}.banner{padding:14px}.banner .ic{width:46px;height:46px;font-size:24px}.rech .rg{grid-template-columns:1fr 1fr}.rech .rg .u,.rech .rg .ok{grid-column:auto}}
 .flag{border-radius:3px;vertical-align:-2px;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
 @media (max-width:700px){.bar{padding-left:10px;padding-right:10px}.lg{font-size:23px}.lg .lgO{width:35px;height:35px}.seg{border-width:1.5px;border-radius:9px}.seg button{padding:3px 6px;font-size:11px;gap:3px;line-height:1.2}.seg button .e{font-size:11px}.seg .flag{width:15px;height:10px}.seg button+button{border-left-width:1.5px}.seg .flag{width:16px;height:11px}.bar .logo{order:1}.bar .sp{display:none}.bar #bLang{margin-left:auto}.bar #bLang{order:3}.bar #bTheme{order:4}.bar #q{order:5;flex:1 1 100%;max-width:none}.bar{gap:6px 6px}}
+/* ================= Studio-Look wie im Control Center ================= */
+body.sl{--sg1:#9bd83f;--sg2:#52ad2c;--sgl:rgba(255,255,255,.9);--sink:#1f4a86;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1400' height='900' viewBox='0 0 1400 900'><g fill='%23fff' fill-opacity='.07'><polygon points='0,0 420,0 160,300'/><polygon points='520,0 980,0 700,240'/><polygon points='1100,60 1400,0 1400,320'/><polygon points='200,420 560,300 480,640'/><polygon points='760,420 1160,380 980,700'/><polygon points='0,620 300,760 0,900'/></g><g fill='%23000' fill-opacity='.05'><polygon points='420,0 700,240 160,300'/><polygon points='980,0 1400,0 1100,60'/><polygon points='560,300 760,420 480,640'/><polygon points='1160,380 1400,320 1400,700'/><polygon points='300,760 700,900 0,900'/><polygon points='980,700 1400,700 1400,900'/></g></svg>") center/cover fixed,linear-gradient(160deg,var(--sg1),var(--sg2) 70%,#3f9a2a);background-color:#58b02c}
+:root[data-theme="dark"] body.sl{--sg1:#2f6f2f;--sg2:#1d4a22;--sgl:rgba(28,34,48,.92);--sink:#9ec5ff;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1400' height='900' viewBox='0 0 1400 900'><g fill='%23fff' fill-opacity='.07'><polygon points='0,0 420,0 160,300'/><polygon points='520,0 980,0 700,240'/><polygon points='1100,60 1400,0 1400,320'/><polygon points='200,420 560,300 480,640'/><polygon points='760,420 1160,380 980,700'/><polygon points='0,620 300,760 0,900'/></g><g fill='%23000' fill-opacity='.05'><polygon points='420,0 700,240 160,300'/><polygon points='980,0 1400,0 1100,60'/><polygon points='560,300 760,420 480,640'/><polygon points='1160,380 1400,320 1400,700'/><polygon points='300,760 700,900 0,900'/><polygon points='980,700 1400,700 1400,900'/></g></svg>") center/cover fixed,linear-gradient(160deg,var(--sg1),var(--sg2) 70%,#143a1a);background-color:#1d4a22}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.sl{--sg1:#2f6f2f;--sg2:#1d4a22;--sgl:rgba(28,34,48,.92);--sink:#9ec5ff;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1400' height='900' viewBox='0 0 1400 900'><g fill='%23fff' fill-opacity='.07'><polygon points='0,0 420,0 160,300'/><polygon points='520,0 980,0 700,240'/><polygon points='1100,60 1400,0 1400,320'/><polygon points='200,420 560,300 480,640'/><polygon points='760,420 1160,380 980,700'/><polygon points='0,620 300,760 0,900'/></g><g fill='%23000' fill-opacity='.05'><polygon points='420,0 700,240 160,300'/><polygon points='980,0 1400,0 1100,60'/><polygon points='560,300 760,420 480,640'/><polygon points='1160,380 1400,320 1400,700'/><polygon points='300,760 700,900 0,900'/><polygon points='980,700 1400,700 1400,900'/></g></svg>") center/cover fixed,linear-gradient(160deg,var(--sg1),var(--sg2) 70%,#143a1a);background-color:#1d4a22}}
+body.sl .crumb{display:inline-block;background:rgba(255,255,255,.82);color:#2a3f66;border-radius:99px;padding:4px 14px;font-weight:700;box-shadow:0 2px 0 rgba(0,0,0,.12)}
+body.sl .crumb a{color:#1f6fb8}
+:root[data-theme="dark"] body.sl .crumb{background:rgba(20,26,38,.8);color:#c8d4ea}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.sl .crumb{background:rgba(20,26,38,.8);color:#c8d4ea}}
+.ribwrap{text-align:center;margin:14px 0 8px}
+.ribbon{display:inline-block;position:relative;background:linear-gradient(#3cb8f2,#1f8fd0);color:#fff;font-weight:900;font-size:30px;letter-spacing:.03em;text-transform:uppercase;padding:8px 54px;border-radius:6px;box-shadow:0 5px 0 #145d8f,0 10px 18px rgba(0,0,0,.25);text-shadow:0 2px 0 rgba(10,50,90,.5)}
+.ribsub{margin:12px 0 0;color:#fff;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.45)}
+body.sl .kats{justify-content:center}
+body.sl .kat{background:linear-gradient(#ffd84a,#ffae1a);border:2px solid #2a1740;color:#3a2200;box-shadow:0 3px 0 #2a1740;font-weight:800}
+body.sl .kat.on{background:linear-gradient(#ff9a3c,#ff6a00);color:#fff}
+body.sl .kat:hover{border-color:#2a1740;filter:brightness(1.06)}
+.scgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px 16px;margin-top:10px}
+.sc{position:relative;display:block;height:150px;border-radius:16px;overflow:hidden;text-decoration:none;background:var(--sgl);border:3px solid #2a1740;box-shadow:0 5px 0 rgba(0,40,0,.35),0 12px 18px -8px rgba(0,0,0,.35);transition:transform .12s}
+.sc:hover{transform:translateY(-4px)}
+.sc[hidden]{display:none}
+.sc .sh{height:42%;background:linear-gradient(var(--wc),color-mix(in srgb,var(--wc) 78%,#000));display:flex;align-items:center;padding:0 10px 0 96px}
+.sc .sh b{color:#fff;font-weight:900;font-size:15px;line-height:1.15;text-transform:uppercase;text-shadow:0 2px 0 rgba(42,23,64,.55);letter-spacing:.01em}
+.sc .sbad{position:absolute;left:11px;top:27px;width:76px;height:76px;border-radius:50%;background:#fff;border:5px solid var(--wc);display:grid;place-items:center;box-shadow:0 3px 0 rgba(0,0,0,.2)}
+.sc .sbad svg{width:46px;height:23px}
+.sc p{margin:8px 12px 0 96px;font-size:12.5px;line-height:1.35;font-weight:700;color:#5a6a80}
+:root[data-theme="dark"] .sc p{color:#a9b6cc}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sc p{color:#a9b6cc}}
+.sc .sn{position:absolute;right:10px;bottom:9px;background:#e1f0f9;color:#1f6fb8;font-style:normal;font-size:11px;font-weight:800;padding:3px 10px;border-radius:9px}
+.ph{position:relative;display:flex;align-items:center;margin:14px 0 6px;padding-left:84px;min-height:58px;border-radius:12px;background:linear-gradient(var(--wc),color-mix(in srgb,var(--wc) 80%,#000));box-shadow:0 4px 0 rgba(0,0,0,.28)}
+.ph h1{margin:0;padding:8px 18px 8px 8px;color:#fff;font-size:26px;font-weight:900;text-transform:uppercase;letter-spacing:.01em;text-shadow:0 2px 0 rgba(42,23,64,.5);line-height:1.15}
+.phbad{position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:84px;height:84px;border-radius:50%;background:#fff;border:6px solid var(--wc);display:grid;place-items:center;box-shadow:0 3px 0 rgba(0,0,0,.22)}
+.phsub{margin:6px 0 14px 84px;display:flex;flex-direction:column;gap:2px}
+.phw{font-size:11px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#6b7a90}
+.phsub em{color:var(--sink);font-size:15px}
+.slw{display:grid;grid-template-columns:270px minmax(0,1fr);gap:16px;align-items:start;margin-top:12px}
+.slnav{display:flex;flex-direction:column;gap:7px;position:sticky;top:78px;max-height:calc(100vh - 96px);overflow:auto;padding:2px 6px 8px 2px}
+.slnav a{display:block;text-decoration:none;color:var(--sink);font-weight:800;font-size:14px;line-height:1.25;padding:10px 12px 10px 16px;border-radius:10px;background:linear-gradient(#fbfffa,#dcebd2);box-shadow:0 3px 0 rgba(0,0,0,.22);border-left:7px solid var(--wc)}
+:root[data-theme="dark"] .slnav a{background:linear-gradient(#2a3446,#1f2838)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .slnav a{background:linear-gradient(#2a3446,#1f2838)}}
+.slnav a:hover{filter:brightness(1.05);transform:translateX(2px)}
+.slnav a.act{background:linear-gradient(var(--wc),color-mix(in srgb,var(--wc) 80%,#000));color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.35)}
+.slmain{background:var(--sgl);border-radius:20px;padding:16px 22px 22px;box-shadow:0 5px 0 rgba(0,40,0,.3),0 14px 24px -10px rgba(0,0,0,.35);min-width:0}
+.slmain .ph{margin-top:6px}
+.slmain h2.h{font-size:20px;color:var(--sink);border-bottom:3px solid var(--wc);padding-bottom:3px;font-variant:small-caps;letter-spacing:.02em}
+.slmain .tw{border:2px solid color-mix(in srgb,var(--wc) 40%,#cfe3f0);box-shadow:0 3px 0 rgba(0,0,0,.12)}
+.slmain th{background:var(--wc);color:#fff;text-transform:none;letter-spacing:0;font-size:14px}
+.slmain tbody tr:nth-child(odd) td{background:rgba(120,190,235,.14)}
+.slmain tbody tr:nth-child(even) td{background:rgba(240,170,220,.12)}
+.slmain td{border-top:1px solid rgba(120,140,170,.18)}
+.slmain .tag{background:color-mix(in srgb,var(--wc) 16%,transparent);color:var(--sink);font-weight:700}
+.slmain .rech,.slmain .formel{border:2px solid color-mix(in srgb,var(--wc) 35%,#cfe3f0)}
+.slmain .siehe a{border:2px solid color-mix(in srgb,var(--wc) 45%,transparent);font-weight:700}
+#wl .gr.plain{background:none;border:0;box-shadow:none;margin:0}
+body.sl details.gr{background:var(--sgl);border:2px solid #2a1740;border-radius:14px;box-shadow:0 4px 0 rgba(0,40,0,.3)}
+body.sl details.gr>summary{color:var(--sink)}
+body.sl #wl .liste{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;padding:10px 0}
+body.sl details.gr .liste{padding:10px}
+body.sl #wl .liste a{border:0;border-left:8px solid var(--wc);border-radius:10px;background:linear-gradient(#fbfffa,#dcebd2);box-shadow:0 3px 0 rgba(0,0,0,.22);padding:11px 38px 11px 14px}
+:root[data-theme="dark"] body.sl #wl .liste a{background:linear-gradient(#2a3446,#1f2838)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.sl #wl .liste a{background:linear-gradient(#2a3446,#1f2838)}}
+body.sl #wl .liste a b{color:var(--sink);font-size:16px}
+body.sl #wl .liste a::after{color:var(--wc)}
+body.sl .in{border:2px solid #2a1740;background:var(--sgl)}
+body.sl .treffer a{border:2px solid #2a1740;box-shadow:0 3px 0 rgba(0,40,0,.3)}
+body.sl main>h1,body.sl main>.sub{color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.4)}
+@media (max-width:860px){.slw{grid-template-columns:1fr}.slnav{flex-direction:row;position:static;max-height:none;overflow-x:auto;overflow-y:hidden;padding:2px 2px 10px;gap:8px}.slnav a{white-space:nowrap;flex:none}.slmain{padding:12px 14px 18px}}
+@media (max-width:560px){.ribbon{font-size:21px;padding:7px 30px}.sc{height:142px}.sc .sh{padding-left:84px}.sc .sh b{font-size:14px}.sc .sbad{width:66px;height:66px;top:30px;border-width:4px}.sc .sbad svg{width:40px}.sc p{margin-left:84px}.ph{padding-left:66px}.phbad{width:68px;height:68px;left:-6px}.ph h1{font-size:19px}.phsub{margin-left:66px}.scgrid{grid-template-columns:1fr}}
+body.sl{min-height:100vh}
+body.sl footer,body.sl footer a{color:rgba(255,255,255,.92)}
+body.sl #app>.phsub{margin-top:8px}body.sl #app>.phsub em{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.45)}body.sl #app>.phsub .phw{display:none}
+.sc .sh b{overflow-wrap:anywhere;hyphens:auto}
 </style>
 </head>
 <body>
@@ -178,6 +248,48 @@ const symbol = s => SYM[s] || "◆";
 const WSYM = {grund:"⚡",passiv:"🎛️",halbleiter:"💡",messen:"📏",speicher:"💾",energie:"🔋",mathe:"➗",sensoren:"🌡️",mikro:"🍓",schnittstellen:"🔗",netzwerk:"📡",digital:"🚦",zahlen:"🔢",linux:"🐧",prog:"💻",schalt:"✏️",fehler:"🔍",glossar:"📖",bauteile:"🧩",bt_ic:"🔲",bt_analog:"📈",bt_katalog:"📚",bt_module:"🧱",bt_wissen:"🎓",labor:"🧪",konsolen:"🎮",mcu:"🤖",zubehoer:"🔩",handys:"📱",kameras:"📷"};
 const weltSym = w => WSYM[w.id] || symbol(w.symbol);
 function zl(c){ const m=/^@(#[0-9a-fA-F]{6})\|(.*)$/.exec(String(c)); return m?'<span class="fpt" style="background:'+m[1]+'"></span>'+md(m[2]):md(c); }
+
+/* Schaltsymbole als Linienzeichnung (wie im Programm) */
+const SCH = {
+ widerstand:'<path d="M2 12h6M40 12h6"/><rect x="8" y="6" width="32" height="12" rx="1"/>',
+ kondensator:'<path d="M2 12h17M29 12h17M19 3v18M29 3v18"/>',
+ elko:'<path d="M2 12h17M29 12h17M19 3v18"/><path d="M29 3q-4 9 0 18"/><path d="M13 5v4M11 7h4"/>',
+ spule:'<path d="M2 14h6q0-9 6-9t6 9q0-9 6-9t6 9q0-9 6-9t6 9h4"/>',
+ batterie:'<path d="M2 12h14M32 12h14M16 4v16M23 8v8M30 4v16"/>',
+ gleichspannung:'<path d="M2 12h14M32 12h14M16 4v16M24 8v8"/>',
+ wechselspannung:'<circle cx="24" cy="12" r="9"/><path d="M2 12h13M33 12h13M17 12q3-6 7 0t7 0"/>',
+ sinus:'<path d="M3 12q5-12 10 0t10 0 10 0 10 0"/>',
+ generator:'<circle cx="24" cy="12" r="9"/><path d="M2 12h13M33 12h13"/><path d="M19 15l2-6 3 6 3-6 2 6"/>',
+ led:'<path d="M2 12h12M34 12h12M14 4l16 8-16 8zM30 4v16"/><path d="M26 2l5-3M31 5l5-3"/>',
+ diode:'<path d="M2 12h12M34 12h12M14 4l16 8-16 8zM30 4v16"/>',
+ zdiode:'<path d="M2 12h12M34 12h12M14 4l16 8-16 8zM28 4h4l-2 2M30 4v16M32 20h-4l1-1"/>',
+ npn:'<circle cx="24" cy="12" r="10"/><path d="M12 12h8M20 5v14M20 9l10-6M20 15l10 6M26 18l4 3-1-5"/>',
+ nmos:'<path d="M12 12h6M18 4v16M22 4v6M22 14v6M22 6h10M22 18h10M22 12h10"/><path d="M32 6V2M32 18v4M32 12h8"/>',
+ opamp:'<path d="M12 2l26 10-26 10zM2 8h10M2 16h10M38 12h8"/><path d="M15 8h5M17.5 5.5v5M15 16h5"/>',
+ schalter:'<path d="M2 16h12M34 16h12"/><circle cx="14" cy="16" r="2"/><circle cx="34" cy="16" r="2"/><path d="M14 16l18-10"/>',
+ taster:'<path d="M2 16h12M34 16h12"/><circle cx="14" cy="16" r="2"/><circle cx="34" cy="16" r="2"/><path d="M12 7h24M24 7V2"/>',
+ sicherung:'<path d="M2 12h6M40 12h6"/><rect x="8" y="7" width="32" height="10"/><path d="M8 12h32"/>',
+ poti:'<path d="M2 14h6M40 14h6"/><rect x="8" y="9" width="32" height="10"/><path d="M24 1v8M20 5l4 4 4-4"/>',
+ ntc:'<path d="M2 14h6M40 14h6"/><rect x="8" y="9" width="32" height="10"/><path d="M12 2l24 20"/><path d="M10 3h5"/>',
+ lampe:'<circle cx="24" cy="12" r="9"/><path d="M2 12h13M33 12h13M18 6l12 12M30 6L18 18"/>',
+ voltmeter:'<circle cx="24" cy="12" r="9"/><path d="M2 12h13M33 12h13"/><path d="M20 8l4 8 4-8"/>',
+ amperemeter:'<circle cx="24" cy="12" r="9"/><path d="M2 12h13M33 12h13"/><path d="M20 16l4-9 4 9M21.5 13h5"/>',
+ wattmeter:'<circle cx="24" cy="12" r="9"/><path d="M2 12h13M33 12h13"/><path d="M18 8l3 8 3-6 3 6 3-8"/>',
+ stromquelle:'<circle cx="24" cy="12" r="9"/><path d="M2 12h13M33 12h13M16 12h14M26 8l4 4-4 4"/>',
+ quarz:'<path d="M2 12h14M32 12h14M16 4v16M32 4v16"/><rect x="19" y="5" width="10" height="14"/>',
+ antenne:'<path d="M24 22V8M24 8L14 2M24 8l10-6M24 8V2"/><path d="M18 22h12"/>',
+ trafo:'<path d="M2 6h8q6 0 6 3t-6 3 6 3-6 3H2M46 6h-8q-6 0-6 3t6 3-6 3 6 3h8"/><path d="M22 3v18M26 3v18"/>',
+ relais:'<rect x="4" y="5" width="16" height="14"/><path d="M2 12h2M20 12h2M28 16h18M34 16l10-10"/>',
+ thyristor:'<path d="M2 12h12M34 12h12M14 4l16 8-16 8zM30 4v16M22 16l-6 6h-8"/>',
+ optokoppler:'<rect x="3" y="3" width="42" height="18" rx="2"/><path d="M10 7l8 5-8 5zM18 7v10M28 8l6 4-6 4M33 8v8"/>',
+ mikrofon:'<rect x="19" y="2" width="10" height="14" rx="5"/><path d="M14 11q0 9 10 9t10-9M24 20v3"/>',
+ motor:'<circle cx="24" cy="12" r="9"/><path d="M2 12h13M33 12h13"/><path d="M19 16V8l5 6 5-6v8"/>',
+ knoten:'<path d="M2 12h44M24 2v20"/><circle cx="24" cy="12" r="3" fill="currentColor"/>',
+ gehaeuse:'<rect x="9" y="2" width="30" height="20" rx="2"/><path d="M4 6h5M4 12h5M4 18h5M39 6h5M39 12h5M39 18h5"/><circle cx="14" cy="7" r="1.5"/>'
+};
+const WSCH = {grund:"batterie",passiv:"kondensator",halbleiter:"npn",messen:"voltmeter",speicher:"quarz",energie:"batterie",mathe:"wechselspannung",sensoren:"ntc",mikro:"gehaeuse",schnittstellen:"optokoppler",netzwerk:"antenne",digital:"diode",zahlen:"optokoppler",linux:"schalter",prog:"schalter",schalt:"widerstand",fehler:"voltmeter",glossar:"lampe",bauteile:"optokoppler",bt_ic:"optokoppler",bt_analog:"opamp",bt_katalog:"elko",bt_module:"antenne",bt_wissen:"lampe",labor:"amperemeter",konsolen:"taster",mcu:"quarz",zubehoer:"gehaeuse",handys:"antenne",kameras:"antenne"};
+function schSym(key, color, px){ const p = SCH[key]; if (!p) return ""; return '<svg viewBox="0 0 48 24" width="'+(px||56)+'" height="'+((px||56)/2)+'" fill="none" stroke="'+(color||"#333")+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:'+(color||"#333")+'" aria-hidden="true">'+p+'</svg>'; }
+
 const hexOf = f => FARBEN[f] || f || "#ff8c1a";
 function hell(f){ const h = hexOf(f).replace("#",""); const r=parseInt(h.substr(0,2),16),g=parseInt(h.substr(2,2),16),b=parseInt(h.substr(4,2),16); return (0.299*r+0.587*g+0.114*b) > 165; }
 function dunkler(f, k){ const h = hexOf(f).replace("#",""); const c=[0,2,4].map(i=>Math.round(parseInt(h.substr(i,2),16)*k)); return "rgb("+c.join(",")+")"; }
@@ -468,27 +580,34 @@ function startseite(){
   document.title = "Tech Studio"; brand("studio");
   const chips = '<div class="kats" role="tablist">'+["alle"].concat(KATS).map(k =>
     '<button class="kat'+(k===KATWAHL?" on":"")+'" data-k="'+k+'">'+esc(k==="alle" ? U("katAlle") : U("kat")[k])+'</button>').join("")+'</div>';
-  const karten = INDEX.welten.map(w =>
-    '<a class="welt" data-k="'+weltKat(w.id).join(" ")+'" href="#/w/'+w.id+'"><div class="kopf'+(hell(w.farbe)?" light":"")+'" style="background:'+hexOf(w.farbe)+'"><div class="ic">'+weltSym(w)+'</div><b>'+esc(T(w.name))+'</b></div><div class="t"><div class="n">'+w.seiten.length+' '+U("seiten")+'</div>'+esc(T(w.untertitel))+'</div></a>').join("")
-    + [["icon-werkstatt.html","🎨","linear-gradient(135deg,#2f66d0,#8a5ad8)","icN","icT"],["datei-werkstatt.html","🗂️","linear-gradient(135deg,#e0703a,#e0527a)","dtN","dtT"]].map(x =>
-      '<a class="welt" data-k="werkzeuge" href="'+x[0]+'"><div class="kopf" style="background:'+x[2]+'"><div class="ic">'+x[1]+'</div><b>'+esc(U(x[3]))+'</b></div><div class="t"><div class="n">'+esc(U("icZ"))+'</div>'+esc(U(x[4]))+'</div></a>').join("");
-  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("studio"))+'</div><h1>Tech Studio</h1><p class="sub">'+U("startsub")+'</p>'+chips+'<div class="grid">'+karten+'</div>';
+  const dk = w => hell(w.farbe) ? dunkler(w.farbe,.62) : hexOf(w.farbe);
+  const karte = (href, kat, col, sym, name, sub, n) => '<a class="sc" data-k="'+kat+'" href="'+href+'" style="--wc:'+col+'"><div class="sh"><b>'+esc(name)+'</b></div><div class="sbad">'+sym+'</div><p>'+esc(sub)+'</p><i class="sn">'+esc(n)+'</i></a>';
+  const karten = INDEX.welten.map(w => karte("#/w/"+w.id, weltKat(w.id).join(" "), dk(w), schSym(w.symbol && SCH[w.symbol] ? (WSCH[w.id]||w.symbol) : (WSCH[w.id]||"widerstand"), dk(w), 50), T(w.name), T(w.untertitel), w.seiten.length+" "+U("seiten"))).join("")
+    + [["icon-werkstatt.html","🎨","#6a4fd8","icN","icT"],["datei-werkstatt.html","🗂️","#e0527a","dtN","dtT"]].map(x => karte(x[0], "werkzeuge", x[2], '<span style="font-size:30px">'+x[1]+'</span>', U(x[3]), U(x[4]), U("icZ"))).join("");
+  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("studio"))+'</div><div class="ribwrap"><div class="ribbon">'+esc(U("studio"))+'</div><p class="ribsub">'+U("startsub")+'</p></div>'+chips+'<div class="scgrid">'+karten+'</div>';
   const filtere = () => {
     document.querySelectorAll(".kat").forEach(b => b.classList.toggle("on", b.dataset.k === KATWAHL));
-    document.querySelectorAll(".grid .welt").forEach(a => { a.hidden = !(KATWAHL === "alle" || a.dataset.k.split(" ").includes(KATWAHL)); });
+    document.querySelectorAll(".scgrid .sc").forEach(a => { a.hidden = !(KATWAHL === "alle" || a.dataset.k.split(" ").includes(KATWAHL)); });
   };
   document.querySelectorAll(".kat").forEach(b => b.onclick = () => { KATWAHL = b.dataset.k; filtere(); });
   filtere();
 }
+function pageHead(w, titel, kurz, sym, kopf){
+  const c = hell(w.farbe) ? dunkler(w.farbe,.62) : hexOf(w.farbe);
+  const key = sym && SCH[sym] ? sym : (WSCH[w.id]||"widerstand");
+  return '<div class="ph" style="--wc:'+c+'"><div class="phbad">'+schSym(key, c, 54)+'</div><h1>'+esc(T(titel))+'</h1></div><div class="phsub"><span class="phw">'+esc(T(kopf||w.name))+'</span>'+(kurz?'<em>'+esc(T(kurz))+'</em>':'')+'</div>';
+}
 function weltseite(id){
   const w = weltInfo(id); if (!w) return nichts();
   document.title = T(w.name)+" – Tech Studio";brand("studio");
+  const c = hell(w.farbe) ? dunkler(w.farbe,.62) : hexOf(w.farbe);
   const grp = new Map(); w.seiten.forEach(s => { const g = s.gruppe || ""; if(!grp.has(g)) grp.set(g, []); grp.get(g).push(s); });
   const offen = grp.size <= 3;
-  let h = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › <a href="#/studio">'+esc(U("studio"))+'</a> › '+esc(T(w.name))+'</div>'+bannerHTML(w, w.name, w.untertitel)+'<input class="in" id="wf" placeholder="'+esc(U("filter"))+'" style="margin-bottom:6px">';
-  h += '<div id="wl" style="--lc:'+hexOf(w.farbe)+'">'+[...grp].map(([g, ss]) => (g ? '<details class="gr"'+(offen?" open":"")+'><summary>'+esc(T(g))+'<span>'+ss.length+'</span></summary>' : '<div class="gr card" style="padding:0">')
+  let h = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › <a href="#/studio">'+esc(U("studio"))+'</a> › '+esc(T(w.name))+'</div>'+pageHead(w, w.name, w.untertitel, null, "")+'<input class="in" id="wf" placeholder="'+esc(U("filter"))+'" style="margin:6px 0 10px">';
+  h += '<div id="wl" style="--wc:'+c+'">'+[...grp].map(([g, ss]) => (g ? '<details class="gr"'+(offen?" open":"")+'><summary>'+esc(T(g))+'<span>'+ss.length+'</span></summary>' : '<div class="gr plain">')
      +'<div class="liste">'+ss.map(s=>'<a href="#/s/'+w.id+'/'+encodeURIComponent(s.id)+'" data-t="'+esc((T(s.titel)+" "+s.titel+" "+T(s.kurz||"")).toLowerCase())+'">'+'<b>'+esc(T(s.titel))+'</b>'+(s.kurz?'<small>'+esc(T(s.kurz))+'</small>':'')+'</a>').join("")+'</div>'+(g?'</details>':'</div>')).join("")+'</div>';
   app.innerHTML = h;
+  app.style.setProperty("--wc", c);
   $("#wf").addEventListener("input", e => { const q = e.target.value.toLowerCase().trim();
     document.querySelectorAll("#wl details").forEach(d => { let n = 0; d.querySelectorAll("a").forEach(a => { const ok = !q || a.dataset.t.includes(q); a.style.display = ok ? "" : "none"; if(ok) n++; }); d.style.display = n ? "" : "none"; if (q && n) d.open = true; }); });
 }
@@ -496,14 +615,17 @@ async function seitenansicht(wid, sid){
   const w = weltInfo(wid); if (!w) return nichts();
   const wd = await welt(wid), s = wd.seiten.find(p => p.id === sid); if (!s) return nichts();
   document.title = T(s.titel)+" – Tech Studio";brand("studio");
-  let h = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › <a href="#/studio">'+esc(U("studio"))+'</a> › <a href="#/w/'+w.id+'">'+esc(T(w.name))+'</a> › '+esc(T(s.titel))+'</div>'+bannerHTML(w, s.titel, s.kurz, s.symbol);
+  const wc = hell(w.farbe) ? dunkler(w.farbe,.62) : hexOf(w.farbe);
+  const nav = w.seiten.map(p => '<a href="#/s/'+w.id+'/'+encodeURIComponent(p.id)+'"'+(p.id===sid?' class="act"':'')+'>'+esc(T(p.titel))+'</a>').join("");
+  let h = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › <a href="#/studio">'+esc(U("studio"))+'</a> › <a href="#/w/'+w.id+'">'+esc(T(w.name))+'</a> › '+esc(T(s.titel))+'</div><div class="slw"><nav class="slnav" aria-label="'+esc(T(w.name))+'">'+nav+'</nav><section class="slmain">'+pageHead(w, s.titel, s.kurz, s.symbol);
   if (s.tags && s.tags.length) h += '<div class="tags">'+s.tags.filter(t=>t.length>2&&!/[\/()]/.test(t)).slice(0,10).map(t=>'<span class="tag">'+esc(t)+'</span>').join("")+'</div>';
   for (const b of s.bloecke){ const f = BAUSTEIN[b.t]; try { h += f ? f(b, w.farbe) : ""; } catch(e){ h += '<div class="platz">'+esc(b.t)+': '+esc(e.message)+'</div>'; } }
   if (s.siehe && s.siehe.length){
     const links = s.siehe.map(x => { const [a,b] = x.includes(":") ? x.split(":") : [wid, x]; const ww = weltInfo(a); const sp = ww && ww.seiten.find(p=>p.id===b); return sp ? '<a href="#/s/'+a+'/'+encodeURIComponent(b)+'">'+esc(T(sp.titel))+'</a>' : ""; }).join("");
     if (links) h += '<h2 class="h">'+U("siehe")+'</h2><div class="siehe">'+links+'</div>';
   }
-  app.innerHTML = h; window.scrollTo(0,0);
+  app.innerHTML = h+'</section></div>'; app.style.setProperty("--wc", wc); window.scrollTo(0,0);
+  const act = app.querySelector(".slnav a.act"); if (act && act.scrollIntoView) { try { act.scrollIntoView({block:"nearest", inline:"center"}); } catch(e){} }
 }
 let EXTRA = null;
 const WNAME = {de:["Deutschkurs","Cours d’allemand"], xm:["Weihnachtswelt","Monde de Noël"], rz:["Rezepte","Recettes"]};
@@ -599,6 +721,8 @@ function nichts(){ app.innerHTML = '<p>'+U("weg")+' <a href="#/studio">'+U("stud
 
 async function route(){
   const p = decodeURIComponent((location.hash || "#/").slice(1)).split("/").filter(Boolean);
+  document.body.classList.toggle("sl", ["studio","w","s","q"].includes(p[0]));
+  if (!["w","s"].includes(p[0])) app.style.removeProperty("--wc");
   try {
     if (!p.length) placeseite();
     else if (p[0] === "studio") startseite();
