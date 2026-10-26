@@ -224,6 +224,17 @@ body.sl footer,body.sl footer a{color:rgba(255,255,255,.92)}
 body.sl #app>.phsub{margin-top:8px}body.sl #app>.phsub em{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.45)}body.sl #app>.phsub .phw{display:none}
 .sc .sh b{overflow-wrap:break-word}
 .emo{font-size:36px;line-height:1}.ph .emo{font-size:42px}@media (max-width:560px){.emo{font-size:30px}.ph .emo{font-size:34px}}
+
+.ribtop{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:14px 0 0}
+.ribtop em{font-style:normal;color:#fff;font-weight:700;font-size:13px;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+.ribbon.s{font-size:19px;padding:6px 20px;box-shadow:0 3px 0 #145d8f,0 6px 10px rgba(0,0,0,.2)}
+.ribwrap{margin:22px 0 14px}
+.sc{border:2px solid rgba(255,255,255,.75)!important;box-shadow:0 3px 8px rgba(0,40,0,.28)!important}
+:root[data-theme="dark"] .sc{border-color:rgba(255,255,255,.28)!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sc{border-color:rgba(255,255,255,.28)!important}}
+body.sl .kat{border:1.5px solid rgba(255,255,255,.7);box-shadow:0 3px 0 rgba(0,0,0,.18)}
+body.sl .kat:hover{border-color:rgba(255,255,255,.9)}
+.sc .sbad{border-width:4px}
 </style>
 </head>
 <body>
@@ -301,10 +312,10 @@ try { LANG = localStorage.getItem("lang") || ((navigator.language||"").startsWit
 function T(s){ if (LANG !== "fr" || FR === null || typeof s !== "string") return s; const r = FR[s]; return r === undefined ? s : r; }
 
 const UI = {
-  de:{placeSub:"Alles an einem Ort – wähle einen Bereich.",werkzeug:"Werkzeug",teilw:"teilweise passend",studio:"Tech Studio",studioT:"Nachschlagewerk und Werkzeuge für Elektronik, Informatik, Geräte und Labor.",lifestyle:"Lifestyle",lifeT:"Alltag, Genuss und Freizeit.",bald:"Weitere Bereiche folgen bald.",xmN:"Weihnachtswelt",xmZ:"27 Werkzeuge",xmT:"Karten, Wünsche, Post für Kunden und Team, Rezepte, Wichteln, Adventskalender, Quiz und viele Ideen zum Verschenken und Teilen.",deN:"Deutschkurs",deZ:"66 Lektionen · A1 bis C1",deT:"Deutsch lernen Schritt für Schritt – Aussprache, Wortschatz, Grammatik und Übungen.",deH:"Kommt bald",deP1:"Aussprache und Alphabet",deP2:"Grundwortschatz nach Themen",deP3:"Grammatik leicht erklärt",deP4:"Übungen und kleine Tests",deP5:"Hörverstehen und Dialoge",place:"Oratio Place",welten2:"Welten",
+  de:{placeSub:"Alles an einem Ort – wähle einen Bereich.",werkzeug:"Werkzeug",teilw:"teilweise passend",studio:"Oratio Tech Studio",studioT:"Nachschlagewerk und Werkzeuge für Elektronik, Informatik, Geräte und Labor.",lifestyle:"Lifestyle",lifeT:"Alltag, Genuss und Freizeit.",bald:"Weitere Bereiche folgen bald.",xmN:"Weihnachtswelt",xmZ:"27 Werkzeuge",xmT:"Karten, Wünsche, Post für Kunden und Team, Rezepte, Wichteln, Adventskalender, Quiz und viele Ideen zum Verschenken und Teilen.",deN:"Deutschkurs",deZ:"66 Lektionen · A1 bis C1",deT:"Deutsch lernen Schritt für Schritt – Aussprache, Wortschatz, Grammatik und Übungen.",deH:"Kommt bald",deP1:"Aussprache und Alphabet",deP2:"Grundwortschatz nach Themen",deP3:"Grammatik leicht erklärt",deP4:"Übungen und kleine Tests",deP5:"Hörverstehen und Dialoge",place:"Oratio Place",welten2:"Welten",
       icN:"Icon-Werkstatt",icT:"Bild in Form bringen, zuschneiden und als Symbol speichern (PNG, JPG, WebP, ICO).",icZ:"Werkzeug",dtN:"Datei-Werkstatt",dtT:"PDF, Word, Bilder und ZIP: zusammenfügen, umwandeln, komprimieren – direkt im Browser, ohne Upload.",
       katAlle:"Alle",kat:{elektronik:"Elektronik",informatik:"Informatik",geraete:"Geräte",labor:"Labor",werkzeuge:"Werkzeuge"},wzName:"Werkzeuge",wzN:"2 Werkzeuge",wzT:"Icon-Werkstatt und Datei-Werkstatt (PDF, Word, Bilder, ZIP) – direkt im Browser, ohne Upload.",
-      suche:"Alles durchsuchen …",welten:"Alle Welten",seiten:"Seiten",startsub:"Nachschlagewerk für Elektronik, Bauteile und Technik. Wähle eine Welt oder suche oben.",
+      suche:"Alles durchsuchen …",welten:"Alle Welten",seiten:"Seiten",startsub:"Elektronik & Informatik zum Nachschlagen",weltW:"Wähle deine Welt",
       filter:"In dieser Welt filtern …",home:"Start",treffer:"Treffer",keine:"Nichts gefunden.",weg:"Seite nicht gefunden.",siehe:"Siehe auch",
       hinzu:"+ Hinzufügen",leerV:"Füge mindestens zwei Einträge hinzu, um sie zu vergleichen (höchstens %n).",gelb:"Gelb hinterlegt = Unterschied.",waehle:"Eintrag wählen",finde:"Suchen …",
       rechner:"RECHNER",leerR:"Lass ein Feld leer – es wird aus den anderen berechnet.",mehrR:"Trage genug Werte ein (schreibe z. B. 4k7, 10u, 2,2M). Das leere Feld wird berechnet.",
@@ -313,10 +324,10 @@ const UI = {
       pin:{i:"Eingang",o:"Ausgang",x:"Ein-/Ausgang",g:"Masse",v:"Versorgung",n:"nicht belegt"},
       dunkel:"Dunkel",hellm:"Hell",auto:"Auto",imp:"Impressum & Datenschutz",stand:"Hobbyprojekt, Angaben ohne Gewähr. Bitte wichtige Werte im Datenblatt prüfen.",
       zeit:"Zeitdiagramm",kreis:"Schaltbild",ver:"Versorgung / Werte",geh:"Gehäuse",ans:"Anschlüsse"},
-  fr:{placeSub:"Tout au même endroit – choisis un domaine.",werkzeug:"Outil",teilw:"résultats partiels",studio:"Tech Studio",studioT:"Ouvrage de référence et outils pour l’électronique, l’informatique, les appareils et le laboratoire.",lifestyle:"Lifestyle",lifeT:"Quotidien, plaisirs et loisirs.",bald:"D’autres domaines arrivent bientôt.",xmN:"Le monde de Noël",xmZ:"27 outils",xmT:"Cartes, vœux, courrier pour clients et équipe, recettes, Secret Santa, calendrier de l’Avent, quiz et beaucoup d’idées à offrir et à partager.",deN:"Cours d’allemand",deZ:"66 leçons · A1 à C1",deT:"Apprendre l’allemand pas à pas : prononciation, vocabulaire, grammaire et exercices.",deH:"Bientôt disponible",deP1:"Prononciation et alphabet",deP2:"Vocabulaire de base par thèmes",deP3:"Grammaire expliquée simplement",deP4:"Exercices et petits tests",deP5:"Compréhension orale et dialogues",place:"Oratio Place",welten2:"mondes",
+  fr:{placeSub:"Tout au même endroit – choisis un domaine.",werkzeug:"Outil",teilw:"résultats partiels",studio:"Oratio Tech Studio",studioT:"Ouvrage de référence et outils pour l’électronique, l’informatique, les appareils et le laboratoire.",lifestyle:"Lifestyle",lifeT:"Quotidien, plaisirs et loisirs.",bald:"D’autres domaines arrivent bientôt.",xmN:"Le monde de Noël",xmZ:"27 outils",xmT:"Cartes, vœux, courrier pour clients et équipe, recettes, Secret Santa, calendrier de l’Avent, quiz et beaucoup d’idées à offrir et à partager.",deN:"Cours d’allemand",deZ:"66 leçons · A1 à C1",deT:"Apprendre l’allemand pas à pas : prononciation, vocabulaire, grammaire et exercices.",deH:"Bientôt disponible",deP1:"Prononciation et alphabet",deP2:"Vocabulaire de base par thèmes",deP3:"Grammaire expliquée simplement",deP4:"Exercices et petits tests",deP5:"Compréhension orale et dialogues",place:"Oratio Place",welten2:"mondes",
       icN:"Atelier d’icônes",icT:"Mettre une image en forme, la recadrer et l’enregistrer comme icône (PNG, JPG, WebP, ICO).",icZ:"Outil",dtN:"Atelier de fichiers",dtT:"PDF, Word, images et ZIP : fusionner, convertir, compresser – directement dans le navigateur, sans envoi.",
       katAlle:"Tous",kat:{elektronik:"Électronique",informatik:"Informatique",geraete:"Appareils",labor:"Laboratoire",werkzeuge:"Outils"},wzName:"Outils",wzN:"2 outils",wzT:"Atelier d’icônes et atelier de fichiers (PDF, Word, images, ZIP) – directement dans le navigateur, sans envoi.",
-      suche:"Tout rechercher …",welten:"Tous les mondes",seiten:"pages",startsub:"Ouvrage de référence pour l’électronique, les composants et la technique. Choisis un monde ou recherche ci-dessus.",
+      suche:"Tout rechercher …",welten:"Tous les mondes",seiten:"pages",startsub:"Électronique & informatique à consulter",weltW:"Choisis ton monde",
       filter:"Filtrer dans ce monde …",home:"Accueil",treffer:"résultats",keine:"Aucun résultat.",weg:"Page introuvable.",siehe:"Voir aussi",
       hinzu:"+ Ajouter",leerV:"Ajoute au moins deux entrées pour les comparer (maximum %n).",gelb:"Surligné en jaune = différence.",waehle:"Choisir une entrée",finde:"Rechercher …",
       rechner:"CALCULATEUR",leerR:"Laisse un champ vide : il sera calculé à partir des autres.",mehrR:"Saisis assez de valeurs (par ex. 4k7, 10u, 2,2M). Le champ vide sera calculé.",
@@ -530,7 +541,7 @@ async function bVergleichInit(box, b, farbe){
         if (it.marke !== last){ h += '<h3>'+esc(it.marke)+'</h3>'; last = it.marke; }
         h += '<button data-i="'+i+'"'+(sel.includes(i)?" disabled":"")+'>'+esc(T(it.name))+'</button>'; });
       return h || '<p style="padding:14px 16px">'+U("keine")+'</p>'; };
-    dlg.innerHTML = '<div class="dh"><b style="flex:1">'+U("waehle")+'</b><button class="btn" id="zu">✕</button></div><div style="padding:10px 16px"><input class="in" id="dq" placeholder="'+esc(U("finde"))+'" style="max-width:none"></div><div class="dl">'+liste("")+'</div>';
+    dlg.innerHTML = '<div class="dh"><b style="flex:1">'+U("weltW")+'</b><button class="btn" id="zu">✕</button></div><div style="padding:10px 16px"><input class="in" id="dq" placeholder="'+esc(U("finde"))+'" style="max-width:none"></div><div class="dl">'+liste("")+'</div>';
     const dl = dlg.querySelector(".dl");
     const bind = () => dl.querySelectorAll("button").forEach(bt => bt.onclick = () => { sel.push(+bt.dataset.i); dlg.close(); zeige(); });
     bind(); dlg.querySelector("#dq").oninput = e => { dl.innerHTML = liste(e.target.value); bind(); };
@@ -578,14 +589,14 @@ function deutschseite(){
     '<div class="card" style="max-width:560px"><h2 style="margin-top:0">'+esc(U("deH"))+'</h2><ul style="line-height:1.9;padding-left:20px;margin:0">'+[1,2,3,4,5].map(i=>'<li>'+esc(U("deP"+i))+'</li>').join("")+'</ul></div>';
 }
 function startseite(){
-  document.title = "Tech Studio"; brand("studio");
+  document.title = "Oratio Tech Studio"; brand("studio");
   const chips = '<div class="kats" role="tablist">'+["alle"].concat(KATS).map(k =>
     '<button class="kat'+(k===KATWAHL?" on":"")+'" data-k="'+k+'">'+esc(k==="alle" ? U("katAlle") : U("kat")[k])+'</button>').join("")+'</div>';
   const dk = w => hell(w.farbe) ? dunkler(w.farbe,.62) : hexOf(w.farbe);
   const karte = (href, kat, col, sym, name, sub, n) => '<a class="sc" data-k="'+kat+'" href="'+href+'" style="--wc:'+col+'"><div class="sh"><b'+(/\S{14,}/.test(name)?' style="font-size:12.5px;letter-spacing:0"':'')+'>'+esc(name)+'</b></div><div class="sbad">'+sym+'</div><p>'+esc(sub)+'</p><i class="sn">'+esc(n)+'</i></a>';
   const karten = INDEX.welten.map(w => karte("#/w/"+w.id, weltKat(w.id).join(" "), dk(w), '<span class="emo">'+weltSym(w)+'</span>', T(w.name), T(w.untertitel), w.seiten.length+" "+U("seiten"))).join("")
     + [["icon-werkstatt.html","🎨","#6a4fd8","icN","icT"],["datei-werkstatt.html","🗂️","#e0527a","dtN","dtT"]].map(x => karte(x[0], "werkzeuge", x[2], '<span style="font-size:30px">'+x[1]+'</span>', U(x[3]), U(x[4]), U("icZ"))).join("");
-  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("studio"))+'</div><div class="ribwrap"><div class="ribbon">'+esc(U("studio"))+'</div><p class="ribsub">'+U("startsub")+'</p></div>'+chips+'<div class="scgrid">'+karten+'</div>';
+  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("studio"))+'</div><div class="ribtop"><span class="ribbon s">'+esc(U("studio"))+'</span><em>'+U("startsub")+'</em></div><div class="ribwrap"><div class="ribbon">'+esc(U("weltW"))+'</div></div>'+chips+'<div class="scgrid">'+karten+'</div>';
   const filtere = () => {
     document.querySelectorAll(".kat").forEach(b => b.classList.toggle("on", b.dataset.k === KATWAHL));
     document.querySelectorAll(".scgrid .sc").forEach(a => { a.hidden = !(KATWAHL === "alle" || a.dataset.k.split(" ").includes(KATWAHL)); });
@@ -600,7 +611,7 @@ function pageHead(w, titel, kurz, sym, kopf){
 }
 function weltseite(id){
   const w = weltInfo(id); if (!w) return nichts();
-  document.title = T(w.name)+" – Tech Studio";brand("studio");
+  document.title = T(w.name)+" – Oratio Tech Studio";brand("studio");
   const c = hell(w.farbe) ? dunkler(w.farbe,.62) : hexOf(w.farbe);
   const grp = new Map(); w.seiten.forEach(s => { const g = s.gruppe || ""; if(!grp.has(g)) grp.set(g, []); grp.get(g).push(s); });
   const offen = grp.size <= 3;
@@ -615,7 +626,7 @@ function weltseite(id){
 async function seitenansicht(wid, sid){
   const w = weltInfo(wid); if (!w) return nichts();
   const wd = await welt(wid), s = wd.seiten.find(p => p.id === sid); if (!s) return nichts();
-  document.title = T(s.titel)+" – Tech Studio";brand("studio");
+  document.title = T(s.titel)+" – Oratio Tech Studio";brand("studio");
   const wc = hell(w.farbe) ? dunkler(w.farbe,.62) : hexOf(w.farbe);
   const nav = w.seiten.map(p => '<a href="#/s/'+w.id+'/'+encodeURIComponent(p.id)+'"'+(p.id===sid?' class="act"':'')+'>'+esc(T(p.titel))+'</a>').join("");
   let h = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › <a href="#/studio">'+esc(U("studio"))+'</a> › <a href="#/w/'+w.id+'">'+esc(T(w.name))+'</a> › '+esc(T(s.titel))+'</div><div class="slw"><nav class="slnav" aria-label="'+esc(T(w.name))+'">'+nav+'</nav><section class="slmain">'+pageHead(w, s.titel, s.kurz, s.symbol);
