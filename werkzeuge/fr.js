@@ -135,5 +135,10 @@ window.WZ_FR = {
 ,
 "Farbe":"Couleur","Blau":"Bleu","Grün":"Vert","Gelb":"Jaune","Rot":"Rouge","Schwarz":"Noir","Lila":"Violet","Rosa":"Rose","Türkis":"Turquoise"
 ,
-"Abbrechen":"Annuler","Übernehmen":"Appliquer","Schließen":"Fermer"
+"Abbrechen":"Annuler","Übernehmen":"Appliquer","Schließen":"Fermer",
+"Elektronik-Labor":"Labo d’électronique",
+"Rechner und Nachschlagewerk für Bastler und Elektroniker: Farbcode, Ohm, LED, Teiler, Filter, 555, Logik und Pi-Pinout. Alles läuft in deinem Browser.":"Calculateurs et aide-mémoire pour bricoleurs et électroniciens : code couleur, Ohm, LED, diviseur, filtres, 555, logique et brochage du Pi. Tout se passe dans ton navigateur.",
+"Dein persönlicher Schreibtisch im Browser: Widgets wählen, anordnen, Hintergrund ändern. Alles bleibt in ":"Ton bureau personnel dans le navigateur : choisis des widgets, organise-les, change le fond. Tout reste dans ",
+"deinem Browser":"ton navigateur",
+" gespeichert – nichts wird gesendet.":" – rien n’est envoyé."
 };

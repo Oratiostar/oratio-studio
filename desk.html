@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Oratio Desk – Oratio</title>
+<meta name="description" content="Oratio Desk: dein persönlicher Schreibtisch im Browser mit Uhr, Notizen, Aufgaben, Pomodoro, Kalender, Rechner, Gewohnheiten und mehr. Alles bleibt auf deinem Gerät.">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="werkzeuge/wz.css">
+<link rel="stylesheet" href="werkzeuge/tools.css">
+<style>
+.deskwrap{border-radius:22px;padding:14px;margin:6px 0 14px;box-shadow:0 8px 30px rgba(20,40,90,.18);min-height:60vh}
+.dkbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.dkbar .btn{backdrop-filter:blur(8px);background:rgba(255,255,255,.78);color:#1c2540;border-color:rgba(255,255,255,.7)}
+.dkbar .btn.go,.dkbar .btn.on{background:var(--acc);color:#fff;border-color:transparent}
+:root[data-theme=dark] .dkbar .btn:not(.go):not(.on){background:rgba(20,26,45,.7);color:#eef}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .dkbar .btn:not(.go):not(.on){background:rgba(20,26,45,.7);color:#eef}}
+.dkpan{background:color-mix(in srgb,var(--card) 90%,transparent);backdrop-filter:blur(14px);border-radius:16px;padding:12px;margin-bottom:12px;border:1px solid var(--line)}
+.pgrid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.padd{display:flex;flex-direction:column;gap:2px;text-align:left;padding:10px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer;font:inherit}
+.padd span{font-size:24px}.padd small{color:var(--muted);font-size:12.5px;line-height:1.3}
+@media (hover:hover){.padd:hover{border-color:var(--acc)}}
+.bgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.bgb{height:62px;border-radius:14px;border:3px solid transparent;color:#fff;font:700 13px system-ui;cursor:pointer;text-shadow:0 1px 3px rgba(0,0,0,.5);display:flex;align-items:flex-end;padding:6px 8px}
+.bgb.on{border-color:var(--fg)}
+.dkgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px;align-items:start}
+.dw{background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:18px;border:1px solid rgba(255,255,255,.45);box-shadow:0 4px 16px rgba(10,20,50,.16);padding:12px;min-width:0;color:var(--fg)}
+.dw.s2{grid-column:span 2}
+@media (max-width:640px){.dw.s2{grid-column:span 1}.deskwrap{padding:10px;border-radius:16px}}
+.dw .wh{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.dw h3{margin:0;font-size:16px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wsym{font-size:19px}
+.wti{flex:1;min-width:0;font:700 15px system-ui;border:1px dashed var(--line);border-radius:8px;padding:4px 6px;background:transparent;color:var(--fg)}
+.wc{display:flex;gap:3px}.wb{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px;min-width:30px;height:30px;cursor:pointer;font-size:13px}.wb:disabled{opacity:.35}.wb.wx{color:#c4452c}.warnb{background:#c4452c!important;color:#fff!important;border-color:#c4452c!important}
+.edit .dw{outline:2px dashed var(--acc);outline-offset:-4px;cursor:grab}.dw.drag{opacity:.45}.dw.over{outline:3px solid var(--acc)}
+.add{display:flex;gap:6px;margin:0 0 8px}.add .in{flex:1;min-width:0}
+.leer{color:var(--muted);font-size:14px;margin:6px 0;text-align:center}
+.x{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:14px;padding:4px 6px;border-radius:8px}.x:hover{color:#c4452c;background:var(--soft)}
+.uhr{text-align:center}.uhr b{display:block;font-size:42px;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:-1px}.uhr div{font-size:15px;font-weight:600;margin-top:2px}.uhr small{color:var(--muted)}
+.wz3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}.wz3>div{background:var(--soft);border-radius:10px;padding:6px;text-align:center}.wz3 small{display:block;color:var(--muted);font-size:11.5px}.wz3 b{font-size:15px;font-variant-numeric:tabular-nums}
+.nt{min-height:150px;resize:vertical;width:100%;box-sizing:border-box}
+.prog2{height:7px;background:var(--soft);border-radius:6px;overflow:hidden;margin:4px 0 8px}.prog2 i{display:block;height:100%;background:var(--acc);width:0;transition:width .3s}
+.todo{list-style:none;margin:0 0 6px;padding:0;max-height:300px;overflow:auto}.todo li{display:flex;align-items:center;gap:4px;padding:3px 0;border-bottom:1px solid var(--line)}.todo li label{flex:1;display:flex;gap:8px;align-items:center;cursor:pointer;min-width:0}.todo li span{overflow-wrap:anywhere}.todo input{width:18px;height:18px;accent-color:var(--acc);flex:none}.todo li.done span{text-decoration:line-through;color:var(--muted)}.todo li.leer{border:0}
+.pom{text-align:center}.pom .pt{font-size:46px;margin:6px 0}.mini{width:64px!important;padding:5px 6px!important;display:inline-block}.pom label{font-size:13px}
+.cm{text-transform:capitalize}.cg{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin:8px 0}.cg .wd{font-style:normal;text-align:center;font-size:11.5px;color:var(--muted);font-weight:700}
+.cd{position:relative;aspect-ratio:1;border:0;border-radius:10px;background:transparent;color:var(--fg);cursor:pointer;font:600 13px system-ui;padding:0}.cd.we{color:var(--muted)}.cd.hol{background:color-mix(in srgb,#e63946 18%,transparent);color:#c4262f}.cd.today{background:var(--acc);color:#fff}.cd.sel{outline:2px solid var(--fg);outline-offset:-2px}.cd u{position:absolute;bottom:3px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:#f2b100;text-decoration:none}@media (hover:hover){.cd:hover{background:var(--soft)}}
+.ce b{display:block;font-size:13px;margin-bottom:4px;text-transform:capitalize}
+.calc .cin{font-size:22px;text-align:right;font-variant-numeric:tabular-nums}.calc .cin.bad{border-color:#c4452c}.ck{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0}.ck .btn{padding:10px 0;font-size:18px;justify-content:center}.hist{display:block;min-height:1.2em;text-align:right}
+.hr{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid var(--line)}.hn{flex:1;min-width:0}.hn b{display:block;overflow-wrap:anywhere;font-size:14px}.hn small{color:var(--muted)}.hd{display:flex;gap:3px}.hb{width:25px;height:30px;border-radius:8px;border:1px solid var(--line);background:var(--soft);cursor:pointer;padding:0;color:var(--muted)}.hb small{font-size:10.5px;font-weight:700}.hb.on{background:#2a9d3f;border-color:#2a9d3f;color:#fff}
+.cd2{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}.cn{min-width:60px;text-align:center;font:800 24px system-ui;color:var(--acc);font-variant-numeric:tabular-nums}.cl{flex:1;min-width:0}.cl b{display:block;overflow-wrap:anywhere}.cl small{color:var(--muted)}
+.lr{display:flex;align-items:center;gap:4px;padding:3px 0}.lr a{flex:1;min-width:0;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--fg);font-weight:700;flex-wrap:wrap}.lr a small{flex-basis:100%;margin-left:36px;color:var(--muted);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:-4px}.fav{width:28px;height:28px;border-radius:8px;background:var(--acc);color:#fff;display:grid;place-items:center;font-size:14px}
+.glas{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;margin:6px 0}.glas i{font-style:normal;font-size:22px;filter:grayscale(1) opacity(.3)}.glas i.on{filter:none}.wat{text-align:center}.wn{margin:0 8px!important}
+.safe{margin:0 0 10px}
+.standby{position:fixed;inset:0;z-index:9999;background:radial-gradient(ellipse at 50% 30%,#1b2147,#05060f 70%);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;padding:20px}
+.sbc b{display:block;font:800 min(26vw,230px)/1 system-ui;letter-spacing:-.04em;font-variant-numeric:tabular-nums;text-shadow:0 0 60px rgba(90,160,255,.45)}
+.sbc div{font-size:min(5vw,34px);font-weight:600;opacity:.85;margin-top:8px}#sbC{opacity:.6!important;font-size:min(4vw,24px)!important}
+.sbx{position:absolute;top:max(14px,env(safe-area-inset-top));right:max(14px,env(safe-area-inset-right));background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:50%;width:42px;height:42px;font-size:18px;cursor:pointer}
+.standby small{position:absolute;bottom:max(16px,env(safe-area-inset-bottom));opacity:.45}
+</style>
+</head>
+<body>
+<main>
+<h1>Oratio Desk</h1>
+<p class="sub">Dein persönlicher Schreibtisch im Browser: Widgets wählen, anordnen, Hintergrund ändern. Alles bleibt in <b>deinem Browser</b> gespeichert – nichts wird gesendet.</p>
+<div id="dkHost"></div>
+</main>
+<script src="werkzeuge/wz.js"></script>
+<script src="werkzeuge/fr.js"></script>
+<script src="werkzeuge/desk.js"></script>
+<script>WZ.kopf("desk"); Desk.start();</script>
+</body>
+</html>
