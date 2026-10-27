@@ -337,7 +337,7 @@ body.home{overflow-x:hidden}body.home main{overflow-x:clip}
 .wzg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
 .wzk{display:flex;flex-direction:column;gap:4px;padding:16px 16px 14px;border-radius:16px;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);box-shadow:0 6px 18px rgba(20,30,60,.12);transition:transform .15s}
 .wzk .wzs{font-size:28px;line-height:1}.wzk b{font-size:16px}.wzk small{opacity:.8;line-height:1.4}
-@media (min-width:1100px){.wzg.wzbig{grid-template-columns:repeat(5,1fr)}}.wzk.gross{padding:20px;background:linear-gradient(135deg,rgba(255,154,60,.22),rgba(238,79,126,.2) 60%,rgba(107,79,224,.2))}.wzk.gross .wzs{font-size:40px}.wzk.gross b{font-size:19px}
+.wzg[hidden]{display:none!important}@media (min-width:1100px){.wzg.wzbig{grid-template-columns:repeat(5,1fr)}}.wzk.gross{padding:20px;background:linear-gradient(135deg,rgba(255,154,60,.22),rgba(238,79,126,.2) 60%,rgba(107,79,224,.2))}.wzk.gross .wzs{font-size:40px}.wzk.gross b{font-size:19px}
 @media (hover:hover){.wzk:hover{transform:translateY(-3px)}}
 </style>
 </head>
@@ -722,18 +722,16 @@ function placeseite(){
 }
 function werkzeugseite(){
   document.title = U("wzName")+" – Oratio Place"; brand("wz");
-  const fin = WTOOLS.slice(-5), alle = WTOOLS.slice(0,-5), einz = alle.filter(x => x[0].startsWith("datei")), tag = alle.filter(x => x[0].startsWith("alltag")), elek = alle.filter(x => x[0].startsWith("elektro"));
+  const fin = WTOOLS.slice(-5), alle = WTOOLS.slice(0,-5);
   const kachel = (x, gross) => { const [href,sym,t1,t2,s1,s2,kw] = x; return '<a class="wzk'+(gross?" gross":"")+'" href="'+esc(href)+'" data-t="'+esc(nrm(t1+" "+t2+" "+s1+" "+s2+" "+kw))+'"><span class="wzs">'+sym+'</span><b>'+esc(LANG==="fr"?t2:t1)+'</b><small>'+esc(LANG==="fr"?s2:s1)+'</small></a>'; };
   app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("wzName"))+'</div><h1>🧰 '+esc(U("wzName"))+'</h1><p class="sub">'+esc(U("wzSub"))+'</p>'
     + '<input id="wzq" class="in" type="search" autocomplete="off" placeholder="'+esc(U("wzSuche"))+'" style="margin:6px 0 18px;max-width:560px">'
-    + '<h2 class="wzh">'+esc(U("wzWerk"))+'</h2><div class="wzg wzbig">'+fin.map(x => kachel(x,true)).join("")+'</div>'
-    + '<h2 class="wzh">'+esc(U("wzTag"))+'</h2><div class="wzg">'+tag.map(x => kachel(x,false)).join("")+'</div>'
-    + '<h2 class="wzh">'+esc(U("wzEl"))+'</h2><div class="wzg">'+elek.map(x => kachel(x,false)).join("")+'</div>'
-    + '<h2 class="wzh">'+esc(U("wzDat"))+'</h2><div class="wzg">'+einz.map(x => kachel(x,false)).join("")+'</div><p class="platz" id="wzk" hidden>'+esc(U("wzKein"))+'</p>';
+    + '<div class="wzg wzbig" id="wzmain">'+fin.map(x => kachel(x,true)).join("")+'</div>'
+    + '<div class="wzg" id="wzres" hidden>'+alle.concat(fin).map(x => kachel(x,false)).join("")+'</div><p class="platz" id="wzk" hidden>'+esc(U("wzKein"))+'</p>';
   $("#wzq").addEventListener("input", e => { const w = nrm(e.target.value).split(/\s+/).filter(Boolean); let n = 0;
-    app.querySelectorAll(".wzk").forEach(a => { const ok = w.every(t => a.dataset.t.includes(t)); a.style.display = ok ? "" : "none"; if (ok) n++; });
-    app.querySelectorAll(".wzh").forEach(h => { const g = h.nextElementSibling; h.style.display = g && [...g.children].some(c => c.style.display !== "none") ? "" : "none"; });
-    $("#wzk").hidden = n > 0; });
+    $("#wzmain").hidden = w.length > 0; $("#wzres").hidden = w.length === 0;
+    app.querySelectorAll("#wzres .wzk").forEach(a => { const ok = w.length > 0 && w.every(t => a.dataset.t.includes(t)); a.style.display = ok ? "" : "none"; if (ok) n++; });
+    $("#wzk").hidden = w.length === 0 || n > 0; });
 }
 function lifestyleseite(){
   document.title = "Oratio Lifestyle"; brand("lifestyle");
