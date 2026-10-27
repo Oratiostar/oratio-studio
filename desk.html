@@ -171,13 +171,13 @@ body.dkopen{overflow:hidden}
 .cv{display:flex;flex-direction:column;height:100%;gap:.4em;min-height:0}
 .cdsp{position:relative;text-align:right;line-height:1.1;padding:0 .2em;min-height:2.6em;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}.cdsp small{font-size:.8em;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1.1em;direction:rtl;text-align:right}.cr{font-weight:300;font-size:2.2em;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden}.cmem{position:absolute;left:.2em;top:0;font:700 .75em system-ui;opacity:.7;font-style:normal}
 .ckg{flex:1;display:flex;gap:.4em;min-height:0}.ck4,.ck6{display:grid;gap:.3em;min-height:0}.ck4{flex:1.25;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr}.ck6{flex:1.7;grid-template-columns:repeat(6,1fr);grid-auto-rows:1fr}
-.ck{border:0;border-radius:999px;font:500 1em system-ui,sans-serif;color:inherit;background:color-mix(in srgb,currentColor 22%,transparent);cursor:pointer;padding:0;min-width:0;min-height:0;touch-action:manipulation}
-.ck.d{background:color-mix(in srgb,currentColor 30%,transparent)}.ck.op{background:#ff9f0a;color:#fff;font-size:1.15em}.ck.f2{background:color-mix(in srgb,currentColor 16%,transparent)}.ck.f{font-size:.82em}.ck.on{background:#fff;color:#ff9f0a}
+.ck{display:grid;place-items:center;line-height:1;border:0;border-radius:999px;font:500 1em system-ui,sans-serif;color:inherit;background:color-mix(in srgb,currentColor 22%,transparent);cursor:pointer;padding:0;min-width:0;min-height:0;touch-action:manipulation}
+.ck.d{background:color-mix(in srgb,currentColor 30%,transparent)}.ck.op{background:#ff9f0a;color:#fff;font-size:1.55em;font-weight:400;padding-bottom:.08em}.ck.f2{background:color-mix(in srgb,currentColor 16%,transparent)}.ck.f{font-size:.82em}.ck.on{background:#fff;color:#ff9f0a}
 .ck:active{filter:brightness(1.3)}
 @media (hover:hover){.ck:hover{filter:brightness(1.12)}}
 .cv.sci .ck{font-size:.72em}
-.cv.sci .ck.f{font-size:.66em}
-.cv.big{height:auto;font-size:16px;max-width:620px;margin:0 auto}.cv.big .cr{font-size:3em}.cv.big .ckg{flex-direction:column}.cv.big .ck4{grid-auto-rows:54px}.cv.big .ck6{grid-auto-rows:40px}.cv.big .ck{font-size:20px}.cv.big .ck.f,.cv.big.sci .ck{font-size:15px}
+.cv.sci .ck.f{font-size:.66em}.cv.sci .ck.op{font-size:1.2em}.cv.sci .ck.d{font-size:.85em}
+.cv.big{height:auto;font-size:16px;max-width:620px;margin:0 auto}.cv.big .cr{font-size:3em}.cv.big .ckg{flex-direction:column}.cv.big .ck4{grid-auto-rows:54px}.cv.big .ck6{grid-auto-rows:40px}.cv.big .ck{font-size:22px}.cv.big .ck.op{font-size:32px}.cv.big .ck.f,.cv.big.sci .ck{font-size:15px}.cv.big.sci .ck.d{font-size:19px}.cv.big .ck.op,.cv.big.sci .ck.op{font-size:32px}
 .sheet .ck{color:var(--fg)}.sheet .ck.op{color:#fff}.sheet .ck.on{background:var(--fg);color:var(--card)}
 .sheet .cdsp small{min-height:1.2em}
 .cbody .hist{max-width:620px;margin:14px auto 0}.hl{display:flex;flex-direction:column;gap:2px}.hr2{display:flex;justify-content:space-between;gap:12px;background:var(--soft);border:0;color:var(--fg);padding:8px 12px;border-radius:10px;cursor:pointer;font:inherit;text-align:left}.hr2 span{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
@@ -191,6 +191,15 @@ body.dkopen{overflow:hidden}
 .sbc div{font-size:min(5vw,34px);font-weight:600;opacity:.85;margin-top:8px}#sbC{opacity:.6!important;font-size:min(4vw,24px)!important}
 .sbx{position:absolute;top:max(14px,env(safe-area-inset-top));right:max(14px,env(safe-area-inset-right));background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:50%;width:42px;height:42px;font-size:18px;cursor:pointer}
 .standby small{position:absolute;bottom:max(16px,env(safe-area-inset-bottom));opacity:.45}
+
+.tl:has(.cv){padding:.55em}
+.cv:not(.big) .cr{font-size:1.8em}.cv:not(.big) .cdsp{min-height:1.9em}.cv:not(.big) .ck.op{font-size:1.15em}.cv:not(.big) .ck{font-size:.95em}.cv.sci:not(.big) .ck{font-size:.72em}.cv.sci:not(.big) .ck.op{font-size:1.1em}
+.th b:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.th{gap:.5em}
+.tw .btn{padding:.3em .55em;min-width:2.2em}.tw{gap:.4em}
+.wb2 button{width:2.3em;height:2.3em}.wi{padding:0 .7em;gap:.3em}
+.cdt .cn{min-width:1.6em}
+.cv:not(.big) .cdsp small{display:none}.cv:not(.big) .cdsp{min-height:1.5em}.cv:not(.big) .ck{overflow:hidden}.cv:not(.big) .ck.op{padding:0}
+.cv:not(.big){gap:.15em}.cv:not(.big) .ck4{gap:.2em;overflow:hidden}.cv:not(.big) .cr{font-size:1.5em}.cv:not(.big) .cdsp{min-height:1.3em}
 </style>
 </head>
 <body>
