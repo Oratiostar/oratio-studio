@@ -63,7 +63,7 @@ var Kurs = (function(){
     });
     Object.keys(T_).forEach(function(id, i){
       var x = T_[id], c = x.color, st = teilStat(id), done = st[0] === st[1] && st[1] > 0, seed = +id + 2;
-      s += '<a class="kreg' + (done ? " done" : "") + '" href="#/teil/' + id + '" style="--rc:' + c + '" aria-label="' + esc(x.kurz) + '">'
+      s += '<a class="kreg' + (done ? " done" : "") + '" href="#/kap/' + x.kaps[0] + '" style="--rc:' + c + '" aria-label="' + esc(x.kurz) + '">'
         + '<path d="' + blob(x.x, x.y + 10, x.r * 1.06, x.r * .84, seed, .22) + '" fill="#000" opacity=".28" filter="url(#kbl)"/>'
         + '<path d="' + blob(x.x, x.y, x.r * 1.1, x.r * .88, seed, .22) + '" fill="var(--sand)"/>'
         + '<path class="kland" d="' + blob(x.x, x.y - 2, x.r * .98, x.r * .78, seed, .22) + '" fill="' + c + '"/>'
@@ -85,7 +85,7 @@ var Kurs = (function(){
     document.title = t("titel") + " – Oratio Place";
     var cards = Object.keys(STR.teile).map(function(id){
       var x = STR.teile[id], st = teilStat(id), words = x.kaps.reduce(function(a, k){ return a + STR.kapitel[k].min; }, 0);
-      return '<a class="rcard" href="#/teil/' + id + '" style="--rc:' + x.color + '"><span class="rem">' + x.icon + '</span><span class="rt"><small>' + t("teil") + ' ' + id + '</small><b>' + esc(x.kurz) + '</b><em>' + x.kaps.length + ' ' + (x.kaps.length === 1 ? (FR ? "chapitre" : "Kapitel") : (FR ? "chapitres" : "Kapitel")) + ' · ' + words + ' min</em></span><span class="rbar"><i style="width:' + (st[1] ? st[0] / st[1] * 100 : 0) + '%"></i></span></a>';
+      return '<a class="rcard" href="#/kap/' + x.kaps[0] + '" style="--rc:' + x.color + '"><span class="rem">' + x.icon + '</span><span class="rt"><small>' + t("teil") + ' ' + id + '</small><b>' + esc(x.kurz) + '</b><em>' + x.kaps.length + ' ' + (x.kaps.length === 1 ? (FR ? "chapitre" : "Kapitel") : (FR ? "chapitres" : "Kapitel")) + ' · ' + words + ' min</em></span><span class="rbar"><i style="width:' + (st[1] ? st[0] / st[1] * 100 : 0) + '%"></i></span></a>';
     }).join("");
     seite(crumb([[t("land")]]) + '<h1>🗺️ ' + t("titel") + '</h1><p class="sub">' + t("sub") + (FR ? ' <b>' + t("hinweis") + '</b>' : '') + '</p>'
       + '<div class="ktools"><div class="kpass"><b>🧳 ' + t("pass_") + '</b><span>' + g + ' / ' + n + ' ' + t("gel") + '</span><div class="kpb"><i style="width:' + pc + '%"></i></div></div>'
@@ -128,10 +128,21 @@ var Kurs = (function(){
     var color = teil ? teil.color : "#3b82f6";
     document.title = titel + " – " + t("titel");
     var hk = kind + "/" + key; lastSet(kind === "kap" ? "#/kap/" + key : kind === "anhang" ? "#/anhang/" + key : "#/vorwort");
-    var outline = info.secs.map(function(s){ return '<a href="#/' + (kind === "kap" ? "kap/" + key : kind === "anhang" ? "anhang/" + key : "vorwort") + '/' + s[0] + '" data-s="' + s[0] + '">' + esc(s[1]) + '</a>'; }).join("");
+    var base = kind === "kap" ? "kap/" + key : kind === "anhang" ? "anhang/" + key : "vorwort";
+    function secLinks(sx){ return sx.map(function(s){ return '<a class="os" href="#/' + base + '/' + s[0] + '" data-s="' + s[0] + '">' + esc(s[1]) + '</a>'; }).join(""); }
+    var outline = "";
+    if (kind === "kap"){
+      var lastSub = null;
+      outline = '<a class="oreg" href="#/teil/' + teil.id + '">' + teil.icon + ' ' + esc(teil.kurz) + '</a>' + teil.kaps.map(function(n){
+        var kk = STR.kapitel[n], h = "";
+        if (teil.subs && kk.sub !== lastSub){ lastSub = kk.sub; h = kk.sub ? '<div class="osub">' + teil.subs[kk.sub].icon + ' ' + esc(teil.subs[kk.sub].name) + '</div>' : ""; }
+        var cur = n === +key;
+        return h + '<div class="och' + (cur ? " cur" : "") + '"><a class="ok" href="#/kap/' + n + '"><i>' + n + '</i><span>' + esc(kk.title) + '</span>' + (GEL[n] ? '<em>✓</em>' : '') + '</a>' + (cur ? '<div class="osl">' + secLinks(kk.secs) + '</div>' : '') + '</div>';
+      }).join("");
+    } else outline = '<div class="osl flat">' + secLinks(info.secs) + '</div>';
     var ids = Object.keys(STR.kapitel).map(Number), pi = ids.indexOf(+key);
     var prev = kind === "kap" && pi > 0 ? ids[pi - 1] : null, next = kind === "kap" && pi < ids.length - 1 ? ids[pi + 1] : null;
-    seite(crumb(crumbs) + '<div class="lese" style="--rc:' + color + '"><aside class="outl"><b>' + t("inhalt") + '</b><div class="olist">' + outline + '</div></aside>'
+    seite(crumb(crumbs) + '<div class="lese" style="--rc:' + color + '"><aside class="outl"><div class="olist">' + outline + '</div></aside>'
       + '<article><h1>' + esc(titel) + '</h1>' + (info.min ? '<p class="meta">' + info.secs.length + ' ' + t("abs") + ' · ' + info.min + ' ' + t("min") + (FR ? ' · <em>' + t("hinweis") + '</em>' : '') + '</p>' : '')
       + '<div class="prose" id="kbody"><p class="platz">…</p></div><div id="kend"></div>'
       + (kind === "kap" ? '<div class="kdone"><button type="button" class="kbtn pri" id="kmark"></button></div>' : '')
@@ -147,22 +158,26 @@ var Kurs = (function(){
         c.onclick = function(){ var tx = p.querySelector("code") ? p.querySelector("code").innerText : p.innerText; (navigator.clipboard ? navigator.clipboard.writeText(tx) : Promise.reject()).then(function(){ c.textContent = t("kopiert"); setTimeout(function(){ c.textContent = t("kopieren"); }, 1400); }, function(){}); };
         p.appendChild(c);
       });
-      if (sec){ var el = document.getElementById(secId(sec)); if (el) setTimeout(function(){ el.scrollIntoView({block: "start"}); window.scrollBy(0, -70); }, 30); }
+      if (sec){ var el = document.getElementById(secId(sec)); if (el) setTimeout(function(){ setForced(secId(sec)); el.scrollIntoView({block: "start"}); window.scrollBy(0, -70); if (spyF) spyF(); }, 30); }
       spy();
       var end = document.getElementById("kend");
       if (kind === "kap" && "IntersectionObserver" in window && end){ var io = new IntersectionObserver(function(en){ if (en[0].isIntersecting && !GEL[key]){ GEL[key] = 1; saveG(); mk(); io.disconnect(); } }); io.observe(end); }
     }, function(){ var b = document.getElementById("kbody"); if (b) b.innerHTML = '<p class="platz">⚠️ ' + (FR ? "Chargement impossible." : "Das Kapitel konnte nicht geladen werden.") + '</p>'; });
   }
-  var spyF = null;
+  var spyF = null, forced = null;
+  function setForced(id){ forced = {id: id, y: -1}; setTimeout(function(){ if (forced) forced.y = window.pageYOffset; }, 450); }
   function spy(){
-    var secs = Array.prototype.slice.call(document.querySelectorAll("#kbody > section")), links = document.querySelectorAll(".olist a");
+    var secs = Array.prototype.slice.call(document.querySelectorAll("#kbody > section")), links = document.querySelectorAll(".olist a.os");
     if (spyF) window.removeEventListener("scroll", spyF);
     spyF = function(){
       var h = document.documentElement, p = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
       document.querySelector("#kprog i").style.width = Math.min(100, p * 100) + "%";
-      var cur = null; secs.forEach(function(s){ if (s.getBoundingClientRect().top < 120) cur = s.id; });
-      links.forEach(function(a){ a.classList.toggle("on", a.dataset.s === cur || secId(a.dataset.s) === cur); });
+      var cur = null; secs.forEach(function(s){ if (s.getBoundingClientRect().top < 140) cur = s.id; });
+      if (!cur && secs.length) cur = secs[0].id;
+      if (forced){ if (forced.y >= 0 && Math.abs(window.pageYOffset - forced.y) > 90) forced = null; else cur = forced.id; }
+      links.forEach(function(a){ var on = secId(a.dataset.s) === cur; if (a.classList.contains("on") !== on) a.classList.toggle("on", on); });
     };
+    links.forEach(function(a){ a.addEventListener("click", function(){ setForced(secId(a.dataset.s)); spyF(); }); });
     window.addEventListener("scroll", spyF, {passive: true}); spyF();
   }
   // --- Suche im Text
@@ -233,7 +248,7 @@ var Kurs = (function(){
     var h = location.hash, key = h.replace(/^(#\/(?:kap|anhang)\/[^\/]+)\/.*$/, "$1");
     // Sprung zu einem Abschnitt im selben Kapitel: nicht neu laden
     if (key === lastKey && /^#\/(kap|anhang)\//.test(h) && h !== key && document.getElementById("kbody")){
-      var s = h.split("/")[3], el = s && document.getElementById(secId(s)); if (el){ el.scrollIntoView({block: "start"}); window.scrollBy(0, -70); } return;
+      var s = h.split("/")[3], el = s && document.getElementById(secId(s)); if (el){ setForced(secId(s)); el.scrollIntoView({block: "start"}); window.scrollBy(0, -70); if (spyF) spyF(); } return;
     }
     lastKey = key; route();
   }

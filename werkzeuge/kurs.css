@@ -58,9 +58,18 @@
 .lese{display:grid;grid-template-columns:260px minmax(0,1fr);gap:26px;align-items:start}
 .outl{position:sticky;top:76px;max-height:calc(100vh - 96px);overflow:auto;background:var(--card);border:1px solid var(--line);border-left:5px solid var(--rc);border-radius:14px;padding:12px 8px 12px 14px;font-size:14px}
 .outl b{display:block;margin-bottom:6px}
-.olist a{display:block;padding:5px 8px;border-radius:8px;color:var(--fg);text-decoration:none;line-height:1.3}
-.olist a.on{background:var(--soft);font-weight:700;box-shadow:inset 3px 0 var(--rc)}
-@media (hover:hover){.olist a:hover{background:var(--soft)}}
+.oreg{display:block;font-weight:800;text-decoration:none;color:#fff;background:var(--rc);border-radius:10px;padding:7px 10px;margin:0 6px 8px 0}
+.osub{font-size:12px;text-transform:uppercase;letter-spacing:.05em;font-weight:800;color:var(--muted);margin:10px 4px 3px}
+.och{margin:1px 6px 1px 0}
+.och .ok{display:flex;gap:8px;align-items:flex-start;padding:5px 6px;border-radius:8px;color:var(--fg);text-decoration:none;line-height:1.3}
+.och .ok i{flex:none;font-style:normal;font-weight:800;font-size:12px;min-width:26px;text-align:center;border-radius:6px;background:var(--soft);padding:1px 3px;margin-top:1px}
+.och .ok em{margin-left:auto;font-style:normal;color:#2a9a4a;font-weight:800}
+.och.cur>.ok{font-weight:800;background:color-mix(in srgb,var(--rc) 14%,var(--card))}.och.cur>.ok i{background:var(--rc);color:#fff}
+@media (hover:hover){.och .ok:hover{background:var(--soft)}}
+.osl{margin:2px 0 6px 30px;border-left:2px solid var(--line);padding-left:6px}.osl.flat{margin:0;border:0;padding:0}
+.osl a.os{display:block;padding:4px 8px;border-radius:8px;color:var(--fg);text-decoration:none;font-size:13.5px;line-height:1.3}
+.osl a.os.on{background:var(--rc);color:#fff;font-weight:700}
+@media (hover:hover){.osl a.os:not(.on):hover{background:var(--soft)}}
 article h1{font-size:28px;margin:4px 0 4px}
 .meta{color:var(--muted);font-size:14px;margin:0 0 12px}
 .prose{font-size:16.5px;line-height:1.65;max-width:860px}
@@ -106,7 +115,7 @@ article h1{font-size:28px;margin:4px 0 4px}
 @media (max-width:900px){
   .lese{grid-template-columns:1fr}
   .outl{position:static;max-height:none}
-  .outl .olist{max-height:180px;overflow:auto}
+  .outl .olist{max-height:260px;overflow:auto}
   .rhead{flex-direction:column;align-items:flex-start}
   .kl1{font-size:21px}
 }
