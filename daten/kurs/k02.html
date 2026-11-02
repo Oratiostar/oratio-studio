@@ -1,0 +1,189 @@
+<p>Diese Frage habe ich mir selbst gestellt: <em>Warum macht man Sachen ausführbar, und was passiert, wenn man es nicht tut?</em> Die Antwort ist eine der wichtigsten Ideen in Linux.</p>
+<section id="s2-1"><h2>2.1 Eine Datei ist nicht automatisch ein Programm</h2><p>Für Linux ist zuerst alles nur eine Datei, ob <code>foto.jpg</code>, <code>brief.txt</code> oder <code>script.sh</code>. Damit nicht jede heruntergeladene Datei (zum Beispiel eine Rechnung, die in Wahrheit Schadcode ist) sich selbst starten kann, muss man eine Datei erst <strong>ausdrücklich ausführbar</strong> machen.</p>
+</section><section id="s2-2"><h2>2.2 Rechte lesen mit `ls -l`</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span></code></pre></div>
+<pre class="text"><code>-rw-r--r--  test.txt
+-rwxr-xr-x  script.sh</code></pre>
+<p>Die ersten Zeichen sind die Rechte:</p>
+<ul>
+<li><code>r</code> = read, lesen</li>
+<li><code>w</code> = write, schreiben (ändern)</li>
+<li><code>x</code> = execute, ausführen</li>
+</ul>
+<p>Die Gruppen stehen für <strong>Besitzer</strong>, <strong>Gruppe</strong> und <strong>alle anderen</strong>. Bei <code>-rwxr-xr-x</code> darf der Besitzer alles, die anderen dürfen lesen und ausführen.</p>
+</section><section id="s2-3"><h2>2.3 `chmod +x` – Datei ausführbar machen</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x display_watchdog.sh</span></code></pre></div>
+<p>Vorher war <code>-rw-r--r--</code>, nachher <code>-rwxr-xr-x</code>. Ohne dieses Recht kommt beim Start <code>Permission denied</code> (Keine Berechtigung).</p>
+</section><section id="s2-4"><h2>2.4 Warum nano die Datei trotzdem öffnen kann</h2><p>Lesen ist nicht ausführen. nano braucht nur das Leserecht <code>r</code>. Zum Starten braucht man <code>x</code>.</p>
+</section><section id="s2-5"><h2>2.5 Was bedeutet `./`?</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./display_watchdog.sh</span></span></code></pre></div>
+<p><code>./</code> heißt „aktueller Ordner". Der Befehl bedeutet: „Starte die Datei <code>display_watchdog.sh</code> aus diesem Ordner." Ohne <code>./</code> sucht Linux nur in bestimmten Systemordnern.</p>
+</section><section id="s2-6"><h2>2.6 Warum `bash script.sh` auch ohne `+x` geht</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> display_watchdog.sh</span></code></pre></div>
+<p>Hier wird nicht die Datei gestartet, sondern das Programm <code>bash</code>, und das liest die Datei einfach ein. Deshalb geht es oft auch ohne das <code>x</code>-Recht.</p>
+</section><section id="s2-7"><h2>2.7 Der Shebang</h2><p>Fast jedes Script beginnt mit der Zeile</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span></code></pre></div>
+<p>Das heißt <strong>Shebang</strong>. Sie sagt Linux, mit welchem Programm das Script gestartet wird (hier: mit bash). Bei Python-Scripts steht <code>#!/usr/bin/env python3</code>.</p>
+</section><section id="s2-8"><h2>2.8 Besitzer ändern mit `chown`</h2><p>Was mit <code>sudo</code> angelegt wurde, gehört dem Benutzer <code>root</code>, und das normale Konto darf es nicht ändern. Das hat mich bei der SSD und bei der Datei <code>app_config.json</code> getroffen. Mit <code>chown</code> wird die Datei zurückgegeben:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> chown oratio:oratio /mnt/ssd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> chown <span class="at">-R</span> oratio:oratio /home/oratio/Freenove_Tower_Cooler_for_Raspberry_Pi</span></code></pre></div>
+<p>Die Form ist <code>benutzer:gruppe</code>. Die Option <code>-R</code> wirkt auf alles im Ordner.</p>
+</section><section id="s2-9"><h2>2.9 Was ist `sudo`?</h2><p><code>sudo</code> führt einen Befehl als Administrator (root) aus. Es ist nötig für Installationen, für das Formatieren von Laufwerken und für alles, was das System ändert. Merksatz: <em>Was <code>sudo</code> davor hat, kann das System verändern. Zweimal prüfen.</em></p>
+</section><section id="s2-10"><h2>2.10 Rechte als Zahlen: 4, 2, 1</h2><p>Statt <code>rwx</code> kann man Rechte auch als <strong>Zahl</strong> schreiben. Das ist kürzer und wird in <code>chmod</code> ständig benutzt. Jedes Recht hat einen Wert:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Recht</th>
+<th>Buchstabe</th>
+<th>Zahl</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>lesen (read)</td>
+<td><code>r</code></td>
+<td><strong>4</strong></td>
+</tr>
+<tr class="even">
+<td>schreiben (write)</td>
+<td><code>w</code></td>
+<td><strong>2</strong></td>
+</tr>
+<tr class="odd">
+<td>ausführen (execute)</td>
+<td><code>x</code></td>
+<td><strong>1</strong></td>
+</tr>
+<tr class="even">
+<td>kein Recht</td>
+<td><code>-</code></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Man <strong>addiert</strong> die Zahlen der Rechte, die erlaubt sein sollen:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Rechte</th>
+<th>Rechnung</th>
+<th>Ziffer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>---</code> nichts</td>
+<td>0</td>
+<td><strong>0</strong></td>
+</tr>
+<tr class="even">
+<td><code>--x</code> nur ausführen</td>
+<td>1</td>
+<td><strong>1</strong></td>
+</tr>
+<tr class="odd">
+<td><code>-w-</code> nur schreiben</td>
+<td>2</td>
+<td><strong>2</strong></td>
+</tr>
+<tr class="even">
+<td><code>-wx</code> schreiben und ausführen</td>
+<td>2 + 1</td>
+<td><strong>3</strong></td>
+</tr>
+<tr class="odd">
+<td><code>r--</code> nur lesen</td>
+<td>4</td>
+<td><strong>4</strong></td>
+</tr>
+<tr class="even">
+<td><code>r-x</code> lesen und ausführen</td>
+<td>4 + 1</td>
+<td><strong>5</strong></td>
+</tr>
+<tr class="odd">
+<td><code>rw-</code> lesen und schreiben</td>
+<td>4 + 2</td>
+<td><strong>6</strong></td>
+</tr>
+<tr class="even">
+<td><code>rwx</code> alles</td>
+<td>4 + 2 + 1</td>
+<td><strong>7</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Ein <code>chmod</code> mit Zahlen hat <strong>drei Ziffern</strong>, nacheinander für <strong>Besitzer (User)</strong>, <strong>Gruppe (Group)</strong> und <strong>alle anderen (Others)</strong>:</p>
+<pre class="text"><code>chmod  7  5  5  datei
+       │  │  └── alle anderen: 5 = r-x
+       │  └───── Gruppe:       5 = r-x
+       └──────── Besitzer:     7 = rwx</code></pre>
+<p>Die häufigsten Werte:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Zahl</th>
+<th>Rechte</th>
+<th>Bedeutung</th>
+<th>Typischer Einsatz</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>755</code></td>
+<td><code>rwxr-xr-x</code></td>
+<td>Besitzer alles, andere lesen und starten</td>
+<td>Programme, Scripts, <strong>Ordner</strong></td>
+</tr>
+<tr class="even">
+<td><code>644</code></td>
+<td><code>rw-r--r--</code></td>
+<td>Besitzer lesen und ändern, andere nur lesen</td>
+<td>normale <strong>Dateien</strong>, zum Beispiel <code>.py</code>, <code>.json</code>, <code>.txt</code></td>
+</tr>
+<tr class="odd">
+<td><code>664</code></td>
+<td><code>rw-rw-r--</code></td>
+<td>Besitzer und Gruppe dürfen ändern</td>
+<td>Dateien, die auch die Gruppe ändert</td>
+</tr>
+<tr class="even">
+<td><code>600</code></td>
+<td><code>rw-------</code></td>
+<td>nur der Besitzer, sonst niemand</td>
+<td>private Schlüssel, Passwörter</td>
+</tr>
+<tr class="odd">
+<td><code>700</code></td>
+<td><code>rwx------</code></td>
+<td>nur der Besitzer, alles</td>
+<td>private Ordner und Scripts</td>
+</tr>
+<tr class="even">
+<td><code>777</code></td>
+<td><code>rwxrwxrwx</code></td>
+<td>alle dürfen alles</td>
+<td><strong>Vermeiden</strong>, ein Sicherheitsrisiko</td>
+</tr>
+</tbody>
+</table></div>
+<p>Beispiele:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 664 app_ui_oled.py                <span class="co"># Datei: Besitzer und Gruppe dürfen ändern</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> <span class="at">-R</span> 755 /home/oratio/Freenove_Tower_Cooler_for_Raspberry_Pi</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> /home/oratio/Freenove_Tower_Cooler_for_Raspberry_Pi <span class="at">-type</span> d <span class="at">-exec</span> chmod 755 {} <span class="dt">\;</span>   <span class="co"># nur Ordner</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> /home/oratio/Freenove_Tower_Cooler_for_Raspberry_Pi <span class="at">-type</span> f <span class="at">-exec</span> chmod 644 {} <span class="dt">\;</span>   <span class="co"># nur Dateien</span></span></code></pre></div>
+<p>Das letzte Paar ist die saubere Art, einen ganzen Projektordner zu reparieren: <strong>Ordner bekommen 755</strong> (sie brauchen <code>x</code>, damit man hineinwechseln darf), <strong>Dateien bekommen 644</strong>. <code>find ... -type d</code> findet nur Ordner, <code>-type f</code> nur Dateien, <code>-exec chmod ... {} \;</code> führt den Befehl für jeden Fund aus.</p>
+<p><strong>Das gleiche mit Buchstaben:</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u+x script.sh        <span class="co"># dem Besitzer (u = user) Ausführen geben</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> g+w datei            <span class="co"># der Gruppe (g) Schreiben geben</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> o-r datei            <span class="co"># den anderen (o = others) Lesen wegnehmen</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> a+x script.sh        <span class="co"># allen (a = all) Ausführen geben; ohne Buchstabe wie &quot;chmod +x&quot;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u=rwx,go=rx script   <span class="co"># genau setzen: das ist dasselbe wie 755</span></span></code></pre></div>
+<p><strong>So wird <code>ls -l</code> gelesen:</strong></p>
+<pre class="text"><code>-rwxr-xr-x  1 oratio oratio  842 Nov  2 02:10 display_watchdog.sh
+│└┬┘└┬┘└┬┘    └──┬─┘ └──┬─┘
+│ │  │  │        │      └── Gruppe
+│ │  │  │        └───────── Besitzer
+│ │  │  └── andere: r-x = 5
+│ │  └───── Gruppe:  r-x = 5
+│ └──────── Besitzer: rwx = 7
+└────────── Typ: - Datei, d Ordner, l Link</code></pre>
+<p>Dieses Beispiel ist also <code>755</code>. Rechne zum Üben: <code>rw-r-----</code> ist 6, 4, 0, also <code>640</code>.</p>
+<p><strong>Besonderheit bei Ordnern:</strong> <code>r</code> heißt „Inhalt auflisten", <code>w</code> heißt „Dateien darin anlegen und löschen", <code>x</code> heißt „hineinwechseln". Ohne <code>x</code> kommt man nicht in den Ordner, auch wenn man ihn lesen darf. Darum bekommen Ordner meist 755 und nicht 644.</p>
+</section>

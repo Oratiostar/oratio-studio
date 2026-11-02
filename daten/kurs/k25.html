@@ -1,0 +1,435 @@
+<section id="s25-1"><h2>25.1 Drei Konsolen, drei Welten</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Linux-Terminal (bash)</strong></th>
+<th><strong>Windows PowerShell</strong></th>
+<th><strong>Windows Eingabeaufforderung (cmd)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Startet man über</td>
+<td>Terminal-Symbol, <code>Strg+Alt+T</code></td>
+<td>Startmenü, „PowerShell" tippen</td>
+<td>Startmenü, „cmd" tippen</td>
+</tr>
+<tr class="even">
+<td>Skriptdatei</td>
+<td><code>.sh</code></td>
+<td><code>.ps1</code></td>
+<td><code>.bat</code> oder <code>.cmd</code></td>
+</tr>
+<tr class="odd">
+<td>Erste Zeile im Skript</td>
+<td><code>#!/bin/bash</code> (Shebang)</td>
+<td>keine nötig</td>
+<td><code>@echo off</code></td>
+</tr>
+<tr class="even">
+<td>Was wird durch die Pipe <code>|</code> weitergegeben?</td>
+<td><strong>Text</strong></td>
+<td><strong>Objekte</strong> (mit Eigenschaften)</td>
+<td>Text</td>
+</tr>
+<tr class="odd">
+<td>Groß-/Kleinschreibung bei Dateinamen</td>
+<td><strong>ja</strong>, <code>Datei</code> ist nicht <code>datei</code></td>
+<td>nein</td>
+<td>nein</td>
+</tr>
+<tr class="even">
+<td>Pfadtrenner</td>
+<td><code>/</code></td>
+<td><code>\</code> (und <code>/</code> geht meist auch)</td>
+<td><code>\</code></td>
+</tr>
+<tr class="odd">
+<td>Laufwerke</td>
+<td>ein Baum ab <code>/</code>, Laufwerke werden <strong>gemountet</strong></td>
+<td>Buchstaben <code>C:</code>, <code>D:</code></td>
+<td>Buchstaben <code>C:</code>, <code>D:</code></td>
+</tr>
+<tr class="even">
+<td>Administrator</td>
+<td><code>sudo</code> vor den Befehl</td>
+<td>„Als Administrator ausführen"</td>
+<td>„Als Administrator ausführen"</td>
+</tr>
+<tr class="odd">
+<td>Kommentar im Skript</td>
+<td><code># Text</code></td>
+<td><code># Text</code></td>
+<td><code>REM Text</code> oder <code>:: Text</code></td>
+</tr>
+<tr class="even">
+<td>Variable setzen</td>
+<td><code>name="Oratio"</code></td>
+<td><code>$name = "Oratio"</code></td>
+<td><code>set name=Oratio</code></td>
+</tr>
+<tr class="odd">
+<td>Variable lesen</td>
+<td><code>$name</code></td>
+<td><code>$name</code></td>
+<td><code>%name%</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Der wichtigste Unterschied:</strong> Bei Bash ist alles Text. Bei PowerShell sind es Objekte. In PowerShell liefert <code>Get-Process</code> zum Beispiel Objekte mit Eigenschaften wie <code>Name</code>, <code>CPU</code>, <code>Id</code>, die man mit <code>Where-Object</code> oder <code>Select-Object</code> direkt ansprechen kann. In Bash müssen die Textzeilen mit <code>grep</code>, <code>awk</code> oder <code>cut</code> zerlegt werden.</p>
+</section><section id="s25-2"><h2>25.2 Befehle: Linux gegen Windows</h2><p><strong>Ergänzung.</strong> Die linke Spalte ist bash, die mittlere ist PowerShell, die rechte ist cmd. Viele PowerShell-Befehle haben <strong>Aliase</strong> mit Linux-Namen. Darum funktioniert zum Beispiel <code>ls</code> in PowerShell, auch wenn der echte Befehl <code>Get-ChildItem</code> heißt.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Aufgabe</th>
+<th>Linux (bash)</th>
+<th>PowerShell</th>
+<th>cmd</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Wo bin ich?</td>
+<td><code>pwd</code></td>
+<td><code>Get-Location</code> (Alias <code>pwd</code>)</td>
+<td><code>cd</code> (ohne Ziel)</td>
+</tr>
+<tr class="even">
+<td>Ordnerinhalt zeigen</td>
+<td><code>ls</code>, <code>ls -l</code>, <code>ls -la</code></td>
+<td><code>Get-ChildItem</code> (Alias <code>ls</code>, <code>dir</code>)</td>
+<td><code>dir</code></td>
+</tr>
+<tr class="odd">
+<td>Ordner wechseln</td>
+<td><code>cd /pfad</code></td>
+<td><code>Set-Location</code> (Alias <code>cd</code>)</td>
+<td><code>cd \pfad</code></td>
+</tr>
+<tr class="even">
+<td>Ordner anlegen</td>
+<td><code>mkdir name</code></td>
+<td><code>New-Item -ItemType Directory name</code> (Alias <code>mkdir</code>)</td>
+<td><code>mkdir name</code></td>
+</tr>
+<tr class="odd">
+<td>Leere Datei anlegen</td>
+<td><code>touch datei</code></td>
+<td><code>New-Item datei</code></td>
+<td><code>type nul &gt; datei</code></td>
+</tr>
+<tr class="even">
+<td>Datei kopieren</td>
+<td><code>cp a b</code></td>
+<td><code>Copy-Item a b</code> (Alias <code>cp</code>)</td>
+<td><code>copy a b</code></td>
+</tr>
+<tr class="odd">
+<td>Datei verschieben / umbenennen</td>
+<td><code>mv a b</code></td>
+<td><code>Move-Item a b</code> (Alias <code>mv</code>)</td>
+<td><code>move a b</code>, <code>ren a b</code></td>
+</tr>
+<tr class="even">
+<td>Datei löschen</td>
+<td><code>rm datei</code></td>
+<td><code>Remove-Item datei</code> (Alias <code>rm</code>)</td>
+<td><code>del datei</code></td>
+</tr>
+<tr class="odd">
+<td>Ordner mit Inhalt löschen</td>
+<td><code>rm -r ordner</code></td>
+<td><code>Remove-Item -Recurse ordner</code></td>
+<td><code>rmdir /s ordner</code></td>
+</tr>
+<tr class="even">
+<td>Dateiinhalt anzeigen</td>
+<td><code>cat datei</code></td>
+<td><code>Get-Content datei</code> (Alias <code>cat</code>)</td>
+<td><code>type datei</code></td>
+</tr>
+<tr class="odd">
+<td>Text ausgeben</td>
+<td><code>echo "Hallo"</code></td>
+<td><code>Write-Host "Hallo"</code> (Alias <code>echo</code>)</td>
+<td><code>echo Hallo</code></td>
+</tr>
+<tr class="even">
+<td>Bildschirm leeren</td>
+<td><code>clear</code></td>
+<td><code>Clear-Host</code> (Alias <code>clear</code>, <code>cls</code>)</td>
+<td><code>cls</code></td>
+</tr>
+<tr class="odd">
+<td>In Dateien suchen</td>
+<td><code>grep "text" datei</code></td>
+<td><code>Select-String "text" datei</code></td>
+<td><code>findstr "text" datei</code></td>
+</tr>
+<tr class="even">
+<td>Datei suchen</td>
+<td><code>find / -name "x.txt"</code></td>
+<td><code>Get-ChildItem -Recurse -Filter x.txt</code></td>
+<td><code>dir /s x.txt</code></td>
+</tr>
+<tr class="odd">
+<td>Prozesse anzeigen</td>
+<td><code>ps aux</code>, <code>top</code></td>
+<td><code>Get-Process</code> (Alias <code>ps</code>)</td>
+<td><code>tasklist</code></td>
+</tr>
+<tr class="even">
+<td>Prozess beenden</td>
+<td><code>kill PID</code></td>
+<td><code>Stop-Process -Id PID</code></td>
+<td><code>taskkill /PID PID</code></td>
+</tr>
+<tr class="odd">
+<td>Netzwerk-Konfiguration</td>
+<td><code>ip a</code>, <code>ifconfig</code></td>
+<td><code>Get-NetIPAddress</code>, <code>ipconfig</code></td>
+<td><code>ipconfig</code></td>
+</tr>
+<tr class="even">
+<td>Verbindung testen</td>
+<td><code>ping adresse</code></td>
+<td><code>Test-Connection adresse</code>, <code>ping</code></td>
+<td><code>ping adresse</code></td>
+</tr>
+<tr class="odd">
+<td>Hilfe</td>
+<td><code>man befehl</code></td>
+<td><code>Get-Help befehl</code></td>
+<td><code>befehl /?</code></td>
+</tr>
+<tr class="even">
+<td>Programmpfad finden</td>
+<td><code>which befehl</code></td>
+<td><code>Get-Command befehl</code></td>
+<td><code>where befehl</code></td>
+</tr>
+<tr class="odd">
+<td>Umgebungsvariablen</td>
+<td><code>env</code>, <code>echo $PATH</code></td>
+<td><code>Get-ChildItem Env:</code></td>
+<td><code>set</code></td>
+</tr>
+<tr class="even">
+<td>Dateirechte</td>
+<td><code>chmod</code>, <code>chown</code></td>
+<td><code>Get-Acl</code>, <code>Set-Acl</code></td>
+<td><code>icacls</code></td>
+</tr>
+<tr class="odd">
+<td>Datei-Hash berechnen</td>
+<td><code>sha256sum datei</code></td>
+<td><code>Get-FileHash datei</code></td>
+<td><code>certutil -hashfile datei SHA256</code></td>
+</tr>
+<tr class="even">
+<td>Herunterfahren</td>
+<td><code>sudo shutdown -h now</code></td>
+<td><code>Stop-Computer</code></td>
+<td><code>shutdown /s /t 0</code></td>
+</tr>
+<tr class="odd">
+<td>Neustart</td>
+<td><code>sudo reboot</code></td>
+<td><code>Restart-Computer</code></td>
+<td><code>shutdown /r /t 0</code></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s25-3"><h2>25.3 Befehle, die es nur unter Linux gibt</h2><p><strong>Ergänzung.</strong> Diese Befehle gibt es in Windows nicht oder nur über Zusatzprogramme (WSL, Git Bash):</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Befehl</th>
+<th>Zweck</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>sudo</code></td>
+<td>Befehl mit Administratorrechten ausführen</td>
+</tr>
+<tr class="even">
+<td><code>chmod</code>, <code>chown</code>, <code>chgrp</code></td>
+<td>Rechte und Besitzer ändern (<a class="xr" href="#/kap/2">Kapitel 2</a>)</td>
+</tr>
+<tr class="odd">
+<td><code>apt</code>, <code>apt-get</code>, <code>dpkg</code></td>
+<td>Programme installieren (<a class="xr" href="#/kap/3">Kapitel 3</a>)</td>
+</tr>
+<tr class="even">
+<td><code>systemctl</code>, <code>journalctl</code></td>
+<td>Dienste und Logs (<a class="xr" href="#/kap/5">Kapitel 5</a>)</td>
+</tr>
+<tr class="odd">
+<td><code>lsblk</code>, <code>mount</code>, <code>umount</code>, <code>fdisk</code>, <code>parted</code>, <code>mkfs.ext4</code></td>
+<td>Laufwerke (<a class="xr" href="#/kap/7">Kapitel 7</a>)</td>
+</tr>
+<tr class="even">
+<td><code>dd</code></td>
+<td>Rohdaten von Laufwerk zu Laufwerk kopieren</td>
+</tr>
+<tr class="odd">
+<td><code>crontab</code></td>
+<td>Zeitplan</td>
+</tr>
+<tr class="even">
+<td><code>ln -s</code></td>
+<td>Symbolischen Link anlegen</td>
+</tr>
+<tr class="odd">
+<td><code>nano</code>, <code>vim</code></td>
+<td>Editoren im Terminal</td>
+</tr>
+<tr class="even">
+<td><code>wlr-randr</code>, <code>kanshi</code>, <code>xrandr</code></td>
+<td>Bildschirmeinstellungen (<a class="xr" href="#/kap/10">Kapitel 10</a>)</td>
+</tr>
+<tr class="odd">
+<td><code>vcgencmd</code>, <code>raspi-config</code>, <code>rpi-eeprom-config</code></td>
+<td>Nur Raspberry Pi</td>
+</tr>
+<tr class="even">
+<td><code>source ~/.bashrc</code></td>
+<td>Einstellungsdatei neu laden</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s25-4"><h2>25.4 Befehle, die es nur unter Windows gibt</h2><p><strong>Ergänzung.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Befehl</th>
+<th>Zweck</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Get-FileHash</code></td>
+<td>Hash einer Datei (siehe 23.7)</td>
+</tr>
+<tr class="even">
+<td><code>Get-ChildItem Env:</code></td>
+<td>Umgebungsvariablen anzeigen</td>
+</tr>
+<tr class="odd">
+<td><code>Set-ExecutionPolicy</code></td>
+<td>Erlaubt oder verbietet PowerShell-Skripte</td>
+</tr>
+<tr class="even">
+<td><code>ipconfig /all</code></td>
+<td>Netzwerk-Details</td>
+</tr>
+<tr class="odd">
+<td><code>diskpart</code></td>
+<td>Laufwerke und Partitionen verwalten (Windows-Gegenstück zu <code>parted</code>)</td>
+</tr>
+<tr class="even">
+<td><code>sfc /scannow</code></td>
+<td>Systemdateien prüfen und reparieren</td>
+</tr>
+<tr class="odd">
+<td><code>chkdsk</code></td>
+<td>Laufwerk auf Fehler prüfen</td>
+</tr>
+<tr class="even">
+<td><code>bcdedit</code></td>
+<td>Windows-Bootmenü bearbeiten (wichtig bei Dual Boot)</td>
+</tr>
+<tr class="odd">
+<td><code>winget</code></td>
+<td>Programme installieren (Windows-Gegenstück zu <code>apt</code>)</td>
+</tr>
+<tr class="even">
+<td><code>Get-Service</code>, <code>Start-Service</code></td>
+<td>Windows-Dienste</td>
+</tr>
+<tr class="odd">
+<td><code>reg</code>, <code>Get-ItemProperty HKLM:\...</code></td>
+<td>Registry</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s25-5"><h2>25.5 Befehle, die auf beiden Systemen gehen</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Befehl</th>
+<th>Hinweis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ping</code></td>
+<td>gleiche Idee, nur die Optionen unterscheiden sich (Linux <code>-c 4</code>, Windows <code>-n 4</code>)</td>
+</tr>
+<tr class="even">
+<td><code>ssh benutzer@adresse</code></td>
+<td>in Windows 10/11 eingebaut</td>
+</tr>
+<tr class="odd">
+<td><code>scp</code>, <code>sftp</code></td>
+<td>Dateien über SSH kopieren</td>
+</tr>
+<tr class="even">
+<td><code>curl</code>, <code>wget</code></td>
+<td>in aktuellem Windows vorhanden (in PowerShell ist <code>wget</code> ein Alias für <code>Invoke-WebRequest</code>, der sich anders verhält)</td>
+</tr>
+<tr class="odd">
+<td><code>git</code></td>
+<td>gleicher Befehl überall</td>
+</tr>
+<tr class="even">
+<td><code>python</code>, <code>python3</code>, <code>pip</code></td>
+<td>Unter Windows heißt der Start oft <code>python</code> oder <code>py</code>, unter Linux meist <code>python3</code></td>
+</tr>
+<tr class="odd">
+<td><code>node</code>, <code>npm</code></td>
+<td>gleich</td>
+</tr>
+<tr class="even">
+<td><code>cd</code>, <code>mkdir</code>, <code>echo</code>, <code>cls</code>/<code>clear</code></td>
+<td>gleicher Name, aber nicht überall gleiche Optionen</td>
+</tr>
+<tr class="odd">
+<td><code>ls</code>, <code>cat</code>, <code>cp</code>, <code>mv</code>, <code>rm</code>, <code>pwd</code></td>
+<td>in <strong>PowerShell</strong> als Alias, in <strong>cmd</strong> nicht</td>
+</tr>
+<tr class="even">
+<td><code>tar</code></td>
+<td>in aktuellem Windows vorhanden</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s25-6"><h2>25.6 Typische Stolpersteine beim Wechsel</h2><ol type="1">
+<li><strong>Pfadtrenner.</strong> <code>C:\Users\Oratio\Desktop</code> unter Windows, <code>/home/oratio/Desktop</code> unter Linux.</li>
+<li><strong>Zeilenenden.</strong> Windows speichert Textdateien mit Wagenrücklauf und Zeilenvorschub (CRLF), Linux nur mit Zeilenvorschub (LF). Ein <code>.sh</code>-Script mit Windows-Zeilenenden bricht oft mit einer Meldung wie <code>bad interpreter: /bin/bash^M</code> ab. Reparatur: <code>sed -i 's/\r$//' script.sh</code>.</li>
+<li><strong>Ausführbar machen.</strong> Unter Linux braucht ein Script <code>chmod +x script.sh</code> und wird mit <code>./script.sh</code> gestartet. Unter Windows reicht der Doppelklick auf <code>.bat</code> und <code>.ps1</code> je nach Einstellung.</li>
+<li><strong>PowerShell-Skripte sind standardmäßig gesperrt.</strong> Falls <code>.ps1</code> nicht startet, gibt es eine Meldung über die Ausführungsrichtlinie. Einmalig und nur für die aktuelle Sitzung kann man sie lockern: <code>Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass</code>.</li>
+<li><strong>Groß-/Kleinschreibung.</strong> <code>Datei.TXT</code> und <code>datei.txt</code> sind unter Linux zwei verschiedene Dateien.</li>
+<li><strong>Leerzeichen im Pfad.</strong> Immer in Anführungszeichen setzen: <code>cd "/media/oratio/SHARE/meine roms"</code>.</li>
+</ol>
+</section><section id="s25-7"><h2>25.7 Ein Beispiel: das Hash-Skript</h2><p>Ein praktisches Beispiel ist ein Skript, das Dateien per <strong>Drag and Drop</strong> entgegennimmt, für jede Datei einen <strong>SHA-256-Hash</strong> berechnet und Dateien mit gleichem Hash als <strong>Duplikate</strong> gruppiert. Der Kern in PowerShell:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">$files</span>  <span class="op">=</span> <span class="fu">Get-ChildItem</span> <span class="op">-</span>Recurse <span class="op">-</span>File <span class="op">-</span>Path <span class="va">$ordner</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">$groups</span> <span class="op">=</span> <span class="va">$files</span> <span class="op">|</span> <span class="fu">ForEach-Object</span> <span class="op">{</span> Get<span class="op">-</span>FileHash <span class="op">-</span>LiteralPath <span class="va">$_</span><span class="op">.</span><span class="fu">FullName</span> <span class="op">-</span>Algorithm SHA256 <span class="op">}</span> <span class="op">|</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>          <span class="fu">Group-Object</span> Hash</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> <span class="op">(</span><span class="va">$g</span> <span class="kw">in</span> <span class="va">$groups</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="op">(</span><span class="va">$g</span><span class="op">.</span><span class="fu">Count</span> <span class="op">-</span>gt 1<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">Write-Host</span> <span class="st">&quot;Duplikate:&quot;</span> <span class="va">$g</span><span class="op">.</span><span class="fu">Group</span><span class="op">.</span><span class="fu">Path</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Der gleiche Gedanke in Bash:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> <span class="st">&quot;</span><span class="va">$ordner</span><span class="st">&quot;</span> <span class="at">-type</span> f <span class="at">-exec</span> sha256sum {} + <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-w64</span> <span class="at">-D</span></span></code></pre></div>
+<p><strong>Verbesserungen:</strong></p>
+<ul>
+<li>Ordner rekursiv durchsuchen, damit nicht nur einzelne Dateien funktionieren.</li>
+<li>Ungültige Pfade mit einer Warnung überspringen statt abzubrechen.</li>
+<li><strong>Zuerst nach Dateigröße gruppieren</strong> und nur Dateien mit gleicher Größe hashen. Das spart oft 90 bis 99 Prozent der Hash-Berechnungen, weil unterschiedlich große Dateien nie identisch sein können.</li>
+<li>Fortschrittsanzeige, Laufzeit, Restzeit und Export als TXT und CSV auf den Desktop.</li>
+</ul>
+<p><strong>Typischer Fehler beim Umsetzen:</strong> Das Skript bricht nach „41 Dateien gefunden" mit <code>Cannot bind argument to parameter 'Text' because it is an empty string</code> ab. <strong>Ursache:</strong> Ein Cmdlet (zum Beispiel <code>Write-Host</code> oder <code>Write-Progress</code>) bekommt einen leeren Text als Pflichtparameter, weil eine Variable noch leer ist. <strong>Lösung:</strong> Variable vorher prüfen oder mit einem Standardwert belegen. Mehr dazu im Fehlerlexikon (<a class="xr" href="#/kap/53">Kapitel 53</a> ff.).</p>
+<p><strong>Merke:</strong> Beim Umsetzen eines Scripts von Bash nach PowerShell ändert sich nicht die Idee, sondern die Syntax: Variablen mit <code>$</code>, Objekte statt Text, andere Namen für die Befehle.</p>
+</section>

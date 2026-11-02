@@ -1,0 +1,165 @@
+<section id="s18-1"><h2>18.1 Die Displaytypen</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Display</th>
+<th>Controller</th>
+<th>Verbindung</th>
+<th>Auflösung</th>
+<th>Farbe</th>
+<th>Typischer Einsatz</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0,91" OLED</td>
+<td>SSD1306</td>
+<td>I²C</td>
+<td>128×32</td>
+<td>nein</td>
+<td>kleine Anzeigen</td>
+</tr>
+<tr class="even">
+<td>0,96" OLED</td>
+<td>SSD1306 oder SH1106</td>
+<td>I²C</td>
+<td>128×64</td>
+<td>nein</td>
+<td>Uhren, Sensoren, Menüs</td>
+</tr>
+<tr class="odd">
+<td>0,96" TFT</td>
+<td>ST7735S</td>
+<td>SPI</td>
+<td>80×160</td>
+<td>ja, 65.000 Farben</td>
+<td>kleine Farbanzeigen</td>
+</tr>
+<tr class="even">
+<td>1,8" TFT</td>
+<td>ST7735</td>
+<td>SPI</td>
+<td>128×160</td>
+<td>ja</td>
+<td>Bilder, Animationen</td>
+</tr>
+<tr class="odd">
+<td>2,4" TFT</td>
+<td>ILI9341</td>
+<td>SPI</td>
+<td>240×320</td>
+<td>ja</td>
+<td>Menüs, Diagramme, Spiele</td>
+</tr>
+<tr class="even">
+<td>1,28" rundes IPS</td>
+<td>GC9A01</td>
+<td>SPI</td>
+<td>240×240</td>
+<td>ja</td>
+<td>Uhren, Rund-Menüs</td>
+</tr>
+<tr class="odd">
+<td>rundes AMOLED</td>
+<td>verschieden</td>
+<td>SPI</td>
+<td>390×390 oder 454×454</td>
+<td>ja, tiefes Schwarz</td>
+<td>Smartwatch-Look</td>
+</tr>
+<tr class="even">
+<td>LED-Matrix 64×32</td>
+<td>HUB75</td>
+<td>eigene Signale</td>
+<td>2048 Pixel</td>
+<td>ja</td>
+<td>große Anzeigen</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Warum nutzen farbige runde Displays SPI statt I²C?</strong> Weil sie sehr viele Pixel haben. I²C wäre zu langsam. Faustregel: wenige Pixel und schwarzweiß → I²C. Viele Pixel und Farbe → SPI.</p>
+</section><section id="s18-2"><h2>18.2 Ein Datenblatt lesen (Beispiel)</h2><p>Das Display <strong>IDT-0080-0160-IW50-DSN-B08</strong> hat laut Datenblatt:</p>
+<ul>
+<li>Controller <strong>ST7735S</strong>, Verbindung <strong>SPI</strong></li>
+<li>0,96 Zoll, 80 × 160 Pixel, 65.000 Farben</li>
+<li>Versorgung 3,0–3,6 V (<strong>also 3,3 V, nicht 5 V!</strong>)</li>
+<li>Hintergrundbeleuchtung 20 mA</li>
+</ul>
+<p>Pinbelegung:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Pin</th>
+<th>Funktion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SDA</td>
+<td>Daten (MOSI)</td>
+</tr>
+<tr class="even">
+<td>SCL</td>
+<td>SPI-Takt</td>
+</tr>
+<tr class="odd">
+<td>RES</td>
+<td>Reset</td>
+</tr>
+<tr class="even">
+<td>VCC</td>
+<td>Versorgung</td>
+</tr>
+<tr class="odd">
+<td>GND</td>
+<td>Masse</td>
+</tr>
+<tr class="even">
+<td>SPI4W</td>
+<td>Auswahl 3-Draht (0) oder 4-Draht (1, empfohlen)</td>
+</tr>
+<tr class="odd">
+<td>RS</td>
+<td>Daten/Befehl (nur 4-Draht)</td>
+</tr>
+<tr class="even">
+<td>CS</td>
+<td>Chip Select</td>
+</tr>
+<tr class="odd">
+<td>LEDK / LEDA</td>
+<td>Hintergrundbeleuchtung (Kathode / Anode)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>So wird ein Datenblatt gelesen:</strong> Zuerst Controller, Spannung und Verbindungsart suchen, dann die Pinbelegung. Diese drei Infos entscheiden, ob und wie das Display funktioniert.</p>
+</section><section id="s18-3"><h2>18.3 Beispiel: rundes GC9A01 am ESP32</h2><div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Arduino.h&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Arduino_GFX_Library.h&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TFT_CS   </span><span class="dv">5</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TFT_DC   </span><span class="dv">2</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TFT_RST  </span><span class="dv">4</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TFT_SCK  </span><span class="dv">18</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TFT_MOSI </span><span class="dv">23</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>Arduino_DataBus <span class="op">*</span>bus <span class="op">=</span> <span class="kw">new</span> Arduino_ESP32SPI<span class="op">(</span>TFT_DC<span class="op">,</span> TFT_CS<span class="op">,</span> TFT_SCK<span class="op">,</span> TFT_MOSI<span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>Arduino_GFX <span class="op">*</span>gfx <span class="op">=</span> <span class="kw">new</span> Arduino_GC9A01<span class="op">(</span>bus<span class="op">,</span> TFT_RST<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="kw">true</span><span class="op">);</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> setup<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  Serial<span class="op">.</span>begin<span class="op">(</span><span class="dv">115200</span><span class="op">);</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  gfx<span class="op">-&gt;</span>begin<span class="op">();</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  gfx<span class="op">-&gt;</span>fillScreen<span class="op">(</span>BLACK<span class="op">);</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  gfx<span class="op">-&gt;</span>fillCircle<span class="op">(</span><span class="dv">120</span><span class="op">,</span> <span class="dv">120</span><span class="op">,</span> <span class="dv">118</span><span class="op">,</span> BLUE<span class="op">);</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  gfx<span class="op">-&gt;</span>fillCircle<span class="op">(</span><span class="dv">120</span><span class="op">,</span> <span class="dv">120</span><span class="op">,</span> <span class="dv">90</span><span class="op">,</span> BLACK<span class="op">);</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  gfx<span class="op">-&gt;</span>setTextColor<span class="op">(</span>WHITE<span class="op">);</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  gfx<span class="op">-&gt;</span>setTextSize<span class="op">(</span><span class="dv">3</span><span class="op">);</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  gfx<span class="op">-&gt;</span>setCursor<span class="op">(</span><span class="dv">45</span><span class="op">,</span> <span class="dv">90</span><span class="op">);</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  gfx<span class="op">-&gt;</span>println<span class="op">(</span><span class="st">&quot;Hallo&quot;</span><span class="op">);</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  gfx<span class="op">-&gt;</span>setTextColor<span class="op">(</span>GREEN<span class="op">);</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  gfx<span class="op">-&gt;</span>setCursor<span class="op">(</span><span class="dv">35</span><span class="op">,</span> <span class="dv">125</span><span class="op">);</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  gfx<span class="op">-&gt;</span>println<span class="op">(</span><span class="st">&quot;Oratio&quot;</span><span class="op">);</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> loop<span class="op">()</span> <span class="op">{}</span></span></code></pre></div>
+<p>Die Pin-Konfiguration (CS, DC, RST, SCK, MOSI) ist das Herzstück. <strong>Stimmt die Pinbelegung nicht mit der Verkabelung überein, bleibt das Display schwarz.</strong></p>
+</section><section id="s18-4"><h2>18.4 Ein Projekt von einem Display zum nächsten wechseln</h2><p>Das Programm besteht aus zwei Teilen: <strong>Hardware</strong> (Display-Controller, Pins, Bibliothek) und <strong>Inhalt</strong> (was gezeichnet wird). Beim Wechsel des Displays wird nur der Hardware-Teil getauscht. So kann dieselbe Uhr auf SSD1306, GC9A01 und ST7735 laufen.</p>
+</section>

@@ -1,0 +1,322 @@
+<section id="s50-1"><h2>50.1 Einen Traceback lesen</h2><pre class="text"><code>Traceback (most recent call last):
+  File &quot;/home/oratio/Oratio_Control_Center/app_ui.py&quot;, line 142, in &lt;module&gt;
+    tab = klasse(self.width(), self.height())
+  File &quot;/home/oratio/Oratio_Control_Center/Tower/tower_tab.py&quot;, line 58, in __init__
+    self.fan = FanPanel(cfg[&quot;fan&quot;])
+KeyError: &#39;fan&#39;</code></pre>
+<ol type="1">
+<li><strong>Letzte Zeile:</strong> Art und Detail: <code>KeyError: 'fan'</code>, also in einem Wörterbuch fehlt der Schlüssel <code>fan</code>.</li>
+<li><strong>Zeile darüber:</strong> wo es passiert ist (<code>tower_tab.py</code>, Zeile 58).</li>
+<li><strong>Weiter oben:</strong> wer das aufgerufen hat (der Weg).</li>
+<li>Die Zeile öffnen: <code>sed -n '50,65p' Tower/tower_tab.py</code>.</li>
+<li>Ursache klären: Warum fehlt <code>fan</code>? Meist ist die JSON-Datei alt oder kaputt (<code>python3 -m json.tool datei.json</code>).</li>
+</ol>
+</section><section id="s50-2"><h2>50.2 Fehlerarten und die Frage dahinter</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Meldung</th>
+<th>Frage</th>
+<th>Befehl</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>SyntaxError</code></td>
+<td>Fehlt ein Zeichen (<code>:</code>, Klammer, Anführungszeichen)? Auch die Zeile <strong>davor</strong> prüfen</td>
+<td><code>python3 -m py_compile datei.py</code></td>
+</tr>
+<tr class="even">
+<td><code>IndentationError</code> / <code>TabError</code></td>
+<td>Einrückung mischt Tab und Leerzeichen, oder ein Block fehlt</td>
+<td><code>expand -t 4 datei.py &gt; neu.py</code>; Editor: Tabs sichtbar machen</td>
+</tr>
+<tr class="odd">
+<td><code>NameError: name 'x' is not defined</code></td>
+<td>Gibt es den Namen an dieser Stelle (Tippfehler, später definiert, Import)?</td>
+<td><code>grep -n "x" datei.py</code></td>
+</tr>
+<tr class="even">
+<td><code>UnboundLocalError</code></td>
+<td>Wird die Variable in der Funktion zugewiesen <strong>und</strong> vorher gelesen?</td>
+<td>Wert zuvor setzen</td>
+</tr>
+<tr class="odd">
+<td><code>AttributeError: 'NoneType' …</code></td>
+<td>Wurde das Objekt vorher angelegt, oder lieferte eine Funktion <code>None</code>?</td>
+<td>Zeile davor ansehen; <code>print(type(obj))</code></td>
+</tr>
+<tr class="even">
+<td><code>AttributeError: … has no attribute 'x'</code></td>
+<td>Fehlt das Attribut in <code>__init__</code>, oder ist der Name anders geschrieben?</td>
+<td><code>grep -n "self.x" datei.py</code></td>
+</tr>
+<tr class="odd">
+<td><code>KeyError</code></td>
+<td>Fehlt der Schlüssel im Wörterbuch / in der JSON-Datei?</td>
+<td><code>dict.get("schluessel", vorgabe)</code> benutzen</td>
+</tr>
+<tr class="even">
+<td><code>IndexError</code></td>
+<td>Liste kürzer als erwartet? Neue Seite eingebaut, aber nicht alle Listen erweitert?</td>
+<td><code>print(len(liste))</code></td>
+</tr>
+<tr class="odd">
+<td><code>TypeError</code></td>
+<td>Falscher Typ (Text statt Zahl) oder zu viele/wenige Argumente</td>
+<td>Meldung nennt die Funktion und die Anzahl</td>
+</tr>
+<tr class="even">
+<td><code>ModuleNotFoundError</code></td>
+<td>Paket fehlt in dieser Umgebung</td>
+<td><code>which python3</code>, <code>pip list</code>, richtige Umgebung aktivieren</td>
+</tr>
+<tr class="odd">
+<td><code>ImportError: cannot import name</code></td>
+<td>Name steht nicht in der Datei, oder zirkulärer Import (A importiert B importiert A)</td>
+<td>Import verschieben</td>
+</tr>
+<tr class="even">
+<td><code>PermissionError</code></td>
+<td>Datei gehört <code>root</code></td>
+<td><code>sudo chown oratio:oratio datei</code></td>
+</tr>
+<tr class="odd">
+<td><code>FileNotFoundError</code></td>
+<td>Pfad relativ?</td>
+<td>absolute Pfade mit <code>BASE_DIR</code></td>
+</tr>
+<tr class="even">
+<td><code>json.decoder.JSONDecodeError</code></td>
+<td>Komma zu viel/wenig, Anführungszeichen fehlen</td>
+<td><code>python3 -m json.tool datei.json</code> zeigt die Stelle</td>
+</tr>
+<tr class="odd">
+<td><code>RecursionError</code></td>
+<td>Funktion ruft sich endlos selbst auf</td>
+<td>Abbruchbedingung prüfen</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s50-3"><h2>50.3 PyQt5-spezifisch</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Meldung / Symptom</th>
+<th>Ursache</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Programm stürzt ohne Meldung ab</td>
+<td>Fehler im Slot wird bei PyQt5 verschluckt oder beendet das Programm</td>
+<td>im Terminal starten; <code>python3 -X dev -X faulthandler app_ui.py</code></td>
+</tr>
+<tr class="even">
+<td><code>qt.qpa.xcb: could not connect to display</code></td>
+<td>keine Anzeige-Umgebung (SSH, Dienst)</td>
+<td>am Desktop starten, oder <code>DISPLAY</code>/<code>WAYLAND_DISPLAY</code> setzen</td>
+</tr>
+<tr class="odd">
+<td><code>Could not load the Qt platform plugin "xcb"</code></td>
+<td>Plugin-Abhängigkeit fehlt</td>
+<td><code>QT_DEBUG_PLUGINS=1 python3 app_ui.py</code> zeigt die fehlende Bibliothek; auf Wayland <code>QT_QPA_PLATFORM=wayland</code></td>
+</tr>
+<tr class="even">
+<td><code>QObject::setParent: Cannot set parent, new parent is in a different thread</code></td>
+<td>Oberfläche aus einem Thread angefasst</td>
+<td>nur im GUI-Thread Widgets ändern; Ergebnisse per Signal übergeben</td>
+</tr>
+<tr class="odd">
+<td><code>QPainter::begin: A paint device can only be painted by one painter at a time</code></td>
+<td>verschachteltes <code>QPainter</code> auf demselben Gerät</td>
+<td><code>p.end()</code> vor dem zweiten Painter</td>
+</tr>
+<tr class="even">
+<td><code>QLayout: Attempting to add QLayout "" to X "", which already has a layout</code></td>
+<td>zweites Layout für dasselbe Widget</td>
+<td>vorhandenes Layout nutzen</td>
+</tr>
+<tr class="odd">
+<td>Schaltfläche tut nichts</td>
+<td>Signal nicht verbunden</td>
+<td><code>btn.clicked.connect(self.funktion)</code> <strong>ohne</strong> Klammern</td>
+</tr>
+<tr class="even">
+<td>Stylesheet wirkt nicht</td>
+<td>wird vom Widget überschrieben; Selektor passt nicht; <code>{</code>/<code>}</code> in f-String nicht verdoppelt</td>
+<td>Selektor prüfen; <code>{{ }}</code> im f-String</td>
+</tr>
+<tr class="odd">
+<td>Fenster 4K winzig oder riesig</td>
+<td>Skalierung</td>
+<td><code>QT_SCALE_FACTOR</code> / eigener Skalierfaktor (<a class="xr" href="#/kap/43/43.2">Kapitel 43.2</a>.4)</td>
+</tr>
+<tr class="even">
+<td>Programm lässt sich vom Symbol nicht starten, im Terminal schon</td>
+<td><code>.desktop</code>-Datei</td>
+<td><code>Exec=</code> absoluter Pfad, <code>Path=</code> setzen, ausführbar</td>
+</tr>
+<tr class="odd">
+<td>PyQt5 und PyQt6 gemischt</td>
+<td>Namen unterscheiden sich</td>
+<td>eine Version durchgängig</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s50-4"><h2>50.4 Hilfsmittel zum Beobachten</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> py_compile datei.py        <span class="co"># Syntax ohne Start</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-X</span> dev app_ui.py              <span class="co"># strengere Warnungen</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-X</span> faulthandler app_ui.py     <span class="co"># Stapelabbild bei harten Abstürzen</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="va">QT_DEBUG_PLUGINS</span><span class="op">=</span>1 <span class="ex">python3</span> app_ui.py  <span class="co"># welches Qt-Plugin lädt, was fehlt</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="va">QT_LOGGING_RULES</span><span class="op">=</span><span class="st">&quot;qt.qpa.*=true&quot;</span> <span class="ex">python3</span> app_ui.py</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> json.tool Json/oratio_apps.json <span class="op">&gt;</span> /dev/null <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> gültig</span></code></pre></div>
+<p>Im Quelltext hilft <code>print(...)</code> an der Verdachtsstelle; danach entfernen (<a class="xr" href="#/kap/34/34.5">Kapitel 34.5</a>).</p>
+</section><section id="s50-5"><h2>50.5 Control Center: Symptom → Ursache → Weg</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Zuerst prüfen</th>
+<th>Ursache (typisch)</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Programm startet nicht</td>
+<td><code>python3 app_ui.py</code> im Terminal</td>
+<td>Syntax-/Einrückungsfehler in einer geladenen Datei; fehlendes Paket</td>
+<td>Datei aus der Meldung öffnen; <code>python3 -m py_compile</code></td>
+</tr>
+<tr class="even">
+<td>Programm startet, aber ein Tab fehlt</td>
+<td>Terminalmeldung <code>Tab X nicht geladen: …</code> (<a class="xr" href="#/kap/36/36.3">Kapitel 36.3</a>)</td>
+<td>der Tab-Code hat beim Import einen Fehler</td>
+<td>die Meldung zeigt Datei und Zeile</td>
+</tr>
+<tr class="odd">
+<td>Programm startet erneut und erneut, dann Ende</td>
+<td><code>Logs/oratio.log</code></td>
+<td>Absturz in den ersten Sekunden; <code>run_app.sh</code> gibt nach 3 Abstürzen in 60 s auf</td>
+<td>letzten Eintrag lesen</td>
+</tr>
+<tr class="even">
+<td>Widget fehlt in der Galerie</td>
+<td><code>python3 -c "import Oratio_Menu.Widget.NAME"</code></td>
+<td>Fehler in der Widget-Datei</td>
+<td>Meldung lesen</td>
+</tr>
+<tr class="odd">
+<td>Kachel verschwunden</td>
+<td><code>python3 -m json.tool Json/oratio_apps.json</code></td>
+<td>JSON ungültig oder Eintrag gelöscht</td>
+<td>aus <code>Json/Backup/&lt;Datum&gt;/</code> zurückkopieren</td>
+</tr>
+<tr class="even">
+<td>Alle Einstellungen verschwunden/zurückgesetzt</td>
+<td><code>ls Json/</code></td>
+<td>JSON beschädigt und beim Laden ersetzt</td>
+<td>Programm schließen, Dateien aus <code>Json/Backup/&lt;Datum&gt;/</code> kopieren, starten</td>
+</tr>
+<tr class="odd">
+<td>Programm ruckelt</td>
+<td>Sparmodus (<a class="xr" href="#/kap/38/38.9">Kapitel 38.9</a>)</td>
+<td>Effekte, Live-Hintergrund, 4K ohne Grafikbeschleunigung</td>
+<td>Effekte aus; Live-Hintergrund „Sparsam“ oder aus</td>
+</tr>
+<tr class="even">
+<td>Schalter (Neustart, LED …) ohne Wirkung</td>
+<td><code>sudo -n true &amp;&amp; echo OK</code></td>
+<td><code>sudo</code> verlangt Passwort</td>
+<td><code>bash install.sh</code> erneut ausführen</td>
+</tr>
+<tr class="odd">
+<td>WLAN/Bluetooth-Schalter springt zurück</td>
+<td><code>rfkill list</code></td>
+<td>Funksperre aktiv</td>
+<td><code>rfkill unblock bluetooth</code>; Programm tut das beim Einschalten selbst</td>
+</tr>
+<tr class="even">
+<td>Hotspot lässt sich nicht einschalten</td>
+<td><code>nmcli dev status</code></td>
+<td><code>nmcli</code> fehlt, oder WLAN-Chip ist im Heimnetz</td>
+<td>mit LAN-Kabel; Rückfrage bestätigen (<a class="xr" href="#/kap/38/38.10">Kapitel 38.10</a>)</td>
+</tr>
+<tr class="odd">
+<td>Handy erreicht die Seite nicht</td>
+<td><code>ss -tulpn | grep 8765</code>, <code>hostname -I</code></td>
+<td>Server läuft nicht / nicht im selben Netz</td>
+<td>Server im Fenster „Handy-Austausch“ stoppen und starten; nach Dateiaustausch neu starten</td>
+</tr>
+<tr class="even">
+<td>Sprachsteuerung zeigt ✗</td>
+<td>Fenster „Bereit?“</td>
+<td>Vosk/Modell/Piper/Gemma fehlt</td>
+<td>„Einrichten“ (<a class="xr" href="#/kap/39/39.3">Kapitel 39.3</a>); <code>ollama list</code></td>
+</tr>
+<tr class="odd">
+<td>Toolbox-Knopf tut nichts</td>
+<td>Befehl im Terminal ausführen</td>
+<td>Programm fehlt oder Fehler wird verschluckt</td>
+<td>Installationsangebot; Fehlermeldung im Ergebnisfeld lesen</td>
+</tr>
+<tr class="even">
+<td>Backup-Klon bricht ab</td>
+<td>Protokoll im Fenster</td>
+<td>Quelle/Ziel/Partition (<a class="xr" href="#/kap/39/39.2">Kapitel 39.2</a>)</td>
+<td><code>lsblk /dev/sda</code>, Protokoll-Abschnitte „Tabelle auf der Platte“ und „So sieht das System die Platte“ vergleichen</td>
+</tr>
+<tr class="odd">
+<td>App im Glasfenster zeigt nichts</td>
+<td>App einzeln starten: <code>python3 pfad/app.py</code></td>
+<td>Fehler in der App</td>
+<td>Meldung lesen</td>
+</tr>
+<tr class="even">
+<td>Auf dem Steam Deck startet etwas nicht</td>
+<td><a class="xr" href="#/kap/43/43.8">Kapitel 43.8</a></td>
+<td>Architektur, venv, <code>apt</code></td>
+<td>dort Tabelle</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s50-6"><h2>50.6 C++/CMake-Variante (<a class="xr" href="#/kap/42">Kapitel 42</a>)</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Meldung / Symptom</th>
+<th>Ursache</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>cmake: command not found</code></td>
+<td>nicht installiert</td>
+<td><code>bash install.sh</code> bzw. <code>sudo apt install cmake build-essential</code></td>
+</tr>
+<tr class="even">
+<td><code>Could not find a package configuration file provided by "Qt5"</code></td>
+<td>Qt5-Entwicklungspakete fehlen</td>
+<td><code>sudo apt install qtbase5-dev</code></td>
+</tr>
+<tr class="odd">
+<td><code>undefined reference to …</code></td>
+<td>eine <code>.cpp</code> fehlt in der Quellenliste (<code>app.cmake</code>)</td>
+<td>Datei eintragen, neu bauen (<code>bash build.sh</code>)</td>
+</tr>
+<tr class="even">
+<td><code>no matching function</code> / <code>was not declared</code></td>
+<td>Header fehlt oder Name falsch</td>
+<td>erster Fehler der Ausgabe ist der echte</td>
+</tr>
+<tr class="odd">
+<td>Plugin wird nicht geladen</td>
+<td><code>dlopen</code>-Fehler</td>
+<td><code>ldd datei.so</code> zeigt fehlende Bibliotheken; <code>./oratio_control_center --run-app …so</code></td>
+</tr>
+<tr class="even">
+<td>Änderung wirkt nicht</td>
+<td>nicht neu gebaut</td>
+<td><code>bash build.sh</code> (alles neu: <code>bash build.sh neu</code>)</td>
+</tr>
+</tbody>
+</table></div>
+</section>

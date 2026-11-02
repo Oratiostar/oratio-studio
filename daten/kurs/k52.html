@@ -1,0 +1,202 @@
+<section id="s52-1"><h2>52.1 Windows auf dem Steam Deck</h2><p>Die ausführliche Tabelle steht in <a class="xr" href="#/kap/28/28.13">Kapitel 28.13</a>; hier das Entscheidungsschema.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Zuerst prüfen</th>
+<th>Weg</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Installationsmedium startet nicht</td>
+<td>Deck aus, <strong>Lauter + Ein</strong> halten → Bootmenü</td>
+<td>Stick (FAT32/NTFS, <code>install.wim</code> unter 4 GB oder geteilt) wählen</td>
+</tr>
+<tr class="even">
+<td>Installer findet die Platte nicht</td>
+<td><code>diskpart</code> → <code>list disk</code></td>
+<td>Treiber nachladen (<a class="xr" href="#/kap/28/28.4">Kapitel 28.4</a>)</td>
+</tr>
+<tr class="odd">
+<td>Installation bricht bei Netzwerk ab</td>
+<td>–</td>
+<td><code>Shift+F10</code>, <code>oobe\bypassnro</code>, Neustart (<a class="xr" href="#/kap/28/28.8">Kapitel 28.8</a>)</td>
+</tr>
+<tr class="even">
+<td>Kein Ton / kein WLAN / kein Touch</td>
+<td>Geräte-Manager: gelbes Ausrufezeichen</td>
+<td>Treiber der Reihe nach installieren (Tabelle 28.5)</td>
+</tr>
+<tr class="odd">
+<td>Kein Start nach dem Klonen</td>
+<td><code>lsblk</code>, <code>efibootmgr -v</code></td>
+<td>Boot-Eintrag und Partitionstabelle (<a class="xr" href="#/kap/28/28.12">Kapitel 28.12</a>)</td>
+</tr>
+<tr class="even">
+<td>Platte zeigt falsche Größe nach dd-Klon</td>
+<td><code>sudo sgdisk -e /dev/…</code>, <code>partprobe</code></td>
+<td>GPT-Kopie ans Ende verschieben</td>
+</tr>
+<tr class="odd">
+<td>Xbox-Zubehör-Fehler</td>
+<td>–</td>
+<td><a class="xr" href="#/kap/28/28.9">Kapitel 28.9</a></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s52-2"><h2>52.2 Steam Deck: SteamOS und eigene Installation</h2><p>Die Fehlersuche der Deck-Variante des Control Centers steht in <a class="xr" href="#/kap/43/43.8">Kapitel 43.8</a>. Kurzschema:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Befehl</th>
+<th>Deutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Exec format error</code></td>
+<td><code>uname -m</code>, <code>file programm</code></td>
+<td>Programm für andere Prozessorart (arm64 statt x86_64) → richtiges Programm laden</td>
+</tr>
+<tr class="even">
+<td><code>externally-managed-environment</code></td>
+<td>–</td>
+<td>System-Python gesperrt → virtuelle Umgebung <code>python3 -m venv</code></td>
+</tr>
+<tr class="odd">
+<td>Änderungen am System nach Update weg</td>
+<td>–</td>
+<td>SteamOS-Updates ersetzen das Systemabbild; Eigenes im Home-Ordner halten</td>
+</tr>
+<tr class="even">
+<td><code>pacman</code> verweigert</td>
+<td><code>sudo steamos-readonly disable</code></td>
+<td>System ist schreibgeschützt (danach wieder <code>enable</code>)</td>
+</tr>
+<tr class="odd">
+<td>Ollama braucht root</td>
+<td>–</td>
+<td>ohne root im Home-Ordner installieren (<a class="xr" href="#/kap/43/43.5">Kapitel 43.5</a>)</td>
+</tr>
+<tr class="even">
+<td>Fenster im Spielmodus schwarz</td>
+<td>–</td>
+<td>Desktopmodus verwenden</td>
+</tr>
+<tr class="odd">
+<td>Eingabe fehlt</td>
+<td>–</td>
+<td>Steam Input → Desktop-Konfiguration</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s52-3"><h2>52.3 Batocera</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Befehl / Ort</th>
+<th>Deutung</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Startet nicht von NVMe</td>
+<td>Pi-Bootreihenfolge (<a class="xr" href="#/kap/8/8.3">Kapitel 8.3</a>)</td>
+<td><code>BOOT_ORDER</code> nicht auf NVMe</td>
+<td><code>0xf416</code> oder per <code>raspi-config</code></td>
+</tr>
+<tr class="even">
+<td>Kein Bild</td>
+<td><code>config.txt</code> auf der Boot-Partition</td>
+<td>falsche HDMI-Einstellung</td>
+<td><code>hdmi_force_hotplug=1</code>, Modus setzen</td>
+</tr>
+<tr class="odd">
+<td>Controller wird nicht erkannt</td>
+<td><code>evtest</code>, Menü → Controller</td>
+<td>Bluetooth/USB nicht gekoppelt</td>
+<td>neu koppeln, Zuordnung</td>
+</tr>
+<tr class="even">
+<td>Spiele fehlen</td>
+<td><code>/userdata/roms/&lt;system&gt;</code></td>
+<td>falscher Ordner/Dateiendung</td>
+<td>System-Ordner und BIOS prüfen (<code>/userdata/bios</code>)</td>
+</tr>
+<tr class="odd">
+<td>Spiel startet nicht</td>
+<td>Menü → Systemeinstellungen → Protokoll</td>
+<td>BIOS fehlt oder falscher Kern</td>
+<td>BIOS ergänzen, anderen Emulator wählen</td>
+</tr>
+<tr class="even">
+<td>Einstellungen weg</td>
+<td><code>/userdata/system/batocera.conf</code></td>
+<td>Datei zurückgesetzt</td>
+<td>Sicherung wiederherstellen</td>
+</tr>
+<tr class="odd">
+<td>Zugriff über Netz</td>
+<td><code>ssh root@batocera</code> (Standardpasswort ändern!)</td>
+<td>–</td>
+<td><code>\\BATOCERA</code> als Freigabe</td>
+</tr>
+<tr class="even">
+<td>Eigene Software (Lüfter, OLED) läuft nicht</td>
+<td>–</td>
+<td>Batocera hat keine apt-Pakete</td>
+<td>Dienste manuell in <code>/userdata/system</code> eintragen</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s52-4"><h2>52.4 Dual Boot</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Befehl</th>
+<th>Deutung</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Nur ein System startet</td>
+<td><code>efibootmgr -v</code></td>
+<td>Eintrag fehlt</td>
+<td><code>efibootmgr</code> / <code>bcdboot</code> (Windows) / GRUB neu</td>
+</tr>
+<tr class="even">
+<td>Windows-Update zerstört Bootmenü</td>
+<td>–</td>
+<td>überschreibt Startreihenfolge</td>
+<td>Reihenfolge im UEFI oder mit <code>efibootmgr -o</code></td>
+</tr>
+<tr class="odd">
+<td>Zeit falsch in Linux/Windows</td>
+<td><code>timedatectl</code></td>
+<td>Windows nimmt Ortszeit, Linux UTC</td>
+<td>Windows: Registry <code>RealTimeIsUniversal</code>; oder Linux: <code>timedatectl set-local-rtc 1</code></td>
+</tr>
+<tr class="even">
+<td>Windows sieht Linux-Partition nicht</td>
+<td>–</td>
+<td>ext4 unbekannt</td>
+<td>absichtlich; Dateien über NTFS/exFAT-Partition tauschen</td>
+</tr>
+<tr class="odd">
+<td>Partition zu klein</td>
+<td><code>lsblk</code></td>
+<td>–</td>
+<td>vor dem Verkleinern <strong>Sicherung</strong>, dann mit <code>gparted</code></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s52-5"><h2>52.5 Gemeinsame Grundregel</h2><ol type="1">
+<li><strong>Sichern vor jeder Platten-/Partitionsarbeit</strong> – Fehler dort sind nicht rückgängig zu machen.</li>
+<li><strong>Zuerst lesen, dann schreiben:</strong> <code>lsblk</code>, <code>fdisk -l</code>, <code>blkid</code> zeigen den Zustand, ohne etwas zu ändern.</li>
+<li><strong>Zwei Mal das Ziel prüfen:</strong> Bei <code>dd</code> ist der falsche Zielname das Ende der Daten.</li>
+</ol>
+</section>

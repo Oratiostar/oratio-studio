@@ -1,0 +1,319 @@
+<section id="s48-1"><h2>48.1 „Der Befehl geht nicht“</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Befehl zur Prüfung</th>
+<th>Deutung</th>
+<th>Weiter</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>command not found</code></td>
+<td><code>which name</code>, <code>command -v name</code></td>
+<td>nichts angezeigt = nicht installiert oder falsch geschrieben</td>
+<td><code>apt search name</code>; Tippfehler (Groß-/Kleinschreibung zählt); gehört der Befehl zu einem anderen System (<code>apt</code> auf dem Pi, <code>pacman</code> auf SteamOS)?</td>
+</tr>
+<tr class="even">
+<td><code>./skript.sh: Permission denied</code></td>
+<td><code>ls -l skript.sh</code></td>
+<td>kein <code>x</code> in den Rechten</td>
+<td><code>chmod +x skript.sh</code></td>
+</tr>
+<tr class="odd">
+<td><code>bad interpreter: /bin/bash^M</code></td>
+<td><code>file skript.sh</code></td>
+<td>„with CRLF line terminators“</td>
+<td><code>sed -i 's/\r$//' skript.sh</code></td>
+</tr>
+<tr class="even">
+<td><code>Zeile 1: from: Kommando nicht gefunden</code></td>
+<td><code>head -1 datei.py</code></td>
+<td>Python-Datei wurde wie Shell-Skript gestartet</td>
+<td><code>python3 datei.py</code></td>
+</tr>
+<tr class="odd">
+<td><code>No such file or directory</code></td>
+<td><code>pwd</code>, <code>ls</code>, <code>ls -la</code></td>
+<td>falscher Ordner oder Tippfehler</td>
+<td>absoluten Pfad nehmen; Leerzeichen im Pfad in Anführungszeichen setzen</td>
+</tr>
+<tr class="even">
+<td><code>&lt;befehl</code> mit führendem <code>&lt;</code></td>
+<td>–</td>
+<td>die Shell liest <code>&lt;</code> als „Datei als Eingabe“</td>
+<td>ohne <code>&lt;</code> eingeben</td>
+</tr>
+<tr class="odd">
+<td>Befehl hängt</td>
+<td><code>ps aux | grep befehl</code></td>
+<td>läuft er, wartet er auf Eingabe, oder hängt er?</td>
+<td><code>Strg+C</code>; <code>kill PID</code>; <code>kill -9 PID</code> nur zuletzt</td>
+</tr>
+<tr class="even">
+<td><code>^[[A</code> statt Pfeiltaste</td>
+<td><code>echo $SHELL</code></td>
+<td><code>sh</code> statt <code>bash</code></td>
+<td><code>bash</code> starten</td>
+</tr>
+<tr class="odd">
+<td><code>unexpected end of file</code> im Skript</td>
+<td><code>bash -n skript.sh</code></td>
+<td><code>if</code> ohne <code>fi</code>, <code>do</code> ohne <code>done</code>, offene Klammer</td>
+<td>Block schließen</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s48-2"><h2>48.2 Rechte und Besitzer</h2><p><strong>Symptom:</strong> <code>Permission denied</code> beim Schreiben, Löschen, Starten; Datei wird nicht gespeichert; Programm kann Einstellungen nicht schreiben.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> datei            <span class="co"># Besitzer und Rechte</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">id</span>                     <span class="co"># wer bin ich, in welchen Gruppen</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stat</span> datei             <span class="co"># genaue Rechte in Zahlen</span></span></code></pre></div>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Ausgabe</th>
+<th>Deutung</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>-rw-r--r-- root root</code></td>
+<td>Datei gehört <code>root</code>; der normale Benutzer darf nicht schreiben</td>
+<td><code>sudo chown oratio:oratio datei</code></td>
+</tr>
+<tr class="even">
+<td><code>drwxr-xr-x</code> ohne <code>w</code> für den Benutzer</td>
+<td>im Ordner nichts anlegbar</td>
+<td><code>sudo chmod u+w ordner</code> oder Besitzer ändern</td>
+</tr>
+<tr class="odd">
+<td>Laufwerk „schreibgeschützt“</td>
+<td>Besitzer <code>root</code>, oder Dateisystem nur lesbar eingehängt</td>
+<td><code>sudo chown -R oratio:oratio /media/oratio/NAME</code>; <code>mount | grep NAME</code> zeigt <code>ro</code></td>
+</tr>
+<tr class="even">
+<td>Zugriff auf <code>/dev/ttyUSB0</code> verweigert</td>
+<td>Benutzer nicht in der Gruppe <code>dialout</code></td>
+<td><code>sudo usermod -aG dialout $USER</code>, neu anmelden</td>
+</tr>
+<tr class="odd">
+<td>Zugriff auf I²C/GPIO verweigert</td>
+<td>Gruppen <code>i2c</code>, <code>gpio</code></td>
+<td><code>sudo usermod -aG i2c,gpio $USER</code>, neu anmelden</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Faustregel:</strong> Wenn ein Programm selbst Dateien anlegt, darf es <strong>nicht</strong> mit <code>sudo</code> gestartet werden, sonst gehören diese Dateien später <code>root</code>.</p>
+</section><section id="s48-3"><h2>48.3 Installieren und Pakete</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Prüfen</th>
+<th>Deutung</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>E: Unable to locate package</code></td>
+<td><code>apt search name</code></td>
+<td>Paketlisten alt oder Name falsch</td>
+<td><code>sudo apt update</code></td>
+</tr>
+<tr class="even">
+<td><code>E: Could not get lock …</code></td>
+<td><code>ps aux | grep -E "apt|dpkg"</code></td>
+<td>ein anderer Installer läuft</td>
+<td>warten; nur wenn nichts läuft, die Sperre prüfen</td>
+</tr>
+<tr class="odd">
+<td><code>externally-managed-environment</code></td>
+<td>–</td>
+<td><code>pip</code> im System gesperrt</td>
+<td><code>python3 -m venv ~/.venvs/projekt &amp;&amp; source ~/.venvs/projekt/bin/activate</code></td>
+</tr>
+<tr class="even">
+<td><code>ModuleNotFoundError</code></td>
+<td><code>python3 -c "import xyz"</code>, <code>which python3</code></td>
+<td>Paket fehlt <strong>in der benutzten Umgebung</strong></td>
+<td>richtige Umgebung aktivieren, dann <code>pip install xyz</code>; mit <code>sudo</code> gestartet sieht das Programm die Umgebung nicht</td>
+</tr>
+<tr class="odd">
+<td><code>Exec format error</code></td>
+<td><code>file programm</code>, <code>uname -m</code></td>
+<td>Programmdatei für falsche Architektur</td>
+<td>passende Version holen (<a class="xr" href="#/kap/43/43.6">Kapitel 43.6</a>.4)</td>
+</tr>
+<tr class="even">
+<td>Download bricht ab</td>
+<td><code>ping</code>, <code>df -h</code></td>
+<td>kein Netz oder Platz voll</td>
+<td>Netz prüfen; Platz schaffen</td>
+</tr>
+<tr class="odd">
+<td>Programm startet nicht nach <code>apt install</code></td>
+<td><code>which name</code>, <code>name --version</code></td>
+<td>Pfad oder Neustart des Terminals nötig</td>
+<td>neues Terminal; <code>hash -r</code></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s48-4"><h2>48.4 Platz und Laufwerke</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Befehl</th>
+<th>Deutung</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>„No space left on device“</td>
+<td><code>df -h</code>, <code>df -i</code></td>
+<td>Platz oder Inodes voll</td>
+<td>große Ordner finden: <code>sudo du -xh / --max-depth=2 | sort -h | tail -20</code>; <code>ncdu /</code></td>
+</tr>
+<tr class="even">
+<td>System langsam, Platte voll</td>
+<td><code>df -h /</code></td>
+<td>Wurzeldateisystem voll</td>
+<td><code>sudo apt clean</code>, <code>journalctl --vacuum-size=200M</code>, alte Backups entfernen</td>
+</tr>
+<tr class="odd">
+<td>Platte nicht sichtbar</td>
+<td><code>lsblk</code>, <code>lsusb</code>, <code>dmesg | tail</code></td>
+<td>erscheint sie nirgends: Kabel/Strom; in <code>dmesg</code> aber ja: nicht eingehängt</td>
+<td><code>sudo mount /dev/sda1 /mnt</code></td>
+</tr>
+<tr class="even">
+<td>Platte „busy“ beim Aushängen</td>
+<td><code>lsof +f -- /media/oratio/NAME</code></td>
+<td>ein Programm benutzt sie</td>
+<td>Programm schließen; Dateimanager nicht dort öffnen</td>
+</tr>
+<tr class="odd">
+<td>Partition zeigt nach <code>dd</code> nicht p1/p2</td>
+<td><code>lsblk</code></td>
+<td>Linux las die Tabelle nicht neu</td>
+<td><code>sudo partprobe /dev/mmcblk0</code></td>
+</tr>
+<tr class="even">
+<td>Partition nach Klon zu klein</td>
+<td><code>lsblk</code>, <code>sudo parted /dev/X print</code></td>
+<td>Kopie hat die Größe der Quelle</td>
+<td>Partition vergrößern (<a class="xr" href="#/kap/7">Kapitel 7</a>, 28.12)</td>
+</tr>
+<tr class="odd">
+<td>Dateisystem „dirty“ oder beschädigt</td>
+<td><code>sudo fsck /dev/sda1</code> (ausgehängt!)</td>
+<td></td>
+<td>nur bei ausgehängtem Laufwerk reparieren</td>
+</tr>
+<tr class="even">
+<td>Neue Platte startet nicht</td>
+<td><code>blkid</code>, <code>cat /proc/cmdline</code>, <code>cat /etc/fstab</code></td>
+<td><code>PARTUUID</code> stimmt nicht überein</td>
+<td><code>cmdline.txt</code> und <code>fstab</code> anpassen (<a class="xr" href="#/kap/8/8.4">Kapitel 8.4</a>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Regel:</strong> Vor <code>mkfs</code>, <code>fdisk</code>, <code>parted</code>, <code>dd</code>, <code>rm -r</code> immer <code>lsblk</code>, und das Laufwerk an der <strong>Größe</strong> erkennen.</p>
+</section><section id="s48-5"><h2>48.5 Prozesse und Dienste</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Befehl</th>
+<th>Deutung</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Programm läuft doppelt</td>
+<td><code>ps aux | grep name</code></td>
+<td>alter Prozess noch aktiv</td>
+<td><code>pkill name</code>, neu starten</td>
+</tr>
+<tr class="even">
+<td>Port belegt</td>
+<td><code>ss -tulpn | grep PORT</code></td>
+<td>anderes Programm hört dort</td>
+<td>beenden oder anderen Port wählen</td>
+</tr>
+<tr class="odd">
+<td>Dienst startet nicht</td>
+<td><code>systemctl status dienst</code>, <code>journalctl -u dienst -e</code></td>
+<td>Fehlermeldung am Ende</td>
+<td>Konfiguration korrigieren; <code>sudo systemctl daemon-reload</code> nach Änderung der Dienstdatei</td>
+</tr>
+<tr class="even">
+<td>Dienst startet nach Neustart nicht</td>
+<td><code>systemctl is-enabled dienst</code></td>
+<td><code>disabled</code></td>
+<td><code>sudo systemctl enable dienst</code></td>
+</tr>
+<tr class="odd">
+<td>Zeitgesteuerte Aufgabe läuft nicht</td>
+<td><code>crontab -l</code>, <code>grep CRON /var/log/syslog</code> oder <code>journalctl -u cron</code></td>
+<td>Pfade in cron sind kurz, die Umgebung ist leer</td>
+<td>absolute Pfade, <code>PATH</code> im Skript setzen</td>
+</tr>
+<tr class="even">
+<td>Programm läuft nur im Terminal, nicht per Symbol</td>
+<td><code>cat ~/.local/share/applications/name.desktop</code></td>
+<td><code>Exec=</code> ohne absoluten Pfad oder <code>Path=</code> fehlt</td>
+<td><code>Exec=</code> mit vollem Pfad, <code>Path=</code> setzen, <code>chmod +x</code></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s48-6"><h2>48.6 Netzwerk</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Befehl</th>
+<th>Deutung</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Kein Internet</td>
+<td><code>ip a</code>, <code>ping -c 3 8.8.8.8</code>, <code>ping -c 3 example.com</code></td>
+<td>Reihenfolge: Adresse → Gateway → Internet → Name</td>
+<td>wo die Kette bricht, dort ansetzen</td>
+</tr>
+<tr class="even">
+<td>Adresse da, Ping auf IP geht, Name nicht</td>
+<td><code>cat /etc/resolv.conf</code></td>
+<td>DNS fehlt</td>
+<td>Router-/DNS-Einstellung</td>
+</tr>
+<tr class="odd">
+<td>WLAN verbindet nicht</td>
+<td><code>nmcli dev wifi</code>, <code>nmcli dev status</code>, <code>rfkill list</code></td>
+<td>geblockt (<code>Soft blocked: yes</code>) oder falsches Passwort</td>
+<td><code>rfkill unblock wifi</code></td>
+</tr>
+<tr class="even">
+<td>SSH geht nicht</td>
+<td><code>ping IP</code>, <code>ssh -v oratio@IP</code></td>
+<td><code>Connection refused</code>: Dienst aus; <code>timed out</code>: Netz</td>
+<td><code>sudo systemctl enable --now ssh</code></td>
+</tr>
+<tr class="odd">
+<td>Zugriff auf andere Geräte im selben Netz fehlt</td>
+<td><code>ip a</code></td>
+<td>beide Geräte im selben Teilnetz?</td>
+<td>gleiche Netzadresse prüfen</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s48-7"><h2>48.7 Texteditor-Fallen</h2><ul>
+<li><strong>nano:</strong> Speichern <code>Strg+O</code>, Enter, beenden <code>Strg+X</code>. Nicht gespeichert = Änderung weg.</li>
+<li><strong>Tabs im Python-Quelltext:</strong> <code>TabError</code>; mit <code>expand -t 4 datei &gt; neu</code> umwandeln.</li>
+<li><strong>Windows-Editor:</strong> erzeugt CRLF; siehe 48.1.</li>
+<li><strong>Datei lässt sich nicht speichern:</strong> Besitzer prüfen (48.2).</li>
+</ul>
+</section>

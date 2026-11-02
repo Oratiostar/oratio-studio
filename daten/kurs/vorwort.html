@@ -1,0 +1,115 @@
+<p>Dieses Buch ist ein Kurs, ein Nachschlagewerk und ein Werkstattbuch in einem. Es beginnt bei den ersten Terminal-Befehlen und führt über den Raspberry Pi, Mikrocontroller, Displays, LED-Matrizen, Betriebssysteme und lokale KI bis zu einem großen Eigenbau, dem <strong>Oratio Control Center</strong>. Am Ende stehen eine ausführliche Fehlersuche, ein Fehlerlexikon und ein großer Elektronik-Teil.</p>
+<p>Ich bin Elektroniker von Beruf und habe mir Linux, Mikrocontroller und Programmieren als Hobby beigebracht. Das Buch hält fest, was ich dabei gelernt habe: nicht nur, <strong>was</strong> funktioniert, sondern auch, <strong>was nicht funktioniert hat und warum</strong>. Gerade die Fehlversuche haben das meiste Wissen gebracht.</p>
+<section id="sV-x0"><h2>Wie die Texte geschrieben sind</h2><ul>
+<li><strong>Erfahrungsberichte</strong> stehen in der Ich-Form („Ich habe X versucht, das scheiterte, weil …“). Bei Problemen steht zuerst der Versuch, der nicht funktioniert hat, dann die Lösung, und immer die Begründung, <strong>warum</strong> sie funktioniert.</li>
+<li><strong>Anleitungen</strong> sind neutral oder als Aufforderung geschrieben („Datei öffnen, Zeile suchen, speichern“), damit sie sich wie ein Rezept nachbauen lassen.</li>
+<li>Jeder Gedanke steht einmal an der Stelle, an der er zum ersten Mal wichtig wird. Lehren, die in <strong>mehreren</strong> Projekten gelten, stehen gesammelt im Querschnitt-Teil (Teil 15).</li>
+</ul>
+</section><section id="sV-x1"><h2>Wie das Buch aufgebaut ist</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Teil</th>
+<th>Inhalt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>1 – Grundlagen</strong></td>
+<td>Linux und das Terminal (<a class="xr" href="#/kap/1">Kapitel 1</a>–5)</td>
+</tr>
+<tr class="even">
+<td><strong>2 – Raspberry Pi</strong></td>
+<td>Befehle, Laufwerke, Boot-Etappen, Backup (6–9)</td>
+</tr>
+<tr class="odd">
+<td><strong>3 – Projekt Bildschirm, Gehäuse, Anschlüsse</strong></td>
+<td>4K-Skalierung, Freenove-Turm, GPIO, Ton (10–14)</td>
+</tr>
+<tr class="even">
+<td><strong>4 – Projekt Mikrocontroller und Displays</strong></td>
+<td>Arduino, PlatformIO, Displays, LED-Matrix (15–20)</td>
+</tr>
+<tr class="odd">
+<td><strong>5 – Projekt Zifferblatt</strong></td>
+<td>Rundes AMOLED-Display mit ESP32-S3 (21)</td>
+</tr>
+<tr class="even">
+<td><strong>6 – Python und Oratio Watch OS</strong></td>
+<td>Programmieren lernen, eigene Smartwatch (22–23)</td>
+</tr>
+<tr class="odd">
+<td><strong>7 – Projekt Lokale KI</strong></td>
+<td>Sprachassistent ohne Cloud (24)</td>
+</tr>
+<tr class="even">
+<td><strong>8 – Windows und Linux</strong></td>
+<td>Konsolen im Vergleich (25)</td>
+</tr>
+<tr class="odd">
+<td><strong>9 – Projekt Batocera</strong></td>
+<td>Retro-Station auf dem Pi 5 (26)</td>
+</tr>
+<tr class="even">
+<td><strong>10 – Projekt Steam Deck, Dual Boot</strong></td>
+<td>SteamOS und Windows (27)</td>
+</tr>
+<tr class="odd">
+<td><strong>11 – Projekt Windows 11 auf dem Steam Deck</strong></td>
+<td>Installation ohne PC (28)</td>
+</tr>
+<tr class="even">
+<td><strong>12 – Überblick</strong></td>
+<td>Karte aller Projekte (29)</td>
+</tr>
+<tr class="odd">
+<td><strong>13 – Konzept Sprache</strong></td>
+<td>Hören und Sprechen (30)</td>
+</tr>
+<tr class="even">
+<td><strong>14 – Großprojekt Oratio Control Center</strong></td>
+<td>Projekt A, Projekt B, Vergleich, Varianten, Webseite (31–45)</td>
+</tr>
+<tr class="odd">
+<td><strong>15 – Querschnitt</strong></td>
+<td>Lehren, die in allen Projekten gelten (46)</td>
+</tr>
+<tr class="even">
+<td><strong>16 – Fehlersuche</strong></td>
+<td>Methode und Werkzeuge, nach Symptomen geordnet (47–52)</td>
+</tr>
+<tr class="odd">
+<td><strong>17 – Fehlerlexikon</strong></td>
+<td>Meldungen und ihre Bedeutung (53–58)</td>
+</tr>
+<tr class="even">
+<td><strong>18 – Wissensbausteine</strong></td>
+<td>Kurze Antworten auf Verständnisfragen (59–61)</td>
+</tr>
+<tr class="odd">
+<td><strong>19 – Elektronik</strong></td>
+<td>Grundlagen, Schaltungen, Bauteile prüfen, Sicherheit (62–70)</td>
+</tr>
+<tr class="even">
+<td><strong>Anhänge</strong></td>
+<td>A Befehle von A bis Z · B Glossar · C Lernreihenfolge · D Fehler-Index · E Befehlskatalog der Toolbox (alle Befehle mit „Wo hilft es“)</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="sV-x2"><h2>Drei Wege durch das Buch</h2><ol type="1">
+<li><strong>Von vorn nach hinten.</strong> Wer bei Null anfängt, liest Teil 1 und 2 und wählt dann ein Projekt.</li>
+<li><strong>Projektweise.</strong> Jeder Projektteil ist in sich geschlossen und nennt vorne, was vorausgesetzt wird. Das Control Center (Teil 14) ist so beschrieben, dass es Schritt für Schritt <strong>nachgebaut</strong> werden kann.</li>
+<li><strong>Bei einem Fehler.</strong> Zuerst <a class="xr" href="#/kap/47">Kapitel 47</a> (Methode), dann das Kapitel zum Symptom in Teil 16. Danach das Fehlerlexikon (Teil 17) oder der Fehler-Index (<a class="xr" href="#/anhang/D">Anhang D</a>). Ziel ist, dass sich neue Probleme <strong>ohne fremde Hilfe</strong> eingrenzen lassen.</li>
+</ol>
+</section><section id="sV-x3"><h2>Was in den Kästen steht</h2><ul>
+<li>Befehle stehen in grauen Kästen und werden genau so ins Terminal getippt.</li>
+<li>Ein Befehl mit <code>sudo</code> davor läuft mit Administratorrechten. Das ist mächtig; solche Befehle werden vorher doppelt geprüft.</li>
+<li>Texte in spitzen Klammern wie <code>&lt;NAME&gt;</code> sind Platzhalter, die ersetzt werden.</li>
+<li>Tabellen mit <strong>Symptom → Befehl → Deutung → Weiter</strong> (Teil 16) sind zum Nachschlagen gedacht.</li>
+</ul>
+</section><section id="sV-x4"><h2>Was nicht in diesem Buch steht</h2><ul>
+<li><strong>Nicht der vollständige Quellcode aller Projekte.</strong> Das Buch enthält Beispielcode und die entscheidenden Ausschnitte, damit der Aufbau nachvollziehbar und nachbaubar ist; die komplette Software liegt in den Projektordnern.</li>
+<li><strong>Nicht alles ist gleich gründlich getestet.</strong> Wo eine Funktion nur im Probelauf oder in einer Testumgebung geprüft wurde, steht das ausdrücklich dabei (zum Beispiel beim Backup-Klon, beim Hotspot, bei der Kamera, bei der Sprachsteuerung mit echtem Mikrofon).</li>
+<li><strong>Elektronik-Werte</strong> sind nicht Bauteil für Bauteil gegen das Datenblatt geprüft (Teil 19).</li>
+</ul>
+<p>Alle Befehle sind für Raspberry Pi OS (Debian 13, „Trixie“) mit Wayland geschrieben. Wo etwas nur für Windows oder nur für ein bestimmtes Gerät gilt, steht das dabei.</p>
+</section>

@@ -1,0 +1,185 @@
+<p>Dieses Kapitel steht an einer Stelle, damit sie in den Projektkapiteln nicht jedes Mal wiederholt werden müssen. Es sind die Dinge, die ich in sehr verschiedenen Projekten – Pi, Mikrocontroller, Control Center, Steam Deck, Windows – immer wieder neu gelernt habe. Zu jedem Punkt steht, wo er zum ersten Mal wichtig wurde.</p>
+<section id="s46-1"><h2>46.1 Arbeitsweise</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Lehre</th>
+<th>Wie ich sie anwende</th>
+<th>Gelernt in</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Messen statt raten</strong></td>
+<td>Bei jedem Fehler zuerst einen Befehl, der etwas anzeigt (<code>lsblk</code>, <code>ls -l</code>, <code>cat</code>, <code>journalctl</code>), dann erst ändern</td>
+<td><a class="xr" href="#/kap/7">Kapitel 7</a>, 10, 47</td>
+</tr>
+<tr class="even">
+<td><strong>Eine Sache ändern, dann testen</strong></td>
+<td>Nie fünf Dinge gleichzeitig; sonst weiß ich nicht, was geholfen hat</td>
+<td><a class="xr" href="#/kap/10">Kapitel 10</a>, 47</td>
+</tr>
+<tr class="odd">
+<td><strong>Fehlermeldung wörtlich lesen</strong></td>
+<td>Die letzte Zeile nennt die Art, die Zeilen darüber den Weg. Nicht zusammenfassen, sondern abschreiben</td>
+<td><a class="xr" href="#/kap/47">Kapitel 47</a>, 50</td>
+</tr>
+<tr class="even">
+<td><strong>Zuerst die Grundfunktion</strong></td>
+<td>LED blinkt, <code>ping</code> geht, <code>lsblk</code> zeigt die Platte – dann erst die komplizierte Ebene</td>
+<td><a class="xr" href="#/kap/47">Kapitel 47</a></td>
+</tr>
+<tr class="odd">
+<td><strong>Gegenprobe</strong></td>
+<td>Anderes Kabel, anderes Gerät, anderes Board, anderer Anschluss</td>
+<td><a class="xr" href="#/kap/18">Kapitel 18</a>, 51</td>
+</tr>
+<tr class="even">
+<td><strong>Details anzeigen zuerst</strong></td>
+<td>Wenn ein Knopf grau bleibt, steht der echte Grund oft hinter „Details“</td>
+<td><a class="xr" href="#/kap/28/28.6">Kapitel 28.6</a></td>
+</tr>
+<tr class="odd">
+<td><strong>Erst Probelauf, dann echt</strong></td>
+<td>Gefährliche Werkzeuge haben einen Modus „nur anzeigen“; den zuerst benutzen</td>
+<td><a class="xr" href="#/kap/39/39.2">Kapitel 39.2</a></td>
+</tr>
+<tr class="even">
+<td><strong>Das Falsche zuerst festhalten</strong></td>
+<td>Was nicht half, ist genauso wichtig wie die Lösung; es verhindert, denselben Weg noch einmal zu gehen</td>
+<td>in jedem Projektkapitel</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s46-2"><h2>46.2 Dateien, Rechte, Pfade</h2><ul>
+<li><strong>Rechte:</strong> Dateien, die mit <code>sudo</code> angelegt wurden, gehören <code>root</code>; das Programm als normaler Benutzer darf sie nicht schreiben. Besitzer prüfen (<code>ls -l</code>), mit <code>chown</code> ändern (<a class="xr" href="#/kap/2">Kapitel 2</a>). Konsequenz im Control Center: Das Fenster läuft ohne <code>sudo</code> (<a class="xr" href="#/kap/32/32.5">Kapitel 32.5</a>).</li>
+<li><strong>Pfade absolut machen:</strong> <code>BASE_DIR = os.path.dirname(os.path.abspath(__file__))</code>. Relative Pfade brechen, sobald das Programm aus einem anderen Ordner startet (Desktop-Symbol, Autostart).</li>
+<li><strong>Vor jeder Änderung eine Kopie:</strong> <code>cp datei datei.bak</code>; besonders bei <code>cmdline.txt</code>, <code>config.txt</code>, <code>fstab</code>, aber auch bei jeder größeren Python-Datei.</li>
+<li><strong>Syntax prüfen, bevor etwas startet:</strong> <code>python3 -m py_compile datei.py</code>, <code>bash -n skript.sh</code>, <code>python3 -m json.tool datei.json</code>.</li>
+<li><strong>Windows-Zeilenenden</strong> (<code>^M</code>, <code>bad interpreter</code>): <code>sed -i 's/\r$//' datei</code>.</li>
+<li><strong>Tab und Leerzeichen nie mischen</strong> (<code>TabError</code>): im Editor Tabs in Leerzeichen umwandeln, oder <code>expand -t 4</code> (<a class="xr" href="#/kap/32/32.4">Kapitel 32.4</a>).</li>
+</ul>
+</section><section id="s46-3"><h2>46.3 Einstellungen, die „verschwinden“</h2><p>Die häufigste Ursache ist, dass eine Einstellung <strong>nur in dieser Sitzung</strong> gilt und beim Start von einer späteren Etappe überschrieben wird:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Fall</th>
+<th>Warum</th>
+<th>Wohin die Einstellung gehört</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bildschirmauflösung nach Neustart wieder weg</td>
+<td><code>wlr-randr</code> wirkt nur im laufenden Compositor; <code>cmdline.txt</code> wirkt früher und wird überschrieben (<a class="xr" href="#/kap/8/8.8">Kapitel 8.8</a>)</td>
+<td>Autostart, Kanshi, Watchdog</td>
+</tr>
+<tr class="even">
+<td>Skalierung nach Aus- und Einschalten des Monitors wieder weg</td>
+<td>Hotplug setzt zurück; Autostart läuft nur beim Login</td>
+<td>Kanshi (Ereignis) oder Watchdog (Dauerprüfung)</td>
+</tr>
+<tr class="odd">
+<td>Lautstärke 0 nach dem Start</td>
+<td>Programm startet stumm</td>
+<td>beim Programmstart einmal Stumm aufheben (<a class="xr" href="#/kap/37/37.5">Kapitel 37.5</a>)</td>
+</tr>
+<tr class="even">
+<td>Programm im Autostart startet nicht</td>
+<td>Desktop noch nicht fertig</td>
+<td><code>sleep</code> vor den Aufruf setzen</td>
+</tr>
+<tr class="odd">
+<td>Änderung in <code>config.txt</code> wirkt nicht</td>
+<td>Datei wird nur beim Start der Firmware gelesen</td>
+<td>Neustart</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s46-4"><h2>46.4 Architektur und Plattform</h2><ul>
+<li><strong>Programmdateien nie zwischen Geräten mit anderer Architektur kopieren.</strong> <code>uname -m</code>: <code>aarch64</code> = Pi (ARM), <code>x86_64</code> = Deck/PC. Skripte (Python, Bash) sind unkritisch, Binärdateien nicht (<code>Exec format error</code>, <a class="xr" href="#/kap/43/43.6">Kapitel 43.6</a>.4).</li>
+<li><strong>Eine Erkennung, alles Gerätespezifische dahinter:</strong> Ein Ordner für Pi und Deck, <code>plattform.py</code> erkennt das Gerät (<a class="xr" href="#/kap/43/43.3">Kapitel 43.3</a>).</li>
+<li><strong>Befehle sind nicht überall gleich:</strong> <code>apt</code> (Pi), <code>pacman</code> (SteamOS), <code>winget</code> (Windows); <code>lxterminal</code> (Pi) gegenüber <code>konsole</code> (KDE). Immer zuerst <code>command -v</code> fragen.</li>
+<li><strong>Zwei Familien schwarzer Fenster:</strong> Windows (CMD) und Linux (bash) verstehen unterschiedliche Befehle (<a class="xr" href="#/kap/25">Kapitel 25</a>, 28.3). Vor dem Tippen fragen: In welchem System bin ich?</li>
+</ul>
+</section><section id="s46-5"><h2>46.5 Software-Struktur</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Lehre</th>
+<th>Begründung</th>
+<th>Gelernt in</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ein kaputtes Teil darf nie das Ganze stoppen</td>
+<td>Tabs, Widgets, Toolbox-Bereiche laden in <code>try/except</code></td>
+<td><a class="xr" href="#/kap/36/36.3">Kapitel 36.3</a></td>
+</tr>
+<tr class="even">
+<td>Eine Datei pro Tab/Widget/App</td>
+<td>Löschen ist so einfach wie Anlegen</td>
+<td><a class="xr" href="#/kap/36">Kapitel 36</a>, 37</td>
+</tr>
+<tr class="odd">
+<td>Daten und Anzeige trennen</td>
+<td>Inhalte in JSON, Code nur zum Zeigen; dasselbe JSON speist App und Webseite</td>
+<td><a class="xr" href="#/kap/39/39.6">Kapitel 39.6</a>, 44</td>
+</tr>
+<tr class="even">
+<td>Nichts Festes für Namen, Pfade, Modelle</td>
+<td>Einstellungen aus JSON lesen (Beispiel: Modell <code>gemma3:1b</code> statt fest <code>4b</code>)</td>
+<td><a class="xr" href="#/kap/43/43.4">Kapitel 43.4</a>.3</td>
+</tr>
+<tr class="odd">
+<td>Lange Arbeit in Threads, Fortschritt per Signal</td>
+<td>sonst friert das Fenster ein</td>
+<td><a class="xr" href="#/kap/43/43.4">Kapitel 43.4</a>.1</td>
+</tr>
+<tr class="even">
+<td>Exaktes nie dem Sprachmodell überlassen</td>
+<td>Uhr, Wetter, Rechnen gehören in Code</td>
+<td><a class="xr" href="#/kap/30/30.4">Kapitel 30.4</a></td>
+</tr>
+<tr class="odd">
+<td>Layoutrand ≥ Innenabstand der gezeichneten Fläche</td>
+<td>sonst ragen Knöpfe aus dem Fenster</td>
+<td><a class="xr" href="#/kap/43/43.5">Kapitel 43.5</a>.3</td>
+</tr>
+<tr class="even">
+<td>Animationen müssen zur Hardware passen</td>
+<td>auf schwacher Grafik lieber umschalten als ruckeln</td>
+<td><a class="xr" href="#/kap/37/37.7">Kapitel 37.7</a></td>
+</tr>
+<tr class="odd">
+<td>Testausgaben (<code>print</code>) wieder entfernen</td>
+<td>sie können das Programm stark verlangsamen</td>
+<td><a class="xr" href="#/kap/34/34.5">Kapitel 34.5</a></td>
+</tr>
+<tr class="even">
+<td>Zuerst den erwarteten Zustand zeigen, dann bestätigen</td>
+<td>Oberfläche wirkt schnell und springt nicht hin und her</td>
+<td><a class="xr" href="#/kap/37/37.6">Kapitel 37.6</a></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s46-6"><h2>46.6 Datensicherheit</h2><ol type="1">
+<li><strong>Vor <code>mkfs</code>, <code>parted</code>, <code>fdisk</code>, <code>dd</code>:</strong> <code>lsblk</code> ausführen und das Laufwerk an der <strong>Größe</strong> erkennen, nicht am Namen.</li>
+<li><strong>Vor <code>rm -r</code>:</strong> den Pfad mit <code>ls</code> prüfen.</li>
+<li><strong>Die Systemplatte nie als Ziel:</strong> Programme, die Platten löschen können, bieten sie gar nicht erst an (<a class="xr" href="#/kap/39/39.2">Kapitel 39.2</a>).</li>
+<li><strong>Original und Kopie nie gleichzeitig</strong> an einen Rechner (gleiche Kennungen, <a class="xr" href="#/kap/28/28.12">Kapitel 28.12</a>).</li>
+<li><strong>Sicherung der Einstellungen:</strong> täglich automatisch (<a class="xr" href="#/kap/36/36.4">Kapitel 36.4</a>), plus Profile (<a class="xr" href="#/kap/38/38.13">Kapitel 38.13</a>).</li>
+<li><strong>Skripte aus dem Internet</strong> (<code>curl … | sh</code>) nur von offiziellen Seiten.</li>
+</ol>
+</section><section id="s46-7"><h2>46.7 Hardware und Strom</h2><ul>
+<li><strong>Strom zuerst:</strong> Zu schwaches Netzteil erzeugt scheinbar zufällige Fehler. <code>vcgencmd get_throttled</code> am Pi; LED-Matrizen und Motoren haben eigene Versorgung.</li>
+<li><strong>Masse (GND) überall verbinden.</strong></li>
+<li><strong>Spannung prüfen:</strong> 3,3 V oder 5 V? Ein 3,3-V-Eingang verträgt keine 5 V (<a class="xr" href="#/kap/38/38.5">Kapitel 38.5</a>, 51).</li>
+<li><strong>Datenkabel gegenüber Ladekabel:</strong> Manche USB-Kabel haben keine Datenleitungen. Das Gerät erscheint dann nirgends (<a class="xr" href="#/kap/28/28.10">Kapitel 28.10</a>, 51).</li>
+<li><strong>Servos und Motoren nie über den Pi versorgen.</strong></li>
+</ul>
+</section><section id="s46-8"><h2>46.8 Schreiben und Weitergeben</h2><ul>
+<li><strong>Updates als ZIP mit nur den geänderten Dateien in der Ordnerstruktur;</strong> für ein volles Backup alles mitgeben.</li>
+<li><strong>Aufschreiben, was die Lösung war:</strong> genau dafür ist dieses Buch da.</li>
+<li><strong>Ehrlich sagen, was nicht getestet wurde.</strong> In dieser Dokumentation steht bei vielen Funktionen, was nur im Probelauf oder in einer Testumgebung geprüft wurde und was an echter Hardware noch aussteht (Backup-Klon, Hotspot, Kamera, Audio, Zifferblatt).</li>
+</ul>
+</section>

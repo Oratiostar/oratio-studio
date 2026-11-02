@@ -1,0 +1,231 @@
+<section id="s37-1"><h2>37.1 Die Bedienoberfläche im Überblick</h2><p>Das Oratio Menu ist der Teil, der wie ein Handy-Startbildschirm aussieht. Es besteht aus folgenden Bereichen:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Bereich</th>
+<th>Ort auf dem Bildschirm</th>
+<th>Zweck</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Glas-Leiste</td>
+<td>ganz oben</td>
+<td>Uhr, laufende Fenster, Menü</td>
+</tr>
+<tr class="even">
+<td>Symbolgruppe</td>
+<td>oben rechts</td>
+<td>Lupe, Glocke, Pinsel, WLAN, Bluetooth, Mikrofon, Kontrollzentrum, Zahnrad</td>
+</tr>
+<tr class="odd">
+<td>Raster mit Seiten</td>
+<td>Bildschirmmitte</td>
+<td>Kacheln (Apps und Widgets), Seitenpunkte unten</td>
+</tr>
+<tr class="even">
+<td>Dock</td>
+<td>unten</td>
+<td>Lieblings-Apps, immer sichtbar</td>
+</tr>
+<tr class="odd">
+<td>Kontrollfenster</td>
+<td>öffnet unter der Symbolgruppe</td>
+<td>schnelle Schalter (WLAN, Ton, Helligkeit, Musik …)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Fast alles Weitere ist ein <strong>Glasfenster</strong>, das neben oder über dieser Ansicht aufgeht und vom Werkzeugkasten <code>glass_ui.py</code> (<a class="xr" href="#/kap/36/36.5">Kapitel 36.5</a>) gezeichnet wird.</p>
+</section><section id="s37-2"><h2>37.2 Kacheln, Seiten und der Bearbeiten-Modus</h2><p><strong>Raster:</strong> Standard sind 10 Spalten × 5 Zeilen pro Seite. Eine Kachel hat in <code>oratio_apps.json</code> die Werte <code>slot</code>, <code>row</code>, <code>col</code>. Daraus ergibt sich die Seite (Rechnung wie in <a class="xr" href="#/kap/35">Kapitel 35</a>: Seite = Slot geteilt durch Kacheln pro Seite).</p>
+<p><strong>Bearbeiten-Modus:</strong> Pinsel-Symbol oben rechts → Stift. Dann gilt:</p>
+<ul>
+<li>Kachel ziehen = verschieben (Ziehen über den Rand wechselt die Seite, nach 0,75 s Wartezeit, danach 1,1 s bis zur nächsten Seite)</li>
+<li>Rechtsklick oder langes Drücken auf eine Kachel = Menü: Bearbeiten, Größe, Farbe, Name, Entfernen</li>
+<li>Ziehen auf das Dock = App ins Dock</li>
+</ul>
+<p><strong>Große Kacheln:</strong> Widgets und manche Apps haben Größen in Kästchen (1×1, 2×1, 2×2, 4×2, 4×4).</p>
+<p><strong>Farbe:</strong> Rechtsklick → Farbe. Der Schalter „Farbe vom System“ färbt die Kachel im grauen Glas-Look der Widgets, der dem Theme folgt.</p>
+<p><strong>Namen:</strong> Die Schreibweise bleibt, wie sie selbst gesetzt wird. Eine automatische Regel („jedes Wort groß, ‚Oratio‘ weglassen“) gab es kurz und wurde wieder entfernt, weil sie Namen wie „Oratio Media Player“ verstümmelte. Umbenennen: Kachel im Bearbeiten-Modus öffnen oder den Namen direkt in <code>oratio_apps.json</code> ändern.</p>
+</section><section id="s37-3"><h2>37.3 Neue App hinzufügen (von der Oberfläche aus)</h2><p>Menü → „App hinzufügen“ öffnet ein Fenster mit Feldern für Name, Datei (das Skript), Icon, Farbe, Terminal-Start und „Im Oratio-Look öffnen“ (= <code>embed</code>). Die Datei kann gleich über die Mediathek ausgewählt werden. Nach „Speichern“ schreibt das Programm einen neuen Eintrag in <code>oratio_apps.json</code> (<a class="xr" href="#/kap/36/36.7">Kapitel 36.7</a>) und die Kachel erscheint auf dem nächsten freien Platz.</p>
+</section><section id="s37-4"><h2>37.4 Widgets: eine Datei pro Widget</h2><p>Jedes Widget ist <strong>eine Datei</strong> im Ordner <code>Oratio_Menu/Widget/</code>. Eine neue Datei dort taucht von selbst in der Widget-Galerie auf. Eine Widget-Datei enthält:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Name in der Datei</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>KIND</code></td>
+<td>interne Kennung (z. B. <code>"network"</code>)</td>
+</tr>
+<tr class="even">
+<td><code>NAME</code></td>
+<td>Anzeigename in der Galerie</td>
+</tr>
+<tr class="odd">
+<td><code>SIZES</code></td>
+<td>erlaubte Größen als Liste, z. B. <code>[(1,1),(2,1),(2,2),(4,2)]</code></td>
+</tr>
+<tr class="even">
+<td><code>MIN</code></td>
+<td>kleinste sinnvolle Größe</td>
+</tr>
+<tr class="odd">
+<td><code>FAST</code></td>
+<td><code>True</code>, wenn das Widget schnell neu gezeichnet werden soll (z. B. Equalizer)</td>
+</tr>
+<tr class="even">
+<td><code>ORDER</code></td>
+<td>Reihenfolge in der Galerie</td>
+</tr>
+<tr class="odd">
+<td><code>paint(c)</code></td>
+<td><strong>die Zeichenfunktion</strong>: bekommt einen Zeichenkasten <code>c</code> und malt das Widget</td>
+</tr>
+<tr class="even">
+<td><code>on_click</code> (optional)</td>
+<td>was beim Antippen passiert</td>
+</tr>
+<tr class="odd">
+<td><code>APP</code> / <code>OPEN_APP</code> (optional)</td>
+<td>welche App beim Antippen aufgeht</td>
+</tr>
+<tr class="even">
+<td><code>tick</code>, <code>data_tick</code> (optional)</td>
+<td>regelmäßige Aktualisierung bzw. Daten holen</td>
+</tr>
+</tbody>
+</table></div>
+<p>Die Daten, die mehrere Widgets brauchen (CPU, Netz, Lüfter …), holt eine gemeinsame Datei <code>_common</code> (<code>WDATA</code>), damit nicht jedes Widget selbst abfragt.</p>
+<p><strong>Beispiele für vorhandene Widgets:</strong> CPU, RAM, Netzwerk, Lüfter, LED, OLED, Uhr, Wetter, Rechner, Timer, Wecker, Equalizer, Musik, App-Wechsler, Stapel.</p>
+<p><strong>Wie ein kaputtes Widget behandelt wird:</strong> Beim Laden steckt jede Widget-Datei in einem <code>try/except</code>. Ein Fehler in einer Datei lässt nur dieses Widget aus der Galerie verschwinden.</p>
+<h3 id="widget-galerie">Widget-Galerie</h3>
+<p>Menü → „Widgets“ (oder Zahnrad → Einstellungen → Apps &amp; Seiten → Widgets). Jedes Widget wird mit Live-Vorschau gezeigt. Unter der Vorschau eine Größe antippen: das Widget landet auf der aktuellen Seite.</p>
+<h3 id="widget-stapel">Widget-Stapel</h3>
+<p>In der Galerie oben auf „Stapel (mehrere in einer Karte)“ umschalten, mindestens zwei Widgets antippen (Haken), Größe (2×2 / 4×2 / 4×4) und „Automatisch weiterblättern“ (Aus / 5 / 10 / 30 s) wählen, „Stapel erstellen“. Danach zeigt eine Karte jeweils ein Widget. Wischen oder die Punkte am rechten Rand wechseln. Ändern: Rechtsklick → „Stapel bearbeiten“. In <code>oratio_apps.json</code> erscheint ein Eintrag <code>"widget": "stack"</code>.</p>
+<p><strong>Grenzen:</strong> Der Stapel wechselt nicht nach Tageszeit, nur nach Tempo. Widgets mit eigener Bedienung (Rechner-Tasten) lassen sich im Stapel nur ansehen; Antippen öffnet die zugehörige App.</p>
+</section><section id="s37-5"><h2>37.5 Das Kontrollfenster</h2><p>Das Kontrollzentrum (Symbol oben rechts) enthält Kacheln für WLAN, Bluetooth, Flugmodus, Ton, Helligkeit, Musik, Display, App-Fenster, Nachtmodus, LED und weitere. Merkmale:</p>
+<ul>
+<li><strong>4 Spalten</strong>, höchstens <strong>7 Reihen</strong>. Was nicht passt, ist deaktiviert. In den CC-Einstellungen schaltet „Scrollen“ unbegrenzte Länge ein.</li>
+<li>Alle Kacheln sind frei in Breite (1–4) und Höhe (1–3) einstellbar; der Inhalt passt sich an.</li>
+<li><strong>Bearbeitungsmodus:</strong> lange auf eine <strong>leere</strong> Stelle drücken (nicht auf Knöpfe!). Dann Kacheln ziehen, untere rechte Ecke = Größe, „Fertig“ unten rechts beendet. Der Zeiger wird an der Griff-Ecke zur Hand.</li>
+<li>Weitere Kacheln (zuerst aus): Pi neu starten, Bildschirmfoto, Browser, Musik, Notizen. Einschalten unter „Weitere Kacheln“.</li>
+<li>„Aus“, „Pi neu“ und „CC neu“ fragen nicht nach, ein Druck genügt. Das Energie-Fenster aus den Menü-Einstellungen fragt weiter.</li>
+<li>Die <strong>Musik-Kachel</strong> steuert YouTube &amp; Co. (über <code>playerctl</code>) <strong>und</strong> den Oratio Media Player (über kleine Dateien <code>/tmp/oratio_medien_state.json</code> und <code>/tmp/oratio_medien_cmd</code>). Auf den Titel tippen öffnet den Media Player.</li>
+<li>Nach jedem Programmstart wird einmalig „Stumm“ aufgehoben und Lautstärke 0 auf 50 % gesetzt.</li>
+</ul>
+</section><section id="s37-6"><h2>37.6 WLAN und Bluetooth schalten – zwei Lehren</h2><ol type="1">
+<li><strong>Bluetooth springt zurück auf „aus“:</strong> Die Funksperre war aktiv. Vor dem Einschalten muss sie gelöst werden: <code>rfkill unblock bluetooth</code>. Das Programm macht das jetzt selbst.</li>
+<li><strong>Das Symbol wechselt hin und her, während WLAN hochfährt:</strong> Das Symbol wechselt jetzt <strong>sofort</strong> und bleibt so, bis die echte Abfrage den neuen Zustand bestätigt. Klappt das nach ca. 12 s nicht, zeigt es wieder den echten Zustand. Die Abfragen (WLAN, Bluetooth, Flugmodus, Ton, Netz) laufen gleichzeitig statt nacheinander, das Fenster öffnet schneller.</li>
+</ol>
+<p><strong>Lehre:</strong> Eine Oberfläche, die den Systemzustand nur abfragt, wirkt langsam. Besser ist erst den erwarteten Zustand zeigen und danach bestätigen.</p>
+</section><section id="s37-7"><h2>37.7 Flüssig bleiben: Ruckeln beim Verschieben und Seitenwechsel</h2><p>Auf dem Pi 5 mit 4K ohne Grafikbeschleunigung gab es mehrere Ruckel-Probleme. Der Weg dorthin war nicht gerade:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Versuch</th>
+<th>Ergebnis</th>
+<th>Warum</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Alle Widgets weiter animieren, während eine App gezogen wird</td>
+<td>ruckelt</td>
+<td>jeder Mausschritt zeichnet alles neu</td>
+</tr>
+<tr class="even">
+<td>Beim Ziehen Widget-Animationen pausieren, Markierungen nur bei Änderung zeichnen, Zielsuche höchstens 30× pro Sekunde</td>
+<td>ruckelt nicht mehr</td>
+<td>weniger Zeichenarbeit pro Sekunde</td>
+</tr>
+<tr class="odd">
+<td>Seitenwechsel als zwei Bilder gleiten lassen (alte und neue Seite als Foto)</td>
+<td>weißliches Aufblitzen</td>
+<td>die Seitenbilder lagen 90 ms über den echten, durchscheinenden Glasflächen – doppelt gestapeltes Glas wirkt weißlich</td>
+</tr>
+<tr class="even">
+<td>Beide Bilder in <strong>einem</strong> Widget, auf ganze Pixel bewegt</td>
+<td>besser, aber aufwendig</td>
+<td>–</td>
+</tr>
+<tr class="odd">
+<td>Menü erkennt, dass Gleiten unter etwa 14 Bildern/s läuft, und schaltet direkt um</td>
+<td>sauber statt ruckelig</td>
+<td>auf 4K ohne Beschleunigung ist Gleiten nicht möglich</td>
+</tr>
+<tr class="even">
+<td>Heutiger Stand: die <strong>echten Kacheln</strong> gleiten hinaus und herein</td>
+<td>gut</td>
+<td>keine Bilder, nichts wird im Leerlauf vorberechnet</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Merksatz:</strong> Bei durchscheinenden Flächen niemals zwei Ebenen übereinander legen, sonst entsteht ein Helligkeitssprung. Und: Wenn eine Animation auf der Hardware nicht flüssig läuft, lieber ganz weglassen als ruckeln lassen.</p>
+<p>Weitere Beschleuniger: Icon-Bilder werden auf höchstens 512 Pixel begrenzt und die skalierten Bilder zwischengespeichert; die Schrift-Berechnung wird gemerkt (Widgets ca. 5× schneller). Normale Live-Widgets laufen mit etwa 8 statt 15 Bildern pro Sekunde.</p>
+</section><section id="s37-8"><h2>37.8 Eingebaute Apps (Auswahl)</h2><p>Im Ordner <code>Oratio_Menu/Apps/</code> liegt jede App in einem eigenen Unterordner (Skript + <code>icon.png</code>):</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>App</th>
+<th>Zweck</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Oratio Media Player</td>
+<td>Musik mit Titelbild, Pegelbalken, Qualitätsanzeige (Codec, kHz, bit, kbit/s); pausiert andere Musik (<code>playerctl</code>)</td>
+</tr>
+<tr class="even">
+<td>Browser</td>
+<td>Favoriten (Stern, Strg+D), Verlauf, Suche auf der Seite (Strg+F), Zoom (Strg +/−/0), Video-Vollbild, Downloads nach <code>~/Downloads</code>; Favoriten liegen in <code>~/.local/share/oratio_browser</code></td>
+</tr>
+<tr class="odd">
+<td>Dateien</td>
+<td>Rechtsklick-Menü, Einfügen mit gleichem Namen fragt (Ersetzen / Beide behalten / Abbrechen), Bildvorschau</td>
+</tr>
+<tr class="even">
+<td>Rechner</td>
+<td>echte App mit Fenstergröße klein/normal/groß/voll, Glas/Matt; das Widget öffnet sie</td>
+</tr>
+<tr class="odd">
+<td>Timer, Wecker, Wetter</td>
+<td>folgen der Einstellung „App-Fenster → Darstellung“ (Glas / Matt / System)</td>
+</tr>
+<tr class="even">
+<td>Aufgaben</td>
+<td>Aufgabenliste (<code>oratio_aufgaben.py</code>)</td>
+</tr>
+<tr class="odd">
+<td>Icon Werkstatt</td>
+<td>zeichnet App-Icons</td>
+</tr>
+<tr class="even">
+<td>Strike</td>
+<td>kleines Spiel</td>
+</tr>
+<tr class="odd">
+<td>Labor</td>
+<td>Messplatz (<a class="xr" href="#/kap/38/38.5">Kapitel 38.5</a>)</td>
+</tr>
+<tr class="even">
+<td>Backup</td>
+<td>Systemklon (<a class="xr" href="#/kap/39/39.2">Kapitel 39.2</a>)</td>
+</tr>
+<tr class="odd">
+<td>Bauteile, Akademie, Atlas</td>
+<td>Elektronik-Nachschlagewerke (<a class="xr" href="#/kap/39/39.6">Kapitel 39.6</a>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Wichtige Lehre zu Icons:</strong> Es gab einen Versuch, dass Icons mit eigenem Hintergrund die ganze Kachel füllen (leeren Rand abschneiden). Er wurde wieder zurückgenommen; alle Icons werden wieder als „Platte + Icon mit kleinem Rand“ gezeichnet. Ein Icon darf auch <strong>keinen</strong> Hintergrund haben (Media Player: nur Ring, Schrift, Rot); dann bestimmt die Kachelfarbe das Aussehen.</p>
+</section><section id="s37-9"><h2>37.9 Tastatur und Joystick</h2><p>Das Menü ist auch ohne Maus bedienbar (Datei <code>Ansicht/tastatur.py</code>): Pfeile bewegen die Markierung, Enter öffnet, Esc geht zurück, Strg+Tab öffnet den App-Wechsler. Eine kleine Rii-Tastatur mit Joystick eignet sich als Fernbedienung am Fernseher. Beim Joystick gilt dasselbe wie bei den Pfeiltasten.</p>
+</section><section id="s37-10"><h2>37.10 Die Hauptlehren aus diesem Kapitel</h2><ol type="1">
+<li>Eine Datei pro Widget, eine pro App: Fehler bleiben lokal.</li>
+<li>Zuerst den erwarteten Zustand zeigen, danach bestätigen lassen.</li>
+<li>Animationen müssen zur Hardware passen – auf schwacher Grafik lieber umschalten als gleiten.</li>
+<li>Alles Veränderliche in eine JSON-Datei, alles Aussehen in den Werkzeugkasten.</li>
+</ol>
+</section>

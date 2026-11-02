@@ -1,0 +1,118 @@
+<section id="s41-1"><h2>41.1 Worum es geht</h2><p>In Projekt A und in der ersten Form von B wird das Ziehen aus <strong>Maus-Ereignissen</strong> zusammengebaut: <code>mousePressEvent</code> merkt sich den Anfang, <code>mouseMoveEvent</code> verschiebt ein Bild, <code>mouseReleaseEvent</code> entscheidet. In dieser Variante übernimmt <strong>Qt selbst</strong> das Ziehen mit <code>QDrag</code>, <code>QMimeData</code> und <code>dropEvent</code>. Das Verhalten ist gleich: auf belegten Platz = tauschen, auf leeren Platz = alter Platz bleibt leer, Seitenwechsel am Rand (0,75 s, danach 1,1 s), Lücke im Dock, Milchglas auf der Ziel-App.</p>
+<p><strong>Neu dadurch:</strong> Esc bricht das Ziehen ab (die App bleibt an ihrem Platz). Loslassen außerhalb des Fensters bedeutet abgebrochen.</p>
+</section><section id="s41-2"><h2>41.2 Der Ablauf in vier Schritten</h2><p>(aus der Beschreibung in <code>Parts/view_dnd.py</code>)</p>
+<ol type="1">
+<li>Die Kachel oder das Dock-Symbol meldet „weit genug gezogen“ (Signal <code>dragRequested</code>). Die Ansicht startet <code>_start_tile_drag</code> bzw. <code>_start_dock_drag</code>.</li>
+<li>Dort wird ein <code>QDrag</code> mit dem schwebenden Bild gestartet. <code>QDrag.exec_()</code> läuft, bis losgelassen oder abgebrochen wird. Währenddessen laufen Timer und Animationen normal weiter.</li>
+<li><strong>Die ganze Ansicht ist das Ziel.</strong> <code>dragEnterEvent</code>, <code>dragMoveEvent</code>, <code>dragLeaveEvent</code> und <code>dropEvent</code> bekommen die Zeigerposition und zeigen die Vorschau.</li>
+<li>Nach <code>exec_()</code> setzt <code>_drag_done</code> bzw. <code>_dock_drag_done</code> die App ein (losgelassen) oder nimmt alles zurück (Abbruch).</li>
+</ol>
+</section><section id="s41-3"><h2>41.3 Der Kern in wenigen Zeilen</h2><div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PyQt5.QtCore <span class="im">import</span> QMimeData, Qt</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PyQt5.QtGui <span class="im">import</span> QDrag</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _run_qt_drag(<span class="va">self</span>, image, hotspot, mime_type, payload):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Kehrt erst zurück, wenn losgelassen oder abgebrochen wurde.&quot;&quot;&quot;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> QMimeData()</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    data.setData(mime_type, payload)      <span class="co"># welche Art Ding wird gezogen (Kachel, Dock-Symbol)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    drag <span class="op">=</span> QDrag(<span class="va">self</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    drag.setMimeData(data)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    drag.setPixmap(image)                 <span class="co"># das schwebende Bild</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    drag.setHotSpot(hotspot)              <span class="co"># wo im Bild &quot;angefasst&quot; wurde</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> drag.exec_(Qt.MoveAction)</span></code></pre></div>
+<p>Damit die Ansicht Ziehvorgänge überhaupt annimmt, muss sie <code>setAcceptDrops(True)</code> setzen und die vier Ereignis-Methoden überschreiben. Die MIME-Namen für Kachel und Dock stehen in <code>Parts/consts.py</code> (<code>MIME_TILE</code>, <code>MIME_DOCK</code>, für das Kontrollfenster <code>MIME_CC</code>).</p>
+</section><section id="s41-4"><h2>41.4 Vergleich zur Maus-Ereignis-Lösung</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Maus-Ereignisse (A, erstes B)</th>
+<th>Qt-Drag&amp;Drop</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Code</td>
+<td>selbst verwaltet: Zustand, Schwelle, Bild</td>
+<td>Qt verwaltet Ablauf, Code kürzer</td>
+</tr>
+<tr class="even">
+<td>Abbruch mit Esc</td>
+<td>muss selbst gebaut werden</td>
+<td>geschenkt</td>
+</tr>
+<tr class="odd">
+<td>Loslassen außerhalb</td>
+<td>muss selbst behandelt werden</td>
+<td>geschenkt</td>
+</tr>
+<tr class="even">
+<td>Schwebendes Bild</td>
+<td>eigenes Widget, das dem Zeiger folgt</td>
+<td><code>setPixmap</code></td>
+</tr>
+<tr class="odd">
+<td>Laufen Animationen weiter?</td>
+<td>ja</td>
+<td>ja (<code>exec_</code> hat eine eigene Ereignisschleife)</td>
+</tr>
+<tr class="even">
+<td>Fehlerbild</td>
+<td>Bild bleibt hängen, wenn Release verloren geht</td>
+<td>selten</td>
+</tr>
+<tr class="odd">
+<td>Eigene Feinheiten (Randzeit, Vorschau)</td>
+<td>direkt im Move-Ereignis</td>
+<td>im <code>dragMoveEvent</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Wo Qt-Drag&amp;Drop nicht passt:</strong> Beim <strong>Größe ändern</strong> der Kacheln im Kontrollfenster (untere rechte Ecke) bleibt die alte Maus-Logik, weil das kein Ziehen eines Dings ist, sondern ein Verändern.</p>
+</section><section id="s41-5"><h2>41.5 Wie die Datei aufgeteilt wurde</h2><p>In derselben Variante wurde die 10 700-Zeilen-Datei <code>oratio_menu.py</code> in <code>Oratio_Menu/Parts/</code> zerlegt (nichts am Inhalt geändert, nur verschoben):</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Datei</th>
+<th>Inhalt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>consts.py</code></td>
+<td>Raster, Größen, optionale Module, MIME-Namen</td>
+</tr>
+<tr class="even">
+<td><code>icons.py</code></td>
+<td>alle gezeichneten Symbole (<code>draw_*</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>model.py</code></td>
+<td><code>MenuItem</code>, Raster-Berechnung, Programme finden</td>
+</tr>
+<tr class="even">
+<td><code>tiles.py</code></td>
+<td>App-Kachel (<code>AppTile</code>), Zeichenfläche, Seitenpunkte, <code>drag_image()</code></td>
+</tr>
+<tr class="odd">
+<td><code>menu_bar.py</code></td>
+<td>Glas-Leiste mit allen Animationen</td>
+</tr>
+<tr class="even">
+<td><code>dock.py</code></td>
+<td>Dock-Symbole und Dock-Leiste</td>
+</tr>
+<tr class="odd">
+<td><code>panels_*.py</code></td>
+<td>Fenster: Einstellungen, Verbindungen, Apps, Meldungen</td>
+</tr>
+<tr class="even">
+<td><code>cc_*.py</code></td>
+<td>Kontrollfenster (Bausteine, Zustand, Fenster)</td>
+</tr>
+<tr class="odd">
+<td><code>view.py</code></td>
+<td>die Ansicht <code>MenuView</code>, zusammengesetzt aus <code>view_config</code>, <code>view_window</code>, <code>view_overlay</code>, <code>view_panels</code>, <code>view_home</code>, <code>view_layout</code>, <code>view_dock</code>, <code>view_dnd</code>, <code>view_keys</code>, <code>view_apps</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Im Hauptprojekt B (<a class="xr" href="#/kap/36/36.6">Kapitel 36.6</a>) heißt dieselbe Idee <code>Kern/</code>, <code>Bausteine/</code>, <code>Fenster/</code>, <code>Ansicht/</code>; die Aufteilung ist dort etwas anders benannt.</p>
+</section>

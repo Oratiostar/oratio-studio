@@ -1,0 +1,160 @@
+<p>Dieses Kapitel ist die <strong>Landkarte</strong> des Buches. Jedes Projekt steht mit Hardware, Ziel, den wichtigsten Stolpersteinen und den Kapiteln, in denen es ausführlich behandelt wird. Wer ein bestimmtes Projekt nachbauen will, beginnt hier und springt in das genannte Kapitel. Wer ein Problem hat, sucht das Projekt und findet unter „Typische Fehler“ die Richtung.</p>
+<section id="s29-1"><h2>29.1 Die Projekte in einer Tabelle</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Projekt</th>
+<th>Hardware</th>
+<th>Ziel</th>
+<th>Typische Fehler und Lösung</th>
+<th>Kapitel</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Raspberry Pi als Arbeitsrechner</strong></td>
+<td>Pi 4 und Pi 5, NVMe-SSD, Freenove-Gehäuse</td>
+<td>stabiler Alltagsrechner mit Sicherung</td>
+<td>Rechte auf Laufwerken, Boot-Reihenfolge, Unterspannung</td>
+<td>6, 7, 8, 9</td>
+</tr>
+<tr class="even">
+<td><strong>Bildschirm und 4K</strong></td>
+<td>Pi mit 4K-Monitor</td>
+<td>scharfes Bild, lesbare Oberfläche, bleibt nach Neustart und Monitorwechsel</td>
+<td>Skalierung weg nach Neustart → Autostart; nach Monitor aus/an → Kanshi/Watchdog</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td><strong>Freenove Tower Cooler</strong></td>
+<td>Pi 5, Turm mit OLED, Lüfter, LEDs</td>
+<td>Anzeige, Lüftersteuerung, Beleuchtung</td>
+<td>läuft nur unter Raspberry Pi OS; Dienste/Treiber</td>
+<td>11, 26.10</td>
+</tr>
+<tr class="even">
+<td><strong>LED-Matrix (HUB75)</strong></td>
+<td>Pi 4, Panel 64×32, später Pico/ESP32-S3</td>
+<td>Animationen, Uhr, Lauftext, „Oratio“-Schriftzug</td>
+<td>Compilerfehler in C++, Flackern → <code>--led-slowdown-gpio</code>, Versorgung</td>
+<td>19, 51.7</td>
+</tr>
+<tr class="odd">
+<td><strong>OLED mit Arduino Nano</strong></td>
+<td>Nano-Klon, SSD1306</td>
+<td>Text und Symbole anzeigen, Pi liefert Daten</td>
+<td>Upload-Fehler → <code>atmega328old</code>, Adresse → I²C-Scan, „leeres“ Display → Schrift zu klein</td>
+<td>16, 17.5</td>
+</tr>
+<tr class="even">
+<td><strong>Oratio Watch OS</strong></td>
+<td>ESP32-S3, rundes GC9A01, LVGL</td>
+<td>eigene Smartwatch-Oberfläche</td>
+<td>SPI-Pins, Speicher, PlatformIO-Konfiguration</td>
+<td>17, 23</td>
+</tr>
+<tr class="odd">
+<td><strong>Zifferblatt AMOLED</strong></td>
+<td>Waveshare ESP32-S3-Touch-AMOLED-1.75 (CO5300, QSPI)</td>
+<td>Casio-Zifferblatt 1:1 auf rundem Display</td>
+<td>PSRAM-Einstellung, Spaltenversatz</td>
+<td>21</td>
+</tr>
+<tr class="even">
+<td><strong>Lokale KI / ORAI</strong></td>
+<td>Pi, Ollama, Whisper, Piper, Vosk</td>
+<td>eigener Sprachassistent</td>
+<td>Modellgröße, Sprache, Mikrofon</td>
+<td>24, 30, 39.3</td>
+</tr>
+<tr class="odd">
+<td><strong>Batocera-Station</strong></td>
+<td>Pi 5, SD/SSD</td>
+<td>Retro-Spiele</td>
+<td>falsches Image (BCM2711), Berechtigung, Boot-Reihenfolge</td>
+<td>26</td>
+</tr>
+<tr class="even">
+<td><strong>Steam Deck mit Dual Boot</strong></td>
+<td>Steam Deck OLED</td>
+<td>SteamOS + Windows</td>
+<td>Bootloader überschrieben, 24H2</td>
+<td>27</td>
+</tr>
+<tr class="odd">
+<td><strong>Windows 11 auf dem Steam Deck</strong></td>
+<td>Steam Deck OLED, Stick, ohne PC</td>
+<td>Windows von Hand installieren</td>
+<td>Treiber, Konto-Zwang, Klonen, Partitionstabelle</td>
+<td>28</td>
+</tr>
+<tr class="even">
+<td><strong>Oratio Control Center</strong></td>
+<td>Pi 5, Python, PyQt5; Varianten für Deck, C++, Browser</td>
+<td>Startfeld für Skripte, Programme, Widgets, Einstellungen</td>
+<td>Einrückung, JSON, Qt-Anzeige, Autostart</td>
+<td>31–45</td>
+</tr>
+<tr class="odd">
+<td><strong>Hash-Prüfer</strong></td>
+<td>Windows und Linux</td>
+<td>doppelte Dateien finden, Downloads prüfen</td>
+<td>leerer Parameter in PowerShell</td>
+<td>25.7, 45</td>
+</tr>
+<tr class="even">
+<td><strong>Elektronik im Beruf</strong></td>
+<td>Messgerät, Lötkolben</td>
+<td>Bauteile prüfen, Schaltungen berechnen, Sicherheitsrelais</td>
+<td>falsche Einordnung, falsche Messung</td>
+<td>62–70</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s29-2"><h2>29.2 Die Projekte im Zusammenhang</h2><p>Die Projekte sind nicht unabhängig. Vieles baut aufeinander auf:</p>
+<pre class="text"><code>Linux und Terminal (1–5)
+  └─ Raspberry Pi im Alltag (6–9) ── Boot, Laufwerke, Backup
+        ├─ Bildschirm / 4K (10) ──────────────┐
+        ├─ Freenove-Turm (11) ────────────────┤
+        │                                     ▼
+        │                          Oratio Control Center (31–45)
+        │                           ├─ Projekt A „Werkbank“ (32–35)
+        │                           ├─ Projekt B „Glas“ (36–39)
+        │                           ├─ Varianten: Qt-Drag&amp;Drop, C++ (40–42)
+        │                           ├─ Steam-Deck-Variante (43)
+        │                           └─ Browser-Variante Oratio Place (44)
+        └─ Lokale KI (24) ── Sprache (30) ─────┘
+Mikrocontroller (15–20) ── Displays, LED-Matrix
+        ├─ Oratio Watch OS (23)
+        └─ Zifferblatt (21)
+Betriebssysteme (25–28) ── Windows, Batocera, Steam Deck
+Elektronik (62–70) ── Bauteile, Schaltungen, Messen</code></pre>
+<p>Was daraus folgt: Ein Fehler in einem unteren Baustein (zum Beispiel falsch gesetzte Rechte, Bildschirmskalierung, Python-Einrückung) taucht in vielen oberen Projekten wieder auf. Darum sind die Grundlagen am Anfang des Buches wichtig, und darum gibt es ab <a class="xr" href="#/kap/46">Kapitel 46</a> einen eigenen Querschnitt der Lehren, die sich in allen Projekten wiederholen.</p>
+</section><section id="s29-3"><h2>29.3 Projekt für Projekt: was dahintersteckt</h2><h3 id="raspberry-pi-als-arbeitsrechner-kapitel-69">Raspberry Pi als Arbeitsrechner (<a class="xr" href="#/kap/6">Kapitel 6</a>–9)</h3>
+<p>Der Pi ist der Rechner, auf dem die meisten Projekte laufen. Die Grundlagen: Befehle für Systeminformationen, Temperatur, Takt und Strom (<a class="xr" href="#/kap/6">Kapitel 6</a>), das Einrichten einer neuen SSD mit allen Schritten von der Partition bis <code>fstab</code> (<a class="xr" href="#/kap/7">Kapitel 7</a>), der Weg vom Einschalten bis zum Desktop (<a class="xr" href="#/kap/8">Kapitel 8</a>) und das automatische Sichern des ganzen Systems (<a class="xr" href="#/kap/9">Kapitel 9</a>). <strong>Lehre:</strong> Wer die Startkette kennt, versteht, warum Einstellungen manchmal nach einem Neustart verschwinden.</p>
+<h3 id="bildschirm-und-4k-kapitel-10">Bildschirm und 4K (<a class="xr" href="#/kap/10">Kapitel 10</a>)</h3>
+<p>Ein 4K-Monitor zeigt am Pi alles winzig. Die Auflösung soll voll bleiben, nur die Oberfläche größer werden. Die Lösung <code>wlr-randr --scale</code> wirkt nur in der laufenden Sitzung; deshalb Autostart, dann Kanshi für Monitorwechsel, dann ein Watchdog, wenn der Monitor beim Aus- und Einschalten kein Ereignis sendet. <strong>Lehre:</strong> Eine Einstellung kann in einer Schicht stehen und in der nächsten überschrieben werden.</p>
+<h3 id="freenove-tower-cooler-kapitel-11">Freenove Tower Cooler (<a class="xr" href="#/kap/11">Kapitel 11</a>)</h3>
+<p>Das Gehäuse mit OLED, Lüfter und LEDs wird von einer Python-Oberfläche des Herstellers gesteuert. Diese Oberfläche war der <strong>Ausgangspunkt des Control Centers</strong> (<a class="xr" href="#/kap/32">Kapitel 32</a>).</p>
+<h3 id="led-matrix-kapitel-19">LED-Matrix (<a class="xr" href="#/kap/19">Kapitel 19</a>)</h3>
+<p>Ein HUB75-Panel mit 64×32 Pixeln wird vom Pi mit der Bibliothek <code>rpi-rgb-led-matrix</code> angesteuert; später ging es auch mit Pico und ESP32-S3. <strong>Lehre:</strong> Zeitkritische Signale (Flackern) lösen sich mit Hardware-Unterstützung und passenden Parametern, nicht mit reinem Python.</p>
+<h3 id="oled-mit-arduino-nano-kapitel-16">OLED mit Arduino Nano (<a class="xr" href="#/kap/16">Kapitel 16</a>)</h3>
+<p>Der erste vollständige Weg von der Entwicklungsumgebung über den Upload bis zur Anzeige: Nano-Klon, <code>arduino-cli</code>, Bootloader-Variante, I²C-Adresse, Display-Bibliothek. <strong>Lehre:</strong> Wenn nichts zu lesen ist, ist das Display meist in Ordnung; die Einstellung (Schriftgröße, Drehung) ist falsch.</p>
+<h3 id="oratio-watch-os-und-zifferblatt-kapitel-23-und-21">Oratio Watch OS und Zifferblatt (<a class="xr" href="#/kap/23">Kapitel 23</a> und 21)</h3>
+<p>Eine eigene Uhr-Software auf ESP32-S3 mit rundem Display. Das Zifferblatt-Projekt überträgt ein Casio-Zifferblatt 1:1 auf ein rundes AMOLED-Display. <strong>Lehre:</strong> Hardware und Inhalt trennen; dann lässt sich dieselbe Oberfläche auf andere Displays übertragen.</p>
+<h3 id="lokale-ki-und-sprache-kapitel-24-30-393">Lokale KI und Sprache (<a class="xr" href="#/kap/24">Kapitel 24</a>, 30, 39.3)</h3>
+<p>Ein Assistent auf dem Pi, der hört, versteht und antwortet, ohne Cloud. Das Konzept: Nur das Sprechen und Verstehen sind Modelle; was <strong>exakt</strong> sein muss (Befehle, Zahlen), liegt in normalem Programmcode. <strong>Lehre:</strong> Kleine Modelle erfinden Dinge, deshalb gehört die Entscheidung in Code.</p>
+<h3 id="batocera-steam-deck-und-windows-kapitel-2528">Batocera, Steam Deck und Windows (<a class="xr" href="#/kap/25">Kapitel 25</a>–28)</h3>
+<p>Betriebssysteme auf verschiedener Hardware: Retro-Station auf dem Pi 5, Dual Boot und eine komplette Windows-Installation auf dem Steam Deck. <strong>Lehre:</strong> Der Bootloader ist die empfindlichste Stelle; vor jeder Partitionsarbeit Sicherung.</p>
+<h3 id="oratio-control-center-kapitel-3145">Oratio Control Center (<a class="xr" href="#/kap/31">Kapitel 31</a>–45)</h3>
+<p>Das große Projekt: eine eigene Oberfläche für den Pi, die aus dem Freenove-Fenster wuchs. Projekt A zeigt den Weg, Projekt B die heutige Glas-Oberfläche; dazu kommen Varianten für Qt-Drag&amp;Drop, C++, das Steam Deck und den Browser. Alles ist so beschrieben, dass es <strong>Schritt für Schritt nachgebaut</strong> werden kann.</p>
+<h3 id="elektronik-kapitel-6270">Elektronik (<a class="xr" href="#/kap/62">Kapitel 62</a>–70)</h3>
+<p>Bauteile erkennen und prüfen, Spannungsteiler und Z-Diode berechnen, 4–20-mA-Signale messen, Akkus sicher laden, Motoren und Treiber, Sicherheitsrelais, Elektronik am Mikrocontroller.</p>
+</section><section id="s29-4"><h2>29.4 So gehe ich ein neues Projekt an</h2><ol type="1">
+<li><strong>Ziel in einem Satz aufschreiben.</strong> Ohne Ziel lässt sich nicht entscheiden, ob etwas gelungen ist.</li>
+<li><strong>Hardware und Chip bestimmen, Datenblatt lesen.</strong> Spannung (3,3 V oder 5 V), Bus (I²C, SPI, UART), Pinbelegung.</li>
+<li><strong>Kleinsten Test bauen,</strong> der etwas Sichtbares tut (LED blinkt, Text erscheint).</li>
+<li><strong>Jede Änderung einzeln testen.</strong> Fehlermeldung wörtlich lesen (<a class="xr" href="#/kap/47">Kapitel 47</a>).</li>
+<li><strong>Funktionierende Version sichern</strong> (Kopie oder Git), bevor weitergebaut wird.</li>
+<li><strong>Aufschreiben, was die Lösung war.</strong> Genau dafür ist dieses Buch entstanden.</li>
+</ol>
+</section>

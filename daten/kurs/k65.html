@@ -1,0 +1,163 @@
+<section id="s65-1"><h2>65.1 Netzteile und USB-Power-Delivery</h2><p>Ein Netzteil liefert nicht so viel, wie draufsteht, sondern <strong>so viel, wie das Gerät anfordert</strong> – bis zur Obergrenze. Die Wattzahl ist eine Obergrenze, keine Vorgabe.</p>
+<p><strong>Fall: iPhone mit 30 W am 100-W-MacBook-Netzteil.</strong> Meine Frage: Mein iPhone lädt mit höchstens 30 W. Darf ich ein 100-W-Netzteil benutzen? <strong>Ja.</strong> Gerät und Netzteil verhandeln über das Ladeprotokoll (USB-PD), welche Spannung und welcher Strom gewählt werden. Das Netzteil bietet mehrere Stufen an, das Gerät wählt die, die es verträgt.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>USB-PD-Stufe (typisch)</th>
+<th>Spannung</th>
+<th>Strom</th>
+<th>Leistung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Grundstufe</td>
+<td>5 V</td>
+<td>3 A</td>
+<td>15 W</td>
+</tr>
+<tr class="even">
+<td>Zwischenstufe</td>
+<td>9 V</td>
+<td>3 A</td>
+<td>27 W</td>
+</tr>
+<tr class="odd">
+<td>Zwischenstufe</td>
+<td>15 V</td>
+<td>3 A</td>
+<td>45 W</td>
+</tr>
+<tr class="even">
+<td>Oberstufe</td>
+<td>20 V</td>
+<td>5 A</td>
+<td>100 W</td>
+</tr>
+</tbody>
+</table></div>
+<p>Welche Stufen ein Netzteil tatsächlich bietet, steht auf seinem Typenschild. Für 5 A braucht es außerdem ein Kabel mit eingebautem Chip („e-marked“).</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Gerät</th>
+<th>Was es braucht</th>
+<th>Hinweis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Raspberry Pi 4</td>
+<td>5 V, 3 A</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Raspberry Pi 5</td>
+<td>5 V, 5 A (27-W-Netzteil)</td>
+<td>sonst begrenzt der Pi die USB-Leistung und zeigt „USB boot requires high current“ (<a class="xr" href="#/kap/26/26.4">Kapitel 26.4</a>)</td>
+</tr>
+<tr class="odd">
+<td>ESP32 / Arduino</td>
+<td>5 V über USB, wenige hundert mA</td>
+<td>LED-Matrizen, Motoren und Servos brauchen eigene Versorgung</td>
+</tr>
+<tr class="even">
+<td>LED-Matrix HUB75 64×32</td>
+<td>5 V, mehrere Ampere</td>
+<td>niemals über den Pin eines Boards speisen</td>
+</tr>
+</tbody>
+</table></div>
+<p>Ob die Versorgung reicht, zeigt am Pi <code>vcgencmd get_throttled</code> (<a class="xr" href="#/kap/49/49.2">Kapitel 49.2</a>).</p>
+</section><section id="s65-2"><h2>65.2 Lithium-Akkus: warum nie direkt ans Netzteil</h2><p><strong>Fall: Akku mit Netzteil laden.</strong> Meine Frage: Wenn ich Plus und Minus eines Netzteils an Plus und Minus eines Lithium-Akkus anschließe, wird er dann aufgeladen? <strong>Antwort: Er wird irgendwie geladen, aber das darf nie direkt passieren.</strong></p>
+<p><strong>Warum das gefährlich ist:</strong></p>
+<ol type="1">
+<li><strong>Das Netzteil begrenzt den Ladestrom nicht passend.</strong> Lithium-Zellen müssen mit <strong>konstantem Strom (CC)</strong> und danach mit <strong>konstanter Spannung (CV)</strong> geladen werden. Ein normales Netzteil tut das nicht.</li>
+<li><strong>Der Akku bestimmt die Spannung, nicht das Netzteil.</strong> Ein 5-V-Netzteil an einer 3,7-V-Zelle erzeugt sofort einen sehr hohen Ausgleichsstrom.</li>
+<li><strong>Lithium-Zellen brauchen Schutzfunktionen:</strong> Temperaturkontrolle, Überspannungsschutz, Tiefentladeschutz, Strombegrenzung und bei mehreren Zellen einen Balancer.</li>
+</ol>
+<p>Folgen im schlimmsten Fall: Überhitzen, Aufblähen, Brand.</p>
+<p><strong>Der Ladeablauf einer Zelle (CC/CV):</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Phase</th>
+<th>Was passiert</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Vorladen (bei tiefentladener Zelle)</td>
+<td>kleiner Strom bis etwa 3 V</td>
+</tr>
+<tr class="even">
+<td>2. Konstantstrom (CC)</td>
+<td>Ladestrom konstant (zum Beispiel 0,5 bis 1 A), Spannung steigt auf 4,2 V</td>
+</tr>
+<tr class="odd">
+<td>3. Konstantspannung (CV)</td>
+<td>Spannung bleibt bei 4,2 V, Strom sinkt</td>
+</tr>
+<tr class="even">
+<td>4. Ende</td>
+<td>bei etwa einem Zehntel des Ladestroms schaltet der Lader ab</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Spannungswerte einer Li-Ion-Zelle (üblich):</strong> voll 4,2 V, Nennwert 3,7 V, leer etwa 3,0 V. Darunter darf sie nicht entladen werden, sonst ist sie dauerhaft geschädigt.</p>
+<p><strong>Bausteine fürs sichere Laden</strong> (meine Frage: „Gibt es einen IC zwischen Netzteil und Akku?“ – ja, mehrere):</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Baustein</th>
+<th>Aufgabe</th>
+<th>Anmerkung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>TP4056</strong> (Modul)</td>
+<td>Lader für <strong>eine</strong> Zelle, 4,2 V, Ladestrom etwa 0,2 bis 1 A einstellbar, schaltet bei 4,2 V ab</td>
+<td>Variante <strong>mit Schutzschaltung (DW01 + 8205A)</strong> wählen. Anschlüsse: Netzteil an <code>IN+ / IN−</code>, Akku an <code>B+ / B−</code>, Last an <code>OUT+ / OUT−</code></td>
+</tr>
+<tr class="even">
+<td><strong>MCP73831 / MCP73832</strong> (Microchip)</td>
+<td>kleiner Lader-IC für eine Zelle, einstellbarer Ladestrom</td>
+<td>gut für eigene Platinen (SOT23-5)</td>
+</tr>
+<tr class="odd">
+<td><strong>BQ2407x-Serie</strong> (Texas Instruments)</td>
+<td>Lader mit <strong>Power-Path</strong>: Akku laden und gleichzeitig das Gerät betreiben</td>
+<td>professioneller</td>
+</tr>
+<tr class="even">
+<td><strong>BMS-Modul</strong></td>
+<td>Schutzplatine für Akkupacks aus mehreren Zellen (Balancer, Überstrom, Tiefentladung)</td>
+<td>immer bei Packs mit 2 oder mehr Zellen in Reihe</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Beim TP4056 bestimmt ein Widerstand <code>RPROG</code> den Ladestrom.</strong> Nach dem Datenblatt gilt ungefähr <code>I = 1200 / R</code> (mit R in Ohm und I in Ampere). 1,2 kΩ ergeben also etwa 1 A. Für eine kleine Zelle (zum Beispiel 300 mAh bei der Smartwatch) ist 1 A viel zu viel: dort wird mit höchstens etwa 0,5 C geladen, also 150 mA, was einem <code>RPROG</code> von rund 8 kΩ entspräche. <strong>Datenblatt prüfen</strong>; das ist hier meine Näherung.</p>
+<p><strong>Weitere Regeln für Akkus im Projekt:</strong></p>
+<ul>
+<li>Zellen nie kurzschließen, nie mechanisch beschädigen, nie unbeaufsichtigt laden, nicht in der Hitze lagern.</li>
+<li>Eine aufgeblähte Zelle sofort entsorgen (Sammelstelle), nicht mehr laden.</li>
+<li>Beim Löten an Zellen gilt: schnell arbeiten oder fertige Zellen mit Lötfahnen nehmen.</li>
+<li>Die Akkulaufzeit abschätzen: <code>Laufzeit [h] = Kapazität [mAh] / mittlerer Strom [mA]</code>. Eine Smartwatch mit 300 mAh und 60 mA mittlerem Strom läuft etwa 5 Stunden.</li>
+</ul>
+</section><section id="s65-3"><h2>65.3 Fall: Kondensator im PC-Netzteil</h2><p>Ein Elektrolytkondensator auf der <strong>Primärseite</strong> eines PC-Netzteils speichert nach dem Ziehen des Steckers noch <strong>etwa 325 bis 400 V</strong>. Das ist lebensgefährlich. Die 325 V kommen aus dem Spitzenwert der Netzspannung: <code>230 V · √2 ≈ 325 V</code>.</p>
+<p>Es sind zwar <strong>Entladewiderstände</strong> eingebaut, aber man verlässt sich nie darauf (sie können defekt sein oder der Strom zu klein). Vorgehen vor jedem Öffnen:</p>
+<ol type="1">
+<li>Netzstecker ziehen.</li>
+<li>Mehrere Minuten warten.</li>
+<li>Die Spannung an den großen Kondensatoren <strong>mit dem Messgerät</strong> kontrollieren.</li>
+<li>Falls noch Spannung anliegt: über einen geeigneten Widerstand entladen (nicht mit einem Schraubendreher kurzschließen).</li>
+<li>Nur mit Fachkenntnis arbeiten. Wer das nicht kann, öffnet das Netzteil nicht.</li>
+</ol>
+<p><strong>Allgemein:</strong> Netzteile, Elektroblitz-Geräte, Röhrenfernseher und Zwischenkreise von Antrieben speichern gefährliche Energie auch im ausgeschalteten Zustand.</p>
+</section><section id="s65-4"><h2>65.4 Übungen mit Lösungen</h2><ol type="1">
+<li><strong>Aufgabe:</strong> Ein Akku mit 2000 mAh versorgt eine Schaltung, die im Mittel 250 mA zieht. Laufzeit? <strong>Lösung:</strong> <code>2000 mAh / 250 mA = 8 h</code> (in der Praxis wegen Wandlerverlusten etwas weniger, etwa 80 bis 85 % davon).</li>
+<li><strong>Aufgabe:</strong> Welcher Ladestrom ist für eine 1000-mAh-Zelle bei 0,5 C üblich? <strong>Lösung:</strong> <code>0,5 · 1000 mAh = 500 mA</code>.</li>
+<li><strong>Aufgabe:</strong> Ein Netzteil gibt 20 V bei 5 A an. Welche Leistung? <strong>Lösung:</strong> <code>P = 20 V · 5 A = 100 W</code>.</li>
+</ol>
+</section>

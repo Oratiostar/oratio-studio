@@ -1,0 +1,375 @@
+<p>Bei Mikrocontrollern gibt es drei Fehlerquellen, die man <strong>der Reihe nach</strong> trennt: <strong>1. Verbindung zum Rechner</strong> (Kabel, Port, Treiber, Boot-Modus), <strong>2. Programm</strong> (Übersetzen, Hochladen), <strong>3. Schaltung</strong> (Strom, Pegel, Verdrahtung). Wer zuerst ein einfaches Blink-Programm (nur die eingebaute LED) zum Laufen bringt, weiß danach: Rechner, Kabel, Board und Werkzeug sind in Ordnung. Alles Weitere ist dann Schaltung oder Programm.</p>
+<section id="s51-1"><h2>51.1 Verbindung: Board wird nicht gefunden</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Befehl</th>
+<th>Deutung</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Kein Port in der Arduino-IDE/PlatformIO</td>
+<td><code>ls /dev/ttyUSB* /dev/ttyACM*</code> vor und nach dem Einstecken</td>
+<td>nichts Neues erscheint: Kabel hat nur Ladeleitungen, oder Board defekt</td>
+<td>anderes <strong>Datenkabel</strong> probieren</td>
+</tr>
+<tr class="even">
+<td>Port da, <code>Permission denied</code></td>
+<td><code>ls -l /dev/ttyUSB0</code>, <code>groups</code></td>
+<td>Benutzer nicht in der Gruppe <code>dialout</code></td>
+<td><code>sudo usermod -aG dialout $USER</code>, abmelden und neu anmelden</td>
+</tr>
+<tr class="odd">
+<td>Port erscheint und verschwindet sofort</td>
+<td><code>dmesg -w</code> beim Einstecken</td>
+<td><code>brltty</code> greift den Port ab</td>
+<td><code>sudo apt remove brltty</code></td>
+</tr>
+<tr class="even">
+<td>Port wechselt zwischen <code>ttyUSB0</code> und <code>ttyUSB1</code></td>
+<td><code>ls /dev/serial/by-id/</code></td>
+<td>feste Namen über die Seriennummer</td>
+<td>diesen Pfad statt <code>ttyUSB0</code> benutzen</td>
+</tr>
+<tr class="odd">
+<td>ESP32-S3 zeigt sich als <code>ttyACM0</code>, nach Hochladen anders</td>
+<td><code>dmesg | tail</code></td>
+<td>natives USB startet neu</td>
+<td>Port nach jedem Upload neu wählen</td>
+</tr>
+<tr class="even">
+<td>Windows: Gerät „Unbekannt“</td>
+<td>Geräte-Manager</td>
+<td>Treiber für CH340/CP210x fehlt</td>
+<td>passenden Treiber installieren</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s51-2"><h2>51.2 Hochladen schlägt fehl</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Meldung</th>
+<th>Bedeutung</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>avrdude: stk500_getsync(): not in sync: resp=0x00</code></td>
+<td>Nano meldet sich nicht</td>
+<td>Board „Nano“, Prozessor <strong>„ATmega328P (Old Bootloader)“</strong> wählen (bei PlatformIO <code>board = nanoatmega328</code>; Klone brauchen oft den alten Bootloader); anderes Kabel; nichts an Pin D0/D1 angeschlossen lassen</td>
+</tr>
+<tr class="even">
+<td><code>avrdude: ser_open(): can't open device</code></td>
+<td>Port belegt oder fehlt</td>
+<td>Serieller Monitor offen? Schließen. Port neu wählen</td>
+</tr>
+<tr class="odd">
+<td><code>A fatal error occurred: Failed to connect to ESP32: Wrong boot mode detected</code></td>
+<td>ESP32 ist nicht im Lade-Modus</td>
+<td><strong>BOOT</strong>-Taste halten, <strong>RESET</strong> kurz drücken, BOOT loslassen, dann hochladen</td>
+</tr>
+<tr class="even">
+<td><code>Failed to connect … No serial data received</code></td>
+<td>Kabel/Port/Boot</td>
+<td>Datenkabel; Taste wie oben; Baudrate des Uploads senken (<code>upload_speed = 115200</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>A serial exception error occurred: Could not configure port</code></td>
+<td>USB-Chip/Treiber</td>
+<td>anderen Port, Kabel</td>
+</tr>
+<tr class="even">
+<td>Hochladen klappt, Programm läuft nicht</td>
+<td>Boot-Modus bleibt aktiv</td>
+<td>nach dem Upload <strong>RESET</strong> drücken; BOOT nicht gedrückt halten</td>
+</tr>
+<tr class="odd">
+<td><code>Sketch too big</code> / <code>region 'iram0_0_seg' overflowed</code></td>
+<td>Speicher voll</td>
+<td>Partitionsschema (ESP32) größer wählen, Bibliotheken/Schriften verkleinern</td>
+</tr>
+<tr class="even">
+<td>Verhalten wie altes Programm</td>
+<td>Upload wirklich fertig?</td>
+<td>in der Ausgabe nach „Hard resetting“ oder „bytes written“ suchen</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s51-3"><h2>51.3 Übersetzen (Compiler)</h2><p>Der <strong>erste</strong> Fehler der Ausgabe ist der echte; alle folgenden sind meist Folgefehler.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Meldung</th>
+<th>Ursache</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>fatal error: X.h: No such file or directory</code></td>
+<td>Bibliothek fehlt</td>
+<td>im Bibliotheksverwalter installieren; PlatformIO: <code>lib_deps</code></td>
+</tr>
+<tr class="even">
+<td><code>'X' was not declared in this scope</code></td>
+<td>Tippfehler, Variable außerhalb ihres Blocks, Header fehlt</td>
+<td>Schreibweise (Groß/Klein!) prüfen</td>
+</tr>
+<tr class="odd">
+<td><code>expected ';' before …</code></td>
+<td>Semikolon fehlt, <strong>meist in der Zeile davor</strong></td>
+<td>Zeile davor ansehen</td>
+</tr>
+<tr class="even">
+<td><code>expected '}' at end of input</code></td>
+<td>Klammer nicht geschlossen</td>
+<td>Einrückung prüfen; Editor-Funktion „zusammengehörige Klammer“</td>
+</tr>
+<tr class="odd">
+<td><code>multiple definition of …</code></td>
+<td>Funktion/Variable in zwei Dateien</td>
+<td>in Header nur deklarieren (<code>extern</code>), Definition einmal</td>
+</tr>
+<tr class="even">
+<td><code>undefined reference to …</code></td>
+<td>Funktion deklariert, aber nie definiert / Bibliothek nicht eingebunden</td>
+<td>Definition ergänzen; <code>lib_deps</code></td>
+</tr>
+<tr class="odd">
+<td><code>conflicting declaration</code></td>
+<td>zwei Bibliotheken mit gleichem Namen</td>
+<td>eine entfernen</td>
+</tr>
+<tr class="even">
+<td>Fehler nur bei PlatformIO, in der IDE nicht</td>
+<td><code>.ino</code> hat automatische Prototypen, <code>.cpp</code> nicht</td>
+<td>Funktionen vor Benutzung deklarieren, <code>#include &lt;Arduino.h&gt;</code></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s51-4"><h2>51.4 Serieller Monitor</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Deutung</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Zeichensalat (<code>ÿþ…</code>)</td>
+<td>Baudrate im Monitor ≠ <code>Serial.begin(…)</code></td>
+<td>gleiche Zahl einstellen (115200 vs. 9600)</td>
+</tr>
+<tr class="even">
+<td>Nichts im Monitor</td>
+<td>Programm läuft nicht, falscher Port, ESP32-S3 ohne <code>USB CDC on boot</code></td>
+<td>RESET; Port prüfen; Option „USB CDC On Boot: Enabled“</td>
+</tr>
+<tr class="odd">
+<td>Nur beim Start Text, dann Stille</td>
+<td>Programm hängt in einer Schleife oder <code>delay</code></td>
+<td><code>Serial.println("A");</code>-Markierungen setzen und halbieren (<a class="xr" href="#/kap/47">Kapitel 47</a>)</td>
+</tr>
+<tr class="even">
+<td>Endloser Neustart mit <code>Guru Meditation Error</code> / <code>Brownout detector was triggered</code></td>
+<td>Reset durch Fehler oder Strom</td>
+<td>Fehlertext lesen: <code>Brownout</code> = Spannung bricht ein → besseres Kabel/Netzteil, Kondensator 100–470 µF; <code>LoadProhibited</code> = ungültiger Zeiger</td>
+</tr>
+<tr class="odd">
+<td><code>rst:0x1 (POWERON_RESET)</code> immer wieder</td>
+<td>Strom oder Programmfehler</td>
+<td>siehe oben</td>
+</tr>
+<tr class="even">
+<td><code>E (…) i2c: …</code></td>
+<td>I²C-Fehler</td>
+<td><a class="xr" href="#/kap/51/51.6">Kapitel 51.6</a></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s51-5"><h2>51.5 Strom und Pegel</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Frage</th>
+<th>Messen/Prüfen</th>
+<th>Hinweis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Hat das Board 5 V bzw. 3,3 V?</td>
+<td>Multimeter an VCC/GND</td>
+<td>USB 5 V, ESP32-Pins arbeiten mit <strong>3,3 V</strong></td>
+</tr>
+<tr class="even">
+<td>Sind alle Massen verbunden?</td>
+<td>Durchgangsprüfung zwischen GND-Punkten</td>
+<td>Ohne gemeinsame Masse funktioniert kein Signal</td>
+</tr>
+<tr class="odd">
+<td>Bekommt der Verbraucher genug?</td>
+<td>Strom messen</td>
+<td>Pin liefert nur wenige Milliampere (Arduino ca. 20 mA); Motoren, Relais, LED-Streifen brauchen eine Treiberstufe und eigene Versorgung</td>
+</tr>
+<tr class="even">
+<td>5-V-Signal an 3,3-V-Eingang?</td>
+<td>Pegel messen</td>
+<td>kann den ESP32/Pi beschädigen → Pegelwandler oder Spannungsteiler</td>
+</tr>
+<tr class="odd">
+<td>Wird etwas heiß?</td>
+<td>Finger/Wärmebild</td>
+<td>sofort trennen; Kurzschluss, falsch gepolt</td>
+</tr>
+<tr class="even">
+<td>LED leuchtet nicht</td>
+<td>Polung, Vorwiderstand (z. B. 220 Ω bei 5 V), Pin-Modus <code>OUTPUT</code></td>
+<td>Langes Bein = Plus</td>
+</tr>
+<tr class="odd">
+<td>Taster liefert Zufallswerte</td>
+<td>Eingang schwebt</td>
+<td><code>INPUT_PULLUP</code> verwenden; Taster nach GND</td>
+</tr>
+<tr class="even">
+<td>Taster prellt (mehrfach ausgelöst)</td>
+<td><code>Serial.println</code> bei jedem Druck</td>
+<td>Entprellen: 20–50 ms Sperrzeit</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s51-6"><h2>51.6 I²C und Displays</h2><pre class="text"><code>Muster: 1) Adresse suchen (I²C-Scanner) → 2) Adresse im Programm eintragen
+        → 3) Leitungen/Pegel/Pull-ups prüfen → 4) Bibliothek und Controllertyp prüfen</code></pre>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Deutung</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Scanner findet nichts</td>
+<td>SDA/SCL vertauscht, GND fehlt, falsche Pins</td>
+<td>Pins des Boards prüfen (ESP32: frei wählbar mit <code>Wire.begin(SDA, SCL)</code>), Kabel kurz</td>
+</tr>
+<tr class="even">
+<td>Scanner findet 0x3C, Display schwarz</td>
+<td>Programm nutzt andere Adresse oder anderen Controller (SSD1306 vs. SH1106)</td>
+<td>Adresse und Treiberklasse anpassen</td>
+</tr>
+<tr class="odd">
+<td>Display zeigt nur Zufallspunkte</td>
+<td>falscher Controller</td>
+<td>passende Bibliothek/Klasse</td>
+</tr>
+<tr class="even">
+<td>Display um Pixel versetzt (SH1106)</td>
+<td>132 statt 128 Pixel Breite</td>
+<td>SH1106-Treiber verwenden</td>
+</tr>
+<tr class="odd">
+<td>Bild steht auf dem Kopf</td>
+<td>Ausrichtung</td>
+<td>Rotation setzen (<code>setRotation</code>, <code>u8g2.setFlipMode</code>)</td>
+</tr>
+<tr class="even">
+<td>Display flackert</td>
+<td>zu viele Voll-Aktualisierungen</td>
+<td>nur Änderungen zeichnen, Puffer verwenden</td>
+</tr>
+<tr class="odd">
+<td>Spiegelverkehrte Schrift</td>
+<td>Display ist gespiegelt verbaut</td>
+<td>Spiegel-Option des Treibers</td>
+</tr>
+<tr class="even">
+<td>AMOLED zeigt Streifen/Versatz</td>
+<td>Offset des Panels</td>
+<td>Spalten-/Zeilenversatz im Treiber setzen (Zifferblatt-<a class="xr" href="#/kap/21">Kapitel 21</a>)</td>
+</tr>
+<tr class="odd">
+<td>Display wird nach einigen Minuten dunkel/leer</td>
+<td>Spannungseinbruch</td>
+<td>Versorgung stützen, Helligkeit senken</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s51-7"><h2>51.7 Adressierbare LEDs und Matrizen</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Ursache</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Erste LED falsche Farbe</td>
+<td>Datenpegel 3,3 V statt 5 V</td>
+<td>Pegelwandler oder erste LED opfern; 300–500 Ω in die Datenleitung; 1000 µF über die Versorgung</td>
+</tr>
+<tr class="even">
+<td>Farben vertauscht (Grün ↔︎ Rot)</td>
+<td>Farbreihenfolge <code>GRB</code> statt <code>RGB</code></td>
+<td>in der Bibliothek einstellen</td>
+</tr>
+<tr class="odd">
+<td>Alles weiß/flackert bei hoher Helligkeit</td>
+<td>Netzteil zu schwach</td>
+<td>Helligkeit begrenzen; ca. 60 mA pro LED bei Weiß</td>
+</tr>
+<tr class="even">
+<td>Matrix flackert unter Linux</td>
+<td>Zeitkritisches Signal wird vom System unterbrochen</td>
+<td>Hardware-Unterstützung (PWM/PIO/Treiberbibliothek), kein reines Python-Bit-Banging</td>
+</tr>
+<tr class="odd">
+<td>Matrix zeigt Zeilen vertauscht</td>
+<td>Verdrahtungsreihenfolge (Zickzack)</td>
+<td>Koordinaten-Umrechnung</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s51-8"><h2>51.8 PlatformIO (Eigenheiten)</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Deutung</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Error: Please specify 'upload_port'</code></td>
+<td>mehrere Ports</td>
+<td><code>upload_port</code> in <code>platformio.ini</code></td>
+</tr>
+<tr class="even">
+<td>Änderungen an der Bibliothek wirken nicht</td>
+<td>Zwischenspeicher</td>
+<td><code>pio run -t clean</code>, <code>.pio</code>-Ordner löschen</td>
+</tr>
+<tr class="odd">
+<td><code>Platform not installed</code></td>
+<td>erster Start ohne Netz</td>
+<td>Netzverbindung, <code>pio pkg update</code></td>
+</tr>
+<tr class="even">
+<td>Falsche Boardwerte</td>
+<td>Variante</td>
+<td><code>pio boards &lt;Name&gt;</code> zeigt Kennungen</td>
+</tr>
+<tr class="odd">
+<td>Zwei Bibliotheken gleicher Name</td>
+<td>Konflikt</td>
+<td><code>lib_ignore</code> oder <code>lib_deps</code> eindeutig</td>
+</tr>
+</tbody>
+</table></div>
+</section>

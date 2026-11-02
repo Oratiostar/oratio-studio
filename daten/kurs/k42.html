@@ -1,0 +1,118 @@
+<section id="s42-1"><h2>42.1 Worum es geht</h2><p>Das Programm ist hier in <strong>C++ mit Qt5</strong> geschrieben statt in Python mit PyQt5. Aussehen, Bedienung und alle Einstellungsdateien (<code>Json/</code>, <code>LED/led_config.json</code> …) sind gleich geblieben. Dafür gibt es <strong>keinen Interpreter</strong> mehr: Das Programm wird gebaut und startet als fertige Datei.</p>
+<p><strong>Umfang:</strong> rund 23 000 Zeilen C++.</p>
+</section><section id="s42-2"><h2>42.2 Bauen und starten</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Aufgabe</th>
+<th>Befehl</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Erstes Mal auf dem Pi (installiert Qt5 und Compiler, baut, richtet Dienste ein)</td>
+<td><code>bash install.sh</code></td>
+</tr>
+<tr class="even">
+<td>Nach Änderungen am Code</td>
+<td><code>bash build.sh</code></td>
+</tr>
+<tr class="odd">
+<td>Alles von vorn bauen</td>
+<td><code>bash build.sh neu</code></td>
+</tr>
+<tr class="even">
+<td>Starten</td>
+<td><code>./run_app.sh</code> oder das Desktop-Symbol</td>
+</tr>
+<tr class="odd">
+<td>Eine App allein starten</td>
+<td><code>./oratio_control_center --run-app Oratio_Menu/Apps/Kanshi/kanshi.so</code></td>
+</tr>
+<tr class="even">
+<td>Dienste neu einrichten</td>
+<td><code>./oratio_control_center --install-services</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Von Hand: <code>cmake -S . -B build -DCMAKE_BUILD_TYPE=Release &amp;&amp; cmake --build build -j4 &amp;&amp; cmake --install build</code>. Die fertigen Programme werden in den Projektordner installiert (<code>CMAKE_INSTALL_PREFIX</code> ist der Projektordner).</p>
+</section><section id="s42-3"><h2>42.3 Aufbau des Bauplans</h2><p><code>CMakeLists.txt</code> legt Standard (C++17), <code>AUTOMOC</code> (Qt erzeugt den Hilfscode für Signale) und die Qt-Komponenten fest. Daraus entstehen:</p>
+<ol type="1">
+<li><strong><code>oratio_core</code></strong> (statische Bibliothek): gemeinsamer Teil ohne Fenster (Pfade, Dienste, LED-Muster, Lüftertreiber, OLED-Zeichnung, PS5).</li>
+<li><strong>Dienste:</strong> <code>led_service</code>, <code>fan_service</code>, <code>oled_service</code> (eigene Programme, die im Hintergrund laufen).</li>
+<li><strong><code>oratio_ui</code></strong> (Objektbibliothek): alles, was zum Fenster gehört (<code>app.cmake</code> listet die Quellen in <code>OCC_UI_SOURCES</code>).</li>
+<li><strong><code>oratio_control_center</code></strong>: das Hauptprogramm.</li>
+<li><strong>Apps als Plugins</strong> (<code>.so</code>): <code>hash_checker.so</code>, <code>kanshi.so</code>.</li>
+</ol>
+<p><code>app.cmake</code> prüft für jede Datei der Liste, ob sie existiert (<code>if(EXISTS …)</code>). Ein fehlender Tab-Ordner führt also nicht zum Abbruch, nur zu einem Programm ohne diesen Tab – dieselbe Fehlertoleranz wie in Python (<a class="xr" href="#/kap/36/36.3">Kapitel 36.3</a>).</p>
+<p><strong>Widgets:</strong> <code>file(GLOB … Oratio_Menu/Widget/*.cpp CONFIGURE_DEPENDS)</code> – jede <code>.cpp</code> in diesem Ordner ist ein Widget. Am Ende der Datei steht <code>REGISTER_WIDGET</code> mit <code>kind</code>, <code>name</code>, <code>sizes</code>, <code>min</code>, <code>fast</code>, <code>order</code>, dazu die Funktion <code>paint(c)</code>. Ein neues Widget entsteht durch Kopieren einer kleinen Datei (<code>network.cpp</code>), Ändern und <code>bash build.sh</code>.</p>
+</section><section id="s42-4"><h2>42.4 Apps als Plugins</h2><p>Ein Plugin ist eine Bibliothek, die das Menü zur Laufzeit öffnet (<code>dlopen</code>). Die Vorlage steht in <code>Oratio_Menu/Apps/oratio_app.h</code>. Eine App besteht aus einem normalen Qt-Fenster und einer einzigen Zeile am Ende:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;oratio_app.h&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MeinFenster <span class="op">:</span> <span class="kw">public</span> <span class="ex">QWidget</span> <span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ... ganz normales Qt-Fenster ...</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>ORATIO_APP<span class="op">(</span>MeinFenster<span class="op">)</span></span></code></pre></div>
+<p>Das Makro erzeugt die exportierte Funktion <code>oratio_app_create()</code>, die das Menü aufruft. Dann gilt:</p>
+<ul>
+<li>Das Fenster erscheint als <strong>Glas-Karte</strong> im Tab; Titel = Fenstertitel; x schließt.</li>
+<li>Eigene Farben der App fallen weg, das Menü legt Glas, Nachtmodus und Schrift darüber (Teile mit <code>setProperty("keepStyle", true)</code> behalten ihren Stil).</li>
+<li>Meldungen über <code>OratioApp::information/warning/critical/question</code> erscheinen als Glas-Meldung in der Karte; außerhalb des Menüs sind es normale <code>QMessageBox</code>-Fenster.</li>
+<li><code>accept()</code>/<code>close()</code> der App schließt die Karte.</li>
+</ul>
+<p><strong>Neue App bauen:</strong> Ordner <code>Oratio_Menu/Apps/&lt;Ordner&gt;/</code> mit <code>&lt;name&gt;.cpp</code>, dann in <code>app.cmake</code> die Zeile <code>oratio_app_plugin(&lt;Ordner&gt; &lt;name&gt;)</code>, dann <code>bash build.sh</code>. Die <code>.so</code> landet im selben Ordner. Liegt neben einer <code>.py</code>-Datei eine gleichnamige <code>.so</code>, öffnet das Menü die <code>.so</code> als Glas-Karte; <code>.py</code>-Programme ohne <code>.so</code> laufen weiter mit <code>python3</code> als eigenes Fenster.</p>
+</section><section id="s42-5"><h2>42.5 Skripte im Oratio-Look</h2><p>„App hinzufügen“ → „Im Oratio-Look öffnen“ <strong>an</strong> und „Im Terminal öffnen“ <strong>aus</strong>: Skripte (<code>.sh</code>, <code>.py</code>, <code>.js</code>, <code>.pl</code>, <code>.rb</code>, <code>.lua</code>, <code>.php</code>, <code>.bash</code>) laufen in einem Glasfenster. Die Ausgabe erscheint live, darunter eine Eingabezeile (für <code>read</code> und Ähnliches), dazu „Stopp“ und „Nochmal“. Das Fenster zu schließen beendet das Programm.</p>
+</section><section id="s42-6"><h2>42.6 Toolbox als JSON-Listen</h2><p>In der C++-Variante stehen die Toolbox-Befehle nicht mehr im Programmcode, sondern in Listen: <code>pi_commands.json</code> (Bereich „Pi Tools“) und <code>general_commands.json</code> („Allgemeine Tools“). <code>core.cpp</code> (Motor) und <code>toolbox_menu.cpp</code> (Aussehen) werden nicht angefasst. Fehlt eine Liste, startet alles trotzdem; dort steht „Datei fehlt“. Der Vorteil: Eine neue Zeile in einer Textdatei braucht <strong>keinen Neubau</strong>.</p>
+</section><section id="s42-7"><h2>42.7 Vergleich Python gegenüber C++</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Python (PyQt5)</th>
+<th>C++ (Qt5)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Änderung ausprobieren</td>
+<td>Datei speichern, neu starten</td>
+<td><code>bash build.sh</code>, dann starten</td>
+</tr>
+<tr class="even">
+<td>Startzeit</td>
+<td>langsamer (Interpreter, Importe)</td>
+<td>schneller</td>
+</tr>
+<tr class="odd">
+<td>Speicherbedarf</td>
+<td>höher</td>
+<td>niedriger</td>
+</tr>
+<tr class="even">
+<td>Fehler beim Schreiben</td>
+<td>erst beim Ausführen sichtbar</td>
+<td>viele schon beim Bauen</td>
+</tr>
+<tr class="odd">
+<td>Zusätzliche Pakete</td>
+<td>PyQt5, Python-Bibliotheken</td>
+<td>Compiler, Qt5-Entwicklungspakete</td>
+</tr>
+<tr class="even">
+<td>Hilfsbibliotheken</td>
+<td>Python-Module</td>
+<td><code>nlohmann/json</code> (im Projekt), PIL entfällt (Qt zeichnet Systemschriften)</td>
+</tr>
+<tr class="odd">
+<td>Lernkurve</td>
+<td>flach</td>
+<td>steil (Zeiger, Header, CMake)</td>
+</tr>
+<tr class="even">
+<td>Geeignet für</td>
+<td>Ausprobieren, Lernen</td>
+<td>fertiges Gerät, das schnell und sparsam laufen soll</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Ehrliche Einordnung:</strong> Die C++-Fassung wurde aus dem Python-Stand übertragen. Wer neue Funktionen entwickeln will, tut das zuerst in Python und überträgt sie später, wenn sie sich bewährt haben.</p>
+</section>

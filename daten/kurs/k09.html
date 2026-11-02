@@ -1,0 +1,52 @@
+<p>Mein Ziel: <em>Wenn die SSD kaputtgeht, soll eine Kopie des Betriebssystems da sein, automatisch, täglich oder wöchentlich.</em></p>
+<section id="s9-1"><h2>9.1 Drei Möglichkeiten</h2><ol type="1">
+<li><strong>Klon auf eine zweite SSD</strong> (Programm <code>rpi-clone</code>): Die zweite SSD ist sofort bootfähig. Wenn SSD 1 ausfällt, wird SSD 2 angesteckt und die Arbeit geht weiter.</li>
+<li><strong>Backup-Dateien auf eine externe Festplatte</strong> (Programm <code>raspiBackup</code>): Mehrere Sicherungsstände, zum Beispiel von letzter Woche und vor einem Monat.</li>
+<li><strong>Backup über das Netzwerk</strong> auf ein NAS oder einen anderen Linux-Rechner.</li>
+</ol>
+</section><section id="s9-2"><h2>9.2 Welche Lösung?</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>rpi-clone</th>
+<th>raspiBackup</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bootfähige Kopie</td>
+<td>ja</td>
+<td>ja</td>
+</tr>
+<tr class="even">
+<td>Mehrere alte Stände</td>
+<td>nein</td>
+<td>ja</td>
+</tr>
+<tr class="odd">
+<td>Automatisch</td>
+<td>ja</td>
+<td>ja</td>
+</tr>
+<tr class="even">
+<td>Rückgängig bei spätem Fehler</td>
+<td>nein, der Fehler wird mitkopiert</td>
+<td>ja, mit älterem Stand</td>
+</tr>
+</tbody>
+</table></div>
+<p>Beispiel für den Unterschied: Wer am Montag etwas Falsches installiert und es erst am Freitag bemerkt, hat den Fehler im Klon bereits mitkopiert. Mit raspiBackup geht man auf den Stand vom Sonntag zurück. Die „Luxuslösung" ist beides zu kombinieren. Ich habe mich für <strong>raspiBackup</strong> entschieden. Es ist keine App mit Fenster, sondern ein Script für die Kommandozeile mit einem menügesteuerten Installer.</p>
+<p><strong>Merksatz:</strong> <em>Ein Backup ist erst dann ein Backup, wenn getestet wurde, dass es wirklich startet.</em></p>
+</section><section id="s9-3"><h2>9.3 Einrichtung Schritt für Schritt (Pi 5: NVMe als System, zweite SSD als Backup)</h2><ol type="1">
+<li>Zweite SSD anstecken und mit <code>lsblk</code> identifizieren (nicht die System-SSD!).</li>
+<li>Formatieren: <code>sudo mkfs.ext4 -L BACKUP /dev/sda1</code></li>
+<li>Einhängen: <code>sudo mkdir /backup</code> und <code>sudo mount /dev/sda1 /backup</code></li>
+<li>raspiBackup installieren:</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-sSLO</span> <span class="at">--fail</span> https://raw.githubusercontent.com/framps/raspiBackup/master/published/raspiBackupInstallUI.sh</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> bash ./raspiBackupInstallUI.sh</span></code></pre></div>
+<ol start="5" type="1">
+<li>Im Menü den Backup-Pfad (<code>/backup</code>) festlegen. Ein erstes Backup startet mit <code>sudo raspiBackup</code>.</li>
+<li>Automatisch jede Woche (zum Beispiel Sonntag 3 Uhr) per cron oder systemd-Timer, wie im Installationsmenü angeboten.</li>
+</ol>
+</section>

@@ -1,0 +1,137 @@
+<section id="s55-1"><h2>55.1 Compilerfehler</h2><p>Der Compiler nennt <strong>Datei:Zeile:Spalte</strong> und die Art des Fehlers. Meist ist der <strong>erste</strong> Fehler der echte, die folgenden sind Folgefehler.</p>
+<h3 id="xyz-was-not-declared-in-this-scope"><code>'xyz' was not declared in this scope</code></h3>
+<p>Der Name ist an dieser Stelle unbekannt.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Ursache</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Funktion wird <strong>vor</strong> ihrer Definition aufgerufen (<code>'pageOratio' was not declared</code>, <code>playMelody was not declared</code>)</td>
+<td>Funktion weiter oben definieren oder einen <strong>Prototyp</strong> ergänzen: <code>void pageOratio();</code></td>
+</tr>
+<tr class="even">
+<td>Konstante oder Farbe gibt es in der Bibliothek nicht (<code>GC9A01A_LIGHTGREY</code>, <code>NOTE_FS5</code>)</td>
+<td>Eigene Konstante mit <code>#define</code> oder <code>const</code> anlegen, zum Beispiel <code>#define NOTE_FS5 740</code>, oder eine vorhandene Farbe verwenden</td>
+</tr>
+<tr class="odd">
+<td><code>'sin' was not declared</code>, <code>'cos' was not declared</code></td>
+<td><code>#include &lt;cmath&gt;</code> ergänzen</td>
+</tr>
+<tr class="even">
+<td>Tippfehler oder falsche Schreibweise</td>
+<td>Namen vergleichen</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="error-expected-unqualified-id-before-if"><code>error: expected unqualified-id before 'if'</code></h3>
+<p>Eine Anweisung (<code>if</code>, <code>for</code>, <code>x = 1;</code>) steht <strong>außerhalb einer Funktion</strong>. Alles Ausführbare gehört in <code>setup()</code>, <code>loop()</code> oder eine andere Funktion. Prüfen, ob die geschweiften Klammern <code>{ }</code> vorher richtig geschlossen sind.</p>
+<h3 id="expected--before-"><code>expected ';' before ...</code></h3>
+<p>Ein Semikolon fehlt, meist in der <strong>Zeile davor</strong>.</p>
+<h3 id="fatal-error-xyzh-no-such-file-or-directory-zum-beispiel-adafruit_i2cdeviceh-led-matrixh"><code>fatal error: xyz.h: No such file or directory</code> (zum Beispiel <code>Adafruit_I2CDevice.h</code>, <code>led-matrix.h</code>)</h3>
+<p><strong>Bedeutung:</strong> Die Header-Datei wird nicht gefunden.</p>
+<p><strong>Lösung:</strong></p>
+<ul>
+<li>Arduino/PlatformIO: Bibliothek fehlt. In <code>platformio.ini</code> unter <code>lib_deps</code> eintragen (<code>adafruit/Adafruit BusIO</code>) oder in der Arduino IDE installieren. <code>Adafruit_I2CDevice.h</code> gehört zu <strong>Adafruit BusIO</strong>.</li>
+<li>Matrix-Beispiele auf dem Pi: Relativen Pfad prüfen (<code>#include "../include/led-matrix.h"</code>) oder aus dem richtigen Ordner kompilieren.</li>
+</ul>
+<h3 id="-piobuildesp32devsrcmaincppo-error-1"><code>*** [.pio/build/esp32dev/src/main.cpp.o] Error 1</code></h3>
+<p>Das ist nur das <strong>Ende</strong>: Der Compiler ist an <code>main.cpp</code> gescheitert. Die eigentliche Meldung steht <strong>darüber</strong>.</p>
+<h3 id="red--has-no-member-named-red"><code>.red</code> ... <code>has no member named 'red'</code></h3>
+<p>In neueren Versionen der Matrix-Bibliothek heißen die Farbanteile <code>.r</code>, <code>.g</code>, <code>.b</code>. <code>.red</code> durch <code>.r</code> ersetzen. Bei Flackern: <code>--led-slowdown-gpio=4</code>.</p>
+</section><section id="s55-2"><h2>55.2 Fehler in der Anzeige und im Programmablauf</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Ursache</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Display bleibt leer</td>
+<td><code>display.display()</code> fehlt, falsche Adresse, falsche Pins</td>
+<td><code>display.display()</code> nach dem Zeichnen, I²C-Scanner laufen lassen</td>
+</tr>
+<tr class="even">
+<td>Text zu klein oder gespiegelt</td>
+<td>Standardgröße und Drehung</td>
+<td><code>setTextSize(2)</code>, <code>setRotation(1)</code></td>
+</tr>
+<tr class="odd">
+<td><code>Serial.println("OLED nicht gefunden");</code> erscheint</td>
+<td>I²C-Adresse falsch (0x3C oder 0x3D) oder Verkabelung</td>
+<td>Scanner, SDA/SCL prüfen</td>
+</tr>
+<tr class="even">
+<td>Display zeigt Müll oder verschobenes Bild</td>
+<td>falscher Controller oder falsche Auflösung (SSD1306 gegenüber SH1106)</td>
+<td>Bibliothek und Controller zum Display passend wählen</td>
+</tr>
+<tr class="odd">
+<td>Farben vertauscht (Rot und Blau)</td>
+<td>RGB- und BGR-Reihenfolge</td>
+<td>Treiber-Option zur Farbreihenfolge setzen oder <code>invert</code> umschalten</td>
+</tr>
+<tr class="even">
+<td>JSON aus dem Internet wird nicht gelesen (<code>DeserializationError</code>)</td>
+<td>Antwort zu groß für das Dokument oder keine gültige Antwort</td>
+<td><code>if (error) Serial.println(error.c_str());</code> ausgeben, <code>StaticJsonDocument</code> größer wählen, HTTP-Code prüfen (<code>200</code>)</td>
+</tr>
+<tr class="odd">
+<td>Nach einigen Minuten hängt das Programm</td>
+<td>Speicher voll, <code>String</code>-Verkettungen</td>
+<td><code>char</code>-Arrays benutzen, Heap beobachten</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s55-3"><h2>55.3 PlatformIO</h2><h3 id="could-not-initialize-project-mit-unknownpackageerror-could-not-find-the-package-with-platformiotoolchain-gccarmnoneeabi--1902010-requirements"><code>Could not initialize Project</code> mit <code>UnknownPackageError: Could not find the package with 'platformio/toolchain-gccarmnoneeabi @ ~1.90201.0' requirements</code></h3>
+<p><strong>Bedeutung:</strong> PlatformIO sucht ein bestimmtes Toolchain-Paket in einer festen Version und findet für das verwendete System (zum Beispiel ARM64-Linux auf dem Pi) keine passende Ausgabe. Es ist <strong>nicht</strong> der Pico, VS Code oder das Internet kaputt.</p>
+<p><strong>Was eine Toolchain ist:</strong> Die Sammlung aus Compiler, Assembler und Linker, mit der aus dem C++-Code ein Programm für den Chip wird.</p>
+<p><strong>Lösung:</strong> Die Plattform und ihre Version prüfen und eine Plattform wählen, die für ARM64 gebaut ist (für den Pico die Arduino-Pico-Plattform von Earle Philhower), oder das Projekt auf einem x86-Rechner bauen. Die Hinweise zur Plattform stehen in <code>platformio.ini</code>.</p>
+<h3 id="no-module-named-platformio"><code>No module named platformio</code></h3>
+<p>Im normalen Terminal ist PlatformIO nicht installiert, es liegt in VS Code in einer eigenen Umgebung. Aufruf:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">~/.platformio/penv/bin/platformio</span> <span class="at">--version</span></span></code></pre></div>
+<p>Fehlt die Datei oder ist die Umgebung beschädigt, löscht man nur diese Umgebung (<code>rm -rf ~/.platformio/penv</code>), schließt VS Code und startet es neu. PlatformIO baut sie neu auf. Die Projekte bleiben erhalten.</p>
+<h3 id="falsche-boardangabe">Falsche Boardangabe</h3>
+<p>Ein Nano-Klon braucht oft <code>board = nanoatmega328</code> mit <code>board_build.mcu</code>/Bootloader <code>atmega328old</code>, sonst bricht der Upload ab (<code>avrdude: stk500_getsync(): not in sync</code>).</p>
+</section><section id="s55-4"><h2>55.4 Board wird nicht erkannt oder Upload scheitert</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Ursache</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Kein Port in der Liste (<code>/dev/ttyUSB0</code> fehlt)</td>
+<td>Kabel nur zum Laden, Treiber fehlt, Board nicht erkannt</td>
+<td>Datenkabel verwenden, unter Windows den <strong>CP210x</strong>- oder <strong>CH340</strong>-Treiber installieren, <code>ls /dev/ttyUSB* /dev/ttyACM*</code> prüfen</td>
+</tr>
+<tr class="even">
+<td><code>Permission denied: '/dev/ttyUSB0'</code></td>
+<td>Benutzer nicht in der Gruppe <code>dialout</code></td>
+<td><code>sudo usermod -a -G dialout $USER</code>, danach neu anmelden</td>
+</tr>
+<tr class="odd">
+<td>Upload bleibt bei <code>Connecting......</code> hängen (ESP32)</td>
+<td>Boot-Modus nicht aktiv</td>
+<td>Taste <strong>BOOT</strong> gedrückt halten, bis der Upload beginnt</td>
+</tr>
+<tr class="even">
+<td><code>avrdude: stk500_getsync(): not in sync</code> (Nano)</td>
+<td>falscher Bootloader</td>
+<td>Prozessor <code>atmega328old</code> wählen</td>
+</tr>
+<tr class="odd">
+<td>Upload klappt, Display bleibt leer</td>
+<td>Programm läuft, Verdrahtung falsch</td>
+<td>I²C-Scanner (<a class="xr" href="#/kap/17/17.5">Kapitel 17.5</a>)</td>
+</tr>
+</tbody>
+</table></div>
+</section>

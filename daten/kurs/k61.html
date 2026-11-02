@@ -1,0 +1,44 @@
+<section id="s61-1"><h2>61.1 Python: wichtige Unterschiede</h2><ul>
+<li><strong><code>print</code></strong> schreibt Text in das Terminal. Zum Suchen von Fehlern ist es das einfachste Werkzeug (<code>print("hier")</code>).</li>
+<li><strong><code>os.system("befehl")</code></strong> startet einen Befehl, ist aber unsicher bei Eingaben von außen. Besser ist <strong><code>subprocess.run([...])</code></strong> oder <code>subprocess.Popen([...])</code> mit einer <strong>Liste</strong> aus Befehl und Argumenten.</li>
+<li><strong>JSON als Datenbank:</strong> Für kleine Programme ist eine JSON-Datei die einfachste Speicherung (Namen, Pfade, Einstellungen). Grundregel: <strong>Einstellungen in JSON, Logik im Code.</strong> Dann lassen sich Apps hinzufügen, ohne den Code zu ändern.</li>
+<li><strong>Kann jeder Linux-Befehl benutzt werden?</strong> Ja, jeder Befehl, den das Terminal kennt, lässt sich mit <code>subprocess</code> starten.</li>
+<li><strong>Groß- und Kleinschreibung:</strong> Python unterscheidet <code>Name</code> und <code>name</code>. Klassen schreibt man üblicherweise <code>GroßBuchstabe</code>, Funktionen und Variablen <code>klein_mit_unterstrich</code>.</li>
+<li><strong>ComboBox oder QInputDialog:</strong> Eine <strong>ComboBox</strong> ist ein Auswahlfeld, das im Fenster bleibt. <strong>QInputDialog</strong> ist ein Popup-Fenster mit einer Eingabe oder Auswahl.</li>
+<li><strong>PyQt5 oder PyQt6:</strong> Die beiden sind sich ähnlich, aber nicht kompatibel (zum Beispiel <code>exec_()</code> gegenüber <code>exec()</code>). Eine Version konsequent verwenden.</li>
+</ul>
+</section><section id="s61-2"><h2>61.2 Drag and Drop in Qt</h2><p>Statt Mausereignisse selbst zu verwalten (<code>mousePressEvent</code>, <code>mouseReleaseEvent</code>), bietet Qt eine eingebaute Drag-and-Drop-Unterstützung. Sie ist stabiler, wenn viele Elemente verschoben werden. Beim Ziehen kann man das Element abdunkeln, indem man seine Farbe aus der Grundfarbe berechnet.</p>
+</section><section id="s61-3"><h2>61.3 Python oder C++ für mein Projekt?</h2><p>C++ (zum Beispiel mit Qt) ist schneller und braucht weniger Speicher, aber die Entwicklung dauert länger. Für eine Oberfläche mit Knöpfen, die Skripte starten, ist Python schnell genug. Ein Programm für den Raspberry Pi lässt sich in C++ neu schreiben und dort kompilieren, es läuft dann nur auf der passenden Architektur (ARM64).</p>
+</section><section id="s61-4"><h2>61.4 Eigenes Programm früher starten oder als Startbild</h2><p>Autostart (<a class="xr" href="#/kap/5">Kapitel 5</a>) startet nach der Anmeldung. Soll früher gestartet werden (zum Beispiel ein Video beim Hochfahren), braucht es einen <strong>systemd-Dienst</strong>. Dienste starten vor der Anmeldung und können ein Programm oder Video sofort abspielen. Die Abspielzeit lässt sich mit Start- und Endzeit steuern, zum Beispiel mit <code>mpv --start=8 --end=19 video.mp4</code>.</p>
+</section><section id="s61-5"><h2>61.5 Steam Deck und Retro-Spiele</h2><p><strong>PS1-Dateiformate:</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Format</th>
+<th>Beschreibung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>BIN</code> + <code>CUE</code></td>
+<td>Abbild plus Beschreibung der Spuren</td>
+</tr>
+<tr class="even">
+<td><code>CHD</code></td>
+<td>komprimiertes Abbild, spart Platz, wird von den meisten Emulatoren gelesen (empfohlen)</td>
+</tr>
+<tr class="odd">
+<td><code>PBP</code></td>
+<td>Sony-Paketformat, oft für eigenständige Spiele</td>
+</tr>
+<tr class="even">
+<td><code>M3U</code></td>
+<td>Wiedergabeliste für Spiele mit <strong>mehreren Discs</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Umwandeln: <code>chdman createcd -i spiel.cue -o spiel.chd</code>. Bei mehreren Discs legt man pro Disc eine CHD an und eine <code>.m3u</code> mit den Dateinamen.</p>
+<p><strong>BIOS:</strong> Unter RetroDECK im Ordner <code>~/retrodeck/bios/</code>. PS2 braucht einen Unterordner <code>ps2</code>, weil der Emulator (PCSX2) die Dateien dort erwartet.</p>
+<p><strong>Bazzite oder SteamOS?</strong> SteamOS ist das Valve-System für das Deck. Bazzite ist ein ähnliches System auf Fedora-Basis, das auch auf anderen Handhelds läuft (zum Beispiel Intel- und AMD-Geräten).</p>
+<p><strong>Speicher erweitern:</strong> Steam Deck und ROG Ally nehmen eine microSD-Karte oder eine austauschbare M.2-SSD auf (Größe 2230 oder 2242). Prüfe die Bauform vor dem Kauf.</p>
+</section>

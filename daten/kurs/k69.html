@@ -1,0 +1,170 @@
+<p>Dieses Kapitel verbindet die Grundlagen mit den Projekten aus den Teilen 2 und 3: Wie wird ein LED, ein Taster, ein Relais, ein Display oder ein Motor <strong>richtig</strong> an Arduino, ESP32 oder Raspberry Pi angeschlossen?</p>
+<section id="s69-1"><h2>69.1 Eine LED richtig anschließen</h2><p>Jede LED braucht einen <strong>Vorwiderstand</strong>, sonst wird sie durch den zu hohen Strom zerstört (und der Pin ebenfalls).</p>
+<pre class="text"><code>R = (UB − UF) / IF</code></pre>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Farbe</th>
+<th>Durchlassspannung UF (typisch)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Rot, Gelb, Grün (normal)</td>
+<td>1,8 bis 2,2 V</td>
+</tr>
+<tr class="even">
+<td>Blau, Weiß</td>
+<td>2,8 bis 3,3 V</td>
+</tr>
+</tbody>
+</table></div>
+<p>Rechenbeispiel Rot an einem ESP32-Pin (3,3 V) mit 5 mA: <code>R = (3,3 V − 2,0 V) / 0,005 A = 260 Ω</code> → 270 Ω. Bei 5 V (Arduino) und 10 mA: 300 Ω → 330 Ω. Das <strong>lange Bein</strong> der LED ist die Anode (Plus).</p>
+<p><strong>Viele LEDs:</strong> Ein Pin liefert nur wenige Milliampere. Mehr braucht einen Treiber (Abschnitt 69.4) oder ein Schieberegister (Abschnitt 69.3). Adressierbare LED-Streifen (WS2812) haben ihren Treiber in jeder LED und brauchen nur <strong>einen</strong> Datenpin und eine eigene 5-V-Versorgung (ca. 60 mA je LED bei Weiß).</p>
+</section><section id="s69-2"><h2>69.2 Taster und Schalter</h2><p>Ein Eingang darf nie „in der Luft hängen“ (schwebend); er liest dann Zufallswerte.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Schaltung</th>
+<th>Ruhepegel</th>
+<th>Gedrückt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Taster nach Masse, <strong>interner Pull-up</strong> (<code>INPUT_PULLUP</code>)</td>
+<td><code>HIGH</code></td>
+<td><code>LOW</code></td>
+</tr>
+<tr class="even">
+<td>Taster nach Plus mit externem Pull-down (10 kΩ nach Masse)</td>
+<td><code>LOW</code></td>
+<td><code>HIGH</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Prellen:</strong> Mechanische Kontakte springen beim Schließen 1 bis 20 ms. Das Programm sieht dann mehrere Drücke. Abhilfe: nach der ersten Flanke 20 bis 50 ms ignorieren (Entprellzeit) oder einen Kondensator (100 nF) parallel zum Taster.</p>
+<p><strong>Drehgeber (Rotary Encoder)</strong> liefern zwei Signale A und B, deren Reihenfolge die Drehrichtung ergibt, und meist einen Taster.</p>
+</section><section id="s69-3"><h2>69.3 Mehr Ausgänge: das Schieberegister 74HC595</h2><p>Gehen die Pins aus, erweitert ein <strong>Schieberegister</strong> die Ausgänge. Es braucht nur <strong>drei Leitungen</strong> vom Mikrocontroller (Daten, Takt, Speichern) und liefert <strong>8 Ausgänge</strong>. Mehrere lassen sich hintereinanderschalten (Ausgang <code>QH'</code> an den Dateneingang des nächsten).</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Anschluss</th>
+<th>Name</th>
+<th>Aufgabe</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Daten</td>
+<td><code>SER</code> (DS)</td>
+<td>die Bits werden hineingeschoben</td>
+</tr>
+<tr class="even">
+<td>Takt</td>
+<td><code>SRCLK</code> (SHCP)</td>
+<td>jede steigende Flanke schiebt ein Bit</td>
+</tr>
+<tr class="odd">
+<td>Speichern</td>
+<td><code>RCLK</code> (STCP)</td>
+<td>übernimmt alle 8 Bits gleichzeitig an die Ausgänge</td>
+</tr>
+<tr class="even">
+<td>Ausgänge</td>
+<td><code>QA</code> bis <code>QH</code></td>
+<td>je Pin nur wenige mA, bei LED mit Vorwiderstand</td>
+</tr>
+<tr class="odd">
+<td>Ausgabe freigeben</td>
+<td><code>OE</code></td>
+<td>LOW = Ausgänge aktiv</td>
+</tr>
+</tbody>
+</table></div>
+<p>In Arduino gibt es dafür <code>shiftOut(dataPin, clockPin, MSBFIRST, wert)</code>, anschließend den Speicher-Pin kurz auf HIGH. Für Last über wenige Milliampere (Relais, Motoren) folgt auf den Ausgang wieder ein Treiber (ULN2803).</p>
+</section><section id="s69-4"><h2>69.4 Lasten schalten: Transistor, MOSFET, Relais</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Last</th>
+<th>Baustein</th>
+<th>Schaltung (Kurzfassung)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>kleine Last bis etwa 500 mA (Summer, kleines Relais)</td>
+<td>NPN-Transistor (BC337) oder ULN2003</td>
+<td>Basis über 1 kΩ am Pin; Last zwischen Plus und Kollektor; Emitter an Masse; Freilaufdiode bei Spule</td>
+</tr>
+<tr class="even">
+<td>größere Last (Lüfter, LED-Streifen, Pumpe)</td>
+<td><strong>Logic-Level-N-MOSFET</strong> (zum Beispiel IRLZ44N, schaltet mit 3,3–5 V durch)</td>
+<td>Gate über 100 Ω am Pin; <strong>Pull-down 10 kΩ</strong> Gate–Source (hält den MOSFET beim Start aus); Last zwischen Plus und Drain; Source an Masse</td>
+</tr>
+<tr class="odd">
+<td>Netzspannung schalten</td>
+<td><strong>fertiges Relais-Modul</strong> oder Halbleiterrelais</td>
+<td>nur mit Fachkenntnis, Berührungsschutz, Gehäuse</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Typische Fehler:</strong></p>
+<ul>
+<li>Last an einem Pin, der nur 3,3 V liefert, mit einem MOSFET, der erst bei 10 V durchschaltet → Transistor bleibt halb offen und wird heiß (siehe Abschnitt 66.4).</li>
+<li>Kein gemeinsamer Massepunkt zwischen Mikrocontroller und Lastversorgung → die Schaltung reagiert nicht.</li>
+<li>Spule ohne Freilaufdiode → der Pin oder Transistor stirbt nach einigen Schaltungen.</li>
+</ul>
+</section><section id="s69-5"><h2>69.5 Versorgung stützen und stören vermeiden</h2><ul>
+<li><strong>Entkopplung:</strong> Ein <strong>100-nF-Keramikkondensator</strong> möglichst nahe an der Versorgung jedes ICs fängt schnelle Stromspitzen ab. Ein größerer Elektrolytkondensator (100 bis 470 µF) am Board glättet Einbrüche, etwa bei WLAN-Aktivität des ESP32.</li>
+<li><strong>Brownout:</strong> Bricht die Spannung kurz ein, startet der ESP32 neu („Brownout detector was triggered“, <a class="xr" href="#/kap/51/51.4">Kapitel 51.4</a>). Ursachen: dünnes oder langes USB-Kabel, schwaches Netzteil, zu viele Verbraucher.</li>
+<li><strong>Massebrummen und Rauschen:</strong> Leistungs- und Signalleitungen getrennt führen, eine zentrale Massestelle (Sternpunkt).</li>
+<li><strong>Lange Leitungen:</strong> I²C ist für wenige Zentimeter bis Dezimeter gedacht. Längere Strecken brauchen niedrigere Taktraten, kleinere Pull-ups oder einen anderen Bus.</li>
+</ul>
+</section><section id="s69-6"><h2>69.6 Pull-ups bei I²C</h2><p>I²C hat zwei Leitungen, <code>SDA</code> und <code>SCL</code>, und beide brauchen <strong>Pull-up-Widerstände</strong> nach Plus (typisch 4,7 kΩ bis 10 kΩ bei 3,3 V). Viele Module haben sie schon eingebaut; hängen mehrere Module an einem Bus, werden die Pull-ups parallel geschaltet und der Gesamtwert sinkt. Als Faustregel nicht unter etwa 1 kΩ parallel. Der I²C-Scanner (<a class="xr" href="#/kap/17/17.5">Kapitel 17.5</a>) zeigt, ob ein Gerät antwortet. Der Bus arbeitet im <strong>Open-Drain-Prinzip</strong>: Teilnehmer ziehen die Leitung nach Masse, die Pull-ups ziehen sie hoch. Darum dürfen Teilnehmer mit unterschiedlichen Spannungen nur über Pegelwandler gemischt werden (Abschnitt 64.3).</p>
+</section><section id="s69-7"><h2>69.7 Löten und Verdrahten</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Thema</th>
+<th>Empfehlung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Lötkolben</td>
+<td>temperaturgeregelt, etwa 320 bis 350 °C bei bleihaltigem, etwas mehr bei bleifreiem Lot</td>
+</tr>
+<tr class="even">
+<td>Technik</td>
+<td>Lötspitze erwärmt Bauteilbein <strong>und</strong> Pad gleichzeitig, dann Lot zuführen, nicht auf die Spitze</td>
+</tr>
+<tr class="odd">
+<td>Gute Lötstelle</td>
+<td>glänzend, kegelförmig; matt und kugelig = kalte Lötstelle</td>
+</tr>
+<tr class="even">
+<td>Auslöten</td>
+<td>Entlötlitze oder Absaugpumpe; SMD mit Heißluft und Flussmittel</td>
+</tr>
+<tr class="odd">
+<td>Verdrahtung</td>
+<td>kurze Leitungen, farbcodiert (Rot Plus, Schwarz Masse), Zugentlastung, Schrumpfschlauch</td>
+</tr>
+<tr class="even">
+<td>Steckbrett</td>
+<td>nur für Tests; für Dauerbetrieb Lochraster oder Platine</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s69-8"><h2>69.8 Programmieren und Hilfsmittel</h2><ul>
+<li>Ein <strong>ESP32</strong> wird mit der <strong>Arduino IDE</strong> oder mit <strong>PlatformIO</strong> programmiert; auf dem Raspberry Pi geht beides (<a class="xr" href="#/kap/16">Kapitel 16</a>, 17).</li>
+<li>Auch ohne Laptop lässt sich ein Raspberry Pi als Entwicklungsrechner nutzen (<a class="xr" href="#/kap/17">Kapitel 17</a>).</li>
+<li><strong>Flatpak</strong> ist eine Paketquelle, mit der Programme unabhängig von der Systemversion installiert werden (<code>flatpak install …</code>).</li>
+<li>Ein Programm direkt aus dem Mikrocontroller auslesen (ISP) geht nur mit einem Programmiergerät und einem sechspoligen ISP-Anschluss, und nur wenn der Lesezugriff nicht gesperrt ist (<a class="xr" href="#/kap/16/16.9">Kapitel 16.9</a>).</li>
+</ul>
+</section><section id="s69-9"><h2>69.9 Übungen mit Lösungen</h2><ol type="1">
+<li><strong>Aufgabe:</strong> Eine blaue LED (3,0 V) an 5 V mit 15 mA: Vorwiderstand? <strong>Lösung:</strong> <code>R = (5 − 3,0)/0,015 = 133 Ω</code> → 150 Ω (ergibt 13,3 mA).</li>
+<li><strong>Aufgabe:</strong> Wie viele 74HC595 braucht man für 24 Ausgänge, und wie viele Mikrocontroller-Pins? <strong>Lösung:</strong> 3 Bausteine in Reihe, weiterhin nur 3 Datenleitungen.</li>
+<li><strong>Aufgabe:</strong> Ein 12-V-Lüfter (200 mA) soll von einem ESP32 geschaltet werden. Was ist nötig? <strong>Lösung:</strong> Ein Logic-Level-N-MOSFET, Gate-Widerstand, Pull-down am Gate, Freilaufdiode über dem Lüfter, gemeinsame Masse mit der 12-V-Versorgung.</li>
+</ol>
+</section>

@@ -1,0 +1,282 @@
+<p>Dieses Kapitel erklärt, was zwischen dem Einstecken des Netzteils und dem fertigen Desktop passiert. Wer das einmal verstanden hat, versteht auch, <strong>warum Einstellungen manchmal nach einem Neustart verschwinden</strong> – etwa die Bildschirmauflösung (<a class="xr" href="#/kap/10">Kapitel 10</a>).</p>
+<section id="s8-1"><h2>8.1 Die Grundidee: Staffellauf</h2><p>Der Start ist ein Staffellauf. Jede Etappe ist ein anderes Programm, das nur eine Aufgabe hat: die nächste Etappe zu finden und zu starten. Jede Etappe liest <strong>ihre eigenen</strong> Einstellungen.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Etappe</th>
+<th>Wer läuft</th>
+<th>Was liest sie</th>
+<th>Aufgabe</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Boot-ROM im Chip</td>
+<td>nichts (fest eingebaut)</td>
+<td>findet den Bootloader</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>EEPROM-Bootloader (kleiner Speicher auf der Platine)</td>
+<td>die eigene Konfiguration im EEPROM (<code>BOOT_ORDER</code>)</td>
+<td>sucht ein bootfähiges Medium</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Firmware</td>
+<td><code>config.txt</code>, Device-Tree-Datei (<code>.dtb</code>), Overlays</td>
+<td>richtet Hardware ein, lädt den Kernel</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Linux-Kernel</td>
+<td><code>cmdline.txt</code></td>
+<td>startet Treiber, hängt das Wurzeldateisystem ein</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>systemd (das erste Programm im System)</td>
+<td>Dienstdateien, <code>fstab</code></td>
+<td>startet Dienste, Anmeldung</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Anmeldemanager und Desktop-Sitzung</td>
+<td>Autologin-Einstellung, Sitzungsdateien</td>
+<td>startet den Fenstermanager (labwc)</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Fenstermanager (labwc)</td>
+<td><code>~/.config/labwc/…</code>, Autostart</td>
+<td>zeichnet Desktop, setzt Bildschirm-Modus</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Eigene Programme</td>
+<td>Autostart-Einträge</td>
+<td>z. B. Kanshi, Control Center</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s8-2"><h2>8.2 Etappe 1 und 2: Boot-ROM und EEPROM</h2><p>Im Prozessor steckt ein winziges, nicht änderbares Programm (Boot-ROM). Es startet den <strong>Bootloader</strong>, der im EEPROM (einem kleinen Flash-Speicher) auf der Platine liegt. Der Bootloader entscheidet, <strong>von wo</strong> gestartet wird.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rpi-eeprom-config</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rpi-eeprom-config <span class="kw">|</span> <span class="fu">grep</span> BOOT_ORDER</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">vcgencmd</span> bootloader_version</span></code></pre></div>
+<p>Der Wert <code>BOOT_ORDER</code> ist eine Zahl in Hexadezimal, zum Beispiel <code>0xf461</code>. <strong>Man liest sie von rechts nach links</strong>, eine Ziffer pro Versuch:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Ziffer</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>1</code></td>
+<td>SD-Karte</td>
+</tr>
+<tr class="even">
+<td><code>6</code></td>
+<td>NVMe</td>
+</tr>
+<tr class="odd">
+<td><code>4</code></td>
+<td>USB-Massenspeicher</td>
+</tr>
+<tr class="even">
+<td><code>f</code></td>
+<td>von vorn beginnen</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>0xf461</code> heißt also: erst SD (1), dann NVMe (6), dann USB (4), dann wieder von vorn (f). Wer von NVMe starten will, aber eine SD-Karte steckt, startet von der SD-Karte, weil sie zuerst probiert wird. Ändern: <code>sudo raspi-config</code> → Advanced Options → Boot Order.</p>
+<p><strong>Typischer Fehler:</strong> Pi startet von der falschen Platte. Prüfen mit <code>lsblk</code> (<a class="xr" href="#/kap/7">Kapitel 7</a>), ob die erwartete Platte überhaupt erkannt wird, und mit <code>BOOT_ORDER</code>, wer zuerst gefragt wird.</p>
+</section><section id="s8-3"><h2>8.3 Etappe 3: Firmware und `config.txt`</h2><p>Hat der Bootloader ein Medium gefunden, liest er dort die <strong>Boot-Partition</strong>. Sie ist eine kleine FAT-Partition und liegt auf dem aktuellen Raspberry Pi OS unter <code>/boot/firmware/</code> (früher <code>/boot/</code>).</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Datei</th>
+<th>Inhalt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>config.txt</code></td>
+<td>Einstellungen für die Firmware: Treiber (<code>dtoverlay=…</code>), Schnittstellen (<code>dtparam=i2c_arm=on</code>), Grafik, Übertaktung</td>
+</tr>
+<tr class="even">
+<td><code>cmdline.txt</code></td>
+<td>Parameter für den Kernel, <strong>genau eine Zeile</strong></td>
+</tr>
+<tr class="odd">
+<td><code>*.dtb</code></td>
+<td>Device-Tree: beschreibt die Hardware der Platine</td>
+</tr>
+<tr class="even">
+<td><code>overlays/</code></td>
+<td>zusätzliche Hardware-Beschreibungen (z. B. für I²C-Geräte)</td>
+</tr>
+<tr class="odd">
+<td><code>kernel*.img</code>, <code>initramfs*</code></td>
+<td>der Kernel und sein Start-Dateisystem</td>
+</tr>
+</tbody>
+</table></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> nano /boot/firmware/config.txt</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">vcgencmd</span> get_config int         <span class="co"># was die Firmware wirklich übernommen hat</span></span></code></pre></div>
+<p>Eine Änderung in <code>config.txt</code> wirkt <strong>erst nach einem Neustart</strong>, weil die Datei nur in dieser Etappe gelesen wird.</p>
+</section><section id="s8-4"><h2>8.4 Etappe 4: der Kernel und `cmdline.txt`</h2><p>Der Kernel bekommt von der Firmware die Parameter aus <code>cmdline.txt</code>. Dort steht zum Beispiel, welche Partition das Wurzeldateisystem ist:</p>
+<pre class="text"><code>console=serial0,115200 console=tty1 root=PARTUUID=xxxxxxxx-02 rootfstype=ext4 fsck.repair=yes rootwait</code></pre>
+<p>Der Kernel startet seine Treiber, erkennt Platten und Bildschirm und hängt das Wurzeldateisystem ein. Prüfen, was er bekommen hat und was er meldet:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> /proc/cmdline               <span class="co"># Parameter, die der Kernel wirklich bekam</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dmesg</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-50</span>                <span class="co"># Meldungen der ersten Sekunden</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dmesg</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-i</span> <span class="at">-E</span> <span class="st">&quot;error|fail|drm|hdmi&quot;</span></span></code></pre></div>
+<p><strong>Regel für <code>cmdline.txt</code>:</strong> Alles in <strong>einer</strong> Zeile, durch Leerzeichen getrennt. Ein Zeilenumbruch oder ein Tippfehler kann den Start verhindern. Vor jeder Änderung eine Kopie anlegen (<code>sudo cp cmdline.txt cmdline.txt.bak</code>).</p>
+<p><strong>Warum die PARTUUID wichtig ist:</strong> Sie steht in <code>cmdline.txt</code> und in <code>/etc/fstab</code>. Wer ein System auf eine andere Platte kopiert, muss beide anpassen (deshalb schreibt die Backup-App sie um, <a class="xr" href="#/kap/39/39.2">Kapitel 39.2</a>).</p>
+</section><section id="s8-5"><h2>8.5 Etappe 5: systemd</h2><p>Nach dem Kernel startet als erstes Programm <strong>systemd</strong>. Es liest <code>/etc/fstab</code> (welche Laufwerke eingehängt werden), startet Dienste in der richtigen Reihenfolge und erreicht ein <strong>Ziel</strong> (<code>target</code>). Für den Desktop ist das <code>graphical.target</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">systemctl</span> get-default                    <span class="co"># welches Ziel gilt</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">systemd-analyze</span>                          <span class="co"># wie lange der Start dauerte</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">systemd-analyze</span> blame <span class="kw">|</span> <span class="fu">head</span> <span class="at">-20</span>         <span class="co"># welche Dienste am längsten brauchten</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">systemctl</span> <span class="at">--failed</span>                       <span class="co"># welche Dienste nicht starten konnten</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">journalctl</span> <span class="at">-b</span>                            <span class="co"># alle Meldungen seit dem letzten Start</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">journalctl</span> <span class="at">-b</span> <span class="at">-p</span> err                     <span class="co"># nur Fehler seit dem Start</span></span></code></pre></div>
+</section><section id="s8-6"><h2>8.6 Etappe 6: Anmeldung und Sitzung</h2><p>Der Anmeldemanager (bei Raspberry Pi OS mit Desktop meist <strong>LightDM</strong>) zeigt die Anmeldung oder meldet mit Autologin gleich den Benutzer an. Er startet dann die <strong>Sitzung</strong>: Bei Raspberry Pi OS (Debian 13, „Trixie“) ist das eine Wayland-Sitzung mit dem Fenstermanager <strong>labwc</strong>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$XDG_SESSION_TYPE</span>                   <span class="co"># wayland oder x11</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">loginctl</span>                                 <span class="co"># laufende Sitzungen</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> nano /etc/lightdm/lightdm.conf      <span class="co"># Anmeldemanager-Einstellungen</span></span></code></pre></div>
+</section><section id="s8-7"><h2>8.7 Etappe 7: labwc und der Desktop</h2><p>labwc ist der <strong>Compositor</strong>: das Programm, das alle Fenster zeichnet und den Bildschirm-Modus festlegt. Beim Start liest er seine Dateien in dieser Reihenfolge der Zuständigkeit:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Datei</th>
+<th>Wirkung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>~/.config/labwc/autostart</code></td>
+<td>Programme, die beim Start der Sitzung laufen (z. B. <code>kanshi &amp;</code>)</td>
+</tr>
+<tr class="even">
+<td><code>~/.config/labwc/rc.xml</code></td>
+<td>Verhalten des Fenstermanagers</td>
+</tr>
+<tr class="odd">
+<td><code>~/.config/labwc/environment</code></td>
+<td>Umgebungsvariablen für die Sitzung</td>
+</tr>
+<tr class="even">
+<td><code>/etc/xdg/labwc/…</code></td>
+<td>Systemweite Vorgaben (Benutzerdateien haben Vorrang)</td>
+</tr>
+<tr class="odd">
+<td><code>~/.config/autostart/*.desktop</code></td>
+<td>Autostart im Standardformat (Desktop-Einträge)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Der Compositor <strong>fragt den Monitor</strong>, was er kann (die Liste heißt EDID) und wählt dessen <strong>bevorzugten Modus</strong>. Bei einem 4K-Monitor ist das 3840×2160 mit Skalierung 1.</p>
+</section><section id="s8-8"><h2>8.8 Die Antwort auf „Warum ist meine Auflösung nach dem Neustart wieder weg?“</h2><p>Das ist der Grund, warum das Bildschirmthema in <a class="xr" href="#/kap/10">Kapitel 10</a> so lang wurde. Die Etappen <strong>überschreiben einander</strong>:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Wo man die Auflösung einstellt</th>
+<th>Etappe</th>
+<th>Wirkung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>config.txt</code> (<code>hdmi_group</code>, <code>hdmi_mode</code>)</td>
+<td>3</td>
+<td>wirkt für die Firmware und die Konsole; der Desktop richtet sich später selbst ein</td>
+</tr>
+<tr class="even">
+<td><code>cmdline.txt</code> (<code>video=HDMI-A-1:1920x1080@60D</code>)</td>
+<td>4</td>
+<td>der Kernel übernimmt den Wert (<code>cat /proc/cmdline</code> zeigt ihn), <strong>aber</strong> der Compositor in Etappe 7 stellt den Bildschirm danach <strong>neu</strong> ein</td>
+</tr>
+<tr class="odd">
+<td><code>wlr-randr</code> im Terminal</td>
+<td>7</td>
+<td>wirkt sofort, gilt aber <strong>nur in dieser Sitzung</strong> (steht nur im Arbeitsspeicher des Compositors)</td>
+</tr>
+<tr class="even">
+<td><code>~/.config/labwc/autostart</code> mit <code>wlr-randr</code></td>
+<td>7</td>
+<td>läuft bei jedem Sitzungsstart; wirkt nicht, wenn der Monitor später aus- und eingeschaltet wird</td>
+</tr>
+<tr class="odd">
+<td>Kanshi (Profil)</td>
+<td>7</td>
+<td>reagiert auf das Ereignis „Monitor erkannt“ und wendet das Profil an</td>
+</tr>
+<tr class="even">
+<td>Watchdog-Skript</td>
+<td>7</td>
+<td>prüft alle paar Sekunden und korrigiert</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Die Regel dahinter:</strong> Die Einstellung muss <strong>in der Etappe stehen, die zuletzt entscheidet</strong>. Beim Desktop ist das der Compositor. Alles, was früher passiert, wird später wieder überschrieben.</p>
+<p><strong>Zwei Zusatzgründe für „verschwunden“:</strong></p>
+<ol type="1">
+<li><strong>Neustart des Compositors:</strong> Ein Programm, das mit <code>wlr-randr</code> etwas einstellt, ändert nur den laufenden Zustand. Startet die Sitzung neu, gilt wieder der bevorzugte Modus.</li>
+<li><strong>Hotplug:</strong> Wird der Monitor ausgeschaltet und wieder eingeschaltet, meldet er sich neu an, der Compositor setzt Modus und Skalierung zurück. Eine Autostart-Zeile läuft aber nur einmal beim Login. Deshalb braucht es Kanshi oder einen Watchdog.</li>
+</ol>
+</section><section id="s8-9"><h2>8.9 Eine Prüfliste: „Wo hängt der Start?“</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Beobachtung</th>
+<th>Etappe</th>
+<th>Befehl oder Anzeichen</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Nichts auf dem Bildschirm, die grüne LED (ACT) bleibt aus</td>
+<td>1–2</td>
+<td>Netzteil, SD-Karte, Boot-Reihenfolge; Pi 5: 5 V / 5 A</td>
+</tr>
+<tr class="even">
+<td>Bildschirm bleibt schwarz, die grüne LED blinkt in einem Muster</td>
+<td>2–3</td>
+<td>Das Blinkmuster ist ein Fehlercode des Bootloaders (kein startfähiges Medium, Datei fehlt); die Codes stehen in der Raspberry-Pi-Dokumentation. Boot-Partition und Medium prüfen</td>
+</tr>
+<tr class="odd">
+<td>Textmeldungen laufen, bleiben dann stehen</td>
+<td>4–5</td>
+<td><code>dmesg</code>, <code>journalctl -b -p err</code> am Rechner mit der Karte lesen</td>
+</tr>
+<tr class="even">
+<td>„Waiting for root device“ oder <code>rootwait</code> hängt</td>
+<td>4</td>
+<td>PARTUUID in <code>cmdline.txt</code> stimmt nicht zur Platte</td>
+</tr>
+<tr class="odd">
+<td>Anmeldebildschirm kehrt immer wieder</td>
+<td>6</td>
+<td>Rechte im Home-Ordner, <code>~/.xsession-errors</code>, <code>journalctl -b</code></td>
+</tr>
+<tr class="even">
+<td>Desktop erscheint, aber falsche Auflösung</td>
+<td>7</td>
+<td><code>wlr-randr</code>, Kanshi-Profil, Autostart</td>
+</tr>
+<tr class="odd">
+<td>Programm aus dem Autostart startet nicht</td>
+<td>7–8</td>
+<td>Programm im Terminal starten, Fehlermeldung lesen; <code>sleep</code> vor den Aufruf setzen</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Eine zweite Methode:</strong> Wenn der Pi gar nicht startet, die SD-Karte oder Platte an einem anderen Rechner einstecken. Die Boot-Partition (FAT) ist dort sichtbar; <code>cmdline.txt</code> und <code>config.txt</code> lassen sich korrigieren, ohne dass der Pi laufen muss.</p>
+</section><section id="s8-10"><h2>8.10 Merksätze</h2><ul>
+<li>Jede Etappe liest nur <strong>ihre</strong> Dateien; eine Änderung wirkt erst, wenn diese Etappe wieder läuft (meist: Neustart).</li>
+<li>Was in einer späteren Etappe eingestellt wird, überschreibt die frühere.</li>
+<li>Einstellungen, die der Desktop selbst anwenden muss, gehören in den <strong>Desktop-Autostart</strong> oder in Kanshi.</li>
+<li>Vor jeder Änderung an <code>cmdline.txt</code>, <code>config.txt</code>, <code>fstab</code> eine Kopie anlegen.</li>
+</ul>
+</section>

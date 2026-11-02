@@ -1,0 +1,102 @@
+<section id="s57-1"><h2>57.1 Batocera</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Meldung / Symptom</th>
+<th>Bedeutung</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Device-tree file 'bcm2712-rpi-5-b.dtb' not found</code></td>
+<td>falsches Image (Pi 4 statt Pi 5)</td>
+<td>richtiges Image schreiben (24.3)</td>
+</tr>
+<tr class="even">
+<td>Nur <code>config.txt</code>, <code>cmdline.txt</code> sichtbar, keine ROMs</td>
+<td>nur die Boot-Partition geöffnet</td>
+<td>Partition <strong>SHARE</strong> öffnen (24.5)</td>
+</tr>
+<tr class="odd">
+<td>Beim Kopieren der Spiele <code>Keine Berechtigung</code></td>
+<td>Schreibrechte der Partition</td>
+<td><code>sudo chmod -R 777 /media/oratio/SHARE</code> (24.6)</td>
+</tr>
+<tr class="even">
+<td>Zwei Partitionen <code>SHARE</code> und <code>SHARE1</code></td>
+<td>zwei Batocera-Laufwerke gleichzeitig angeschlossen</td>
+<td>den Befehl für das richtige Laufwerk ausführen</td>
+</tr>
+<tr class="odd">
+<td><code>EEPROM updates directory ... not found</code></td>
+<td>Batocera kann die Boot-Konfiguration lesen, aber nicht aktualisieren</td>
+<td>Änderung unter Raspberry Pi OS machen (24.7)</td>
+</tr>
+<tr class="even">
+<td><code>sudo raspi-config</code> geht nicht (<code>root@BATOCERA</code>)</td>
+<td>man ist in Batocera, nicht in Raspberry Pi OS</td>
+<td>anderes System starten</td>
+</tr>
+<tr class="odd">
+<td>Bild auf dem Steam Deck um 90 Grad gedreht</td>
+<td>Orientierung des Spiels/Systems</td>
+<td>Anzeige-Rotation im Spiel oder in den Einstellungen ändern</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s57-2"><h2>57.2 Steam Deck und Dual Boot</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Ursache</th>
+<th>Lösung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Nach der Windows-Installation startet SteamOS nicht</td>
+<td>Windows hat den Bootloader überschrieben</td>
+<td>Bootmanager wie rEFInd oder Startmenü über die Tastenkombination, im schlimmsten Fall SteamOS neu installieren (<a class="xr" href="#/kap/27">Kapitel 27</a>)</td>
+</tr>
+<tr class="even">
+<td><code>grub&gt;</code> Eingabeaufforderung</td>
+<td>GRUB findet seine Konfiguration nicht</td>
+<td><code>exit</code> versuchen, sonst mit einem Bootstick reparieren</td>
+</tr>
+<tr class="odd">
+<td>SteamOS startet nach Windows-Update 24H2 nicht mehr</td>
+<td>Änderung am Bootloader/Partitionen</td>
+<td>bei 23H2 bleiben, EFI-Partition sichern</td>
+</tr>
+<tr class="even">
+<td><code>Free space before</code> verwirrt</td>
+<td>Platz vor (links von) der Partition</td>
+<td>Partition nach rechts schieben oder die richtige Seite verkleinern</td>
+</tr>
+<tr class="odd">
+<td>Programm unter SteamOS lässt sich nicht installieren</td>
+<td>SteamOS ist schreibgeschützt</td>
+<td>Flatpak oder <code>pacman</code> im Entwicklermodus nutzen, wissend dass Systemupdates das zurücksetzen können</td>
+</tr>
+<tr class="even">
+<td>Deck liest alles vor</td>
+<td>Screen Reader aktiv</td>
+<td>Barrierefreiheit in den Einstellungen deaktivieren</td>
+</tr>
+<tr class="odd">
+<td>PS2-Spiel startet nicht</td>
+<td>BIOS im falschen Ordner</td>
+<td><code>~/retrodeck/bios/</code> und der Unterordner für PS2 (<a class="xr" href="#/kap/27/27.1">Kapitel 27.1</a>)</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s57-3"><h2>57.3 Windows und PowerShell</h2><h3 id="cannot-bind-argument-to-parameter-text-because-it-is-an-empty-string"><code>Cannot bind argument to parameter 'Text' because it is an empty string.</code></h3>
+<p>Ein Cmdlet wie <code>Write-Host</code> oder <code>Write-Progress</code> bekam einen <strong>leeren Text</strong> für einen Pflichtparameter. Die Variable ist leer oder <code>$null</code>. Prüfen (<code>if ($text) { ... }</code>) oder einen Standardwert setzen (<code>$text = "-"</code>).</p>
+<h3 id="die-datei-kann-nicht-geladen-werden-da-die-ausführung-von-skripts-auf-diesem-system-deaktiviert-ist"><code>Die Datei kann nicht geladen werden, da die Ausführung von Skripts auf diesem System deaktiviert ist.</code></h3>
+<p>Die PowerShell-Ausführungsrichtlinie sperrt Skripte. Nur für die aktuelle Sitzung lockern:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Set-ExecutionPolicy</span> <span class="op">-</span>Scope <span class="kw">Process</span> <span class="op">-</span>ExecutionPolicy Bypass</span></code></pre></div>
+<h3 id="-ist-weder-als-cmdlet-funktion-skriptdatei-noch-als-ausführbares-programm-erkannt"><code>... ist weder als Cmdlet, Funktion, Skriptdatei noch als ausführbares Programm erkannt</code></h3>
+<p>Der Befehl existiert unter Windows nicht (zum Beispiel ein Linux-Befehl). Die Zuordnung steht in <a class="xr" href="#/kap/25">Kapitel 25</a>.</p>
+<h3 id="skript-findet-dateien-mit-sonderzeichen-nicht">Skript findet Dateien mit Sonderzeichen nicht</h3>
+<p><code>-LiteralPath</code> statt <code>-Path</code> verwenden, damit Zeichen wie <code>[</code> und <code>]</code> nicht als Muster gelesen werden.</p>
+</section>

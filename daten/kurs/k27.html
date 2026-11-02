@@ -1,0 +1,123 @@
+<section id="s27-1"><h2>27.1 Retro-Spiele auf dem Steam Deck (RetroDECK)</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Thema</th>
+<th>Antwort</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>BIOS-Ordner PS1 und PS2</td>
+<td><code>/home/deck/retrodeck/bios/</code> (PS2 in einem Unterordner <code>ps2</code>, genau nach Anleitung des Emulators)</td>
+</tr>
+<tr class="even">
+<td>Falsch gespeichertes BIOS</td>
+<td>Häufigste Ursache, wenn PS2 (PCSX2) nicht startet</td>
+</tr>
+<tr class="odd">
+<td>Dateiformate PS1</td>
+<td><code>BIN</code> + <code>CUE</code> (Abbild plus Beschreibung), <code>CHD</code> (komprimiert, empfohlen), <code>PBP</code> (Sony-Paketformat, z. B. Bowling)</td>
+</tr>
+<tr class="even">
+<td>Menü im Spiel öffnen</td>
+<td>Hotkey von RetroArch: Select + Start gleichzeitig. Auf einem PlayStation-Controller sind die Tasten anders belegt</td>
+</tr>
+<tr class="odd">
+<td>Plötzlich liest der Deck alles vor</td>
+<td>Der Screen Reader (Barrierefreiheit) wurde aus Versehen aktiviert und lässt sich in den Einstellungen unter Barrierefreiheit abschalten</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s27-2"><h2>27.2 Dual Boot: SteamOS und Windows</h2><h3 id="was-passiert-ist">Was passiert ist</h3>
+<ol type="1">
+<li>Windows wird auf einer vorbereiteten Partition installiert und startet, <strong>aber SteamOS ist danach nicht mehr erreichbar.</strong></li>
+<li>Selbst mit der Tastenkombination fürs Startmenü startete SteamOS nicht. Es musste <strong>neu installiert</strong> werden, und Windows ging dabei verloren.</li>
+<li>Zwischendurch landete das Gerät im <strong>GRUB-Befehlsmodus</strong> (ein Bildschirm mit <code>grub&gt;</code>).</li>
+</ol>
+<h3 id="ursache">Ursache</h3>
+<p>Beim Installieren schreibt Windows seinen eigenen Bootloader in die <strong>EFI-Partition</strong> und stellt sich in der Startreihenfolge nach vorn. Der Eintrag von SteamOS wird dabei überschrieben oder in der Boot-Reihenfolge verdrängt. Muss SteamOS jedes Mal neu installiert werden, geht das Problem <strong>tiefer als der Bootloader</strong>: Die SteamOS-Partition oder die Partitionstabelle wird beschädigt oder überschrieben.</p>
+<h3 id="hilfsmittel-und-begriffe">Hilfsmittel und Begriffe</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Begriff</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>EFI-Partition</strong></td>
+<td>Kleine Partition mit den Startdateien aller Systeme</td>
+</tr>
+<tr class="even">
+<td><strong>GPT</strong></td>
+<td>Moderne Partitionstabelle</td>
+</tr>
+<tr class="odd">
+<td><strong>Free space before</strong></td>
+<td>Freier Platz <strong>vor</strong> (links von) der Partition. Im Partitionswerkzeug wichtig, um nicht die falsche Seite zu verkleinern</td>
+</tr>
+<tr class="even">
+<td><strong>GRUB</strong></td>
+<td>Bootloader, den Linux-Systeme nutzen</td>
+</tr>
+<tr class="odd">
+<td><strong>rEFInd</strong></td>
+<td>Grafischer Bootmanager, der alle installierten Systeme erkennt und zur Auswahl zeigt</td>
+</tr>
+<tr class="even">
+<td><strong>Clover</strong></td>
+<td>Bootmanager, der vor allem im Hackintosh-Bereich verbreitet ist. rEFInd gilt als einfacher und universeller</td>
+</tr>
+<tr class="odd">
+<td><strong>Windows To Go</strong></td>
+<td>Windows läuft direkt von einem USB-Stick, ohne Festinstallation. Rufus bietet die Option an</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="erste-hilfe-bei-grub">Erste Hilfe bei <code>grub&gt;</code></h3>
+<pre class="text"><code>exit</code></pre>
+<p>Das versucht, zurück ins Boot-Menü zu kommen. Hilft das nicht, braucht man die Reparatur über einen Bootstick.</p>
+<h3 id="refind-entfernen">rEFInd entfernen</h3>
+<p>Der Weg hängt vom System ab. Unter Linux löscht man den rEFInd-Ordner aus der EFI-Partition und den Eintrag aus der Boot-Liste (<code>efibootmgr</code>). Unter Windows geht es mit <code>bcdedit</code> und dem Löschen des Ordners. Die Mac-Methode gilt nicht für das Steam Deck.</p>
+<h3 id="windows-ohne-product-key-hash-prüfen">Windows ohne Product Key, Hash prüfen</h3>
+<p>Zum Installieren gehört die Prüfung des Downloads: <code>Get-FileHash</code> (PowerShell) oder <code>sha256sum</code> (Linux) vergleichen mit dem Wert auf der Webseite (<a class="xr" href="#/kap/25/25.7">Kapitel 25.7</a>). Eine Aktivierung ist nicht sofort nötig, Windows läuft auch eingeschränkt.</p>
+</section><section id="s27-3"><h2>27.3 Windows 11 24H2 und der Dual Boot</h2><p><strong>Beobachtung:</strong> Das Update 24H2 verursacht bei Dual Boot mit SteamOS häufig Probleme (SteamOS startet nicht mehr, schwarzer Bildschirm beim Wechsel). Darum bleibt man besser bei <strong>Windows 11 23H2</strong>.</p>
+<p><strong>Frage: Wird 23H2 durch „Nach Updates suchen" automatisch auf 24H2 gehoben?</strong> Nicht automatisch durch einen Klick auf die Treiber-Updates, aber Microsoft schiebt große Funktionsupdates mit der Zeit nach. Man kann das verhindern, zum Beispiel mit der Einstellung für die Zielversion der Funktionsupdates in den Windows-Update-Optionen.</p>
+<p><strong>Merke:</strong> Vor jedem großen Windows-Update bei Dual Boot ein <strong>Backup der EFI-Partition und der SteamOS-Partition</strong> machen.</p>
+</section><section id="s27-4"><h2>27.4 SteamOS, Bazzite und Batocera</h2><ul>
+<li><strong>SteamOS</strong> wird von Valve für das Steam Deck entwickelt.</li>
+<li><strong>Bazzite</strong> ist ein Spiele-System auf Fedora-Basis, das dem SteamOS ähnlich ist, aber auch auf anderen Geräten läuft.</li>
+<li><strong>Batocera</strong> ist ein reines Retro-Spiele-System (<a class="xr" href="#/kap/26">Kapitel 26</a>).</li>
+</ul>
+</section><section id="s27-5"><h2>27.5 Python: Raspberry Pi gegen Steam Deck</h2><p><strong>Zum Python-Lernen ist der Raspberry Pi in den meisten Fällen die bessere Wahl.</strong> Gründe: Er ist zum Lernen gebaut, läuft mit Linux, es gibt viele Tutorials, und man kann später LEDs, Sensoren und Motoren anschließen.</p>
+<p><strong>Wichtig:</strong> Der Satz „Python ist auf dem Pi schon installiert" stimmt für <strong>Raspberry Pi OS</strong> (dort ist Python 3 dabei). Auf dem <strong>Steam Deck (SteamOS)</strong> ist Python ebenfalls in der Systemgrundlage vorhanden, aber SteamOS ist ein <strong>schreibgeschütztes</strong> System. Zusatzpakete installiert man dort in einer eigenen Umgebung (<code>python3 -m venv</code>, <a class="xr" href="#/kap/3">Kapitel 3</a>) oder über Flatpak.</p>
+</section><section id="s27-6"><h2>27.6 Der „Einschränkungs&quot;-Fund: Imager als AppImage</h2><p>Es gibt eine Falle, die auf dem Steam Deck nicht auftritt, auf dem Raspberry Pi aber schon:</p>
+<p>Ein Flash-Programm als AppImage (zum Beispiel der Imager) läuft auf dem <strong>Steam Deck</strong> (x86-64) nach <code>chmod +x</code> direkt. Auf dem <strong>Pi 5</strong> (ARM64) kommt die Meldung <strong><code>Exec format error</code></strong>, weil die Datei für die falsche Prozessorarchitektur gebaut ist.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Gerät</th>
+<th>Prozessor</th>
+<th>AppImage für amd64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Steam Deck</td>
+<td>x86-64 (amd64)</td>
+<td>läuft</td>
+</tr>
+<tr class="even">
+<td>Raspberry Pi 5</td>
+<td>ARM64 (aarch64)</td>
+<td><code>Exec format error</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Lösung auf dem Pi:</strong> das passende Programm aus der Paketquelle installieren:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install rpi-imager</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">rpi-imager</span></span></code></pre></div>
+<p>Das ist der richtige Weg, weil Etcher offiziell vor allem für x86-64 angeboten wird.</p>
+</section>

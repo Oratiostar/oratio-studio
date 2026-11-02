@@ -1,0 +1,351 @@
+<section id="s47-1"><h2>47.1 Die Grundhaltung</h2><p>Ein Fehler ist eine Aussage des Systems: „Ich kann X nicht, weil Y.“ Die Aufgabe besteht darin, das Y zu finden. Dafür gibt es immer dieselbe Reihenfolge:</p>
+<ol type="1">
+<li><strong>Symptom genau beschreiben.</strong> Was sollte passieren? Was passiert stattdessen? Die Fehlermeldung wörtlich aufschreiben, nicht zusammenfassen.</li>
+<li><strong>Ebene bestimmen.</strong> Wo kann der Fehler liegen: Strom, Kabel, Hardware, Treiber, Betriebssystem, Programm, Einstellung?</li>
+<li><strong>Mit einem Befehl nachsehen, statt zu raten.</strong> Jeder Verdacht lässt sich mit einem Anzeige-Befehl prüfen (Teil 47.3).</li>
+<li><strong>Eingrenzen durch Halbieren.</strong> Läuft die Kette bis zur Mitte? Dann liegt der Fehler in der zweiten Hälfte; wenn nicht, in der ersten.</li>
+<li><strong>Eine Sache ändern.</strong> Dann testen. Dann erst die nächste.</li>
+<li><strong>Gegenprobe.</strong> Anderes Kabel, anderes Gerät, anderer Anschluss, anderes Board.</li>
+<li><strong>Aufschreiben.</strong> Symptom, Ursache, Lösung, und auch, was <strong>nicht</strong> geholfen hat.</li>
+</ol>
+</section><section id="s47-2"><h2>47.2 Die zehn Fragen</h2><p>Wenn nichts einfällt, werden diese Fragen der Reihe nach beantwortet:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Frage</th>
+<th>Wie prüfen</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Hat es <strong>jemals</strong> funktioniert?</td>
+<td>Wenn ja: Was hat sich seitdem geändert (Update, neues Kabel, neue Datei)?</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><strong>Ist es eingeschaltet</strong> und hat es Strom?</td>
+<td>LED, <code>vcgencmd get_throttled</code>, Netzteil, Kabel</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><strong>Sieht</strong> das System das Gerät?</td>
+<td><code>lsblk</code>, <code>lsusb</code>, <code>ls /dev/tty*</code>, <code>i2cdetect -y 1</code>, <code>dmesg | tail</code></td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Stimmt der <strong>Pfad</strong>?</td>
+<td><code>pwd</code>, <code>ls</code>, <code>ls -l</code></td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Stimmen die <strong>Rechte</strong>?</td>
+<td><code>ls -l</code>, <code>id</code>, <code>groups</code></td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Ist das <strong>Programm installiert</strong>?</td>
+<td><code>which name</code>, <code>command -v name</code>, <code>name --version</code></td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Läuft ein <strong>alter Prozess</strong> noch?</td>
+<td><code>ps aux | grep name</code>, <code>pkill name</code></td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Wurde die Datei <strong>gespeichert</strong> und das Programm <strong>neu gestartet</strong>?</td>
+<td>Datum der Datei: <code>ls -l</code>; Programm neu starten</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Was sagt das <strong>Protokoll</strong>?</td>
+<td><code>journalctl -b -p err</code>, <code>Logs/oratio.log</code>, <code>dmesg</code></td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Geht es <strong>auf einem anderen</strong> Gerät/Kabel?</td>
+<td>Gegenprobe</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s47-3"><h2>47.3 Anzeige-Befehle: das Werkzeug zum Messen</h2><p>Alle diese Befehle <strong>ändern nichts</strong> und sind gefahrlos.</p>
+<h3 id="system-und-hardware">System und Hardware</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Frage</th>
+<th>Befehl</th>
+<th>Wie lesen</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Welches Gerät, welches System?</td>
+<td><code>cat /proc/device-tree/model</code> (Pi), <code>cat /etc/os-release</code>, <code>uname -a</code></td>
+<td>Name des Boards, Version</td>
+</tr>
+<tr class="even">
+<td>Welche Prozessor-Architektur?</td>
+<td><code>uname -m</code></td>
+<td><code>aarch64</code> (Pi), <code>x86_64</code> (PC, Deck)</td>
+</tr>
+<tr class="odd">
+<td>Wie viel Speicher?</td>
+<td><code>free -h</code></td>
+<td>Spalte <code>available</code> ist die wichtige</td>
+</tr>
+<tr class="even">
+<td>Wie voll sind die Laufwerke?</td>
+<td><code>df -h</code></td>
+<td>Spalte <code>Use%</code>; bei 100 % kann nichts mehr gespeichert werden</td>
+</tr>
+<tr class="odd">
+<td>Sind Dateieinträge (Inodes) erschöpft?</td>
+<td><code>df -i</code></td>
+<td><code>IUse%</code> bei 100 % = „No space left“ trotz freiem Platz</td>
+</tr>
+<tr class="even">
+<td>Wie warm ist der Pi?</td>
+<td><code>vcgencmd measure_temp</code></td>
+<td>über 80 °C wird gedrosselt</td>
+</tr>
+<tr class="odd">
+<td>Wurde gedrosselt oder war Unterspannung?</td>
+<td><code>vcgencmd get_throttled</code></td>
+<td><code>0x0</code> = alles gut; andere Werte: Unterspannung, Temperatur (<a class="xr" href="#/kap/27">Kapitel 27</a> und „Drosselung erklärt“ in der Toolbox)</td>
+</tr>
+<tr class="even">
+<td>Alle Laufwerke und Partitionen</td>
+<td><code>lsblk</code></td>
+<td>Größe ist das Erkennungsmerkmal</td>
+</tr>
+<tr class="odd">
+<td>Mehr Details zu Laufwerken</td>
+<td><code>lsblk -f</code>, <code>sudo blkid</code></td>
+<td>Dateisystem, UUID/PARTUUID</td>
+</tr>
+<tr class="even">
+<td>USB-Geräte</td>
+<td><code>lsusb</code></td>
+<td>erscheint das Gerät überhaupt?</td>
+</tr>
+<tr class="odd">
+<td>Was meldete der Kernel?</td>
+<td><code>dmesg | tail -30</code></td>
+<td>zeigt, ob und wie ein Gerät erkannt wurde</td>
+</tr>
+<tr class="even">
+<td>I²C-Geräte</td>
+<td><code>i2cdetect -y 1</code></td>
+<td>Adressen; <code>UU</code> = von einem Treiber belegt</td>
+</tr>
+<tr class="odd">
+<td>Serielle Anschlüsse</td>
+<td><code>ls /dev/ttyUSB* /dev/ttyACM*</code></td>
+<td>„No such file“ = kein Gerät erkannt</td>
+</tr>
+<tr class="even">
+<td>GPIO-Zustand</td>
+<td><code>pinctrl get 17</code></td>
+<td>Pin-Funktion und Pegel</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="prozesse-dienste-protokolle">Prozesse, Dienste, Protokolle</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Frage</th>
+<th>Befehl</th>
+<th>Wie lesen</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Läuft das Programm?</td>
+<td><code>ps aux | grep name</code></td>
+<td>nur die grep-Zeile erscheint = läuft nicht</td>
+</tr>
+<tr class="even">
+<td>Wer belegt den Anschluss?</td>
+<td><code>ss -tulpn | grep 8765</code></td>
+<td>Programmname in der letzten Spalte</td>
+</tr>
+<tr class="odd">
+<td>Dienststatus</td>
+<td><code>systemctl status name</code></td>
+<td><code>active (running)</code>, <code>failed</code>, Log-Auszug</td>
+</tr>
+<tr class="even">
+<td>Fehlgeschlagene Dienste</td>
+<td><code>systemctl --failed</code></td>
+<td>Liste</td>
+</tr>
+<tr class="odd">
+<td>Dienst-Protokoll</td>
+<td><code>journalctl -u name -e</code></td>
+<td>Ende des Protokolls</td>
+</tr>
+<tr class="even">
+<td>Alles seit dem Start</td>
+<td><code>journalctl -b</code>, <code>journalctl -b -p err</code></td>
+<td><code>-p err</code> nur Fehler</td>
+</tr>
+<tr class="odd">
+<td>Live mitlesen</td>
+<td><code>journalctl -f</code>, <code>tail -f Logs/oratio.log</code></td>
+<td>Strg+C beendet</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="dateien-und-inhalt">Dateien und Inhalt</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Frage</th>
+<th>Befehl</th>
+<th>Wie lesen</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Wo bin ich, was liegt hier?</td>
+<td><code>pwd</code>, <code>ls -la</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Rechte und Besitzer</td>
+<td><code>ls -l datei</code></td>
+<td><code>-rwxr-xr-x oratio oratio</code></td>
+</tr>
+<tr class="odd">
+<td>Welcher Typ ist die Datei?</td>
+<td><code>file datei</code></td>
+<td>zeigt z. B. Architektur einer Programmdatei oder Zeilenenden</td>
+</tr>
+<tr class="even">
+<td>Anfang/Ende einer Datei</td>
+<td><code>head -20 datei</code>, <code>tail -20 datei</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Wo steht ein Wort im Projekt?</td>
+<td><code>grep -rn "wort" --include=*.py .</code></td>
+<td>Datei und Zeilennummer</td>
+</tr>
+<tr class="even">
+<td>Syntax einer Python-Datei</td>
+<td><code>python3 -m py_compile datei.py</code></td>
+<td>Zeile und Art des Fehlers</td>
+</tr>
+<tr class="odd">
+<td>Syntax eines Shell-Skripts</td>
+<td><code>bash -n skript.sh</code></td>
+<td>prüft nur die Syntax</td>
+</tr>
+<tr class="even">
+<td>Ist die JSON-Datei gültig?</td>
+<td><code>python3 -m json.tool datei.json</code></td>
+<td>Stelle des Fehlers</td>
+</tr>
+<tr class="odd">
+<td>Was hat sich geändert?</td>
+<td><code>diff datei datei.bak</code>, <code>ls -lt | head</code></td>
+<td>neueste Dateien zuerst</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="netzwerk">Netzwerk</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Frage</th>
+<th>Befehl</th>
+<th>Wie lesen</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Habe ich eine Adresse?</td>
+<td><code>ip a</code>, <code>hostname -I</code></td>
+<td><code>inet 192.168…</code></td>
+</tr>
+<tr class="even">
+<td>Ist das Netz da?</td>
+<td><code>ping -c 3 8.8.8.8</code></td>
+<td>Antwort = Internet erreichbar</td>
+</tr>
+<tr class="odd">
+<td>Funktioniert DNS?</td>
+<td><code>ping -c 3 example.com</code></td>
+<td>schlägt nur dies fehl: Namensauflösung</td>
+</tr>
+<tr class="even">
+<td>WLAN-Status</td>
+<td><code>nmcli dev status</code>, <code>nmcli dev wifi</code></td>
+<td>verbunden/getrennt, sichtbare Netze</td>
+</tr>
+<tr class="odd">
+<td>Welche Ports hören zu?</td>
+<td><code>ss -tulpn</code></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s47-4"><h2>47.4 Meldungen lesen</h2><p><strong>Unix-Programme und Python:</strong> Die letzte Zeile nennt die Art, die Zeilen darüber den Weg. Von unten nach oben lesen.</p>
+<p><strong>C++-Compiler:</strong> Der <strong>erste</strong> Fehler ist der echte; die folgenden sind oft Folgefehler. Das Format ist <code>Datei:Zeile:Spalte: Art: Text</code>.</p>
+<p><strong>Zeilenzahl ist ungenau:</strong> Bei <code>expected ';'</code> oder einer fehlenden Klammer liegt die Ursache meist in der <strong>Zeile davor</strong>.</p>
+<p><strong>Ohne Meldung:</strong> Das Programm im <strong>Terminal</strong> starten (nicht über ein Symbol), dort steht der Fehler. Dann in <code>Logs/</code> und im Home-Ordner nach Protokollen sehen.</p>
+</section><section id="s47-5"><h2>47.5 Eingrenzen durch Halbieren</h2><p>Beispiel: Ein Programm zeigt nichts an. Die Kette ist: Daten → Berechnung → Zeichnen → Bildschirm. Statt alles zu lesen:</p>
+<ol type="1">
+<li>Einen <strong>Testausdruck</strong> (<code>print("A")</code>) in die Mitte setzen. Erscheint er? Dann liegt der Fehler hinter der Mitte.</li>
+<li>Wiederholen auf der problematischen Hälfte, bis die Zeile gefunden ist.</li>
+<li>Die Testausdrücke danach <strong>wieder entfernen</strong> (sie können das Programm bremsen, <a class="xr" href="#/kap/34/34.5">Kapitel 34.5</a>).</li>
+</ol>
+<p>Dasselbe gilt für Hardware: Läuft das Gerät mit einem einfachen Beispielprogramm? Dann stimmen Verkabelung und Strom, und der Fehler liegt im eigenen Programm.</p>
+</section><section id="s47-6"><h2>47.6 Die Fehlersuch-Notiz</h2><p>Zu jedem Problem notiere ich vier Zeilen:</p>
+<pre class="text"><code>Symptom:    (wörtliche Meldung)
+Befehl:     (was ich eingegeben habe)
+Ergebnis:   (was herauskam)
+Ursache:    (was es war) / Lösung: (was geholfen hat) / Nicht geholfen: (…)</code></pre>
+<p>Das kostet eine Minute und spart bei der Wiederkehr Stunden.</p>
+</section><section id="s47-7"><h2>47.7 Wann Hilfe holen und wie man fragt</h2><p>Hilfe (Forum, Mensch, KI) ist nur so gut wie die Frage. Eine gute Frage enthält:</p>
+<ol type="1">
+<li>Gerät und System (<code>cat /proc/device-tree/model</code>, <code>cat /etc/os-release</code>).</li>
+<li>Was erreicht werden soll.</li>
+<li>Was getan wurde (die Befehle, in der Reihenfolge).</li>
+<li>Die <strong>vollständige</strong> Meldung als Text.</li>
+<li>Was schon ausprobiert wurde und nicht half.</li>
+</ol>
+</section><section id="s47-8"><h2>47.8 Sicherheitsregeln bei der Fehlersuche</h2><p>Fehlersuche heißt oft, Befehle auszuprobieren. Einige Befehle richten bei einem Irrtum dauerhaften Schaden an. Diese Regeln gelten immer:</p>
+<ol type="1">
+<li><strong>Vor jedem <code>mkfs</code>, <code>parted</code>, <code>fdisk</code>, <code>dd</code>:</strong> <code>lsblk</code> ausführen und das Laufwerk an der <strong>Größe</strong> erkennen. Der Gerätename kann nach einem Neustart wechseln.</li>
+<li><strong>Vor jedem <code>rm -r</code>:</strong> den Pfad mit <code>ls</code> ansehen. Ein Leerzeichen an der falschen Stelle ändert, was gelöscht wird.</li>
+<li><strong>Vor größeren Änderungen</strong> eine Sicherheitskopie anlegen (<code>cp datei datei.bak</code>).</li>
+<li><strong>Skripte aus dem Internet</strong> (<code>curl … | sh</code>) nur von offiziellen Seiten ausführen.</li>
+<li><strong><code>/etc/fstab</code> und <code>cmdline.txt</code></strong> besonders vorsichtig bearbeiten: Ein Fehler kann den Start verhindern. Vorher Kopie, und Zugriff auf die Karte an einem anderen Rechner bereithalten.</li>
+<li><strong>Den ganzen Fehler lesen,</strong> nicht nur den Teil, der wichtig erscheint.</li>
+<li><strong>Immer eine Änderung auf einmal.</strong> Sonst bleibt unklar, was geholfen hat.</li>
+</ol>
+</section><section id="s47-9"><h2>47.9 Die zwei Kurz-Checklisten</h2><p><strong>Hardware</strong> (von außen nach innen):</p>
+<ul>
+<li><strong>Strom:</strong> Reicht das Netzteil? Am Pi <code>vcgencmd get_throttled</code>. LED-Matrizen brauchen eine eigene Stromversorgung.</li>
+<li><strong>Spannung:</strong> 3,3 V oder 5 V? Ein 3,3-V-Display an 5 V kann kaputtgehen.</li>
+<li><strong>Masse:</strong> GND muss überall verbunden sein.</li>
+<li><strong>Verkabelung:</strong> genau mit der Pin-Tabelle vergleichen.</li>
+<li><strong>Gerät sichtbar?</strong> I²C-Scanner oder <code>i2cdetect -y 1</code>.</li>
+<li><strong>Kabel:</strong> manche USB-Kabel haben nur Strom und keine Datenleitungen.</li>
+<li><strong>Port:</strong> <code>dmesg | tail</code> zeigt, ob das Gerät erkannt wurde und welcher Port es ist.</li>
+</ul>
+<p><strong>Software:</strong></p>
+<ul>
+<li>Wurde die Datei <strong>gespeichert</strong>? (Strg+S in Geany, Strg+O in nano)</li>
+<li>Wurde das Programm <strong>neu gestartet</strong>? Ein laufendes Programm kennt die neue Datei nicht.</li>
+<li>Läuft ein <strong>alter Prozess</strong> noch? <code>ps aux | grep &lt;name&gt;</code>, dann <code>pkill</code>.</li>
+<li>Stimmen <strong>Pfade</strong> und <strong>Dateinamen</strong>? (<code>ls</code>, <code>pwd</code>)</li>
+<li>Hat die Datei die richtigen <strong>Rechte</strong>? (<code>ls -l</code>, <code>chmod +x</code>, <code>chown</code>)</li>
+<li>Gibt es eine <strong>Tippfehler-Ursache</strong>? Ein zusätzliches Zeichen, eine falsche Endung (<code>.sh</code> statt <code>.desktop</code>).</li>
+</ul>
+</section>

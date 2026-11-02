@@ -1,0 +1,40 @@
+<section id="s5-1"><h2>5.1 Prozesse ansehen und beenden</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ps</span> aux                        <span class="co"># alle laufenden Prozesse</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ps</span> aux <span class="kw">|</span> <span class="fu">grep</span> kanshi          <span class="co"># ist Kanshi gestartet?</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">top</span>                           <span class="co"># live, beenden mit q</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">htop</span>                          <span class="co"># komfortabler (sudo apt install htop)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">kill</span> 1234                     <span class="co"># Prozess mit der Nummer 1234 beenden</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">pkill</span> kanshi                  <span class="co"># Prozess nach Namen beenden</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">pkill</span> <span class="at">-f</span> app_ui.py            <span class="co"># Prozess nach ganzer Befehlszeile beenden</span></span></code></pre></div>
+<p><strong>So habe ich den Fehler bei Kanshi gefunden:</strong> <code>ps aux | grep kanshi</code> zeigte nur die grep-Zeile selbst. Das heißt: Kanshi läuft gar nicht, obwohl es im Autostart steht. Die Ursache war ein Syntaxfehler in der Konfigurationsdatei (siehe <a class="xr" href="#/kap/10/10.6">Kapitel 10.6</a>).</p>
+</section><section id="s5-2"><h2>5.2 systemd – Dienste</h2><p>Auf dem Pi laufen Hintergrunddienste unter <strong>systemd</strong>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">systemctl</span> status ssh <span class="at">--no-pager</span>       <span class="co"># Zustand ansehen</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl enable <span class="at">--now</span> ssh       <span class="co"># jetzt starten und beim Boot starten</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl restart <span class="op">&lt;</span>dienst<span class="op">&gt;</span>       # neu starten</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">systemctl</span> <span class="at">--user</span> status kanshi        <span class="co"># Dienst des eigenen Benutzers</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">systemctl</span> get-default                 <span class="co"># grafisch (graphical.target) oder nicht</span></span></code></pre></div>
+</section><section id="s5-3"><h2>5.3 Logs lesen</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">journalctl</span> <span class="at">-n</span> 50       <span class="co"># letzte 50 Systemmeldungen</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">journalctl</span> <span class="at">-f</span>          <span class="co"># live mitlesen</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dmesg</span> <span class="kw">|</span> <span class="fu">tail</span>           <span class="co"># letzte Kernel-Meldungen (z. B. neue USB-Geräte)</span></span></code></pre></div>
+<p><code>dmesg</code> zeigt, was der Kern erkannt hat, wenn etwas angesteckt wird, zum Beispiel einen Arduino, der als <code>ttyUSB0</code> auftaucht.</p>
+</section><section id="s5-4"><h2>5.4 Autostart beim Login (Desktop)</h2><p>Dateien im Ordner <code>~/.config/autostart</code> werden beim Login gestartet. Jede Datei ist ein <strong>Desktop Entry</strong>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode ini"><code class="sourceCode ini"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[Desktop Entry]</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">Type</span><span class="ot">=</span><span class="st">Application</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">Name</span><span class="ot">=</span><span class="st">Display Watchdog</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="dt">Exec</span><span class="ot">=</span><span class="st">/home/oratio/display_watchdog.sh</span></span></code></pre></div>
+<p>Bedeutung der Zeilen:</p>
+<ul>
+<li><code>[Desktop Entry]</code> – Beginn der Konfiguration</li>
+<li><code>Type=Application</code> – es ist ein Programm</li>
+<li><code>Name=</code> – Anzeigename</li>
+<li><code>Exec=</code> – welches Programm gestartet wird</li>
+</ul>
+<p>Jede Datei in <code>autostart</code> beschreibt ein Programm. Die Dateien sind nicht alle gleich lang. Der Pflichtteil sind meist diese vier Zeilen.</p>
+<p>Beachte: Das Script heißt <code>.sh</code>, die Autostart-Datei heißt <code>.desktop</code>. Diese beiden Endungen habe ich einmal verwechselt.</p>
+<p><strong>Bei labwc</strong> (dem Fenstermanager von Raspberry Pi OS Trixie) gibt es zusätzlich die Datei <code>~/.config/labwc/autostart</code>. Dort steht zum Beispiel die Zeile <code>kanshi &amp;</code>.</p>
+</section><section id="s5-5"><h2>5.5 cron – Aufgaben nach Zeitplan</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">crontab</span> <span class="at">-e</span>     <span class="co"># Zeitplan bearbeiten</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">crontab</span> <span class="at">-l</span>     <span class="co"># Zeitplan anzeigen</span></span></code></pre></div>
+<p>Eine Zeile hat fünf Zeitfelder (Minute, Stunde, Tag, Monat, Wochentag), danach den Befehl. Beispiel „jeden Sonntag um 3 Uhr": <code>0 3 * * 0 /home/oratio/backup.sh</code>. Damit läuft eine Sicherung ohne eigenes Zutun.</p>
+</section><section id="s5-6"><h2>5.6 Neustart und Ausschalten</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> reboot</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> shutdown now</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> shutdown <span class="at">-h</span> now</span></code></pre></div>
+</section>

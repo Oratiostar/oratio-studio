@@ -1,0 +1,86 @@
+<section id="s20-1"><h2>20.1 Welches Board für welchen Zweck?</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Board</th>
+<th>Stärken</th>
+<th>Grenzen</th>
+<th>Typisches Projekt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Arduino Nano (Klon)</strong></td>
+<td>einfach, billig, 5 V</td>
+<td>wenig Speicher, kein WLAN. Bei Klonen oft <code>:cpu=atmega328old</code> nötig</td>
+<td>OLED-Anzeige, Sensoren</td>
+</tr>
+<tr class="even">
+<td><strong>ESP32 / ESP32-S3</strong></td>
+<td>WLAN, Bluetooth, viel Leistung, 3,3 V</td>
+<td>Pins und Boot-Verhalten beachten</td>
+<td>Oratio Watch, Smart-Home</td>
+</tr>
+<tr class="odd">
+<td><strong>Raspberry Pi Pico H</strong></td>
+<td>PIO-Hardware, günstig</td>
+<td><strong>kein WLAN</strong> (die W-Version hätte es), für HUB75 PIO-Treiber nötig</td>
+<td>LED-Matrix</td>
+</tr>
+<tr class="even">
+<td><strong>Raspberry Pi 4 / 5</strong></td>
+<td>vollständiges Linux</td>
+<td>läuft nicht in Echtzeit, hohe Leistungsaufnahme</td>
+<td>Control Center, Matrix mit <code>rpi-rgb-led-matrix</code></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s20-2"><h2>20.2 Der Ablauf bei jedem Display-Projekt</h2><ol type="1">
+<li><strong>Controller-Chip herausfinden</strong> (SSD1306, ST7735S, GC9A01) und im Datenblatt prüfen.</li>
+<li><strong>Bus bestimmen:</strong> I²C (SDA, SCL, Adresse mit I²C-Scanner), SPI (MOSI, SCK, CS, DC, RST) oder UART.</li>
+<li><strong>Pins nach Board-Tabelle verdrahten.</strong> Die ESP32-S3-Tabelle steht in <a class="xr" href="#/kap/17">Kapitel 17</a>.</li>
+<li><strong>Bibliothek</strong> wählen (Adafruit_GFX, TFT_eSPI, LVGL, U8g2).</li>
+<li><strong>Kleinster Test:</strong> Bildschirm löschen, einen Text, einen Kreis.</li>
+<li>Erst dann: die Anwendung.</li>
+</ol>
+</section><section id="s20-3"><h2>20.3 Typische Fehler</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Meldung oder Symptom</th>
+<th>Meist die Ursache</th>
+<th>Prüfen</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Upload bricht ab (<code>avrdude: stk500_getsync()</code>)</td>
+<td>falscher Bootloader</td>
+<td><code>:cpu=atmega328old</code></td>
+</tr>
+<tr class="even">
+<td>Display bleibt schwarz</td>
+<td>falsche Adresse oder Pins</td>
+<td>I²C-Scanner</td>
+</tr>
+<tr class="odd">
+<td>Bild verschoben oder gespiegelt</td>
+<td>falsche Drehung / Offset</td>
+<td>Rotation und <code>setRotation()</code></td>
+</tr>
+<tr class="even">
+<td>Farben falsch</td>
+<td>RGB und BGR vertauscht</td>
+<td>Display-Treiberoption</td>
+</tr>
+<tr class="odd">
+<td>Kompilierfehler <code>'cmath' ...</code> oder <code>.red</code></td>
+<td>alte Bibliothek mit neuem Compiler</td>
+<td><code>#include &lt;cmath&gt;</code>, <code>.red</code> zu <code>.r</code></td>
+</tr>
+<tr class="even">
+<td>Matrix flackert auf dem Pi</td>
+<td>zu schneller GPIO</td>
+<td><code>--led-slowdown-gpio=4</code></td>
+</tr>
+</tbody>
+</table></div>
+</section>

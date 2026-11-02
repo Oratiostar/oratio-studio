@@ -1,0 +1,227 @@
+<section id="s62-1"><h2>62.1 Die drei Grundformeln</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Formel</th>
+<th>Name</th>
+<th>Aussage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>U = R · I</code></td>
+<td>Ohmsches Gesetz</td>
+<td>Spannung = Widerstand mal Strom</td>
+</tr>
+<tr class="even">
+<td><code>P = U · I</code></td>
+<td>Leistung</td>
+<td>Leistung = Spannung mal Strom</td>
+</tr>
+<tr class="odd">
+<td><code>P = U² / R</code></td>
+<td>Leistung bei fester Spannung</td>
+<td>folgt aus den beiden oberen</td>
+</tr>
+<tr class="even">
+<td><code>P = I² · R</code></td>
+<td>Leistung bei festem Strom</td>
+<td>ebenfalls abgeleitet</td>
+</tr>
+</tbody>
+</table></div>
+<p>Aus jeder Formel lassen sich die anderen Größen herausholen:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Gesucht</th>
+<th>Aus Spannung und Strom</th>
+<th>Aus Spannung und Widerstand</th>
+<th>Aus Strom und Widerstand</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Spannung <code>U</code></td>
+<td>–</td>
+<td>–</td>
+<td><code>U = R · I</code></td>
+</tr>
+<tr class="even">
+<td>Strom <code>I</code></td>
+<td>–</td>
+<td><code>I = U / R</code></td>
+<td>–</td>
+</tr>
+<tr class="odd">
+<td>Widerstand <code>R</code></td>
+<td><code>R = U / I</code></td>
+<td>–</td>
+<td>–</td>
+</tr>
+<tr class="even">
+<td>Leistung <code>P</code></td>
+<td><code>P = U · I</code></td>
+<td><code>P = U² / R</code></td>
+<td><code>P = I² · R</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Einheiten und Vorsätze.</strong> Spannung in Volt (V), Strom in Ampere (A), Widerstand in Ohm (Ω), Leistung in Watt (W). Die Vorsätze erspart man sich beim Rechnen, wenn man sie in Zehnerpotenzen umsetzt:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Vorsatz</th>
+<th>Zeichen</th>
+<th>Faktor</th>
+<th>Beispiel</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mikro</td>
+<td>µ</td>
+<td>10⁻⁶</td>
+<td>100 µA = 0,0001 A</td>
+</tr>
+<tr class="even">
+<td>Milli</td>
+<td>m</td>
+<td>10⁻³</td>
+<td>20 mA = 0,02 A</td>
+</tr>
+<tr class="odd">
+<td>Kilo</td>
+<td>k</td>
+<td>10³</td>
+<td>4,7 kΩ = 4700 Ω</td>
+</tr>
+<tr class="even">
+<td>Mega</td>
+<td>M</td>
+<td>10⁶</td>
+<td>1 MΩ = 1 000 000 Ω</td>
+</tr>
+<tr class="odd">
+<td>Nano / Piko (Kondensatoren)</td>
+<td>n / p</td>
+<td>10⁻⁹ / 10⁻¹²</td>
+<td>100 nF = 0,1 µF</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Häufigster Rechenfehler:</strong> mA und A mischen. Darum vor der Rechnung alles in Volt, Ampere, Ohm umsetzen.</p>
+</section><section id="s62-2"><h2>62.2 Reihen- und Parallelschaltung</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Schaltung</th>
+<th>Gesamtwiderstand</th>
+<th>Strom</th>
+<th>Spannung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Reihe</td>
+<td><code>R = R1 + R2 + …</code></td>
+<td>überall gleich</td>
+<td>teilt sich nach den Widerständen auf</td>
+</tr>
+<tr class="even">
+<td>Parallel</td>
+<td><code>1/R = 1/R1 + 1/R2 + …</code> (bei zwei: <code>R = R1·R2 / (R1+R2)</code>)</td>
+<td>teilt sich auf</td>
+<td>überall gleich</td>
+</tr>
+</tbody>
+</table></div>
+<p>Zwei gleiche Widerstände parallel ergeben die Hälfte. Der Gesamtwiderstand parallel ist <strong>immer kleiner als der kleinste Einzelwiderstand</strong>. Diese Plausibilitätsprobe fängt viele Rechenfehler ab.</p>
+</section><section id="s62-3"><h2>62.3 Fall: Leistung und Widerstand</h2><p>Meine Frage war: Bei 230 V und zwei Lampen, muss der Widerstand klein oder groß sein, damit man die höchste Leistung misst? Die Antwort steckt in <code>P = U² / R</code>: Bei fester Spannung wird die Leistung <strong>größer, wenn der Widerstand kleiner ist</strong>.</p>
+<p>Rechenbeispiel bei 230 V:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Widerstand</th>
+<th>Strom <code>I = U/R</code></th>
+<th>Leistung <code>P = U²/R</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>529 Ω</td>
+<td>0,43 A</td>
+<td>100 W</td>
+</tr>
+<tr class="even">
+<td>264,5 Ω</td>
+<td>0,87 A</td>
+<td>200 W</td>
+</tr>
+<tr class="odd">
+<td>52,9 Ω</td>
+<td>4,35 A</td>
+<td>1000 W</td>
+</tr>
+</tbody>
+</table></div>
+<p>In der Praxis darf der Widerstand nicht beliebig klein werden: Der Strom würde Leitungen, Sicherungen und Bauteile überlasten. Eine Glühlampe hat außerdem <strong>kalt</strong> einen viel kleineren Widerstand als warm; darum fließt beim Einschalten kurz ein Mehrfaches des Nennstroms.</p>
+</section><section id="s62-4"><h2>62.4 Der Widerstand als Bauteil</h2><ul>
+<li><strong>E-Reihen:</strong> Widerstände gibt es nur in genormten Werten. Die E12-Reihe hat 12 Werte je Zehnerpotenz: 1,0 – 1,2 – 1,5 – 1,8 – 2,2 – 2,7 – 3,3 – 3,9 – 4,7 – 5,6 – 6,8 – 8,2. Man rechnet zuerst den exakten Wert aus und wählt dann den <strong>nächsten Normwert</strong>, danach rechnet man zurück und prüft, ob alles noch passt.</li>
+<li><strong>Leistung:</strong> Ein Widerstand erwärmt sich mit <code>P = U · I</code>. Übliche Bauformen vertragen 0,25 W oder 0,5 W. Faustregel: höchstens die <strong>Hälfte</strong> des Nennwertes ausnutzen.</li>
+<li><strong>Toleranz:</strong> Kohleschicht meist 5 %, Metallfilm 1 % oder besser. Für Messzwecke (Shunt, Teiler) Metallfilm nehmen.</li>
+</ul>
+</section><section id="s62-5"><h2>62.5 Das Multimeter richtig benutzen</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Messart</th>
+<th>Stellung</th>
+<th>Anschluss</th>
+<th>Wichtig</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Gleichspannung</td>
+<td>V⎓</td>
+<td><strong>parallel</strong> zum Bauteil</td>
+<td>Bereich lieber zu groß wählen</td>
+</tr>
+<tr class="even">
+<td>Wechselspannung</td>
+<td>V~</td>
+<td>parallel</td>
+<td>bei Netzspannung Messgerät-Kategorie (CAT) beachten</td>
+</tr>
+<tr class="odd">
+<td>Strom</td>
+<td>A</td>
+<td><strong>in Reihe</strong> (Stromkreis auftrennen)</td>
+<td>falsche Buchse = Sicherung brennt durch</td>
+</tr>
+<tr class="even">
+<td>Widerstand</td>
+<td>Ω</td>
+<td>Bauteil <strong>spannungsfrei</strong> und besser <strong>ausgelötet</strong></td>
+<td>parallele Bauteile verfälschen den Wert</td>
+</tr>
+<tr class="odd">
+<td>Durchgang</td>
+<td>)))</td>
+<td>spannungsfrei</td>
+<td>piept bei niedrigem Widerstand</td>
+</tr>
+<tr class="even">
+<td>Diodentest</td>
+<td>Dioden-Symbol</td>
+<td>Rot an Anode, Schwarz an Kathode</td>
+<td>zeigt die Durchlassspannung</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Die zwei größten Fehler:</strong> Strom parallel zur Spannungsquelle messen (Kurzschluss über das Messgerät) und Widerstand an einer Schaltung messen, die noch Spannung hat. Darum gilt: erst Spannung messen, dann abschalten, dann den Rest.</p>
+</section><section id="s62-6"><h2>62.6 Übungen mit Lösungen</h2><ol type="1">
+<li><strong>Aufgabe:</strong> Eine LED (2,0 V, 10 mA) soll an 5 V. Welcher Vorwiderstand? <strong>Lösung:</strong> <code>R = (5 V − 2 V) / 0,01 A = 300 Ω</code>. Nächster Normwert: 330 Ω. Kontrolle: <code>I = 3 V / 330 Ω ≈ 9,1 mA</code>. Leistung im Widerstand: <code>3 V · 9,1 mA ≈ 27 mW</code>, also reicht 0,25 W.</li>
+<li><strong>Aufgabe:</strong> Welche Spannung fällt an 250 Ω ab, wenn 12 mA fließen? <strong>Lösung:</strong> <code>U = 250 Ω · 0,012 A = 3 V</code>.</li>
+<li><strong>Aufgabe:</strong> Zwei Widerstände, 1 kΩ und 2 kΩ, parallel. Gesamtwiderstand? <strong>Lösung:</strong> <code>R = 1000 · 2000 / 3000 ≈ 667 Ω</code>. Das ist kleiner als 1 kΩ, also plausibel.</li>
+<li><strong>Aufgabe:</strong> Ein Heizelement hat 40 Ω an 230 V. Leistung und Strom? <strong>Lösung:</strong> <code>P = 230² / 40 = 1322,5 W</code>, <code>I = 230 / 40 = 5,75 A</code>.</li>
+</ol>
+</section>

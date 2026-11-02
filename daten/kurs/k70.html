@@ -1,0 +1,108 @@
+<section id="s70-1"><h2>70.1 Die Prüfroutine bei jedem Hardware-Fehler</h2><p>Immer in dieser Reihenfolge, von außen nach innen:</p>
+<ol type="1">
+<li><strong>Sicht:</strong> Gibt es verbrannte Stellen, Risse, Lötbrücken, lose Stecker?</li>
+<li><strong>Geruch und Wärme:</strong> Wird etwas heiß? Sofort trennen.</li>
+<li><strong>Versorgung:</strong> Spannung am Eingang der Schaltung messen, dann an jedem Baustein (VCC gegen GND).</li>
+<li><strong>Masse:</strong> Durchgang zwischen allen GND-Punkten.</li>
+<li><strong>Signale:</strong> Pegel mit dem Multimeter (statisch) oder dem Oszilloskop/Logic-Analyzer (dynamisch).</li>
+<li><strong>Gegenprobe:</strong> anderes Kabel, anderes Modul, anderer Pin, Beispielprogramm.</li>
+<li><strong>Aufschreiben:</strong> Messwerte notieren (<a class="xr" href="#/kap/47">Kapitel 47</a>).</li>
+</ol>
+</section><section id="s70-2"><h2>70.2 Die Rechenformeln auf einen Blick</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Aufgabe</th>
+<th>Formel</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Vorwiderstand LED</td>
+<td><code>R = (UB − UF) / IF</code></td>
+</tr>
+<tr class="even">
+<td>Spannungsteiler</td>
+<td><code>Uaus = Uein · R2 / (R1 + R2)</code></td>
+</tr>
+<tr class="odd">
+<td>Parallelwiderstand</td>
+<td><code>R = R1 · R2 / (R1 + R2)</code></td>
+</tr>
+<tr class="even">
+<td>Shunt 4–20 mA</td>
+<td><code>U = I · R</code> (250 Ω: 1–5 V)</td>
+</tr>
+<tr class="odd">
+<td>Z-Dioden-Vorwiderstand</td>
+<td><code>RV = (Uein − UZ) / (IZ + IL)</code></td>
+</tr>
+<tr class="even">
+<td>Akkulaufzeit</td>
+<td><code>t = Kapazität / Strom</code></td>
+</tr>
+<tr class="odd">
+<td>Leistung</td>
+<td><code>P = U · I = U²/R = I²·R</code></td>
+</tr>
+<tr class="even">
+<td>Ladestrom (0,5 C)</td>
+<td><code>I = 0,5 · Kapazität</code></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s70-3"><h2>70.3 Wo Elektronik in meinen Projekten vorkam</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Projekt</th>
+<th>Elektronik-Thema</th>
+<th>Kapitel</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>LED-Matrix (HUB75)</td>
+<td>5-V-Versorgung mit mehreren Ampere, Pegel 3,3 V → 5 V, Flackern</td>
+<td>19, 51.7</td>
+</tr>
+<tr class="even">
+<td>OLED mit Arduino Nano</td>
+<td>I²C, Adresse, Pegel</td>
+<td>16, 51.6</td>
+</tr>
+<tr class="odd">
+<td>Oratio Watch</td>
+<td>Akku, TP4056, ESP32, Display, Echtzeituhr</td>
+<td>23, 65.2</td>
+</tr>
+<tr class="even">
+<td>Zifferblatt ESP32-S3</td>
+<td>Akku, AMOLED, Spannungsversorgung</td>
+<td>21</td>
+</tr>
+<tr class="odd">
+<td>Freenove-Turm</td>
+<td>Lüfter, LED, OLED, 5 V / 5 A</td>
+<td>11, 65.1</td>
+</tr>
+<tr class="even">
+<td>Control Center (Hardware-Seite)</td>
+<td>GPIO, I²C, Lüftersteuerung</td>
+<td>12, 49.6</td>
+</tr>
+<tr class="odd">
+<td>Arbeit</td>
+<td>4–20 mA, Z-Diode, Sicherheitsrelais, Motoren, Bauteilprüfung</td>
+<td>64, 63, 68, 67, 66</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s70-4"><h2>70.4 Meine Regeln</h2><ol type="1">
+<li><strong>Erst messen, dann raten.</strong> Ein Messwert ist besser als eine Vermutung.</li>
+<li><strong>Erst identifizieren, dann prüfen.</strong> Falsches Bauteil, falsche Prüfung.</li>
+<li><strong>Netzspannung und große Kondensatoren sind kein Spielplatz.</strong> Abschalten, warten, messen.</li>
+<li><strong>Sicherheitsfunktionen werden nie überbrückt.</strong></li>
+<li><strong>Das Datenblatt gilt, nicht die Erinnerung.</strong></li>
+<li><strong>Lithium nie ohne Lader und Schutz.</strong></li>
+<li><strong>Eine Änderung, ein Test.</strong></li>
+</ol>
+</section>

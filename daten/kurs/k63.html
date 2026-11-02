@@ -1,0 +1,173 @@
+<section id="s63-1"><h2>63.1 Der Spannungsteiler</h2><p>Zwei Widerstände in Reihe teilen eine Spannung. Die Ausgangsspannung wird über <code>R2</code> abgegriffen:</p>
+<pre class="text"><code>Uaus = Uein · R2 / (R1 + R2)</code></pre>
+<p>Rechenbeispiel: 5 V sollen auf etwa 3,3 V (etwa für ein Signal vom Arduino zum ESP32).</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Schritt</th>
+<th>Rechnung</th>
+<th>Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Verhältnis wählen</td>
+<td><code>R1 = 1 kΩ</code>, <code>R2 = 2 kΩ</code></td>
+<td>–</td>
+</tr>
+<tr class="even">
+<td>Ausgangsspannung</td>
+<td><code>5 V · 2000 / (1000 + 2000)</code></td>
+<td>3,33 V</td>
+</tr>
+<tr class="odd">
+<td>Strom durch den Teiler</td>
+<td><code>5 V / 3000 Ω</code></td>
+<td>1,67 mA</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Wichtigste Regel: Belastung.</strong> Der Teiler gilt nur, solange die Last <strong>sehr hochohmig gegenüber <code>R2</code></strong> ist. Hängt eine Last <code>RL</code> an <code>Uaus</code>, liegt sie parallel zu <code>R2</code>, und die Spannung bricht ein.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Last an Uaus</th>
+<th>Wirkung (mit R1 = 1 kΩ, R2 = 2 kΩ, 5 V)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>keine</td>
+<td>3,33 V</td>
+</tr>
+<tr class="even">
+<td>100 kΩ</td>
+<td>3,31 V (praktisch unverändert)</td>
+</tr>
+<tr class="odd">
+<td>2 kΩ</td>
+<td>R2‖RL = 1 kΩ → Uaus = 2,5 V (eingebrochen)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Daraus folgt die Auslegungsregel: Der Querstrom im Teiler soll <strong>etwa zehnmal größer</strong> sein als der Strom, den die Last zieht. Dann bleibt die Spannung stabil.</p>
+<p><strong>Als Pegelanpassung</strong> (5 V auf 3,3 V) taugt ein Teiler nur für <strong>langsame oder einfache Signale</strong> in eine Richtung (zum Beispiel Arduino-TX zum ESP32-RX). Für schnelle Busse wie I²C oder SPI braucht es Pegelwandler-Bausteine.</p>
+</section><section id="s63-2"><h2>63.2 Das Potentiometer als einstellbarer Teiler</h2><p>Ein Potentiometer (Poti) hat drei Anschlüsse: zwei feste Enden und den <strong>Schleifer</strong> in der Mitte. Die Enden liegen an Plus und Masse, der Schleifer liefert die einstellbare Spannung. Es gibt zwei Betriebsarten:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Betrieb</th>
+<th>Schaltung</th>
+<th>Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Als Teiler (drei Anschlüsse)</td>
+<td>Enden an Plus und Masse, Abgriff am Schleifer</td>
+<td>Spannung von 0 bis <code>Uein</code></td>
+</tr>
+<tr class="even">
+<td>Als veränderlicher Widerstand (zwei Anschlüsse)</td>
+<td>Schleifer mit einem Ende verbunden</td>
+<td>Widerstand von 0 bis <code>Rmax</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Weitere Regeln:</strong></p>
+<ul>
+<li>Ein Poti als Teiler soll <strong>niederohmig gegenüber der Last</strong> sein, sonst bricht die Spannung ein (siehe oben).</li>
+<li>Typische Werte: 10 kΩ für Messzwecke und Mikrocontroller-Eingänge (<code>analogRead</code>), 1 kΩ bis 5 kΩ, wenn mehr Strom fließen darf.</li>
+<li>Lineare Kennlinie (Typ B) für Sollwerte, logarithmische (Typ A) für Lautstärke.</li>
+</ul>
+<p><strong>Fall: Sollwert 0–10 V aus 12 V.</strong> Ein Poti R1 sollte aus 12 V eine einstellbare Spannung von 0 bis 10 V am Eingang eines Sensors erzeugen. Die Ausgangswerte von zwei Sensoren hängen von dieser Spannung ab und werden zusammen mit dem Wert eines Thermoelements auf einem Display angezeigt. Ein Poti an 12 V liefert aber 0 bis 12 V, nicht 0 bis 10 V. Zwei Lösungswege:</p>
+<ol type="1">
+<li><strong>Festen Widerstand vorschalten</strong>, so dass der Teiler bei Vollausschlag genau 10 V ergibt (<code>Rvor / Rpoti = 0,2</code>, also zum Beispiel 2 kΩ vor einem 10-kΩ-Poti: <code>12 V · 10 / 12 = 10 V</code>).</li>
+<li><strong>Eine Z-Diode als Referenz</strong> (nächster Abschnitt). Sie macht den Sollwert unabhängig von Schwankungen der 12 V.</li>
+</ol>
+</section><section id="s63-3"><h2>63.3 Die Z-Diode als Spannungsreferenz</h2><p>Eine <strong>Z-Diode</strong> (Zenerdiode) wird in <strong>Sperrrichtung</strong> betrieben. Ab ihrer Z-Spannung <code>UZ</code> beginnt sie zu leiten und hält die Spannung nahezu konstant. Sie braucht immer einen <strong>Vorwiderstand</strong> <code>RV</code>, der den Strom begrenzt:</p>
+<pre class="text"><code> Uges (12 V) ──[ RV ]──┬──────── Uaus (= UZ, 10 V)
+                       │
+                     Z-Diode (Kathode oben)
+                       │
+ Masse ────────────────┴────────</code></pre>
+<p><strong>Fall: 10 V als Sollwert für ein Druckregelventil.</strong> Aufgabe: eine möglichst genaue Spannung von 10 V erzeugen, die als Sollwert dient. Dazu eine 10-V-Z-Diode mit Vorwiderstand, und ein 10-kΩ-Poti <strong>parallel zur Z-Diode</strong>, an dessen Schleifer die einstellbare Spannung abgegriffen wird. Die Versorgung beträgt 12 V.</p>
+<p><strong>Die Rechnung, Schritt für Schritt:</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Schritt</th>
+<th>Rechnung</th>
+<th>Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Spannung am Vorwiderstand</td>
+<td><code>URV = Uges − UZ = 12 V − 10 V</code></td>
+<td>2 V</td>
+</tr>
+<tr class="even">
+<td>2. Maximaler Z-Strom (Datenblatt: <code>Ptot = 1,3 W</code>)</td>
+<td><code>IZmax = Ptot / UZ = 1,3 W / 10 V</code></td>
+<td>130 mA</td>
+</tr>
+<tr class="odd">
+<td>3. Minimaler Z-Strom (angenommen 10 % von <code>IZmax</code>)</td>
+<td><code>IZmin = 0,1 · 130 mA</code></td>
+<td>13 mA</td>
+</tr>
+<tr class="even">
+<td>4. Laststrom (Poti 10 kΩ + Anzeige zusammen etwa 9 kΩ)</td>
+<td><code>IL = UZ / RL = 10 V / 9 kΩ</code></td>
+<td>1,11 mA</td>
+</tr>
+<tr class="odd">
+<td>5. Gesamtstrom</td>
+<td><code>Iges = IZmin + IL = 13 mA + 1,11 mA</code></td>
+<td>14,1 mA</td>
+</tr>
+<tr class="even">
+<td>6. Vorwiderstand</td>
+<td><code>RV = URV / Iges = 2 V / 14,1 mA</code></td>
+<td>rund 142 Ω</td>
+</tr>
+<tr class="odd">
+<td>7. Normwert aus E-Reihe</td>
+<td>nächste Werte</td>
+<td><strong>120 Ω oder 150 Ω</strong></td>
+</tr>
+<tr class="even">
+<td>8. Kontrolle mit 150 Ω</td>
+<td><code>Iges = 2 V / 150 Ω</code></td>
+<td>13,33 mA</td>
+</tr>
+<tr class="odd">
+<td>9. Z-Strom bei 150 Ω</td>
+<td><code>IZ = 13,33 mA − 1,11 mA</code></td>
+<td>12,2 mA</td>
+</tr>
+<tr class="even">
+<td>10. Verlustleistung in <code>RV</code></td>
+<td><code>P = URV · Iges = 2 V · 13,33 mA</code></td>
+<td>27 mW</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Warum diese Kontrollen?</strong></p>
+<ul>
+<li><strong>Schritt 8–9:</strong> Beim gewählten Normwert fließt etwas weniger Strom als gerechnet. Der Z-Strom (12,2 mA) liegt dann knapp unter dem Sollminimum von 13 mA, bleibt aber deutlich im leitenden Bereich. Mit 120 Ω würden etwa 16,7 mA fließen, und der Z-Strom läge bei 15,6 mA. <strong>Welcher Wert gewählt wird, ist eine Abwägung:</strong> der kleinere Widerstand gibt mehr Sicherheit gegen Schwankungen, belastet aber Diode und Quelle stärker.</li>
+<li><strong>Schritt 10:</strong> Auch der Widerstand muss die Leistung aushalten. Hier ist sie winzig (27 mW).</li>
+<li><strong>Ohne Last</strong> (Anzeige abgezogen) fließt der gesamte Strom durch die Z-Diode. Das ist ihr Worst Case: <code>10 V · 13,33 mA = 133 mW</code>, weit unter den 1,3 W.</li>
+</ul>
+<p><strong>Allgemeine Auslegung</strong> für schwankende Eingangsspannung und schwankende Last (die vier „Fälle“ der Aufgabenstellung):</p>
+<pre class="text"><code>RV maximal:  RVmax = (Uein,min − UZ) / (IZmin + ILmax)     → die Diode soll auch im schlimmsten Fall noch leiten
+RV minimal:  RVmin = (Uein,max − UZ) / (IZmax + ILmin)     → die Diode darf im schlimmsten Fall nicht überlastet werden</code></pre>
+<p>Der Vorwiderstand muss zwischen diesen beiden Grenzen liegen. Gibt es keinen solchen Wert, ist die Schwankung zu groß für eine einfache Z-Diodenschaltung. Dann braucht es einen Spannungsregler (zum Beispiel LM7810 oder eine Referenz wie TL431).</p>
+<p><strong>Grenzen der Z-Diode:</strong> Sie hat eine Toleranz (oft 5 %) und eine Temperaturabhängigkeit; für „möglichst präzise“ Spannungen ist eine echte Referenz (TL431, REF-Bausteine) die bessere Wahl. Mit Z-Diode plus Poti wird die Sollwertspannung außerdem vom Poti <strong>belastet</strong> (Abschnitt 63.1).</p>
+</section><section id="s63-4"><h2>63.4 Übungen mit Lösungen</h2><ol type="1">
+<li><strong>Aufgabe:</strong> 24 V sollen mit einer 5,1-V-Z-Diode auf 5,1 V stabilisiert werden, Laststrom 5 mA, <code>IZmin</code> = 5 mA. Vorwiderstand? <strong>Lösung:</strong> <code>Iges = 5 + 5 = 10 mA</code>, <code>URV = 24 − 5,1 = 18,9 V</code>, <code>RV = 18,9 V / 0,01 A = 1890 Ω</code> → 1,8 kΩ oder 2 kΩ. Leistung im Widerstand: <code>18,9 V · 0,01 A = 0,19 W</code> → mindestens 0,5 W.</li>
+<li><strong>Aufgabe:</strong> Spannungsteiler 12 V → 3,3 V mit <code>R2 = 3,3 kΩ</code>. Welches <code>R1</code>? <strong>Lösung:</strong> <code>R1 = R2 · (Uein / Uaus − 1) = 3,3 kΩ · (12/3,3 − 1) = 3,3 kΩ · 2,64 ≈ 8,7 kΩ</code> → 8,2 kΩ ergibt 3,44 V, 9,1 kΩ ergibt 3,19 V. Normwerte treffen selten genau.</li>
+<li><strong>Aufgabe:</strong> Wie verändert sich <code>Uaus</code> des Teilers 1 kΩ / 2 kΩ an 5 V, wenn eine Last von 1 kΩ angeschlossen wird? <strong>Lösung:</strong> <code>R2‖RL = 2000·1000/3000 = 667 Ω</code>, <code>Uaus = 5 V · 667 / (1000+667) = 2,0 V</code>.</li>
+</ol>
+</section>

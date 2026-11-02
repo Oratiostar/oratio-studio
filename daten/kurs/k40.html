@@ -1,0 +1,274 @@
+<p>Dieses Kapitel stellt beide Projekte nebeneinander. Es beantwortet vier Fragen: <strong>Was ist gleich geblieben? Was ist neu? Was war besser, was schlechter? Welche Methode steckt jeweils dahinter?</strong></p>
+<section id="s40-1"><h2>40.1 Auf einen Blick</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Projekt A „Werkbank“</th>
+<th>Projekt B „Glas“</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ausgangspunkt</td>
+<td>Freenove-Projekt für Tower-Gehäuse (Lüfter, LED)</td>
+<td>eigenes Programm von Grund auf</td>
+</tr>
+<tr class="even">
+<td>Zeit</td>
+<td>erste Wochen</td>
+<td>danach, deutlich größer</td>
+</tr>
+<tr class="odd">
+<td>Programmiersprache</td>
+<td>Python mit PyQt5</td>
+<td>Python mit PyQt5 (Varianten: C++, Steam Deck, Web)</td>
+</tr>
+<tr class="even">
+<td>Bedienidee</td>
+<td>Reiter mit Knöpfen (Skripte starten)</td>
+<td>Handy-Startbildschirm mit Kacheln, Widgets, Dock</td>
+</tr>
+<tr class="odd">
+<td>Aussehen</td>
+<td>Qt-Standard mit Stylesheets</td>
+<td>selbst gezeichnetes Glas, 4 Modi, Nachtmodus</td>
+</tr>
+<tr class="even">
+<td>Kacheln</td>
+<td>JSON-Liste, 3-Stufen-Ziehen mit eigener Maus-Logik</td>
+<td>JSON-Liste mit Größen, Seiten, Widgets, Stapel</td>
+</tr>
+<tr class="odd">
+<td>Struktur</td>
+<td>wenige Dateien</td>
+<td>Ordner pro Tab, Datei pro Widget und App</td>
+</tr>
+<tr class="even">
+<td>Fehlertoleranz</td>
+<td>ein Tippfehler stoppt alles</td>
+<td>ein defektes Teil fehlt, der Rest läuft</td>
+</tr>
+<tr class="odd">
+<td>Zielgruppe</td>
+<td>ich selbst am Pi</td>
+<td>ich, und andere, die es einrichten</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s40-2"><h2>40.2 Was ist gleich geblieben?</h2><ol type="1">
+<li><strong>Qt als Grundlage</strong> (PyQt5): Fenster, Layouts, Signale, Zeichnen.</li>
+<li><strong>Skripte werden mit <code>subprocess</code> gestartet</strong>; Terminal-Programme mit <code>lxterminal -e</code>.</li>
+<li><strong>Kacheln stehen in einer JSON-Datei</strong> (<code>oratio_apps.json</code>). Nur das Format wurde reicher.</li>
+<li><strong>Die Zugriffsrechte-Entscheidung aus <a class="xr" href="#/kap/32/32.5">Kapitel 32.5</a>:</strong> Das Fenster läuft ohne <code>sudo</code>.</li>
+<li><strong>Einstellungen werden in JSON-Dateien neben dem Programm gespeichert</strong>, nicht in der Registry, nicht in einer Datenbank.</li>
+<li><strong>Kanshi</strong> für die Bildschirmauflösung (<a class="xr" href="#/kap/33">Kapitel 33</a>): Das Programm schreibt die Konfiguration um und startet <code>kanshi</code> neu.</li>
+<li><strong>Die Geräte</strong> (LED, Lüfter, OLED, PS5) behalten ihre Dienste und ihre eigene Einstellungsdatei.</li>
+</ol>
+</section><section id="s40-3"><h2>40.3 Was ist neu in B?</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Neu</th>
+<th>Beschreibung</th>
+<th>Kapitel</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tabs als Ordner</td>
+<td><code>_tab_laden</code> + <code>TABS</code></td>
+<td>36.3</td>
+</tr>
+<tr class="even">
+<td>Glas-Werkzeugkasten</td>
+<td><code>glass_ui.py</code></td>
+<td>36.5</td>
+</tr>
+<tr class="odd">
+<td>Widgets</td>
+<td>eine Datei pro Widget, Galerie, Stapel</td>
+<td>37.4</td>
+</tr>
+<tr class="even">
+<td>Dock, Seiten, Bearbeiten-Modus</td>
+<td>Handy-Bedienung</td>
+<td>37.2</td>
+</tr>
+<tr class="odd">
+<td>Kontrollfenster</td>
+<td>schnelle Schalter</td>
+<td>37.5</td>
+</tr>
+<tr class="even">
+<td>Mitteilungen, Suche, Einstellungen, Sperre, Fokus</td>
+<td>System-Funktionen</td>
+<td>38</td>
+</tr>
+<tr class="odd">
+<td>Toolbox mit Etiketten</td>
+<td>425 → über 1000 Befehle</td>
+<td>39.1</td>
+</tr>
+<tr class="even">
+<td>Labor, Bauteile, Akademie, Atlas</td>
+<td>Elektronik</td>
+<td>38.5, 39.6</td>
+</tr>
+<tr class="odd">
+<td>Backup-Klon</td>
+<td>bootfähiges System kopieren</td>
+<td>39.2</td>
+</tr>
+<tr class="even">
+<td>Sprachsteuerung</td>
+<td>Vosk, Piper, Gemma</td>
+<td>39.3</td>
+</tr>
+<tr class="odd">
+<td>Sprachen</td>
+<td>de, fr, en, es</td>
+<td>39.4</td>
+</tr>
+<tr class="even">
+<td>Handy-Seite</td>
+<td>Fernbedienung, Austausch, Hotspot</td>
+<td>38.10</td>
+</tr>
+<tr class="odd">
+<td>Absturz-Neustart, Fehlerprotokoll, tägliche Sicherung</td>
+<td>Betriebssicherheit</td>
+<td>36.4</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s40-4"><h2>40.4 Vorteile und Nachteile</h2><h3 id="projekt-a">Projekt A</h3>
+<p><strong>Vorteile</strong></p>
+<ul>
+<li>Man versteht jede Zeile. Jeder Knopf ist ein <code>QPushButton</code>, jede Aktion ein <code>subprocess</code>.</li>
+<li>Schnell zu ändern: Ein neuer Tab sind zehn Zeilen.</li>
+<li>Läuft auf jedem Pi ohne zusätzliche Pakete außer PyQt5.</li>
+<li>Gut zum Lernen: Alle Methoden (Tabs, Layouts, Signale, Prozesse, JSON) kommen einzeln vor.</li>
+</ul>
+<p><strong>Nachteile</strong></p>
+<ul>
+<li>Ein Syntaxfehler, ein falsches Einrücken oder eine fehlende Datei stoppt <strong>alles</strong>.</li>
+<li>Das Aussehen ist Sache jedes Knopfes; es wird schnell uneinheitlich.</li>
+<li>Das eigene Maus-Ziehen ist aufwendig und anfällig (<a class="xr" href="#/kap/34">Kapitel 34</a>).</li>
+<li>Keine Seiten, keine Größen, keine Widgets: Der Bildschirm ist nach 20 Kacheln voll.</li>
+</ul>
+<h3 id="projekt-b">Projekt B</h3>
+<p><strong>Vorteile</strong></p>
+<ul>
+<li>Ein kaputter Tab, ein defektes Widget, eine fehlende Sprachdatei: der Rest läuft.</li>
+<li>Einheitliches Aussehen, weil alles vom selben Werkzeugkasten gezeichnet wird.</li>
+<li>Wächst, ohne unübersichtlich zu werden (Ordner statt Riesendatei).</li>
+<li>Fast alles ist über das Fenster einstellbar; wenig muss in Dateien geändert werden.</li>
+</ul>
+<p><strong>Nachteile</strong></p>
+<ul>
+<li>Sehr groß: Ein Einsteiger findet sich nicht mehr in 100 Dateien zurecht.</li>
+<li>Eine neue Idee berührt oft mehrere Dateien (Ansicht, Fenster, Suche, Einstellungsliste).</li>
+<li>Mehr Abhängigkeiten (Vosk, Piper, Ollama, <code>grim</code>, <code>wlrctl</code>, <code>nmcli</code>) und mehr, was auf anderer Hardware ausfallen kann.</li>
+<li>Selbst gezeichnetes Glas kostet CPU: auf dem Pi 5 mit 4K muss man Effekte sparen (<a class="xr" href="#/kap/37/37.7">Kapitel 37.7</a>).</li>
+<li>Ein Teil wurde nicht an echter Hardware geprüft (Backup-Klon, Hotspot, Kamera, Audio); das steht jeweils im Kapitel.</li>
+</ul>
+</section><section id="s40-5"><h2>40.5 Methoden, die jeweils verwendet wurden</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Methode</th>
+<th>A</th>
+<th>B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>QTabWidget</code> / <code>addTab</code></td>
+<td>✔</td>
+<td>✔ (mit eigener Tab-Leiste)</td>
+</tr>
+<tr class="even">
+<td><code>QGridLayout</code>, <code>QVBoxLayout</code></td>
+<td>✔</td>
+<td>✔</td>
+</tr>
+<tr class="odd">
+<td><code>subprocess.Popen</code></td>
+<td>✔</td>
+<td>✔</td>
+</tr>
+<tr class="even">
+<td>JSON-gesteuerte Oberfläche</td>
+<td>einfache Liste</td>
+<td>Rastermodell mit Größen</td>
+</tr>
+<tr class="odd">
+<td>Eigenes Maus-Ziehen (<code>mousePress/Move/Release</code>)</td>
+<td>✔</td>
+<td>zuerst ja, dann Variante mit Qt-Drag&amp;Drop (<a class="xr" href="#/kap/41">Kapitel 41</a>)</td>
+</tr>
+<tr class="even">
+<td><code>QPainter</code> / <code>paintEvent</code></td>
+<td>nur Maske</td>
+<td><strong>überall</strong> (Glas, Symbole, Widgets)</td>
+</tr>
+<tr class="odd">
+<td>Modul per Textnamen laden (<code>__import__</code>)</td>
+<td>–</td>
+<td>✔</td>
+</tr>
+<tr class="even">
+<td>Mixin-Klassen</td>
+<td>–</td>
+<td>✔</td>
+</tr>
+<tr class="odd">
+<td>Hintergrund-Threads / Timer</td>
+<td>wenige</td>
+<td>viele (Verlauf, Nutzung, Fokus, Mitteilungen)</td>
+</tr>
+<tr class="even">
+<td>Eigener Webserver</td>
+<td>–</td>
+<td>✔ (Handy)</td>
+</tr>
+<tr class="odd">
+<td>Offline-Sprache</td>
+<td>–</td>
+<td>✔</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s40-6"><h2>40.6 Welche Variante nehme ich wofür?</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Wunsch</th>
+<th>Empfehlung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ich will lernen, wie eine Qt-Oberfläche funktioniert</td>
+<td>Projekt A nachbauen (<a class="xr" href="#/kap/31">Kapitel 31</a>–35)</td>
+</tr>
+<tr class="even">
+<td>Ich will ein fertiges Bedienpult am Pi</td>
+<td>Projekt B (<a class="xr" href="#/kap/36">Kapitel 36</a>–39)</td>
+</tr>
+<tr class="odd">
+<td>Ich will das Ziehen „sauber“ per Qt lösen</td>
+<td>Drag&amp;Drop-Variante (<a class="xr" href="#/kap/41">Kapitel 41</a>)</td>
+</tr>
+<tr class="even">
+<td>Ich will kleine Datei, schneller Start</td>
+<td>C++-Variante (<a class="xr" href="#/kap/42">Kapitel 42</a>)</td>
+</tr>
+<tr class="odd">
+<td>Ich will dasselbe auf dem Steam Deck</td>
+<td>Deck-Variante (<a class="xr" href="#/kap/43">Kapitel 43</a>)</td>
+</tr>
+<tr class="even">
+<td>Ich will es im Browser zeigen</td>
+<td>Oratio Place (<a class="xr" href="#/kap/44">Kapitel 44</a>)</td>
+</tr>
+</tbody>
+</table></div>
+</section>

@@ -1,0 +1,70 @@
+<p>Es gibt vier Gerätearten. Das Wichtigste ist zu verstehen, <strong>was jedes kann und was nicht</strong>. Das kostet Anfänger oft Zeit, zum Beispiel wenn Raspberry-Pi-Code auf dem ESP32 nicht läuft.</p>
+<section id="s15-1"><h2>15.1 Der große Unterschied</h2><p>Ein <strong>Raspberry Pi</strong> ist ein kompletter Computer mit Linux. Ein <strong>Mikrocontroller</strong> (Arduino, ESP32, Pico) ist ein kleiner Chip, auf dem genau ein Programm läuft, ohne Betriebssystem.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Raspberry Pi 4 / 5</th>
+<th>ESP32 / ESP32-S3</th>
+<th>Arduino Nano</th>
+<th>Raspberry Pi Pico H</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Art</td>
+<td>Mini-Computer mit Linux</td>
+<td>Mikrocontroller</td>
+<td>Mikrocontroller</td>
+<td>Mikrocontroller (Chip RP2040)</td>
+</tr>
+<tr class="even">
+<td>WLAN / Bluetooth</td>
+<td>ja</td>
+<td>ja</td>
+<td>nein</td>
+<td>nein</td>
+</tr>
+<tr class="odd">
+<td>Startzeit</td>
+<td>15–30 Sekunden (Boot)</td>
+<td>1–2 Sekunden</td>
+<td>sofort</td>
+<td>sofort</td>
+</tr>
+<tr class="even">
+<td>Stromverbrauch</td>
+<td>hoch</td>
+<td>niedrig</td>
+<td>sehr niedrig</td>
+<td>sehr niedrig</td>
+</tr>
+<tr class="odd">
+<td>Programmiert mit</td>
+<td>Python, C++, Shell</td>
+<td>Arduino/C++</td>
+<td>Arduino/C++</td>
+<td>C++ (Pico-SDK), MicroPython</td>
+</tr>
+<tr class="even">
+<td>Internet, Wetter, Webseiten</td>
+<td>direkt möglich</td>
+<td>über WLAN mit eigenem Code</td>
+<td>nur mit Zusatzhardware</td>
+<td>nur mit Zusatzhardware</td>
+</tr>
+</tbody>
+</table></div>
+<p>Das „H" beim <strong>Pico H</strong> bedeutet nur, dass die Stiftleisten schon angelötet sind. Er hat <strong>kein WLAN</strong>.</p>
+</section><section id="s15-2"><h2>15.2 Was auf dem ESP32 *nicht* läuft</h2><p>Mein Code für die LED-Matrix am Raspberry Pi benutzte Dinge, die es auf dem ESP32 nicht gibt:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;../include/led-matrix.h&quot;</span><span class="pp">   </span><span class="co">// eine Raspberry-Pi-Bibliothek</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>system<span class="op">(</span><span class="st">&quot;hostname -I&quot;</span><span class="op">);</span>               <span class="co">// Linux-Befehle</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>popen<span class="op">(...)</span></span></code></pre></div>
+<p>Auf dem Mikrocontroller gibt es kein Linux, deshalb muss man die Teile umschreiben: Uhrzeit per WLAN holen (NTP), Wetter direkt über die Web-API laden, eine ESP32-taugliche HUB75-Bibliothek verwenden. Die Animationen (Mario, Radar, Feuerwerk) lassen sich übernehmen, aber der Code ist neu zu schreiben.</p>
+<p><strong>Faustregel:</strong> Braucht ein Programm Internet, Dateien und Linux-Befehle, passt der Pi. Soll es schnell starten, wenig Strom brauchen und einfach nur etwas anzeigen, passt ein Mikrocontroller.</p>
+</section><section id="s15-3"><h2>15.3 Eigene KI?</h2><ul>
+<li><strong>Auf dem ESP32</strong> geht nur sehr wenig: Wake-Word wie „Hallo Oratio", einfache Sprachkommandos, Sensoren. Ein großer Chatbot läuft dort nicht.</li>
+<li><strong>Auf dem Pi 4 oder Pi 5</strong> geht ein kleiner lokaler Sprachassistent (<a class="xr" href="#/kap/24">Kapitel 24</a>).</li>
+<li>Der ESP32 kann ein Helfer sein: Sensoren, Relais, Knöpfe und Licht schalten, während die KI auf dem Pi läuft.</li>
+</ul>
+</section>

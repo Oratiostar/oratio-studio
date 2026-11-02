@@ -1,0 +1,108 @@
+<section id="s64-1"><h2>64.1 Warum Strom als Signal?</h2><p>In der Industrie wird ein Messwert oft als <strong>Strom 4 bis 20 mA</strong> übertragen. Das hat drei Gründe:</p>
+<ul>
+<li>Der Strom ist in einer Reihenschaltung überall gleich. <strong>Leitungswiderstand und Länge stören nicht.</strong></li>
+<li><strong>4 mA = Nullpunkt, 20 mA = Endwert.</strong> Ein Wert unter etwa 3,6 mA bedeutet „Leitung unterbrochen“ oder „Sensor defekt“. Bei 0–10 V wäre „0 V“ gleichzeitig ein gültiger Messwert und ein Leitungsbruch.</li>
+<li>Der Sensor bekommt über dieselbe Leitung seine Versorgung (<strong>Zweileiter-Technik</strong>).</li>
+</ul>
+</section><section id="s64-2"><h2>64.2 Fall: Drucksensor mit Stromausgang am Messgerät, das nur Spannung misst</h2><p>Ich hatte einen Drucksensor mit Stromausgang (4–20 mA) und ein Messgerät von National Instruments, dessen Analogeingang nur Spannung misst. Die Frage: Wie lässt sich der Strom lesen?</p>
+<p><strong>Lösung: der Shunt-Widerstand.</strong> Der Strom fließt durch einen bekannten Widerstand. Der Spannungsabfall wird gemessen: <code>U = I · R</code>.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Strom</th>
+<th>Spannung an 250 Ω</th>
+<th>Spannung an 500 Ω</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>4 mA</td>
+<td>1 V</td>
+<td>2 V</td>
+</tr>
+<tr class="even">
+<td>12 mA</td>
+<td>3 V</td>
+<td>6 V</td>
+</tr>
+<tr class="odd">
+<td>20 mA</td>
+<td>5 V</td>
+<td>10 V</td>
+</tr>
+</tbody>
+</table></div>
+<p>Mit 250 Ω ergibt sich der Spannungsbereich 1–5 V, mit 500 Ω der Bereich 2–10 V. Welcher Widerstand passt, hängt vom Eingangsbereich des Messgerätes ab (zum Beispiel 0–5 V oder ±10 V).</p>
+<p><strong>Zurückrechnen auf den Messwert</strong> (Beispiel: Drucksensor 0–10 bar):</p>
+<pre class="text"><code>Druck [bar] = (U − 1 V) / (5 V − 1 V) · 10 bar        (bei 250 Ω)</code></pre>
+<p>Bei 3 V: <code>(3 − 1)/4 · 10 = 5 bar</code>.</p>
+<p><strong>Worauf es beim Shunt ankommt:</strong></p>
+<ul>
+<li><strong>Genauigkeit und Temperaturstabilität:</strong> Metallfilmwiderstand mit 0,1 % bis 1 %. Eine Toleranz von 5 % verfälscht jeden Messwert um 5 %.</li>
+<li><strong>Leistung:</strong> <code>P = I² · R = (0,02 A)² · 250 Ω = 0,1 W</code>. Ein 0,25-W-Widerstand genügt.</li>
+<li><strong>Hochohmiger Eingang:</strong> Das Messgerät soll mit mindestens 1 MΩ messen, damit es den Strom nicht verfälscht.</li>
+<li><strong>Schleifenspannung:</strong> Der Sensor braucht Versorgung (oft 12 bis 30 V). Der Shunt liegt <strong>in Reihe</strong> zum Sensor, nicht parallel.</li>
+</ul>
+<p><strong>Warum kann ein Spannungs-Analogeingang nicht einfach Strom messen?</strong> Ein „Analog Input“ eines Standard-Messgerätes (zum Beispiel NI 9215, NI 9205, PCIe-6363) hat einen hohen Innenwiderstand (1 MΩ oder mehr). Ein Strommesser müsste dagegen einen sehr kleinen Innenwiderstand haben. Wer 4–20 mA direkt an einen Spannungseingang legt, misst Unsinn oder nichts. Es gibt eigene Strommodule (zum Beispiel NI 9203 oder NI 9227; Typen bitte beim Hersteller bestätigen).</p>
+<p><strong>Weitere Wege:</strong></p>
+<ul>
+<li>Fertiger <strong>Messumformer</strong> (4–20 mA auf 0–10 V), oft mit galvanischer Trennung. Vorteil: Das Messgerät ist vor Überspannung geschützt.</li>
+<li>Ein <strong>Mikrocontroller</strong> mit ADC: Auch dort wird der Strom zuerst mit einem Shunt in Spannung gewandelt, und der Spannungsbereich muss unter 3,3 V (ESP32) bzw. 5 V (Nano) bleiben. Beim ESP32 deshalb 100 Ω (0,4–2,0 V) und einen Schutz gegen Überspannung vorsehen.</li>
+</ul>
+</section><section id="s64-3"><h2>64.3 Signalpegel: 3,3 V und 5 V</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Baustein</th>
+<th>Logikpegel</th>
+<th>Hinweis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Arduino Nano / Uno</td>
+<td>5 V</td>
+<td><code>HIGH</code> ab etwa 3 V erkannt</td>
+</tr>
+<tr class="even">
+<td>ESP32, ESP32-S3, Pico, Raspberry Pi</td>
+<td>3,3 V</td>
+<td>Eingänge <strong>nicht 5-V-tolerant</strong></td>
+</tr>
+<tr class="odd">
+<td>Viele Sensor-Module</td>
+<td>3,3 V oder 5 V</td>
+<td>Datenblatt/Platinenaufdruck prüfen</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Grundregel:</strong> Ein 5-V-Signal darf <strong>nie direkt</strong> auf einen 3,3-V-Eingang. Mögliche Lösungen:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Lösung</th>
+<th>Wann</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Spannungsteiler (Abschnitt 63.1)</td>
+<td>einfache, langsame Signale in eine Richtung</td>
+</tr>
+<tr class="even">
+<td>Pegelwandler-Modul (zum Beispiel mit BSS138-MOSFET)</td>
+<td>I²C und bidirektionale Leitungen</td>
+</tr>
+<tr class="odd">
+<td>Pegelwandler-IC (zum Beispiel 74HCT245, TXS0108)</td>
+<td>schnelle Signale, mehrere Leitungen (LED-Matrix, SPI)</td>
+</tr>
+</tbody>
+</table></div>
+<p>In der anderen Richtung (3,3 V auf einen 5-V-Eingang) reicht oft schon ein 3,3-V-Signal, weil die Schwelle bei etwa 3 V liegt. Das ist aber <strong>an der Grenze</strong> und nicht sicher; für Zuverlässigkeit ebenfalls einen Pegelwandler nehmen.</p>
+<p><strong>Analogwerte am Mikrocontroller:</strong> Der ADC misst relativ zur Referenzspannung (5 V beim Nano, 3,3 V beim ESP32). Beim Nano bedeutet <code>analogRead</code> einen Wert von 0 bis 1023 für 0 bis 5 V; ein 12-Bit-ADC (ESP32) liefert 0 bis 4095. Der ADC des ESP32 ist <strong>nicht linear</strong> und hat Rauschen; für Genauigkeit mehrfach messen und mitteln.</p>
+</section><section id="s64-4"><h2>64.4 Übungen mit Lösungen</h2><ol type="1">
+<li><strong>Aufgabe:</strong> Ein Sensor liefert 4–20 mA. Am 250-Ω-Shunt messe ich 2,6 V. Wie viel mA sind das und wie viel Prozent des Messbereichs? <strong>Lösung:</strong> <code>I = 2,6 V / 250 Ω = 10,4 mA</code>. Prozent: <code>(10,4 − 4)/16 = 40 %</code>.</li>
+<li><strong>Aufgabe:</strong> Welche Leistung nimmt ein Shunt von 100 Ω bei 20 mA auf? <strong>Lösung:</strong> <code>P = (0,02)² · 100 = 0,04 W</code>.</li>
+<li><strong>Aufgabe:</strong> Ein 4–20-mA-Signal soll an einen ESP32-ADC (0–3,3 V). Welcher Shunt höchstens? <strong>Lösung:</strong> <code>R ≤ 3,3 V / 0,02 A = 165 Ω</code>; mit Sicherheitsabstand 100 Ω → 0,4 bis 2,0 V.</li>
+</ol>
+</section>

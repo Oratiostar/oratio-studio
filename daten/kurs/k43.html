@@ -1,0 +1,591 @@
+<p>Dieses Kapitel beschreibt, wie das Projekt B (<a class="xr" href="#/kap/36">Kapitel 36</a>–39) vom Raspberry Pi 5 auf das Steam Deck übertragen wurde: was anders ist, was dabei kaputtging, warum, und wie man es repariert. Es gilt auch für jeden anderen x86-Rechner mit Linux (z. B. ein Laptop). Die Nebenprojekte, die im selben Zug entstanden, stehen in eigenen Kapiteln (Zifferblatt: <a class="xr" href="#/kap/25">Kapitel 25</a>, Webseite: <a class="xr" href="#/kap/44">Kapitel 44</a>).</p>
+<section id="s43-1"><h2>43.1 Das Projekt und die Idee dahinter</h2><h3 id="4311-was-das-oratio-control-center-ist">43.1.1 Was das Oratio Control Center ist</h3>
+<p>Das Oratio Control Center (kurz OCC) ist eine Bedienoberfläche, die ich in Python mit PyQt5 geschrieben habe. Sie sammelt an einem Ort alles, was ich auf einem Kleinrechner täglich brauche: ein Menü mit Apps (Dateien, Browser, Notizen, Kalender, Rechner, Terminal, Update, Backup, Verbindungen, Oratio AI und mehr), Widgets wie Uhr und Wetter, Schnellschalter für WLAN und Bluetooth und – nur auf dem Raspberry Pi – die Steuerung von Lüfter, LED-Streifen und OLED-Display des Freenove-Towers.</p>
+<p>Entstanden ist das Programm auf dem Raspberry Pi 5. In diesem Kurs geht es darum, wie ich es danach auf das Steam Deck übertragen habe, was dabei kaputtging, warum, und wie man es repariert. Dazu kommen drei Nebenprojekte aus demselben Projektumfeld: ein lokaler KI-Assistent mit Sprache, ein Zifferblatt für ein rundes AMOLED-Display mit ESP32-S3 und die Webseite „Oratio Place“.</p>
+<h3 id="4312-die-drei-geräte-im-überblick">43.1.2 Die drei Geräte im Überblick</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Raspberry Pi 5</th>
+<th>Steam Deck (LCD/OLED)</th>
+<th>Laptop (z. B. Zenbook 14, Ryzen AI 7)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Prozessor-Architektur</td>
+<td>ARM (aarch64)</td>
+<td>x86_64 (AMD Zen 2)</td>
+<td>x86_64 (AMD Zen 5)</td>
+</tr>
+<tr class="even">
+<td>Betriebssystem</td>
+<td>Raspberry Pi OS (Debian), labwc/Wayland</td>
+<td>SteamOS (Arch-basiert, Schreibschutz), KDE Plasma</td>
+<td>Windows (oder Linux)</td>
+</tr>
+<tr class="odd">
+<td>Paketverwaltung</td>
+<td>apt, mit sudo</td>
+<td>kein apt; pip im venv, Flatpak</td>
+<td>je nach System</td>
+</tr>
+<tr class="even">
+<td>GPIO-Pins (Lüfter, LED, OLED)</td>
+<td>ja</td>
+<td>nein</td>
+<td>nein</td>
+</tr>
+<tr class="odd">
+<td>Grafik</td>
+<td>schwach, aber ausreichend für Oberflächen</td>
+<td>deutlich stärker, spieletauglich</td>
+<td>stark, spieletauglich</td>
+</tr>
+<tr class="even">
+<td>Stärke</td>
+<td>Basteln, Hardware, 24/7-Betrieb, wenig Strom</td>
+<td>Handheld, Spiele, mobil, Touchscreen, Akku</td>
+<td>Arbeiten, Mobilität, Akku, leise</td>
+</tr>
+</tbody>
+</table></div>
+<p>Ehrliche Einordnung: Auf dem Steam Deck läuft das OCC spürbar flüssiger als auf dem Pi, weil der Prozessor und die Grafik deutlich mehr leisten. Der Pi bleibt aber das richtige Gerät, sobald Hardware an die Pins soll. Ein moderner Laptop ist bei reiner Rechenleistung und beim Akku vorn; für lokale KI-Modelle zählt dort vor allem der Arbeitsspeicher. Genaue Benchmark-Zahlen und aktuelle Preise ändern sich ständig – vor einer Kaufentscheidung sollte man sie aktuell nachschlagen.</p>
+<h3 id="4313-der-projektordner">43.1.3 Der Projektordner</h3>
+<p>Auf dem Pi und auf dem Deck gilt derselbe Ordner. Die wichtigsten Teile:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Datei / Ordner</th>
+<th>Aufgabe</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>app_ui.py</td>
+<td>Startpunkt der Oberfläche: baut das Hauptfenster und die Tabs</td>
+</tr>
+<tr class="even">
+<td>glass_ui.py</td>
+<td>Gemeinsames Aussehen („Glas“-Optik) und Hilfsfunktionen für Größen</td>
+</tr>
+<tr class="odd">
+<td>plattform.py</td>
+<td>Erkennt, ob das Programm auf dem Pi läuft, und blendet Pi-Teile sonst aus</td>
+</tr>
+<tr class="even">
+<td>deck_start.sh</td>
+<td>Startskript für das Deck (aktiviert das venv und setzt die Skalierung)</td>
+</tr>
+<tr class="odd">
+<td>DECK_ANLEITUNG.txt</td>
+<td>Kurzanleitung für die Installation auf dem Deck</td>
+</tr>
+<tr class="even">
+<td>Oratio_Menu/</td>
+<td>Das Menü mit allen Apps (Unterordner Apps/), Spracheinrichtung, Nachtlicht, Suche u. a.</td>
+</tr>
+<tr class="odd">
+<td>Oratio_Menu/Apps/Oratio_AI/</td>
+<td>Der KI-Assistent (Oratio_AI.py) und seine Einstellungen</td>
+</tr>
+<tr class="even">
+<td>Oratio_Menu/sprachsteuerung.py</td>
+<td>Sprache: Mikrofon, Erkennung, Sprachausgabe, Befehle</td>
+</tr>
+<tr class="odd">
+<td>Oratio_Menu/install_sprache.sh</td>
+<td>Installiert Vosk, Whisper, Piper und die KI in einem Rutsch</td>
+</tr>
+<tr class="even">
+<td>Oratio_Menu/Modelle/</td>
+<td>Heruntergeladene Sprachmodelle (groß, nicht von Hand kopieren)</td>
+</tr>
+<tr class="odd">
+<td>Oratio_Toolbox/core.py</td>
+<td>Werkzeugkasten mit Terminal-Befehlen</td>
+</tr>
+<tr class="even">
+<td>Fan/, LED/, OLED/, Tower/</td>
+<td>Nur für den Pi: Hardware-Steuerung des Freenove-Towers</td>
+</tr>
+<tr class="odd">
+<td>Json/</td>
+<td>Einstellungen und Zustände (Akzentfarbe, Menüeinträge …)</td>
+</tr>
+<tr class="even">
+<td>Logs/</td>
+<td>Protokolle – hier steht, was schiefging</td>
+</tr>
+</tbody>
+</table></div>
+<p><em>Merke: Faustregel: Wenn etwas nicht geht, zuerst in Logs/ nachsehen und die Konsole lesen, aus der das Programm gestartet wurde.</em></p>
+</section><section id="s43-2"><h2>43.2 Steam Deck vorbereiten</h2><h3 id="4321-desktop-modus-und-konsole">43.2.1 Desktop-Modus und Konsole</h3>
+<p>Das Steam Deck hat zwei Welten. Der Spielemodus ist die Steam-Oberfläche. Der Desktop-Modus ist ein normaler KDE-Plasma-Desktop. Das OCC läuft im Desktop-Modus; der Spielemodus wurde im Projekt nach Versuchen aufgegeben, weil dort Fenster und Eingaben anders behandelt werden (der Finger kommt dort als Maus an, nicht als Touch).</p>
+<ol type="1">
+<li><p>Steam-Taste drücken, dann „Ein/Aus“ wählen.</p></li>
+<li><p>„Zum Desktop wechseln“ antippen. Nach ein paar Sekunden erscheint der Desktop.</p></li>
+<li><p>Unten links im Startmenü (Symbol links in der Leiste) den Eintrag „System“ öffnen und dort „Konsole“ starten.</p></li>
+</ol>
+<h3 id="4322-warum-das-deck-anders-ist-als-der-pi">43.2.2 Warum das Deck anders ist als der Pi</h3>
+<p>SteamOS ist schreibgeschützt. Das System-Laufwerk lässt sich nicht einfach verändern, und es gibt kein apt. Das hat Folgen für alles, was ich auf dem Pi mit „sudo apt install …“ gelöst hätte:</p>
+<ul>
+<li><p>Python-Pakete gehören in eine eigene Umgebung (venv) im Home-Ordner.</p></li>
+<li><p>Programme, die nicht in Python geschrieben sind, lädt man in den Home-Ordner (Beispiel: Ollama nach ~/ollama, Piper nach Oratio_Menu/Modelle).</p></li>
+<li><p>Grafische Zusatzprogramme installiert man über Flatpak (Discover) – das ist der erlaubte Weg auf SteamOS.</p></li>
+<li><p>Nach größeren SteamOS-Updates kann alles, was außerhalb des Home-Ordners liegt, verschwinden. Alles im Home-Ordner bleibt.</p></li>
+</ul>
+<h3 id="4323-das-venv-anlegen">43.2.3 Das venv anlegen</h3>
+<p>python -m venv ~/oratio-venv<br />
+source ~/oratio-venv/bin/activate<br />
+pip install PyQt5</p>
+<p>Der erste Befehl legt die Umgebung an, der zweite schaltet sie in diesem Konsolenfenster ein (die Eingabezeile beginnt dann mit „(oratio-venv)“), der dritte lädt PyQt5 hinein. Meldet pip „externally managed environment“, wurde das venv nicht aktiviert – den zweiten Befehl wiederholen.</p>
+<h3 id="4324-das-programm-starten">43.2.4 Das Programm starten</h3>
+<p>cd ~/Downloads/Oratio_Control_Center<br />
+bash deck_start.sh</p>
+<p>deck_start.sh macht drei Dinge: Es aktiviert das venv, schaltet die automatische Qt-Skalierung ab und berechnet einen eigenen Skalierfaktor aus der Bildschirmhöhe. 1080 Pixel Höhe entsprechen dem Faktor 1,0, ein 4K-Fernseher (2160 Pixel) dem Faktor 2,0. Das Deck-Display (800 Pixel hoch) bleibt bei 1,0. So sieht die Oberfläche auf dem Fernseher nicht winzig aus.</p>
+<p><em>Merke: F11 schaltet den Vollbildmodus ein und aus. Ein neu gestartetes Programm blendet das Vollbild kurz aus; zurück kommt man über die Taskleiste unten.</em></p>
+<h3 id="4325-als-symbol-im-spielemodus">43.2.5 Als Symbol im Spielemodus</h3>
+<p>Wer trotzdem einen Startknopf im Spielemodus möchte: Im Desktop-Modus Steam öffnen, „Spiele“ → „Nicht-Steam-Spiel hinzufügen“, „Durchsuchen“, Dateityp „Alle Dateien“ wählen und deck_start.sh auswählen. Wegen der Eingabe-Unterschiede bleibt das eine Notlösung.</p>
+</section><section id="s43-3"><h2>43.3 plattform.py: Ein Ordner für zwei Geräte</h2><p>Statt zwei getrennte Programme zu pflegen, gibt es eine Datei, die erkennt, wo das Programm läuft. Auf dem Pi ändert sich dadurch nichts; auf anderen Geräten werden Pi-Teile ausgeblendet. In den JSON-Dateien bleiben die Einträge erhalten – sie werden nur nicht angezeigt.</p>
+<h3 id="4331-wie-der-pi-erkannt-wird">43.3.1 Wie der Pi erkannt wird</h3>
+<p>with open("/proc/device-tree/model", "rb") as f:<br />
+IST_PI = b"raspberry" in f.read().lower()</p>
+<p>Auf dem Pi steht in dieser Datei der Name des Boards („Raspberry Pi 5 Model B …“). Auf dem Deck existiert die Datei nicht, das Programm fängt den Fehler ab und setzt IST_PI auf falsch. Erzwingen lässt es sich mit einer Umgebungsvariable: ORATIO_PI=1 (so tun als Pi) oder ORATIO_PI=0 (so tun als kein Pi). Das ist praktisch zum Testen.</p>
+<h3 id="4332-was-auf-dem-deck-ausgeblendet-wird">43.3.2 Was auf dem Deck ausgeblendet wird</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Eintrag</th>
+<th>Warum nur Pi</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tower-Tab, LED, Lüfter, OLED</td>
+<td>brauchen GPIO/I²C des Freenove-Towers</td>
+</tr>
+<tr class="even">
+<td>Raspi Config, SD Card Copier, Pi Imager</td>
+<td>Werkzeuge des Raspberry Pi OS</td>
+</tr>
+<tr class="odd">
+<td>Oratio Backup</td>
+<td>klont das Pi-System mit rsync und /boot/firmware</td>
+</tr>
+<tr class="even">
+<td>Oratio Labor</td>
+<td>arbeitet mit Pi-Pins</td>
+</tr>
+<tr class="odd">
+<td>Kanshi</td>
+<td>Bildschirmanordnung unter labwc (wlr-randr), KDE hat eigene Einstellungen</td>
+</tr>
+<tr class="even">
+<td>Oratio Update</td>
+<td>ruft apt auf – SteamOS hat kein apt</td>
+</tr>
+<tr class="odd">
+<td>Oratio Control Center (als App)</td>
+<td>startete sich über run_app.sh mit festem Pi-Pfad</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="4333-weitere-merkmale">43.3.3 Weitere Merkmale</h3>
+<ul>
+<li><p>IM_SPIELEMODUS: erkennt Gamescope über die Umgebungsvariablen SteamGameId, GAMESCOPE_WAYLAND_DISPLAY oder den Desktop-Namen.</p></li>
+<li><p>KANN_APT: nur wahr, wenn apt-get und pkexec vorhanden sind. Davon hängt ab, ob ein „Installieren“-Knopf per Passwortfenster arbeiten darf oder einen anderen Weg gehen muss.</p></li>
+<li><p>Terminal-Auswahl: Das Programm sucht lxterminal (Pi), konsole (Deck/KDE), x-terminal-emulator oder xterm – in dieser Reihenfolge.</p></li>
+</ul>
+<p>$(command -v lxterminal || command -v konsole || echo xterm)</p>
+<p>Dieser Ausdruck ist eine typische Shell-Technik: „command -v“ gibt den Pfad eines Programms aus, wenn es existiert, und „||“ springt zur nächsten Möglichkeit, wenn nicht. So braucht der Code kein Wissen über das Gerät.</p>
+</section><section id="s43-4"><h2>43.4 Installieren per Knopfdruck</h2><p>Auf dem Deck fehlten anfangs Dinge, die auf dem Pi schon eingerichtet waren: der KI-Server Ollama, das Sprachmodell, die Spracherkennung und die Sprachausgabe. Die Anforderung lautete: Der Nutzer soll nichts von Hand installieren, sondern überall, wo etwas fehlt, einen „Installieren“-Knopf finden. Dieser Teil erklärt, wie das gebaut ist.</p>
+<h3 id="4341-das-prinzip">43.4.1 Das Prinzip</h3>
+<ol type="1">
+<li><p>Das Programm prüft, ob die Komponente vorhanden ist (Datei, Modul, Server erreichbar).</p></li>
+<li><p>Fehlt sie, erscheint ein Knopf „Installieren“ (vorher unsichtbar).</p></li>
+<li><p>Ein Klick startet einen Arbeiter-Thread (QThread) oder ein Terminalfenster mit dem Installationsskript.</p></li>
+<li><p>Fortschrittsmeldungen laufen als Signale in die Oberfläche; am Ende wird neu geprüft und der Knopf verschwindet.</p></li>
+</ol>
+<p><em>Merke: Wichtig ist der Thread: Würde der Download im Hauptprogramm laufen, fröre das Fenster ein, bis er fertig ist.</em></p>
+<h3 id="4342-ollama-ohne-administratorrechte">43.4.2 Ollama ohne Administratorrechte</h3>
+<p>Ollama ist ein Programm, das KI-Modelle lokal ausführt und einen kleinen Webserver (Port 11434) bereitstellt. Auf einem normalen Linux installiert man es mit einem Skript, das Systemdateien anfasst. Auf SteamOS geht das nicht. Die Lösung (Funktion ollama_installieren in Oratio_AI.py):</p>
+<ol type="1">
+<li><p>Das Archiv (tar.zst bzw. tgz) von ollama.com in den Ordner ~/ollama herunterladen und entpacken.</p></li>
+<li><p>Den Server mit „ollama serve“ im Hintergrund starten.</p></li>
+<li><p>Warten, bis <a href="http://127.0.0.1:11434/api/tags">http://127.0.0.1:11434/api/tags</a> antwortet.</p></li>
+<li><p>Das Modell über die Schnittstelle /api/pull laden – der Server liefert dabei laufend Fortschritt, der als Prozentanzeige erscheint.</p></li>
+</ol>
+<p>curl <a href="http://127.0.0.1:11434/api/tags">http://127.0.0.1:11434/api/tags</a> # welche Modelle sind da?<br />
+~/ollama/bin/ollama list # dasselbe in der Konsole<br />
+~/ollama/bin/ollama pull gemma3:1b # Modell laden</p>
+<h3 id="4343-welches-modell">43.4.3 Welches Modell?</h3>
+<p>Ein Fehler, den ich gemacht hatte: Im Code stand fest „gemma3:4b“, installiert war aber nur „gemma3:1b“. Ergebnis im Fenster: „Modell gemma3:4b ist nicht installiert“. Die Lösung ist eine Funktion ki_modell(), die den Namen aus der Datei Apps/Oratio_AI/ai_einstellungen.json liest (Standard gemma3:1b). Merksatz: Namen von Modellen gehören nie fest in den Code.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Modell</th>
+<th>Größe ungefähr</th>
+<th>Eigenschaft</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>gemma3:1b</td>
+<td>ca. 0,8 GB</td>
+<td>schnell, läuft überall, versteht aber wenig Zusammenhang</td>
+</tr>
+<tr class="even">
+<td>gemma3:4b</td>
+<td>ca. 3 GB</td>
+<td>deutlich besser im Verständnis, langsamer, braucht mehr RAM</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="4344-der-sprach-installer-install_sprachesh">43.4.4 Der Sprach-Installer install_sprache.sh</h3>
+<p>Das Skript hat sechs Schritte, ist Deck-bewusst (kein apt auf SteamOS) und benutzt das Python des laufenden Programms. Das Programm gibt dieses Python über die Umgebungsvariable OCC_PYTHON mit, damit pip in das richtige venv installiert.</p>
+<ol type="1">
+<li><p>Vorbereitung und Erkennung des Systems.</p></li>
+<li><p>Vosk (Python-Paket) installieren.</p></li>
+<li><p>Das kleine deutsche Vosk-Modell laden.</p></li>
+<li><p>faster-whisper installieren (Modellgröße tiny, base, small oder medium).</p></li>
+<li><p>Piper herunterladen (passende Architektur!) und die Stimme „Thorsten“ laden; Piper wird mit „--help“ getestet.</p></li>
+<li><p>Ollama und das KI-Modell einrichten.</p></li>
+</ol>
+<h3 id="4345-der-browser-qtwebengine">43.4.5 Der Browser: QtWebEngine</h3>
+<p>Der Oratio Browser braucht QtWebEngine. Fehlt es, erscheint ein Knopf „Installieren“, der „pip install PyQtWebEngine“ (Paketname je nach Version PyQt5-WebEngine) im venv ausführt. Ein QTimer prüft alle paar Sekunden, ob der Import jetzt klappt, und startet den Browser dann neu.</p>
+<p>python -c "from PyQt5.QtWebEngineWidgets import QWebEngineView; print('ok')"</p>
+</section><section id="s43-5"><h2>43.5 Oratio AI: ein lokaler Assistent</h2><h3 id="4351-aufbau">43.5.1 Aufbau</h3>
+<p>Oratio AI ist ein Chatfenster. Die Frage geht an einen lokalen Ollama-Server (Gemma), die Antwort erscheint im Verlauf. Alles bleibt auf dem Gerät, es gibt keinen Cloud-Zugriff und kein Konto.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Baustein</th>
+<th>Aufgabe</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>send()</td>
+<td>nimmt den Text, startet CmdWorker</td>
+</tr>
+<tr class="even">
+<td>CmdWorker</td>
+<td>prüft zuerst, ob es ein lokaler Befehl ist (sprachsteuerung.befehl)</td>
+</tr>
+<tr class="odd">
+<td>_cmd_fertig</td>
+<td>zeigt die lokale Antwort an und spricht sie bei Bedarf</td>
+</tr>
+<tr class="even">
+<td>_gemma(text)</td>
+<td>wenn kein Befehl passte: Frage an das Sprachmodell</td>
+</tr>
+<tr class="odd">
+<td>InstallWorker</td>
+<td>führt Installationen im Hintergrund aus</td>
+</tr>
+<tr class="even">
+<td>btn_mic („Sprechen“)</td>
+<td>diktiert die Frage mit dem Mikrofon</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="4352-warum-befehle-zuerst-lokal-beantwortet-werden">43.5.2 Warum Befehle zuerst lokal beantwortet werden</h3>
+<p>Gemma 1B kennt weder die Uhrzeit noch das Datum noch das Wetter. Gefragt, wie spät es sei, erfand das Modell „17:22“. Ein Sprachmodell rät Wahrscheinlichkeiten, es liest keine Uhr. Deshalb prüft das Programm vor jeder Anfrage per Regeln (einfache Textvergleiche), ob eine Frage zu einer festen Funktion gehört:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Frage</th>
+<th>Antwort kommt von</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>„Wie spät ist es?“</td>
+<td>Systemuhr des Geräts</td>
+</tr>
+<tr class="even">
+<td>„Welcher Tag ist heute?“</td>
+<td>Systemdatum</td>
+</tr>
+<tr class="odd">
+<td>„Wie wird das Wetter morgen?“</td>
+<td>Open-Meteo (kostenlos, ohne Schlüssel)</td>
+</tr>
+<tr class="even">
+<td>alles andere</td>
+<td>Gemma über Ollama</td>
+</tr>
+</tbody>
+</table></div>
+<p>Für das Wetter braucht man einen Ort. Das Programm nimmt den Wert der Einstellung „ort“; fehlt er, schätzt es den Ort über die IP-Adresse (ip-api). Dann wird der Ort in Koordinaten umgewandelt (Geocoding) und die Vorhersage abgefragt.</p>
+<p><em>Merke: Allgemeine Regel: Alles, was exakt sein muss (Zeit, Rechnen, Wetter), gehört in Code oder eine Datenquelle – nie ins Sprachmodell.</em></p>
+<h3 id="4353-das-fenster-layout-und-der-rand">43.5.3 Das Fenster-Layout und der Rand</h3>
+<p>Ein sichtbarer Fehler: Die Knöpfe „Kurz/Normal/Lang“, „Neu“, die Eingabeleiste und „Senden“ ragten über das blaue Fenster hinaus in den lila Hintergrund. Ursache: Das Layout hatte 4 Pixel Rand, die blaue Fläche (Funktion sims_look) hat aber 12 Pixel Innenabstand. Die Elemente begannen also vor der Fläche. Lösung: Rand = 12 + S(8), wobei S() den Skalierfaktor anwendet, dazu flexible Breiten und minimumSizeHint, damit nichts erzwungen breiter wird als das Fenster.</p>
+<p><em>Merke: Merksatz: Der Rand des Layouts muss mindestens so groß sein wie der Innenabstand der gezeichneten Fläche.</em></p>
+</section><section id="s43-6"><h2>43.6 Sprache: hören und sprechen</h2><h3 id="4361-drei-teile-drei-aufgaben">43.6.1 Drei Teile, drei Aufgaben</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Aufgabe</th>
+<th>Werkzeug</th>
+<th>Merkmal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Hören (Befehle, schnell)</td>
+<td>Vosk</td>
+<td>klein, offline, erkennt nur einfache Sätze</td>
+</tr>
+<tr class="even">
+<td>Hören (Diktat, genauer)</td>
+<td>faster-whisper</td>
+<td>Modelle tiny/base/small/medium: größer = besser und langsamer</td>
+</tr>
+<tr class="odd">
+<td>Sprechen</td>
+<td>Piper</td>
+<td>neuronale Stimme, offline (de_DE Thorsten, Qualität medium/high)</td>
+</tr>
+<tr class="even">
+<td>Audio-Wiedergabe</td>
+<td>paplay / aplay</td>
+<td>spielen die erzeugte WAV-Datei ab</td>
+</tr>
+<tr class="odd">
+<td>Aufnahme</td>
+<td>pw-record / parecord</td>
+<td>nehmen vom Mikrofon auf</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="4362-das-mikrofon-des-steam-decks">43.6.2 Das Mikrofon des Steam Decks</h3>
+<p>Das Deck hat eigene eingebaute Mikrofone, die unter Linux als normales Audio-Eingabegerät erscheinen. Welche Aufnahme-Quelle aktiv ist, zeigt die Konsole:</p>
+<p>pactl list short sources # alle Aufnahmequellen<br />
+pactl get-default-source # Standardquelle<br />
+parecord --channels=1 --rate=16000 test.wav # aufnehmen (Strg+C beendet)<br />
+paplay test.wav # abspielen</p>
+<p>Wenn die Aufnahme leise oder leer ist, in den KDE-Audioeinstellungen (Lautsprecher-Symbol unten rechts) das richtige Eingabegerät wählen und die Lautstärke prüfen.</p>
+<h3 id="4363-erkennungsqualität--eine-ehrliche-bilanz">43.6.3 Erkennungsqualität – eine ehrliche Bilanz</h3>
+<p>Das Mikrofon funktionierte, aber die Erkennung war schlecht: Aus Sätzen wurden fremde Wörter. Das liegt nicht an einem Fehler im Programm, sondern an der Größe der Modelle. Vosk-small hat wenige Wörter und kaum Satzverständnis. Whisper tiny und base sind für Deutsch zu schwach. Deshalb wurde der Standard auf „small“ angehoben und „medium“ ergänzt, mit beam_size=5 (der Suchbreite beim Dekodieren) und vad_filter=True (schneidet Stille weg, damit Whisper nicht in Pausen Wörter erfindet).</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Whisper-Modell</th>
+<th>Qualität Deutsch</th>
+<th>Download</th>
+<th>Tempo auf dem Deck</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>tiny</td>
+<td>schlecht</td>
+<td>ca. 75 MB</td>
+<td>sehr schnell</td>
+</tr>
+<tr class="even">
+<td>base</td>
+<td>mäßig</td>
+<td>ca. 150 MB</td>
+<td>schnell</td>
+</tr>
+<tr class="odd">
+<td>small</td>
+<td>brauchbar</td>
+<td>ca. 500 MB</td>
+<td>gut</td>
+</tr>
+<tr class="even">
+<td>medium</td>
+<td>gut</td>
+<td>ca. 1,5 GB</td>
+<td>spürbar langsamer</td>
+</tr>
+</tbody>
+</table></div>
+<p>Der Vergleich mit dem iPhone-Assistenten oder den großen Cloud-Assistenten hinkt: Die laufen in Rechenzentren mit riesigen Modellen. Offline auf einem Handheld mit einem 1-Milliarde-Parameter-Modell versteht Gemma 1B schlicht weniger. Zwei Wege wurden benannt: (1) eine Cloud-Erkennung wie Whisper large über einen Groq-Schlüssel – deutlich besser, aber Audio verlässt das Gerät; (2) die Sprachsteuerung bei den einfachen Befehlen belassen. Diese Entscheidung ist noch offen.</p>
+<p><em>Achtung: Cloud-Erkennung bedeutet: Die Aufnahme geht an einen fremden Server. Das ist ein Datenschutz-Kompromiss, den man bewusst wählen muss.</em></p>
+<h3 id="4364-der-fehler-exec-format-error">43.6.4 Der Fehler „Exec format error“</h3>
+<p>Piper sagte nichts. Das Log ~/oratio_sprechen.log zeigte „Exec format error“. Das heißt: Das Betriebssystem kann die Datei nicht ausführen, weil sie für eine andere Prozessor-Architektur gebaut ist. Die Piper-Datei war vom Pi mitkopiert worden (aarch64/ARM), das Deck ist x86_64. Eine ARM-Binärdatei läuft auf x86 nie.</p>
+<p>file ~/Downloads/Oratio_Control_Center/Oratio_Menu/Modelle/piper/piper/piper<br />
+uname -m # x86_64 = Deck, aarch64 = Pi<br />
+cat ~/oratio_sprechen.log # Log LESEN, nicht ausführen</p>
+<p>Die Reparatur steckt im Installer: Er ruft „piper --help“ auf. Scheitert das, wird der Ordner gelöscht und die x86_64-Version neu geladen. Außerdem wurde die Wiedergabe geändert: Erst wird die komplette Audiodatei erzeugt, dann spielt paplay sie ab. Direktes Streamen in den Player stotterte und brach ab.</p>
+<p><em>Merke: Lehre: Ordner mit fertigen Programmdateien nie zwischen Pi und PC/Deck kopieren, ohne die Architektur zu prüfen. Skripte (Python, Bash) sind unkritisch, Binärdateien nicht.</em></p>
+<h3 id="4365-die-terminalfenster-der-einrichtung">43.6.5 Die Terminalfenster der Einrichtung</h3>
+<p>Der Knopf „Sprache einrichten“ öffnet ein Terminal, damit man den Fortschritt sieht. Die Reihenfolge der Suche ist lxterminal, konsole, x-terminal-emulator, xterm. Das Terminal bekommt OCC_PYTHON mit, damit das Skript das richtige Python nimmt. Der Knopf „Stimme testen“ erzeugt einen Beispielsatz und spielt ihn ab; Fehler landen im Log.</p>
+<h3 id="4366-besser-klingende-stimme">43.6.6 Besser klingende Stimme</h3>
+<p>Die erste Stimme (Thorsten medium) klang blechern. Die Variante thorsten-high ist größer und natürlicher; stimme_modell() bevorzugt sie, wenn sie vorhanden ist. Mehr Natürlichkeit gibt es offline derzeit nicht ohne deutlich mehr Rechenaufwand.</p>
+</section><section id="s43-7"><h2>43.7 Das große Pi→Deck-Audit</h2><p>Nach den Fehlern kam die Vorgabe: Alles, was ursprünglich für den Pi geschrieben wurde, muss systematisch durchsucht werden. Vorgehen: nach Befehlen suchen, die es auf dem Deck nicht gibt, und jeden einzeln entscheiden – ersetzen, ausblenden oder erklären.</p>
+<p>cd ~/Downloads/Oratio_Control_Center<br />
+grep -rn "apt\sudo\lxterminal\wlr-randr\grim\slurp" --include=*.py --include=*.sh .</p>
+<p>grep -rn durchsucht alle Dateien unterhalb des Ordners und zeigt Datei und Zeilennummer. Mit --include beschränkt man auf Dateitypen.</p>
+<h3 id="4371-befehle-und-ihre-entsprechung">43.7.1 Befehle und ihre Entsprechung</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Pi-Befehl</th>
+<th>Zweck</th>
+<th>Auf dem Deck</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>apt install …</td>
+<td>Programme installieren</td>
+<td>nicht möglich; venv, Flatpak oder Download in den Home-Ordner</td>
+</tr>
+<tr class="even">
+<td>lxterminal</td>
+<td>Terminal öffnen</td>
+<td>konsole (Fallback xterm)</td>
+</tr>
+<tr class="odd">
+<td>wlr-randr</td>
+<td>Bildschirm unter labwc</td>
+<td>KDE-Systemeinstellungen → Anzeige</td>
+</tr>
+<tr class="even">
+<td>grim / slurp</td>
+<td>Screenshot unter Wayland/labwc</td>
+<td>spectacle (KDE)</td>
+</tr>
+<tr class="odd">
+<td>wf-recorder</td>
+<td>Bildschirmaufnahme</td>
+<td>Spectacle oder OBS (Flatpak)</td>
+</tr>
+<tr class="even">
+<td>playerctl</td>
+<td>Mediensteuerung</td>
+<td>meist auch auf KDE vorhanden, sonst Flatpak</td>
+</tr>
+<tr class="odd">
+<td>brightnessctl</td>
+<td>Helligkeit</td>
+<td>über KDE-Energieeinstellungen</td>
+</tr>
+<tr class="even">
+<td>wlsunset</td>
+<td>Nachtlicht</td>
+<td>KDE hat „Nachtfarbe“ eingebaut</td>
+</tr>
+<tr class="odd">
+<td>rsync auf /boot/firmware</td>
+<td>Pi-System klonen</td>
+<td>nicht sinnvoll – ausgeblendet</td>
+</tr>
+</tbody>
+</table></div>
+<p>Konkret geändert wurden: die Terminal-Auswahl in Oratio_Toolbox/core.py, das Nachtlicht (auf KDE erscheint ein Hinweis statt eines apt-Aufrufs) und der Installer. Noch offen und vorgeschlagen: die Pi-Befehle in der Toolbox auf dem Deck ausblenden.</p>
+</section><section id="s43-8"><h2>43.8 Fehlersuche ohne KI</h2><p>Ziel dieses Teils: Neue Fehler selbst eingrenzen. Das Prinzip ist immer gleich – Symptom benennen, die Ursache mit einem Befehl prüfen, das Ergebnis deuten.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Befehl</th>
+<th>Deutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Programm startet nicht, nichts passiert</td>
+<td>bash deck_start.sh (in der Konsole)</td>
+<td>Die Fehlermeldung steht in der Konsole, nicht im Fenster</td>
+</tr>
+<tr class="even">
+<td>ModuleNotFoundError: No module named 'PyQt5'</td>
+<td>source ~/oratio-venv/bin/activate</td>
+<td>venv nicht aktiv; Zeile beginnt ohne „(oratio-venv)“</td>
+</tr>
+<tr class="odd">
+<td>externally managed environment</td>
+<td>python -m venv … und aktivieren</td>
+<td>pip außerhalb eines venv ist gesperrt</td>
+</tr>
+<tr class="even">
+<td>Permission denied beim Log</td>
+<td>cat ~/oratio_sprechen.log</td>
+<td>Log ist eine Textdatei, kein Befehl; mit cat/less lesen</td>
+</tr>
+<tr class="odd">
+<td>Exec format error</td>
+<td>file &lt;Datei&gt; und uname -m</td>
+<td>Datei für falsche Architektur (ARM vs x86)</td>
+</tr>
+<tr class="even">
+<td>Modell … nicht installiert</td>
+<td>~/ollama/bin/ollama list</td>
+<td>Namen vergleichen; ai_einstellungen.json anpassen</td>
+</tr>
+<tr class="odd">
+<td>KI antwortet nicht</td>
+<td>curl <a href="http://127.0.0.1:11434/api/tags">http://127.0.0.1:11434/api/tags</a></td>
+<td>Keine Antwort = Server läuft nicht (ollama serve)</td>
+</tr>
+<tr class="even">
+<td>Kein Ton</td>
+<td>pactl list short sinks; paplay test.wav</td>
+<td>Falsches Ausgabegerät oder Piper-Fehler im Log</td>
+</tr>
+<tr class="odd">
+<td>Mikrofon leer</td>
+<td>parecord test.wav, dann paplay</td>
+<td>Quelle falsch / zu leise → KDE-Audioeinstellung</td>
+</tr>
+<tr class="even">
+<td>Fenster zu groß/klein</td>
+<td>echo $QT_SCALE_FACTOR</td>
+<td>Faktor aus deck_start.sh; Bildschirmhöhe prüfen</td>
+</tr>
+<tr class="odd">
+<td>Schrift am Fernsehrand abgeschnitten</td>
+<td>KDE-Anzeigeeinstellungen</td>
+<td>Overscan, siehe Abschnitt 43.9</td>
+</tr>
+<tr class="even">
+<td>Browser-Fenster leer</td>
+<td>python -c "from PyQt5.QtWebEngineWidgets import QWebEngineView"</td>
+<td>Import-Fehler = Paket fehlt, Installieren-Knopf benutzen</td>
+</tr>
+<tr class="odd">
+<td>Terminal-Fenster geht nicht auf</td>
+<td>command -v konsole lxterminal xterm</td>
+<td>Zeigt, welches Terminal existiert</td>
+</tr>
+<tr class="even">
+<td>Python-Datei hat Syntaxfehler</td>
+<td>python -m py_compile datei.py</td>
+<td>Meldet Zeile und Art des Fehlers, ohne zu starten</td>
+</tr>
+<tr class="odd">
+<td>Shell-Skript hat Syntaxfehler</td>
+<td>bash -n skript.sh</td>
+<td>Prüft nur die Syntax</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="4381-ablauf-bei-einem-unbekannten-fehler">43.8.1 Ablauf bei einem unbekannten Fehler</h3>
+<ol type="1">
+<li><p>Genau lesen: Die letzte Zeile einer Python-Fehlermeldung nennt die Art, die Zeilen darüber den Weg.</p></li>
+<li><p>Aus der Konsole starten, nicht per Symbol – sonst sieht man die Meldung nicht.</p></li>
+<li><p>Logs/ und die Logdateien im Home-Ordner prüfen.</p></li>
+<li><p>Eine Sache ändern, neu testen. Nie fünf Dinge gleichzeitig.</p></li>
+<li><p>Wenn es auf dem Pi geht und auf dem Deck nicht: Unterschiede suchen (Architektur, apt, Terminal, Pfade).</p></li>
+</ol>
+</section><section id="s43-9"><h2>43.9 Das Deck am Fernseher: Overscan</h2><p>Ich benutze das Deck zeitweise nur mit dem externen Monitor (Fernseher), das eigene Display ist aus. Problem: Die Schrift am Rand war abgeschnitten. Ursache: Viele Fernseher vergrößern das Bild leicht über den Rand hinaus (Overscan), um alte Sendersignale zu kaschieren.</p>
+<h3 id="4391-zuerst-am-fernseher">43.9.1 Zuerst am Fernseher</h3>
+<p>In den Bildeinstellungen des Fernsehers das Seitenverhältnis auf „Bildschirmanpassung“, „Just Scan“, „1:1“, „Voll“ oder „Original“ stellen (der Name hängt von der Marke ab). Das beseitigt den Overscan an der Quelle und ist die sauberste Lösung.</p>
+<h3 id="4392-dann-in-kde">43.9.2 Dann in KDE</h3>
+<ol type="1">
+<li><p>Auf dem Desktop unten links das Startmenü öffnen, „Systemeinstellungen“ wählen.</p></li>
+<li><p>In der linken Liste „Anzeige und Monitor“ → „Anzeige-Konfiguration“ öffnen.</p></li>
+<li><p>Den Fernseher auswählen. Je nach Plasma-Version gibt es dort eine Einstellung „Overscan“ (in Prozent) oder „Skalierung“.</p></li>
+<li><p>Wert langsam erhöhen, bis der Rand sichtbar wird, dann „Anwenden“ drücken und innerhalb von 15 Sekunden bestätigen.</p></li>
+</ol>
+<p>Im OCC gibt es zusätzlich den Rand der Glasfläche (sims_look(rand=12)): Er hält die Inhalte vom Fensterrand weg und hilft, wenn nur wenige Pixel fehlen.</p>
+</section>

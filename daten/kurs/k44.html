@@ -1,0 +1,134 @@
+<section id="s44-1"><h2>44.1 Idee</h2><p>Die Seite ist eine <strong>statische Webseite</strong>: reines HTML, CSS und JavaScript, ohne Server und ohne Datenbank. Der Browser lädt die Dateien und führt die Programme (Rechner, Werkzeuge, Kurse) selbst aus. Dadurch gibt es nichts zu warten, nichts zu hacken, und das Hosting ist kostenlos.</p>
+<p><strong>Warum so?</strong> Die Inhalte (Elektronik-Tabellen, Vergleiche, Glossar) existierten schon als JSON-Dateien im Atlas des Control Centers (<a class="xr" href="#/kap/39/39.6">Kapitel 39.6</a>). Eine Webseite muss sie nur anzeigen. Es entstand also <strong>kein zweites Projekt</strong>, sondern eine zweite Anzeige derselben Daten.</p>
+</section><section id="s44-2"><h2>44.2 Hosting</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Teil</th>
+<th>Wert</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ablage</td>
+<td>GitHub-Repository (Konto Oratiostar, Repository oratio-studio)</td>
+</tr>
+<tr class="even">
+<td>Auslieferung</td>
+<td><strong>GitHub Pages</strong></td>
+</tr>
+<tr class="odd">
+<td>Domain</td>
+<td><code>oratioplace.com</code>, bei Porkbun registriert, zeigt auf GitHub Pages</td>
+</tr>
+<tr class="even">
+<td>Datei <code>.nojekyll</code></td>
+<td>sagt GitHub Pages, die Dateien unverändert auszuliefern (ohne Jekyll-Verarbeitung)</td>
+</tr>
+<tr class="odd">
+<td>Datei <code>CNAME</code></td>
+<td>wird in GitHub unter Settings → Pages verwaltet</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s44-3"><h2>44.3 Dateien und Ordner</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Datei / Ordner</th>
+<th>Inhalt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>index.html</code></td>
+<td>Startseite „Oratio Place“ mit den fünf Welten und der Suche</td>
+</tr>
+<tr class="even">
+<td><code>desk.html</code></td>
+<td><strong>Oratio Desk</strong>: das Control Center im Browser</td>
+</tr>
+<tr class="odd">
+<td><code>impressum.html</code></td>
+<td>Impressum und Datenschutz</td>
+</tr>
+<tr class="even">
+<td><code>deutsch.html</code>, <code>weihnachten.html</code>, <code>alltag.html</code>, <code>elektro.html</code></td>
+<td>Seiten der Welten</td>
+</tr>
+<tr class="odd">
+<td><code>icon-werkstatt.html</code>, <code>datei-werkstatt.html</code>, <code>werkzeuge.html</code></td>
+<td>Werkzeug-Welt („Oratio Tech Studio“)</td>
+</tr>
+<tr class="even">
+<td><code>werkzeuge/*.js</code></td>
+<td>Logik der Werkzeuge und Kurse (z. B. <code>de_a1.js</code> … <code>de_c1.js</code> für den Deutschkurs, <code>xmas_*.js</code> für die Weihnachtswelt, <code>desk*.js</code> für den Desk)</td>
+</tr>
+<tr class="odd">
+<td><code>werkzeuge/lib/</code></td>
+<td>Bibliotheken: <code>jszip</code>, <code>pdf-lib</code>, <code>pdf.js</code>, QR-Code (<code>qr.js</code>) – lokal eingebunden, nicht aus dem Netz geladen</td>
+</tr>
+<tr class="even">
+<td><code>daten/*.json</code></td>
+<td>Inhalte: Bauteile, Vergleiche (Handys, Konsolen, Mikrocontroller), Glossar, Suche, französische Texte</td>
+</tr>
+<tr class="odd">
+<td><code>bilder/</code>, <code>fonts/</code></td>
+<td>Bilder und lokal eingebundene Schrift (Inter)</td>
+</tr>
+<tr class="even">
+<td><code>bauen_web.py</code></td>
+<td>baut <code>daten/</code> aus den Atlas-Dateien</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Die fünf Welten:</strong> Tech Studio, Weihnachtswelt, Lifestyle, Deutschkurs, Werkzeuge. Alles ist durchgehend <strong>zweisprachig</strong> (Deutsch/Französisch; die französischen Texte stehen in <code>daten/sprache_fr.json</code>). Der Kopf heißt auf jeder Seite „Oratio Place“.</p>
+<p><strong>Warum die Bibliotheken lokal liegen:</strong> Eine Seite, die Skripte von fremden Servern lädt, funktioniert nicht mehr, wenn dieser Server weg ist, und gibt Besucherdaten weiter. Lokale Dateien vermeiden beides.</p>
+</section><section id="s44-4"><h2>44.4 bauen_web.py – die Daten erzeugen</h2><p>Das Skript liest die Weltdateien des Atlas (<code>Oratio_Menu/Apps/Oratio_Atlas/Daten/welt_*.json</code>), kopiert sie nach <code>daten/</code> und erzeugt die Suchindizes (<code>index.json</code>, <code>suche.json</code>). Der Aufbau:</p>
+<ol type="1">
+<li>Quelle bestimmen: Ordner neben dem Webordner, oder die Umgebungsvariable <code>ATLAS_ORDNER</code>.</li>
+<li>Für jede <code>welt_*.json</code>: lesen, kopieren, Name/Untertitel/Farbe in die Welt-Liste eintragen.</li>
+<li>Die Texte der Seiten mit einer Funktion <code>flach(...)</code> zu reinem Suchtext zusammenführen (Pinbelegungen, Kreise und Zeitdiagramme werden ausgelassen, weil sie nur Zeichnungsdaten sind).</li>
+<li>Index und Suche schreiben (<code>json.dump(..., separators=(",", ":"))</code> = ohne Leerzeichen, spart Platz).</li>
+</ol>
+</section><section id="s44-5"><h2>44.5 Aktualisieren</h2><ol type="1">
+<li>Inhalte im Control Center ändern (Atlas-Dateien).</li>
+<li>Im Webordner <code>python3 bauen_web.py</code> ausführen.</li>
+<li>Nur die geänderten Dateien ins Repository hochladen.</li>
+<li>Bei GitHub unter Settings → Pages prüfen, dass die Domain <code>oratioplace.com</code> eingetragen ist.</li>
+</ol>
+<p><strong>Wenn ein neues Repository angelegt wird:</strong> Die Domain muss in den Pages-Einstellungen neu eingetragen werden, und das DNS bei Porkbun muss weiter auf GitHub Pages zeigen. Ohne diese beiden Schritte ist die Seite nach dem Umzug unter der Domain nicht erreichbar.</p>
+</section><section id="s44-6"><h2>44.6 Oratio Desk</h2><p><code>desk.html</code> ist ein <strong>Home-Bildschirm im Browser</strong> nach dem Vorbild des Control Centers: Seiten zum Wischen, Kacheln im Raster, Widgets, Apps in Fenstern, Dock, wählbare Hintergründe und Stile (hell, dunkel, Glas). Die Dateien:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Datei</th>
+<th>Inhalt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>werkzeuge/desk.js</code></td>
+<td>Kern: Zustand, Raster, Bearbeiten, Fenster („Apps“), Hintergründe, Sicherung</td>
+</tr>
+<tr class="even">
+<td><code>werkzeuge/desk_c.js</code></td>
+<td>Taschenrechner (Standard, Wissenschaftlich, Umrechnen) als Widget und als App</td>
+</tr>
+<tr class="odd">
+<td><code>werkzeuge/desk_t.js</code></td>
+<td>Uhr-App (Weltzeit, Wecker, Stoppuhr, Timer), die passenden Widgets und Fokus (Pomodoro)</td>
+</tr>
+<tr class="even">
+<td><code>werkzeuge/desk_w.js</code></td>
+<td>weitere Widgets und Apps: Kalender, analoge Uhr, Aufgaben, Notizen, Countdown, Gewohnheiten, Wasser, Links, Gerät, Würfel</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Wichtig:</strong> Alles bleibt im Browser (<code>localStorage</code>). Es wird nichts gesendet, und es gibt keinen Zugriff auf den Pi. Der Desk zeigt, wie die Bedienung aussieht, und bietet kleine Werkzeuge, die im Browser laufen. Ein blinkender „NEU“-Hinweis führt auf der Startseite zum Desk.</p>
+<p><strong>Aufbau-Idee:</strong> Ein Kern (<code>desk.js</code>) stellt Hilfsfunktionen und eine Registratur bereit (<code>Desk.u</code>, <code>Desk.data()</code>); die anderen Dateien melden dort ihre Widgets an. Das ist dasselbe Muster wie „eine Datei pro Widget“ im Control Center (<a class="xr" href="#/kap/37/37.4">Kapitel 37.4</a>).</p>
+</section><section id="s44-7"><h2>44.7 Was dieses Projekt gelehrt hat</h2><ul>
+<li><strong>Daten und Anzeige trennen:</strong> Weil der Inhalt in JSON liegt, genügt ein Skript, um dieselben Daten an zwei Orten zu zeigen.</li>
+<li><strong>Statisch ist stabil:</strong> Keine Datenbank, kein Server, keine Wartung.</li>
+<li><strong>Alles Nötige mitliefern:</strong> Schrift, Bibliotheken, Bilder liegen im selben Repository.</li>
+<li><strong>Nicht alles hochladen:</strong> Nach einer Änderung nur die geänderten Dateien ersetzen.</li>
+</ul>
+</section>

@@ -1,0 +1,117 @@
+<section id="s31-1"><h2>31.1 Zwei Projekte, die ich getrennt halte</h2><p>Ich habe das Control Center zweimal mit unterschiedlicher Methode gebaut. Damit nichts durcheinandergerät, haben beide Stände einen eigenen Namen:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Zeitraum</th>
+<th>Kern</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Projekt A – „Werkbank“</strong></td>
+<td>31. August bis Anfang Oktober</td>
+<td>Das Freenove-Fenster wird Schritt für Schritt erweitert: neuer Tab für Skripte, Kacheln mit Icons, JSON-Datei für die Apps, Ziehen mit eigenen Maus-Ereignissen. Alles lag in wenigen, großen Dateien.</td>
+</tr>
+<tr class="even">
+<td><strong>Projekt B – „Glas“</strong></td>
+<td>ab Anfang Oktober</td>
+<td>Neu aufgebaut: jeder Tab hat einen eigenen Ordner, ein gemeinsamer „Glas-Werkzeugkasten“ (<code>glass_ui.py</code>), Widgets als einzelne Dateien, Dock, Kontrollfenster, Toolbox, Sprache, Backup, viele Apps.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Danach kamen vier Varianten und Ableger:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Variante</th>
+<th>Was sie ausprobiert</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Qt-Drag-and-Drop</strong></td>
+<td>Das Ziehen der Apps nicht selbst programmieren, sondern Qt (<code>QDrag</code>) benutzen.</td>
+</tr>
+<tr class="even">
+<td><strong>C++-Version</strong></td>
+<td>Dasselbe Programm in C++ mit Qt und CMake.</td>
+</tr>
+<tr class="odd">
+<td><strong>Deck-Version</strong></td>
+<td>Dasselbe Programm auf dem Steam Deck, ohne die Pi-Teile.</td>
+</tr>
+<tr class="even">
+<td><strong>Oratio Place</strong></td>
+<td>Eine Webseite, die aus den Daten des Programms entsteht.</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s31-2"><h2>31.2 Warum aus A ein B wurde</h2><p>Projekt A funktionierte, aber jede neue Idee berührte mehrere Dateien an mehreren Stellen. Der Menü-Code wuchs auf über zehntausend Zeilen in einer Datei. Die Entscheidung für B lautete: <strong>ein Ordner pro Tab, ein Werkzeugkasten für alles Gemeinsame, Neues immer als eigene Datei.</strong> Wie das aussieht und warum es besser skaliert, beschreibt <a class="xr" href="#/kap/40">Kapitel 40</a> im Vergleich.</p>
+</section><section id="s31-3"><h2>31.3 Der Aufbau dieses Teils</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Kapitel</th>
+<th>Inhalt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>32</td>
+<td>Projekt A, Teil 1: vom Freenove-Fenster zum Skript-Tab</td>
+</tr>
+<tr class="even">
+<td>33</td>
+<td>Projekt A, Teil 2: Pi Tools, die JSON-Datei und das Kanshi-Werkzeug</td>
+</tr>
+<tr class="odd">
+<td>34</td>
+<td>Projekt A, Teil 3: Kacheln ziehen und schöner machen</td>
+</tr>
+<tr class="even">
+<td>35</td>
+<td>Projekt A, Teil 4: Seiten, Größen und freie Plätze</td>
+</tr>
+<tr class="odd">
+<td>36</td>
+<td>Projekt B, Teil 1: der neue Aufbau</td>
+</tr>
+<tr class="even">
+<td>37</td>
+<td>Projekt B, Teil 2: Menü, Widgets, Apps, Dock, Kontrollfenster</td>
+</tr>
+<tr class="odd">
+<td>38</td>
+<td>Projekt B, Teil 3: die Funktionen im Menü</td>
+</tr>
+<tr class="even">
+<td>39</td>
+<td>Projekt B, Teil 4: Toolbox, Backup-Klon, Sprachsteuerung, Elektronik-Apps und Selbstbau-Anleitungen</td>
+</tr>
+<tr class="odd">
+<td>40</td>
+<td>Projekt A und B im Vergleich</td>
+</tr>
+<tr class="even">
+<td>41</td>
+<td>Variante Qt-Drag-and-Drop</td>
+</tr>
+<tr class="odd">
+<td>42</td>
+<td>Variante C++</td>
+</tr>
+<tr class="even">
+<td>43</td>
+<td>Variante Steam Deck</td>
+</tr>
+<tr class="odd">
+<td>44</td>
+<td>Oratio Place, die Webseite</td>
+</tr>
+<tr class="even">
+<td>45</td>
+<td>Der Hash-Prüfer als erstes Skript</td>
+</tr>
+</tbody>
+</table></div>
+</section>

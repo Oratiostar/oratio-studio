@@ -1,0 +1,179 @@
+<section id="s16-1"><h2>16.1 Grundbegriffe</h2><ul>
+<li><strong>Sketch</strong> – ein Arduino-Programm (Datei mit der Endung <code>.ino</code>)</li>
+<li><strong><code>setup()</code></strong> – läuft einmal beim Start</li>
+<li><strong><code>loop()</code></strong> – läuft danach immer wieder</li>
+<li><strong>Board / FQBN</strong> – die Boardbezeichnung, zum Beispiel <code>arduino:avr:nano</code></li>
+<li><strong>Port</strong> – die USB-Schnittstelle, meist <code>/dev/ttyUSB0</code> oder <code>/dev/ttyACM0</code></li>
+<li><strong>Bibliothek (Library)</strong> – Fertigcode für ein Bauteil</li>
+</ul>
+</section><section id="s16-2"><h2>16.2 Das erste Programm: Blinken</h2><div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> setup<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  pinMode<span class="op">(</span>LED_BUILTIN<span class="op">,</span> OUTPUT<span class="op">);</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> loop<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  digitalWrite<span class="op">(</span>LED_BUILTIN<span class="op">,</span> HIGH<span class="op">);</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  delay<span class="op">(</span><span class="dv">1000</span><span class="op">);</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  digitalWrite<span class="op">(</span>LED_BUILTIN<span class="op">,</span> LOW<span class="op">);</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  delay<span class="op">(</span><span class="dv">1000</span><span class="op">);</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><code>pinMode</code> macht den Pin zum Ausgang, <code>digitalWrite</code> schaltet ihn an oder aus, <code>delay(1000)</code> wartet 1000 Millisekunden. Wenn die eingebaute LED blinkt, funktioniert die gesamte Kette: Programm, Compiler, Upload und Board.</p>
+</section><section id="s16-3"><h2>16.3 Arduino CLI auf dem Raspberry Pi</h2><p>Die alte Arduino-IDE 1.0 auf dem Pi hat bei mir Probleme gemacht: Die Bibliotheken Adafruit BusIO und GFX liefen nicht richtig, und die Deinstallation war schwierig (sie war mit „Pi Apps" installiert). Die bessere Lösung war <strong>arduino-cli</strong>, ein Programm für das Terminal.</p>
+<p><strong>Installation:</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fsSL</span> https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh <span class="kw">|</span> <span class="fu">sh</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> mv bin/arduino-cli /usr/local/bin/</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">arduino-cli</span> version</span></code></pre></div>
+<p><strong>Board-Paket installieren:</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">arduino-cli</span> core update-index</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">arduino-cli</span> core install arduino:avr</span></code></pre></div>
+<p><strong>Board suchen:</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">arduino-cli</span> board list</span></code></pre></div>
+<p>Mein Nano-Klon erschien als <code>/dev/ttyUSB0</code>, aber als „Unbekannt". Das ist bei vielen Nano-Klonen normal.</p>
+<p><strong>Bibliotheken installieren:</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">arduino-cli</span> lib install <span class="st">&quot;Adafruit SSD1306&quot;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">arduino-cli</span> lib install <span class="st">&quot;Adafruit GFX Library&quot;</span></span></code></pre></div>
+<p><strong>Projekt anlegen, kompilieren, hochladen:</strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ~/OLED_Test</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/OLED_Test</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> OLED_Test.ino</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">arduino-cli</span> compile <span class="at">--fqbn</span> arduino:avr:nano:cpu=atmega328old .</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">arduino-cli</span> upload <span class="at">-p</span> /dev/ttyUSB0 <span class="at">--fqbn</span> arduino:avr:nano:cpu=atmega328old .</span></code></pre></div>
+<p><strong>Der wichtige Trick mit dem Bootloader:</strong> Viele Nano-Klone brauchen <code>:cpu=atmega328old</code> (alter Bootloader). Wenn der Upload fehlschlägt, hilft die Variante ohne diesen Zusatz:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">arduino-cli</span> compile <span class="at">--fqbn</span> arduino:avr:nano .</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">arduino-cli</span> upload <span class="at">-p</span> /dev/ttyUSB0 <span class="at">--fqbn</span> arduino:avr:nano .</span></code></pre></div>
+<p><strong>Der Punkt <code>.</code> am Ende</strong> bedeutet „der Sketch im aktuellen Ordner".</p>
+</section><section id="s16-4"><h2>16.4 Ordnung: ein Ordner pro Projekt</h2><p>Jedes Projekt bekommt seinen eigenen Ordner, und die <code>.ino</code>-Datei trägt denselben Namen wie der Ordner:</p>
+<pre class="text"><code>/home/oratio/
+├── OLED_Test/
+│   └── OLED_Test.ino
+├── Blink_Test/
+│   └── Blink_Test.ino
+├── Uhr_Projekt/
+│   └── Uhr_Projekt.ino
+└── Wetterstation/
+    └── Wetterstation.ino</code></pre>
+<p>Die Befehle zum Kompilieren und Hochladen bleiben <strong>immer gleich</strong>, solange dasselbe Board und derselbe Port benutzt werden. Nur der Ordner ändert sich:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/Uhr_Projekt</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">arduino-cli</span> compile <span class="at">--fqbn</span> arduino:avr:nano:cpu=atmega328old .</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">arduino-cli</span> upload <span class="at">-p</span> /dev/ttyUSB0 <span class="at">--fqbn</span> arduino:avr:nano:cpu=atmega328old .</span></code></pre></div>
+<p>Erst bei einem anderen Board (ESP32, Uno, Mega) oder einem anderen Port (<code>ttyUSB1</code>) müssen die Befehle geändert werden.</p>
+</section><section id="s16-5"><h2>16.5 Das Display OLED SSD1306 (128×64, I²C)</h2><p>Verkabelung Nano ↔︎ OLED:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Display</th>
+<th>Arduino Nano</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>GND</td>
+<td>GND</td>
+</tr>
+<tr class="even">
+<td>VCC</td>
+<td>5 V</td>
+</tr>
+<tr class="odd">
+<td>SCL</td>
+<td>A5</td>
+</tr>
+<tr class="even">
+<td>SDA</td>
+<td>A4</td>
+</tr>
+</tbody>
+</table></div>
+<p>Beispielprogramm:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Wire.h&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Adafruit_GFX.h&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Adafruit_SSD1306.h&gt;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SCREEN_WIDTH </span><span class="dv">128</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SCREEN_HEIGHT </span><span class="dv">64</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>Adafruit_SSD1306 display<span class="op">(</span>SCREEN_WIDTH<span class="op">,</span> SCREEN_HEIGHT<span class="op">,</span> <span class="op">&amp;</span>Wire<span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> setup<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  Wire<span class="op">.</span>begin<span class="op">();</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>display<span class="op">.</span>begin<span class="op">(</span>SSD1306_SWITCHCAPVCC<span class="op">,</span> <span class="bn">0x3C</span><span class="op">))</span> <span class="op">{</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span><span class="kw">true</span><span class="op">);</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  display<span class="op">.</span>clearDisplay<span class="op">();</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  display<span class="op">.</span>setTextSize<span class="op">(</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  display<span class="op">.</span>setTextColor<span class="op">(</span>SSD1306_WHITE<span class="op">);</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  display<span class="op">.</span>setCursor<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  display<span class="op">.</span>println<span class="op">(</span><span class="st">&quot;Hallo Oratio&quot;</span><span class="op">);</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  display<span class="op">.</span>setCursor<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">15</span><span class="op">);</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  display<span class="op">.</span>println<span class="op">(</span><span class="st">&quot;Arduino Nano&quot;</span><span class="op">);</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  display<span class="op">.</span>display<span class="op">();</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> loop<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Die wichtigsten Befehle für das Display:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Befehl</th>
+<th>Wirkung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>display.clearDisplay()</code></td>
+<td>Bildspeicher löschen</td>
+</tr>
+<tr class="even">
+<td><code>display.setTextSize(2)</code></td>
+<td>Schriftgröße</td>
+</tr>
+<tr class="odd">
+<td><code>display.setCursor(x, y)</code></td>
+<td>Textposition in Pixeln</td>
+</tr>
+<tr class="even">
+<td><code>display.println("Text")</code></td>
+<td>Text schreiben</td>
+</tr>
+<tr class="odd">
+<td><code>display.setRotation(1)</code></td>
+<td>Bild drehen (0–3)</td>
+</tr>
+<tr class="even">
+<td><code>display.display()</code></td>
+<td><strong>alles zeichnen</strong> (ohne diesen Befehl bleibt das Display leer!)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Lektion „Display kaputt?":</strong> Wenn nichts zu lesen ist, ist das Display meist in Ordnung. Die Schrift ist nur zu klein (<code>setTextSize(1)</code>) und das Bild im Hochformat. Mit <code>setRotation(1)</code> und <code>setTextSize(2)</code> oder <code>3</code> wird der Text gut lesbar. <strong>Erst prüfen, ob die Software falsch eingestellt ist, bevor die Hardware verdächtigt wird.</strong></p>
+</section><section id="s16-6"><h2>16.6 Warum war das Display beim zweiten Mal leer?</h2><p>Warum bleibt das Display manchmal leer? Der Zusammenhang ist: Der Bildspeicher des Displays wird mit <code>clearDisplay()</code> geleert, und erst <code>display.display()</code> überträgt ihn zum Bildschirm. Fehlt das, bleibt das Display leer, oder es zeigt noch etwas aus dem vorigen Programm.</p>
+</section><section id="s16-7"><h2>16.7 Eine andere Bibliothek: U8g2</h2><p>Wenn Adafruit-Bibliotheken Probleme machen, ist <strong>U8g2</strong> eine Alternative, die oft ohne Adafruit GFX auskommt:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Wire.h&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;U8g2lib.h&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2<span class="op">(</span>U8G2_R0<span class="op">);</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> setup<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  u8g2<span class="op">.</span>begin<span class="op">();</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  u8g2<span class="op">.</span>clearBuffer<span class="op">();</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  u8g2<span class="op">.</span>setFont<span class="op">(</span>u8g2_font_ncenB08_tr<span class="op">);</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  u8g2<span class="op">.</span>drawStr<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="st">&quot;Hallo&quot;</span><span class="op">);</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  u8g2<span class="op">.</span>sendBuffer<span class="op">();</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> loop<span class="op">()</span> <span class="op">{}</span></span></code></pre></div>
+</section><section id="s16-8"><h2>16.8 Raspberry Pi und Arduino zusammenarbeiten lassen</h2><p>Es gibt mehrere Möglichkeiten, einen Nano mit Display „klug" zu machen:</p>
+<ol type="1">
+<li><strong>Pi als Gehirn</strong>: Der Pi holt Uhrzeit, Wetter, CPU-Temperatur und IP und schickt sie per USB (seriell) an den Nano, der sie anzeigt. Wird der Pi abgezogen, kommen keine neuen Daten mehr.</li>
+<li><strong>Nur einmal einstellen</strong>: Der Pi stellt die Uhr, danach läuft der Nano allein. Die Zeit geht aber nach einem Stromausfall verloren und driftet.</li>
+<li><strong>Echtzeituhr (RTC, zum Beispiel DS3231)</strong>: Der Nano behält die Zeit auch ohne Strom und ohne Pi. Das ist die richtige Lösung für eine eigenständige Uhr.</li>
+</ol>
+</section><section id="s16-9"><h2>16.9 Programme ansehen und sichern: avrdude</h2><p>Kann man ein Programm vom Arduino zurücksichern? Ja, mit <code>avrdude</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">avrdude</span> <span class="at">-c</span> arduino <span class="at">-p</span> m328p <span class="at">-P</span> /dev/ttyUSB0 <span class="at">-b</span> 115200 <span class="at">-U</span> flash:r:backup.hex:i    <span class="co"># auslesen</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">avrdude</span> <span class="at">-c</span> arduino <span class="at">-p</span> m328p <span class="at">-P</span> /dev/ttyUSB0 <span class="at">-b</span> 115200 <span class="at">-U</span> flash:w:backup.hex:i    <span class="co"># zurückschreiben</span></span></code></pre></div>
+<p>(Unter Windows heißt der Port <code>COM3</code>, auf dem Pi <code>/dev/ttyUSB0</code>.) Wichtig: Man bekommt nur die <strong>kompilierte Version</strong> (<code>.hex</code>), nicht den Quellcode (<code>.ino</code>). Sie reicht aus, um das Projekt auf einen anderen Arduino zu übertragen. Ist das Lock-Bit gesetzt, lässt sich der Chip nicht auslesen.</p>
+</section>

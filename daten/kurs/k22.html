@@ -1,0 +1,114 @@
+<p>Braucht man eine spezielle Software, um Python zu lernen? Nein, ein einfacher Editor wie <strong>Geany</strong> reicht. Hier die Grundlagen, an Beispielen aus einem echten Projekt: Dateien öffnen, Funktionen suchen, Fehler finden, Variablen ändern, Comboboxen einbauen, Layouts verändern und Programme starten.</p>
+<section id="s22-1"><h2>22.1 Das erste Programm</h2><ol type="1">
+<li>Geany öffnen, neue Datei anlegen.</li>
+<li>Schreiben: <code>print("Hallo Oratio")</code></li>
+<li>Als <code>hello.py</code> speichern. Die Endung <code>.py</code> ist wichtig, sie sagt Geany, dass es Python ist.</li>
+<li>Ausführen: in Geany über das Menü <strong>Erstellen → Ausführen</strong>, oder auf das kleine Raketen- oder Papierflieger-Symbol klicken. Im Terminal geht es mit <code>python3 hello.py</code>.</li>
+</ol>
+</section><section id="s22-2"><h2>22.2 Die wichtigsten Bausteine</h2><p><strong>Variablen</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>name <span class="op">=</span> <span class="st">&quot;Oratio&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>slot <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>scale <span class="op">=</span> <span class="fl">3.0</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>aktiv <span class="op">=</span> <span class="va">True</span></span></code></pre></div>
+<p><strong>Texte mit eingebauten Werten (f-String)</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>app_name<span class="sc">}</span><span class="ss"> -&gt; </span><span class="sc">{</span>button<span class="sc">.</span>app_name<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<p><strong>Bedingungen</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> index <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.screen1_display_time_label.setStyleSheet(btn_style)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> index <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.screen2_display_time_label.setStyleSheet(btn_style)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span></code></pre></div>
+<p><code>elif</code> ist „sonst wenn". <code>pass</code> heißt „nichts tun". Beim Erweitern auf eine <strong>vierte Seite</strong> musste an <em>jeder</em> Stelle ein weiteres <code>elif index == 3:</code> ergänzt werden. Das ist ein häufiger Fehler: man ändert nur eine von mehreren Stellen.</p>
+<p><strong>Schleifen</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> app <span class="kw">in</span> apps:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    row <span class="op">=</span> app[<span class="st">&quot;row&quot;</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    col <span class="op">=</span> app[<span class="st">&quot;col&quot;</span>]</span></code></pre></div>
+<p><strong>Funktionen</strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_script(<span class="va">self</span>, filename):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    subprocess.Popen([<span class="st">&quot;python3&quot;</span>, filename])</span></code></pre></div>
+<p><strong>Klassen</strong>: Ein Fenster oder eine Seite ist eine Klasse. <code>self</code> ist „dieses Objekt".</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ScriptsTab(QWidget):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, width, height):</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span></code></pre></div>
+<p><strong>Fehler abfangen</strong></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    subprocess.Popen([<span class="st">&quot;python3&quot;</span>, filename])</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(e)</span></code></pre></div>
+</section><section id="s22-3"><h2>22.3 Einrückung ist Teil der Sprache</h2><p>In Python bestimmt die <strong>Einrückung</strong>, was zu was gehört. Das führt zu einem seltsamen Fehler: Wenn <code>def run_oled_loop(self):</code> weiter eingerückt ist als <code>def oled_ui_4_show(self):</code>, hält Python die zweite Funktion für einen <strong>Teil der ersten</strong>. Richtig:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> oled_ui_3_show(<span class="va">self</span>, pi_temperature, pi_duty):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> oled_ui_4_show(<span class="va">self</span>):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_oled_loop(<span class="va">self</span>):</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div>
+<p>Die beiden <code>def</code> müssen <strong>exakt untereinander</strong> stehen. In Geany in die Zeile klicken und prüfen, ob das <code>d</code> von <code>def</code> bei beiden in derselben Spalte steht.</p>
+</section><section id="s22-4"><h2>22.4 JSON – Einstellungen in einer Datei</h2><p>Mein Control Center speichert Apps und Einstellungen in JSON-Dateien. JSON ist ein Textformat für strukturierte Daten:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;cpu_temp&quot;</span><span class="fu">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;CPU Temp&quot;</span><span class="fu">,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;tool&quot;</span><span class="fu">:</span> <span class="st">&quot;cpu_temp&quot;</span><span class="fu">,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;slot&quot;</span><span class="fu">:</span> <span class="dv">5</span><span class="fu">,</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;system&quot;</span><span class="fu">,</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;#404040&quot;</span><span class="fu">,</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;icon&quot;</span><span class="fu">:</span> <span class="st">&quot;Pi_Tools/Icons/cpu_temp.png&quot;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>Lesen und Schreiben in Python:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;oratio_apps.json&quot;</span>, <span class="st">&quot;r&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    apps <span class="op">=</span> json.load(f)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> app <span class="kw">in</span> apps:</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    app[<span class="st">&quot;slot&quot;</span>] <span class="op">=</span> app[<span class="st">&quot;row&quot;</span>] <span class="op">*</span> <span class="dv">6</span> <span class="op">+</span> app[<span class="st">&quot;col&quot;</span>]</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;oratio_apps_slot.json&quot;</span>, <span class="st">&quot;w&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    json.dump(apps, f, indent<span class="op">=</span><span class="dv">4</span>)</span></code></pre></div>
+<p><strong>Regeln:</strong> In JSON stehen Texte in doppelten Anführungszeichen, zwischen Einträgen steht ein Komma, aber <strong>nach dem letzten Eintrag keins</strong>. Ein einziges falsches Komma lässt das Programm nicht mehr starten. Das ist mir mehrfach passiert („Meine App startet nicht mehr").</p>
+</section><section id="s22-5"><h2>22.5 Typische Fehlermeldungen in Python</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Meldung</th>
+<th>Bedeutung</th>
+<th>Beispiel</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>NameError: name 'screen4_config' is not defined</code></td>
+<td>eine Variable wurde nie angelegt</td>
+<td><code>screen3_config = ...get('screen4')</code> stand doppelt, <code>screen4_config</code> fehlte</td>
+</tr>
+<tr class="even">
+<td><code>UnboundLocalError: cannot access local variable 'page'</code></td>
+<td>Variable wird benutzt, bevor sie einen Wert hat</td>
+<td>Zeilen mit <code>page = ...</code> auskommentiert, aber <code>if page != ...</code> blieb stehen</td>
+</tr>
+<tr class="odd">
+<td><code>IndentationError</code></td>
+<td>falsche Einrückung</td>
+<td>Funktion zu weit eingerückt</td>
+</tr>
+<tr class="even">
+<td><code>SyntaxError</code></td>
+<td>ungültiger Code</td>
+<td>zwei <code>except Exception as e:</code> hintereinander</td>
+</tr>
+<tr class="odd">
+<td><code>Permission denied</code></td>
+<td>keine Rechte</td>
+<td>Script ohne <code>chmod +x</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Wie solche Fehler zu finden sind:</strong> Die Fehlermeldung nennt Datei und <strong>Zeilennummer</strong>. Mit <code>sed -n '430,445p' datei.py</code> erscheint genau diese Stelle. Mit <code>grep -n "page" datei.py</code> zeigen sich alle Verwendungen.</p>
+</section><section id="s22-6"><h2>22.6 Debuggen mit print</h2><p>Wenn ein Knopf „nichts tut", wird Schritt für Schritt geprüft:</p>
+<ol type="1">
+<li>Ist der Knopf mit der Funktion verbunden? (<code>self.btn5.clicked.connect(self.open_kanshi_dialog)</code>)</li>
+<li>Gibt es die Funktion überhaupt? (<code>grep -n "def open_kanshi_dialog" datei.py</code>)</li>
+<li>Wird sie aufgerufen? Als erste Zeile in die Funktion schreiben: <code>print("Kanshi geklickt")</code> und starte das Programm im Terminal mit <code>python3 app_ui.py</code>. Erscheint der Text, ist die Verbindung in Ordnung, und der Fehler liegt innerhalb der Funktion.</li>
+</ol>
+</section>

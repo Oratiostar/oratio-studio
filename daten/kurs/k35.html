@@ -1,0 +1,47 @@
+<section id="s35-1"><h2>35.1 Mehr Apps als Platz: Seiten</h2><p>Mit 25 Kacheln war das Raster voll. Zwei Wege wurden abgewogen:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Weg</th>
+<th>Prinzip</th>
+<th>Nachteil</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Kategorien</td>
+<td>mehrere Gruppen mit je einem Raster, umschaltbar</td>
+<td>wer viele Kategorien hat, muss in jeder suchen</td>
+</tr>
+<tr class="even">
+<td><strong>Seiten</strong></td>
+<td>wie beim Handy: Seite 1, Seite 2, unten Punkte</td>
+<td>man braucht Regeln für Kacheln, die auf eine andere Seite gehören</td>
+</tr>
+</tbody>
+</table></div>
+<p>Entschieden wurde für <strong>Seiten mit Punkten unten</strong>. Der Slot (Platznummer) bestimmt die Seite: bei 4 × 6 Plätzen gehören Slot 0 bis 23 zu Seite 1, Slot 24 bis 47 zu Seite 2.</p>
+<p>Beim Ausprobieren verschwand eine App, nachdem ich ihren Slot auf 24 gesetzt hatte. Sie lag nun auf Seite 2, die es noch nicht gab. <strong>Lehre:</strong> Wer das Datenmodell erweitert (Seiten), muss auch die Anzeige erweitern (Seitenumschaltung).</p>
+</section><section id="s35-2"><h2>35.2 Das Raster soll sich anpassen</h2><p>Das Raster ist keine feste Zahl: 4 × 4, 4 × 5, 4 × 6 oder 5 × 3 sollen gehen. Damit der Code damit zurechtkommt, rechnet er <strong>alles aus Spalten- und Zeilenzahl</strong>:</p>
+<pre><code>Seite = Slot // (Spalten * Zeilen)
+Zeile = (Slot % (Spalten * Zeilen)) // Spalten
+Spalte = Slot % Spalten</code></pre>
+<p>Ändert man die Rastergröße, ordnen sich die Apps automatisch neu.</p>
+</section><section id="s35-3"><h2>35.3 Eine App größer machen</h2><p>Eine App kann mehrere Plätze belegen (2 × 1 oder 2 × 2). Dafür bekommt jeder Eintrag in der JSON eine Breite <code>"w"</code> und Höhe <code>"h"</code> in Kästchen. Eine große App verdrängt andere: Die Nachbarn rutschen weiter und, wenn kein Platz ist, auf die nächste Seite.</p>
+</section><section id="s35-4"><h2>35.4 Auf einen freien Platz ziehen</h2><p>Der Code war anfangs nur für „App gegen App tauschen“ gebaut. Jetzt sollte jede App auf <strong>jeden</strong> freien Platz, auch auf die nächste Seite. Dafür muss das Programm beim Loslassen drei Dinge können:</p>
+<ol type="1">
+<li>Das Zielfeld <strong>berechnen</strong> (Seite, Zeile, Spalte aus der Mausposition).</li>
+<li>Prüfen, ob dort <strong>frei</strong> ist oder eine andere App liegt.</li>
+<li>Frei: Slot ändern. Belegt: tauschen.</li>
+</ol>
+<p>Seitenwechsel beim Ziehen: Hält man die Kachel am Rand, wechselt die Seite nach einer kurzen Wartezeit.</p>
+</section><section id="s35-5"><h2>35.5 Ein kleines Fenster mit Vergrößerungsknopf</h2><p>Das Fenster sollte erst klein starten und sich per Knopf in der Ecke vergrößern. Das geht mit dem Fenster-Rahmen des Systems (Maximieren-Knopf) oder, später, mit eigenen Knöpfen.</p>
+</section><section id="s35-6"><h2>35.6 Der Punkt-Indikator und die Rundung</h2><p>Die Seitenpunkte unten sollen in einer abgerundeten Leiste sitzen wie beim iPhone. Ein sichtbarer Unterschied zeigte sich erst, nachdem die Leiste <strong>nur so breit wie die Punkte</strong> gemacht wurde, nicht über die ganze Breite.</p>
+</section><section id="s35-7"><h2>35.7 Das Ende von Projekt A</h2><p>Projekt A endete an einer Grenze, die ich in einer Vergleichstabelle festgehalten habe (<a class="xr" href="#/kap/40">Kapitel 40</a>): Die Datei mit den Kacheln, dem Ziehen, den Effekten und den Seiten war sehr groß geworden. Jede neue Idee (Hintergrund, Widgets, Einstellungen) hätte noch mehr hineingebracht. Gleichzeitig kamen Ideen, die nichts mit Kacheln zu tun hatten:</p>
+<ul>
+<li>ein Video beim Start des Pi (ein Intro mit dem Oratio-Logo),</li>
+<li>ein eigenes Betriebssystem-Abbild (Oratio OS),</li>
+<li>die Frage, ob das Programm in C++ besser liefe.</li>
+</ul>
+<p>Das waren die Gründe, den Aufbau noch einmal neu zu denken. Das Ergebnis ist Projekt B „Glas“.</p>
+</section>

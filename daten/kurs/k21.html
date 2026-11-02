@@ -1,0 +1,48 @@
+<section id="s21-1"><h2>21.1 Die Hardware</h2><p>Das Waveshare <strong>ESP32-S3-Touch-AMOLED-1.75</strong> ist ein rundes Display mit 466 × 466 Pixeln, angesteuert über vier Datenleitungen (<strong>QSPI</strong>). Der Controller heißt <strong>CO5300</strong>. Der Prozessor ESP32-S3 hat 8 MB <strong>PSRAM</strong> (externer Speicher), den man für den Bildpuffer braucht.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Signal</th>
+<th>GPIO</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CS</td>
+<td>12</td>
+</tr>
+<tr class="even">
+<td>SCK</td>
+<td>38</td>
+</tr>
+<tr class="odd">
+<td>D0 / D1 / D2 / D3</td>
+<td>4 / 5 / 6 / 7</td>
+</tr>
+<tr class="even">
+<td>RST</td>
+<td>39</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Einstellungen in der Arduino-IDE:</strong> PSRAM auf <strong>„OPI PSRAM“</strong> stellen, sonst reicht der Speicher für den Bildpuffer nicht. Der Spalten-Offset des Controllers ist 6 (<code>COL_OFFSET 6</code>), sonst sitzt das Bild verschoben.</p>
+</section><section id="s21-2"><h2>21.2 Software-Aufbau</h2><div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Arduino_DataBus <span class="op">*</span>bus <span class="op">=</span> <span class="kw">new</span> Arduino_ESP32QSPI<span class="op">(</span><span class="dv">12</span><span class="op">,</span> <span class="dv">38</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">7</span><span class="op">);</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Arduino_GFX <span class="op">*</span>gfx <span class="op">=</span> <span class="kw">new</span> Arduino_CO5300<span class="op">(</span>bus<span class="op">,</span> <span class="dv">39</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">466</span><span class="op">,</span> <span class="dv">466</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span></code></pre></div>
+<p><code>Arduino_GFX</code> ist die Grafikbibliothek. Der Bus überträgt, die Klasse <code>Arduino_CO5300</code> kennt die Befehle des Controllers.</p>
+</section><section id="s21-3"><h2>21.3 Wie das 1:1-Zifferblatt entsteht</h2><p>Ziel: Das Zifferblatt einer Casio-Digitaluhr soll auf dem Display identisch aussehen. Der Rechenweg:</p>
+<ol type="1">
+<li>Die Vorlage wird zugeschnitten; die Mitte des Zifferblatts liegt bei (324, 295) im Ausschnitt, der Maßstab ist 0,6 (Vorlagen-Einheiten → Display-Pixel).</li>
+<li>Ein Python-Skript (PIL) zeichnet Hintergrund und Glyphen in <strong>vierfacher Auflösung</strong> (Supersampling) und rechnet sie herunter – das glättet Kanten.</li>
+<li>Die Ziffern sind <strong>Sieben-Segment-Masken</strong>: groß 50×96 (Strichstärke 13,5), Sekunden 33×60 (9), Datum 25×45 (7,4). Wochentage sind eine eigene Blockschrift.</li>
+<li>Der Rahmen entsteht mit einer <strong>Distanztransformation</strong> (scipy): Der Abstand zur Außenkante bestimmt die Farbbänder.</li>
+<li>Das Skript schreibt C-Header (<code>face_bg.h</code>, <code>glyphs.h</code>, <code>layout.h</code>), die als RGB565-Felder ins Programm eingebunden werden.</li>
+<li>Der Sketch zeichnet den Hintergrund einmal, blendet jede Sekunde die Masken in der richtigen Farbe ein (Alpha-Maske) und rendert alles in einen PSRAM-Puffer, der in einem Zug auf das Display geht.</li>
+</ol>
+<p><strong>RGB565:</strong> 5 Bit Rot, 6 Bit Grün, 5 Bit Blau, zusammen 16 Bit pro Pixel – halb so groß wie 24 Bit und für Displays üblich.</p>
+<p><strong>Prüfung:</strong> Ein kleines C++-Programm auf dem Rechner mit denselben Funktionen bestätigte, dass die Ausgabe des Sketches pixelgleich zur Python-Vorschau ist. <strong>Auf der echten Hardware wurde nicht getestet.</strong> WLAN und NTP für die Uhrzeit sind optional; die Batterieanzeige steht fest auf 100 %, die Anbindung an den Power-Chip AXP2101 ist noch offen.</p>
+</section><section id="s21-4"><h2>21.4 Bewertung des eigenen Sketches `Oratio_Casio_Watch.ino`</h2><ul>
+<li><strong>Positiv:</strong> Touch-Schalter, Schrittanzeige, klare Struktur.</li>
+<li><strong>Probleme:</strong> Die Ecken des runden Displays werden abgeschnitten (Inhalt zu weit außen); Beschriftungen sind teilweise verdeckt; die Pins weichen von denen der Waveshare-Beispiele ab; <code>setBrightness()</code> kann je nach Treiber einen Compile-Fehler geben.</li>
+<li><strong>Offene Entscheidung:</strong> Touch-Schalter und Schrittanzeige in das 1:1-Zifferblatt übernehmen; und klären, ob das Board die Variante 1.75 oder 1.75C ist.</li>
+</ul>
+</section>

@@ -1,0 +1,7 @@
+<p>Es geht um das Freenove Tower Cooler Kit (Modell FNK0113) für den Pi 5 mit OLED-Display, Lüftern und LED-Beleuchtung. Die wichtigsten Erkenntnisse:</p>
+<ul>
+<li><strong>Der Freenove-Lüfter ist kein normaler 4-poliger PC-Lüfter.</strong> Die RGB-Effekte und die Drehzahlsteuerung laufen über die Freenove-Platine und deren Software. Die App sendet Befehle über eine Steuerplatine. Wird der Lüfter einfach auf beliebige GPIO-Pins oder direkt auf 5 V gelegt, funktioniert diese Steuerung nicht mehr.</li>
+<li>Die Software von Freenove besteht aus Python-Dateien: <code>app_ui.py</code> (Fenster), <code>task_oled.py</code> (OLED-Anzeige), <code>task_fan.py</code> (Lüfter), <code>task_led.py</code> (LED-Beleuchtung). Ich habe sie im Ordner <code>~/Freenove_Tower_Cooler_for_Raspberry_Pi/Code</code> gefunden und zum <strong>Oratio Control Center</strong> weiterentwickelt (<a class="xr" href="#/kap/31">Kapitel 31</a>).</li>
+<li>Temperatur und Strom lassen sich prüfen mit <code>vcgencmd measure_temp</code> und <code>vcgencmd get_throttled</code>.</li>
+</ul>
+<p><strong>Tipp zum Bastelplan:</strong> Ein Lüfter kann vom Pi aus drehzahlgeregelt werden, wenn er eine PWM-Leitung hat (4-Draht-Lüfter). Das ist aber ein eigenes Projekt, nicht Teil der Freenove-Software.</p>

@@ -1,0 +1,194 @@
+<section id="s33-1"><h2>33.1 Der Name des neuen Tabs</h2><p>Nach dem Skript-Tab kam der Wunsch nach einem Tab nur für Raspberry-Pi-Befehle, die ich ständig brauche: Bildschirm auf 4K stellen, Temperatur lesen, neu starten. Vor dem Bauen musste der Name feststehen, weil er in Dateien, Klassen und Beschriftungen wiederkehrt. Meine Überlegungen:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Kandidat</th>
+<th>Bewertung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>„Tools“</td>
+<td>zu allgemein, sagt nicht, dass es um den Pi geht</td>
+</tr>
+<tr class="even">
+<td>„Commander“</td>
+<td>klingt nach Dateiverwaltung (wie ein Zwei-Fenster-Dateimanager)</td>
+</tr>
+<tr class="odd">
+<td><strong>„Oratio Pi Tools“</strong></td>
+<td>trägt meinen Namen wie die anderen Teile und sagt, worum es geht</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Namensregel für Dateien und Klassen</strong>, die ich mir dabei gesetzt habe:</p>
+<ul>
+<li>Dateien und Module in Python klein mit Unterstrich: <code>pi_tools.py</code>.</li>
+<li>Klassen in „CamelCase“, ohne Unterstrich: <code>PiToolsTab</code>.</li>
+<li>Ordnernamen dürfen groß beginnen: <code>Pi_Tools/</code>.</li>
+<li>Was in der Oberfläche steht („Oratio Pi Tools“, mit Leerzeichen), ist nur ein Text, den man an einer Stelle als Tab-Namen einträgt. Er muss nichts mit dem Dateinamen zu tun haben.</li>
+</ul>
+<p><code>from pi_tools import PiTools</code> heißt: <em>aus der Datei</em> <code>pi_tools.py</code> <em>die Klasse</em> <code>PiTools</code> holen. Das erste Wort ist die Datei (das Modul), das zweite die Klasse darin.</p>
+</section><section id="s33-2"><h2>33.2 Ein Tab mit festen Buttons</h2><p>Der erste Entwurf bestand aus einer Klasse mit Schaltflächen und je einer Funktion pro Befehl:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> RaspberryPiTab(QWidget):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        layout <span class="op">=</span> QGridLayout()</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        btn_4k <span class="op">=</span> QPushButton(<span class="st">&quot;4K Scale 3&quot;</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        btn_reboot <span class="op">=</span> QPushButton(<span class="st">&quot;Neustart&quot;</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        btn_temp <span class="op">=</span> QPushButton(<span class="st">&quot;Temperatur&quot;</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        layout.addWidget(btn_4k, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        layout.addWidget(btn_reboot, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        layout.addWidget(btn_temp, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.setLayout(layout)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        btn_4k.clicked.<span class="ex">connect</span>(<span class="va">self</span>.set_4k)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        btn_reboot.clicked.<span class="ex">connect</span>(<span class="va">self</span>.reboot)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        btn_temp.clicked.<span class="ex">connect</span>(<span class="va">self</span>.temp)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> set_4k(<span class="va">self</span>):</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        subprocess.Popen([<span class="st">&quot;wlr-randr&quot;</span>, <span class="st">&quot;--output&quot;</span>, <span class="st">&quot;HDMI-A-1&quot;</span>,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>                          <span class="st">&quot;--mode&quot;</span>, <span class="st">&quot;3840x2160&quot;</span>, <span class="st">&quot;--scale&quot;</span>, <span class="st">&quot;3&quot;</span>])</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> reboot(<span class="va">self</span>):</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        subprocess.Popen([<span class="st">&quot;lxterminal&quot;</span>, <span class="st">&quot;-e&quot;</span>, <span class="st">&quot;sudo reboot&quot;</span>])</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> temp(<span class="va">self</span>):</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        subprocess.Popen([<span class="st">&quot;lxterminal&quot;</span>, <span class="st">&quot;-e&quot;</span>, <span class="st">&quot;vcgencmd measure_temp&quot;</span>])</span></code></pre></div>
+<p>Das funktioniert. Das Problem zeigt sich bei Befehl 20: Die Klasse bekommt für jeden Befehl eine Funktion, der Code wird unübersichtlich, und jede neue Schaltfläche heißt Python-Code ändern.</p>
+</section><section id="s33-3"><h2>33.3 Die Daten in eine JSON-Datei</h2><p>JSON ist ein Textformat für Listen und Einträge. Statt jede Schaltfläche in Python zu schreiben, steht in einer Datei, <strong>was</strong> es gibt. Der Python-Code liest die Datei und baut die Schaltflächen:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Backup&quot;</span><span class="fu">,</span> <span class="dt">&quot;file&quot;</span><span class="fu">:</span> <span class="st">&quot;backup.py&quot;</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Hash&quot;</span><span class="fu">,</span>   <span class="dt">&quot;file&quot;</span><span class="fu">:</span> <span class="st">&quot;hashchecker.sh&quot;</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Kanshi&quot;</span><span class="fu">,</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;import&quot;</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;OLED&quot;</span><span class="fu">,</span>   <span class="dt">&quot;file&quot;</span><span class="fu">:</span> <span class="st">&quot;OLED/oled.py&quot;</span><span class="fu">}</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ot">]</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;oratio_apps.json&quot;</span>, <span class="st">&quot;r&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    apps <span class="op">=</span> json.load(f)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, app <span class="kw">in</span> <span class="bu">enumerate</span>(apps):</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    ...   <span class="co"># pro Eintrag eine Kachel anlegen</span></span></code></pre></div>
+<p>Folgen, die ich bemerkte:</p>
+<ul>
+<li>Die <strong>Anzahl der Kacheln</strong> steht nicht mehr im Programm. 25 Einträge ergeben 25 Kacheln, 30 ergeben 30.</li>
+<li>Die <strong>Position</strong> kommt ebenfalls aus der Datei: <code>"row"</code> und <code>"col"</code> (später <code>"slot"</code>). Zwei Einträge auf demselben Platz überdecken sich, der zuletzt angelegte liegt oben.</li>
+<li>JSON verlangt <strong>genaue Syntax</strong>: Anführungszeichen, Kommas zwischen den Einträgen, keines nach dem letzten. Ein vergessenes Komma lässt die ganze Datei scheitern. Prüfen: <code>python3 -m json.tool oratio_apps.json</code>.</li>
+</ul>
+</section><section id="s33-4"><h2>33.4 Zwei Arten, ein Programm zu öffnen</h2><p>Ein Eintrag kann auf zwei Arten starten, und die Wahl hat sichtbare Folgen:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Art</th>
+<th>Wie</th>
+<th>Wann sinnvoll</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>run_file()</code></td>
+<td>startet einen <strong>neuen Prozess</strong> (<code>subprocess.Popen</code>)</td>
+<td>Skripte: Hash-Checker, Backup, Bash- und PowerShell-Skripte</td>
+</tr>
+<tr class="even">
+<td><code>"type": "import"</code></td>
+<td><strong>importiert</strong> die Klasse und öffnet sie im laufenden Programm</td>
+<td>kleine Dialoge: Kanshi, Info-Fenster</td>
+</tr>
+</tbody>
+</table></div>
+<p>Beim Kanshi-Dialog sah ich den Unterschied sofort: Mit <code>run_file</code> erschien zusätzlich ein zweites Fenster, weil ein ganzes zweites Python-Programm startete. Mit dem Import öffnet sich nur der Dialog:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> app.get(<span class="st">&quot;type&quot;</span>) <span class="op">==</span> <span class="st">&quot;import&quot;</span> <span class="kw">and</span> app[<span class="st">&quot;name&quot;</span>] <span class="op">==</span> <span class="st">&quot;Kanshi3&quot;</span>:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    dialog <span class="op">=</span> KanshiDialog()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    dialog.exec_()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span></code></pre></div>
+<p>Faustregel: <strong>Oberfläche = importieren, Skripte = als Prozess starten.</strong></p>
+</section><section id="s33-5"><h2>33.5 Befehle aus dem Hauptprogramm herausnehmen</h2><p>Zuletzt wurden es zu viele Befehle für die Hauptdatei. Die Aufteilung, die ich festlegte:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Datei</th>
+<th>Aufgabe</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>app_ui.py</code></td>
+<td>nur Fenster, Schaltflächen, Ziehen, JSON laden, Klicks erkennen</td>
+</tr>
+<tr class="even">
+<td><code>oratio_apps.json</code></td>
+<td>nur Name, Icon, Position, Werkzeugname</td>
+</tr>
+<tr class="odd">
+<td><code>Pi_Tools/pi_tools.py</code></td>
+<td>nur die Befehle: CPU-Temperatur, RAM, SSD, WLAN, Bluetooth, USB, Neustart, Screenshot …</td>
+</tr>
+</tbody>
+</table></div>
+<p>In der JSON steht dann statt eines Dateinamens ein Werkzeug:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;CPU Temp&quot;</span><span class="fu">,</span> <span class="dt">&quot;tool&quot;</span><span class="fu">:</span> <span class="st">&quot;cpu_temp&quot;</span><span class="fu">}</span></span></code></pre></div>
+<p>und das Hauptprogramm ruft <code>pi_tools.cpu_temp()</code> auf. Keine 20 oder 50 einzelnen Dateien mehr. Dieser Gedanke taucht in Projekt B wieder auf (<a class="xr" href="#/kap/38">Kapitel 38</a>: die Toolbox).</p>
+</section><section id="s33-6"><h2>33.6 Das Kanshi-Werkzeug: Bildschirm-Skalierung per Knopf</h2><p>Der Pi 5 am 4K-Monitor braucht eine Skalierung, sonst ist alles winzig (<a class="xr" href="#/kap/10">Kapitel 10</a>). Ich wollte sie per Klick wählen. Das Werkzeug schreibt die Konfigurationsdatei von <strong>Kanshi</strong> (<code>~/.config/kanshi/config</code>) und startet Kanshi neu:</p>
+<pre><code>profile monitor
+{
+    output HDMI-A-1 mode 3840x2160 scale 3
+}</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>subprocess.run([<span class="st">&quot;pkill&quot;</span>, <span class="st">&quot;kanshi&quot;</span>], stderr<span class="op">=</span>subprocess.DEVNULL)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>subprocess.Popen([<span class="st">&quot;kanshi&quot;</span>])</span></code></pre></div>
+<p>Auf dem Weg zum funktionierenden Dialog traten Fehler auf. Jeder hat eine Lehre:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Beobachtung</th>
+<th>Ursache</th>
+<th>Was ich daraus mache</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Nach „OK“ ändert sich nichts; nach Aus- und Einschalten des Monitors steht wieder Skalierung 1</td>
+<td>die Config-Datei wurde nicht (richtig) geschrieben, oder der Ausgangsname stimmte nicht</td>
+<td><code>cat ~/.config/kanshi/config</code> und <code>wlr-randr</code> ansehen: der Name (<code>HDMI-A-1</code>) muss genau passen</td>
+</tr>
+<tr class="even">
+<td><code>pkill kanshi; kanshi</code> im Terminal wirkt sofort, der Knopf nicht</td>
+<td>der Knopf startet Kanshi nicht sauber neu oder es laufen mehrere Kanshi-Prozesse</td>
+<td><code>pgrep -a kanshi</code> zeigt, wie viele laufen</td>
+</tr>
+<tr class="odd">
+<td>Dialog zeigt immer „1“, obwohl Skalierung 3 aktiv ist</td>
+<td><code>QInputDialog.getItem(..., 0, False)</code>: die <strong>0</strong> ist der Index der Voreinstellung, also immer der erste Eintrag</td>
+<td>Index aus der aktuellen Einstellung berechnen</td>
+</tr>
+<tr class="even">
+<td><code>NameError: name 'config' is not defined</code></td>
+<td>die Variable <code>config</code> wurde in einer anderen Funktion angelegt und existiert hier nicht</td>
+<td>Variable im richtigen Bereich anlegen oder übergeben</td>
+</tr>
+<tr class="odd">
+<td>Nur bei Skalierung 2 verschwindet das ganze Programm</td>
+<td>Wayland baut bei dieser Umschaltung die Fenster neu; die Qt-Anwendung verliert kurz die Verbindung</td>
+<td>im Terminal starten und die Meldung beim Schließen lesen; Test: <code>pkill</code>/<code>kanshi</code> testweise durch <code>print("Scale:", scale)</code> ersetzen. Verschwindet das Fenster dann nicht mehr, ist Kanshi bzw. der Neuladevorgang schuld, nicht PyQt</td>
+</tr>
+<tr class="even">
+<td>Beim Start steht <code>GLib-GObject-CRITICAL ... g_object_unref</code></td>
+<td>eine Warnung aus den GTK/GLib-Teilen unter Wayland</td>
+<td>meist harmlos, solange das Programm läuft; zuerst klären, <strong>wann</strong> sie kommt (Start, Fensteröffnen, Schließen)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Die Varianten Kanshi, Kanshi Test, Kanshi 2, Kanshi 3:</strong> Ich habe das Werkzeug mehrfach als Kopie weiterentwickelt, statt die laufende Datei zu verändern. Das ist bequem, hat aber einen Nachteil: Beim Aufräumen blieb in der JSON ein Eintrag stehen (<code>Pi_Tools/Kanshi2.py</code>), den es nicht mehr gab. Die Kachel startete dann einfach nichts. Wer Kopien anlegt, löscht später die Einträge mit.</p>
+</section><section id="s33-7"><h2>33.7 Das Aussehen: Farben und Rundungen im Stylesheet</h2><p>Die Oberfläche bekam eine Optik über Qt-Stylesheets (ähnlich CSS):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>btn.setStyleSheet(<span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="st">    QPushButton {</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="st">        background-color: #1a73e8;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="st">        border-radius: 12px;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="st">        font-size: 14pt;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="st">    }</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span>)</span></code></pre></div>
+<p>Fragen, die dabei aufkamen und beantwortet sind:</p>
+<ul>
+<li><strong><code>px</code> oder <code>pt</code>?</strong> <code>px</code> sind Bildschirmpunkte, <code>pt</code> sind Schriftpunkte, die sich mit der Skalierung ändern. Schriftgrößen in <code>pt</code>, Abstände und Rundungen in <code>px</code>.</li>
+<li><strong>Doppelte Klammern <code>{{ }}</code></strong> in einem f-String: Ein <code>{</code> im Text muss als <code>{{</code> geschrieben werden, weil <code>{...}</code> sonst als Variable gilt. Zwischen den beiden Klammern steht kein Leerzeichen.</li>
+<li><strong>Zwei Zeilen mit <code>background-color</code></strong> im Code: Die zweite überschreibt die erste. Beim Ändern immer die Stelle suchen, an der der <strong>Wert wirklich gesetzt</strong> wird.</li>
+</ul>
+<p><strong>Nach dem Löschen blieben leere Kästchen im Fenster.</strong> Ich hatte die Schaltflächen aus dem Code entfernt, aber der Rahmen (die Container-Widgets) stand weiter da. Ein Widget, das nicht mehr gebraucht wird, muss auch den Container verlieren: <code>deleteLater()</code> oder das Layout neu aufbauen.</p>
+</section>

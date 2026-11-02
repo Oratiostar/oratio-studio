@@ -1,0 +1,110 @@
+<section id="s32-1"><h2>32.1 Ausgangspunkt: das Freenove-Programm</h2><p>Der Freenove-Tower (<a class="xr" href="#/kap/11">Kapitel 11</a>) bringt eine fertige Python-Oberfläche mit. Sie hat vier Tabs:</p>
+<p><strong>Monitor | LED | Fan | OLED</strong></p>
+<p>Die Datei <code>app_ui.py</code> baut das Hauptfenster. Jeder Tab ist eine eigene Klasse, die zu einer eigenen Datei gehört (LED, Lüfter, OLED). Gestartet wird die Oberfläche mit <code>python3 app_ui.py</code> oder über ein kleines Startskript <code>run_app.sh</code>. Auf diesem Aufbau beruht alles Weitere. Dass Qt (die Oberflächen-Bibliothek) ein Tab-Widget (<code>QTabWidget</code>) mitbringt, in das man beliebig viele Tabs hängt, ist die Grundlage der nächsten Schritte.</p>
+<p><strong>Merke:</strong> Wer ein fremdes Programm erweitert, erweitert zuerst eine Kopie. Ich habe den Ordner mit allen Python-Dateien kopiert und nur in der Kopie gearbeitet. So blieb das Original zum Vergleichen übrig.</p>
+</section><section id="s32-2"><h2>32.2 Ziel: ein Tab „Scripts“</h2><p>Ich wollte rechts neben OLED einen fünften Tab:</p>
+<p><strong>Monitor | LED | Fan | OLED | Scripts</strong></p>
+<p>Beim Anklicken sollten vier Rechtecke (Schaltflächen) erscheinen, jedes mit dem Namen eines Skripts. Ein Klick auf ein Rechteck startet das Skript. Die ersten Skripte waren Programme, die ich schon hatte: ein Datei-Prüfer (Hash-Checker, siehe <a class="xr" href="#/kap/45">Kapitel 45</a>), ein Backup, ein OLED-Test und ein Update-Skript.</p>
+</section><section id="s32-3"><h2>32.3 Die neue Datei</h2><p>Der Tab bekommt eine eigene Datei, damit <code>app_ui.py</code> nicht noch länger wird: <code>app_ui_scripts.py</code>. Darin steht eine Klasse mit einem Raster (<code>QGridLayout</code>) und vier Schaltflächen:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PyQt5.QtWidgets <span class="im">import</span> QWidget, QPushButton, QGridLayout</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> subprocess</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ScriptsTab(QWidget):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        layout <span class="op">=</span> QGridLayout()</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.btn1 <span class="op">=</span> QPushButton(<span class="st">&quot;Backup&quot;</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.btn2 <span class="op">=</span> QPushButton(<span class="st">&quot;Update&quot;</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.btn3 <span class="op">=</span> QPushButton(<span class="st">&quot;OLED Test&quot;</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.btn4 <span class="op">=</span> QPushButton(<span class="st">&quot;Hash Checker&quot;</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        layout.addWidget(<span class="va">self</span>.btn1, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        layout.addWidget(<span class="va">self</span>.btn2, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        layout.addWidget(<span class="va">self</span>.btn3, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        layout.addWidget(<span class="va">self</span>.btn4, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.setLayout(layout)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.btn1.clicked.<span class="ex">connect</span>(<span class="kw">lambda</span>: <span class="va">self</span>.run_script(<span class="st">&quot;backup.py&quot;</span>))</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.btn4.clicked.<span class="ex">connect</span>(<span class="kw">lambda</span>: <span class="va">self</span>.run_bash(<span class="st">&quot;hashchecker.sh&quot;</span>))</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> run_script(<span class="va">self</span>, filename):</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>            subprocess.Popen([<span class="st">&quot;python3&quot;</span>, filename])</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(e)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> run_bash(<span class="va">self</span>, filename):</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>            subprocess.Popen([<span class="st">&quot;lxterminal&quot;</span>, <span class="st">&quot;-e&quot;</span>, <span class="ss">f&quot;bash </span><span class="sc">{</span>filename<span class="sc">}</span><span class="ss">&quot;</span>])</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(e)</span></code></pre></div>
+<p>Was die Teile tun:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Teil</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>QGridLayout</code></td>
+<td>ordnet Elemente in Zeile und Spalte an: <code>addWidget(element, zeile, spalte)</code></td>
+</tr>
+<tr class="even">
+<td><code>QPushButton("Text")</code></td>
+<td>eine Schaltfläche mit Beschriftung</td>
+</tr>
+<tr class="odd">
+<td><code>.clicked.connect(...)</code></td>
+<td>verbindet den Klick mit einer Funktion</td>
+</tr>
+<tr class="even">
+<td><code>lambda: ...</code></td>
+<td>eine kleine namenlose Funktion; nötig, damit der Dateiname beim Klick mitgegeben wird</td>
+</tr>
+<tr class="odd">
+<td><code>subprocess.Popen([...])</code></td>
+<td>startet ein anderes Programm, ohne dass die Oberfläche wartet</td>
+</tr>
+<tr class="even">
+<td><code>lxterminal -e ...</code></td>
+<td>öffnet ein Terminal-Fenster und führt dort einen Befehl aus</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s32-4"><h2>32.4 Den Tab in app_ui.py einhängen</h2><p>In <code>app_ui.py</code> sind nur drei Stellen nötig:</p>
+<ol type="1">
+<li>oben <code>from app_ui_scripts import ScriptsTab</code>,</li>
+<li>dort, wo die Tabs angelegt werden, <code>self.tab_widget.addTab(ScriptsTab(), "Scripts")</code>,</li>
+<li>speichern und neu starten.</li>
+</ol>
+<p>Das ist das Prinzip für <strong>jeden</strong> weiteren Tab: eigene Datei mit einer <code>QWidget</code>-Klasse, ein <code>import</code>, ein <code>addTab</code>.</p>
+</section><section id="s32-5"><h2>32.5 Der Hash-Checker lief nicht aus dem Control Center</h2><p>Das Skript <code>hashchecker.sh</code> ist ein Bash-Skript (Shell), kein Python-Skript. Mit <code>python3 hashchecker.sh</code> ließ es sich nicht starten. Deshalb die zweite Funktion <code>run_bash</code>, die es in einem Terminal-Fenster mit <code>bash</code> ausführt. Das Skript selbst habe ich vorher im Terminal geprüft, weil das die schnellste Fehlerquelle ausschließt:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/Dokumente/Code</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> hashchecker.sh</span></code></pre></div>
+<p>Läuft es dort nicht, liegt der Fehler im Skript. Läuft es dort, aber nicht aus dem Control Center, liegt er in der Oberfläche.</p>
+<h3 id="der-fehler-mit-sudo">Der Fehler mit <code>sudo</code></h3>
+<p>Genau dieser Fall trat auf: Aus dem Terminal gestartet (<code>python3 app_ui.py</code>) lief alles, über <code>./run_app.sh</code> startete der Hash-Checker nicht. Der Vergleich der beiden Wege ergab: In <code>run_app.sh</code> stand <code>sudo python app_ui.py</code>. Damit läuft das <strong>ganze Programm als Benutzer root</strong>, und root hat einen anderen Home-Ordner, andere Pfade und eine andere Umgebung als der Benutzer <code>oratio</code>. Skripte, die relative Pfade oder die Anzeige des normalen Benutzers brauchen, scheitern dann.</p>
+<p>Die Lösung: das Programm als normaler Benutzer starten und nur dort <code>sudo</code> verwenden, wo ein einzelner Befehl es wirklich braucht.</p>
+<p><strong>Merke:</strong> Läuft etwas im Terminal, aber nicht per Startskript oder Symbol, dann unterscheidet sich die <strong>Umgebung</strong>: Benutzer, aktueller Ordner, Umgebungsvariablen. Zuerst vergleichen, nicht raten. Ein einfacher Test: in die Funktion <code>print(os.getlogin())</code> und <code>print(os.getcwd())</code> einbauen und beide Wege ausprobieren.</p>
+</section><section id="s32-6"><h2>32.6 Skript starten oder in eigenem Fenster?</h2><p>Zuerst startete das Skript im selben Fenster wie die Oberfläche und überdeckte sie. Ein eigenes Fenster (Terminal oder <code>QProcess</code>) ist die bessere Lösung. Merksatz: <strong>Die Oberfläche startet Programme, sie wird nicht selbst zum Programm.</strong></p>
+</section><section id="s32-7"><h2>32.7 Wenn der Tab sich nicht einhängen lässt: Einrückung</h2><p>In diesem Abschnitt der Arbeit tauchte der häufigste Anfängerfehler mit Python auf: <strong>Einrückung</strong>. Python erkennt Blöcke an den Leerzeichen am Zeilenanfang. Mischt man Tabulatoren und Leerzeichen, sieht der Code im Editor richtig aus und bricht trotzdem ab:</p>
+<pre><code>TabError: inconsistent use of tabs and spaces in indentation
+IndentationError: unexpected indent</code></pre>
+<p>Ursache war mein Editor (Geany): Er fügte teilweise Tabulatoren ein, ich selbst tippte Leerzeichen. Merkregeln:</p>
+<ul>
+<li><strong>Vier Leerzeichen pro Ebene</strong>, nie Tabulatoren.</li>
+<li>Im Editor einstellen, dass die Tab-Taste Leerzeichen einfügt.</li>
+<li>Prüfen ohne Start: <code>python3 -m py_compile datei.py</code> meldet die Zeile.</li>
+<li>Gemischte Datei bereinigen: <code>expand -t 4 datei.py &gt; datei_neu.py</code>.</li>
+</ul>
+<p>Was beim Einfügen von Code aus einer Anleitung besonders oft schiefgeht: Der neue Block muss <strong>genau auf derselben Ebene</strong> beginnen wie die Zeilen daneben. Tipp: erst die Zeile davor markieren und die Einrückung ansehen, dann einfügen.</p>
+</section><section id="s32-8"><h2>32.8 Die Methode, nach der ich arbeitete</h2><p>Aus diesem Kapitel nehme ich mit, wie ich jeden weiteren Schritt anging:</p>
+<ol type="1">
+<li>Eine Sache pro Schritt ändern, danach starten und testen.</li>
+<li>Im Terminal starten (<code>python3 app_ui.py</code>), nicht über ein Symbol, damit Fehlermeldungen sichtbar sind.</li>
+<li>Bei jeder Änderung wissen, <strong>in welcher Datei</strong> und <strong>an welcher Stelle</strong> sie steht.</li>
+<li>Ein Fehler wird erst eingegrenzt (Skript allein, Oberfläche allein), dann behoben.</li>
+<li>Eine laufende Version sichern, bevor ich weiterbaue.</li>
+</ol>
+</section>

@@ -1,0 +1,139 @@
+<p>Kurze Antworten auf Fragen, die beim Lernen immer wieder auftauchen. Jeder Baustein steht für sich.</p>
+<section id="s59-1"><h2>59.1 Welcher Raspberry Pi, welches System?</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Pi 3</th>
+<th>Pi 4</th>
+<th>Pi 5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Prozessor</td>
+<td>schwächer</td>
+<td>deutlich schneller</td>
+<td>deutlich schneller als der Pi 4</td>
+</tr>
+<tr class="even">
+<td>Speicher</td>
+<td>1 GB</td>
+<td>2 bis 8 GB</td>
+<td>4, 8 oder 16 GB</td>
+</tr>
+<tr class="odd">
+<td>Schnittstelle für SSD</td>
+<td>nur USB 2</td>
+<td>USB 3</td>
+<td>USB 3 und <strong>PCIe</strong> (NVMe über Adapter)</td>
+</tr>
+<tr class="even">
+<td>Netzteil</td>
+<td>5 V / 2,5 A</td>
+<td>5 V / 3 A</td>
+<td>5 V / 5 A</td>
+</tr>
+<tr class="odd">
+<td>Kühlung</td>
+<td>meist nicht nötig</td>
+<td>empfohlen</td>
+<td>Lüfter empfohlen</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>32 Bit gegen 64 Bit:</strong> Auf Pi 4 und 5 nimmt man <strong>64 Bit</strong>. Viele Programme (zum Beispiel aktuelle VS-Code- oder Arduino-Versionen) gibt es nur noch dafür. 32 Bit ist nur für sehr alte Geräte sinnvoll.</li>
+<li><strong>Lite, Desktop oder Full:</strong> <em>Lite</em> hat keine Oberfläche (Server, Terminal), <em>Desktop</em> hat die grafische Oberfläche, <em>Full</em> bringt zusätzlich viel Software mit. Zum Lernen reicht <em>Desktop</em>.</li>
+<li><strong>Bookworm und Trixie:</strong> Namen der Debian-Versionen (12 und 13). Trixie ist neuer. Beide nutzen standardmäßig <strong>Wayland</strong> mit dem Fenstermanager <code>labwc</code>.</li>
+<li><strong>SD-Karte in ein anderes Modell stecken:</strong> Meist geht das, solange das System für beide Modelle gebaut ist. Ein System, das für Pi 5 gebaut ist, läuft nicht auf einem Pi 3 und umgekehrt.</li>
+</ul>
+</section><section id="s59-2"><h2>59.2 Image auf eine SD-Karte schreiben</h2><ol type="1">
+<li><strong>Raspberry Pi Imager</strong> installieren (<code>sudo apt install rpi-imager</code> oder von der Webseite) und starten.</li>
+<li>Betriebssystem wählen, Speichermedium wählen, <strong>Einstellungen</strong> (Benutzername, WLAN, SSH) eintragen.</li>
+<li>Schreiben und warten.</li>
+</ol>
+<p>Bei einer fertigen Datei mit der Endung <strong><code>.xz</code></strong> ist Auspacken unnötig: Der Imager liest sie direkt (<strong>Eigenes Image wählen</strong>). Zum Auspacken im Terminal: <code>unxz datei.img.xz</code>.</p>
+<p>Andere Programme: <strong>balenaEtcher</strong> (Windows, Mac, Linux), <strong>Win32 Disk Imager</strong> (Windows, zum Schreiben <strong>und</strong> Sichern eines Images), <code>dd</code> im Terminal (schnell, aber ein falscher Zielname überschreibt das falsche Laufwerk). Ein Image <strong>von</strong> einem Laufwerk ziehen geht mit Win32 Disk Imager oder <code>dd</code>.</p>
+</section><section id="s59-3"><h2>59.3 GPIO-Nummerierung</h2><p>Ein Pin hat zwei Nummern:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Nummer</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Physische Pinnummer</strong> (1 bis 40)</td>
+<td>Position auf der Stiftleiste</td>
+</tr>
+<tr class="even">
+<td><strong>BCM-Nummer</strong> (GPIO 17, GPIO 18 ...)</td>
+<td>Name des Prozessor-Anschlusses</td>
+</tr>
+</tbody>
+</table></div>
+<p>Die Abbildungen im Internet unterscheiden sich, weil manche die physische und manche die BCM-Nummer beschriften. In Python benutzt man in der Regel die <strong>BCM-Nummer</strong>. Immer zuerst prüfen, welche Nummerierung gemeint ist.</p>
+</section><section id="s59-4"><h2>59.4 SSH: Wozu?</h2><p>SSH öffnet ein Terminal auf dem Pi <strong>von einem anderen Gerät aus</strong> (PC, Handy). Damit lassen sich Befehle eingeben, Dateien kopieren (<code>scp</code>, <code>sftp</code>) und den Pi ohne Bildschirm betreiben (<code>headless</code>). Aktivieren: <code>sudo raspi-config</code> → Interface Options → SSH. Verbinden: <code>ssh oratio@&lt;IP-Adresse&gt;</code>; die IP zeigt <code>hostname -I</code>.</p>
+</section><section id="s59-5"><h2>59.5 SSD, NVMe und Adapter</h2><ul>
+<li><strong>NVMe-SSD am Pi 5:</strong> Über einen <strong>M.2-HAT</strong> an der PCIe-Schnittstelle. Der Pi 5 arbeitet standardmäßig mit PCIe Gen 2 (etwa 500 MB/s) und kann mit <code>dtparam=pciex1_gen=3</code> auf Gen 3 gestellt werden (nicht offiziell garantiert).</li>
+<li><strong>Nur eine PCIe-Leitung:</strong> Mehr Geräte an einer Leitung gehen nur über einen <strong>PCIe-Switch</strong>, und sie teilen sich die Geschwindigkeit.</li>
+<li><strong>Keys beim M.2-Stecker:</strong> SSDs mit <strong>M-Key</strong> (eine Kerbe) sind NVMe. Eine SSD mit <strong>zwei Kerben</strong> (B+M) ist oft eine SATA-SSD, die ein NVMe-Adapter nicht ansteuert. Auf das Typenschild achten.</li>
+<li><strong>USB-Gehäuse:</strong> Wenn eine SSD am USB-Adapter <code>0 B</code> zeigt, siehe <a class="xr" href="#/kap/56/56.3">Kapitel 56.3</a>.</li>
+<li><strong>Boot von SSD:</strong> <code>sudo raspi-config</code> → Advanced Options → Boot Order (<a class="xr" href="#/kap/26/26.7">Kapitel 26.7</a>).</li>
+<li><strong>Wo schaue ich nach Werten?</strong> <code>lsblk</code> (Laufwerke), <code>sudo fdisk -l</code> (der Schalter <code>-l</code> bedeutet <em>list</em>), <code>sudo nvme list</code>.</li>
+</ul>
+</section><section id="s59-6"><h2>59.6 Mehr Zubehör für den Pi 5</h2><ul>
+<li><strong>HATs</strong> sind Aufsteckplatinen, zum Beispiel für SSD, KI oder Display. <strong>Unten montierte HATs</strong> (HAT+ und ähnliche) nutzen den PCIe-Anschluss.</li>
+<li><strong>NPU</strong> (Neural Processing Unit) ist ein Beschleuniger für KI-Aufgaben (Bilder, Sprache). Er ist kein Ersatz für den Prozessor, sondern eine Zusatzkarte, etwa der <strong>AI HAT</strong>.</li>
+<li><strong>Compute Module</strong> ist der Pi ohne Anschlüsse, zum Einbau in eigene Geräte. Der normale Pi hat alle Buchsen auf der Platine.</li>
+<li><strong>Home Assistant OS</strong> ist ein System für Smart Home, das über den Browser bedient wird.</li>
+<li><strong>Controller verbinden:</strong> Per Bluetooth (<code>bluetoothctl</code>) oder per USB. Unter Batocera/RetroPie gibt es eine eigene Controller-Zuordnung.</li>
+</ul>
+</section><section id="s59-7"><h2>59.7 Temperatur und Last</h2><ul>
+<li>Der Pi 5 liegt im Normalbetrieb bei etwa 40 bis 60 °C. Ab etwa 80 °C regelt er die Leistung herunter.</li>
+<li>Temperatur: <code>vcgencmd measure_temp</code>. Zustand der Spannung und der Drosselung: <code>vcgencmd get_throttled</code>.</li>
+<li><strong>CPU voll?</strong> <code>top</code> oder <code>htop</code> zeigt, welches Programm die Leistung braucht. Beenden mit <code>kill PID</code>.</li>
+</ul>
+</section><section id="s59-8"><h2>59.8 Dateien vergleichen</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Aufgabe</th>
+<th>Werkzeug</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Zwei Textdateien vergleichen</td>
+<td><code>diff datei1 datei2</code></td>
+</tr>
+<tr class="even">
+<td>Zwei Dateien auf Gleichheit prüfen</td>
+<td><code>cmp datei1 datei2</code> oder <code>sha256sum datei1 datei2</code> (gleicher Hash = gleicher Inhalt)</td>
+</tr>
+<tr class="odd">
+<td>Grafisch vergleichen</td>
+<td><strong>Meld</strong> (<code>sudo apt install meld</code>)</td>
+</tr>
+<tr class="even">
+<td>Doppelte Dateien finden</td>
+<td>Hash berechnen und gruppieren (<a class="xr" href="#/kap/25/25.7">Kapitel 25.7</a>)</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s59-9"><h2>59.9 Terminal: Bash, sh und Skripte</h2><ul>
+<li><strong>Shell</strong> ist das Programm, das die Eingaben liest. <strong>Bash</strong> („Bourne Again SHell", ein Wortspiel auf den Vorgänger <em>Bourne Shell</em>) ist die übliche Shell unter Linux.</li>
+<li>Eine Datei <code>xyz.sh</code> ist ein <strong>Shell-Skript</strong>: eine Textdatei mit Befehlen. Sie läuft in Bash, wenn die erste Zeile <code>#!/bin/bash</code> ist.</li>
+<li>Ausführbar machen: <code>chmod +x xyz.sh</code>, starten mit <code>./xyz.sh</code>.</li>
+<li><code>alias name='befehl'</code> in <code>~/.bashrc</code> legt eine Abkürzung an, <code>source ~/.bashrc</code> lädt sie neu.</li>
+<li><strong><code>cd</code> und <code>sudo</code>:</strong> <code>cd</code> wechselt den Ordner, <code>sudo</code> führt einen Befehl mit Administratorrechten aus. Es sind zwei völlig verschiedene Dinge.</li>
+</ul>
+</section><section id="s59-10"><h2>59.10 Anzeigen</h2><ul>
+<li><strong>KMS</strong> (<code>dtoverlay=vc4-kms-v3d</code> in <code>/boot/firmware/config.txt</code>) ist der moderne Grafiktreiber. Die Datei wird mit <code>sudo nano /boot/firmware/config.txt</code> bearbeitet, Änderungen gelten nach dem Neustart.</li>
+<li><strong>Full HD gegen 4K:</strong> 4K hat viermal so viele Pixel. Bei <strong>Skalierung 2</strong> wirkt 4K wie Full HD, nur schärfer. Der Pi 4 schafft 4K bei 60 Hz mit einem Bildschirm (mit zwei 4K-Bildschirmen je 30 Hz), der Pi 5 schafft 4K bei 60 Hz auch mit zwei Bildschirmen.</li>
+<li><strong>Bildschirm drehen:</strong> <code>wlr-randr --output HDMI-A-1 --transform 180</code>.</li>
+<li><strong>Anzeige auf dem Handy:</strong> Über VNC (Raspberry Pi Connect oder RealVNC) oder per Bildschirm-Streaming. Das ist der offizielle Weg ohne Zusatzhardware: <strong>Raspberry Pi Connect</strong>.</li>
+<li><strong>HDMI-Signal:</strong> Ein Bild besteht aus Pixeln, jeder Pixel aus drei Farbwerten (Rot, Grün, Blau, je 8 Bit). Diese Werte werden als Folge von Einsen und Nullen über mehrere Leitungspaare übertragen. 4K bei 60 Hz braucht ein passendes Kabel (HDMI 2.0).</li>
+<li><strong>Display mit eigenem Anschluss (DSI, GPIO):</strong> Prüfe, ob das Display einen HDMI- oder einen SPI-/DSI-Eingang hat. Für Touch braucht es zusätzlich eine USB- oder I²C-Verbindung und meist 5 V Versorgung.</li>
+</ul>
+</section>

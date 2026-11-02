@@ -1,0 +1,231 @@
+<p><strong>Der Grundsatz:</strong> Zuerst das Bauteil <strong>identifizieren</strong>, dann messen. Wer ein Bauteil falsch einordnet, misst nach der falschen Anleitung. In einem meiner Fälle waren auf dem Foto, das ich zur Optokoppler-Prüfung gezeigt hatte, gar keine Optokoppler zu sehen: Die ICs waren ein MC3486N, ein MAX154 und ein PIC16F876. Messen hätte nichts gebracht.</p>
+<section id="s66-1"><h2>66.1 Bauteile erkennen: Schritt für Schritt</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Schritt</th>
+<th>Vorgehen</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Platinenaufdruck lesen</td>
+<td>Bezeichner sagen die Bauteilart: <code>R</code> Widerstand, <code>C</code> Kondensator, <code>L</code> Spule, <code>D</code> Diode, <code>Q</code>/<code>T</code> Transistor, <code>U</code>/<code>IC</code> integrierter Schaltkreis, <code>F</code> Sicherung, <code>K</code> Relais, <code>X</code>/<code>Y</code> Quarz</td>
+</tr>
+<tr class="even">
+<td>2. Ziffern genau ablesen</td>
+<td>Eine Verwechslung wie <code>D1</code> statt <code>D10</code> ändert nichts an der Bauteilart, kann aber bei der Nachbestellung zählen</td>
+</tr>
+<tr class="odd">
+<td>3. Umgebung ansehen</td>
+<td>Eine Diode neben Spule und Regler-IC deutet auf einen Schaltregler, dort ist es meist eine <strong>Schottky-Diode</strong> oder <strong>Freilaufdiode</strong></td>
+</tr>
+<tr class="even">
+<td>4. Aufdruck entziffern</td>
+<td>Kürzel im Internet suchen, Hersteller-Datenblatt öffnen</td>
+</tr>
+<tr class="odd">
+<td>5. Funktion prüfen</td>
+<td>Nach Anleitung messen (Abschnitte unten)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Fall: ausgelötetes schwarzes SMD-Bauteil, Position D10.</strong> Neben ihm lagen eine Spule („470“, das heißt 47 µH), ein Regler-IC und Elektrolytkondensatoren (220 µF / 16 V). Das ist der typische Aufbau eines <strong>Step-down-Wandlers</strong> (DC/DC). Die Diode dort hat meist eine dieser Aufgaben:</p>
+<ul>
+<li><strong>Freilaufpfad</strong> für die Spule, wenn der Schalter des Reglers abschaltet,</li>
+<li>Gleichrichtung,</li>
+<li>Verpolungsschutz.</li>
+</ul>
+<p>Eine verfärbte Lötstelle neben dem Bauteil ist ein Hinweis auf Überhitzung durch Kurzschluss oder Überlast. Darum die Frage nach der Fehlerursache stellen: Hat eine Sicherung ausgelöst? War das Gerät schon vorher ausgefallen?</p>
+</section><section id="s66-2"><h2>66.2 Die Diode prüfen</h2><p>Die Prüfung läuft im <strong>Diodentest</strong> des Multimeters, Bauteil ausgelötet (oder mindestens spannungsfrei):</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Messung</th>
+<th>Erwartung bei intakter Diode</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Rot an Anode, Schwarz an Kathode (Durchlassrichtung)</td>
+<td><strong>Silizium</strong> etwa 0,5 bis 0,7 V, <strong>Schottky</strong> etwa 0,15 bis 0,45 V, <strong>LED</strong> je nach Farbe 1,6 bis 3,3 V</td>
+</tr>
+<tr class="even">
+<td>umgekehrt (Sperrrichtung)</td>
+<td><code>OL</code> (unendlich)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Defekt: In <strong>beiden</strong> Richtungen Durchgang (Kurzschluss) oder in beiden Richtungen <code>OL</code> (unterbrochen). Die Kathode ist bei den meisten Dioden durch einen <strong>Ring oder Strich</strong> markiert.</p>
+</section><section id="s66-3"><h2>66.3 TVS-Diode: SMBJ15A gegen SMBJ15CA</h2><p>Eine <strong>TVS-Diode</strong> (Überspannungsschutz) leitet kurzzeitig große Impulsströme ab und klemmt damit Spannungsspitzen.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>SMBJ15A</th>
+<th>SMBJ15CA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Richtung</td>
+<td><strong>unidirektional</strong> (eine Richtung)</td>
+<td><strong>bidirektional</strong> (beide Richtungen, das „C“)</td>
+</tr>
+<tr class="even">
+<td>Einsatz</td>
+<td>Gleichspannung, nur positive Überspannung</td>
+<td>Wechselspannung, Datenleitungen</td>
+</tr>
+<tr class="odd">
+<td>Arbeitsspannung</td>
+<td>15 V</td>
+<td>15 V</td>
+</tr>
+<tr class="even">
+<td>Durchbruchspannung</td>
+<td>etwa 16,7 bis 18,5 V</td>
+<td>etwa 16,7 bis 18,5 V</td>
+</tr>
+<tr class="odd">
+<td>Klemmspannung</td>
+<td>etwa 24,4 V</td>
+<td>etwa 24,4 V</td>
+</tr>
+<tr class="even">
+<td>Pulsleistung</td>
+<td>600 W</td>
+<td>600 W</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Ist ein Austausch möglich?</strong> Die bidirektionale ersetzt die unidirektionale <strong>oft</strong>, wenn am Eingang nur Gleichspannung ohne negative Anteile liegt. Am besten setzt man aber wieder den <strong>Originaltyp</strong> ein: Eine bidirektionale schützt in negativer Richtung erst bei etwa −15 V, während eine unidirektionale dort wie eine normale Diode leitet und die Spannung auf etwa −0,7 V begrenzt. Das kann bei Verpolung einen Unterschied machen. (Werte nach Datenblatt der Serie prüfen.)</p>
+</section><section id="s66-4"><h2>66.4 Den MOSFET prüfen (Beispiel: STW9NK90Z, N-Kanal, 900 V, TO-247)</h2><p>Ein MOSFET ist ein spannungsgesteuerter Schalter mit drei Anschlüssen: <strong>Gate (G), Drain (D), Source (S)</strong>. Beim TO-247-Gehäuse sind von vorn gesehen (Schrift zu mir, Beine nach unten) von links: <strong>1 = Gate, 2 = Drain, 3 = Source</strong>; die Metalllasche ist mit Drain verbunden. Zwischen Drain und Source liegt intern eine <strong>Body-Diode</strong>.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Schritt</th>
+<th>Messung (Diodentest, Bauteil ausgebaut)</th>
+<th>Erwartung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Gate entladen: Pin 1 und Pin 3 kurz verbinden</td>
+<td>–</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Schwarz an Source (3), Rot an Drain (2)</td>
+<td><code>OL</code>, keine Leitung</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Rot an Source (3), Schwarz an Drain (2)</td>
+<td>Body-Diode in Durchlassrichtung, etwa 0,4 bis 0,8 V</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Gate gegen Source und gegen Drain messen</td>
+<td><code>OL</code> (Gate ist isoliert)</td>
+</tr>
+<tr class="odd">
+<td>5 (optional)</td>
+<td>Gate kurz mit Rot gegenüber Source berühren („aufladen“), dann Drain–Source messen</td>
+<td>nach dem Aufladen leitet der Kanal, nach dem Entladen wieder nicht</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Defekt</strong>, wenn Drain–Source in beiden Richtungen nahe 0 V (Durchgang) ist, oder wenn das Gate niederohmig gegen Source oder Drain ist.</p>
+<p><strong>Wenn der MOSFET in der Schaltung sehr heiß wird,</strong> ist er nicht zwingend selbst defekt. Mögliche andere Ursachen:</p>
+<ul>
+<li>zu hoher Laststrom,</li>
+<li>zu schwache Gate-Ansteuerung: er schaltet nicht ganz durch und arbeitet im linearen Bereich, wo er viel Verlustwärme erzeugt,</li>
+<li>defekter Treiberbaustein,</li>
+<li>schlechte Kühlung,</li>
+<li>Fehler im Umfeld: Transformator, Diode, Kondensator oder Snubber (Dämpfungsglied).</li>
+</ul>
+<p><strong>Achtung:</strong> Der STW9NK90Z ist ein 900-V-Typ. In seinem Umfeld (Zwischenkreis) liegen mehrere hundert Volt, auch nach dem Ausschalten (Abschnitt 65.3).</p>
+</section><section id="s66-5"><h2>66.5 Den Optokoppler prüfen (zum Beispiel PC817, TLP621, „3G P621“)</h2><p>Ein Optokoppler überträgt ein Signal <strong>galvanisch getrennt</strong> durch Licht: Eingang ist eine <strong>LED</strong>, Ausgang ein <strong>Fototransistor</strong>. Beim 4-poligen Typ:</p>
+<pre class="text"><code>Pin 1 = Anode (+)       Pin 4 = Kollektor
+Pin 2 = Kathode (−)     Pin 3 = Emitter</code></pre>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Prüfung</th>
+<th>Messung</th>
+<th>Erwartung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Eingang</td>
+<td>Diodentest, Rot an Pin 1, Schwarz an Pin 2</td>
+<td>etwa 0,9 bis 1,4 V</td>
+</tr>
+<tr class="even">
+<td>Eingang umgekehrt</td>
+<td>Rot an Pin 2, Schwarz an Pin 1</td>
+<td><code>OL</code></td>
+</tr>
+<tr class="odd">
+<td>Ausgang ohne Ansteuerung</td>
+<td>Pin 3 gegen Pin 4</td>
+<td>hoher Widerstand</td>
+</tr>
+<tr class="even">
+<td>Schalttest</td>
+<td>Eingang: 5 V über 470 Ω an Pin 1, Pin 2 an Masse (etwa 8 mA durch die LED). Ausgang: Pin 4 über 10 kΩ an 5 V, Pin 3 an Masse</td>
+<td>LED aus: Pin 4 etwa 5 V. LED an: Pin 4 etwa 0 bis 0,3 V</td>
+</tr>
+</tbody>
+</table></div>
+<p>Der Vorwiderstand folgt aus <code>R = (UB − UF) / IF = (5 V − 1,2 V) / 8 mA ≈ 475 Ω</code> → 470 Ω. Ein weiteres Merkmal ist das <strong>Stromübertragungsverhältnis (CTR)</strong>: Wie viel vom LED-Strom am Ausgang ankommt (beim PC817 je nach Klasse etwa 50 bis 600 %). Wird der Optokoppler im Alter schwächer, wird die Schaltung langsam unzuverlässig.</p>
+</section><section id="s66-6"><h2>66.6 Transistoren, Kondensatoren, Spulen</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Bauteil</th>
+<th>Prüfung</th>
+<th>Hinweis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Bipolartransistor</strong> (NPN)</td>
+<td>Diodentest: Basis–Emitter und Basis–Kollektor sind je eine Diode (Rot an Basis: etwa 0,6 V). Kollektor–Emitter in beiden Richtungen <code>OL</code></td>
+<td>PNP ist umgekehrt</td>
+</tr>
+<tr class="even">
+<td><strong>Kondensator</strong></td>
+<td>Kapazität messen (Messgerät mit C-Funktion); bei Elektrolytkondensatoren auf Wölbung/Auslaufen achten</td>
+<td>Vor dem Messen <strong>entladen</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>Widerstand</strong></td>
+<td>Ω-Messung, ausgelötet</td>
+<td>Farbring oder Zahlencode lesen</td>
+</tr>
+<tr class="even">
+<td><strong>Spule</strong></td>
+<td>Durchgang (kleiner Widerstand)</td>
+<td>Induktivität nur mit LCR-Messgerät</td>
+</tr>
+<tr class="odd">
+<td><strong>Sicherung</strong></td>
+<td>Durchgang</td>
+<td>nur gegen gleiche Nennwerte tauschen</td>
+</tr>
+<tr class="even">
+<td><strong>Relais</strong></td>
+<td>Spulenwiderstand messen; hörbares Klacken beim Anlegen der Nennspannung</td>
+<td>Freilaufdiode nicht vergessen</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Zahlencode bei SMD-Widerständen:</strong> <code>472</code> bedeutet 47 mit zwei Nullen = 4700 Ω = 4,7 kΩ. <code>103</code> = 10 kΩ. <code>4R7</code> = 4,7 Ω.</p>
+</section><section id="s66-7"><h2>66.7 Übungen mit Lösungen</h2><ol type="1">
+<li><strong>Aufgabe:</strong> Auf einem SMD-Widerstand steht <code>222</code>. Welcher Wert? <strong>Lösung:</strong> 22 mit zwei Nullen = 2200 Ω = 2,2 kΩ.</li>
+<li><strong>Aufgabe:</strong> Im Diodentest zeigt eine Diode in beide Richtungen 0,00 V. Befund? <strong>Lösung:</strong> Kurzschluss, Diode defekt.</li>
+<li><strong>Aufgabe:</strong> Der Optokoppler soll mit 10 mA betrieben werden, Betriebsspannung 12 V, UF = 1,2 V. Vorwiderstand? <strong>Lösung:</strong> <code>R = (12 − 1,2) / 0,01 = 1080 Ω</code> → 1 kΩ (ergibt etwa 10,8 mA) oder 1,2 kΩ (9 mA).</li>
+</ol>
+</section>

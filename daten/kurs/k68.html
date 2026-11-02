@@ -1,0 +1,106 @@
+<p><strong>Warnung vorab:</strong> Sicherheitskreise schützen Menschen. Wer sie verändert, überbrückt oder falsch anschließt, gefährdet Leben. Dieses Kapitel erklärt das <strong>Prinzip</strong> anhand eines konkreten Gerätes aus meiner Arbeit. Verbindlich sind immer die Betriebsanleitung des Herstellers und die Vorgaben der Anlage. Arbeiten an Sicherheitsstromkreisen gehören in die Hand von Fachkräften.</p>
+<section id="s68-1"><h2>68.1 Was ein Sicherheitsrelais tut</h2><p>Ein Sicherheitsrelais überwacht <strong>Schutzeinrichtungen</strong> wie Not-Aus-Taster oder Türschalter und schaltet im Gefahrfall die Maschine <strong>zuverlässig ab</strong>. Es ist kein gewöhnliches Relais: Es ist <strong>zweikanalig</strong> aufgebaut, überwacht sich selbst und fällt bei Fehlern in den sicheren Zustand (Ausgänge offen). Das Grundprinzip heißt <strong>Ruhestromprinzip</strong>: Der Sicherheitskreis ist im Normalbetrieb <strong>geschlossen</strong>. Jede Unterbrechung (Taster gedrückt, Tür offen, Leitungsbruch, Kontaktfehler) schaltet ab.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Zustand</th>
+<th>Kontakt im Sicherheitskreis</th>
+<th>Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Not-Aus nicht gedrückt, Tür zu</td>
+<td>geschlossen</td>
+<td>Maschine darf laufen</td>
+</tr>
+<tr class="even">
+<td>Not-Aus gedrückt</td>
+<td>offen</td>
+<td>Maschine <strong>STOP</strong></td>
+</tr>
+<tr class="odd">
+<td>Leitungsbruch</td>
+<td>offen</td>
+<td>Maschine STOP</td>
+</tr>
+<tr class="even">
+<td>Kontaktverschweißung / Querschluss</td>
+<td>wird erkannt</td>
+<td>Relais gibt nicht frei</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s68-2"><h2>68.2 Fall: duelco NST-2002.2</h2><p>Mein Fall war ein Sicherheitsrelais <strong>duelco NST-2002.2</strong>. Meine Fragen waren, ob die Klemmen T11 und T12 standardmäßig gebrückt oder offen sind und was der Schalter dazwischen tun soll.</p>
+<p><strong>Antwort:</strong> Zwischen <strong>T11 und T12</strong> wird der <strong>Sicherheitskreis</strong> angeschlossen (Not-Aus, Sicherheitsschalter). Im Auslieferungszustand sind die Klemmen <strong>nicht gebrückt</strong>. Der Sicherheitskontakt muss im Normalzustand <strong>geschlossen</strong> sein und bei Gefahr <strong>öffnen</strong>.</p>
+<p><strong>Die Klemmen einfach zu brücken, setzt die Sicherheitsfunktion außer Kraft</strong> und ist im Betrieb verboten. Ein Brückenstecker ist höchstens für einen <strong>dokumentierten</strong> Test auf der Werkbank zulässig, nie in der Anlage.</p>
+<p><strong>Fehlersuche, wenn das Relais nicht anzieht:</strong></p>
+<ol type="1">
+<li>Ist der Kreis zwischen T11 und T12 <strong>geschlossen</strong>? Not-Aus gedrückt? Tür offen? Bei beiden Kanälen jeweils prüfen.</li>
+<li>Liegt die Versorgungsspannung an (bei meinem Fall 110 V; Typenschild beachten)?</li>
+<li>Ist der Rückführkreis geschlossen (Abschnitt 68.4)?</li>
+<li>Ist der Startkreis betätigt (manche Geräte brauchen einen Start- bzw. Quittiertaster)?</li>
+</ol>
+</section><section id="s68-3"><h2>68.3 Funktionsgruppen A, B, C im Schaltplan</h2><p>Auf dem Schaltplan standen <strong>A</strong>, <strong>B</strong> und <strong>C</strong> nicht für Bauteile, sondern für <strong>Funktionsgruppen</strong>. So habe ich sie zugeordnet:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Gruppe</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A</strong></td>
+<td>Auswertung / Steuergerät</td>
+</tr>
+<tr class="even">
+<td><strong>B</strong></td>
+<td>Bedienung / Eingang (Taster, Schalter, Freigabe)</td>
+</tr>
+<tr class="odd">
+<td><strong>C</strong></td>
+<td>Ausgang</td>
+</tr>
+</tbody>
+</table></div>
+<p>Wichtig bei jeder Dokumentation: Solche Gruppenbuchstaben sind keine Norm, sondern die Bezeichnung dieser Anlage. Beim Lesen von Plänen zuerst die <strong>Legende</strong> lesen.</p>
+</section><section id="s68-4"><h2>68.4 Typischer Aufbau einer zweikanaligen Not-Aus-Schaltung</h2><p>Die Klemmenbezeichnungen unterscheiden sich je nach Hersteller (bei vielen Geräten <code>S11/S12</code> und <code>S21/S22</code>, beim duelco <code>T11/T12</code>). Das <strong>Prinzip</strong> ist aber gleich:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Teil</th>
+<th>Aufgabe</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Versorgung</strong> (zum Beispiel <code>A1/A2</code>)</td>
+<td>speist das Relais</td>
+</tr>
+<tr class="even">
+<td><strong>Eingangskanal 1 und 2</strong></td>
+<td>zwei <strong>Öffner (NC)</strong> des Not-Aus-Tasters, getrennt geführt (Zweikanaligkeit)</td>
+</tr>
+<tr class="odd">
+<td><strong>Startkreis</strong></td>
+<td>Start-/Quittiertaster, damit die Anlage nach dem Not-Aus nicht von selbst wieder anläuft</td>
+</tr>
+<tr class="even">
+<td><strong>Rückführkreis</strong> (EDM, „External Device Monitoring“)</td>
+<td><strong>Öffner der Folgeschütze</strong> in Reihe: zeigt, dass die Schütze wirklich abgefallen sind. Ist ein Schütz verschweißt, gibt das Relais nicht mehr frei</td>
+</tr>
+<tr class="odd">
+<td><strong>Sicherheitsausgänge</strong> (zum Beispiel <code>13–14</code>, <code>23–24</code>, <code>33–34</code>)</td>
+<td>Relaiskontakte, schließen im freigegebenen Zustand</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Wichtig:</strong> Die Ausgangskontakte (beim NST-2002.2 sind das <code>13–14</code>, <code>23–24</code>, <code>33–34</code>, jeweils bis etwa <strong>6 A</strong>) sind <strong>nicht dafür da, große Lasten direkt zu schalten</strong>. Das Sicherheitsrelais steuert <strong>Schütze (K1/K2)</strong>, und die Schütze schalten die Last. Die Eingänge (T11/T12 usw.) führen nur sehr kleine Ströme.</p>
+</section><section id="s68-5"><h2>68.5 Ersatz, wenn das Gerät nicht mehr erhältlich ist</h2><p>Man braucht <strong>kein identisches Gerät</strong>, sondern ein <strong>funktional gleichwertiges</strong> Sicherheitsrelais, das zur Anwendung passt: zweikanalig, für Not-Aus, mit passender Versorgungsspannung (zum Beispiel 24 V), mit Rückführkreis und ausreichenden Ausgängen. Bei der Suche wurden mir als gängige Familien genannt: Pilz PNOZ (zum Beispiel PNOZ s1, PNOZ X2.8P), Schneider Electric XPSUEP und Siemens SIRIUS 3TK2830. Bei einem Austausch ist die <strong>Sicherheitskategorie bzw. der Performance Level</strong> (zum Beispiel Kategorie 3 oder 4 nach EN ISO 13849) der Anlage das entscheidende Kriterium, und die Klemmenbelegung muss neu geprüft werden (T11/T12 entspricht zum Beispiel bei Pilz S11/S12).</p>
+</section><section id="s68-6"><h2>68.6 Übungen mit Lösungen</h2><ol type="1">
+<li><strong>Aufgabe:</strong> Der Not-Aus ist gedrückt, die Maschine bleibt aus. Welche Kontaktstellung hat der Sicherheitskreis? <strong>Lösung:</strong> Offen. Das ist der gewollte sichere Zustand.</li>
+<li><strong>Aufgabe:</strong> Warum soll das Sicherheitsrelais nicht direkt einen 4-kW-Motor schalten? <strong>Lösung:</strong> Seine Kontakte sind nur für kleine Ströme (hier etwa 6 A) ausgelegt; ein Schütz übernimmt die Last, und das Sicherheitsrelais überwacht das Schütz über den Rückführkreis.</li>
+<li><strong>Aufgabe:</strong> Warum zwei Kanäle statt einem? <strong>Lösung:</strong> Ein einzelner Kontaktfehler (Verschweißen, Leitungsbruch, Querschluss) kann so erkannt werden, ohne dass die Schutzfunktion ausfällt.</li>
+</ol>
+</section>

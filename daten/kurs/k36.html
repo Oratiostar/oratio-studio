@@ -1,0 +1,393 @@
+<section id="s36-1"><h2>36.1 Die Grundentscheidung</h2><p>Projekt B beginnt mit einem Satz, den ich mir zur Regel gemacht habe:</p>
+<blockquote>
+<p><strong><code>app_ui.py</code> startet alles. Jeder Tab und jedes Gerät hat einen eigenen Ordner mit einer eigenen <code>.py</code>-Datei und lässt sich einzeln löschen.</strong></p>
+</blockquote>
+<p>Ein neuer Tab ist damit <strong>eine Datei plus etwa drei Zeilen</strong> in <code>app_ui.py</code>. Ein Tab, den ich nicht mehr will, verschwindet, indem ich seinen Ordner lösche. Das Programm startet trotzdem.</p>
+</section><section id="s36-2"><h2>36.2 Der Projektordner</h2><pre><code>Oratio_Control_Center/
+  app_ui.py          das Programm: startet alles, die Tab-Zeilen stehen oben
+  glass_ui.py        der Glas-Werkzeugkasten (Farben, Schriften, Fenster, Schalter)
+  app_host.py        holt fremde Programme in ein Glasfenster
+  run_app.sh         startet das Programm (mit automatischem Neustart nach Absturz)
+  install.sh         richtet einen neuen Pi ein
+  Oratio_Menu/       Tabs &quot;Home&quot; und &quot;Oratio Menu&quot; (gehören zusammen)
+  Tower/             Tab &quot;Tower&quot; (LED, Lüfter, OLED)
+  Oratio_Toolbox/    Tab &quot;Oratio Toolbox&quot; (Befehle)
+  LED/ Fan/ OLED/ PS5/   die Geräte, jeweils mit eigener Einstellungsdatei (.json)
+  Json/              Apps, Widgets, Hintergrund, Aussehen, Sprache
+  Sprache/           Deutsch, Français, English, Español
+  Handy/             Server und Seite für das Handy
+  Logs/              Fehlerprotokoll
+  Doku/              Glossar</code></pre>
+<p>Wichtig an der Aufteilung:</p>
+<ul>
+<li>Ein Tab, der <strong>nicht</strong> zum Menü gehört (Tower, Toolbox), hat seinen <strong>eigenen Ordner</strong>.</li>
+<li><code>glass_ui.py</code> gehört allen Tabs und bleibt immer liegen. Ohne diese Datei läuft nichts.</li>
+<li>Dateien, die das Programm selbst erzeugt (Einstellungen, Verlauf), liegen in <code>Json/</code>.</li>
+</ul>
+</section><section id="s36-3"><h2>36.3 app_ui.py: Tabs laden, ohne dass ein fehlender Ordner stört</h2><p>Die Besonderheit von <code>app_ui.py</code> ist, dass <strong>ein fehlender Tab das Programm nicht stoppt</strong>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _tab_laden(modul, klasse):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Eine Tab-Klasse aus ihrem Ordner holen. Ordner gelöscht oder kaputt?</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Dann gibt es den Tab einfach nicht - der Rest startet trotzdem.&quot;&quot;&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">getattr</span>(<span class="bu">__import__</span>(modul, fromlist<span class="op">=</span>[klasse]), klasse)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> _ex:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f&quot;Tab </span><span class="sc">{</span>klasse<span class="sc">}</span><span class="ss"> nicht geladen: </span><span class="sc">{</span>_ex<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>HomeTab    <span class="op">=</span> _tab_laden(<span class="st">&quot;Oratio_Menu.oratio_menu&quot;</span>, <span class="st">&quot;HomeTab&quot;</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>TowerTab   <span class="op">=</span> _tab_laden(<span class="st">&quot;Tower.tower_tab&quot;</span>, <span class="st">&quot;TowerTab&quot;</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>MenuTab    <span class="op">=</span> _tab_laden(<span class="st">&quot;Oratio_Menu.oratio_menu&quot;</span>, <span class="st">&quot;MenuTab&quot;</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>ToolboxTab <span class="op">=</span> _tab_laden(<span class="st">&quot;Oratio_Toolbox.toolbox_menu&quot;</span>, <span class="st">&quot;ToolboxTab&quot;</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>TABS <span class="op">=</span> [(<span class="st">&quot;Home&quot;</span>, HomeTab), (<span class="st">&quot;Oratio Menu&quot;</span>, MenuTab),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        (<span class="st">&quot;Tower&quot;</span>, TowerTab), (<span class="st">&quot;Oratio Toolbox&quot;</span>, ToolboxTab)]</span></code></pre></div>
+<p>Was hier steckt:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Baustein</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>__import__(modul, fromlist=[klasse])</code></td>
+<td>lädt ein Modul, dessen Name als Text vorliegt</td>
+</tr>
+<tr class="even">
+<td><code>getattr(modul, klasse)</code></td>
+<td>holt die Klasse mit diesem Namen daraus</td>
+</tr>
+<tr class="odd">
+<td><code>try ... except</code></td>
+<td>fängt jeden Fehler beim Laden ab</td>
+</tr>
+<tr class="even">
+<td><code>return None</code></td>
+<td>„es gibt diesen Tab nicht“</td>
+</tr>
+<tr class="odd">
+<td><code>TABS = [...]</code></td>
+<td>die Reihenfolge der Liste ist die Reihenfolge in der Leiste</td>
+</tr>
+</tbody>
+</table></div>
+<p>Danach legt das Hauptfenster nur noch die vorhandenen Tabs an:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, klasse <span class="kw">in</span> TABS:</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> klasse <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    tab <span class="op">=</span> klasse(<span class="va">self</span>.width(), <span class="va">self</span>.height())</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.tab_widget.addTab(tab, name)</span></code></pre></div>
+<p><strong>Regel für jede Tab-Klasse:</strong> Der Konstruktor bekommt Breite und Höhe, also <code>def __init__(self, width, height)</code>.</p>
+<p><strong>Dieser Gedanke zieht sich durch das ganze Projekt:</strong> Ein kaputtes Teil darf nie das Ganze stoppen. Derselbe Trick (try/except beim Laden) steckt in den Widgets (<a class="xr" href="#/kap/37">Kapitel 37</a>) und in der Toolbox.</p>
+</section><section id="s36-4"><h2>36.4 Start, Neustart und Installation</h2><p><strong><code>run_app.sh</code></strong> startet das Programm <strong>ohne <code>sudo</code></strong>. Das ist die Folge aus Projekt A (<a class="xr" href="#/kap/32/32.5">Kapitel 32.5</a>): Das Fenster braucht keine Systemrechte, deshalb gehören alle Dateien weiter dem normalen Benutzer. Lüfter, LED und OLED laufen als eigene Dienste im Hintergrund, die ihre Rechte selbst mitbringen. Das Skript hat noch eine Besonderheit: Es startet nach einem Absturz selbst neu.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">FEHLER</span><span class="op">=</span>0</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="fu">true</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">START</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s<span class="va">)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">python3</span> app_ui.py</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="va">CODE</span><span class="op">=</span><span class="va">$?</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$CODE</span><span class="st">&quot;</span> <span class="ot">-eq</span> 0 <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">exit</span> 0          <span class="co"># normales Beenden: nichts neu starten</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="va">NOW</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s<span class="va">)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="va">$((NOW</span> <span class="op">-</span> <span class="va">START))</span> <span class="ot">-lt</span> 60 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span> <span class="va">FEHLER</span><span class="op">=</span><span class="va">$((FEHLER</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span><span class="kw">;</span> <span class="cf">else</span> <span class="va">FEHLER</span><span class="op">=</span>1<span class="kw">;</span> <span class="cf">fi</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Absturz (Code </span><span class="va">$CODE</span><span class="st">) - Details in Logs/oratio.log&quot;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$FEHLER</span><span class="st">&quot;</span> <span class="ot">-ge</span> 3 <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="kw">{</span> <span class="bu">echo</span> <span class="st">&quot;Zu viele Abstürze - Abbruch.&quot;</span><span class="kw">;</span> <span class="bu">exit</span> <span class="st">&quot;</span><span class="va">$CODE</span><span class="st">&quot;</span><span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sleep</span> 2</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>Die Logik: Endet das Programm mit Code 0, war es ein normales Schließen. Jeder andere Code ist ein Absturz, nach zwei Sekunden folgt ein Neustart. Stürzt es dreimal innerhalb einer Minute ab, gibt das Skript auf, damit kein Endlos-Neustart entsteht.</p>
+<p><strong>Fehlerprotokoll:</strong> Abstürze und Fehlermeldungen landen in <code>Logs/oratio.log</code>. Ab 1 MB wird die Datei zu <code>oratio.log.1</code>, und eine neue beginnt. Bei einem Problem ist das die erste Datei zum Nachsehen.</p>
+<p><strong><code>install.sh</code></strong> richtet einen neuen Pi in einem Zug ein:</p>
+<ol type="1">
+<li>Raspberry Pi OS mit Desktop aufspielen, Benutzer <code>oratio</code>.</li>
+<li>Den <strong>ganzen</strong> Ordner vom alten Pi (USB-Stick) nach <code>/home/oratio/</code> kopieren. Nur so kommen Apps, Widgets, Einstellungen und der PS5-Schlüssel mit.</li>
+<li><code>cd ~/Oratio_Control_Center</code> und <code>bash install.sh</code>. Nicht mit <code>sudo</code> starten, das Skript fragt selbst danach.</li>
+<li>Den Fragen folgen, am Ende neu starten.</li>
+</ol>
+<p>Das Skript darf beliebig oft laufen. Es prüft zuerst, ob es im Projektordner liegt und ob es <strong>nicht</strong> als root läuft. Danach installiert es die Pakete (<code>apt</code>) und kopiert die LED-Treiber nach <code>/usr/local/lib</code>.</p>
+<p><strong>Ohne Internet:</strong> Die Freenove-Treiberbibliotheken (<code>libfreenove_ws2812_lib.so</code>, <code>libfreenove_pwm_lib.so</code>) liegen im Projekt unter <code>LED/Treiber/</code>. Beide brauchen die PIO-Bibliothek des Pi (<code>libpio.so.0</code>), die normalerweise vorhanden ist. Internet braucht man nur für den ersten <code>apt</code>-Schritt, das Wetter, die PS5-Kopplung und Update-Kacheln.</p>
+<p><strong>Sudo ohne Passwort prüfen</strong> (für Neustart, Ausschalten und die Geräteschalter nötig):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> <span class="at">-k</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> <span class="at">-n</span> true <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> OK <span class="kw">||</span> <span class="bu">echo</span> <span class="st">&quot;Passwort wird verlangt&quot;</span></span></code></pre></div>
+<p>Kommt „Passwort wird verlangt“, <code>bash install.sh</code> erneut ausführen.</p>
+<p><strong>Tägliche Sicherung der Einstellungen:</strong> Beim Start kopiert das Programm einmal pro Tag alle Einstellungen aus <code>Json/</code> nach <code>Json/Backup/&lt;Datum&gt;/</code>. Die letzten sieben Tage bleiben, ältere werden entfernt. Zurückholen: Programm beenden, die Dateien aus dem Datumsordner nach <code>Json/</code> kopieren.</p>
+</section><section id="s36-5"><h2>36.5 glass_ui.py: der Glas-Werkzeugkasten</h2><p>Alles, was gemeinsam gebraucht wird, steht in einer Datei mit rund 1700 Zeilen:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Baustein</th>
+<th>Aufgabe</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>S(v)</code></td>
+<td>rechnet eine Größe mit dem <strong>Skalierfaktor</strong> um: derselbe Code sieht auf 1080p und 4K gleich aus</td>
+</tr>
+<tr class="even">
+<td><code>paint_glass(p, rect, ...)</code></td>
+<td>zeichnet eine Glasfläche (durchscheinend, heller Rand, Glanz)</td>
+</tr>
+<tr class="odd">
+<td><code>GlassPanel</code></td>
+<td>ein Fenster im Glas-Look (Rahmen, Titelleiste, Schließen-Knopf)</td>
+</tr>
+<tr class="even">
+<td><code>GlassButton</code>, <code>GlassToggle</code>, <code>GlassMiniButton</code></td>
+<td>Schaltflächen, Schalter, kleine Knöpfe</td>
+</tr>
+<tr class="odd">
+<td><code>GlassTabBar</code>, <code>GlassTabWidget</code></td>
+<td>die Tab-Leiste mit Glaskapseln</td>
+</tr>
+<tr class="even">
+<td><code>ui_font(px, weight)</code></td>
+<td>liefert die Schrift der Oberfläche (Inter)</td>
+</tr>
+<tr class="odd">
+<td><code>set_night_mode</code>, <code>set_accent</code></td>
+<td>Nachtmodus und Akzentfarbe für <strong>alle</strong> Fenster</td>
+</tr>
+<tr class="even">
+<td><code>load_icon_pixmap</code>, <code>scaled_cached</code></td>
+<td>lädt Icons auf höchstens 512 Pixel begrenzt und merkt sich die skalierten Bilder</td>
+</tr>
+<tr class="odd">
+<td><code>daily_backup</code>, <code>setup_logging</code></td>
+<td>tägliche Sicherung, Fehlerprotokoll</td>
+</tr>
+</tbody>
+</table></div>
+<p>Dadurch sehen alle Fenster gleich aus, und eine Änderung am Glas-Look betrifft mit einer Zeile alles. In Projekt A war dagegen jede Kachel einzeln mit einem Stylesheet gestaltet.</p>
+<p><strong>Die vier Modi:</strong> Glas oder Matt, jeweils normal oder Nacht. Ein Fenster fragt nicht selbst, wie es aussehen soll, sondern ruft den Werkzeugkasten. Deshalb funktioniert ein neues Fenster sofort in allen vier Modi.</p>
+</section><section id="s36-6"><h2>36.6 Wo liegt was? (im Ordner Oratio_Menu)</h2><p>Das Menü war zeitweise <strong>eine Datei mit über 10 000 Zeilen</strong>. Ich habe sie nach Themen zerlegt, ohne das Verhalten zu ändern (der Code ist Zeichen für Zeichen derselbe, nur anders einsortiert). Die Gliederung ist heute die Landkarte des Projekts:</p>
+<p><strong>Kern/</strong> – Grundbausteine ohne Fenster</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Datei</th>
+<th>Inhalt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>abhaengigkeiten.py</code></td>
+<td>optionale Teile mit Ersatz (Fensterleiste, Leisten-Vorgaben)</td>
+</tr>
+<tr class="even">
+<td><code>konstanten.py</code></td>
+<td>feste Zahlen: Rastergrenzen, Symbolgrößen, Farbschema, App-Fensterarten</td>
+</tr>
+<tr class="odd">
+<td><code>stil.py</code></td>
+<td>Glas-Stil des Kontrollfensters</td>
+</tr>
+<tr class="even">
+<td><code>symbole.py</code></td>
+<td><strong>alle</strong> selbst gezeichneten Symbole (<code>draw_..._icon</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>modell.py</code></td>
+<td><code>MenuItem</code> und die Raster-Rechnerei (Seiten, freie Plätze)</td>
+</tr>
+<tr class="even">
+<td><code>umzug.py</code></td>
+<td>einmaliger Umzug alter Ordner und JSON-Dateien beim Start</td>
+</tr>
+<tr class="odd">
+<td><code>programme.py</code></td>
+<td>installierte Programme, Startarten, Installation</td>
+</tr>
+<tr class="even">
+<td><code>system.py</code></td>
+<td>Befehle starten, WLAN/Bluetooth schalten, Helligkeit, Ton</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Bausteine/</strong> – sichtbare Bauteile: <code>kacheln.py</code> (App-Kachel, Raster, Seitenpunkte, Ziehbild), <code>menueleiste.py</code> (Glas-Leiste oben), <code>dock.py</code>, <code>kontrollzentrum.py</code> (Kontrollfenster).</p>
+<p><strong>Fenster/</strong> – Glasfenster: <code>einstellungen.py</code>, <code>verbindungen.py</code> (WLAN, Bluetooth, Mikrofon, Energie), <code>apps.py</code> (App hinzufügen/bearbeiten, Mediathek), <code>galerie.py</code> (Widget-Galerie), <code>zentrale.py</code> (die Liste aller Einstellungen).</p>
+<p><strong>Ansicht/</strong> – die Hauptansicht <code>MenuView</code> in Teilen (alle zusammen ergeben <strong>eine</strong> Klasse):</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Datei</th>
+<th>Inhalt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ansicht.py</code></td>
+<td>Aufbau, Größe, Zeichnen, Ereignisse</td>
+</tr>
+<tr class="even">
+<td><code>speicher.py</code></td>
+<td>Laden, Speichern, Profile, Sicherung</td>
+</tr>
+<tr class="odd">
+<td><code>leiste.py</code></td>
+<td>Menü-Leiste und Menü-Fenster</td>
+</tr>
+<tr class="even">
+<td><code>fenster.py</code></td>
+<td>Overlay oben rechts, Seiten-Fenster, Klick auf die Symbole</td>
+</tr>
+<tr class="odd">
+<td><code>design.py</code></td>
+<td>Stil, Nachtmodus, Effekte, Schrift, Hintergrund, Dock-Look</td>
+</tr>
+<tr class="even">
+<td><code>laufende.py</code></td>
+<td>Leiste der laufenden Fenster</td>
+</tr>
+<tr class="odd">
+<td><code>raster.py</code></td>
+<td>Seiten, Kacheln, Bearbeiten-Modus, Größe ändern</td>
+</tr>
+<tr class="even">
+<td><code>dock_ops.py</code></td>
+<td>Apps ins Dock und aus dem Dock</td>
+</tr>
+<tr class="odd">
+<td><code>ziehen.py</code></td>
+<td>Apps im Raster ziehen</td>
+</tr>
+<tr class="even">
+<td><code>tastatur.py</code></td>
+<td>Bedienung per Tastatur und Joystick</td>
+</tr>
+<tr class="odd">
+<td><code>starten.py</code></td>
+<td>Apps und Widgets starten, anlegen, löschen</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Technik der Aufteilung:</strong> <code>MenuView</code> erbt von mehreren „Mixin“-Klassen, je eine pro Datei (<code>class MenuView(ZiehenMixin, RasterMixin, ...)</code>). Jede Datei enthält nur einen Teil der Methoden, zusammen ergeben sie eine Klasse.</p>
+<p><strong>Wo kommt eine neue Funktion hin?</strong> Als eigene Datei (wie <code>mitteilungen.py</code>, <code>suche.py</code>) oder als eigenes Fenster in <code>Fenster/</code> – <strong>nicht</strong> wieder in eine Riesendatei.</p>
+<p><strong>Der Nachteil, den ich ehrlich notiere:</strong> Eine neue Idee berührt oft mehrere Teile, die zusammenpassen müssen (Ansicht, Fenster, Suche, Einstellungsliste). Bei einer Einzeldatei kann man alles in einem Rutsch suchen und ersetzen, bei vielen Dateien muss man wissen, welche zusammengehören. Die Updates in der Anleitung führen deshalb immer auf, <strong>welche Dateien</strong> sich ändern.</p>
+</section><section id="s36-7"><h2>36.7 Die Einstellungsdateien (Json/)</h2><p>Jedes Gerät und jede Funktion merkt sich ihren Zustand in einer eigenen JSON-Datei, die beim ersten Ändern von selbst entsteht:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Datei</th>
+<th>Inhalt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>oratio_apps.json</code></td>
+<td>alle Kacheln (Apps <strong>und</strong> Widgets) mit Name, Farbe, Größe, Seite, Zeile, Spalte</td>
+</tr>
+<tr class="even">
+<td><code>oratio_home.json</code></td>
+<td>die Kacheln des Tabs „Home“</td>
+</tr>
+<tr class="odd">
+<td><code>oratio_menu_settings.json</code></td>
+<td>Aussehen, Dock, Leisten, Effekte</td>
+</tr>
+<tr class="even">
+<td><code>oratio_wetter.json</code></td>
+<td>Ort fürs Wetter</td>
+</tr>
+<tr class="odd">
+<td><code>oratio_stimme.json</code></td>
+<td>Sprachsteuerung</td>
+</tr>
+<tr class="even">
+<td><code>oratio_sperre.json</code></td>
+<td>Sperrbildschirm (der Code steht nur als Prüfsumme)</td>
+</tr>
+<tr class="odd">
+<td><code>oratio_fokus.json</code></td>
+<td>Fokus-Profile</td>
+</tr>
+<tr class="even">
+<td><code>oratio_nutzung.json</code></td>
+<td>Nutzungsstatistik</td>
+</tr>
+<tr class="odd">
+<td><code>Json/Profile/&lt;Name&gt;/</code></td>
+<td>gespeicherte Einstellungs-Profile</td>
+</tr>
+<tr class="even">
+<td><code>Json/Backup/&lt;Datum&gt;/</code></td>
+<td>tägliche Sicherung</td>
+</tr>
+</tbody>
+</table></div>
+<p>Ein Eintrag in <code>oratio_apps.json</code> sieht so aus:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Icon Werkstatt&quot;</span><span class="fu">,</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a> <span class="dt">&quot;file&quot;</span><span class="fu">:</span> <span class="st">&quot;/home/oratio/Oratio_Control_Center/Oratio_Menu/Apps/Icon_Werkstatt/icon_werkstatt.py&quot;</span><span class="fu">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a> <span class="dt">&quot;icon&quot;</span><span class="fu">:</span> <span class="st">&quot;Oratio_Menu/Apps/Icon_Werkstatt/icon.png&quot;</span><span class="fu">,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a> <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;#000000&quot;</span><span class="fu">,</span> <span class="dt">&quot;terminal&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span> <span class="dt">&quot;embed&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a> <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;icon_werkstatt&quot;</span><span class="fu">,</span> <span class="dt">&quot;slot&quot;</span><span class="fu">:</span> <span class="dv">8</span><span class="fu">,</span> <span class="dt">&quot;row&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span> <span class="dt">&quot;col&quot;</span><span class="fu">:</span> <span class="dv">8</span><span class="fu">}</span></span></code></pre></div>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Schlüssel</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>file</code></td>
+<td>das Skript, das gestartet wird</td>
+</tr>
+<tr class="even">
+<td><code>icon</code></td>
+<td>Bild der Kachel</td>
+</tr>
+<tr class="odd">
+<td><code>color</code></td>
+<td>Kachelfarbe</td>
+</tr>
+<tr class="even">
+<td><code>embed</code></td>
+<td><code>true</code> = die App läuft <strong>im Glasfenster</strong> des Control Centers („Im Oratio-Look öffnen“)</td>
+</tr>
+<tr class="odd">
+<td><code>terminal</code></td>
+<td><code>true</code> = in einem Terminal-Fenster starten</td>
+</tr>
+<tr class="even">
+<td><code>slot</code>, <code>row</code>, <code>col</code></td>
+<td>Platz im Raster</td>
+</tr>
+</tbody>
+</table></div>
+<p>Ein Widget hat statt <code>file</code> den Schlüssel <code>"widget": "network"</code> sowie <code>w</code> und <code>h</code> für die Größe in Kästchen.</p>
+</section><section id="s36-8"><h2>36.8 Kurz zusammengefasst</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Frage</th>
+<th>Projekt A</th>
+<th>Projekt B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Wo steht ein Tab?</td>
+<td>in <code>app_ui.py</code> und einer Datei</td>
+<td>in einem eigenen Ordner</td>
+</tr>
+<tr class="even">
+<td>Wie kommt er ins Programm?</td>
+<td><code>import</code> und <code>addTab</code></td>
+<td><code>_tab_laden(...)</code> plus eine Zeile in <code>TABS</code></td>
+</tr>
+<tr class="odd">
+<td>Was passiert bei einem Fehler im Tab?</td>
+<td>das Programm startet nicht</td>
+<td>der Tab fehlt, der Rest läuft</td>
+</tr>
+<tr class="even">
+<td>Wer legt das Aussehen fest?</td>
+<td>Stylesheet pro Schaltfläche</td>
+<td>gemeinsamer Glas-Werkzeugkasten</td>
+</tr>
+<tr class="odd">
+<td>Woher kommen die Kacheln?</td>
+<td>eine JSON-Liste</td>
+<td>eine JSON-Liste mit Größen, Seiten, Widgets</td>
+</tr>
+</tbody>
+</table></div>
+<p>Der ausführliche Vergleich steht in <a class="xr" href="#/kap/40">Kapitel 40</a>.</p>
+</section>

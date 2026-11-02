@@ -1,0 +1,26 @@
+<p>Auf einem ESP32 mit rundem Display lässt sich ein eigenes kleines Betriebssystem bauen.</p>
+<section id="s23-1"><h2>23.1 Die Idee</h2><p>Die Hardware (zum Beispiel ESP32-S3 mit rundem Display, Akku, Uhrenchip RTC, SD-Karte, Tasten) ist da. Die Software, die vom Hersteller (DSTIKE) aufgespielt war, ist <strong>nur ein Programm im Flash</strong>. Sie lässt sich löschen und durch eigene Software ersetzen. Vorher das Original mit <code>esptool</code> sichern, dann ist der Weg zurück offen.</p>
+</section><section id="s23-2"><h2>23.2 Aufbau</h2><pre class="text"><code>Oratio Watch OS
+│
+├── Home        (Uhr, flackerfrei, BACK führt immer hierher)
+├── Menu        (ein großes Icon pro Seite, links/rechts wechseln, OK öffnet)
+├── Contacts
+├── Gallery
+├── Music
+├── Calendar
+├── Alarm
+├── Timer       (Start, Stop, Reset)
+├── Stopwatch
+├── Weather
+├── Settings
+├── Bluetooth
+├── Info        (Versionsnummer)
+└── Storage</code></pre>
+</section><section id="s23-3"><h2>23.3 Wichtige Gedanken</h2><ul>
+<li><strong>Nicht 1500 Zeilen auf einmal schreiben.</strong> Ein so großes Programm kompiliert fast nie auf Anhieb und lässt sich nicht pflegen. Besser in Etappen: Home → Menü → eine App → die nächste.</li>
+<li><strong>Einstellungen dauerhaft speichern</strong> mit der ESP32-Bibliothek <code>Preferences</code> (bleiben nach dem Ausschalten erhalten).</li>
+<li><strong>Mit dem Raspberry Pi per WLAN verbinden</strong>: CPU-Temperatur, RAM, IP, Zeit und Wetter kann der Pi liefern.</li>
+<li><strong>Eigene Sprache</strong> für die Oberfläche (zum Beispiel Ewe): Manche technischen Begriffe dort nicht direkt existieren und man ein beschreibendes Wort oder ein englisches Lehnwort nimmt. Prüfe solche Listen mit einem Muttersprachler.</li>
+<li><strong>Tasten</strong>: Mit nur wenigen Tasten (links, rechts, OK, Back) baut man ein ganzes Menü. Das Muster ist immer: Zustand merken, Taste ändert Zustand, Bildschirm neu zeichnen.</li>
+</ul>
+</section>

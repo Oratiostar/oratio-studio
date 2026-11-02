@@ -1,0 +1,326 @@
+<section id="s39-1"><h2>39.1 Die Oratio Toolbox</h2><p>Die Toolbox ist ein eigener Tab mit <strong>Knöpfen für Terminal-Befehle</strong>. Sie ist der Grund, warum ich viele Befehle nicht auswendig kennen muss: Jeder Befehl hat einen Namen, eine Erklärung und einen Knopf „Ausführen“.</p>
+<p><strong>Drei Bereiche</strong> (Knöpfe ganz links oben): <strong>Pi Tools</strong> (Raspberry-Pi-spezifisch), <strong>Allgemein</strong> (Linux allgemein), <strong>Buch</strong> (Befehlsbuch zum Nachschlagen). Oben links ein Suchfeld, das <strong>alles</strong> durchsucht.</p>
+<p><strong>Dateien:</strong> <code>Oratio_Toolbox/toolbox_menu.py</code> (der Tab), <code>core.py</code> (Ausführen, Etiketten), <code>pi_commands.py</code>, <code>general_commands.py</code>, <code>befehlsbuch.py</code>.</p>
+<h3 id="ein-befehl-in-der-liste">Ein Befehl in der Liste</h3>
+<p>Jeder Befehl ist ein Aufruf der Hilfsfunktion <code>befehl(...)</code> (das Beispiel ist zur Veranschaulichung zusammengesetzt; die genauen Kategorienamen stehen in der jeweiligen Datei):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>befehl(<span class="st">&quot;bastel&quot;</span>, <span class="st">&quot;I2C-Geräte suchen&quot;</span>, <span class="st">&quot;Zeigt alle Adressen am I2C-Bus&quot;</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;i2cdetect -y 1&quot;</span>, art<span class="op">=</span><span class="st">&quot;anzeigen&quot;</span>, need<span class="op">=</span><span class="st">&quot;i2cdetect&quot;</span>)</span></code></pre></div>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Teil</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Kategorie</td>
+<td>in welcher Gruppe der Knopf steht</td>
+</tr>
+<tr class="even">
+<td>Name</td>
+<td>Text des Knopfes</td>
+</tr>
+<tr class="odd">
+<td>Info</td>
+<td>Erklärung unter dem Namen</td>
+</tr>
+<tr class="even">
+<td>Befehl</td>
+<td>der Text, der im Terminal ausgeführt wird</td>
+</tr>
+<tr class="odd">
+<td><code>art</code></td>
+<td>Etikett: <code>anzeigen</code>, <code>aendern</code>, <code>installieren</code>, <code>gefaehrlich</code></td>
+</tr>
+<tr class="even">
+<td><code>need</code></td>
+<td>Programm, das vorhanden sein muss; fehlt es, bietet der Tab die Installation an</td>
+</tr>
+<tr class="odd">
+<td><code>confirm</code></td>
+<td>vorher nachfragen</td>
+</tr>
+<tr class="even">
+<td><code>terminal</code></td>
+<td>in einem Terminal-Fenster laufen lassen</td>
+</tr>
+<tr class="odd">
+<td><code>felder</code></td>
+<td>Eingabefelder mit Vorschlägen (z. B. <code>/dev/ttyUSB0</code>, <code>0x3c</code>, <code>17</code>)</td>
+</tr>
+<tr class="even">
+<td><code>star</code></td>
+<td>oben anheften</td>
+</tr>
+<tr class="odd">
+<td><code>ask</code>, <code>default</code>, <code>explain</code>, <code>timeout</code>, <code>preview</code></td>
+<td>Rückfrage-Text, Vorgabewert, Erklärtext, Zeitlimit, Vorschau</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="die-vier-etiketten">Die vier Etiketten</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Etikett</th>
+<th>Farbe</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Anzeigen</td>
+<td>grün</td>
+<td>zeigt nur etwas an, jederzeit gefahrlos</td>
+</tr>
+<tr class="even">
+<td>Ändert</td>
+<td>orange</td>
+<td>stellt etwas ein oder ändert Dateien</td>
+</tr>
+<tr class="odd">
+<td>Installiert</td>
+<td>blau</td>
+<td>holt Software auf den Pi</td>
+</tr>
+<tr class="even">
+<td>Gefährlich</td>
+<td>rot</td>
+<td>kann Daten löschen oder das System lahmlegen; fragt vorher nach</td>
+</tr>
+</tbody>
+</table></div>
+<p>Das Etikett wird <strong>aus dem Befehlstext erraten</strong> (lieber vorsichtig als zu harmlos). Stimmt es nicht, wird <code>art="…"</code> an die Zeile angehängt. Beim Befehlsbuch gilt das Etikett für den Befehl selbst, nicht für den Knopf.</p>
+<p><strong>Gewohnheit, die ich daraus mitnehme:</strong> Immer zuerst die grünen Anzeige-Befehle ausprobieren.</p>
+<h3 id="wie-die-toolbox-in-sechs-schritten-wuchs">Wie die Toolbox in sechs Schritten wuchs</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Schritt</th>
+<th>Inhalt</th>
+<th>Neue Befehle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Etiketten bei jedem Befehl; Kategorie „Bastel &amp; Mikrocontroller“ (I2C/SPI, GPIO, serielle Ports und ESP32, MicroPython, Pico, Arduino, PlatformIO, AVR, OpenOCD, CAN, GPS …)</td>
+<td>57</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>WLAN &amp; Bluetooth, Netzwerk (DNS, Routen, Verkehr, Geräte finden), Ton (PipeWire, Mixer, Aufnahme)</td>
+<td>97</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Programme starten (35 Programmstarter), Bildschirm, Speicher &amp; Laufwerke, Updates &amp; Pakete, Prozesse &amp; Dienste, Sicherheit &amp; Benutzer, System &amp; Info, Gesundheit, Kamera</td>
+<td>280</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Git &amp; GitHub, Build &amp; Compiler</td>
+<td>86</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Terminal-Hilfen, Dateien &amp; Ordner, Text, Bilder/Video/PDF, Teilen &amp; Übertragen, Kleine Wunder (z. B. <code>cowsay</code>, <code>figlet</code>)</td>
+<td>145</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td><strong>Befehlsbuch</strong> als dritter Bereich</td>
+<td>1020</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Das Befehlsbuch:</strong> Ein Nachschlagewerk, der Knopf heißt „Erklären“ und führt <strong>nichts</strong> aus. Er zeigt, was der Befehl macht, ob er auf diesem Pi installiert ist (live geprüft), das Handbuch-Stichwort, ob die Toolbox schon einen Knopf dafür hat (Häkchen) und eine Warnung bei gefährlichen Befehlen. „Kopieren“ legt den Befehl in die Zwischenablage. 22 Gruppen mit zusammen 1020 Befehlen (Dateien/Ordner, Text, Shell, System, Raspberry Pi, GPIO/I2C, Netzwerk, Bluetooth, Audio, Bildschirm, X11, Pakete, Programmierung, Git, Docker …). Eigene Einträge: in <code>befehlsbuch.py</code> bei <code>GRUPPEN</code> eine Zeile <code>("befehl", "Was er macht")</code>. Fehlt die Datei oder hat sie einen Fehler, gibt es den Bereich „Buch“ einfach nicht (<a class="xr" href="#/kap/36/36.3">Kapitel 36.3</a>: ein kaputtes Teil stoppt nie das Ganze).</p>
+<h3 id="fehler-der-in-der-toolbox-auftrat-programmstarter-öffnen-sich-nicht">Fehler, der in der Toolbox auftrat: Programmstarter öffnen sich nicht</h3>
+<ul>
+<li><strong>Symptom:</strong> Sicherung → „SD Card Copier“ blieb bei „wird geöffnet …“ stehen, nichts passierte.</li>
+<li><strong>Erster Versuch:</strong> Der Knopf startete über <code>gtk-launch piclone</code> und versteckte jede Fehlermeldung.</li>
+<li><strong>Lösung:</strong> Das Menü startet direkt <code>piclone</code>; der Knopf macht das jetzt auch. Das Programm startet abgekoppelt (<code>setsid</code>); nach 2 s prüft der Knopf, ob es noch läuft („… ist geöffnet ✓“). Beendet es sich sofort, erscheint die <strong>echte</strong> Fehlermeldung im Ergebnisfeld.</li>
+<li><strong>Warum:</strong> Wer Fehlermeldungen unterdrückt, erfährt nie, was schiefging. Das gilt für alle 35 Programmstarter.</li>
+</ul>
+<h3 id="selbst-einen-befehl-hinzufügen">Selbst einen Befehl hinzufügen</h3>
+<ol type="1">
+<li>Passende Datei öffnen (<code>pi_commands.py</code> oder <code>general_commands.py</code>).</li>
+<li>In der richtigen Kategorie eine <code>befehl(...)</code>-Zeile ergänzen (Beispiel oben).</li>
+<li>Syntax des Befehls selbst prüfen: <code>bash -n skript.sh</code> (Syntaxprüfung ohne Ausführung) oder den Befehl im Terminal ausprobieren.</li>
+<li>Control Center neu starten.</li>
+</ol>
+</section><section id="s39-2"><h2>39.2 Backup-App und bootfähiger Klon</h2><p><strong>Datei:</strong> <code>Oratio_Menu/Apps/Oratio_Backup/oratio_backup.py</code>. Die App kopiert das <strong>ganze System</strong> auf eine zweite Platte, sodass diese in einem anderen Pi startet.</p>
+<p><strong>Bedienung:</strong></p>
+<ol type="1">
+<li>Backup-App öffnen → Knopf „Ganzes System auf Platte kopieren …“.</li>
+<li>Karte „1. Quelle – von welcher Platte kopieren?“ (vorgewählt: das laufende System).</li>
+<li>Karte „2. Ziel – auf welche Platte?“. Die Systemplatte (NVMe) wird <strong>nie</strong> angeboten. Nach dem Anstecken „Neu suchen“.</li>
+<li><strong>Probelauf</strong> (Haken „Nur anzeigen“, standardmäßig an): zeigt alle Schritte und Befehle und ändert nichts.</li>
+<li>Echter Lauf: Haken weg, den Plattennamen (z. B. <code>sda</code>) eintippen, der Knopf wird rot („Platte löschen und kopieren“).</li>
+<li>Haken „Nur aktualisieren (schnell)“: Ziel wird nicht neu aufgeteilt; <code>rsync</code> überträgt nur Neues und Geändertes. Voraussetzung: die Platte wurde vorher einmal vom Programm angelegt.</li>
+</ol>
+<p><strong>Die 8 Schritte:</strong> prüfen → Zielplatte leeren → neue Aufteilung (kleine FAT-Bootpartition + Rest als System, neue Kennung) → Dateisysteme anlegen → einhängen → System mit <code>rsync</code> kopieren (ohne <code>/proc</code>, <code>/sys</code>, <code>/dev</code>, <code>/run</code>, <code>/tmp</code>, <code>/mnt</code>, <code>/media</code>, Swap-Datei, <code>.cache</code>) → Startbereich kopieren und <code>cmdline.txt</code> sowie <code>fstab</code> auf die <strong>neuen Kennungen (PARTUUID)</strong> umschreiben → Prüfung (<code>e2fsck</code>, <code>fsck</code>).</p>
+<p><strong>Warum die Kennungen umgeschrieben werden:</strong> Jede Partition hat eine eigene PARTUUID. Würde man den Inhalt einfach kopieren, verwiese <code>cmdline.txt</code> noch auf die Partition des alten Systems; der Klon fände sein Wurzeldateisystem nicht.</p>
+<p><strong>Warum <code>rsync</code> und nicht <code>dd</code>:</strong> <code>dd</code> kopiert Block für Block und braucht ein gleich großes Ziel; <code>rsync</code> kopiert Dateien und erlaubt eine andere Aufteilung. <code>rpi-clone</code> wurde bewusst nicht genommen, weil es nach Berichten auf Bookworm nicht läuft.</p>
+<p><strong>Voraussetzungen:</strong> <code>rsync</code>, <code>sfdisk</code> (aus <code>fdisk</code>), <code>mkfs.vfat</code> (aus <code>dosfstools</code>), <code>e2fsprogs</code>. Fehlt etwas, nennt das Skript sofort den <code>apt</code>-Befehl. Rechte: <code>sudo</code> ohne Passwort, sonst <code>pkexec</code>.</p>
+<p><strong>Starten am anderen Pi:</strong> Platte per USB anschließen, SD-Karte entfernen, einschalten. Pi 5 startet von USB, wenn keine bootfähige SD steckt oder die Boot-Reihenfolge es erlaubt (<code>sudo raspi-config</code> → Advanced Options → Boot Order). Ein Pi 4 braucht aktuelle Firmware.</p>
+<h3 id="die-fehlerkette-beim-klonen-chronologisch">Die Fehlerkette beim Klonen (chronologisch)</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Schritt</th>
+<th>Beobachtung</th>
+<th>Ursache und Folge</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><code>rsync</code> bricht ab mit <strong>Code 11, „No space left on device“</strong></td>
+<td>Auf der Platte lagen schon alte Bereiche (bootfs/rootfs). Hat das System die <strong>neue</strong> Aufteilung nicht übernommen, wurde in den <strong>alten, kleineren</strong> Systembereich formatiert und kopiert – der war sofort voll</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Maßnahme: nach dem Aufteilen die Aufteilung neu einlesen und prüfen; <code>rsync -S</code> (dünn besetzte Dateien bleiben dünn); genug Inodes beim Formatieren; bei Fehler Protokoll mit <code>df -h</code> und <code>df -i</code></td>
+<td>–</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Im Protokoll zeigte sich: <code>sda1</code> = 512 MB, aber <code>sda2</code> = <strong>nur 3 MB</strong>. Die neue Prüfung erkannte das und brach <strong>vor</strong> dem Kopieren ab</td>
+<td>Die Größe des Systembereichs war „Rest der Platte“, das <code>sfdisk</code> selbst auslegte</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Lösung: Größe wird <strong>ausgerechnet</strong> und ausdrücklich in Sektoren angegeben; vorher alte Bereiche aus dem Gedächtnis des Systems entfernen (<code>partx -d</code>) und die ersten 4 MB der Platte leeren; nach dem Aufteilen die Tabelle ins Protokoll schreiben, dem System neu mitteilen (<code>partx -d</code>, <code>blockdev --rereadpt</code>, <code>partprobe</code>, <code>partx -a</code>) und prüfen. Das Protokoll zeigt „Tabelle auf der Platte“ gegen „So sieht das System die Platte“</td>
+<td>Es ließ sich nicht sicher feststellen, ob die 3 MB von <code>sfdisk</code> oder vom Kernel (alte Aufteilung im Gedächtnis) kamen; die neue Version behebt beides</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Die Lehre dahinter:</strong> Immer prüfen, ob das <strong>System</strong> die Aufteilung so sieht, wie sie auf die Platte geschrieben wurde. Mit <code>lsblk /dev/sda</code> und <code>sudo fdisk -l /dev/sda</code> lässt sich das jederzeit nachvollziehen. <strong>Vor dem Start keine Fenster oder Dateimanager auf der Zielplatte offen lassen.</strong></p>
+<p><strong>Erfahrungsregel:</strong> Immer zuerst den Probelauf, dann die erste echte Kopie auf eine Platte, auf der nichts Wichtiges liegt. Diese Funktion wurde nicht an echten Platten abschließend getestet; sie ist ein Werkzeug mit Sicherheitsnetz, kein Ersatz für eine zweite, unabhängige Sicherung.</p>
+</section><section id="s39-3"><h2>39.3 Sprachsteuerung (alles offline)</h2><p><strong>Datei:</strong> <code>Oratio_Menu/sprachsteuerung.py</code> und <code>install_sprache.sh</code>.</p>
+<p><strong>Bausteine:</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Aufgabe</th>
+<th>Programm</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sprache erkennen</td>
+<td><strong>Vosk</strong> (kleines deutsches Modell, ca. 45 MB)</td>
+</tr>
+<tr class="even">
+<td>Antwort vorlesen</td>
+<td><strong>Piper</strong> (deutsche Stimme „thorsten“), sonst <code>espeak-ng</code>, sonst nur Text</td>
+</tr>
+<tr class="odd">
+<td>freie Fragen beantworten</td>
+<td><strong>Gemma</strong> (<code>gemma3:4b</code>) über <strong>Ollama</strong></td>
+</tr>
+<tr class="even">
+<td>Mikrofon/Abspielen</td>
+<td><code>alsa-utils</code> (<code>arecord</code>, <code>aplay</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Einrichten (einmalig, mit Internet):</strong> Entweder <code>bash Oratio_Menu/install_sprache.sh</code> im Projektordner, oder im Fenster „Sprachsteuerung“ unten der Knopf „Einrichten (Terminal öffnet sich)“. Das Skript installiert <code>alsa-utils</code>, <code>curl</code>, <code>unzip</code>, <code>espeak-ng</code> (apt), Vosk (pip), das Vosk-Modell und Piper mit Stimme in <code>Oratio_Menu/Modelle/</code>. Jeder Schritt meldet Fehler mit „!!“. Das Fenster zeigt unter „Bereit?“ mit Haken (✓/✗), was noch fehlt, und „Alles bereit ✓“. Entfernen: Ordner <code>Modelle</code> löschen und <code>pip3 uninstall vosk</code>. Gemma fehlt? <code>ollama pull gemma3:4b</code> und <code>sudo systemctl start ollama</code>.</p>
+<p><strong>Bedienung:</strong> Mikrofon-Symbol oben rechts → „Sprachsteuerung …“. „Zuhören“ antippen, Befehl sagen, der Text erscheint währenddessen. Hört er 8 Sekunden nichts, hört er auf; ein Satz darf bis 15 s dauern. Zum Ausprobieren ohne Mikrofon: Befehl ins Feld tippen + Enter.</p>
+<p><strong>Befehle</strong> (Füllwörter wie „bitte“, „Oratio“, „mal“ werden ignoriert; Zahlen als Wort oder Ziffer): „Wie spät ist es“, „Welcher Tag ist heute“, „Lauter“, „Leiser“, „Lautstärke auf fünfzig Prozent“, „Stumm“, „Ton an“, „Dunkelmodus an/aus“, „Nicht stören an/aus“, „Fokus aus“, „Fokus <Profilname>“, „Öffne <App>“ (jede Kachel und jedes Einstellungsfenster, ähnlich geschriebene Namen werden gefunden), „Zeige offene Apps“, „Mach einen Screenshot“, „Sperre den Bildschirm“, „Was kannst du“. <strong>Bewusst nicht per Sprache:</strong> Ausschalten/Neustart, Hotspot, WLAN an/aus – damit nichts Wichtiges aus Versehen passiert.</p>
+<p><strong>Freie Fragen an Gemma:</strong> Was kein bekannter Befehl ist, geht als Frage an Gemma (<code>gemma3:4b</code> über Ollama, alles offline). „Gemma denkt nach …“ steht währenddessen im Fenster (auf dem Pi 5 meist 5–20 s; die erste Frage nach längerer Pause länger, weil das Modell geladen wird). Antworten sind absichtlich kurz (2–3 Sätze, ohne Aufzählungen), weil sie vorgelesen werden. Die letzten 3 Fragen gehen als Gedächtnis mit. Gemma antwortet in der Sprache der Frage. Ein Schalter schaltet das ab.</p>
+<p><strong>Aufwachwort:</strong> Abschnitt „Aufwachwort“ → Schalter „Auf meinen Namen hören“ und Feld „Name“. Das Mikrofon lauscht dauernd, aber die Erkennung achtet <strong>nur</strong> auf den Namen (alles andere wird verworfen, nichts gespeichert). Auf den Namen folgt ein kurzer Piepton, dann sagt man den Befehl. Beim Sprechen des Pi oder Nachdenken von Gemma pausiert das Lauschen, damit er sich nicht selbst hört. Der Schalter wird in <code>Json/oratio_stimme.json</code> gemerkt.</p>
+<p><strong>Das Problem mit dem Namen:</strong> Vosk kennt nur echte deutsche Wörter. „Oratio“ ist vermutlich keins; dann nimmt das Programm ähnlich klingende Wörter als Ersatz (z. B. „Horatio“). Das Feld darunter zeigt, worauf er reagiert. Besser sind lange, klare, echte Wörter („Computer“, „Hallo Pi“).</p>
+<p><strong>Grenzen:</strong> Vosk ist deutsch: französisch oder englisch gesprochene Fragen werden schlecht erkannt (Tippen geht in jeder Sprache). Französische Antworten liest Piper mit der deutschen Stimme. Mit Hintergrundlärm oder Nuscheln sind Fehler möglich. Das Dauerlauschen kostet etwas Rechenzeit.</p>
+</section><section id="s39-4"><h2>39.4 Sprachen</h2><p>Jede Sprache ist <strong>eine Datei</strong> in <code>Sprache/</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>NAME <span class="op">=</span> <span class="st">&quot;Français&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>NEUSTART_FRAGE <span class="op">=</span> <span class="st">&quot;Redémarrer maintenant ?&quot;</span>  <span class="co"># Text der Neustart-Frage</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>TEXTE <span class="op">=</span> {</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Home&quot;</span>: <span class="st">&quot;Accueil&quot;</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Einstellungen&quot;</span>: <span class="st">&quot;Paramètres&quot;</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ...</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Der deutsche Text ist der <strong>Schlüssel</strong>; fehlt eine Übersetzung, erscheint einfach der deutsche Text. Eine neue Sprache entsteht, indem eine vorhandene Datei kopiert, <code>NAME</code> geändert und <code>TEXTE</code> übersetzt wird. Platzhalter wie <code>{n}</code> müssen unverändert bleiben (siehe Fehler in 38.1).</p>
+<p>Der Atlas (39.6) folgt der Spracheinstellung des Control Centers selbst (de/fr/en/es), ohne die Dateien in <code>Sprache/</code> anzufassen.</p>
+</section><section id="s39-5"><h2>39.5 Weitere Hilfen im Projekt</h2><ul>
+<li><strong>Doku/Glossar.txt</strong>: Erklärt die wichtigsten Begriffe (sudo, rsync, PARTUUID, fstab, Piper, Vosk …) als reine Textdatei.</li>
+<li><strong>Tägliche Sicherung</strong> der Einstellungen (<a class="xr" href="#/kap/36/36.4">Kapitel 36.4</a>) und <strong>Einstellungs-Profile</strong> (38.13).</li>
+<li><strong>Fehlerprotokoll</strong> <code>Logs/oratio.log</code>.</li>
+</ul>
+</section><section id="s39-6"><h2>39.6 Elektronik-Apps: Bauteile, Akademie, Atlas</h2><p>Drei Apps beantworten die Frage „wie sieht das Bauteil aus, und was darf ich anschließen?“. Sie sind so aufgebaut, dass <strong>der Inhalt in JSON-Dateien</strong> steht und der Programmcode nur anzeigt.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>App</th>
+<th>Zweck</th>
+<th>Umfang</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Bauteile</strong></td>
+<td>Nachschlagewerk mit Pinbelegung als IC-Zeichnung, Schaltzeichen, Wahrheitstabelle, Zeitdiagramm, Rechnern</td>
+<td>331 Einträge in 10 Kategorien</td>
+</tr>
+<tr class="even">
+<td><strong>Akademie</strong></td>
+<td>Lernspiel: Inselkarte mit Strom-Insel, Logik-Fabrik, Code-Insel, Binär-Berg, Netzwerk-Hafen, Quiz-Arena (154 Fragen), Turbo-Rennen, Voltis Werkstatt</td>
+<td>24 Pokale</td>
+</tr>
+<tr class="odd">
+<td><strong>Atlas</strong></td>
+<td>elektronisches Tabellenbuch, kein Spiel: bunte Weltkarte mit Welten (Grundlagen, Passive Bauteile, Halbleiter, Messtechnik, Speicher &amp; Bandbreiten, Labor &amp; Sensoren …)</td>
+<td>ca. 470 Seiten, 86+ Rechner</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Entstehung:</strong> Zuerst „Bauteile“ (106, dann 331 Einträge). Dann die „Akademie“ als Spiel. Weil ein Nachschlagewerk gewünscht war und kein Spiel, entstand der „Atlas“ – und er übernahm später alle Bauteile-Seiten, sodass „Bauteile“ gelöscht werden kann. Das Labor (38.5) bleibt für die Live-Werkzeuge nötig, weil Atlas nicht auf Hardware zugreift.</p>
+<p><strong>Eigenes ergänzen (ohne mitgelieferte Dateien zu ändern):</strong></p>
+<ul>
+<li><strong>Bauteile:</strong> Zu jeder Kategorie <code>x.json</code> lädt die App auch alle <code>x_*.json</code>. Eine eigene Datei <code>logik_meine.json</code> genügt. Pins stehen als <code>"Name:Art"</code> (<code>i</code> Eingang, <code>o</code> Ausgang, <code>v</code> Versorgung, <code>g</code> Masse, <code>x</code> Steuer).</li>
+<li><strong>Akademie:</strong> Fragen stehen in <code>Daten/fragen_&lt;thema&gt;.json</code>; ein Eintrag ist <code>["Frage", "richtige Antwort", ["falsch 1", "falsch 2", "falsch 3"], "Erklärung"]</code>. Eine Datei <code>fragen_meine.json</code> wird als weiteres Thema geladen.</li>
+<li><strong>Atlas:</strong> Datei <code>Daten/erg_meine.json</code>: <code>{"welt": "grund", "seiten": [ {"id": "x", "titel": "...", "kurz": "...", "tags": [], "bloecke": [ {"t": "text", "text": ["..."]} ] } ]}</code>. Blocktypen: <code>text</code>, <code>h2</code>, <code>hinweis</code> (tipp/warn/merke/info/pi/fun), <code>formel</code>, <code>liste</code>, <code>tabelle</code>, <code>kacheln</code>, <code>symbol</code>, <code>spezial</code>, <code>rechner</code>. Eine ganz neue Welt = eigene Datei <code>welt_xyz.json</code> im Muster der vorhandenen.</li>
+</ul>
+<p><strong>Ehrliche Einordnung:</strong> Pinbelegungen, Werte und Sensor-Daten stammen aus Fachwissen, nicht aus Datenblättern abgeglichen. Vor dem Verdrahten <strong>immer</strong> das Datenblatt prüfen (die App hat dafür den Knopf „Datenblatt suchen“). Besonders genau prüfen: 7476, 7490, 74193, ADC0804, DAC0808, 2N2222 (Beinchen anders als BC547), 4060, 4046, 7448, TSOP4838/VS1838 (Reihenfolge je Hersteller). Module mit 4–8 Pins haben je nach Platine eine andere Reihenfolge.</p>
+</section><section id="s39-7"><h2>39.7 Selbstbau-Anleitungen (Projekt B)</h2><h3 id="a-einen-neuen-tab-hinzufügen">A) Einen neuen Tab hinzufügen</h3>
+<ol type="1">
+<li>Neuen Ordner anlegen, z. B. <code>Notizen/</code> mit einer leeren Datei <code>__init__.py</code> und <code>notizen_tab.py</code>.</li>
+<li>In <code>notizen_tab.py</code> eine Klasse schreiben, deren Konstruktor Breite und Höhe nimmt:</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PyQt5.QtWidgets <span class="im">import</span> QWidget, QVBoxLayout, QLabel</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> NotizenTab(QWidget):</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, width, height):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        lay <span class="op">=</span> QVBoxLayout(<span class="va">self</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        lay.addWidget(QLabel(<span class="st">&quot;Hier entstehen Notizen&quot;</span>))</span></code></pre></div>
+<ol start="3" type="1">
+<li>In <code>app_ui.py</code> die Zeile ergänzen und in <code>TABS</code> eintragen:</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>NotizenTab <span class="op">=</span> _tab_laden(<span class="st">&quot;Notizen.notizen_tab&quot;</span>, <span class="st">&quot;NotizenTab&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>TABS <span class="op">=</span> [..., (<span class="st">&quot;Notizen&quot;</span>, NotizenTab)]</span></code></pre></div>
+<ol start="4" type="1">
+<li>Control Center neu starten. Fehlt der Ordner später, fehlt nur der Tab.</li>
+</ol>
+<h3 id="b-ein-neues-widget">B) Ein neues Widget</h3>
+<ol type="1">
+<li>Neue Datei <code>Oratio_Menu/Widget/mein_widget.py</code>.</li>
+<li>Mindestens <code>KIND</code>, <code>NAME</code>, <code>SIZES</code>, <code>MIN</code> und <code>paint(c)</code> definieren (Tabelle in <a class="xr" href="#/kap/37/37.4">Kapitel 37.4</a>).</li>
+<li>Menü neu starten. Das Widget erscheint von selbst in der Widget-Galerie.</li>
+</ol>
+<h3 id="c-eine-neue-app">C) Eine neue App</h3>
+<ol type="1">
+<li>Ordner <code>Oratio_Menu/Apps/Meine_App/</code> mit <code>meine_app.py</code> und <code>icon.png</code>.</li>
+<li>„App hinzufügen“ im Menü: Name, Datei, Icon, Farbe; Haken „Im Oratio-Look öffnen“ für die Glasfenster-Variante.</li>
+<li>Oder direkt einen Eintrag in <code>Json/oratio_apps.json</code> schreiben (Beispiel in 36.7).</li>
+</ol>
+<h3 id="d-einen-neuen-toolbox-befehl">D) Einen neuen Toolbox-Befehl</h3>
+<p>Siehe Ende von 39.1.</p>
+<h3 id="e-eine-neue-sprache">E) Eine neue Sprache</h3>
+<p>Siehe 39.4.</p>
+<h3 id="f-eine-neue-funktion-mit-fenster-und-suche">F) Eine neue Funktion mit Fenster und Suche</h3>
+<p>Muster aus <a class="xr" href="#/kap/38">Kapitel 38</a>: Datei in <code>Oratio_Menu/</code>, Zeile in <code>Fenster/zentrale.py</code>, Eintrag in <code>suche.py</code>, Einstellungen in <code>Json/</code>.</p>
+<p><strong>Vor jeder Änderung:</strong> Kopie des Ordners oder wenigstens der betroffenen Datei anlegen (<code>cp datei datei.bak</code>). Nach der Änderung zuerst die Syntax prüfen: <code>python3 -m py_compile datei.py</code>. Erst dann starten.</p>
+</section>

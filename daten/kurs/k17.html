@@ -1,0 +1,161 @@
+<section id="s17-1"><h2>17.1 Warum PlatformIO?</h2><p>Die Arduino-IDE ist einfach. <strong>PlatformIO</strong> in <strong>VS Code</strong> ist für größere Projekte besser: mehrere Boards, eine Konfigurationsdatei (<code>platformio.ini</code>), Bibliotheksverwaltung, bessere Fehlermeldungen.</p>
+</section><section id="s17-2"><h2>17.2 Installation</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt upgrade <span class="at">-y</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install code <span class="at">-y</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> <span class="at">--version</span></span></code></pre></div>
+<p>Dann in VS Code:</p>
+<ol type="1">
+<li>Links auf <strong>Extensions</strong> (Erweiterungen) klicken.</li>
+<li><strong>PlatformIO IDE</strong> suchen und installieren.</li>
+<li>VS Code neu starten.</li>
+<li>Links auf den <strong>Alien-Kopf</strong> klicken, dann <strong>New Project</strong>.</li>
+<li>Projektname, <strong>Board</strong> und <strong>Framework: Arduino</strong> wählen.</li>
+</ol>
+<p>Board-Namen:</p>
+<ul>
+<li><code>Arduino Nano ATmega328</code></li>
+<li><code>Arduino Mega or Mega 2560 ATmega2560</code></li>
+<li><code>Espressif ESP32 Dev Module</code></li>
+</ul>
+</section><section id="s17-3"><h2>17.3 Die platformio.ini</h2><p>Das ist die Konfigurationsdatei des Projekts:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode ini"><code class="sourceCode ini"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[env:esp32dev]</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">platform </span><span class="ot">=</span><span class="st"> espressif32</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">board </span><span class="ot">=</span><span class="st"> esp32dev</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="dt">framework </span><span class="ot">=</span><span class="st"> arduino</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="dt">monitor_speed </span><span class="ot">=</span><span class="st"> </span><span class="dv">115200</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="dt">lib_deps </span><span class="ot">=</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="dt">    adafruit/Adafruit SSD1306</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="dt">    adafruit/Adafruit GFX Library</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="dt">    adafruit/Adafruit BusIO</span></span></code></pre></div>
+<ul>
+<li><code>platform</code> – die Chip-Familie</li>
+<li><code>board</code> – das konkrete Board</li>
+<li><code>framework</code> – Arduino</li>
+<li><code>monitor_speed</code> – Baudrate des Seriellen Monitors</li>
+<li><code>lib_deps</code> – Bibliotheken, die automatisch geladen werden</li>
+</ul>
+<p>Das Programm steht in <code>src/main.cpp</code> und beginnt mit <code>#include &lt;Arduino.h&gt;</code>.</p>
+</section><section id="s17-4"><h2>17.4 PlatformIO-Befehle im Terminal</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pio</span> run                       <span class="co"># kompilieren</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pio</span> run <span class="at">--target</span> upload       <span class="co"># hochladen</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pio</span> run <span class="at">-t</span> clean              <span class="co"># aufräumen</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">pio</span> pkg update                <span class="co"># Pakete aktualisieren</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">pio</span> pkg install <span class="at">--library</span> <span class="st">&quot;adafruit/Adafruit BusIO&quot;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">pio</span> system prune <span class="at">--force</span>      <span class="co"># alte Reste löschen</span></span></code></pre></div>
+</section><section id="s17-5"><h2>17.5 Der I²C-Scanner – das wichtigste Diagnoseprogramm</h2><p>Wenn ein I²C-Display nichts anzeigt, prüft man zuerst, ob der Mikrocontroller es überhaupt sieht:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Wire.h&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> setup<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  Serial<span class="op">.</span>begin<span class="op">(</span><span class="dv">9600</span><span class="op">);</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  Wire<span class="op">.</span>begin<span class="op">();</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  Serial<span class="op">.</span>println<span class="op">(</span><span class="st">&quot;I2C Scanner&quot;</span><span class="op">);</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> loop<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  byte error<span class="op">,</span> address<span class="op">;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> devices <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span>address <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> address <span class="op">&lt;</span> <span class="dv">127</span><span class="op">;</span> address<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    Wire<span class="op">.</span>beginTransmission<span class="op">(</span>address<span class="op">);</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    error <span class="op">=</span> Wire<span class="op">.</span>endTransmission<span class="op">();</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>error <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>      Serial<span class="op">.</span>print<span class="op">(</span><span class="st">&quot;Gefunden bei 0x&quot;</span><span class="op">);</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>address <span class="op">&lt;</span> <span class="dv">16</span><span class="op">)</span> Serial<span class="op">.</span>print<span class="op">(</span><span class="st">&quot;0&quot;</span><span class="op">);</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>      Serial<span class="op">.</span>println<span class="op">(</span>address<span class="op">,</span> HEX<span class="op">);</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>      devices<span class="op">++;</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>devices <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> Serial<span class="op">.</span>println<span class="op">(</span><span class="st">&quot;Kein Geraet gefunden&quot;</span><span class="op">);</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  delay<span class="op">(</span><span class="dv">3000</span><span class="op">);</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Dann den <strong>Seriellen Monitor</strong> mit der richtigen Baudrate (hier 9600) öffnen. Typische Meldung: <code>Gefunden bei 0x3C</code>. Das ist die Adresse des OLED. Wird nichts gefunden, liegt es an der Verkabelung, der Spannung oder dem Display. Mein ESP32 hat das Display „nur sporadisch" erkannt, deshalb habe ich es am Nano gegengetestet: Damit unterscheidet man zwischen einem Fehler am Display und einem am ESP32.</p>
+<p><strong>Verkabelung eines I²C-OLED am ESP32:</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>OLED</th>
+<th>ESP32</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>GND</td>
+<td>GND</td>
+</tr>
+<tr class="even">
+<td>VCC</td>
+<td>3V3</td>
+</tr>
+<tr class="odd">
+<td>SCL</td>
+<td>GPIO 22</td>
+</tr>
+<tr class="even">
+<td>SDA</td>
+<td>GPIO 21</td>
+</tr>
+<tr class="odd">
+<td>RES</td>
+<td>nicht anschließen (offen)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Bei den Modulen, die ich am Nano hatte, war RES an 5 V angeschlossen („nicht offen lassen"). Das hängt vom Modul ab, also im Zweifel das Datenblatt oder die Rückseite prüfen.</p>
+</section><section id="s17-6"><h2>17.6 Der Compilerfehler `esp32-hal-periman.h`</h2><p>Der Compiler brach bei <code>#include "esp32-hal-periman.h"</code> ab. Diese Datei gehört zum ESP32-Core und wird von einer anderen Bibliothek eingebunden. Der Weg zur Lösung:</p>
+<ol type="1">
+<li>Die ersten Zeilen der <code>main.cpp</code> prüfen. Es sollten nur die nötigen <code>#include</code>s drinstehen.</li>
+<li><code>pio pkg update</code>, dann <code>pio system prune --force</code> und danach <code>pio run</code>.</li>
+<li>Prüfen, ob in <code>main.cpp</code> noch eine alte, nicht passende Bibliothek eingebunden ist.</li>
+</ol>
+<p><strong>Allgemeine Lehre:</strong> Fehler beim Kompilieren haben fast immer eine <strong>konkrete Zeile</strong>. Die Zeile kopieren, in <code>main.cpp</code> danach suchen und die Ursache eingrenzen.</p>
+</section><section id="s17-7"><h2>17.7 LVGL – was hat es gebracht?</h2><p>Was bringt <strong>LVGL</strong> (eine Grafikbibliothek für Displays)? Es macht Animationen und Bewegungen <strong>flüssiger</strong>, und man kann Menüs mit fertigen Elementen bauen. Es bringt aber nicht automatisch ein schöneres Aussehen. Die Optik muss man selbst gestalten.</p>
+</section><section id="s17-8"><h2>17.8 SD-Karte am ESP32</h2><p>Ein SD-Kartenmodul (SPI) lässt sich zusammen mit dem Display betreiben. Beide teilen sich <code>SCK</code> und <code>MOSI</code>, die SD-Karte bekommt einen eigenen Chip-Select:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>SD-Modul</th>
+<th>ESP32</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>VCC</td>
+<td>3,3 V</td>
+</tr>
+<tr class="even">
+<td>GND</td>
+<td>GND</td>
+</tr>
+<tr class="odd">
+<td>MISO</td>
+<td>GPIO 19</td>
+</tr>
+<tr class="even">
+<td>MOSI</td>
+<td>GPIO 23</td>
+</tr>
+<tr class="odd">
+<td>SCK</td>
+<td>GPIO 18</td>
+</tr>
+<tr class="even">
+<td>CS</td>
+<td>GPIO 13</td>
+</tr>
+</tbody>
+</table></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;SPI.h&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;SD.h&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SD_CS </span><span class="dv">13</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> setup<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  SPI<span class="op">.</span>begin<span class="op">(</span><span class="dv">18</span><span class="op">,</span> <span class="dv">19</span><span class="op">,</span> <span class="dv">23</span><span class="op">);</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>SD<span class="op">.</span>begin<span class="op">(</span>SD_CS<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    Serial<span class="op">.</span>println<span class="op">(</span><span class="st">&quot;SD Karte OK&quot;</span><span class="op">);</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    Serial<span class="op">.</span>println<span class="op">(</span><span class="st">&quot;SD Fehler&quot;</span><span class="op">);</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+</section><section id="s17-9"><h2>17.9 Firmware sichern: esptool</h2><p>Bevor bei einem fertigen Gerät (zum Beispiel einer DSTIKE-Uhr) die Werks-Firmware überschrieben wird, lässt sie sich sichern:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">esptool.py</span> <span class="at">--chip</span> esp32s3 <span class="at">--port</span> /dev/ttyUSB0 read_flash 0 0x1000000 backup.bin</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">esptool.py</span> <span class="at">--chip</span> esp32s3 <span class="at">--port</span> /dev/ttyUSB0 write_flash 0 backup.bin</span></code></pre></div>
+<p>(Unter Windows heißt der Port <code>COM3</code>, auf dem Pi <code>/dev/ttyUSB0</code> oder <code>/dev/ttyACM0</code>.) Damit ist jederzeit der Auslieferungszustand wiederherstellbar. Die Größe <code>0x1000000</code> entspricht 16 MB Flash, das hängt vom Gerät ab.</p>
+</section>

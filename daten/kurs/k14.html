@@ -1,0 +1,98 @@
+<p>Dieses Kapitel fasst zusammen, was in den vorigen Teilen verteilt steht, und führt die offenen Fragen zusammen.</p>
+<section id="s14-1"><h2>14.1 Strom und Stabilität</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Anzeichen</th>
+<th>Prüfen</th>
+<th>Maßnahme</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Blitz-Symbol, Ruckeln, Neustarts</td>
+<td><code>vcgencmd get_throttled</code></td>
+<td>Offizielles Netzteil, kurzes gutes Kabel</td>
+</tr>
+<tr class="even">
+<td>Pi 5 meldet „USB boot requires high current"</td>
+<td>Meldung beim Start</td>
+<td>5 V / 5 A Netzteil</td>
+</tr>
+<tr class="odd">
+<td>SSD am Pi nicht erkannt</td>
+<td><code>lsblk</code>, <code>dmesg</code></td>
+<td>Kabel, Stromversorgung, PCIe-Einstellungen</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s14-2"><h2>14.2 Images schreiben</h2><p>Bewährte Reihenfolge:</p>
+<ol type="1">
+<li>Programm zum Schreiben besorgen: Auf dem Pi <code>sudo apt install rpi-imager</code>, am PC der Raspberry Pi Imager oder Etcher.</li>
+<li>Passendes Image wählen (Gerät beachten, <a class="xr" href="#/kap/26/26.2">Kapitel 26.2</a>).</li>
+<li>Medium auswählen und <strong>genau kontrollieren, dass es das richtige Laufwerk ist</strong>.</li>
+<li>Schreiben, anschließend die Boot-Partition öffnen und kontrollieren.</li>
+</ol>
+<p>Beim Terminal-Weg mit <code>dd</code> gilt: Ein falsch gewähltes Ziel (<code>of=</code>) überschreibt das falsche Laufwerk. Darum vorher <code>lsblk</code> ansehen.</p>
+</section><section id="s14-3"><h2>14.3 Mehrere Systeme</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Variante</th>
+<th>Vorteil</th>
+<th>Nachteil</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Je ein System auf eigenem Medium (SD, NVMe, USB), Auswahl über Leertaste beim Start</td>
+<td>einfach, sauber getrennt</td>
+<td>Tastatur am Pi nötig</td>
+</tr>
+<tr class="even">
+<td>Feste Reihenfolge über <code>raspi-config</code></td>
+<td>keine Eingabe nötig</td>
+<td>man kommt nur mit Handarbeit an das andere System</td>
+</tr>
+<tr class="odd">
+<td>Mehrere Systeme auf einer SSD (Mehrfachpartitionen)</td>
+<td>ein Laufwerk</td>
+<td>mehr Aufwand, Möglich sind zum Beispiel Raspberry Pi OS, Batocera, LibreELEC, RetroPie, DietPi, Ubuntu</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s14-4"><h2>14.4 SSH vom iPhone</h2><p>Per SSH (zum Beispiel vom Handy) lässt sich bequem im Terminal arbeiten. Das ist praktisch für Terminal-Arbeit, aber beim Start-Menü des Bootloaders hilft es nicht: Dort muss eine Tastatur <strong>direkt am Pi</strong> hängen.</p>
+</section><section id="s14-5"><h2>14.5 Updates und Pflege</h2><p>Ein Raspberry Pi hat drei getrennte Dinge, die aktualisiert werden: das <strong>Betriebssystem</strong>, die <strong>Bootloader-Firmware</strong> (im EEPROM) und Programme wie der <strong>Imager</strong> auf dem PC.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update                    <span class="co"># Paketliste holen</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt full-upgrade <span class="at">-y</span>           <span class="co"># System und Kernel aktualisieren</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt autoremove <span class="at">--dry-run</span>      <span class="co"># erst ansehen, was entfernt würde</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rpi-eeprom-update             <span class="co"># zeigt, ob neuere Bootloader-Firmware bereitsteht</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rpi-eeprom-update <span class="at">-a</span>          <span class="co"># einspielen (danach Neustart)</span></span></code></pre></div>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Meldung / Frage</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>„Es gibt ein neues Update“ im <strong>Raspberry Pi Imager</strong></td>
+<td>betrifft den Imager auf dem PC, nicht das System auf dem Pi. Imager über seine Update-Funktion oder die offizielle Seite aktualisieren</td>
+</tr>
+<tr class="even">
+<td>Nach einem Kernel-Update verhält sich etwas anders</td>
+<td>Neustart nötig; ein laufender Kernel wird nicht ausgetauscht</td>
+</tr>
+<tr class="odd">
+<td>Nach dem Update fehlt eine Einstellung</td>
+<td><code>config.txt</code>/<code>cmdline.txt</code> prüfen (<a class="xr" href="#/kap/8">Kapitel 8</a>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Vor größeren Updates</strong> eine Sicherung (<a class="xr" href="#/kap/9">Kapitel 9</a>). Wer das Control Center benutzt, sichert zusätzlich den Ordner <code>Json/</code> (er enthält alle Einstellungen).</p>
+</section><section id="s14-6"><h2>14.6 Ordnung und Wiederherstellung</h2><ul>
+<li><strong>Ein Ordner pro Projekt</strong> (zum Beispiel <code>~/Oratio_Control_Center</code>, <code>~/arduino_projekte/oled_uhr</code>). Das erspart Suchen und Verwechslungen.</li>
+<li><strong>Vor jeder größeren Änderung</strong> eine Kopie des Ordners oder eine Archivdatei: <code>tar -czf ~/Sicherung_$(date +%F).tar.gz -C ~ Projektordner</code>.</li>
+<li><strong>Wiederherstellung testen,</strong> nicht nur sichern: Archiv in einen anderen Ordner entpacken und prüfen, ob das Programm startet.</li>
+<li><strong>Git</strong> hält jede Version fest und erlaubt den Weg zurück (<a class="xr" href="#/kap/3/3.3">Kapitel 3.3</a>).</li>
+</ul>
+</section>

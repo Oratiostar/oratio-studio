@@ -1,0 +1,429 @@
+<p>Dieser Index führt von dem, was man <strong>sieht</strong>, zum passenden Kapitel. Die Spalte „Erster Befehl“ ist der Befehl, mit dem man zuerst misst (<a class="xr" href="#/kap/47">Kapitel 47</a>). Wer die Meldung wörtlich kennt, sucht zusätzlich im Fehlerlexikon (Teil 17) mit der Suchfunktion des PDF-Programms.</p>
+<section id="sD-x0"><h2>D.1 Meldungen und Symptome</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Meldung / Symptom</th>
+<th>Erster Befehl</th>
+<th>Kapitel</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>command not found</code></td>
+<td><code>which name</code>, <code>echo $PATH</code></td>
+<td>48.1, 53</td>
+</tr>
+<tr class="even">
+<td><code>Permission denied</code></td>
+<td><code>ls -l datei</code></td>
+<td>48.2, 2</td>
+</tr>
+<tr class="odd">
+<td><code>No such file or directory</code></td>
+<td><code>pwd</code>, <code>ls</code></td>
+<td>48.1, 53</td>
+</tr>
+<tr class="even">
+<td><code>externally-managed-environment</code> (pip)</td>
+<td><code>python3 -m venv</code></td>
+<td>48.3, 3</td>
+</tr>
+<tr class="odd">
+<td>Laufwerk zeigt <code>0B</code>, „Read Capacity failed“</td>
+<td><code>dmesg | tail</code></td>
+<td>49.5, 56</td>
+</tr>
+<tr class="even">
+<td>Platte schreibgeschützt / gehört <code>root</code></td>
+<td><code>ls -ld</code>, <code>mount</code></td>
+<td>48.2, 49.5</td>
+</tr>
+<tr class="odd">
+<td>Platte voll</td>
+<td><code>df -h</code>, <code>du -h --max-depth=1</code></td>
+<td>48.4</td>
+</tr>
+<tr class="even">
+<td>Befehl hängt</td>
+<td><code>Strg+C</code>, <code>ps aux</code></td>
+<td>48.5</td>
+</tr>
+<tr class="odd">
+<td>SSH <code>Connection refused</code> / <code>timed out</code></td>
+<td><code>systemctl status ssh</code>, <code>ping</code></td>
+<td>49.8</td>
+</tr>
+<tr class="even">
+<td>Uhrzeit falsch</td>
+<td><code>timedatectl</code></td>
+<td>49.8</td>
+</tr>
+<tr class="odd">
+<td>Pi startet nicht, LED blinkt</td>
+<td>LED-Muster zählen</td>
+<td>8, 49.1</td>
+</tr>
+<tr class="even">
+<td><code>Waiting for root device</code></td>
+<td><code>blkid</code> vs. <code>cmdline.txt</code></td>
+<td>49.1, 8</td>
+</tr>
+<tr class="odd">
+<td><code>bcm2712-rpi-5-b.dtb not found</code></td>
+<td>Boot-Partition ansehen</td>
+<td>26.3, 49.1</td>
+</tr>
+<tr class="even">
+<td><code>USB boot requires high current</code></td>
+<td><code>vcgencmd get_throttled</code></td>
+<td>26.4, 49.2</td>
+</tr>
+<tr class="odd">
+<td>Blitz-Symbol, Ruckeln, Neustarts</td>
+<td><code>vcgencmd get_throttled</code></td>
+<td>49.2</td>
+</tr>
+<tr class="even">
+<td>Kein Bild / Bild winzig auf 4K</td>
+<td><code>wlr-randr</code></td>
+<td>10, 49.3</td>
+</tr>
+<tr class="odd">
+<td>Skalierung nach Neustart oder Monitorwechsel weg</td>
+<td><code>ps aux | grep kanshi</code></td>
+<td>10.4, 10.6, 49.3</td>
+</tr>
+<tr class="even">
+<td><code>failed to parse config file</code> (Kanshi)</td>
+<td><code>kanshi</code> im Terminal</td>
+<td>10, 56</td>
+</tr>
+<tr class="odd">
+<td>Kein Ton / falsches Gerät</td>
+<td><code>wpctl status</code></td>
+<td>49.4</td>
+</tr>
+<tr class="even">
+<td><code>/dev/i2c-1</code> fehlt, <code>i2cdetect</code> leer</td>
+<td><code>ls /dev/i2c*</code>, <code>sudo i2cdetect -y 1</code></td>
+<td>49.6, 51.6</td>
+</tr>
+<tr class="odd">
+<td><code>Cannot determine SOC peripheral base address</code> (Pi 5)</td>
+<td>–</td>
+<td>49.6</td>
+</tr>
+<tr class="even">
+<td>Lüfter/OLED/LED des Freenove-Gehäuses reagiert nicht</td>
+<td><code>systemctl status</code>, Datei im Terminal starten</td>
+<td>49.7, 11</td>
+</tr>
+<tr class="odd">
+<td>Autostart-Programm startet nicht</td>
+<td>Zeile im Terminal ausführen</td>
+<td>49.9, 5</td>
+</tr>
+<tr class="even">
+<td><code>IndentationError</code>, <code>TabError</code></td>
+<td><code>python3 -m py_compile datei.py</code></td>
+<td>50.2, 54</td>
+</tr>
+<tr class="odd">
+<td><code>SyntaxError</code></td>
+<td><code>python3 -m py_compile datei.py</code></td>
+<td>50.2, 54</td>
+</tr>
+<tr class="even">
+<td><code>NameError</code>, <code>UnboundLocalError</code></td>
+<td><code>grep -n name datei.py</code></td>
+<td>50.2, 54</td>
+</tr>
+<tr class="odd">
+<td><code>KeyError</code>, <code>JSONDecodeError</code></td>
+<td><code>python3 -m json.tool datei.json</code></td>
+<td>50.2, 50.5</td>
+</tr>
+<tr class="even">
+<td><code>ModuleNotFoundError</code></td>
+<td><code>which python3</code>, <code>pip list</code></td>
+<td>50.2</td>
+</tr>
+<tr class="odd">
+<td><code>could not connect to display</code>, Qt-Plugin <code>xcb</code></td>
+<td><code>echo $WAYLAND_DISPLAY</code>, <code>QT_DEBUG_PLUGINS=1</code></td>
+<td>50.3</td>
+</tr>
+<tr class="even">
+<td>Schaltfläche tut nichts</td>
+<td><code>grep -n "def name"</code>, <code>print</code></td>
+<td>22.6, 50.3</td>
+</tr>
+<tr class="odd">
+<td>Control Center startet nicht / Tab fehlt</td>
+<td><code>python3 app_ui.py</code> im Terminal, <code>Logs/oratio.log</code></td>
+<td>50.5</td>
+</tr>
+<tr class="even">
+<td>Einstellungen weg, Kachel verschwunden</td>
+<td><code>ls Json/</code>, <code>Json/Backup/</code></td>
+<td>50.5</td>
+</tr>
+<tr class="odd">
+<td>Schalter (Neustart, LED …) im Control Center ohne Wirkung</td>
+<td><code>sudo -n true &amp;&amp; echo OK</code></td>
+<td>50.5</td>
+</tr>
+<tr class="even">
+<td><code>cmake: command not found</code>, <code>undefined reference</code> (C++)</td>
+<td><code>bash build.sh</code></td>
+<td>50.6, 42</td>
+</tr>
+<tr class="odd">
+<td>Port fehlt, <code>Permission denied</code> auf <code>/dev/ttyUSB0</code></td>
+<td><code>ls /dev/ttyUSB*</code>, <code>groups</code></td>
+<td>51.1</td>
+</tr>
+<tr class="even">
+<td><code>avrdude: stk500_getsync(): not in sync</code></td>
+<td>Board und Bootloader prüfen</td>
+<td>51.2, 16</td>
+</tr>
+<tr class="odd">
+<td><code>Wrong boot mode detected</code> (ESP32)</td>
+<td>BOOT + RESET</td>
+<td>51.2</td>
+</tr>
+<tr class="even">
+<td><code>fatal error: X.h: No such file or directory</code></td>
+<td>Bibliotheksverwalter</td>
+<td>51.3</td>
+</tr>
+<tr class="odd">
+<td>Zeichensalat im Seriellen Monitor</td>
+<td>Baudrate vergleichen</td>
+<td>51.4</td>
+</tr>
+<tr class="even">
+<td><code>Brownout detector was triggered</code></td>
+<td>Netzteil, Kabel</td>
+<td>51.4, 69.5</td>
+</tr>
+<tr class="odd">
+<td>Display schwarz / verschoben / spiegelverkehrt</td>
+<td>I²C-Scanner (17.5)</td>
+<td>51.6, 20</td>
+</tr>
+<tr class="even">
+<td>LED-Streifen: falsche Farben, Flackern</td>
+<td>Pegel, Versorgung</td>
+<td>51.7</td>
+</tr>
+<tr class="odd">
+<td>Windows auf dem Deck: kein Ton, kein WLAN</td>
+<td>Geräte-Manager</td>
+<td>52.1, 28</td>
+</tr>
+<tr class="even">
+<td>SteamOS startet nach Windows nicht mehr</td>
+<td><code>efibootmgr -v</code></td>
+<td>52.4, 27</td>
+</tr>
+<tr class="odd">
+<td><code>Exec format error</code> (Deck)</td>
+<td><code>uname -m</code></td>
+<td>52.2, 43</td>
+</tr>
+<tr class="even">
+<td>Batocera: kein Bild, Controller, ROMs</td>
+<td><code>config.txt</code>, <code>/userdata</code></td>
+<td>52.3, 26</td>
+</tr>
+<tr class="odd">
+<td>Taster liefert Zufallswerte</td>
+<td>Pull-up/Pull-down</td>
+<td>69.2</td>
+</tr>
+<tr class="even">
+<td>Motor läuft nicht / zuckt</td>
+<td>Treiber, gemeinsame Masse</td>
+<td>67</td>
+</tr>
+<tr class="odd">
+<td>Bauteil unbekannt</td>
+<td>Aufdruck, Umgebung, Datenblatt</td>
+<td>66.1</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="sD-x1"><h2>D.2 Befehl → wobei er hilft</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Befehl</th>
+<th>Hilft bei</th>
+<th>Kapitel</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>lsblk</code></td>
+<td>Welche Platte ist welche? Vor <code>mkfs</code>, <code>dd</code>, <code>fdisk</code></td>
+<td>7, 48.4</td>
+</tr>
+<tr class="even">
+<td><code>blkid</code></td>
+<td>UUID/PARTUUID für <code>fstab</code> und <code>cmdline.txt</code></td>
+<td>7, 8</td>
+</tr>
+<tr class="odd">
+<td><code>df -h</code></td>
+<td>Platte voll?</td>
+<td>48.4</td>
+</tr>
+<tr class="even">
+<td><code>du -h --max-depth=1</code></td>
+<td>Was frisst den Platz?</td>
+<td>48.4</td>
+</tr>
+<tr class="odd">
+<td><code>dmesg | tail</code></td>
+<td>Was hat der Kern beim Anstecken erkannt?</td>
+<td>47.3</td>
+</tr>
+<tr class="even">
+<td><code>journalctl -b -p err</code></td>
+<td>Fehler seit dem Start</td>
+<td>47.3</td>
+</tr>
+<tr class="odd">
+<td><code>systemctl status NAME</code></td>
+<td>Läuft der Dienst? Warum nicht?</td>
+<td>5, 48.5</td>
+</tr>
+<tr class="even">
+<td><code>ps aux | grep NAME</code></td>
+<td>Läuft das Programm wirklich?</td>
+<td>5, 48.5</td>
+</tr>
+<tr class="odd">
+<td><code>vcgencmd get_throttled</code></td>
+<td>Unterspannung, Drosselung</td>
+<td>49.2</td>
+</tr>
+<tr class="even">
+<td><code>vcgencmd measure_temp</code></td>
+<td>Temperatur</td>
+<td>49.2</td>
+</tr>
+<tr class="odd">
+<td><code>wlr-randr</code></td>
+<td>Ausgangsname, Skalierung</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td><code>echo $XDG_SESSION_TYPE</code></td>
+<td>Wayland oder X11?</td>
+<td>10, 49.3</td>
+</tr>
+<tr class="odd">
+<td><code>wpctl status</code></td>
+<td>Tonausgabe, Standardgerät</td>
+<td>49.4</td>
+</tr>
+<tr class="even">
+<td><code>sudo i2cdetect -y 1</code></td>
+<td>Antwortet das I²C-Gerät?</td>
+<td>49.6</td>
+</tr>
+<tr class="odd">
+<td><code>pinctrl get 17</code></td>
+<td>Funktion und Pegel eines GPIO-Pins</td>
+<td>49.6</td>
+</tr>
+<tr class="even">
+<td><code>python3 -m py_compile datei.py</code></td>
+<td>Syntax ohne Start prüfen</td>
+<td>50.4</td>
+</tr>
+<tr class="odd">
+<td><code>python3 -m json.tool datei.json</code></td>
+<td>JSON gültig? Fehlerstelle</td>
+<td>50.4</td>
+</tr>
+<tr class="even">
+<td><code>python3 -X faulthandler app.py</code></td>
+<td>harte Abstürze</td>
+<td>50.4</td>
+</tr>
+<tr class="odd">
+<td><code>grep -rn "text" .</code></td>
+<td>Wo kommt das vor?</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td><code>sed -n '50,65p' datei</code></td>
+<td>Zeilenausschnitt zur Fehlermeldung</td>
+<td>4, 50.1</td>
+</tr>
+<tr class="odd">
+<td><code>ls -l</code></td>
+<td>Rechte und Besitzer</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td><code>chmod +x</code> / <code>chown</code></td>
+<td>ausführbar machen / Besitz zurückholen</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td><code>which NAME</code> / <code>command -v NAME</code></td>
+<td>Ist das Programm da? Welche Version läuft?</td>
+<td>48.1</td>
+</tr>
+<tr class="even">
+<td><code>uname -m</code>, <code>file programm</code></td>
+<td>Prozessorart (x86_64 / aarch64)</td>
+<td>52.2</td>
+</tr>
+<tr class="odd">
+<td><code>efibootmgr -v</code></td>
+<td>Boot-Einträge (Dual Boot)</td>
+<td>52.4</td>
+</tr>
+<tr class="even">
+<td><code>arduino-cli board list</code></td>
+<td>Welcher Port, welches Board?</td>
+<td>16</td>
+</tr>
+<tr class="odd">
+<td><code>pio run -t clean</code></td>
+<td>PlatformIO-Zwischenspeicher</td>
+<td>51.8</td>
+</tr>
+<tr class="even">
+<td><code>esptool</code> / <code>avrdude</code></td>
+<td>Firmware sichern oder schreiben</td>
+<td>16.9, 17.9</td>
+</tr>
+<tr class="odd">
+<td><code>nmcli dev wifi</code>, <code>rfkill list</code></td>
+<td>WLAN-Probleme</td>
+<td>49.8</td>
+</tr>
+<tr class="even">
+<td><code>timedatectl</code></td>
+<td>Zeitzone und Zeitsynchronisation</td>
+<td>49.8</td>
+</tr>
+<tr class="odd">
+<td><code>ssh-keygen -R IP</code></td>
+<td>Meldung „host identification changed“</td>
+<td>49.8</td>
+</tr>
+<tr class="even">
+<td><code>Get-FileHash</code>, <code>sha256sum</code></td>
+<td>Download prüfen</td>
+<td>25.7, 45</td>
+</tr>
+</tbody>
+</table></div>
+</section>

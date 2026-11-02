@@ -1,0 +1,132 @@
+<section id="s34-1"><h2>34.1 Das Ziel</h2><p>Wie auf dem Handy sollten die Kacheln mit der Maus <strong>verschiebbar</strong> sein: auf eine andere Kachel ziehen tauscht beide, auf einen leeren Platz ziehen setzt die Kachel dorthin. Die neue Position soll in der JSON-Datei stehen, damit sie nach dem Neustart bleibt.</p>
+</section><section id="s34-2"><h2>34.2 Der Plan in drei Stufen</h2><p>Ich habe das Ziehen bewusst nicht in einem Schritt gebaut, weil ein Fehler das ganze Tab lahmlegt:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Stufe</th>
+<th>Ziel</th>
+<th>Erfolgskontrolle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Erkennen, dass eine Kachel gezogen wird</td>
+<td>im Terminal erscheint „Ziehe: Backup“</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Wissen, wo sie losgelassen wurde</td>
+<td>Ausgabe „von (0,0) nach (3,2)“</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Tauschen und in JSON speichern</td>
+<td>nach Neustart bleibt die Reihenfolge</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s34-3"><h2>34.3 Stufe 1: eine eigene Schaltflächen-Klasse</h2><p>Eine normale <code>QPushButton</code> meldet keine Mausbewegung. Deshalb bekommt jede Kachel eine eigene Klasse, die von <code>QPushButton</code> erbt und drei Maus-Ereignisse selbst behandelt:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PyQt5.QtCore <span class="im">import</span> Qt, QPoint</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> DraggableButton(QPushButton):</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, text, parent<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(text, parent)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.drag_start_position <span class="op">=</span> QPoint()</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> mousePressEvent(<span class="va">self</span>, event):</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> event.button() <span class="op">==</span> Qt.LeftButton:</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.drag_start_position <span class="op">=</span> event.pos()</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().mousePressEvent(event)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> mouseMoveEvent(<span class="va">self</span>, event):</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> (event.buttons() <span class="op">&amp;</span> Qt.LeftButton):</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        distance <span class="op">=</span> (event.pos() <span class="op">-</span> <span class="va">self</span>.drag_start_position).manhattanLength()</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> distance <span class="op">&lt;</span> <span class="dv">10</span>:</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f&quot;Ziehe: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>text()<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<p>Was hier passiert:</p>
+<ul>
+<li><code>mousePressEvent</code>: Taste gedrückt, den Startpunkt merken.</li>
+<li><code>mouseMoveEvent</code>: Maus bewegt. Erst wenn sie <strong>mehr als 10 Pixel</strong> vom Startpunkt entfernt ist, gilt es als Ziehen. Das verhindert, dass ein normaler Klick versehentlich als Ziehen zählt.</li>
+<li><code>mouseReleaseEvent</code> kommt in Stufe 2.</li>
+</ul>
+<p>Im Code genügt dann die Änderung <code>btn = DraggableButton(...)</code> statt <code>btn = QPushButton(...)</code>.</p>
+</section><section id="s34-4"><h2>34.4 Stufe 2 und 3: Ziel finden, tauschen, speichern</h2><p>Beim Loslassen wird geprüft, über welcher anderen Kachel die Maus steht. Dazu holt man für jede Kachel ihr Rechteck in <strong>Fenster-Koordinaten</strong> und prüft, ob der Mauspunkt darin liegt. Dann gibt es zwei Fälle:</p>
+<ol type="1">
+<li>Ziel ist belegt: beide Einträge in der Liste tauschen ihre Position.</li>
+<li>Ziel ist leer: nur der gezogene Eintrag bekommt die neue Position.</li>
+</ol>
+<p>Danach schreibt das Programm die Liste in <code>oratio_apps.json</code> zurück.</p>
+<p>Typische Fehler auf diesem Weg:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Meldung oder Symptom</th>
+<th>Ursache</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Programm startet gar nicht mehr nach dem Einfügen</td>
+<td>Einrückung oder Syntax: im Terminal starten, die letzte Zeile der Fehlermeldung nennt die Art (<code>IndentationError</code>, <code>SyntaxError</code>, <code>NameError</code>)</td>
+</tr>
+<tr class="even">
+<td><code>self.row</code> und <code>print</code> stehen auf unterschiedlicher Ebene</td>
+<td>Der neue Block gehört auf die Ebene der Nachbarzeilen</td>
+</tr>
+<tr class="odd">
+<td>Die Testausgabe (<code>print</code>) erscheint beim Ziehen nie</td>
+<td>Die Zeile steht außerhalb der Schleife</td>
+</tr>
+<tr class="even">
+<td>Ziehen funktioniert nur mit dem Tauschen, nicht mit leerem Platz</td>
+<td>Der Code kannte nur „Kachel gegen Kachel“; ein leerer Platz muss als Ziel erkannt werden</td>
+</tr>
+<tr class="odd">
+<td>Programm stürzt beim Loslassen ab</td>
+<td>im Release-Ereignis wird auf ein Objekt zugegriffen, das es nicht mehr gibt</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s34-5"><h2>34.5 „Ganz langsam“ – und warum es plötzlich schnell war</h2><p>Beim Ziehen ruckelte die Oberfläche stark. Ich hatte beim Entwickeln an vielen Stellen <code>print(...)</code> stehen, um zu sehen, was passiert. Nachdem ich <strong>alle</strong> Ausgaben auskommentiert hatte, lief das Ziehen flüssig.</p>
+<p><strong>Lehre:</strong> Eine Ausgabe in ein Terminal ist langsam, vor allem, wenn sie bei jeder Mausbewegung kommt (Hunderte Mal pro Sekunde). Ausgaben zur Fehlersuche gehören nach dem Test wieder heraus oder hinter eine Bedingung. Das gilt für jede Programmiersprache.</p>
+</section><section id="s34-6"><h2>34.6 Das Aussehen der Kacheln</h2><h3 id="icons-und-namen">Icons und Namen</h3>
+<p>Die Kacheln zeigten zuerst den Namen im Button. Ich wollte nur das Icon als Bild und den <strong>Namen darunter</strong>, außerhalb der Schaltfläche. Dafür besteht eine Kachel aus einem Container, der eine Schaltfläche (mit Bild) und ein Textfeld darunter enthält.</p>
+<p>Fallstricke:</p>
+<ul>
+<li>Der Pfad zum Bild steht in der JSON. Ein falscher Pfad lässt das Bild leer, <strong>und der Pfad erscheint als Text im Button.</strong> Pfad prüfen: <code>ls Pfad/zur/Datei.png</code>.</li>
+<li>Bilder sollen alle <strong>quadratisch und gleich groß</strong> sein. Ein Icon mit mehr Rand wirkt kleiner als eines, das den Rand ausnutzt. Besser: alle Bilder mit demselben Zeichenfeld (zum Beispiel 512 × 512 Pixel, transparenter Hintergrund) anlegen.</li>
+<li>Mehrere Größen gleichzeitig (<code>ICON_SIZE</code>, <code>BUTTON_SIZE</code>, <code>HOVER_ICON_SIZE</code>): Wenn irgendwo ein alter fester Wert (<code>QSize(40, 40)</code>) stehen bleibt, springen Bilder beim Klicken auf eine falsche Größe. Alle Größen an <strong>einer</strong> Stelle als Konstanten sammeln.</li>
+</ul>
+<h3 id="hover-die-kachel-wird-beim-darüberfahren-größer">Hover: die Kachel wird beim Darüberfahren größer</h3>
+<p>Fährt die Maus über eine Kachel, wächst das Icon um ein paar Pixel (von 40 auf 55). Der Container muss dafür Platz lassen, sonst wird das vergrößerte Bild abgeschnitten.</p>
+<h3 id="der-milchige-effekt-beim-ziehen">Der milchige Effekt beim Ziehen</h3>
+<p>Wenn eine Kachel über eine andere gezogen wird, soll die <strong>untere</strong> Kachel milchig-weiß aufleuchten. Der Weg dorthin war lang:</p>
+<ol type="1">
+<li>Ein weißes Rechteck hinter dem Bild: nicht sichtbar, weil das PNG davor liegt. Alles, was man dem Hintergrund (<code>background-color</code>) gibt, liegt <strong>hinter</strong> dem Bild.</li>
+<li>Ein Qt-Effekt auf der Schaltfläche (<code>QGraphicsColorizeEffect</code>) färbt das Bild selbst ein:</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>effect <span class="op">=</span> QGraphicsColorizeEffect()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>effect.setColor(QColor(<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>effect.setStrength(<span class="fl">0.25</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>button.setGraphicsEffect(effect)</span></code></pre></div>
+<ol start="3" type="1">
+<li>Gefallen hat mir am Ende eine <strong>Überlagerung (Overlay)</strong>: ein halbtransparentes weißes Widget in der Größe der Kachel, mit abgerundeten Ecken, liegt <strong>vor</strong> dem Bild. Es verändert die Datei des Icons nicht und passt sich der Kachelgröße an.</li>
+</ol>
+<p>Dazu gehört eine <strong>Rundungsmaske</strong>, damit der Effekt nicht über die Ecken hinausläuft. Vorgehen: erst prüfen, ob die Qt-Version die Klasse kennt (<code>from PyQt5.QtGui import QPainterPath</code> und eine Zeile <code>path = QPainterPath()</code>), dann die Maske mit <code>addRoundedRect</code> bauen und als Clip verwenden.</p>
+<p>Weitere Verbesserungen, die ich nacheinander getestet habe:</p>
+<ul>
+<li>Die gezogene Kachel wird <strong>dunkler</strong> (wie beim Antippen am Handy), die Zielkachel heller.</li>
+<li>Der Effekt soll <strong>symmetrisch</strong> sein (gleichmäßiger Abstand zum Rand, nicht ein Klecks).</li>
+<li>Beim Ziehen sollen die <strong>anderen</strong> Kacheln ihre eigene Farbe behalten (Blau bleibt blau).</li>
+<li>Das vergrößerte Bild wird am Rand <strong>abgeschnitten</strong>: Der Container braucht mehr Platz oder der Hover-Zuwachs muss kleiner sein.</li>
+</ul>
+</section><section id="s34-7"><h2>34.7 Was ich aus diesem Kapitel mitnehme</h2><ul>
+<li>Ein Effekt entsteht in Schichten: Was liegt hinter, was liegt vor dem Bild?</li>
+<li>Erst prüfen, ob eine Qt-Funktion in der installierten Version existiert, bevor man sie überall einbaut.</li>
+<li>Entwicklungs-Ausgaben bremsen.</li>
+<li>Eine Änderung, ein Test.</li>
+</ul>
+</section>

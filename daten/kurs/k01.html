@@ -1,0 +1,131 @@
+<section id="s1-1"><h2>1.1 Was ist das Terminal?</h2><p>Das Terminal ist ein Fenster, in dem man dem Computer <strong>Textbefehle</strong> gibt. Auf dem Raspberry Pi läuft Linux. Fast alles, was sich mit der Maus erledigen lässt, geht auch über Befehle, und oft ist es so schneller und genauer. Das Terminal lässt sich direkt auf dem Pi oder über SSH von einem anderen Gerät benutzen.</p>
+<p>Ein Befehl hat meistens diese Form:</p>
+<pre class="text"><code>befehl  -optionen  ziel</code></pre>
+<p>Beispiel:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-la</span> /home/oratio</span></code></pre></div>
+<p><code>ls</code> ist der Befehl, <code>-la</code> sind Optionen (Schalter), <code>/home/oratio</code> ist das Ziel.</p>
+</section><section id="s1-2"><h2>1.2 Wo bin ich? Dateien und Ordner</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Befehl</th>
+<th>Bedeutung</th>
+<th>Beispiel</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>pwd</code></td>
+<td>zeigt den aktuellen Ordner</td>
+<td><code>pwd</code></td>
+</tr>
+<tr class="even">
+<td><code>ls</code></td>
+<td>listet Dateien auf</td>
+<td><code>ls</code></td>
+</tr>
+<tr class="odd">
+<td><code>ls -la</code></td>
+<td>alles, auch versteckte Dateien, mit Details</td>
+<td><code>ls -la</code></td>
+</tr>
+<tr class="even">
+<td><code>cd Ordner</code></td>
+<td>in einen Ordner wechseln</td>
+<td><code>cd Projekte</code></td>
+</tr>
+<tr class="odd">
+<td><code>cd ..</code></td>
+<td>eine Ebene zurück</td>
+<td><code>cd ..</code></td>
+</tr>
+<tr class="even">
+<td><code>cd ~</code></td>
+<td>in den Home-Ordner</td>
+<td><code>cd ~</code></td>
+</tr>
+<tr class="odd">
+<td><code>mkdir Name</code></td>
+<td>Ordner anlegen</td>
+<td><code>mkdir Test</code></td>
+</tr>
+<tr class="even">
+<td><code>touch datei.txt</code></td>
+<td>leere Datei anlegen</td>
+<td><code>touch test.txt</code></td>
+</tr>
+<tr class="odd">
+<td><code>cat datei.txt</code></td>
+<td>Dateiinhalt anzeigen</td>
+<td><code>cat test.txt</code></td>
+</tr>
+<tr class="even">
+<td><code>cp a.txt b.txt</code></td>
+<td>kopieren</td>
+<td><code>cp datei.txt kopie.txt</code></td>
+</tr>
+<tr class="odd">
+<td><code>mv a.txt Ordner/</code></td>
+<td>verschieben oder umbenennen</td>
+<td><code>mv datei.txt Ordner/</code></td>
+</tr>
+<tr class="even">
+<td><code>rm datei.txt</code></td>
+<td>löschen (endgültig, kein Papierkorb!)</td>
+<td><code>rm datei.txt</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Wichtig:</strong> <code>rm</code> löscht sofort und ohne Rückfrage. Es gibt keinen Papierkorb. Ein Ordner wird mit <code>rm -r Ordner</code> gelöscht. Der Befehl <code>rm -rf</code> ist besonders gefährlich, weil er nie nachfragt.</p>
+<p>Das Zeichen <code>~</code> steht für den Home-Ordner, bei mir <code>/home/oratio</code>. Mit der <strong>Tab-Taste</strong> werden Dateinamen automatisch vervollständigt, und mit den <strong>Pfeiltasten hoch/runter</strong> kommen frühere Befehle zurück.</p>
+</section><section id="s1-3"><h2>1.3 Dateien bearbeiten mit nano</h2><p><code>nano</code> ist der einfachste Texteditor im Terminal. Ich brauche ihn ständig.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> ~/.bashrc</span></code></pre></div>
+<p>Bedienung in nano (die Tastenkürzel stehen unten im Fenster):</p>
+<ul>
+<li>Speichern: <strong>Strg + O</strong>, dann <strong>Enter</strong></li>
+<li>Beenden: <strong>Strg + X</strong></li>
+<li>Wenn nano nach dem Speichern fragt: <strong>Enter</strong> bestätigt den Dateinamen.</li>
+</ul>
+<p>Beim Einfügen von langem Code in das Terminal kann es sehr lang dauern, ihn wieder zu löschen. In nano löscht <strong>Strg + K</strong> eine ganze Zeile.</p>
+</section><section id="s1-4"><h2>1.4 Hilfe holen</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">man</span> ls          <span class="co"># ausführliche Anleitung (Beenden mit q)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">--help</span>       <span class="co"># Kurzhilfe</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">history</span>         <span class="co"># alle bisherigen Befehle</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">history</span> <span class="kw">|</span> <span class="fu">grep</span> wlr    <span class="co"># nur Befehle, in denen &quot;wlr&quot; vorkommt</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">!!</span>              <span class="co"># den letzten Befehl wiederholen</span></span></code></pre></div>
+</section><section id="s1-5"><h2>1.5 Der senkrechte Strich: die Pipe</h2><p>Das Zeichen <code>|</code> (die <strong>Pipe</strong>) schickt die Ausgabe des ersten Befehls an den zweiten weiter. Ich habe sie ständig benutzt:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ps</span> aux <span class="kw">|</span> <span class="fu">grep</span> python         <span class="co"># Prozesse anzeigen, aber nur die mit &quot;python&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dmesg</span> <span class="kw">|</span> <span class="fu">tail</span>                 <span class="co"># die letzten Kernel-Meldungen</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">wlr-randr</span> <span class="kw">|</span> <span class="fu">grep</span> Scale       <span class="co"># nur die Zeile mit der Skalierung</span></span></code></pre></div>
+</section><section id="s1-6"><h2>1.6 Befehle verketten</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Zeichen</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>&amp;&amp;</code></td>
+<td>zweiter Befehl nur, wenn der erste geklappt hat</td>
+</tr>
+<tr class="even">
+<td><code>;</code></td>
+<td>zweiter Befehl immer</td>
+</tr>
+<tr class="odd">
+<td><code>&amp;</code> am Ende</td>
+<td>im Hintergrund starten (z. B. <code>kanshi &amp;</code>)</td>
+</tr>
+<tr class="even">
+<td><code>&gt;</code></td>
+<td>Ausgabe in eine Datei schreiben (überschreibt)</td>
+</tr>
+<tr class="odd">
+<td><code>&gt;&gt;</code></td>
+<td>Ausgabe an eine Datei anhängen</td>
+</tr>
+</tbody>
+</table></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt upgrade <span class="at">-y</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Text&quot;</span> <span class="op">&gt;&gt;</span> datei.txt</span></code></pre></div>
+</section><section id="s1-7"><h2>1.7 Ein typischer Fehler: das zusätzliche Zeichen</h2><p>Ein typischer Tippfehler: <code>&lt;wlr-randr --output HDMI-A-1 --scale 3</code> eingegeben. Das <code>&lt;</code> vorn am Befehl bedeutet in der Shell: „lies den Inhalt aus einer Datei". Die Shell meldet dann, dass die Datei nicht gefunden wurde. Merke: Befehle exakt abtippen, jedes Zeichen zählt. Auch Groß- und Kleinschreibung zählt unter Linux.</p>
+</section>

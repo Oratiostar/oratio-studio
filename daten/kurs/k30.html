@@ -1,0 +1,199 @@
+<p>Dieses Kapitel fasst zusammen, wie Sprachsteuerung grundsätzlich funktioniert und was die Projekte (<a class="xr" href="#/kap/39/39.3">Kapitel 39.3</a> auf dem Pi, 43.6 auf dem Steam Deck) daraus gemacht haben. Wer verstanden hat, welche Teile es gibt und wo sie scheitern können, kann Fehler selbst einkreisen.</p>
+<section id="s30-1"><h2>30.1 Die Kette</h2><pre class="text"><code>Mikrofon → Aufnahme → Spracherkennung → Text → Befehl oder KI → Antworttext → Sprachausgabe → Lautsprecher</code></pre>
+<p>Jedes Glied ist ein eigenes Programm und kann einzeln getestet werden. Fehlersuche bedeutet: von links nach rechts jedes Glied prüfen, bis es bricht.</p>
+</section><section id="s30-2"><h2>30.2 Die Bausteine</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Aufgabe</th>
+<th>Programm</th>
+<th>Merkmal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Aufnehmen</td>
+<td><code>arecord</code> (ALSA), <code>parecord</code> (PulseAudio), <code>pw-record</code> (PipeWire)</td>
+<td>liefert eine WAV-Datei oder einen Datenstrom</td>
+</tr>
+<tr class="even">
+<td>Erkennen, schnell (Befehle)</td>
+<td><strong>Vosk</strong></td>
+<td>klein, offline, versteht nur einfache Sätze</td>
+</tr>
+<tr class="odd">
+<td>Erkennen, genauer (Diktat)</td>
+<td><strong>faster-whisper</strong> (Modelle tiny, base, small, medium)</td>
+<td>größer = besser und langsamer</td>
+</tr>
+<tr class="even">
+<td>Antworten, Wissen</td>
+<td><strong>Ollama</strong> mit <strong>Gemma</strong> (<code>gemma3:1b</code> oder <code>gemma3:4b</code>)</td>
+<td>läuft lokal, braucht RAM</td>
+</tr>
+<tr class="odd">
+<td>Sprechen</td>
+<td><strong>Piper</strong> (Stimme „Thorsten“, de_DE)</td>
+<td>neuronale Stimme, offline; Qualität medium oder high</td>
+</tr>
+<tr class="even">
+<td>Notlösung beim Sprechen</td>
+<td><code>espeak-ng</code></td>
+<td>klingt roboterhaft, geht fast überall</td>
+</tr>
+<tr class="odd">
+<td>Abspielen</td>
+<td><code>aplay</code>, <code>paplay</code>, <code>pw-play</code></td>
+<td>spielen die erzeugte WAV-Datei</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Wake-Word</strong> (Aufwachwort): Ein Programm, das dauernd lauscht und nur auf <strong>einen</strong> Namen reagiert. Im Control Center übernimmt das die Spracherkennung (Vosk), die im Dauerbetrieb nur auf den eingestellten Namen achtet; alles andere wird verworfen (<a class="xr" href="#/kap/39/39.3">Kapitel 39.3</a>, dort steht auch, warum ein eigener Name Probleme macht).</p>
+</section><section id="s30-3"><h2>30.3 Erst prüfen, ob das Mikrofon überhaupt hört</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arecord</span> <span class="at">-l</span>                                   <span class="co"># Aufnahmegeräte (ALSA)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pactl</span> list short sources                     <span class="co"># Aufnahmequellen (PulseAudio/PipeWire)</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pactl</span> get-default-source                     <span class="co"># Standardquelle</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">parecord</span> <span class="at">--channels</span><span class="op">=</span>1 <span class="at">--rate</span><span class="op">=</span>16000 test.wav  <span class="co"># aufnehmen (Strg+C beendet)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">paplay</span> test.wav                              <span class="co"># abspielen</span></span></code></pre></div>
+<p>Ist die Aufnahme leise oder leer: in den Audioeinstellungen das richtige Eingabegerät wählen und die Lautstärke prüfen. Ist das Mikrofon stumm geschaltet, meldet das die Sprachsteuerung selbst.</p>
+</section><section id="s30-4"><h2>30.4 Regel: Alles, was exakt sein muss, gehört nicht ins Sprachmodell</h2><p>Ein Sprachmodell <strong>rät Wahrscheinlichkeiten</strong>, es liest keine Uhr. Gefragt, wie spät es sei, erfand Gemma 1B „17:22“. Deshalb prüft das Programm vor jeder Anfrage per Regeln, ob es ein bekannter Befehl ist:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Frage</th>
+<th>Antwort kommt von</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>„Wie spät ist es?“</td>
+<td>Systemuhr</td>
+</tr>
+<tr class="even">
+<td>„Welcher Tag ist heute?“</td>
+<td>Systemdatum</td>
+</tr>
+<tr class="odd">
+<td>„Wie wird das Wetter morgen?“</td>
+<td>Wetterdienst (Open-Meteo, kostenlos, ohne Schlüssel)</td>
+</tr>
+<tr class="even">
+<td>„Lauter“, „Öffne Kalender“</td>
+<td>lokale Befehlsliste</td>
+</tr>
+<tr class="odd">
+<td>alles andere</td>
+<td>Gemma über Ollama</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s30-5"><h2>30.5 Erkennungsqualität – eine ehrliche Bilanz</h2><p>Das Mikrofon funktionierte, aber die Erkennung war schlecht: Aus Sätzen wurden fremde Wörter. Das liegt nicht an einem Programmfehler, sondern an der <strong>Größe der Modelle</strong>.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Whisper-Modell</th>
+<th>Qualität Deutsch</th>
+<th>Download</th>
+<th>Tempo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>tiny</td>
+<td>schlecht</td>
+<td>ca. 75 MB</td>
+<td>sehr schnell</td>
+</tr>
+<tr class="even">
+<td>base</td>
+<td>mäßig</td>
+<td>ca. 150 MB</td>
+<td>schnell</td>
+</tr>
+<tr class="odd">
+<td>small</td>
+<td>brauchbar</td>
+<td>ca. 500 MB</td>
+<td>gut</td>
+</tr>
+<tr class="even">
+<td>medium</td>
+<td>gut</td>
+<td>ca. 1,5 GB</td>
+<td>spürbar langsamer</td>
+</tr>
+</tbody>
+</table></div>
+<p>Große Cloud-Assistenten laufen in Rechenzentren mit riesigen Modellen. Offline auf einem Kleingerät mit einem Modell von einer Milliarde Parametern versteht Gemma schlicht weniger. Wer besser verstanden werden will, nimmt ein größeres Erkennungsmodell, spricht näher am Mikrofon und reduziert Hintergrundlärm.</p>
+</section><section id="s30-6"><h2>30.6 Typische Fehler und wie man sie eingrenzt</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Glied</th>
+<th>Prüfen</th>
+<th>Deutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Keine Aufnahme</td>
+<td>Mikrofon</td>
+<td><code>arecord -l</code>, <code>pactl list short sources</code></td>
+<td>kein Gerät = Kabel, Rechte, falsche Quelle</td>
+</tr>
+<tr class="even">
+<td>Aufnahme leer oder leise</td>
+<td>Mikrofon</td>
+<td><code>parecord test.wav</code> + <code>paplay test.wav</code></td>
+<td>Lautstärke oder Quelle falsch</td>
+</tr>
+<tr class="odd">
+<td>Text ist falsch</td>
+<td>Erkennung</td>
+<td>gleiche Aufnahme mit größerem Modell</td>
+<td>Modell zu klein</td>
+</tr>
+<tr class="even">
+<td>Piper sagt nichts</td>
+<td>Sprechen</td>
+<td>Log lesen (<code>cat ~/oratio_sprechen.log</code>)</td>
+<td>steht dort „Exec format error“: Programmdatei ist für die falsche Prozessor-Architektur (Pi: <code>aarch64</code>, Deck: <code>x86_64</code>), siehe <a class="xr" href="#/kap/43/43.6">Kapitel 43.6</a>.4</td>
+</tr>
+<tr class="odd">
+<td>Stimme stottert oder bricht ab</td>
+<td>Abspielen</td>
+<td>erst komplette WAV erzeugen, dann <code>paplay</code></td>
+<td>direktes Streamen in den Player ist unzuverlässig</td>
+</tr>
+<tr class="even">
+<td>„Modell gemma3:4b ist nicht installiert“</td>
+<td>KI</td>
+<td><code>ollama list</code></td>
+<td>im Programm steht ein anderer Modellname als installiert; Namen vergleichen</td>
+</tr>
+<tr class="odd">
+<td>KI antwortet nicht</td>
+<td>KI</td>
+<td><code>curl http://127.0.0.1:11434/api/tags</code></td>
+<td>keine Antwort = Server läuft nicht (<code>ollama serve</code>)</td>
+</tr>
+<tr class="even">
+<td>Frage nach Uhrzeit wird erfunden</td>
+<td>Befehlslogik</td>
+<td>Regeln vor dem Modell</td>
+<td>siehe 30.4</td>
+</tr>
+<tr class="odd">
+<td>Der eigene Name wird nicht erkannt</td>
+<td>Wake-Word</td>
+<td>Anzeige, auf welches Wort er reagiert</td>
+<td>Name ist kein echtes deutsches Wort; ähnlich klingende Wörter nehmen oder ein klares Wort wählen</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s30-7"><h2>30.7 Lehren</h2><ol type="1">
+<li>Jedes Glied einzeln testen, dann zusammensetzen.</li>
+<li>Fertige Programmdateien (Piper, Ollama) nie zwischen Geräten mit anderer Architektur kopieren.</li>
+<li>Lange Installationen im Hintergrund-Thread laufen lassen, Fortschritt per Signal melden.</li>
+<li>Exaktes (Uhr, Wetter, Rechnen) nie dem Sprachmodell überlassen.</li>
+<li>Kleine Modelle sind schnell, aber begrenzt; die Qualität kauft man mit Größe und Zeit.</li>
+</ol>
+</section>

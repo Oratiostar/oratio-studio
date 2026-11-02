@@ -1,0 +1,180 @@
+<p>Dieses Kapitel ist ein Nachschlagewerk: Zu jeder Funktion steht, <strong>wo sie auf dem Bildschirm zu finden ist</strong>, <strong>welche Datei sie enthält</strong> und <strong>welche Einstellungsdatei</strong> sie anlegt. Wer eine Funktion nachbauen will, findet hier die Bausteine; die allgemeine Anleitung zum Selbstbauen steht in <a class="xr" href="#/kap/39">Kapitel 39</a>.</p>
+<p><strong>Immer wieder dasselbe Muster</strong> (so entsteht jede neue Funktion):</p>
+<ol type="1">
+<li>Eine neue Datei in <code>Oratio_Menu/</code> mit der Logik und dem Fenster.</li>
+<li>Eine Zeile in <code>Fenster/zentrale.py</code> (damit sie in der Einstellungsliste auftaucht).</li>
+<li>Ein Eintrag in <code>suche.py</code> (damit die Lupe sie findet).</li>
+<li>Eine JSON-Datei in <code>Json/</code>, die beim ersten Ändern von selbst entsteht.</li>
+<li>Optional ein Start in <code>Ansicht/leiste.py</code>, wenn im Hintergrund etwas laufen soll.</li>
+</ol>
+<section id="s38-1"><h2>38.1 Mitteilungszentrum (Glocke)</h2><ul>
+<li><strong>Wo:</strong> Glocke oben rechts (links neben dem Pinsel). Antippen öffnet die Liste, jede Mitteilung ist einzeln löschbar, unten „Alle löschen“. Rote Zahl = ungelesen.</li>
+<li><strong>Banner:</strong> Eine neue Mitteilung gleitet als kleines Glasbanner unter der Leiste herein und nach ca. 5 s wieder hinaus.</li>
+<li><strong>Nicht stören:</strong> keine Banner, kein roter Punkt; die Mitteilungen landen trotzdem in der Liste.</li>
+<li><strong>Kommen von selbst:</strong> Timer und Wecker, Backup fertig oder fehlgeschlagen, Update fertig, „Der Pi ist heiß“ (ab 80 °C CPU, erneute Meldung erst nach Abkühlung unter 74 °C).</li>
+<li><strong>Ausblenden:</strong> Menü-Einstellungen → Oben rechts → „Glocke (Mitteilungen)“.</li>
+<li><strong>Eigene Mitteilung aus einer App oder einem Skript:</strong></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Oratio_Menu <span class="im">import</span> mitteilungen</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mitteilungen.post(<span class="st">&quot;Titel&quot;</span>, <span class="st">&quot;Text&quot;</span>, app<span class="op">=</span><span class="st">&quot;Name&quot;</span>, level<span class="op">=</span><span class="st">&quot;ok&quot;</span>)   <span class="co"># level: info, ok, warn, error</span></span></code></pre></div>
+<p>Apps in <code>Oratio_Menu/Apps/...</code> können das direkt. Sonst vorher <code>sys.path.insert(0, &lt;Projektordner&gt;)</code>. Ein Fehler in dieser Zeile stoppt nie die App.</p>
+<ul>
+<li><strong>Datei:</strong> <code>Oratio_Menu/mitteilungen.py</code>; gespeichert in <code>Json/oratio_mitteilungen.json</code> (letzte 60).</li>
+</ul>
+<p><strong>Fehler, der sich versteckte:</strong> In der französischen Sprachdatei zeigten 108 Texte mit eingesetzten Werten („Seite 3“, „5 Min“, „Fehlercode 2“) ein <code>\1</code> statt des Wertes. Behoben wurden genau diese 108 Zeilen. Lehre: <strong>Texte mit Platzhaltern in jeder Sprache einmal mit eingesetztem Wert ansehen.</strong></p>
+</section><section id="s38-2"><h2>38.2 Suche (Lupe)</h2><ul>
+<li><strong>Wo:</strong> Lupe oben rechts, ganz links in der Symbolgruppe. Das Eingabefeld ist sofort bereit.</li>
+<li><strong>Findet:</strong> Apps (Tippen startet die App), Einstellungen (Tippen öffnet das passende Fenster), Rechnungen, Befehle aus der Oratio Toolbox (Tippen wechselt zur Toolbox, die Suche dort ist ausgefüllt).</li>
+<li><strong>Rechnen:</strong> <code>12*7</code>, <code>(3+4)^2</code>, <code>15% von 80</code>, <code>sqrt(81)</code>, <code>5-3</code>. Das Buchstaben-x ist keine Rechnung, dafür gehen <code>×</code> und <code>÷</code>. Antippen des Ergebnisses kopiert es.</li>
+<li><strong>Tippfehler werden verziehen:</strong> „brwsr“ findet „Browser“, „hinterg“ findet „Hintergrund ändern“; Umlaute sind egal (ae/ä/a).</li>
+<li><strong>Auswahl:</strong> Pfeil hoch/runter, Enter.</li>
+<li><strong>Neue Einstellung auffindbar machen:</strong> in <code>Oratio_Menu/suche.py</code> in der Liste <code>EINSTELLUNGEN</code> eine Zeile ergänzen (Name, Suchwörter, Funktion).</li>
+</ul>
+</section><section id="s38-3"><h2>38.3 Einstellungen im Handy-Stil</h2><ul>
+<li><strong>Wo:</strong> Zahnrad ganz rechts außen in der Leiste oben antippen, die Leiste fährt heraus, erster Eintrag „Einstellungen“. Oder Lupe → „einstellungen“.</li>
+<li><strong>Aufbau:</strong> oben ein Suchfeld, darunter Gruppen mit farbigen Symbolen: Verbindungen (WLAN, Bluetooth, Mikrofon), Mitteilungen &amp; Kontrolle, Aussehen, Apps &amp; Seiten, System. Rechts steht, wo sinnvoll, der aktuelle Wert.</li>
+<li><strong>Bedienung:</strong> Tippen auf eine Zeile öffnet das passende Fenster rechts daneben, nochmal tippen schließt es.</li>
+<li><strong>Datei:</strong> <code>Fenster/zentrale.py</code> (eine Liste von Zeilen; jede neue Funktion trägt sich hier ein).</li>
+</ul>
+</section><section id="s38-4"><h2>38.4 Verlauf (Langzeit-Diagramme)</h2><ul>
+<li><strong>Wo:</strong> Zahnrad → Einstellungen → System → „Verlauf (Diagramme)“, oder Lupe → „verlauf“.</li>
+<li><strong>Was:</strong> Das Menü schreibt ab Start im Hintergrund alle 30 s Messwerte: CPU-Temperatur, CPU-Last, RAM, Lüfterdrehzahl (nur wenn der Pi sie meldet – Pi 5 mit aktivem Kühler), Netz Down/Up. Oben wählt man 1 Std / 6 Std / 1 Tag / 1 Woche. Je Messgröße ein Diagramm mit „jetzt / Mittel / min / max“; Maus darüber zeigt Zeit und Wert.</li>
+<li><strong>Speicher:</strong> <code>Json/oratio_verlauf.csv</code> (Semikolon, Komma als Dezimalzeichen; Excel und LibreOffice öffnen sie direkt). Werte älter als 8 Tage löscht das Menü selbst.</li>
+<li><strong>Wichtig zu wissen:</strong> Eine Lücke im Diagramm bedeutet, dass das Menü in dieser Zeit nicht lief. Nach dem Einspielen dauert es ein, zwei Minuten bis zu den ersten Punkten.</li>
+<li><strong>Datei:</strong> <code>Oratio_Menu/verlauf.py</code>.</li>
+<li><strong>Unterschied zum Labor:</strong> Das Labor (38.5) zeigt Live-Werte über Minuten; der Verlauf läuft immer im Hintergrund über Tage.</li>
+</ul>
+</section><section id="s38-5"><h2>38.5 Labor (Messplatz)</h2><p>Datei: <code>Oratio_Menu/Apps/Oratio_Labor/oratio_labor.py</code>. Eine App mit sieben Reitern:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Reiter</th>
+<th>Was er kann</th>
+<th>Braucht</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Pins</strong></td>
+<td>die 40 Pins als Bild: grün = hoch (3,3 V), dunkel = tief, blauer Ring = Ausgang, violetter Ring = Sonderfunktion (I2C, UART, SPI). Pin antippen: lesen, Eingang/Ausgang, hoch/tief, Pull-up/Pull-down. Belegte Pins ändert die App erst nach zweiter Bestätigung</td>
+<td><code>pinctrl</code> (im Raspberry Pi OS dabei)</td>
+</tr>
+<tr class="even">
+<td><strong>I2C</strong></td>
+<td>Bus scannen, Adressen mit dem, was dort meist sitzt (0x3C OLED, 0x76 BME280 …). „UU“ = von einem Treiber belegt</td>
+<td><code>i2c-tools</code>, I2C in der Pi-Konfiguration eingeschaltet</td>
+</tr>
+<tr class="odd">
+<td><strong>Messen</strong></td>
+<td>je Messgröße ein Live-Diagramm (1 / 5 / 30 min): CPU-Temperatur, CPU-Last, RAM, CPU-Takt, 1-Wire-Fühler (DS18B20, erscheinen von selbst, wenn <code>dtoverlay=w1-gpio</code> in der <code>config.txt</code> steht), Netzteil- und 3,3-V-Spannung (Pi 5, per <code>vcgencmd</code>). „Aufzeichnen“ schreibt eine CSV nach <code>~/Oratio_Messungen/</code></td>
+<td>–</td>
+</tr>
+<tr class="even">
+<td><strong>Seriell</strong></td>
+<td>serieller Monitor für ESP32, Arduino, GPS, USB-UART-Adapter</td>
+<td><code>python3-serial</code>; Gruppe <code>dialout</code></td>
+</tr>
+<tr class="odd">
+<td><strong>Logik</strong></td>
+<td>Mini-Logikanalysator: bis zu 4 GPIO-Pins, 1/5/20 s aufnehmen; Flanken, Frequenz, Tastgrad. Zuverlässig bis einige 10 kHz</td>
+<td><code>python3-lgpio</code></td>
+</tr>
+<tr class="even">
+<td><strong>PWM</strong></td>
+<td>Servo (500–2500 µs, 50 Hz) oder PWM (Frequenz, Tastgrad) auf GPIO 12/13/18/19/17</td>
+<td><code>python3-lgpio</code></td>
+</tr>
+<tr class="odd">
+<td><strong>Sensoren</strong></td>
+<td>22 Sensoren zum Nachschlagen (BME280, DS18B20, MPU6050, INA219, HC-SR04 …) mit Verdrahtung, Adresse, Software; „Am Bus suchen“ prüft per <code>i2cdetect</code></td>
+<td>–</td>
+</tr>
+<tr class="even">
+<td><strong>Rechner</strong></td>
+<td>Farbcode, Ohm/Leistung, LED-Vorwiderstand (mit nächstem E12/E24-Wert), Spannungsteiler, RC-Filter</td>
+<td>–</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Schreibweise in allen Rechnern:</strong> <code>4,7k</code>, <code>4k7</code>, <code>10u</code>, <code>100n</code>, <code>2.2M</code>.</p>
+<p><strong>Seriell-Reiter so benutzen:</strong> Gerät per USB einstecken → „Neu suchen“ → Anschluss wählen (z. B. <code>/dev/ttyUSB0</code> oder <code>/dev/ttyACM0</code>) → Baudrate wählen (muss zum Programm auf dem Gerät passen, oft 115200) → grüner Knopf „Verbinden“. Unten Befehl tippen und Enter; daneben das Zeilenende (Kein / <code>\n</code> / <code>\r\n</code>; viele Geräte wollen <code>\n</code>). „Diagramm“ zeichnet Zahlen aus den Zeilen als Live-Kurve (bis zu 4 Kanäle; Format <code>temp:23.5,hum:40</code> oder <code>23.5 40 7</code>). „Aufzeichnen“ speichert mit Zeit in <code>~/Oratio_Messungen/seriell_&lt;Zeit&gt;.csv</code>.</p>
+<ul>
+<li><strong>Meldung „Berechtigung fehlt“:</strong> <code>sudo usermod -aG dialout $USER</code>, dann einmal neu anmelden oder neu starten.</li>
+<li><strong>Arduino/ESP32 startet beim Verbinden neu:</strong> normal (das DTR-Signal löst einen Reset aus).</li>
+</ul>
+<p><strong>Sicherheitsregeln, die im Labor-Reiter stehen und für den Aufbau gelten:</strong> Eingänge vertragen nur 3,3 V. Servos und Motoren nie über den Pi versorgen, eigenes Netzteil, GND verbinden.</p>
+</section><section id="s38-6"><h2>38.6 Sperrbildschirm</h2><ul>
+<li><strong>Wo:</strong> Zahnrad → Einstellungen → System → „Sperrbildschirm“. Schnell: Lupe → „sperre“.</li>
+<li><strong>Aussehen:</strong> große Uhr, Datum und die neuesten ungelesenen Mitteilungen über dem unscharfen Bild des Menüs.</li>
+<li><strong>Entsperren:</strong> ohne Code ein Tipp oder eine Taste; mit Code die Zifferntastatur (auch per Tastatur tippbar). Falscher Code: Wackeln; nach 5 Fehlversuchen 30 s Pause.</li>
+<li><strong>Einstellungen:</strong> „Jetzt sperren“, „Automatisch sperren nach Leerlauf“ (Aus / 1 / 5 / 15 / 30 min), Code festlegen/ändern/entfernen (4–8 Ziffern), Schalter „Mitteilungen auf dem Sperrbildschirm“.</li>
+<li><strong>Datei:</strong> <code>Oratio_Menu/sperre.py</code>; Einstellungen in <code>Json/oratio_sperre.json</code> (der Code steht dort nur als Prüfsumme). <strong>Code vergessen:</strong> diese Datei löschen, dann ist die Sperre ohne Code.</li>
+<li><strong>Ehrliche Grenze:</strong> Das sperrt nur das Oratio-Fenster (Blickschutz, Katze auf der Tastatur, Kinder). Wer am Pi sitzt, kann dahinter den Desktop oder das Terminal nutzen. Echtes Sperren des ganzen Systems macht die Kachel „Sperren“ im Kontrollzentrum (<code>swaylock</code>, Anmelde-Passwort).</li>
+</ul>
+</section><section id="s38-7"><h2>38.7 Fokus-Profile</h2><ul>
+<li><strong>Wo:</strong> Zahnrad → Einstellungen → „Fokus“. Schalter rechts = ein/aus; auf den Namen tippen = Profil bearbeiten. Schnell: Lupe → „fokus schlafen“ → Enter.</li>
+<li><strong>Ein Profil stellt mehreres um:</strong> Banner (Alle / Nur wichtige / Keine), Nachtmodus (Unverändert / An / Aus), Helligkeit (Unverändert / 20 / 50 / 80 %, braucht <code>brightnessctl</code>). Beim Ausschalten kommt alles zurück, wie es <strong>vor</strong> dem ersten Profil war.</li>
+<li><strong>Eingebaut:</strong> Arbeit, Basteln, Schlafen.</li>
+<li><strong>Zeitplan:</strong> Kein / Täglich / Mo–Fr / Sa–So mit Von/Bis (auch über Mitternacht, z. B. 22:00–07:00). Schaltet man das Profil im Zeitfenster selbst aus, bleibt es bis zum Ende des Fensters aus.</li>
+<li><strong>Regel:</strong> Mitteilungen landen <strong>immer</strong> in der Glocke, nur das Banner hält sich zurück.</li>
+<li><strong>Datei:</strong> <code>Oratio_Menu/fokus.py</code>; <code>Json/oratio_fokus.json</code>.</li>
+</ul>
+</section><section id="s38-8"><h2>38.8 App-Wechsler</h2><ul>
+<li><strong>Wo:</strong> (1) Widget „App-Wechsler“ auf eine Seite legen, Antippen öffnet ihn (der Weg für Touch). (2) Lupe → „App-Wechsler“. (3) Strg+Tab im Menü.</li>
+<li><strong>Was:</strong> Alle offenen Apps als große Karten (Symbol, Name, Titel). Karte antippen = nach vorn. Kleines x = schließen: erst wird es rot („Sicher?“), erst das zweite Antippen schließt. Pfeiltasten, Enter, Entf, Esc gehen auch.</li>
+<li><strong>Grenze:</strong> Fremde Fenster (Firefox, Terminal) sieht das Menü nur, wenn <code>wlrctl</code> unter labwc läuft. Vorschaubilder gibt es nicht: Auf Wayland lassen sich fremde Fenster ohne Zusatzprogramm nicht abfotografieren. Alt+Tab bleibt beim System (labwc).</li>
+<li><strong>Dateien:</strong> <code>wechsler.py</code>, <code>Widget/wechsler.py</code>.</li>
+</ul>
+</section><section id="s38-9"><h2>38.9 Live-Hintergrund, Töne und Sparmodus</h2><ul>
+<li><strong>Live-Hintergrund</strong> (Zahnrad → Einstellungen → Aussehen): Aurora, Degradé, Sterne, Wellen; Flüssigkeit Sparsam (6 Bilder/s), Normal (12), Flüssig (20). Standard: aus. <strong>Kosten:</strong> Jedes Bild zeichnet die ganze Ansicht neu; auf dem 4K-Pi 5 spürbar. Bei Ruckeln „Sparsam“ oder aus. Der Effekt pausiert, wenn das Menü nicht das aktive Fenster ist. Datei <code>livebg.py</code>.</li>
+<li><strong>Töne</strong> (Zahnrad → Einstellungen → Mitteilungen &amp; Kontrolle → „Töne“): Lautstärke Aus / Leise / Normal / Laut (Standard aus); Schalter für Fenster-Öffnen, neue Mitteilung, Sperrbildschirm. Die kleinen WAV-Dateien baut das Menü beim ersten Mal selbst in <code>Oratio_Menu/Sounds/</code>. Abspielen über <code>QSoundEffect</code>, sonst <code>pw-play</code> / <code>paplay</code> / <code>aplay</code>; der Ton kommt aus dem aktuellen Ausgang. Datei <code>klang.py</code>.</li>
+<li><strong>Sparmodus</strong> (Zahnrad → Allgemein → Verhalten → „Sparmodus (alle Effekte aus)“): schaltet Pinsel-Effekt, Dock-Lupe, Lupe der offenen Apps und Live-Hintergrund aus. Beim Ausschalten kommen die vorherigen Werte zurück (gemerkt in <code>Json/oratio_sparmodus.json</code>). Glas/Matt, Seitenwechsel und Widgets sind nicht betroffen.</li>
+</ul>
+</section><section id="s38-10"><h2>38.10 Handy-Fernbedienung, Handy-Austausch und Hotspot</h2><p>Das sind drei Stufen, die aufeinander aufbauen. Gemeinsam ist <strong>ein</strong> kleiner Server (<code>Handy/handy_server.py</code>) mit <strong>einer</strong> Seite (<code>Handy/handy_page.html</code>), einer PIN und <strong>einem</strong> Port.</p>
+<p><strong>Handy-Austausch (Dateien und Text zwischen Handy und Pi)</strong></p>
+<ul>
+<li><strong>Am Pi:</strong> Einstellungen → Verbindungen → „Handy-Austausch“: Starten/Stoppen, „QR-Code &amp; PIN“, zuletzt angekommene Dateien (antippen = öffnen), „Ordner öffnen“, „Alle löschen“.</li>
+<li><strong>Am Handy:</strong> Seite öffnen (QR scannen, PIN eingeben), Karte „Dateien &amp; Text“. „Dateien zum Pi senden“ (Fortschrittsbalken; Ziel <code>Handy/Austausch/</code>, gleiche Namen werden „Name (2)“). Darunter die Liste der Dateien im Austausch-Ordner: antippen = aufs Handy laden, x (zweimal tippen) = am Pi löschen. „Text &amp; Zwischenablage“: Text eintippen → „An den Pi senden“. „Vom Pi holen“ funktioniert nur, wenn am Pi „Zwischenablage mit dem Handy teilen“ eingeschaltet ist.</li>
+<li><strong>Wichtig nach jedem Austausch der Dateien:</strong> Den Handy-Server <strong>einmal neu starten</strong>, sonst läuft noch der alte Code.</li>
+<li><strong>Datenschutz:</strong> „Zwischenablage teilen“ ist standardmäßig aus; ist es an, kann jedes angemeldete Handy lesen, was am Pi kopiert wird (auch Passwörter). Alles bleibt im eigenen Netz: nur private Adressen, PIN, nach 5 Fehlversuchen 60 s Sperre. Der Austausch-Ordner ist nicht verschlüsselt.</li>
+<li><strong>Grenzen:</strong> max. 4 GB pro Datei, der Pi braucht 300 MB Reserve; die Seite läuft ohne HTTPS, daher klappt das automatische Kopieren in die Handy-Zwischenablage nicht in jedem Browser (dann Text lang antippen → Kopieren).</li>
+<li><strong>Dateien:</strong> <code>austausch.py</code>; <code>Json/oratio_austausch.json</code>, <code>Json/oratio_austausch_clip.json</code>.</li>
+</ul>
+<p><strong>Hotspot mit QR-Code</strong></p>
+<ul>
+<li><strong>Wo:</strong> Einstellungen → Verbindungen → „Hotspot“. Oben der Schalter „Hotspot einschalten“. Standardname „Oratio-Pi“, Passwort zufällig beim ersten Öffnen. 2,4 GHz (läuft überall) oder 5 GHz (schneller). „Neues Passwort“ würfelt ein neues.</li>
+<li><strong>QR-Code:</strong> Handy-Kamera darauf halten, das Handy verbindet sich ohne Abtippen. „Aktuelles WLAN teilen“ zeigt stattdessen das WLAN, in dem der Pi gerade ist, als QR-Code (für Gäste; nur bei normalem Passwort).</li>
+<li><strong>Technik:</strong> braucht NetworkManager (<code>nmcli</code>, bei Raspberry Pi OS Bookworm Standard). Das Passwort steht im Klartext in <code>Json/oratio_hotspot.json</code> (nur der Benutzer darf lesen), weil der QR-Code es braucht.</li>
+<li><strong>Ehrliche Grenze:</strong> Der WLAN-Chip kann nicht gleichzeitig im Heim-WLAN sein und einen Hotspot aufspannen. Mit LAN-Kabel bleibt das Internet erhalten, ohne Kabel haben Pi und Handy im Hotspot <strong>kein</strong> Internet. Die Handy-Seite ist im Hotspot meist unter <code>http://10.42.0.1:8765/</code> erreichbar.</li>
+<li><strong>Datei:</strong> <code>hotspot.py</code>.</li>
+</ul>
+</section><section id="s38-11"><h2>38.11 Kamera und Screenshot</h2><ul>
+<li><strong>Wo:</strong> Zahnrad → Einstellungen → System → „Kamera &amp; Screenshot“. In der Lupe: „Screenshot jetzt“.</li>
+<li><strong>Screenshot:</strong> Programm <code>grim</code> (bei labwc dabei). „Ganzer Bildschirm“, „Bereich aufziehen“ (braucht <code>slurp</code>: <code>sudo apt install slurp</code>), oder mit Verzögerung 3 / 5 / 10 s. Das Menüfenster schließt sich vorher selbst. Gespeichert im Bilder-Ordner als <code>screenshot_Datum_Zeit.png</code>.</li>
+<li><strong>Kamera:</strong> Raspberry-Pi-Kamera am CSI-Anschluss (Programme <code>rpicam-still</code>, <code>rpicam-vid</code>; ältere Systeme <code>libcamera-*</code>). Vorschau (640×480, 15 Bilder/s nur zum Ausrichten), „Foto“ in voller Auflösung, „Video 10/30/60 s“.</li>
+<li><strong>Regeln:</strong> Die Kamera gehört immer nur einer Aufnahme. Schließt man das Fenster, geht die Vorschau sofort aus – die Kamera läuft nie heimlich im Hintergrund.</li>
+<li><strong>Grenzen:</strong> nur CSI-Kameras, keine USB-Webcams; kein Einzelfenster-Screenshot.</li>
+<li><strong>Datei:</strong> <code>aufnahme.py</code>.</li>
+</ul>
+</section><section id="s38-12"><h2>38.12 Nutzungsstatistik</h2><ul>
+<li><strong>Wo:</strong> Zahnrad → Einstellungen → System → „Nutzungsstatistik“. Oben Heute / 7 Tage / 30 Tage.</li>
+<li><strong>Zählweise:</strong> Alle 5 s schaut das Menü, was vorn ist (App-Karte oder fremdes Fenster, letzteres braucht <code>wlrctl</code>). Mehrere Fenster einer App zählen als eine.</li>
+<li><strong>Datenschutz:</strong> Gespeichert werden nur App-Namen und Sekunden pro Tag (keine Titel, Eingaben, Adressen); nach 90 Tagen wird gelöscht. Schalter „Nutzung mitschreiben“ (Pause) und „Alles löschen“.</li>
+<li><strong>Grenze:</strong> Bei fremden Programmen kann der Pi nicht erkennen, ob man am Gerät ist.</li>
+<li><strong>Datei:</strong> <code>nutzung.py</code>; <code>Json/oratio_nutzung.json</code>.</li>
+</ul>
+</section><section id="s38-13"><h2>38.13 Einstellungs-Profile</h2><ul>
+<li><strong>Wo:</strong> Zahnrad → Einstellungen → System → „Einstellungs-Profile“.</li>
+<li><strong>Speichern:</strong> Name eintippen, mit Schaltern wählen, was dazugehört: Aussehen &amp; Menü, Apps/Seiten/Widgets, Fokus-Profile, Tower (LED-Muster, Lüfterkurve, OLED-Seiten), Sperrbildschirm (standardmäßig aus).</li>
+<li><strong>Laden:</strong> Profil antippen, wählen, was geladen wird, „Laden“ → Rückfrage → Einstellungen werden ersetzt und das Menü <strong>startet neu</strong>. Vor jedem Laden sichert das Menü den jetzigen Stand (die letzten 3 bleiben): unten „Stand von vor dem letzten Laden zurückholen“.</li>
+<li><strong>Ablage:</strong> <code>Json/Profile/&lt;Name&gt;/</code> (Kopien plus <code>profil.json</code>). Profile lassen sich über den Handy-Austausch oder USB auf einen anderen Pi kopieren. Kaputte Dateien werden weder gespeichert noch zurückgespielt.</li>
+<li><strong>Grenzen:</strong> Hintergrundbilder und Icon-Dateien sind nicht im Profil, nur der Pfad. Nicht enthalten: Verlauf, Nutzung, Mitteilungen, Handy-PIN, Hotspot-Passwort.</li>
+<li><strong>Datei:</strong> <code>einstellprofile.py</code>.</li>
+</ul>
+</section><section id="s38-14"><h2>38.14 Oratio OS: ein eigenes Abbild bauen (erster Entwurf)</h2><ul>
+<li><strong>Ordner:</strong> <code>Oratio_OS/</code> neben <code>app_ui.py</code>. Enthält <code>bauen.sh</code>, <code>LIESMICH.txt</code> und <code>stage-oratio/</code> (die Oratio-Stufe für <code>pi-gen</code>, das Werkzeug, mit dem auch Raspberry Pi OS gebaut wird).</li>
+<li><strong>Bauen:</strong> <code>cd ~/Oratio_Control_Center/Oratio_OS</code>, dann <code>ORATIO_PASS=meinpasswort bash bauen.sh</code> (nicht mit <code>sudo</code>; 40–90 Minuten; 15 GB frei). Ergebnis: <code>~/oratio-os-bau/pi-gen/deploy/*.img.xz</code>. Mit dem Raspberry Pi Imager („Eigenes Image verwenden“) auf SSD oder SD schreiben.</li>
+<li><strong>Intro-Video beim Start:</strong> Der Pi spielt ein Video im Vollbild (<code>mpv</code>, ohne Desktop, Dienst <code>oratio-intro.service</code>) und startet danach das Control Center. Schalter: Zahnrad → Allgemein → „Intro-Video beim Start“ (nur im Oratio OS). Dahinter steckt die Datei <code>/var/lib/oratio/intro.aus</code>.</li>
+<li><strong>Status:</strong> nicht auf echter Hardware gebaut; Boot-Bild, Einrichtungs-Assistent, Ollama/Gemma und ein Updater fehlen noch. Bei Fehlern: Ende der Terminal-Ausgabe oder <code>journalctl -u oratio-intro</code> ansehen.</li>
+</ul>
+</section>

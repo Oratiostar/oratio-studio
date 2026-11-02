@@ -1,0 +1,221 @@
+<section id="s67-1"><h2>67.1 Warum ein Mikrocontroller keinen Motor treibt</h2><p>Ein Pin liefert nur wenige Milliampere (Arduino etwa 20 mA, ESP32 ähnlich, Raspberry Pi etwa 16 mA). Ein kleiner Gleichstrommotor zieht 100 mA bis mehrere Ampere, beim Anlaufen ein Vielfaches. Außerdem erzeugt eine Spule (Motor, Relais) beim Abschalten eine <strong>Spannungsspitze</strong>. Darum steht zwischen Mikrocontroller und Motor immer eine <strong>Treiberstufe</strong> mit eigener Versorgung. Alle Massen (GND) von Mikrocontroller und Treiber müssen verbunden werden.</p>
+<p><strong>Freilaufdiode.</strong> Bei jeder induktiven Last (Motor, Relais, Magnetventil) gehört eine Diode <strong>antiparallel</strong> zur Last: Kathode zur Plusseite. Sie nimmt den Strom auf, der beim Abschalten weiterfließen will, und schützt den Schalttransistor. Viele Treiber-ICs (ULN2003, L298N-Module) haben solche Dioden schon eingebaut.</p>
+</section><section id="s67-2"><h2>67.2 Die Treiber im Überblick</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Aufgabe</th>
+<th>Baustein</th>
+<th>Daten (typisch)</th>
+<th>Anmerkung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ein Verbraucher ein/aus</td>
+<td><strong>MOSFET</strong> (Logic-Level-Typ) oder Transistor</td>
+<td>je nach Typ</td>
+<td>Logikpegel beachten (3,3 V am ESP32); Gate-Widerstand und Pull-down vorsehen</td>
+</tr>
+<tr class="even">
+<td>Mehrere Verbraucher ein/aus</td>
+<td><strong>ULN2003</strong> (7 Kanäle) / <strong>ULN2803</strong> (8 Kanäle)</td>
+<td>je Kanal bis 500 mA, bis 50 V</td>
+<td>Eingang vom Mikrocontroller, Ausgang schaltet nach Masse, Freilaufdioden eingebaut</td>
+</tr>
+<tr class="odd">
+<td>Gleichstrommotor mit Richtung und Drehzahl</td>
+<td><strong>L298N</strong></td>
+<td>Motorspannung bis etwa 46 V, etwa 2 A je Kanal (mit Kühlung)</td>
+<td>alt und <strong>ineffizient</strong>: verliert etwa 2 V oder mehr</td>
+</tr>
+<tr class="even">
+<td>dasselbe, modern</td>
+<td><strong>TB6612FNG</strong>, <strong>DRV8833</strong>, <strong>MX1508</strong></td>
+<td>niedrigere Verluste</td>
+<td>für kleine 3–6-V-Motoren deutlich besser</td>
+</tr>
+<tr class="odd">
+<td>Schrittmotor 28BYJ-48</td>
+<td><strong>ULN2003-Platine</strong></td>
+<td>5 V</td>
+<td>vier LEDs zeigen die aktive Spule</td>
+</tr>
+<tr class="even">
+<td>Servo</td>
+<td>direkt am Signalpin, eigene 5-V-Versorgung</td>
+<td>PWM-Puls 1 bis 2 ms alle 20 ms</td>
+<td>große Servos nie über den Board-Pin speisen</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s67-3"><h2>67.3 Fall: L298N oder etwas anderes?</h2><p>Ich wollte zwei Motoren mit einem Mikrocontroller steuern. Meine Fragen waren: Was macht der L298N, brauche ich ihn für meine beiden Motoren, und was ist die Platine, die ich in der Hand hatte?</p>
+<p><strong>Was der L298N kann:</strong></p>
+<ul>
+<li>zwei Gleichstrommotoren unabhängig voneinander <strong>oder</strong> einen Schrittmotor,</li>
+<li>die <strong>Drehrichtung</strong> ändern (zwei Eingänge je Motor),</li>
+<li>die <strong>Drehzahl</strong> per PWM regeln (Eingänge <code>ENA</code>, <code>ENB</code>).</li>
+</ul>
+<p><strong>Typische Anschlüsse eines L298N-Moduls:</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Anschluss</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>IN1</code>–<code>IN4</code></td>
+<td>Steuersignale vom Mikrocontroller (Richtung)</td>
+</tr>
+<tr class="even">
+<td><code>ENA</code>, <code>ENB</code></td>
+<td>Freigabe bzw. PWM für die Geschwindigkeit</td>
+</tr>
+<tr class="odd">
+<td><code>OUT1</code>–<code>OUT4</code></td>
+<td>Motoranschlüsse</td>
+</tr>
+<tr class="even">
+<td><code>+12V</code> (Motorversorgung), <code>5V</code>, <code>GND</code></td>
+<td>Versorgung</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Richtung und Drehzahl (eine H-Brücke, bei <code>EN</code> = H):</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>IN1</th>
+<th>IN2</th>
+<th>Wirkung am Motor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>H</td>
+<td>L</td>
+<td>vorwärts</td>
+</tr>
+<tr class="even">
+<td>L</td>
+<td>H</td>
+<td>rückwärts</td>
+</tr>
+<tr class="odd">
+<td>L</td>
+<td>L</td>
+<td>Bremsen (Motoranschlüsse kurzgeschlossen)</td>
+</tr>
+<tr class="even">
+<td>H</td>
+<td>H</td>
+<td>Bremsen</td>
+</tr>
+<tr class="odd">
+<td>beliebig, aber <code>EN</code> = L</td>
+<td></td>
+<td>Freigabe aus: Motor läuft frei aus</td>
+</tr>
+</tbody>
+</table></div>
+<p>Die Drehzahl wird mit PWM an <code>ENA</code> eingestellt: Der Pin schaltet schnell ein und aus, das Verhältnis (Tastgrad) bestimmt die mittlere Spannung.</p>
+<p><strong>Ob der L298N passt:</strong> nur wenn beide Motoren normale Gleichstrommotoren sind, die Betriebsspannung zum Modul passt und der Anlauf- bzw. Blockierstrom nicht zu hoch ist. Bei kleinen 3–6-V-Motoren ist ein moderner Treiber (TB6612FNG, DRV8833, MX1508) besser, weil der L298N etwa 2 V verliert: Von 5 V Versorgung kämen dann nur etwa 3 V am Motor an.</p>
+<p><strong>Die andere Platine:</strong> Auf dem IC stand <strong>ULN2003APG</strong>. Das ist kein L298N, sondern ein Treiberbaustein für kleine Lasten und <strong>Schrittmotoren wie den 28BYJ-48</strong>. Erkennbar waren: der ULN2003A-Chip, der <strong>fünfpolige weiße Stecker</strong> für den Schrittmotor, vier LEDs für die Spulen und die Eingänge <code>IN1</code> bis <code>IN4</code>. Sie ist <strong>nicht</strong> für zwei normale Gleichstrommotoren geeignet.</p>
+<p><strong>Lektion:</strong> Typenschild (Spannung, Strom) und Aufdruck der ICs zuerst lesen, dann den Treiber wählen. Ein Foto der Motorbeschriftung oder die Zahl der Leitungen klärt oft sofort, welcher Typ vorliegt.</p>
+</section><section id="s67-4"><h2>67.4 Der Schrittmotor 28BYJ-48 mit ULN2003</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Eigenschaft</th>
+<th>Wert (üblich, laut Datenblatt prüfen)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Versorgung</td>
+<td>5 V</td>
+</tr>
+<tr class="even">
+<td>Schritte</td>
+<td>32 je Umdrehung des Motors, Getriebe 1:64 → etwa 2048 Schritte (Vollschritt) bzw. 4096 (Halbschritt) je Umdrehung der Welle</td>
+</tr>
+<tr class="odd">
+<td>Anschluss</td>
+<td>fünfpoliger Stecker auf die ULN2003-Platine, Eingänge <code>IN1</code>–<code>IN4</code></td>
+</tr>
+<tr class="even">
+<td>Ansteuerung</td>
+<td>Spulen in Folge schalten (Vollschritt oder Halbschritt), in Arduino zum Beispiel mit der Bibliothek <code>Stepper</code> oder <code>AccelStepper</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Wichtig: Die Eingänge in der Reihenfolge <code>IN1, IN3, IN2, IN4</code> an die Bibliothek geben, sonst läuft der Motor nur zuckend. (Das ist ein bekannter Stolperstein bei dieser Kombination.)</p>
+</section><section id="s67-5"><h2>67.5 Servo oder Schrittmotor?</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Servo</th>
+<th>Schrittmotor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bewegung</td>
+<td>fährt einen <strong>vorgegebenen Winkel</strong> an (meist 0 bis 180°)</td>
+<td>dreht in <strong>vielen kleinen Schritten</strong>, beliebig weit</td>
+</tr>
+<tr class="even">
+<td>Steuerung</td>
+<td>ein PWM-Signal, die Pulsbreite bestimmt den Winkel</td>
+<td>vier (oder mehr) Spulen nacheinander schalten</td>
+</tr>
+<tr class="odd">
+<td>Treiber nötig</td>
+<td>nein (eigene Versorgung)</td>
+<td>ja (ULN2003, A4988, DRV8825 …)</td>
+</tr>
+<tr class="even">
+<td>Haltemoment</td>
+<td>hält die Position aktiv</td>
+<td>hält mit Strom, wird dabei warm</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s67-6"><h2>67.6 Fall: Kondensatormotor und Hilfswicklung</h2><p>Einphasen-Asynchronmotoren brauchen zum Anlaufen (und im Betrieb) eine <strong>zweite Wicklung</strong>, deren Strom durch einen <strong>Kondensator</strong> phasenverschoben wird. Erst dadurch entsteht ein Drehfeld.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Wicklung</th>
+<th>Typische Klemmen</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Hauptwicklung</td>
+<td><code>U1</code> / <code>U2</code></td>
+</tr>
+<tr class="even">
+<td>Hilfswicklung (Kondensator)</td>
+<td><code>Z1</code> / <code>Z2</code> (sehr häufig), je nach Hersteller <code>V1</code> / <code>V2</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Der Kondensator wird je nach Aufgabe als <strong>Betriebskondensator</strong> (bleibt im Betrieb) oder als <strong>Anlaufkondensator</strong> (wird nach dem Hochlauf abgeschaltet) eingesetzt.</p>
+<p><strong>Mein Fall: Motor mit drei herausgeführten Leitungen: Neutral, 110 V und 230 V.</strong> Das spricht für einen <strong>Mehrspannungs-Einphasenmotor</strong> mit Abgriffen an der Wicklung, nicht für einen Drehstrommotor. Ob zusätzlich ein Kondensator nötig ist, hängt davon ab, ob schon <strong>einer eingebaut</strong> ist:</p>
+<ol type="1">
+<li>Mit eingebautem Kondensator kommen genau solche drei Leitungen heraus; ein externer ist nicht nötig. Es wird nur die passende Spannung gewählt.</li>
+<li>Ohne eingebauten Kondensator gäbe es normalerweise Klemmen wie <code>Z1/Z2</code>, oft vier oder mehr Anschlüsse.</li>
+</ol>
+<p>Entscheidend ist das <strong>Typenschild</strong> (Hinweis auf „Capacitor“, µF oder Betriebskondensator) oder ein sichtbares Kondensatorgehäuse am Motor (kleiner Zylinder). <strong>Nie 110 V und 230 V gleichzeitig anschließen:</strong> immer nur Neutral und <strong>eine</strong> der beiden Spannungen.</p>
+<p><strong>Fall: 100-nF-Kondensator zwischen 110-V-Leitung und Neutral.</strong> In einer geöffneten Pumpe hatte jemand einen 100-nF-Kondensator zwischen die 110-V-Leitung und Neutral gelötet, während der Betrieb über 230 V und Neutral lief. Das ergibt für den Motorbetrieb <strong>keinen Sinn</strong>:</p>
+<ul>
+<li>Betriebskondensatoren für Motoren liegen im Bereich <strong>2 µF bis 50 µF</strong>. 100 nF = 0,1 µF ist ein Zwanzigstel des kleinsten üblichen Wertes.</li>
+<li>100 nF sind typisch für <strong>Entstörkondensatoren</strong> (EMV, Funkentstörung, Netzfilter), meist zwischen Phase und Neutral.</li>
+</ul>
+<p>Das war eher ein Warnzeichen für eine Bastellösung als eine saubere Konstruktion.</p>
+</section><section id="s67-7"><h2>67.7 Übungen mit Lösungen</h2><ol type="1">
+<li><strong>Aufgabe:</strong> Ein Motor zieht 800 mA bei 6 V. Welche Leistung nimmt er auf, und was bleibt bei einem L298N (2 V Verlust) an Spannung? <strong>Lösung:</strong> <code>P = 6 V · 0,8 A = 4,8 W</code>. Am Motor kommen etwa 4 V an, wenn die Versorgung 6 V beträgt. Der Treiber setzt dabei etwa <code>2 V · 0,8 A = 1,6 W</code> in Wärme um.</li>
+<li><strong>Aufgabe:</strong> Warum braucht ein Relais eine Freilaufdiode? <strong>Lösung:</strong> Die Spule erzeugt beim Abschalten eine hohe Induktionsspannung. Die Diode gibt dem Strom einen Weg und schützt den Schalttransistor.</li>
+<li><strong>Aufgabe:</strong> Ein 28BYJ-48 braucht für eine ganze Umdrehung der Welle wie viele Halbschritte? <strong>Lösung:</strong> 4096.</li>
+</ol>
+</section>

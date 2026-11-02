@@ -1,0 +1,52 @@
+<p>Wenn die Meldung nicht im Lexikon steht, hilft dieses Vorgehen (<a class="xr" href="#/kap/47">Kapitel 47</a> erklärt es ausführlich):</p>
+<ol type="1">
+<li><strong>Meldung wörtlich lesen</strong>, letzte Zeile zuerst.</li>
+<li><strong>Datei und Zeile</strong> aus der Meldung öffnen.</li>
+<li><strong>Was wurde zuletzt geändert?</strong> Die letzte Änderung rückgängig machen oder einzeln prüfen.</li>
+<li><strong>Eingrenzen:</strong> Das Programm im Terminal starten, einen kleinen Test schreiben, Teile auskommentieren.</li>
+<li><strong>Umgebung prüfen:</strong> Richtiger Ordner (<code>pwd</code>), richtiger Benutzer, richtige Python-Umgebung, richtiges Board, richtiger Port.</li>
+<li><strong>Hardware zuletzt verdächtigen</strong>: Zuerst Software und Einstellungen, dann Kabel, dann Bauteil.</li>
+<li><strong>Lösung dokumentieren:</strong> Meldung, Ursache und Befehl in eine eigene Notizdatei schreiben.</li>
+</ol>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Typische Meldung</th>
+<th>Erste Prüfung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>not found</code></td>
+<td>Name und Pfad stimmen? Installiert?</td>
+</tr>
+<tr class="even">
+<td><code>Permission denied</code></td>
+<td><code>ls -l</code>, Besitzer, <code>chmod</code>, <code>sudo</code></td>
+</tr>
+<tr class="odd">
+<td><code>not declared</code></td>
+<td>Reihenfolge, Include, Schreibweise</td>
+</tr>
+<tr class="even">
+<td><code>IndentationError</code></td>
+<td>Leerzeichen statt Tabs, gleiche Tiefe</td>
+</tr>
+<tr class="odd">
+<td><code>No such file</code></td>
+<td>Pfad absolut angeben</td>
+</tr>
+<tr class="even">
+<td><code>Exec format error</code></td>
+<td>Architektur (<code>uname -m</code>)</td>
+</tr>
+<tr class="odd">
+<td>Display bleibt schwarz</td>
+<td>Adresse, Pins, <code>display.display()</code></td>
+</tr>
+<tr class="even">
+<td>Upload scheitert</td>
+<td>Port, Kabel, BOOT-Taste, Bootloader</td>
+</tr>
+</tbody>
+</table></div>

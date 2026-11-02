@@ -1,0 +1,66 @@
+<section id="s24-1"><h2>24.1 Was ist möglich?</h2><p>Ein großes KI-Modell wie ein Online-Chatbot läuft nicht auf einem Pi. Ein <strong>kleiner lokaler Assistent</strong> schon. Die Kette:</p>
+<pre class="text"><code>Mikrofon hört  →  Sprache wird zu Text  →  KI verarbeitet  →  Antwort wird gesprochen</code></pre>
+</section><section id="s24-2"><h2>24.2 Die Bausteine</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Aufgabe</th>
+<th>Programm</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Lokale Sprach-KI</td>
+<td><strong>Ollama</strong> mit einem kleinen Modell (zum Beispiel <code>qwen2.5:0.5b</code>)</td>
+</tr>
+<tr class="even">
+<td>Sprache zu Text</td>
+<td><strong>Whisper</strong> oder <strong>Vosk</strong></td>
+</tr>
+<tr class="odd">
+<td>Text zu Sprache</td>
+<td><strong>Piper</strong> (schnell und komplett lokal)</td>
+</tr>
+<tr class="even">
+<td>Wake-Word (der Rufname)</td>
+<td><strong>Porcupine</strong> (hier der ursprüngliche Plan; im Control Center übernimmt die Erkennung später Vosk mit dem eingestellten Namen, <a class="xr" href="#/kap/39/39.3">Kapitel 39.3</a>)</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s24-3"><h2>24.3 Hardware</h2><p>Pflicht: Raspberry Pi 4 (4 oder 8 GB) oder Pi 5, microSD 32 GB oder mehr, Netzteil 5 V / 3 A, Lüfter, USB-Mikrofon (oder ReSpeaker 2-Mic HAT), Lautsprecher, WLAN. Optional: Bildschirm, LED-Matrix, ESP32, Relais, Sensoren.</p>
+</section><section id="s24-4"><h2>24.4 Schritt für Schritt</h2><p><strong>1. Pi vorbereiten</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt upgrade <span class="at">-y</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">-y</span> git curl python3 python3-venv python3-pip portaudio19-dev espeak alsa-utils</span></code></pre></div>
+<p><strong>2. Mikrofon und Lautsprecher testen</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arecord</span> <span class="at">-l</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">speaker-test</span> <span class="at">-t</span> wav</span></code></pre></div>
+<p><strong>3. Ollama installieren und ein kleines Modell laden</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fsSL</span> https://ollama.com/install.sh <span class="kw">|</span> <span class="fu">sh</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ollama</span> pull qwen2.5:0.5b</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">ollama</span> run qwen2.5:0.5b</span></code></pre></div>
+<p>Dann „Hallo, wer bist du?" eintippen. Antwortet es, läuft die lokale KI.</p>
+<p><strong>4. Erstes Programm mit eigenem Namen (nur Text, noch ohne Stimme)</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> oratio_ai.py</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> subprocess</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>name <span class="op">=</span> <span class="st">&quot;Oratio AI&quot;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    frage <span class="op">=</span> <span class="bu">input</span>(<span class="st">&quot;Du: &quot;</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> frage.lower() <span class="kw">in</span> [<span class="st">&quot;exit&quot;</span>, <span class="st">&quot;quit&quot;</span>, <span class="st">&quot;ende&quot;</span>]:</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f&quot;Du bist </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">. Antworte kurz, freundlich und auf Deutsch. Frage: </span><span class="sc">{</span>frage<span class="sc">}</span><span class="ss">&quot;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    antwort <span class="op">=</span> subprocess.check_output(</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&quot;ollama&quot;</span>, <span class="st">&quot;run&quot;</span>, <span class="st">&quot;qwen2.5:0.5b&quot;</span>, prompt],</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        text<span class="op">=</span><span class="va">True</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>antwort<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> oratio_ai.py</span></code></pre></div>
+<p><strong>5. Als Nächstes</strong> Mikrofon und gesprochene Antwort (Whisper/Vosk + Piper), dann das Wake-Word.</p>
+</section><section id="s24-5"><h2>24.5 Namen und Sprache</h2><p>Für den Namen des Assistenten habe ich Ideen gesammelt, zum Beispiel <strong>ORAI</strong> (ORAtio + AI), Oris, OraMind, OraNova. <strong>Eine eigene Sprache</strong> (zum Beispiel die Muttersprache) lässt sich so unterstützen, dass man <strong>Beispielsätze und Schlüsselwörter</strong> sammelt und sie Aktionen zuordnet („Licht an", „Fernseher aus"). Der Assistent muss die Sprache nicht offiziell können, wenn die Befehlsliste selbst gepflegt wird.</p>
+</section><section id="s24-6"><h2>24.6 Wie viele Befehle kann der Pi steuern?</h2><p>Meine Frage war: „Ich habe tausende Befehle, aber mein GPIO hat nicht so viele Anschlüsse." Kurz gesagt: Die Befehle liegen <strong>in Software</strong> (Liste oder Datenbank). Die Pins werden nur für die Dinge gebraucht, die wirklich geschaltet werden. Mehr Ausgänge bekommt man über <strong>Erweiterungen</strong> (zum Beispiel I²C-Portexpander) oder indem man einen <strong>ESP32 als Helfer</strong> daran hängt.</p>
+</section>

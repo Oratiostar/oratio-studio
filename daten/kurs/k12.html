@@ -1,0 +1,64 @@
+<section id="s12-1"><h2>12.1 Was sind GPIO-Pins?</h2><p>GPIO (General Purpose Input/Output) sind die Stifte am Pi. Sie lassen sich als Ein- oder Ausgang programmieren, um LEDs zu schalten, Taster zu lesen und Displays anzusteuern. Mit</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gpioinfo</span></span></code></pre></div>
+<p>zeigt alle Pins und ihren Zustand.</p>
+</section><section id="s12-2"><h2>12.2 Die drei Kommunikationsarten im Vergleich</h2><p>Keines ist grundsätzlich „besser". Es kommt auf den Einsatz an.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>UART</th>
+<th>I²C</th>
+<th>SPI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Leitungen</td>
+<td>2 (TX, RX)</td>
+<td>2 (SDA, SCL)</td>
+<td>4 (MOSI, MISO, SCK, CS)</td>
+</tr>
+<tr class="even">
+<td>Geschwindigkeit</td>
+<td>niedrig bis mittel</td>
+<td>mittel</td>
+<td>hoch</td>
+</tr>
+<tr class="odd">
+<td>Mehrere Geräte</td>
+<td>nein (Punkt zu Punkt)</td>
+<td>ja, per Adresse</td>
+<td>ja, mit je einer CS-Leitung</td>
+</tr>
+<tr class="even">
+<td>Vollduplex</td>
+<td>ja</td>
+<td>nein</td>
+<td>ja</td>
+</tr>
+<tr class="odd">
+<td>Typische Rate</td>
+<td>9,6 kbit/s bis einige Mbit/s</td>
+<td>100 kbit/s bis 3,4 Mbit/s</td>
+<td>mehrere bis über 100 Mbit/s</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Merksatz:</strong> <em>UART = einfach und Punkt zu Punkt. I²C = viele Geräte an zwei Leitungen. SPI = schnell und leistungsfähig.</em></p>
+<p>Beispiele:</p>
+<ul>
+<li>UART: Arduino ↔︎ PC, GPS-Modul, Bluetooth-Modul HC-05</li>
+<li>I²C: Temperatur- und Drucksensoren, Echtzeituhr, OLED-Displays, MPU6050</li>
+<li>SPI: SD-Karten, TFT-Displays, Flash-Speicher, RFID RC522</li>
+</ul>
+<p>Ein ESP32 kann alle drei gleichzeitig: Beschleunigungssensor per I²C, SD-Karte per SPI, Debug-Ausgabe an den PC per UART.</p>
+</section><section id="s12-3"><h2>12.3 Am Pi prüfen</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">i2cdetect</span> <span class="at">-y</span> 1          <span class="co"># I²C-Geräte suchen (zeigt Adressen wie 3c)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /dev/spidev<span class="pp">*</span>         <span class="co"># SPI-Schnittstellen</span></span></code></pre></div>
+<p>I²C und SPI müssen vorher in <code>sudo raspi-config</code> (Interface Options) eingeschaltet sein. Ein OLED-Display (SSD1306) meldet sich meist mit der Adresse <strong>0x3C</strong>.</p>
+</section><section id="s12-4"><h2>12.4 Wichtig: Module, Chips, Bibliotheken</h2><p>Eine der wichtigsten Einsichten:</p>
+<ul>
+<li>Ein <strong>Modul</strong> (zum Beispiel das OLED-Board) enthält einen <strong>Chip</strong> (der Controller, zum Beispiel SSD1306), und es braucht die passende <strong>Bibliothek</strong> (zum Beispiel <code>Adafruit_SSD1306</code>).</li>
+<li>Man kauft ein Modul, programmiert aber den Controller.</li>
+<li>Die Art der Verbindung (I²C oder SPI) ist wichtiger als das Bauteil selbst.</li>
+</ul>
+</section>
