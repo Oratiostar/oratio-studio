@@ -1,0 +1,67 @@
+<p>Cette liste contient ce dont on a le plus souvent besoin sur le Pi.</p>
+<section id="s6-1"><h2>6.1 Système</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">uname</span> <span class="at">-a</span>                    <span class="co"># Kernel und Systeminfos</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">hostname</span>                    <span class="co"># Name des Geräts</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">cat</span> /etc/os-release         <span class="co"># welche Version von Raspberry Pi OS</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="fu">cat</span> /proc/device-tree/model <span class="co"># welches Pi-Modell</span></span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a><span class="fu">uptime</span>                      <span class="co"># Laufzeit und Last</span></span>
+<span id="cb1-6"><a aria-hidden="true" href="#cb1-6" tabindex="-1"></a><span class="ex">lscpu</span>                       <span class="co"># Prozessor</span></span>
+<span id="cb1-7"><a aria-hidden="true" href="#cb1-7" tabindex="-1"></a><span class="fu">free</span> <span class="at">-h</span>                     <span class="co"># Arbeitsspeicher (RAM)</span></span>
+<span id="cb1-8"><a aria-hidden="true" href="#cb1-8" tabindex="-1"></a><span class="fu">df</span> <span class="at">-h</span>                       <span class="co"># freier Speicherplatz</span></span></code></pre></div>
+</section><section id="s6-2"><h2>6.2 Température, fréquence, alimentation</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="ex">vcgencmd</span> measure_temp       <span class="co"># CPU-Temperatur</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="ex">vcgencmd</span> get_throttled      <span class="co"># Probleme mit Strom/Wärme? (0x0 = alles gut)</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="ex">vcgencmd</span> measure_clock arm  <span class="co"># aktuelle Taktfrequenz</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="ex">vcgencmd</span> measure_volts      <span class="co"># Spannung</span></span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a><span class="ex">watch</span> <span class="at">-n</span> 1 vcgencmd measure_temp    <span class="co"># Temperatur live, jede Sekunde</span></span></code></pre></div>
+<p><code>get_throttled</code> est très utile : si l’alimentation est trop faible ou si le Pi chauffe trop, cela apparaît ici. Une valeur différente de <code>0x0</code> signifie qu’il y a eu un problème à un moment donné (sous-tension ou bridage).</p>
+</section><section id="s6-3"><h2>6.3 Disques et USB</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="ex">lsblk</span>                       <span class="co"># alle Laufwerke</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">sudo</span> fdisk <span class="at">-l</span>               <span class="co"># Laufwerke im Detail</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="ex">lsusb</span>                       <span class="co"># USB-Geräte</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="fu">dmesg</span> <span class="kw">|</span> <span class="fu">tail</span>                <span class="co"># was wurde zuletzt erkannt?</span></span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a><span class="ex">lspci</span>                       <span class="co"># PCIe-Geräte (nur Pi 5: NVMe, AI-HAT)</span></span></code></pre></div>
+</section><section id="s6-4"><h2>6.4 Réseau</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">hostname</span> <span class="at">-I</span>                 <span class="co"># nur die IP-Adresse(n)</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="ex">ip</span> a                        <span class="co"># alle Netzwerkdetails</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">ping</span> google.com             <span class="co"># Internet testen (Strg+C beendet)</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="ex">iwconfig</span>                    <span class="co"># WLAN-Infos</span></span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a><span class="ex">nmcli</span> device wifi list      <span class="co"># verfügbare WLANs</span></span>
+<span id="cb1-6"><a aria-hidden="true" href="#cb1-6" tabindex="-1"></a><span class="ex">ss</span> <span class="at">-tulnp</span>                   <span class="co"># offene Verbindungen und Ports</span></span>
+<span id="cb1-7"><a aria-hidden="true" href="#cb1-7" tabindex="-1"></a><span class="fu">ssh</span> oratio@<span class="op">&lt;</span>IP-ADRESSE<span class="op">&gt;</span>     # von einem anderen Gerät auf den Pi verbinden</span></code></pre></div>
+</section><section id="s6-5"><h2>6.5 La configuration</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sudo</span> raspi-config           <span class="co"># das Hauptmenü für Einstellungen</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">sudo</span> nano /boot/firmware/config.txt     <span class="co"># Firmware-Konfiguration</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">sudo</span> nano /boot/firmware/cmdline.txt    <span class="co"># Kernel-Parameter (nur EINE Zeile!)</span></span></code></pre></div>
+</section><section id="s6-6"><h2>6.6 Mon top 10 au quotidien</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">hostname</span> <span class="at">-I</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">df</span> <span class="at">-h</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">free</span> <span class="at">-h</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="ex">lsblk</span></span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a><span class="ex">vcgencmd</span> measure_temp</span>
+<span id="cb1-6"><a aria-hidden="true" href="#cb1-6" tabindex="-1"></a><span class="ex">vcgencmd</span> get_throttled</span>
+<span id="cb1-7"><a aria-hidden="true" href="#cb1-7" tabindex="-1"></a><span class="ex">top</span></span>
+<span id="cb1-8"><a aria-hidden="true" href="#cb1-8" tabindex="-1"></a><span class="fu">sudo</span> raspi-config</span>
+<span id="cb1-9"><a aria-hidden="true" href="#cb1-9" tabindex="-1"></a><span class="fu">sudo</span> reboot</span>
+<span id="cb1-10"><a aria-hidden="true" href="#cb1-10" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt upgrade <span class="at">-y</span></span></code></pre></div>
+</section><section id="s6-7"><h2>6.7 Pi 4 et Pi 5 comparés</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Raspberry Pi 4</th>
+<th>Raspberry Pi 5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Utilisé par moi pour</td>
+<td>matrice LED, résolution, projets d’écrans, essais d’IA</td>
+<td>Control Center, SSD NVMe, tour de refroidissement, mise à l’échelle 4K</td>
+</tr>
+<tr class="even">
+<td>PCIe / NVMe</td>
+<td>non</td>
+<td>oui (<code>lspci</code> affiche les appareils)</td>
+</tr>
+<tr class="odd">
+<td>Support de démarrage</td>
+<td>microSD, USB</td>
+<td>microSD, USB, NVMe</td>
+</tr>
+</tbody>
+</table></div>
+</section>

@@ -1,0 +1,24 @@
+<p>Ces outils m’ont aidé à trouver le bon endroit dans de gros fichiers. C’était souvent la clé de la solution.</p>
+<section id="s4-1"><h2>4.1 grep – chercher du texte</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-n</span> <span class="st">"def open_kanshi_dialog"</span> app_ui_pi_tools.py   <span class="co"># mit Zeilennummer</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-Ri</span> rotation .                                    <span class="co"># rekursiv, ohne Groß/Klein</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-E</span> <span class="st">'^(autologin-user|autologin-session)'</span> /etc/lightdm/lightdm.conf</span></code></pre></div>
+<ul>
+<li><code>-n</code> affiche le numéro de ligne</li>
+<li><code>-i</code> ignore la casse</li>
+<li><code>-R</code> cherche aussi dans les sous-dossiers</li>
+<li><code>-E</code> autorise les motifs étendus</li>
+</ul>
+<p><strong>Voici comment j’ai trouvé la rotation de l’OLED dans le code Freenove :</strong> <code>grep -Ri oled .</code> a montré tous les endroits où l’écran est piloté.</p>
+</section><section id="s4-2"><h2>4.2 find – trouver des fichiers</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">find</span> ~/Desktop <span class="at">-name</span> demo</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-iname</span> <span class="st">"*pico*"</span> <span class="at">-o</span> <span class="at">-iname</span> <span class="st">"*.pio"</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">find</span> build <span class="at">-type</span> f <span class="at">-name</span> <span class="st">"*.uf2"</span></span></code></pre></div>
+<p><code>-name</code> cherche par nom, <code>-iname</code> sans tenir compte de la casse, <code>-type f</code> seulement les fichiers. Avec cela, j’ai trouvé les fichiers Pico et le firmware <code>.uf2</code>.</p>
+</section><section id="s4-3"><h2>4.3 sed – afficher et remplacer des lignes</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-n</span> <span class="st">'390,445p'</span> app_ui_pi_tools.py            <span class="co"># nur Zeilen 390 bis 445 anzeigen</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-i</span> <span class="st">'s/\.red/.r/g; s/\.green/.g/g; s/\.blue/.b/g'</span> arcade.cc   <span class="co"># ersetzen</span></span></code></pre></div>
+<p><code>sed -n 'A,Bp'</code> affiche un extrait d’un fichier. C’est pratique quand une erreur indique un numéro de ligne : on voit exactement l’endroit. <code>sed -i</code> modifie directement le fichier, il faut donc d’abord en faire une copie.</p>
+</section><section id="s4-4"><h2>4.4 head, tail, awk, wc</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 20 datei.txt          <span class="co"># erste 20 Zeilen</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> 20 datei.txt          <span class="co"># letzte 20 Zeilen</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-f</span> datei.log             <span class="co"># live mitlesen</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="ex">wlr-randr</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"Scale:"</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n1</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{print $2}'</span>   <span class="co"># nur die Zahl</span></span></code></pre></div>
+<p>Le dernier exemple vient de mon script de surveillance : <code>grep</code> trouve la ligne avec l’échelle, <code>head -n1</code> prend la première, <code>awk '{print $2}'</code> affiche le deuxième mot.</p>
+</section>

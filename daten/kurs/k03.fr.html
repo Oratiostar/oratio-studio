@@ -1,0 +1,37 @@
+<section id="s3-1"><h2>3.1 apt – paquets pour Raspberry Pi OS</h2><p><code>apt</code> est le gestionnaire de paquets. Il récupère des programmes sur Internet et les installe.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sudo</span> apt update          <span class="co"># Paketliste aktualisieren (nur die Liste!)</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">sudo</span> apt upgrade <span class="at">-y</span>      <span class="co"># installierte Programme aktualisieren</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">sudo</span> apt full-upgrade <span class="at">-y</span> <span class="co"># auch Pakete, die neue Abhängigkeiten brauchen</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="fu">sudo</span> apt install htop    <span class="co"># Programm installieren</span></span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a><span class="ex">apt</span> search vlc           <span class="co"># nach einem Programm suchen</span></span>
+<span id="cb1-6"><a aria-hidden="true" href="#cb1-6" tabindex="-1"></a><span class="fu">sudo</span> apt remove vlc      <span class="co"># Programm entfernen</span></span>
+<span id="cb1-7"><a aria-hidden="true" href="#cb1-7" tabindex="-1"></a><span class="fu">sudo</span> apt autoremove      <span class="co"># nicht mehr gebrauchte Abhängigkeiten entfernen</span></span>
+<span id="cb1-8"><a aria-hidden="true" href="#cb1-8" tabindex="-1"></a><span class="fu">sudo</span> apt clean           <span class="co"># heruntergeladene Paketdateien löschen</span></span></code></pre></div>
+<p><strong>Nettoyer en sécurité :</strong> <code>autoremove</code> ne supprime normalement pas les programmes installés volontairement. Il retire seulement les dépendances dont plus personne n’a besoin. La règle de prudence s’applique quand même : d’abord regarder seulement (<code>apt autoremove --dry-run</code>).</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="fu">sudo</span> apt autoremove <span class="at">--dry-run</span></span></code></pre></div>
+<p>Cela montre seulement ce qui serait retiré et ne supprime rien.</p>
+<p><strong>Routine de mise à jour :</strong> avec <code>sudo apt update &amp;&amp; sudo apt upgrade -y</code>, le Pi reste à jour. <code>update</code> récupère la liste, <code>upgrade</code> installe les nouveautés.</p>
+</section><section id="s3-2"><h2>3.2 pip et venv – paquets Python</h2><p>Les bibliothèques Python s’installent avec <code>pip</code>. Sur le Pi (Debian), il faut souvent pour cela un <strong>environnement virtuel</strong>, afin de ne pas déranger le système.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv ~/.venvs/mein_projekt</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="bu">source</span> ~/.venvs/mein_projekt/bin/activate</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="ex">pip</span> install piper-tts</span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="ex">deactivate</span></span></code></pre></div>
+<p><code>source ... activate</code> active l’environnement. Sans <code>venv</code>, pip exige souvent sur les systèmes récents l’option <code>--break-system-packages</code>. Il faut la connaître et ne l’utiliser que consciemment.</p>
+</section><section id="s3-3"><h2>3.3 git – télécharger du code</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/hzeller/rpi-rgb-led-matrix.git</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="bu">cd</span> rpi-rgb-led-matrix</span></code></pre></div>
+<p><code>git clone</code> copie tout un projet de GitHub sur le Pi. C’est ainsi que j’ai installé la bibliothèque de la matrice LED.</p>
+</section><section id="s3-4"><h2>3.4 curl et wget – fichiers depuis le réseau</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fsSL</span> https://ollama.com/install.sh <span class="kw">|</span> <span class="fu">sh</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-sSLO</span> <span class="at">--fail</span> https://raw.githubusercontent.com/framps/raspiBackup/master/published/raspiBackupInstallUI.sh</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">wget</span> <span class="op">&lt;</span>URL<span class="op">&gt;</span></span></code></pre></div>
+<p>Avec <code>curl ... | sh</code>, un script d’installation est exécuté directement. C’est pratique, mais on fait confiance à la source. À n’utiliser que depuis le site officiel du projet.</p>
+</section><section id="s3-5"><h2>3.5 Alias et le fichier .bashrc</h2><p>Un <strong>alias</strong> donne un nom court à une longue commande. Dans <code>~/.bashrc</code> se trouvent les réglages personnels du shell :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">nano</span> ~/.bashrc</span></code></pre></div>
+<p>J’y ai créé ces alias (exemple pour la résolution) :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="bu">alias</span> fullhd=<span class="st">'wlr-randr --output HDMI-A-2 --mode 1920x1080'</span></span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="bu">alias</span> fourk=<span class="st">'wlr-randr --output HDMI-A-2 --mode 3840x2160 --scale 1'</span></span>
+<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="bu">alias</span> fourkbig=<span class="st">'wlr-randr --output HDMI-A-2 --mode 3840x2160 --scale 3'</span></span></code></pre></div>
+<p>Pour que la modification s’applique immédiatement :</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="bu">source</span> ~/.bashrc</span></code></pre></div>
+<p><strong>Différence : enregistrer et <code>source</code>.</strong> Enregistrer (Ctrl+O) écrit le fichier sur le disque. <code>source</code> le charge dans le terminal déjà ouvert. Autre possibilité : fermer le terminal et le rouvrir.</p>
+<p><strong>Différence : alias et echo.</strong> <code>alias</code> crée un raccourci. <code>echo</code> affiche seulement du texte. Avec <code>echo "texte" &gt;&gt; fichier.txt</code>, le texte est ajouté à un fichier.</p>
+</section>

@@ -1,0 +1,7 @@
+<p>Il s’agit du Freenove Tower Cooler Kit (modèle FNK0113) pour le Pi 5, avec écran OLED, ventilateurs et éclairage LED. Les principaux enseignements :</p>
+<ul>
+<li><strong>Le ventilateur Freenove n’est pas un ventilateur de PC normal à 4 broches.</strong> Les effets RGB et le contrôle de la vitesse passent par la carte Freenove et son logiciel. L’appli envoie des commandes via une carte de contrôle. Si le ventilateur est simplement relié à des broches GPIO quelconques ou directement à 5 V, ce contrôle ne fonctionne plus.</li>
+<li>Le logiciel de Freenove se compose de fichiers Python : <code>app_ui.py</code> (fenêtre), <code>task_oled.py</code> (affichage OLED), <code>task_fan.py</code> (ventilateur), <code>task_led.py</code> (éclairage LED). Je les ai trouvés dans le dossier <code>~/Freenove_Tower_Cooler_for_Raspberry_Pi/Code</code> et les ai développés en <strong>Oratio Control Center</strong> (<a class="xr" href="#/kap/31">chapitre 31</a>).</li>
+<li>La température et l’alimentation se vérifient avec <code>vcgencmd measure_temp</code> et <code>vcgencmd get_throttled</code>.</li>
+</ul>
+<p><strong>Conseil pour le bricolage :</strong> un ventilateur peut être régulé en vitesse depuis le Pi s’il a une ligne PWM (ventilateur à 4 fils). Mais c’est un projet à part, qui ne fait pas partie du logiciel Freenove.</p>

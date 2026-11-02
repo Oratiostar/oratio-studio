@@ -1,0 +1,40 @@
+<section id="s5-1"><h2>5.1 Voir et terminer les processus</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">ps</span> aux                        <span class="co"># alle laufenden Prozesse</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">ps</span> aux <span class="kw">|</span> <span class="fu">grep</span> kanshi          <span class="co"># ist Kanshi gestartet?</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="ex">top</span>                           <span class="co"># live, beenden mit q</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="ex">htop</span>                          <span class="co"># komfortabler (sudo apt install htop)</span></span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a><span class="bu">kill</span> 1234                     <span class="co"># Prozess mit der Nummer 1234 beenden</span></span>
+<span id="cb1-6"><a aria-hidden="true" href="#cb1-6" tabindex="-1"></a><span class="ex">pkill</span> kanshi                  <span class="co"># Prozess nach Namen beenden</span></span>
+<span id="cb1-7"><a aria-hidden="true" href="#cb1-7" tabindex="-1"></a><span class="ex">pkill</span> <span class="at">-f</span> app_ui.py            <span class="co"># Prozess nach ganzer Befehlszeile beenden</span></span></code></pre></div>
+<p><strong>Voici comment j’ai trouvé l’erreur avec Kanshi :</strong> <code>ps aux | grep kanshi</code> n’affichait que la ligne de grep elle-même. Cela veut dire : Kanshi ne tourne pas du tout, bien qu’il figure dans le démarrage automatique. La cause était une erreur de syntaxe dans le fichier de configuration (voir <a class="xr" href="#/kap/10/10.6">chapitre 10.6</a>).</p>
+</section><section id="s5-2"><h2>5.2 systemd – les services</h2><p>Sur le Pi, les services d’arrière-plan tournent sous <strong>systemd</strong>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="ex">systemctl</span> status ssh <span class="at">--no-pager</span>       <span class="co"># Zustand ansehen</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">sudo</span> systemctl enable <span class="at">--now</span> ssh       <span class="co"># jetzt starten und beim Boot starten</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">sudo</span> systemctl restart <span class="op">&lt;</span>dienst<span class="op">&gt;</span>       # neu starten</span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="ex">systemctl</span> <span class="at">--user</span> status kanshi        <span class="co"># Dienst des eigenen Benutzers</span></span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a><span class="ex">systemctl</span> get-default                 <span class="co"># grafisch (graphical.target) oder nicht</span></span></code></pre></div>
+</section><section id="s5-3"><h2>5.3 Lire les journaux</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="ex">journalctl</span> <span class="at">-n</span> 50       <span class="co"># letzte 50 Systemmeldungen</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="ex">journalctl</span> <span class="at">-f</span>          <span class="co"># live mitlesen</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">dmesg</span> <span class="kw">|</span> <span class="fu">tail</span>           <span class="co"># letzte Kernel-Meldungen (z. B. neue USB-Geräte)</span></span></code></pre></div>
+<p><code>dmesg</code> montre ce que le noyau a détecté quand on branche quelque chose, par exemple un Arduino qui apparaît comme <code>ttyUSB0</code>.</p>
+</section><section id="s5-4"><h2>5.4 Démarrage automatique à la connexion (bureau)</h2><p>Les fichiers du dossier <code>~/.config/autostart</code> sont lancés à la connexion. Chaque fichier est une <strong>Desktop Entry</strong> :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode ini"><code class="sourceCode ini"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">[Desktop Entry]</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="dt">Type</span><span class="ot">=</span><span class="st">Application</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="dt">Name</span><span class="ot">=</span><span class="st">Display Watchdog</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="dt">Exec</span><span class="ot">=</span><span class="st">/home/oratio/display_watchdog.sh</span></span></code></pre></div>
+<p>Signification des lignes :</p>
+<ul>
+<li><code>[Desktop Entry]</code> – début de la configuration</li>
+<li><code>Type=Application</code> – c’est un programme</li>
+<li><code>Name=</code> – nom affiché</li>
+<li><code>Exec=</code> – quel programme est lancé</li>
+</ul>
+<p>Chaque fichier de <code>autostart</code> décrit un programme. Les fichiers n’ont pas tous la même longueur. La partie obligatoire se compose le plus souvent de ces quatre lignes.</p>
+<p>Attention : le script s’appelle <code>.sh</code>, le fichier de démarrage automatique s’appelle <code>.desktop</code>. J’ai déjà confondu ces deux extensions.</p>
+<p><strong>Avec labwc</strong> (le gestionnaire de fenêtres de Raspberry Pi OS Trixie), il existe en plus le fichier <code>~/.config/labwc/autostart</code>. On y trouve par exemple la ligne <code>kanshi &amp;</code>.</p>
+</section><section id="s5-5"><h2>5.5 cron – tâches planifiées</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">crontab</span> <span class="at">-e</span>     <span class="co"># Zeitplan bearbeiten</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">crontab</span> <span class="at">-l</span>     <span class="co"># Zeitplan anzeigen</span></span></code></pre></div>
+<p>Une ligne comporte cinq champs de temps (minute, heure, jour, mois, jour de la semaine), puis la commande. Exemple « chaque dimanche à 3 h » : <code>0 3 * * 0 /home/oratio/backup.sh</code>. Une sauvegarde tourne ainsi sans intervention de ma part.</p>
+</section><section id="s5-6"><h2>5.6 Redémarrer et éteindre</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sudo</span> reboot</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">sudo</span> shutdown now</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">sudo</span> shutdown <span class="at">-h</span> now</span></code></pre></div>
+</section>

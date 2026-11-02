@@ -1,0 +1,98 @@
+<p>Ma question était : <em>qu’est-ce que mkfs ? Je veux tout savoir sur le formatage, les partitions et les commandes.</em> Voici la réponse, dans l’ordre.</p>
+<section id="s7-1"><h2>7.1 Que se passe-t-il lors d’un formatage ?</h2><p>Un SSD neuf est comme un terrain vide. Il a de l’espace de stockage, mais Linux ne sait pas encore où se trouvent les fichiers et les dossiers. Lors du formatage, cette structure est créée : répertoires, table des fichiers, gestion de l’espace libre.</p>
+</section><section id="s7-2"><h2>7.2 Les noms des disques</h2><p>Linux traite les appareils comme des fichiers. Ils se trouvent sous <code>/dev</code> :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Nom</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>/dev/mmcblk0</code></td>
+<td>carte microSD</td>
+</tr>
+<tr class="even">
+<td><code>/dev/sda</code>, <code>/dev/sdb</code></td>
+<td>disques USB ou SATA</td>
+</tr>
+<tr class="odd">
+<td><code>/dev/nvme0n1</code></td>
+<td>SSD NVMe</td>
+</tr>
+<tr class="even">
+<td><code>/dev/sda1</code></td>
+<td>première partition de <code>sda</code></td>
+</tr>
+<tr class="odd">
+<td><code>/dev/nvme0n1p1</code></td>
+<td>première partition du NVMe</td>
+</tr>
+<tr class="even">
+<td><code>/dev/ttyUSB0</code></td>
+<td>un appareil série USB (par exemple Arduino Nano)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Règle :</strong> on ne formate pas le disque entier (<code>/dev/sda</code>), mais une partition (<code>/dev/sda1</code>).</p>
+</section><section id="s7-3"><h2>7.3 Partitions et table de partitions</h2><p>Une partition est une section d’un disque. Un SSD de 1 To peut par exemple être divisé en 500 Go pour Linux et 500 Go pour les données. Il existe deux types de table de partitions :</p>
+<ul>
+<li><strong>MBR</strong> – ancien, 2 To et 4 partitions au maximum</li>
+<li><strong>GPT</strong> – moderne, pour les gros disques et de nombreuses partitions. Aujourd’hui presque toujours le bon choix.</li>
+</ul>
+</section><section id="s7-4"><h2>7.4 Le déroulement complet : installer un nouveau SSD</h2><p><strong>Étape 1 : trouver le disque</strong> (toujours en premier !)</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="ex">lsblk</span></span></code></pre></div>
+<p>Exemple de sortie :</p>
+<pre class="text"><code>nvme0n1   1TB   ← System
+sda       1TB   ← Backup-SSD</code></pre>
+<p>Il faut savoir exactement quel disque est lequel. Celui qui se trompe ici formate le système.</p>
+<p><strong>Étape 2 : créer la table de partitions et la partition</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="fu">sudo</span> parted <span class="at">-s</span> /dev/sda mklabel gpt</span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="fu">sudo</span> parted <span class="at">-s</span> /dev/sda mkpart primary ext4 0% 100%</span></code></pre></div>
+<p>La première commande crée une table GPT, la deuxième crée une partition sur toute la taille. On peut aussi procéder en interactif avec <code>sudo fdisk /dev/sda</code>. Là : <code>p</code> affiche, <code>n</code> nouvelle partition, <code>d</code> supprime, <code>w</code> enregistre, <code>q</code> quitte sans enregistrer.</p>
+<p><strong>Étape 3 : créer le système de fichiers</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="fu">sudo</span> mkfs.ext4 <span class="at">-L</span> BACKUP /dev/sda1</span></code></pre></div>
+<ul>
+<li><code>mkfs</code> = « make file system », créer un système de fichiers</li>
+<li><code>ext4</code> = type, le standard pour Linux (rapide, stable)</li>
+<li><code>-L BACKUP</code> = un nom pour le disque</li>
+<li><code>/dev/sda1</code> = la partition</li>
+</ul>
+<p>Autres systèmes de fichiers : <strong>exFAT</strong> (échange avec Windows et Mac), <strong>FAT32</strong> (ancien, limite de fichier à 4 Go), <strong>NTFS</strong> (Windows).</p>
+<p><strong>Étape 4 : monter</strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="fu">sudo</span> mkdir /backup</span>
+<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="fu">sudo</span> mount /dev/sda1 /backup</span>
+<span id="cb5-3"><a aria-hidden="true" href="#cb5-3" tabindex="-1"></a><span class="fu">df</span> <span class="at">-h</span></span></code></pre></div>
+<p>Sous Linux, un disque n’est utilisable qu’une fois <strong>monté</strong> sur un dossier. Ensuite il apparaît sous <code>/backup</code>.</p>
+<p><strong>Étape 5 : définir les droits</strong></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="fu">sudo</span> chown oratio:oratio /backup</span></code></pre></div>
+<p>Sinon le dossier appartient à <code>root</code>, et l’utilisateur ne peut rien y enregistrer.</p>
+<p><strong>Étape 6 : démonter avant de débrancher le disque</strong></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="fu">sudo</span> umount /backup</span></code></pre></div>
+</section><section id="s7-5"><h2>7.5 Monter durablement : fstab</h2><p>Un <code>mount</code> normal ne vaut que jusqu’au redémarrage. Pour que le SSD soit toujours monté au démarrage, on l’inscrit dans <code>/etc/fstab</code> :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">cat</span> /etc/fstab</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">sudo</span> blkid                <span class="co"># zeigt die UUID jedes Laufwerks</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">sudo</span> nano /etc/fstab</span></code></pre></div>
+<p>Exemple de ligne (utiliser l’UUID donné par <code>blkid</code>, pas <code>/dev/sda1</code>, car ces noms peuvent changer) :</p>
+<pre class="text"><code>UUID=&lt;UUID-AUS-BLKID&gt;  /backup  ext4  defaults  0  2</code></pre>
+<p>Ensuite <code>sudo mount -a</code> pour tester. Une erreur dans <code>/etc/fstab</code> peut empêcher le Pi de démarrer : il faut donc modifier ce fichier avec une prudence particulière.</p>
+</section><section id="s7-6"><h2>7.6 Autres commandes utiles</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="ex">lsblk</span> <span class="at">-f</span>                     <span class="co"># mit Dateisystem</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="ex">findmnt</span>                      <span class="co"># alle eingehängten Laufwerke als Baum</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="ex">findmnt</span> /                    <span class="co"># von welchem Laufwerk läuft das System?</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="fu">sudo</span> blkid                   <span class="co"># UUID und Typ</span></span></code></pre></div>
+</section><section id="s7-7"><h2>7.7 Mesurer la vitesse</h2><p>Mon objectif était de comparer la vitesse de la carte SD, du SSD USB et du NVMe.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sudo</span> hdparm <span class="at">-Tt</span> /dev/sda             <span class="co"># USB-SSD</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">sudo</span> hdparm <span class="at">-Tt</span> /dev/nvme0n1         <span class="co"># NVMe</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">sudo</span> hdparm <span class="at">-Tt</span> /dev/mmcblk0         <span class="co"># SD-Karte</span></span></code></pre></div>
+<p><code>-T</code> mesure le cache, <code>-t</code> la vraie vitesse de lecture. <code>fio</code> est plus précis :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="fu">sudo</span> apt install fio</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="fu">sudo</span> fio <span class="at">--name</span><span class="op">=</span>USB-Read-Test <span class="at">--filename</span><span class="op">=</span>/dev/sda <span class="at">--rw</span><span class="op">=</span>read <span class="at">--bs</span><span class="op">=</span>1M <span class="at">--size</span><span class="op">=</span>2G <span class="at">--direct</span><span class="op">=</span>1</span></code></pre></div>
+<p>Et le test d’écriture le plus simple, sans logiciel supplémentaire :</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="fu">dd</span> if=/dev/zero of=test.img bs=1M count=1024 conv=fdatasync</span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="fu">rm</span> test.img</span></code></pre></div>
+<p>À la fin, on obtient une ligne comme <code>1073741824 bytes copied, 2.5 s, 430 MB/s</code>. Supprimer ensuite le fichier de test. Le test avec <code>fio</code> sur <code>--filename=/dev/...</code> lit directement depuis le disque, c’est en lecture seule et donc sûr. Ne jamais diriger de test d’écriture vers un disque contenant des données importantes.</p>
+</section><section id="s7-8"><h2>7.8 Ordre de démarrage sur le Pi 5</h2><p>Je voulais « carte SD comme système d’exploitation, NVMe seulement pour tester ». L’ordre de démarrage est dans l’EEPROM du Pi :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sudo</span> rpi-eeprom-config <span class="kw">|</span> <span class="fu">grep</span> BOOT_ORDER</span></code></pre></div>
+<p>Avec <code>sudo raspi-config</code> (Advanced Options, Boot Order), on change l’ordre. Ensuite on vérifie avec <code>lsblk</code> et <code>findmnt /</code> depuis quel disque le système démarre réellement.</p>
+</section>

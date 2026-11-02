@@ -1,0 +1,149 @@
+<p>La mise à l’échelle de l’écran est l’un des sujets les plus longs avec le Pi. Voici le savoir dans l’ordre, avec les essais ratés typiques, car c’est de là qu’on apprend le plus.</p>
+<section id="s10-1"><h2>10.1 Le problème</h2><p>Un écran 4K (3840 × 2160 pixels) affiche tout très petit sur le Pi : texte, menus, icônes. Je voulais conserver toute la résolution (image nette) tout en voyant tout plus grand.</p>
+</section><section id="s10-2"><h2>10.2 Deux systèmes graphiques : Wayland et X11</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$XDG_SESSION_TYPE</span></span></code></pre></div>
+<p>Sortie <code>wayland</code> ou <code>x11</code>. Mon Raspberry Pi OS (Debian 13, « Trixie ») utilise <strong>Wayland</strong> avec le gestionnaire de fenêtres <strong>labwc</strong>.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Wayland (nouveau, chez moi)</th>
+<th>X11 (plus ancien)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Régler l’écran</td>
+<td><code>wlr-randr</code></td>
+<td><code>xrandr</code></td>
+</tr>
+<tr class="even">
+<td>Fichier de démarrage automatique</td>
+<td><code>~/.config/labwc/autostart</code></td>
+<td>autres</td>
+</tr>
+</tbody>
+</table></div>
+<p>J’ai essayé X11. Le problème n’a pas été résolu, je suis donc revenu à Wayland.</p>
+</section><section id="s10-3"><h2>10.3 La commande la plus importante : wlr-randr</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="ex">wlr-randr</span></span></code></pre></div>
+<p>Elle affiche la sortie (par exemple <code>HDMI-A-1</code> ou <code>HDMI-A-2</code>), la résolution actuelle, les résolutions possibles, <strong>Scale</strong> (l’échelle) et l’orientation. <strong>Le nom de la sortie n’est pas le même partout. Toujours exécuter d’abord <code>wlr-randr</code> et lire le nom.</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="ex">wlr-randr</span> <span class="at">--output</span> HDMI-A-2 <span class="at">--mode</span> 1920x1080                  <span class="co"># Full HD</span></span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="ex">wlr-randr</span> <span class="at">--output</span> HDMI-A-2 <span class="at">--mode</span> 3840x2160                  <span class="co"># 4K</span></span>
+<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="ex">wlr-randr</span> <span class="at">--output</span> HDMI-A-2 <span class="at">--mode</span> 3840x2160 <span class="at">--scale</span> 2       <span class="co"># 4K, alles doppelt so groß</span></span>
+<span id="cb2-4"><a aria-hidden="true" href="#cb2-4" tabindex="-1"></a><span class="ex">wlr-randr</span> <span class="at">--output</span> HDMI-A-2 <span class="at">--mode</span> 3840x2160 <span class="at">--scale</span> 3       <span class="co"># 4K, dreifach</span></span>
+<span id="cb2-5"><a aria-hidden="true" href="#cb2-5" tabindex="-1"></a><span class="ex">wlr-randr</span> <span class="at">--output</span> HDMI-A-2 <span class="at">--scale</span> 1                         <span class="co"># zurück</span></span>
+<span id="cb2-6"><a aria-hidden="true" href="#cb2-6" tabindex="-1"></a><span class="ex">wlr-randr</span> <span class="at">--output</span> HDMI-A-2 <span class="at">--transform</span> 180                   <span class="co"># Bild um 180 Grad drehen</span></span>
+<span id="cb2-7"><a aria-hidden="true" href="#cb2-7" tabindex="-1"></a><span class="ex">wlr-randr</span> <span class="at">--output</span> HDMI-A-2 <span class="at">--transform</span> normal                <span class="co"># zurück</span></span></code></pre></div>
+<p>Signification : Scale 1 = normal, Scale 2 = tout deux fois plus grand, Scale 3 = trois fois. La résolution reste 4K, seule l’interface devient plus grande. Avec mon moniteur 4K portable, Scale 3 était plus agréable que Scale 2.</p>
+<p>Pour X11, l’équivalent est :</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="ex">xrandr</span></span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="ex">xrandr</span> <span class="at">--output</span> HDMI-1 <span class="at">--mode</span> 1920x1080 <span class="at">--rate</span> 60</span></code></pre></div>
+</section><section id="s10-4"><h2>10.4 Problème 1 : après le redémarrage, tout est de nouveau petit</h2><p>Une commande <code>wlr-randr</code> dans le terminal ne vaut <strong>que pour la session en cours</strong>. Au redémarrage, Wayland choisit de nouveau la résolution préférée du moniteur. Solution : une entrée de démarrage automatique.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">nano</span> ~/.config/autostart/display.desktop</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode ini"><code class="sourceCode ini"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">[Desktop Entry]</span></span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="dt">Type</span><span class="ot">=</span><span class="st">Application</span></span>
+<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="dt">Name</span><span class="ot">=</span><span class="st">Display Setup</span></span>
+<span id="cb2-4"><a aria-hidden="true" href="#cb2-4" tabindex="-1"></a><span class="dt">Exec</span><span class="ot">=</span><span class="st">sh -c "sleep 3 &amp;&amp; wlr-randr --output HDMI-A-2 --mode 3840x2160 --scale 3"</span></span></code></pre></div>
+<p>Le <code>sleep 3</code> attend que le bureau ait fini de démarrer. Puis <code>sudo reboot</code>.</p>
+</section><section id="s10-5"><h2>10.5 Pourquoi `cmdline.txt` n’a pas aidé</h2><p>J’ai aussi essayé cette méthode :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sudo</span> nano /boot/firmware/cmdline.txt</span></code></pre></div>
+<p>avec le paramètre <code>video=HDMI-A-1:1920x1080@60D</code>. <strong>Tout doit tenir sur une seule ligne.</strong> J’ai vérifié avec <code>cat /proc/cmdline</code> que le paramètre était bien présent. Wayland a pourtant redémarré en 4K, car le noyau a repris le paramètre, mais le bureau a ensuite réglé l’affichage à nouveau. <strong>Leçon :</strong> un réglage peut figurer dans une couche du système et être écrasé dans la suivante. C’est pourquoi la solution avec <code>wlr-randr</code> dans le démarrage automatique était plus fiable.</p>
+</section><section id="s10-6"><h2>10.6 Problème 2 : moniteur éteint puis rallumé</h2><p>Si seul le moniteur est éteint puis rallumé, Wayland le détecte de nouveau et remet l’échelle à 1. Le fichier de démarrage automatique ne s’exécute qu’à la connexion, pas une seconde fois. C’est ce qu’on appelle un <strong>problème de hotplug HDMI</strong>. Il y a deux solutions.</p>
+<h3 id="lösung-a-kanshi">Solution A : Kanshi</h3>
+<p><strong>Kanshi</strong> réagit quand un moniteur est branché ou débranché et applique un <strong>profil</strong> enregistré.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sudo</span> apt install kanshi</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/.config/kanshi</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">nano</span> ~/.config/kanshi/config</span></code></pre></div>
+<p>Contenu (c’est ainsi que cela a fonctionné chez moi, dans l’ancienne notation sans accolades autour des options) :</p>
+<pre class="text"><code>profile {
+    output HDMI-A-1 mode 3840x2160 scale 3
+}</code></pre>
+<p>Ensuite, inscrire la ligne <code>kanshi &amp;</code> dans <code>~/.config/labwc/autostart</code> et se reconnecter.</p>
+<p><strong>Voici comment j’ai trouvé l’erreur (le dépannage est la vraie leçon) :</strong></p>
+<ol type="1">
+<li><code>ps aux | grep kanshi</code> n’affichait que la ligne grep → Kanshi ne tourne pas.</li>
+<li>Au lancement manuel, on a obtenu : <code>unexpected '{' in output – failed to parse config file</code>. La version installée ne comprenait pas la notation <code>output HDMI-A-1 { ... }</code>.</li>
+<li>Configuration changée vers l’ancienne notation → Kanshi a démarré → <code>wlr-randr</code> affichait <code>Scale: 3.000000</code> au lieu de <code>1.000000</code>.</li>
+<li>L’option de débogage <code>kanshi -v</code> n’existait pas dans cette version (<code>invalid option -- 'v'</code>). Ce n’est pas un dysfonctionnement, seulement une version plus ancienne.</li>
+</ol>
+<h3 id="lösung-b-watchdog-die-brutale-aber-sehr-zuverlässige-lösung">Solution B : script de surveillance (la solution « brutale, mais très fiable »)</h3>
+<p>Un petit script vérifie toutes les quelques secondes si l’échelle est toujours correcte et la corrige immédiatement.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="fu">nano</span> ~/display_watchdog.sh</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a></span>
+<span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a><span class="cf">while</span> <span class="fu">true</span></span>
+<span id="cb4-4"><a aria-hidden="true" href="#cb4-4" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb4-5"><a aria-hidden="true" href="#cb4-5" tabindex="-1"></a>    <span class="va">SCALE</span><span class="op">=</span><span class="va">$(</span><span class="ex">wlr-randr</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"Scale:"</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n1</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{print $2}'</span><span class="va">)</span></span>
+<span id="cb4-6"><a aria-hidden="true" href="#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a aria-hidden="true" href="#cb4-7" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$SCALE</span><span class="st">"</span> <span class="ot">!=</span> <span class="st">"3.000000"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb4-8"><a aria-hidden="true" href="#cb4-8" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">"Scale falsch → korrigiere"</span></span>
+<span id="cb4-9"><a aria-hidden="true" href="#cb4-9" tabindex="-1"></a>        <span class="ex">wlr-randr</span> <span class="at">--output</span> HDMI-A-1 <span class="at">--scale</span> 3</span>
+<span id="cb4-10"><a aria-hidden="true" href="#cb4-10" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb4-11"><a aria-hidden="true" href="#cb4-11" tabindex="-1"></a></span>
+<span id="cb4-12"><a aria-hidden="true" href="#cb4-12" tabindex="-1"></a>    <span class="fu">sleep</span> 5</span>
+<span id="cb4-13"><a aria-hidden="true" href="#cb4-13" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>Ligne par ligne :</p>
+<ul>
+<li><code>while true; do ... done</code> – boucle infinie</li>
+<li><code>SCALE=$(...)</code> – enregistre la sortie de la commande dans la variable <code>SCALE</code></li>
+<li><code>if [ "$SCALE" != "3.000000" ]</code> – « si l’échelle n’est pas 3 »</li>
+<li><code>wlr-randr --output ... --scale 3</code> – corrige</li>
+<li><code>sleep 5</code> – attendre 5 secondes (avec <code>sleep 2</code>, il réagit plus vite)</li>
+</ul>
+<p>Ensuite le rendre exécutable (<code>chmod +x ~/display_watchdog.sh</code>), le tester avec <code>~/display_watchdog.sh</code>, puis créer le fichier de démarrage automatique (voir section 5.4). Un tel script ne charge pratiquement pas un Pi 5.</p>
+<h3 id="kanshi-oder-watchdog">Kanshi ou script de surveillance ?</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Kanshi</th>
+<th>Surveillance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Principe</td>
+<td>attend l’événement « moniteur détecté »</td>
+<td>vérifie en permanence que tout est correct</td>
+</tr>
+<tr class="even">
+<td>Si le moniteur n’émet aucun événement</td>
+<td>sans effet</td>
+<td>fonctionne quand même</td>
+</tr>
+<tr class="odd">
+<td>Effort</td>
+<td>fichier de config + programme</td>
+<td>petit script</td>
+</tr>
+</tbody>
+</table></div>
+<p>Je soupçonnais que le moniteur Samsung n’envoyait aucun événement détectable lors de l’extinction et de l’allumage. Dans ce cas, seul le script de surveillance aide.</p>
+</section><section id="s10-7"><h2>10.7 Perspective : mise à l’échelle automatique selon la résolution</h2><p>Le concept : le script ne doit pas seulement vérifier l’échelle, mais aussi lire la résolution puis choisir la bonne valeur.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Résolution</th>
+<th>Scale</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>jusqu’à 1920×1080</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>2560×1440 et 3440×1440</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>3840×2160</td>
+<td>3</td>
+</tr>
+</tbody>
+</table></div>
+<p>Ainsi, chaque moniteur branché se règle automatiquement correctement.</p>
+</section><section id="s10-8"><h2>10.8 Plus sur l’écran : autres commandes</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">cat</span> /proc/cmdline          <span class="co"># Kernel-Parameter prüfen</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">cat</span> /etc/os-release        <span class="co"># Systemversion</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$XDG_SESSION_TYPE</span>     <span class="co"># Wayland oder X11</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="fu">sudo</span> nano /etc/lightdm/lightdm.conf   <span class="co"># Anmeldemanager-Einstellungen</span></span></code></pre></div>
+</section>

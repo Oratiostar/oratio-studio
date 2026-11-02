@@ -1,0 +1,189 @@
+<p>Je me suis posé cette question moi-même : <em>pourquoi rend-on des choses exécutables, et que se passe-t-il si on ne le fait pas ?</em> La réponse est l’une des idées les plus importantes de Linux.</p>
+<section id="s2-1"><h2>2.1 Un fichier n’est pas automatiquement un programme</h2><p>Pour Linux, tout est d’abord un simple fichier, que ce soit <code>foto.jpg</code>, <code>brief.txt</code> ou <code>script.sh</code>. Pour qu’un fichier téléchargé (par exemple une facture qui est en réalité un code malveillant) ne puisse pas se lancer tout seul, il faut d’abord le rendre <strong>explicitement exécutable</strong>.</p>
+</section><section id="s2-2"><h2>2.2 Lire les droits avec `ls -l`</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span></code></pre></div>
+<pre class="text"><code>-rw-r--r--  test.txt
+-rwxr-xr-x  script.sh</code></pre>
+<p>Les premiers caractères sont les droits :</p>
+<ul>
+<li><code>r</code> = read, lire</li>
+<li><code>w</code> = write, écrire (modifier)</li>
+<li><code>x</code> = execute, exécuter</li>
+</ul>
+<p>Les groupes représentent le <strong>propriétaire</strong>, le <strong>groupe</strong> et <strong>tous les autres</strong>. Avec <code>-rwxr-xr-x</code>, le propriétaire peut tout faire, les autres peuvent lire et exécuter.</p>
+</section><section id="s2-3"><h2>2.3 `chmod +x` – rendre un fichier exécutable</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">chmod</span> +x display_watchdog.sh</span></code></pre></div>
+<p>Avant, c’était <code>-rw-r--r--</code>, après <code>-rwxr-xr-x</code>. Sans ce droit, le lancement donne <code>Permission denied</code> (permission refusée).</p>
+</section><section id="s2-4"><h2>2.4 Pourquoi nano peut quand même ouvrir le fichier</h2><p>Lire n’est pas exécuter. nano n’a besoin que du droit de lecture <code>r</code>. Pour lancer, il faut <code>x</code>.</p>
+</section><section id="s2-5"><h2>2.5 Que signifie `./` ?</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="ex">./display_watchdog.sh</span></span></code></pre></div>
+<p><code>./</code> signifie « dossier actuel ». La commande veut dire : « Lance le fichier <code>display_watchdog.sh</code> de ce dossier. » Sans <code>./</code>, Linux ne cherche que dans certains dossiers système.</p>
+</section><section id="s2-6"><h2>2.6 Pourquoi `bash script.sh` fonctionne même sans `+x`</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">bash</span> display_watchdog.sh</span></code></pre></div>
+<p>Ici, ce n’est pas le fichier qui est lancé, mais le programme <code>bash</code>, qui lit simplement le fichier. C’est pourquoi cela marche souvent même sans le droit <code>x</code>.</p>
+</section><section id="s2-7"><h2>2.7 Le shebang</h2><p>Presque chaque script commence par la ligne</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="co">#!/bin/bash</span></span></code></pre></div>
+<p>C’est ce qu’on appelle le <strong>shebang</strong>. Il indique à Linux avec quel programme lancer le script (ici : bash). Pour les scripts Python, on trouve <code>#!/usr/bin/env python3</code>.</p>
+</section><section id="s2-8"><h2>2.8 Changer le propriétaire avec `chown`</h2><p>Ce qui a été créé avec <code>sudo</code> appartient à l’utilisateur <code>root</code>, et le compte normal n’a pas le droit de le modifier. Cela m’est arrivé avec le SSD et avec le fichier <code>app_config.json</code>. Avec <code>chown</code>, on rend le fichier :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sudo</span> chown oratio:oratio /mnt/ssd</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">sudo</span> chown <span class="at">-R</span> oratio:oratio /home/oratio/Freenove_Tower_Cooler_for_Raspberry_Pi</span></code></pre></div>
+<p>La forme est <code>utilisateur:groupe</code>. L’option <code>-R</code> s’applique à tout le contenu du dossier.</p>
+</section><section id="s2-9"><h2>2.9 Qu’est-ce que `sudo` ?</h2><p><code>sudo</code> exécute une commande en tant qu’administrateur (root). C’est nécessaire pour les installations, le formatage des disques et tout ce qui modifie le système. À retenir : <em>ce qui est précédé de <code>sudo</code> peut modifier le système. Vérifier deux fois.</em></p>
+</section><section id="s2-10"><h2>2.10 Les droits en chiffres : 4, 2, 1</h2><p>Au lieu de <code>rwx</code>, on peut aussi écrire les droits sous forme de <strong>nombre</strong>. C’est plus court et très utilisé avec <code>chmod</code>. Chaque droit a une valeur :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Droit</th>
+<th>Lettre</th>
+<th>Nombre</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>lire (read)</td>
+<td><code>r</code></td>
+<td><strong>4</strong></td>
+</tr>
+<tr class="even">
+<td>écrire (write)</td>
+<td><code>w</code></td>
+<td><strong>2</strong></td>
+</tr>
+<tr class="odd">
+<td>exécuter (execute)</td>
+<td><code>x</code></td>
+<td><strong>1</strong></td>
+</tr>
+<tr class="even">
+<td>aucun droit</td>
+<td><code>-</code></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>On <strong>additionne</strong> les nombres des droits que l’on veut autoriser :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Droits</th>
+<th>Calcul</th>
+<th>Chiffre</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>---</code> rien</td>
+<td>0</td>
+<td><strong>0</strong></td>
+</tr>
+<tr class="even">
+<td><code>--x</code> exécuter seulement</td>
+<td>1</td>
+<td><strong>1</strong></td>
+</tr>
+<tr class="odd">
+<td><code>-w-</code> écrire seulement</td>
+<td>2</td>
+<td><strong>2</strong></td>
+</tr>
+<tr class="even">
+<td><code>-wx</code> écrire et exécuter</td>
+<td>2 + 1</td>
+<td><strong>3</strong></td>
+</tr>
+<tr class="odd">
+<td><code>r--</code> lire seulement</td>
+<td>4</td>
+<td><strong>4</strong></td>
+</tr>
+<tr class="even">
+<td><code>r-x</code> lire et exécuter</td>
+<td>4 + 1</td>
+<td><strong>5</strong></td>
+</tr>
+<tr class="odd">
+<td><code>rw-</code> lire et écrire</td>
+<td>4 + 2</td>
+<td><strong>6</strong></td>
+</tr>
+<tr class="even">
+<td><code>rwx</code> tout</td>
+<td>4 + 2 + 1</td>
+<td><strong>7</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Un <code>chmod</code> avec des nombres comporte <strong>trois chiffres</strong>, dans l’ordre pour le <strong>propriétaire (User)</strong>, le <strong>groupe (Group)</strong> et <strong>tous les autres (Others)</strong> :</p>
+<pre class="text"><code>chmod  7  5  5  datei
+       │  │  └── alle anderen: 5 = r-x
+       │  └───── Gruppe:       5 = r-x
+       └──────── Besitzer:     7 = rwx</code></pre>
+<p>Les valeurs les plus courantes :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Nombre</th>
+<th>Droits</th>
+<th>Signification</th>
+<th>Usage typique</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>755</code></td>
+<td><code>rwxr-xr-x</code></td>
+<td>le propriétaire tout, les autres lisent et lancent</td>
+<td>programmes, scripts, <strong>dossiers</strong></td>
+</tr>
+<tr class="even">
+<td><code>644</code></td>
+<td><code>rw-r--r--</code></td>
+<td>le propriétaire lit et modifie, les autres lisent seulement</td>
+<td><strong>fichiers</strong> normaux, par exemple <code>.py</code>, <code>.json</code>, <code>.txt</code></td>
+</tr>
+<tr class="odd">
+<td><code>664</code></td>
+<td><code>rw-rw-r--</code></td>
+<td>le propriétaire et le groupe peuvent modifier</td>
+<td>fichiers que le groupe modifie aussi</td>
+</tr>
+<tr class="even">
+<td><code>600</code></td>
+<td><code>rw-------</code></td>
+<td>seulement le propriétaire, personne d’autre</td>
+<td>clés privées, mots de passe</td>
+</tr>
+<tr class="odd">
+<td><code>700</code></td>
+<td><code>rwx------</code></td>
+<td>seulement le propriétaire, tout</td>
+<td>dossiers et scripts privés</td>
+</tr>
+<tr class="even">
+<td><code>777</code></td>
+<td><code>rwxrwxrwx</code></td>
+<td>tout le monde peut tout faire</td>
+<td><strong>À éviter</strong>, un risque de sécurité</td>
+</tr>
+</tbody>
+</table></div>
+<p>Exemples :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="fu">chmod</span> 664 app_ui_oled.py                <span class="co"># Datei: Besitzer und Gruppe dürfen ändern</span></span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="fu">chmod</span> <span class="at">-R</span> 755 /home/oratio/Freenove_Tower_Cooler_for_Raspberry_Pi</span>
+<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="fu">find</span> /home/oratio/Freenove_Tower_Cooler_for_Raspberry_Pi <span class="at">-type</span> d <span class="at">-exec</span> chmod 755 {} <span class="dt">\;</span>   <span class="co"># nur Ordner</span></span>
+<span id="cb2-4"><a aria-hidden="true" href="#cb2-4" tabindex="-1"></a><span class="fu">find</span> /home/oratio/Freenove_Tower_Cooler_for_Raspberry_Pi <span class="at">-type</span> f <span class="at">-exec</span> chmod 644 {} <span class="dt">\;</span>   <span class="co"># nur Dateien</span></span></code></pre></div>
+<p>La dernière paire est la bonne façon de réparer tout un dossier de projet : <strong>les dossiers reçoivent 755</strong> (ils ont besoin de <code>x</code> pour qu’on puisse y entrer), <strong>les fichiers reçoivent 644</strong>. <code>find ... -type d</code> ne trouve que les dossiers, <code>-type f</code> que les fichiers, <code>-exec chmod ... {} \;</code> exécute la commande pour chaque résultat.</p>
+<p><strong>La même chose avec des lettres :</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="fu">chmod</span> u+x script.sh        <span class="co"># dem Besitzer (u = user) Ausführen geben</span></span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="fu">chmod</span> g+w datei            <span class="co"># der Gruppe (g) Schreiben geben</span></span>
+<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="fu">chmod</span> o-r datei            <span class="co"># den anderen (o = others) Lesen wegnehmen</span></span>
+<span id="cb3-4"><a aria-hidden="true" href="#cb3-4" tabindex="-1"></a><span class="fu">chmod</span> a+x script.sh        <span class="co"># allen (a = all) Ausführen geben; ohne Buchstabe wie "chmod +x"</span></span>
+<span id="cb3-5"><a aria-hidden="true" href="#cb3-5" tabindex="-1"></a><span class="fu">chmod</span> u=rwx,go=rx script   <span class="co"># genau setzen: das ist dasselbe wie 755</span></span></code></pre></div>
+<p><strong>Comment lire <code>ls -l</code> :</strong></p>
+<pre class="text"><code>-rwxr-xr-x  1 oratio oratio  842 Nov  2 02:10 display_watchdog.sh
+│└┬┘└┬┘└┬┘    └──┬─┘ └──┬─┘
+│ │  │  │        │      └── Gruppe
+│ │  │  │        └───────── Besitzer
+│ │  │  └── andere: r-x = 5
+│ │  └───── Gruppe:  r-x = 5
+│ └──────── Besitzer: rwx = 7
+└────────── Typ: - Datei, d Ordner, l Link</code></pre>
+<p>Cet exemple correspond donc à <code>755</code>. Pour t’entraîner, calcule : <code>rw-r-----</code> donne 6, 4, 0, donc <code>640</code>.</p>
+<p><strong>Particularité des dossiers :</strong> <code>r</code> signifie « lister le contenu », <code>w</code> signifie « y créer et supprimer des fichiers », <code>x</code> signifie « y entrer ». Sans <code>x</code>, on ne peut pas entrer dans le dossier, même si on a le droit de le lire. C’est pourquoi les dossiers reçoivent généralement 755 et non 644.</p>
+</section>

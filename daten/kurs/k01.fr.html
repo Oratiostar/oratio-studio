@@ -1,0 +1,131 @@
+<section id="s1-1"><h2>1.1 Qu’est-ce que le terminal ?</h2><p>Le terminal est une fenêtre dans laquelle on donne à l’ordinateur des <strong>commandes textuelles</strong>. Sur le Raspberry Pi tourne Linux. Presque tout ce que l’on fait à la souris peut aussi se faire par commandes, et c’est souvent plus rapide et plus précis. On peut utiliser le terminal directement sur le Pi ou, via SSH, depuis un autre appareil.</p>
+<p>Une commande a le plus souvent cette forme :</p>
+<pre class="text"><code>befehl  -optionen  ziel</code></pre>
+<p>Exemple :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-la</span> /home/oratio</span></code></pre></div>
+<p><code>ls</code> est la commande, <code>-la</code> sont des options (interrupteurs), <code>/home/oratio</code> est la cible.</p>
+</section><section id="s1-2"><h2>1.2 Où suis-je ? Fichiers et dossiers</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Commande</th>
+<th>Signification</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>pwd</code></td>
+<td>affiche le dossier actuel</td>
+<td><code>pwd</code></td>
+</tr>
+<tr class="even">
+<td><code>ls</code></td>
+<td>liste les fichiers</td>
+<td><code>ls</code></td>
+</tr>
+<tr class="odd">
+<td><code>ls -la</code></td>
+<td>tout, y compris les fichiers cachés, avec les détails</td>
+<td><code>ls -la</code></td>
+</tr>
+<tr class="even">
+<td><code>cd Ordner</code></td>
+<td>changer de dossier</td>
+<td><code>cd Projekte</code></td>
+</tr>
+<tr class="odd">
+<td><code>cd ..</code></td>
+<td>remonter d’un niveau</td>
+<td><code>cd ..</code></td>
+</tr>
+<tr class="even">
+<td><code>cd ~</code></td>
+<td>aller dans le dossier personnel</td>
+<td><code>cd ~</code></td>
+</tr>
+<tr class="odd">
+<td><code>mkdir Name</code></td>
+<td>créer un dossier</td>
+<td><code>mkdir Test</code></td>
+</tr>
+<tr class="even">
+<td><code>touch datei.txt</code></td>
+<td>créer un fichier vide</td>
+<td><code>touch test.txt</code></td>
+</tr>
+<tr class="odd">
+<td><code>cat datei.txt</code></td>
+<td>afficher le contenu d’un fichier</td>
+<td><code>cat test.txt</code></td>
+</tr>
+<tr class="even">
+<td><code>cp a.txt b.txt</code></td>
+<td>copier</td>
+<td><code>cp datei.txt kopie.txt</code></td>
+</tr>
+<tr class="odd">
+<td><code>mv a.txt Ordner/</code></td>
+<td>déplacer ou renommer</td>
+<td><code>mv datei.txt Ordner/</code></td>
+</tr>
+<tr class="even">
+<td><code>rm datei.txt</code></td>
+<td>supprimer (définitivement, pas de corbeille !)</td>
+<td><code>rm datei.txt</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Important :</strong> <code>rm</code> supprime immédiatement et sans confirmation. Il n’y a pas de corbeille. Un dossier se supprime avec <code>rm -r dossier</code>. La commande <code>rm -rf</code> est particulièrement dangereuse, car elle ne demande jamais rien.</p>
+<p>Le caractère <code>~</code> désigne le dossier personnel, chez moi <code>/home/oratio</code>. La <strong>touche Tab</strong> complète automatiquement les noms de fichiers, et les <strong>flèches haut/bas</strong> ramènent les commandes précédentes.</p>
+</section><section id="s1-3"><h2>1.3 Modifier des fichiers avec nano</h2><p><code>nano</code> est l’éditeur de texte le plus simple du terminal. J’en ai constamment besoin.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">nano</span> ~/.bashrc</span></code></pre></div>
+<p>Utilisation de nano (les raccourcis clavier sont affichés en bas de la fenêtre) :</p>
+<ul>
+<li>Enregistrer : <strong>Ctrl + O</strong>, puis <strong>Entrée</strong></li>
+<li>Quitter : <strong>Ctrl + X</strong></li>
+<li>Quand nano demande après l’enregistrement : <strong>Entrée</strong> confirme le nom du fichier.</li>
+</ul>
+<p>Quand on colle un long code dans le terminal, il peut être très long à effacer ensuite. Dans nano, <strong>Ctrl + K</strong> supprime une ligne entière.</p>
+</section><section id="s1-4"><h2>1.4 Obtenir de l’aide</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">man</span> ls          <span class="co"># ausführliche Anleitung (Beenden mit q)</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">ls</span> <span class="at">--help</span>       <span class="co"># Kurzhilfe</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="bu">history</span>         <span class="co"># alle bisherigen Befehle</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="bu">history</span> <span class="kw">|</span> <span class="fu">grep</span> wlr    <span class="co"># nur Befehle, in denen "wlr" vorkommt</span></span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a><span class="ex">!!</span>              <span class="co"># den letzten Befehl wiederholen</span></span></code></pre></div>
+</section><section id="s1-5"><h2>1.5 La barre verticale : le pipe</h2><p>Le caractère <code>|</code> (le <strong>pipe</strong>) envoie la sortie de la première commande à la seconde. Je l’ai utilisé en permanence :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">ps</span> aux <span class="kw">|</span> <span class="fu">grep</span> python         <span class="co"># Prozesse anzeigen, aber nur die mit "python"</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">dmesg</span> <span class="kw">|</span> <span class="fu">tail</span>                 <span class="co"># die letzten Kernel-Meldungen</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="ex">wlr-randr</span> <span class="kw">|</span> <span class="fu">grep</span> Scale       <span class="co"># nur die Zeile mit der Skalierung</span></span></code></pre></div>
+</section><section id="s1-6"><h2>1.6 Enchaîner des commandes</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Caractère</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>&amp;&amp;</code></td>
+<td>la deuxième commande seulement si la première a réussi</td>
+</tr>
+<tr class="even">
+<td><code>;</code></td>
+<td>la deuxième commande dans tous les cas</td>
+</tr>
+<tr class="odd">
+<td><code>&amp;</code> à la fin</td>
+<td>lancer en arrière-plan (p. ex. <code>kanshi &amp;</code>)</td>
+</tr>
+<tr class="even">
+<td><code>&gt;</code></td>
+<td>écrire la sortie dans un fichier (écrase)</td>
+</tr>
+<tr class="odd">
+<td><code>&gt;&gt;</code></td>
+<td>ajouter la sortie à un fichier</td>
+</tr>
+</tbody>
+</table></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt upgrade <span class="at">-y</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Text"</span> <span class="op">&gt;&gt;</span> datei.txt</span></code></pre></div>
+</section><section id="s1-7"><h2>1.7 Une erreur typique : le caractère en trop</h2><p>Une faute de frappe typique : j’ai saisi <code>&lt;wlr-randr --output HDMI-A-1 --scale 3</code>. Le <code>&lt;</code> au début de la commande signifie dans le shell : « lis le contenu d’un fichier ». Le shell indique alors que le fichier est introuvable. À retenir : taper les commandes exactement, chaque caractère compte. Sous Linux, les majuscules et minuscules comptent aussi.</p>
+</section>

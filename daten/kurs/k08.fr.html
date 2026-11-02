@@ -1,0 +1,282 @@
+<p>Ce chapitre explique ce qui se passe entre le branchement de l’alimentation et le bureau prêt à l’emploi. Qui a compris cela comprend aussi <strong>pourquoi des réglages disparaissent parfois après un redémarrage</strong> – par exemple la résolution de l’écran (<a class="xr" href="#/kap/10">chapitre 10</a>).</p>
+<section id="s8-1"><h2>8.1 L’idée de base : la course de relais</h2><p>Le démarrage est une course de relais. Chaque étape est un programme différent qui n’a qu’une seule tâche : trouver et lancer l’étape suivante. Chaque étape lit <strong>ses propres</strong> réglages.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Étape</th>
+<th>Qui court</th>
+<th>Que lit-elle</th>
+<th>Tâche</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Boot-ROM dans la puce</td>
+<td>rien (intégré en dur)</td>
+<td>trouve le chargeur d’amorçage</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Chargeur d’amorçage EEPROM (petite mémoire sur la carte)</td>
+<td>sa propre configuration dans l’EEPROM (<code>BOOT_ORDER</code>)</td>
+<td>cherche un support amorçable</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Firmware</td>
+<td><code>config.txt</code>, fichier Device-Tree (<code>.dtb</code>), overlays</td>
+<td>configure le matériel, charge le noyau</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Noyau Linux</td>
+<td><code>cmdline.txt</code></td>
+<td>démarre les pilotes, monte le système de fichiers racine</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>systemd (le premier programme du système)</td>
+<td>fichiers de service, <code>fstab</code></td>
+<td>démarre les services, la connexion</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Gestionnaire de connexion et session de bureau</td>
+<td>réglage de la connexion automatique, fichiers de session</td>
+<td>démarre le gestionnaire de fenêtres (labwc)</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Gestionnaire de fenêtres (labwc)</td>
+<td><code>~/.config/labwc/…</code>, démarrage automatique</td>
+<td>dessine le bureau, règle le mode d’écran</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Programmes personnels</td>
+<td>entrées de démarrage automatique</td>
+<td>p. ex. Kanshi, Control Center</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s8-2"><h2>8.2 Étapes 1 et 2 : Boot-ROM et EEPROM</h2><p>Le processeur contient un minuscule programme non modifiable (Boot-ROM). Il lance le <strong>chargeur d’amorçage</strong>, qui se trouve dans l’EEPROM (une petite mémoire flash) sur la carte. Le chargeur décide <strong>d’où</strong> démarrer.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sudo</span> rpi-eeprom-config</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">sudo</span> rpi-eeprom-config <span class="kw">|</span> <span class="fu">grep</span> BOOT_ORDER</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="ex">vcgencmd</span> bootloader_version</span></code></pre></div>
+<p>La valeur <code>BOOT_ORDER</code> est un nombre en hexadécimal, par exemple <code>0xf461</code>. <strong>On la lit de droite à gauche</strong>, un chiffre par tentative :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Chiffre</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>1</code></td>
+<td>carte SD</td>
+</tr>
+<tr class="even">
+<td><code>6</code></td>
+<td>NVMe</td>
+</tr>
+<tr class="odd">
+<td><code>4</code></td>
+<td>stockage de masse USB</td>
+</tr>
+<tr class="even">
+<td><code>f</code></td>
+<td>recommencer depuis le début</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>0xf461</code> signifie donc : d’abord SD (1), puis NVMe (6), puis USB (4), puis de nouveau depuis le début (f). Qui veut démarrer depuis le NVMe mais a une carte SD insérée démarre depuis la carte SD, car elle est essayée en premier. Pour changer : <code>sudo raspi-config</code> → Advanced Options → Boot Order.</p>
+<p><strong>Erreur typique :</strong> le Pi démarre depuis le mauvais disque. Vérifier avec <code>lsblk</code> (<a class="xr" href="#/kap/7">chapitre 7</a>) si le disque attendu est bien reconnu, et avec <code>BOOT_ORDER</code> qui est interrogé en premier.</p>
+</section><section id="s8-3"><h2>8.3 Étape 3 : firmware et `config.txt`</h2><p>Quand le chargeur a trouvé un support, il y lit la <strong>partition de démarrage</strong>. C’est une petite partition FAT, située sur le Raspberry Pi OS actuel sous <code>/boot/firmware/</code> (autrefois <code>/boot/</code>).</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Fichier</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>config.txt</code></td>
+<td>Réglages pour le firmware : pilotes (<code>dtoverlay=…</code>), interfaces (<code>dtparam=i2c_arm=on</code>), graphique, surcadençage</td>
+</tr>
+<tr class="even">
+<td><code>cmdline.txt</code></td>
+<td>Paramètres pour le noyau, <strong>exactement une ligne</strong></td>
+</tr>
+<tr class="odd">
+<td><code>*.dtb</code></td>
+<td>Device-Tree : décrit le matériel de la carte</td>
+</tr>
+<tr class="even">
+<td><code>overlays/</code></td>
+<td>descriptions matérielles supplémentaires (p. ex. pour les appareils I²C)</td>
+</tr>
+<tr class="odd">
+<td><code>kernel*.img</code>, <code>initramfs*</code></td>
+<td>le noyau et son système de fichiers de démarrage</td>
+</tr>
+</tbody>
+</table></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sudo</span> nano /boot/firmware/config.txt</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="ex">vcgencmd</span> get_config int         <span class="co"># was die Firmware wirklich übernommen hat</span></span></code></pre></div>
+<p>Une modification de <code>config.txt</code> ne prend effet <strong>qu’après un redémarrage</strong>, car le fichier n’est lu qu’à cette étape.</p>
+</section><section id="s8-4"><h2>8.4 Étape 4 : le noyau et `cmdline.txt`</h2><p>Le noyau reçoit du firmware les paramètres de <code>cmdline.txt</code>. On y trouve par exemple quelle partition est le système de fichiers racine :</p>
+<pre class="text"><code>console=serial0,115200 console=tty1 root=PARTUUID=xxxxxxxx-02 rootfstype=ext4 fsck.repair=yes rootwait</code></pre>
+<p>Le noyau démarre ses pilotes, détecte les disques et l’écran et monte le système de fichiers racine. Vérifier ce qu’il a reçu et ce qu’il signale :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="fu">cat</span> /proc/cmdline               <span class="co"># Parameter, die der Kernel wirklich bekam</span></span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="fu">dmesg</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-50</span>                <span class="co"># Meldungen der ersten Sekunden</span></span>
+<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="fu">dmesg</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-i</span> <span class="at">-E</span> <span class="st">"error|fail|drm|hdmi"</span></span></code></pre></div>
+<p><strong>Règle pour <code>cmdline.txt</code> :</strong> tout sur <strong>une seule</strong> ligne, séparé par des espaces. Un saut de ligne ou une faute de frappe peut empêcher le démarrage. Avant toute modification, faire une copie (<code>sudo cp cmdline.txt cmdline.txt.bak</code>).</p>
+<p><strong>Pourquoi le PARTUUID est important :</strong> il figure dans <code>cmdline.txt</code> et dans <code>/etc/fstab</code>. Qui copie un système sur un autre disque doit adapter les deux (c’est pourquoi l’appli de sauvegarde les réécrit, <a class="xr" href="#/kap/39/39.2">chapitre 39.2</a>).</p>
+</section><section id="s8-5"><h2>8.5 Étape 5 : systemd</h2><p>Après le noyau, le premier programme lancé est <strong>systemd</strong>. Il lit <code>/etc/fstab</code> (quels disques sont montés), démarre les services dans le bon ordre et atteint une <strong>cible</strong> (<code>target</code>). Pour le bureau, c’est <code>graphical.target</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="ex">systemctl</span> get-default                    <span class="co"># welches Ziel gilt</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="ex">systemd-analyze</span>                          <span class="co"># wie lange der Start dauerte</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="ex">systemd-analyze</span> blame <span class="kw">|</span> <span class="fu">head</span> <span class="at">-20</span>         <span class="co"># welche Dienste am längsten brauchten</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="ex">systemctl</span> <span class="at">--failed</span>                       <span class="co"># welche Dienste nicht starten konnten</span></span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a><span class="ex">journalctl</span> <span class="at">-b</span>                            <span class="co"># alle Meldungen seit dem letzten Start</span></span>
+<span id="cb1-6"><a aria-hidden="true" href="#cb1-6" tabindex="-1"></a><span class="ex">journalctl</span> <span class="at">-b</span> <span class="at">-p</span> err                     <span class="co"># nur Fehler seit dem Start</span></span></code></pre></div>
+</section><section id="s8-6"><h2>8.6 Étape 6 : connexion et session</h2><p>Le gestionnaire de connexion (sur Raspberry Pi OS avec bureau, le plus souvent <strong>LightDM</strong>) affiche la connexion ou, avec la connexion automatique, connecte directement l’utilisateur. Il démarre ensuite la <strong>session</strong> : sur Raspberry Pi OS (Debian 13, « Trixie »), c’est une session Wayland avec le gestionnaire de fenêtres <strong>labwc</strong>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$XDG_SESSION_TYPE</span>                   <span class="co"># wayland oder x11</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="ex">loginctl</span>                                 <span class="co"># laufende Sitzungen</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">sudo</span> nano /etc/lightdm/lightdm.conf      <span class="co"># Anmeldemanager-Einstellungen</span></span></code></pre></div>
+</section><section id="s8-7"><h2>8.7 Étape 7 : labwc et le bureau</h2><p>labwc est le <strong>compositeur</strong> : le programme qui dessine toutes les fenêtres et fixe le mode d’écran. Au démarrage, il lit ses fichiers selon cet ordre de responsabilité :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Fichier</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>~/.config/labwc/autostart</code></td>
+<td>Programmes lancés au démarrage de la session (p. ex. <code>kanshi &amp;</code>)</td>
+</tr>
+<tr class="even">
+<td><code>~/.config/labwc/rc.xml</code></td>
+<td>Comportement du gestionnaire de fenêtres</td>
+</tr>
+<tr class="odd">
+<td><code>~/.config/labwc/environment</code></td>
+<td>Variables d’environnement pour la session</td>
+</tr>
+<tr class="even">
+<td><code>/etc/xdg/labwc/…</code></td>
+<td>Valeurs par défaut du système (les fichiers de l’utilisateur ont la priorité)</td>
+</tr>
+<tr class="odd">
+<td><code>~/.config/autostart/*.desktop</code></td>
+<td>Démarrage automatique au format standard (entrées de bureau)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Le compositeur <strong>interroge le moniteur</strong> sur ses capacités (la liste s’appelle EDID) et choisit son <strong>mode préféré</strong>. Pour un moniteur 4K, c’est 3840×2160 avec une échelle de 1.</p>
+</section><section id="s8-8"><h2>8.8 La réponse à « Pourquoi ma résolution est-elle de nouveau perdue après le redémarrage ? »</h2><p>C’est la raison pour laquelle le sujet de l’écran est devenu si long au <a class="xr" href="#/kap/10">chapitre 10</a>. Les étapes <strong>s’écrasent les unes les autres</strong> :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Où régler la résolution</th>
+<th>Étape</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>config.txt</code> (<code>hdmi_group</code>, <code>hdmi_mode</code>)</td>
+<td>3</td>
+<td>agit sur le firmware et la console ; le bureau se configure ensuite lui-même</td>
+</tr>
+<tr class="even">
+<td><code>cmdline.txt</code> (<code>video=HDMI-A-1:1920x1080@60D</code>)</td>
+<td>4</td>
+<td>le noyau reprend la valeur (<code>cat /proc/cmdline</code> l’affiche), <strong>mais</strong> le compositeur à l’étape 7 règle ensuite l’écran <strong>à nouveau</strong></td>
+</tr>
+<tr class="odd">
+<td><code>wlr-randr</code> dans le terminal</td>
+<td>7</td>
+<td>agit immédiatement, mais ne vaut <strong>que pour cette session</strong> (ne figure que dans la mémoire du compositeur)</td>
+</tr>
+<tr class="even">
+<td><code>~/.config/labwc/autostart</code> avec <code>wlr-randr</code></td>
+<td>7</td>
+<td>s’exécute à chaque démarrage de session ; sans effet si le moniteur est éteint puis rallumé plus tard</td>
+</tr>
+<tr class="odd">
+<td>Kanshi (profil)</td>
+<td>7</td>
+<td>réagit à l’événement « moniteur détecté » et applique le profil</td>
+</tr>
+<tr class="even">
+<td>Script de surveillance</td>
+<td>7</td>
+<td>vérifie toutes les quelques secondes et corrige</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>La règle qui en découle :</strong> le réglage doit se trouver <strong>à l’étape qui décide en dernier</strong>. Pour le bureau, c’est le compositeur. Tout ce qui se passe avant est écrasé plus tard.</p>
+<p><strong>Deux raisons supplémentaires de « disparition » :</strong></p>
+<ol type="1">
+<li><strong>Redémarrage du compositeur :</strong> un programme qui règle quelque chose avec <code>wlr-randr</code> ne change que l’état en cours. Si la session redémarre, le mode préféré s’applique de nouveau.</li>
+<li><strong>Hotplug :</strong> si le moniteur est éteint puis rallumé, il se signale de nouveau et le compositeur réinitialise le mode et l’échelle. Une ligne de démarrage automatique ne s’exécute qu’une seule fois à la connexion. C’est pourquoi il faut Kanshi ou un script de surveillance.</li>
+</ol>
+</section><section id="s8-9"><h2>8.9 Une liste de contrôle : « Où le démarrage se bloque-t-il ? »</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Observation</th>
+<th>Étape</th>
+<th>Commande ou indice</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Rien à l’écran, la LED verte (ACT) reste éteinte</td>
+<td>1–2</td>
+<td>Alimentation, carte SD, ordre de démarrage ; Pi 5 : 5 V / 5 A</td>
+</tr>
+<tr class="even">
+<td>L’écran reste noir, la LED verte clignote selon un motif</td>
+<td>2–3</td>
+<td>Le motif de clignotement est un code d’erreur du chargeur d’amorçage (aucun support amorçable, fichier manquant) ; les codes figurent dans la documentation Raspberry Pi. Vérifier la partition de démarrage et le support</td>
+</tr>
+<tr class="odd">
+<td>Des messages texte défilent puis s’arrêtent</td>
+<td>4–5</td>
+<td><code>dmesg</code>, <code>journalctl -b -p err</code> ; lire sur un ordinateur avec la carte</td>
+</tr>
+<tr class="even">
+<td>« Waiting for root device » ou <code>rootwait</code> bloque</td>
+<td>4</td>
+<td>Le PARTUUID dans <code>cmdline.txt</code> ne correspond pas au disque</td>
+</tr>
+<tr class="odd">
+<td>L’écran de connexion revient sans cesse</td>
+<td>6</td>
+<td>Droits du dossier personnel, <code>~/.xsession-errors</code>, <code>journalctl -b</code></td>
+</tr>
+<tr class="even">
+<td>Le bureau apparaît, mais mauvaise résolution</td>
+<td>7</td>
+<td><code>wlr-randr</code>, profil Kanshi, démarrage automatique</td>
+</tr>
+<tr class="odd">
+<td>Un programme du démarrage automatique ne se lance pas</td>
+<td>7–8</td>
+<td>Lancer le programme dans le terminal, lire le message d’erreur ; placer un <code>sleep</code> avant l’appel</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Une deuxième méthode :</strong> si le Pi ne démarre pas du tout, brancher la carte SD ou le disque sur un autre ordinateur. La partition de démarrage (FAT) y est visible ; <code>cmdline.txt</code> et <code>config.txt</code> peuvent être corrigés sans que le Pi ait besoin de tourner.</p>
+</section><section id="s8-10"><h2>8.10 Phrases à retenir</h2><ul>
+<li>Chaque étape ne lit que <strong>ses</strong> fichiers ; une modification ne prend effet que quand cette étape tourne de nouveau (le plus souvent : redémarrage).</li>
+<li>Ce qui est réglé dans une étape ultérieure écrase l’étape précédente.</li>
+<li>Les réglages que le bureau doit appliquer lui-même relèvent du <strong>démarrage automatique du bureau</strong> ou de Kanshi.</li>
+<li>Avant toute modification de <code>cmdline.txt</code>, <code>config.txt</code>, <code>fstab</code>, faire une copie.</li>
+</ul>
+</section>
