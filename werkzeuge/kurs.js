@@ -26,6 +26,11 @@ var Kurs = (function(){
     anhangT:{A:"Alle Befehle von A bis Z",B:"Glossar",C:"Lernreihenfolge",D:"Fehler-Index",E:"Befehlskatalog der Toolbox"},
     ap:["Anhang","Annexe"], projekt:["Projekt","Projet"]
   };
+  var PAL = [["#d9540c","#f4883a"],["#17984b","#3bc06d"],["#2457cf","#3f7cf0"],["#7a3fd0","#975fe4"],["#cf2d8f","#ea5fb9"],["#1a9a8e","#4acdc2"],["#c88a0c","#f0b738"],["#251d68","#584ab1"]];
+  var TP = {1:0,2:1,3:2,4:3,5:4,6:5,7:6,8:7,9:0,10:1,11:2,12:3,13:4,14:5,15:3,16:4,17:5,18:6,19:7}, SP = {a:6,b:7,c:0,d:1,e:2};
+  function palT(tid){ return PAL[TP[tid] === undefined ? 2 : TP[tid]]; }
+  function palK(n){ var k = STR.kapitel[n]; return k.sub ? PAL[SP[k.sub]] : palT(k.teil); }
+  function pv(p){ return '--rc:' + p[0] + ';--c1:' + p[0] + ';--c2:' + p[1]; }
   function t(k){ var v = T[k]; return v ? v[FR ? 1 : 0] : k; }
   function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
   function nrm(s){ return String(s).toLowerCase().replace(/ä/g,"a").replace(/ö/g,"o").replace(/ü/g,"u").replace(/ß/g,"ss").replace(/[^a-z0-9À-ſ_\-\.\/ ]/g," "); }
@@ -62,17 +67,28 @@ var Kurs = (function(){
       s += '<path class="kroad" d="M' + a.x + ' ' + a.y + ' Q' + (mx - dy * k).toFixed(0) + ' ' + (my + dx * k).toFixed(0) + ' ' + b.x + ' ' + b.y + '"/>';
     });
     Object.keys(T_).forEach(function(id, i){
-      var x = T_[id], c = x.color, st = teilStat(id), done = st[0] === st[1] && st[1] > 0, seed = +id + 2;
-      s += '<a class="kreg' + (done ? " done" : "") + '" href="#/kap/' + x.kaps[0] + '" style="--rc:' + c + '" aria-label="' + esc(x.kurz) + '">'
-        + '<path d="' + blob(x.x, x.y + 10, x.r * 1.06, x.r * .84, seed, .22) + '" fill="#000" opacity=".28" filter="url(#kbl)"/>'
-        + '<path d="' + blob(x.x, x.y, x.r * 1.1, x.r * .88, seed, .22) + '" fill="var(--sand)"/>'
-        + '<path class="kland" d="' + blob(x.x, x.y - 2, x.r * .98, x.r * .78, seed, .22) + '" fill="' + c + '"/>'
-        + '<path d="' + blob(x.x, x.y - 6, x.r * .8, x.r * .58, seed + 1, .3) + '" fill="#fff" opacity=".16"/>'
-        + '<text class="kem" x="' + x.x + '" y="' + (x.y + (x.r > 100 ? 14 : 12)) + '" font-size="' + Math.round(x.r * .66) + '" text-anchor="middle">' + x.icon + '</text>'
-        + '<g class="klab" transform="translate(' + x.x + ' ' + (x.y + x.r * .88 + 20) + ')"><text text-anchor="middle" class="kl1">' + esc(x.kurz) + '</text>'
-        + '<text text-anchor="middle" y="17" class="kl2">' + (id === "14" ? "Teil 14" : "Teil " + id) + ' · ' + st[0] + '/' + st[1] + (done ? ' ✓' : '') + '</text></g></a>';
+      var x = T_[id], p = palT(id), c1 = p[0], c2 = p[1], st = teilStat(id), done = st[0] === st[1] && st[1] > 0, seed = +id + 2, r = x.r, gid = "kg" + id;
+      var deco = "", sd = seed * 13 + 5;
+      function rnd(){ sd = (sd * 16807) % 2147483647; return sd / 2147483647; }
+      for (var q = 0; q < 7; q++){ var ang = rnd() * 6.283, rad = (.25 + rnd() * .5), px = x.x + Math.cos(ang) * r * .8 * rad, py = x.y - 4 + Math.sin(ang) * r * .56 * rad, sz = 6 + rnd() * 9;
+        if (q % 3 === 0) deco += '<path d="M' + (px - sz) + ' ' + (py + sz * .5) + ' L' + px + ' ' + (py - sz * 1.1) + ' L' + (px + sz) + ' ' + (py + sz * .5) + 'Z" fill="' + c1 + '" opacity=".55"/><path d="M' + (px - sz * .32) + ' ' + (py - sz * .45) + ' L' + px + ' ' + (py - sz * 1.1) + ' L' + (px + sz * .32) + ' ' + (py - sz * .45) + 'Z" fill="#fff" opacity=".7"/>';
+        else deco += '<circle cx="' + px.toFixed(0) + '" cy="' + py.toFixed(0) + '" r="' + sz.toFixed(0) + '" fill="' + c1 + '" opacity=".38"/><circle cx="' + (px - 2).toFixed(0) + '" cy="' + (py - 2).toFixed(0) + '" r="' + (sz * .55).toFixed(0) + '" fill="#fff" opacity=".22"/>'; }
+      var lw = Math.max(150, esc(x.kurz).length * 8.8 + 28), ly = x.y + r * .86 + 4;
+      s += '<g class="kreg' + (done ? " done" : "") + '" tabindex="0" role="link" data-h="#/kap/' + x.kaps[0] + '" aria-label="' + esc(x.kurz) + '">'
+        + '<defs><linearGradient id="' + gid + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + c2 + '"/><stop offset="1" stop-color="' + c1 + '"/></linearGradient></defs>'
+        + '<path d="' + blob(x.x, x.y + 12, r * 1.08, r * .86, seed, .22) + '" fill="#001a33" opacity=".3" filter="url(#kbl)"/>'
+        + '<path class="kfoam" d="' + blob(x.x, x.y + 2, r * 1.22, r * .98, seed, .22) + '" fill="rgba(255,255,255,.22)" stroke="#fff" stroke-opacity=".8" stroke-width="3" stroke-dasharray="26 14"/>'
+        + '<path d="' + blob(x.x, x.y, r * 1.1, r * .88, seed, .22) + '" fill="var(--sand)" stroke="rgba(120,80,20,.35)" stroke-width="2"/>'
+        + '<g class="kland"><path d="' + blob(x.x, x.y - 3, r * .98, r * .77, seed, .22) + '" fill="url(#' + gid + ')" stroke="rgba(0,0,0,.2)" stroke-width="2"/>'
+        + '<path d="' + blob(x.x - r * .08, x.y - r * .22, r * .72, r * .38, seed + 1, .3) + '" fill="#fff" opacity=".2"/>' + deco + '</g>'
+        + '<circle class="kemc" cx="' + x.x + '" cy="' + (x.y - 6) + '" r="' + Math.round(r * .4) + '" fill="#fff" stroke="' + c1 + '" stroke-width="4"/>'
+        + '<text class="kem" x="' + x.x + '" y="' + (x.y - 6 + r * .15) + '" font-size="' + Math.round(r * .46) + '" text-anchor="middle">' + x.icon + '</text>'
+        + '<g class="klab" transform="translate(' + x.x + ' ' + ly + ')"><rect x="' + (-lw / 2) + '" y="0" width="' + lw + '" height="44" rx="12" fill="' + c1 + '" stroke="#fff" stroke-width="3"/>'
+        + '<rect x="' + (-lw / 2 + 3) + '" y="3" width="' + (lw - 6) + '" height="19" rx="9" fill="#fff" opacity=".14"/>'
+        + '<text text-anchor="middle" y="19" class="kl1">' + esc(x.kurz) + '</text>'
+        + '<text text-anchor="middle" y="36" class="kl2">Teil ' + id + ' · ' + st[0] + '/' + st[1] + (done ? ' ✓' : '') + '</text></g></g>';
     });
-    return s + '<text x="650" y="40" text-anchor="middle" class="ktit">Oratio Kursland</text></svg>';
+    return s + '</svg>';
   }
   function seite(h){ W.innerHTML = h; window.scrollTo(0, 0); document.getElementById("kprog").classList.remove("on"); }
   function crumb(parts){ return '<div class="crumb"><a href="index.html">' + t("place") + '</a> › ' + parts.map(function(p, i){ return p[1] ? '<a href="' + p[1] + '">' + p[0] + '</a>' : esc(p[0]); }).join(" › ") + '</div>'; }
@@ -85,7 +101,7 @@ var Kurs = (function(){
     document.title = t("titel") + " – Oratio Place";
     var cards = Object.keys(STR.teile).map(function(id){
       var x = STR.teile[id], st = teilStat(id), words = x.kaps.reduce(function(a, k){ return a + STR.kapitel[k].min; }, 0);
-      return '<a class="rcard" href="#/kap/' + x.kaps[0] + '" style="--rc:' + x.color + '"><span class="rem">' + x.icon + '</span><span class="rt"><small>' + t("teil") + ' ' + id + '</small><b>' + esc(x.kurz) + '</b><em>' + x.kaps.length + ' ' + (x.kaps.length === 1 ? (FR ? "chapitre" : "Kapitel") : (FR ? "chapitres" : "Kapitel")) + ' · ' + words + ' min</em></span><span class="rbar"><i style="width:' + (st[1] ? st[0] / st[1] * 100 : 0) + '%"></i></span></a>';
+      return '<a class="rcard" href="#/kap/' + x.kaps[0] + '" style="' + pv(palT(id)) + '"><span class="rem">' + x.icon + '</span><span class="rt"><small>' + t("teil") + ' ' + id + '</small><b>' + esc(x.kurz) + '</b><em>' + x.kaps.length + ' ' + (x.kaps.length === 1 ? (FR ? "chapitre" : "Kapitel") : (FR ? "chapitres" : "Kapitel")) + ' · ' + words + ' min</em></span><span class="rbar"><i style="width:' + (st[1] ? st[0] / st[1] * 100 : 0) + '%"></i></span></a>';
     }).join("");
     seite(crumb([[t("land")]]) + '<h1>🗺️ ' + t("titel") + '</h1><p class="sub">' + t("sub") + (FR ? ' <b>' + t("hinweis") + '</b>' : '') + '</p>'
       + '<div class="ktools"><div class="kpass"><b>🧳 ' + t("pass_") + '</b><span>' + g + ' / ' + n + ' ' + t("gel") + '</span><div class="kpb"><i style="width:' + pc + '%"></i></div></div>'
@@ -96,11 +112,12 @@ var Kurs = (function(){
       + '<h2>' + t("anh") + '</h2><div class="agrid">' + ["A","B","C","D","E"].map(function(a){ return '<a class="acard" href="#/' + (a === "E" ? "befehle" : "anhang/" + a) + '"><b>' + t("ap") + ' ' + a + '</b><span>' + esc(FR && a === "E" ? t("bef") : T.anhangT[a]) + '</span></a>'; }).join("") + '</div>'
       + '<p class="kfoot"><button class="kbtn s" id="kreset" type="button">' + t("reset") + '</button></p>');
     document.getElementById("ksf").onsubmit = function(e){ e.preventDefault(); var q = document.getElementById("ksq").value.trim(); if (q) location.hash = "#/suche/" + encodeURIComponent(q); };
+    W.querySelectorAll(".kreg").forEach(function(g){ g.onclick = function(){ location.hash = g.getAttribute("data-h"); }; g.onkeydown = function(e){ if (e.key === "Enter" || e.key === " "){ e.preventDefault(); location.hash = g.getAttribute("data-h"); } }; });
     document.getElementById("kreset").onclick = function(){ if (confirm(FR ? "Effacer la progression ?" : "Fortschritt wirklich zurücksetzen?")) { GEL = {}; saveG(); home(); } };
   }
   function kapKarte(n){
     var k = STR.kapitel[n], g = GEL[n];
-    return '<a class="kcard' + (g ? " ok" : "") + '" href="#/kap/' + n + '"><span class="kn">' + n + '</span><span class="kt"><b>' + esc(k.title) + '</b><small>' + k.secs.length + ' ' + t("abs") + ' · ' + k.min + ' ' + t("min") + '</small></span>' + (g ? '<span class="kok" title="' + t("gelesen") + '">✓</span>' : '') + '</a>';
+    return '<a class="kcard' + (g ? " ok" : "") + '" style="' + pv(palK(n)) + '" href="#/kap/' + n + '"><span class="kn">' + n + '</span><span class="kt"><b>' + esc(k.title) + '</b><small>' + k.secs.length + ' ' + t("abs") + ' · ' + k.min + ' ' + t("min") + '</small></span>' + (g ? '<span class="kok" title="' + t("gelesen") + '">✓</span>' : '') + '</a>';
   }
   function teilSeite(id){
     var x = STR.teile[id]; if (!x) return home();
@@ -110,12 +127,12 @@ var Kurs = (function(){
     if (x.subs){
       var rest = x.kaps.filter(function(n){ return !STR.kapitel[n].sub; });
       body = intro + (rest.length ? '<div class="kgrid">' + rest.map(kapKarte).join("") + '</div>' : '') + Object.keys(x.subs).map(function(s){ var u = x.subs[s];
-        return '<section class="ksub"><h2><span>' + u.icon + '</span> ' + esc(u.full) + '</h2>' + u.intro.replace(/<table>[\s\S]*?<\/table>/, "") + '<div class="kgrid">' + u.kaps.map(kapKarte).join("") + '</div></section>'; }).join("");
+        return '<section class="ksub" style="' + pv(PAL[SP[s]]) + '"><h2><span>' + u.icon + '</span> ' + esc(u.full) + '</h2>' + u.intro.replace(/<table>[\s\S]*?<\/table>/, "") + '<div class="kgrid">' + u.kaps.map(kapKarte).join("") + '</div></section>'; }).join("");
     } else body = intro + '<div class="kgrid">' + x.kaps.map(kapKarte).join("") + '</div>';
     var st = teilStat(id), ids = Object.keys(STR.teile), i = ids.indexOf(id);
     var pv = i > 0 ? STR.teile[ids[i - 1]] : null, nx = i < ids.length - 1 ? STR.teile[ids[i + 1]] : null;
-    seite(crumb([[t("land"), "#/"], ["Teil " + id]]) + '<div class="rhead" style="--rc:' + x.color + '"><span class="rem">' + x.icon + '</span><div><small>' + t("teil") + ' ' + id + '</small><h1>' + esc(x.title) + '</h1><p>' + st[0] + ' / ' + st[1] + ' ' + t("gel") + '</p></div></div>'
-      + '<div class="prose" style="--rc:' + x.color + '">' + body + '</div>'
+    seite(crumb([[t("land"), "#/"], ["Teil " + id]]) + '<div class="rhead" style="' + pv(palT(id)) + '"><span class="rem">' + x.icon + '</span><div><small>' + t("teil") + ' ' + id + '</small><h1>' + esc(x.title) + '</h1><p>' + st[0] + ' / ' + st[1] + ' ' + t("gel") + '</p></div></div>'
+      + '<div class="prose" style="' + pv(palT(id)) + '">' + body + '</div>'
       + '<div class="pn">' + (pv ? '<a href="#/teil/' + pv.id + '">‹ ' + esc(pv.kurz) + '</a>' : '<span></span>') + '<a href="#/">🗺️ ' + t("karte") + '</a>' + (nx ? '<a href="#/teil/' + nx.id + '">' + esc(nx.kurz) + ' ›</a>' : '<span></span>') + '</div>');
   }
   // --- Leseansicht
@@ -125,7 +142,7 @@ var Kurs = (function(){
     if (kind === "vorwort"){ info = STR.vorwort; file = "vorwort.html"; titel = info.title; crumbs = [[t("land"), "#/"], [t("vor")]]; }
     else if (kind === "anhang"){ info = STR.anhang[key]; if (!info || key === "E") return key === "E" ? befehle() : home(); file = "a" + key + ".html"; titel = t("ap") + " " + key + " – " + info.title; crumbs = [[t("land"), "#/"], [t("anh")], [t("ap") + " " + key]]; }
     else { info = STR.kapitel[key]; if (!info) return home(); file = "k" + ("0" + key).slice(-2) + ".html"; teil = STR.teile[info.teil]; titel = (FR ? "Chapitre " : "Kapitel ") + key + ": " + info.title; crumbs = [[t("land"), "#/"], [teil.kurz, "#/teil/" + teil.id], [(FR ? "Chap. " : "Kap. ") + key]]; }
-    var color = teil ? teil.color : "#3b82f6";
+    var pal = kind === "kap" ? palK(+key) : PAL[2];
     document.title = titel + " – " + t("titel");
     var hk = kind + "/" + key; lastSet(kind === "kap" ? "#/kap/" + key : kind === "anhang" ? "#/anhang/" + key : "#/vorwort");
     var base = kind === "kap" ? "kap/" + key : kind === "anhang" ? "anhang/" + key : "vorwort";
@@ -137,13 +154,13 @@ var Kurs = (function(){
         var kk = STR.kapitel[n], h = "";
         if (teil.subs && kk.sub !== lastSub){ lastSub = kk.sub; h = kk.sub ? '<div class="osub">' + teil.subs[kk.sub].icon + ' ' + esc(teil.subs[kk.sub].name) + '</div>' : ""; }
         var cur = n === +key;
-        return h + '<div class="och' + (cur ? " cur" : "") + '"><a class="ok" href="#/kap/' + n + '"><i>' + n + '</i><span>' + esc(kk.title) + '</span>' + (GEL[n] ? '<em>✓</em>' : '') + '</a>' + (cur ? '<div class="osl">' + secLinks(kk.secs) + '</div>' : '') + '</div>';
+        return h + '<div class="och' + (cur ? " cur" : "") + '" style="' + pv(palK(n)) + '"><a class="ok" href="#/kap/' + n + '"><i>' + n + '</i><span>' + esc(kk.title) + '</span>' + (GEL[n] ? '<em>✓</em>' : '') + '</a>' + (cur ? '<div class="osl">' + secLinks(kk.secs) + '</div>' : '') + '</div>';
       }).join("");
     } else outline = '<div class="osl flat">' + secLinks(info.secs) + '</div>';
     var ids = Object.keys(STR.kapitel).map(Number), pi = ids.indexOf(+key);
     var prev = kind === "kap" && pi > 0 ? ids[pi - 1] : null, next = kind === "kap" && pi < ids.length - 1 ? ids[pi + 1] : null;
-    seite(crumb(crumbs) + '<div class="lese" style="--rc:' + color + '"><aside class="outl"><div class="olist">' + outline + '</div></aside>'
-      + '<article><h1>' + esc(titel) + '</h1>' + (info.min ? '<p class="meta">' + info.secs.length + ' ' + t("abs") + ' · ' + info.min + ' ' + t("min") + (FR ? ' · <em>' + t("hinweis") + '</em>' : '') + '</p>' : '')
+    seite(crumb(crumbs) + '<div class="lese" style="' + pv(pal) + '"><aside class="outl"><div class="olist">' + outline + '</div></aside>'
+      + '<article><div class="ban"><h1>' + esc(titel) + '</h1></div>' + (info.min ? '<p class="meta">' + info.secs.length + ' ' + t("abs") + ' · ' + info.min + ' ' + t("min") + (FR ? ' · <em>' + t("hinweis") + '</em>' : '') + '</p>' : '')
       + '<div class="prose" id="kbody"><p class="platz">…</p></div><div id="kend"></div>'
       + (kind === "kap" ? '<div class="kdone"><button type="button" class="kbtn pri" id="kmark"></button></div>' : '')
       + '<div class="pn">' + (prev ? '<a href="#/kap/' + prev + '">‹ ' + (FR ? "Chap. " : "Kap. ") + prev + ': ' + esc(STR.kapitel[prev].title) + '</a>' : (kind === "kap" ? '<a href="#/teil/' + info.teil + '">‹ ' + esc(teil.kurz) + '</a>' : '<span></span>')) + '<a href="#/">🗺️</a>' + (next ? '<a href="#/kap/' + next + '">' + (FR ? "Chap. " : "Kap. ") + next + ': ' + esc(STR.kapitel[next].title) + ' ›</a>' : '<span></span>') + '</div></article></div>');
@@ -253,6 +270,7 @@ var Kurs = (function(){
     lastKey = key; route();
   }
   return { start: function(){
+    document.body.classList.add("kursbody");
     get(D + "struktur.json", true).then(function(s){ STR = s; window.addEventListener("hashchange", onHash); onHash(); },
       function(){ W.innerHTML = '<p class="platz">⚠️ ' + (FR ? "Les données n’ont pas pu être chargées." : "Die Daten konnten nicht geladen werden. Bitte die Seite über den Webserver öffnen.") + '</p>'; });
   } };

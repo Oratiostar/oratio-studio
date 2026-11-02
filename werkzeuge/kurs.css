@@ -1,3 +1,4 @@
+@font-face{font-family:"Poppins";font-weight:700;font-display:swap;src:url(../fonts/Poppins-Bold.woff) format("woff")}
 /* Oratio Kursland */
 :root{--sea1:#8fe3f0;--sea2:#2f9fd4;--sand:#f6e3b0;--rd:#0b6b7a}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sea1:#12425a;--sea2:#0a2236;--sand:#7d6a45}}
@@ -120,3 +121,73 @@ article h1{font-size:28px;margin:4px 0 4px}
   .kl1{font-size:21px}
 }
 @media print{header,.outl,.pn,.kdone,#kprog,.cp{display:none!important}.lese{display:block}.prose{max-width:none}}
+
+/* ===== Kurs-Look wie im PDF: Limette, heller Rahmen, Farbe pro Teil ===== */
+:root{--lime:#a5e12e;--paper:#fbfff3;--ink:#14214f;--navy:#14214f;--icode:#e3f2cf;--icodefg:#1d4a8a;--pf:Poppins,Inter,system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--lime:#2b4f14;--paper:#141b14;--ink:#e9f0df;--icode:#273a22;--icodefg:#bfe3ff}}
+:root[data-theme="dark"]{--lime:#2b4f14;--paper:#141b14;--ink:#e9f0df;--icode:#273a22;--icodefg:#bfe3ff}
+body.kursbody{background-color:var(--lime);background-image:
+ linear-gradient(115deg,rgba(255,255,255,.16) 0 18%,transparent 18% 100%),
+ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520'%3E%3Cg fill='%23ffffff'%3E%3Cpath opacity='.13' d='M40 30 L260 70 L150 270Z'/%3E%3Cpath opacity='.10' d='M300 20 L500 120 L330 240Z'/%3E%3Cpath opacity='.09' d='M20 330 L190 300 L120 500Z'/%3E%3Cpath opacity='.14' d='M260 330 L480 380 L330 510Z'/%3E%3C/g%3E%3Cg fill='%23000000'%3E%3Cpath opacity='.05' d='M220 140 L330 300 L130 340Z'/%3E%3Cpath opacity='.05' d='M400 260 L510 440 L360 430Z'/%3E%3C/g%3E%3C/svg%3E");background-attachment:fixed}
+body.kursbody{color:var(--ink)}
+body.kursbody header{background:color-mix(in srgb,var(--paper) 94%,transparent);border-bottom:0;box-shadow:0 2px 12px rgba(0,40,0,.18)}
+body.kursbody main{background:var(--paper);border-radius:30px;margin:14px auto 28px;max-width:1220px;padding:26px 28px 34px;box-shadow:0 10px 40px -12px rgba(0,50,0,.45);color:var(--ink)}
+@media (max-width:640px){body.kursbody main{border-radius:20px;margin:8px 8px 20px;padding:16px 14px 24px}}
+body.kursbody .crumb,body.kursbody .sub{color:color-mix(in srgb,var(--ink) 62%,transparent)}
+/* Titelbalken (blau, schräg) */
+.ban,h1.kh{position:relative;display:inline-block;max-width:100%;margin:6px 0 14px;padding:14px 56px 14px 22px;color:#fff;background:linear-gradient(90deg,#1d62e0,#2aa1e0);clip-path:polygon(0 0,100% 0,calc(100% - 26px) 100%,0 100%);margin-left:-28px;padding-left:50px}
+@media (max-width:640px){.ban{margin-left:-14px;padding-left:28px}}
+.ban h1,h1.kh{margin:0;font:700 clamp(19px,2.6vw,29px)/1.2 var(--pf);text-transform:uppercase;letter-spacing:.2px;color:#fff;text-shadow:0 2px 3px rgba(0,30,90,.45)}
+body.kursbody h1{font-family:var(--pf)}
+/* Abschnittstitel */
+.prose h2{display:flex;gap:12px;align-items:center;font:700 clamp(18px,2vw,23px)/1.25 var(--pf);color:var(--c1,#d9540c);border-bottom:2px solid var(--c1,#d9540c);padding-bottom:7px;margin:34px 0 12px}
+.prose h2::before{content:"";flex:none;width:24px;height:24px;border-radius:7px;background:var(--c2,#f4883a);box-shadow:inset 0 0 0 3px rgba(255,255,255,.35),0 0 0 2px var(--c1,#d9540c)}
+.prose h3{font-family:var(--pf);font-size:17px;color:var(--c1,#d9540c)}
+.prose h4{font-family:var(--pf);font-size:15.5px}
+.prose{color:var(--ink)}
+.prose strong{color:inherit}
+/* Code */
+.prose pre{background:var(--navy);border:0;border-left:9px solid var(--c1,#d9540c);border-radius:12px;padding:15px 16px}
+.prose code{background:var(--icode);color:var(--icodefg);border-radius:6px}
+.prose pre code{background:none;color:#e7edff}
+/* Tabellen */
+.tw{border:2px solid var(--c1,#d9540c);border-radius:6px;overflow-x:auto}
+.prose th{background:var(--c1,#d9540c);color:#fff;text-transform:uppercase;font-size:12px;letter-spacing:.05em;position:static}
+.prose td{border-bottom:1px solid color-mix(in srgb,var(--c1,#d9540c) 22%,transparent)}
+.prose tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--c2,#f4883a) 14%,transparent)}
+/* Seitenleiste */
+.outl{border-left:0;border:2px solid color-mix(in srgb,var(--c1) 40%,transparent);background:var(--paper)}
+.oreg{background:linear-gradient(135deg,var(--c1),var(--c2));font-family:var(--pf);font-size:14px}
+.och .ok i{background:color-mix(in srgb,var(--c2) 28%,transparent);color:var(--c1)}
+.och.cur>.ok{background:color-mix(in srgb,var(--c2) 18%,transparent)}.och.cur>.ok i{background:var(--c1);color:#fff}
+.osl{border-left-color:color-mix(in srgb,var(--c1) 45%,transparent)}
+.osl a.os.on{background:var(--c1)}
+.och .ok{color:var(--ink)}.osl a.os{color:var(--ink)}
+/* Karten */
+.kn{background:linear-gradient(135deg,var(--c1),var(--c2))}
+.kcard{border-color:color-mix(in srgb,var(--c1) 45%,var(--line));background:var(--paper)}
+.kcard.ok{background:color-mix(in srgb,#2a9a4a 10%,var(--paper))}
+@media (hover:hover){.kcard:hover{border-color:var(--c1)}}
+.rcard{background:var(--paper);border-color:color-mix(in srgb,var(--c1) 55%,var(--line))}
+.rem{background:linear-gradient(135deg,var(--c1),var(--c2))}
+.rhead{background:linear-gradient(120deg,var(--c1),var(--c2));border-radius:20px}
+.rhead h1{font-family:var(--pf);text-transform:uppercase;font-size:24px;text-shadow:0 2px 3px rgba(0,0,0,.25)}
+.ksub{border-top:0}.ksub h2{color:var(--c1)}
+.kpass,.acard,.sres,.brow,.pn a{background:var(--paper);color:var(--ink)}
+.kdone .kbtn,.kbtn.pri{background:linear-gradient(135deg,#1d62e0,#2aa1e0)}
+.kbtn{background:var(--paper);color:var(--ink)}.kbtn.pri{color:#fff}
+.pn a{border-color:color-mix(in srgb,var(--c1,#2a5bd0) 40%,transparent)}
+/* Karte */
+.kmapw{border:4px solid #fff;border-radius:28px;box-shadow:0 8px 28px -10px rgba(0,50,90,.6)}
+.kfoam{animation:kfo 14s linear infinite}@keyframes kfo{to{stroke-dashoffset:-160}}
+.kreg{cursor:pointer;outline:none}
+.kreg .klab rect{transition:transform .15s}
+@media (hover:hover){.kreg:hover .kland{filter:brightness(1.1) saturate(1.15)}.kreg:hover .kemc{transform:translateY(-4px)}.kreg:hover .kem{transform:translateY(-4px)}}
+.kreg:focus-visible .klab rect:first-child{stroke:#ffd54a}
+.kemc,.kem{transition:transform .15s;transform-box:fill-box}
+.kreg.done .kemc{stroke:#ffd54a}
+.kreg .kland path:first-child{stroke:none}
+.kl1{font:700 15px var(--pf);fill:#fff;stroke:none;paint-order:normal}
+.kl2{font:600 12px Inter,system-ui,sans-serif;fill:#fff;stroke:none;opacity:.92}
+.ktit{font:700 30px var(--pf)}
+@media (prefers-reduced-motion:reduce){.kfoam{animation:none}}
