@@ -1,8 +1,8 @@
 @font-face{font-family:"Poppins";font-weight:700;font-display:swap;src:url(../fonts/Poppins-Bold.woff) format("woff")}
 /* Oratio Kursland */
-:root{--sea1:#8fe3f0;--sea2:#2f9fd4;--sand:#f6e3b0;--rd:#0b6b7a}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sea1:#12425a;--sea2:#0a2236;--sand:#7d6a45}}
-:root[data-theme="dark"]{--sea1:#12425a;--sea2:#0a2236;--sand:#7d6a45}
+:root{--sea1:#2a86d8;--sea2:#06265a;--sand:#f6e3b0;--rd:#0b6b7a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sea1:#14508c;--sea2:#041a3d;--sand:#7d6a45}}
+:root[data-theme="dark"]{--sea1:#14508c;--sea2:#041a3d;--sand:#7d6a45}
 #kprog{position:fixed;left:0;right:0;top:0;height:4px;z-index:60;display:none}
 #kprog.on{display:block}
 #kprog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#2e86ff,#8a4dff,#ff3b8a)}
@@ -235,3 +235,4 @@ body.kursbody.kgruen .kmapw{border-color:#e9fbc0}
 .prose pre .kopier,.prose pre button{top:6px}
 .khero{display:block;width:100%;height:auto;border-radius:18px;margin:0 0 14px;box-shadow:0 6px 18px rgba(0,0,0,.2)}
 .prose pre code{line-height:1.5!important}.prose pre{padding-top:30px!important}
+.kwave{stroke-opacity:.22!important}.kdeco{pointer-events:none;filter:drop-shadow(0 3px 3px rgba(0,10,40,.45))}
