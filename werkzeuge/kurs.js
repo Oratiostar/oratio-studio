@@ -26,11 +26,14 @@ var Kurs = (function(){
     anhangT:{A:"Alle Befehle von A bis Z",B:"Glossar",C:"Lernreihenfolge",D:"Fehler-Index",E:"Befehlskatalog der Toolbox"},
     ap:["Anhang","Annexe"], projekt:["Projekt","Projet"]
   };
-  var PAL = [["#d9540c","#f4883a"],["#17984b","#3bc06d"],["#2457cf","#3f7cf0"],["#7a3fd0","#975fe4"],["#cf2d8f","#ea5fb9"],["#1a9a8e","#4acdc2"],["#c88a0c","#f0b738"],["#251d68","#584ab1"]];
-  var TP = {1:0,2:1,3:2,4:3,5:4,6:5,7:6,8:7,9:0,10:1,11:2,12:3,13:4,14:5,15:3,16:4,17:5,18:6,19:7}, SP = {a:6,b:7,c:0,d:1,e:2};
-  function palT(tid){ return PAL[TP[tid] === undefined ? 2 : TP[tid]]; }
-  function palK(n){ var k = STR.kapitel[n]; return k.sub ? PAL[SP[k.sub]] : palT(k.teil); }
-  function pv(p){ return '--rc:' + p[0] + ';--c1:' + p[0] + ';--c2:' + p[1]; }
+  function hx(h){ h = h.replace("#",""); return [parseInt(h.substr(0,2),16), parseInt(h.substr(2,2),16), parseInt(h.substr(4,2),16)]; }
+  function mixc(h, o, f){ var a = hx(h), b = hx(o); return "#" + [0,1,2].map(function(i){ var v = Math.round(a[i] + (b[i] - a[i]) * f); return ("0" + v.toString(16)).slice(-2); }).join(""); }
+  function mkPal(h){ return [h, mixc(h, "#ffffff", .32), mixc(h, "#000000", .4)]; }
+  var SUBC = {a:"#e08a00", b:"#2f6df0", c:"#8b5cf6", d:"#0ea5e9", e:"#22a55a"};
+  var PROPS = {1:["⌨️","🌲"],2:["🔌","🌴"],3:["🔆","🌲"],4:["🔧","🌴"],5:["🕰️","🌸"],6:["💻","🌴"],7:["🧠","🌲"],8:["🪟","🐧"],9:["👾","🌴"],10:["🎲","🌲"],11:["💾","🌴"],12:["📍","🌲"],13:["🔊","🌴"],14:["🧰","🌲"],15:["🧭","🌴"],16:["🩺","🌲"],17:["📕","🌴"],18:["✨","🌲"],19:["🔋","🌴"]};
+  function palT(tid){ return mkPal(STR.teile[tid].color); }
+  function palK(n){ var k = STR.kapitel[n]; return k.sub ? mkPal(SUBC[k.sub]) : palT(k.teil); }
+  function pv(p){ return '--rc:' + p[0] + ';--c1:' + p[0] + ';--c2:' + p[1] + ';--c3:' + p[2]; }
   function t(k){ var v = T[k]; return v ? v[FR ? 1 : 0] : k; }
   function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
   function nrm(s){ return String(s).toLowerCase().replace(/ä/g,"a").replace(/ö/g,"o").replace(/ü/g,"u").replace(/ß/g,"ss").replace(/[^a-z0-9À-ſ_\-\.\/ ]/g," "); }
@@ -67,7 +70,7 @@ var Kurs = (function(){
       s += '<path class="kroad" d="M' + a.x + ' ' + a.y + ' Q' + (mx - dy * k).toFixed(0) + ' ' + (my + dx * k).toFixed(0) + ' ' + b.x + ' ' + b.y + '"/>';
     });
     Object.keys(T_).forEach(function(id, i){
-      var x = T_[id], p = palT(id), c1 = p[0], c2 = p[1], st = teilStat(id), done = st[0] === st[1] && st[1] > 0, seed = +id + 2, r = x.r, gid = "kg" + id;
+      var x = T_[id], p = palT(id), c1 = p[0], c2 = p[1], c3 = p[2], st = teilStat(id), done = st[0] === st[1] && st[1] > 0, seed = +id + 2, r = x.r, gid = "kg" + id;
       var deco = "", sd = seed * 13 + 5;
       function rnd(){ sd = (sd * 16807) % 2147483647; return sd / 2147483647; }
       for (var q = 0; q < 7; q++){ var ang = rnd() * 6.283, rad = (.25 + rnd() * .5), px = x.x + Math.cos(ang) * r * .8 * rad, py = x.y - 4 + Math.sin(ang) * r * .56 * rad, sz = 6 + rnd() * 9;
@@ -83,7 +86,8 @@ var Kurs = (function(){
         + '<path d="' + blob(x.x - r * .08, x.y - r * .22, r * .72, r * .38, seed + 1, .3) + '" fill="#fff" opacity=".2"/>' + deco + '</g>'
         + '<circle class="kemc" cx="' + x.x + '" cy="' + (x.y - 6) + '" r="' + Math.round(r * .4) + '" fill="#fff" stroke="' + c1 + '" stroke-width="4"/>'
         + '<text class="kem" x="' + x.x + '" y="' + (x.y - 6 + r * .15) + '" font-size="' + Math.round(r * .46) + '" text-anchor="middle">' + x.icon + '</text>'
-        + '<g class="klab" transform="translate(' + x.x + ' ' + ly + ')"><rect x="' + (-lw / 2) + '" y="0" width="' + lw + '" height="44" rx="12" fill="' + c1 + '" stroke="#fff" stroke-width="3"/>'
+        + '<text class="kprop" x="' + (x.x - r * .62).toFixed(0) + '" y="' + (x.y + r * .22).toFixed(0) + '" font-size="' + Math.round(r * .3) + '" text-anchor="middle">' + PROPS[id][0] + '</text><text class="kprop" x="' + (x.x + r * .62).toFixed(0) + '" y="' + (x.y + r * .22).toFixed(0) + '" font-size="' + Math.round(r * .3) + '" text-anchor="middle">' + PROPS[id][1] + '</text>'
+        + '<g class="klab" transform="translate(' + x.x + ' ' + ly + ')"><rect x="' + (-lw / 2) + '" y="0" width="' + lw + '" height="44" rx="12" fill="' + c3 + '" stroke="#fff" stroke-width="3"/>'
         + '<rect x="' + (-lw / 2 + 3) + '" y="3" width="' + (lw - 6) + '" height="19" rx="9" fill="#fff" opacity=".14"/>'
         + '<text text-anchor="middle" y="19" class="kl1">' + esc(x.kurz) + '</text>'
         + '<text text-anchor="middle" y="36" class="kl2">Teil ' + id + ' · ' + st[0] + '/' + st[1] + (done ? ' ✓' : '') + '</text></g></g>';
@@ -127,7 +131,7 @@ var Kurs = (function(){
     if (x.subs){
       var rest = x.kaps.filter(function(n){ return !STR.kapitel[n].sub; });
       body = intro + (rest.length ? '<div class="kgrid">' + rest.map(kapKarte).join("") + '</div>' : '') + Object.keys(x.subs).map(function(s){ var u = x.subs[s];
-        return '<section class="ksub" style="' + pv(PAL[SP[s]]) + '"><h2><span>' + u.icon + '</span> ' + esc(u.full) + '</h2>' + u.intro.replace(/<table>[\s\S]*?<\/table>/, "") + '<div class="kgrid">' + u.kaps.map(kapKarte).join("") + '</div></section>'; }).join("");
+        return '<section class="ksub" style="' + pv(mkPal(SUBC[s])) + '"><h2><span>' + u.icon + '</span> ' + esc(u.full) + '</h2>' + u.intro.replace(/<table>[\s\S]*?<\/table>/, "") + '<div class="kgrid">' + u.kaps.map(kapKarte).join("") + '</div></section>'; }).join("");
     } else body = intro + '<div class="kgrid">' + x.kaps.map(kapKarte).join("") + '</div>';
     var st = teilStat(id), ids = Object.keys(STR.teile), i = ids.indexOf(id);
     var pv = i > 0 ? STR.teile[ids[i - 1]] : null, nx = i < ids.length - 1 ? STR.teile[ids[i + 1]] : null;
@@ -142,7 +146,7 @@ var Kurs = (function(){
     if (kind === "vorwort"){ info = STR.vorwort; file = "vorwort.html"; titel = info.title; crumbs = [[t("land"), "#/"], [t("vor")]]; }
     else if (kind === "anhang"){ info = STR.anhang[key]; if (!info || key === "E") return key === "E" ? befehle() : home(); file = "a" + key + ".html"; titel = t("ap") + " " + key + " – " + info.title; crumbs = [[t("land"), "#/"], [t("anh")], [t("ap") + " " + key]]; }
     else { info = STR.kapitel[key]; if (!info) return home(); file = "k" + ("0" + key).slice(-2) + ".html"; teil = STR.teile[info.teil]; titel = (FR ? "Chapitre " : "Kapitel ") + key + ": " + info.title; crumbs = [[t("land"), "#/"], [teil.kurz, "#/teil/" + teil.id], [(FR ? "Chap. " : "Kap. ") + key]]; }
-    var pal = kind === "kap" ? palK(+key) : PAL[2];
+    var pal = kind === "kap" ? palK(+key) : mkPal("#2f6df0");
     document.title = titel + " – " + t("titel");
     var hk = kind + "/" + key; lastSet(kind === "kap" ? "#/kap/" + key : kind === "anhang" ? "#/anhang/" + key : "#/vorwort");
     var base = kind === "kap" ? "kap/" + key : kind === "anhang" ? "anhang/" + key : "vorwort";
@@ -271,6 +275,14 @@ var Kurs = (function(){
   }
   return { start: function(){
     document.body.classList.add("kursbody");
+    var stil = "papier"; try { stil = localStorage.getItem("kurs-stil") || "papier"; } catch(e){}
+    function setStil(v){ stil = v; document.body.classList.toggle("kgruen", v === "gruen"); try { localStorage.setItem("kurs-stil", v); } catch(e){} document.querySelectorAll("#kStil button").forEach(function(b){ b.classList.toggle("on", b.dataset.v === v); b.setAttribute("aria-pressed", b.dataset.v === v); }); }
+    setTimeout(function(){
+      var bar = document.querySelector("header .bar"); if (!bar || document.getElementById("kStil")) return;
+      var d = document.createElement("div"); d.className = "seg"; d.id = "kStil"; d.setAttribute("role", "group"); d.setAttribute("aria-label", FR ? "Style de page" : "Seitenstil");
+      d.innerHTML = '<button type="button" data-v="papier" title="' + (FR ? "Fond vert, page claire" : "Hintergrund grün, Fenster hell") + '">📄 ' + (FR ? "Page" : "Papier") + '</button><button type="button" data-v="gruen" title="' + (FR ? "Tout en vert" : "Alles grün") + '">🟩 ' + (FR ? "Vert" : "Grün") + '</button>';
+      bar.appendChild(d); d.querySelectorAll("button").forEach(function(b){ b.onclick = function(){ setStil(b.dataset.v); }; }); setStil(stil);
+    }, 0); setStil(stil);
     get(D + "struktur.json", true).then(function(s){ STR = s; window.addEventListener("hashchange", onHash); onHash(); },
       function(){ W.innerHTML = '<p class="platz">⚠️ ' + (FR ? "Les données n’ont pas pu être chargées." : "Die Daten konnten nicht geladen werden. Bitte die Seite über den Webserver öffnen.") + '</p>'; });
   } };

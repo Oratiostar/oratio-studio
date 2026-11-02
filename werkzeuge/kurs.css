@@ -114,7 +114,7 @@ article h1{font-size:28px;margin:4px 0 4px}
 .cp2{flex:none;border:2px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px;font:600 12.5px Inter,system-ui,sans-serif;padding:5px 9px;cursor:pointer}
 /* Mobil */
 @media (max-width:900px){
-  .lese{grid-template-columns:1fr}
+  .lese{grid-template-columns:minmax(0,1fr)}
   .outl{position:static;max-height:none}
   .outl .olist{max-height:260px;overflow:auto}
   .rhead{flex-direction:column;align-items:flex-start}
@@ -191,3 +191,34 @@ body.kursbody h1{font-family:var(--pf)}
 .kl2{font:600 12px Inter,system-ui,sans-serif;fill:#fff;stroke:none;opacity:.92}
 .ktit{font:700 30px var(--pf)}
 @media (prefers-reduced-motion:reduce){.kfoam{animation:none}}
+
+/* ===== Korrekturen: Handy, Landfarben, Stil Papier/Grün ===== */
+html,body.kursbody{overflow-x:hidden}
+.lese>*,.prose,.prose>*{min-width:0;max-width:100%}
+.prose pre{max-width:100%}
+.prose h2{color:var(--c3,#a5420a)}.prose h3{color:var(--c3,#a5420a)}
+.prose th{background:var(--c3,#a5420a)}
+.tw{border-color:var(--c3,#a5420a)}
+.oreg{background:linear-gradient(135deg,var(--c3),var(--c1))}
+.och .ok i{color:var(--c3)}.och.cur>.ok i{background:var(--c3);color:#fff}
+.osl a.os.on{background:var(--c3)}
+.kn{background:linear-gradient(135deg,var(--c3),var(--c1))}
+.rhead{background:linear-gradient(120deg,var(--c3),var(--c1))}
+.ksub h2{color:var(--c3)}
+.kprop{pointer-events:none;filter:drop-shadow(0 2px 1px rgba(0,0,0,.3))}
+#kStil{margin-left:4px}
+/* Stil „Grün“: alles grün, Schrift darauf; Karten heben sich heller ab */
+body.kursbody.kgruen main{background:#b6e94e;border:3px solid rgba(255,255,255,.6);color:#0d1838;--paper:#d3f58a;--ink:#0d1838;--icode:#e9fbc0;--line:#8fc13a}
+body.kursbody.kgruen header{background:color-mix(in srgb,#b6e94e 92%,transparent)}
+body.kursbody.kgruen .crumb,body.kursbody.kgruen .sub,body.kursbody.kgruen .meta{color:#264015}
+body.kursbody.kgruen .outl{background:#c6f06d}
+body.kursbody.kgruen .tw{background:#e3fa9f}
+body.kursbody.kgruen .prose tbody tr:nth-child(even) td{background:rgba(255,255,255,.35)}
+body.kursbody.kgruen .kmapw{border-color:#e9fbc0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.kursbody.kgruen main{background:#2e5a1c;--paper:#3a6a25;--ink:#ecf6dc;--icode:#2a4a1f;--line:#5c8f3c;color:#ecf6dc}:root:not([data-theme="light"]) body.kursbody.kgruen header{background:#2e5a1c}:root:not([data-theme="light"]) body.kursbody.kgruen .outl{background:#336322}:root:not([data-theme="light"]) body.kursbody.kgruen .tw{background:#2e5a1c}:root:not([data-theme="light"]) body.kursbody.kgruen .crumb,:root:not([data-theme="light"]) body.kursbody.kgruen .sub,:root:not([data-theme="light"]) body.kursbody.kgruen .meta{color:#cfe6b6}}
+:root[data-theme="dark"] body.kursbody.kgruen main{background:#2e5a1c;--paper:#3a6a25;--ink:#ecf6dc;--icode:#2a4a1f;--line:#5c8f3c;color:#ecf6dc}
+:root[data-theme="dark"] body.kursbody.kgruen header{background:#2e5a1c}
+:root[data-theme="dark"] body.kursbody.kgruen .outl{background:#336322}
+:root[data-theme="dark"] body.kursbody.kgruen .tw{background:#2e5a1c}
+:root[data-theme="dark"] body.kursbody.kgruen .crumb,:root[data-theme="dark"] body.kursbody.kgruen .sub,:root[data-theme="dark"] body.kursbody.kgruen .meta{color:#cfe6b6}
+@media (max-width:640px){#kStil button{padding:6px 8px;font-size:13px}}
