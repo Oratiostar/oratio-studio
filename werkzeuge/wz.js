@@ -148,6 +148,7 @@ window.WZ = {
     document.documentElement.lang = "fr";
     var skip = {SCRIPT:1, STYLE:1, TEXTAREA:1, CODE:1};
     function knoten(n){
+      var el0 = n.nodeType === 1 ? n : n.parentNode; if (el0 && el0.closest && el0.closest("[data-nt]")) return;
       if (n.nodeType === 3) {
         var p = n.parentNode; if (p && (skip[p.nodeName] || (p.classList && p.classList.contains("fn")))) return;
         var v = n.nodeValue, w = WZ.t(v); if (w !== v) n.nodeValue = w;

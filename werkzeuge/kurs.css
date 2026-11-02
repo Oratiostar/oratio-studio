@@ -222,3 +222,16 @@ body.kursbody.kgruen .kmapw{border-color:#e9fbc0}
 :root[data-theme="dark"] body.kursbody.kgruen .tw{background:#2e5a1c}
 :root[data-theme="dark"] body.kursbody.kgruen .crumb,:root[data-theme="dark"] body.kursbody.kgruen .sub,:root[data-theme="dark"] body.kursbody.kgruen .meta{color:#cfe6b6}
 @media (max-width:640px){#kStil button{padding:6px 8px;font-size:13px}}
+
+/* Korrekturen 5: kleiner Schalter, Code umbrechen */
+#kStil button{padding:5px 8px!important;font-size:0}
+#kStil .ksw{display:block;width:16px;height:16px;border-radius:5px;border:2px solid rgba(0,0,0,.35)}
+#kStil .sp{background:linear-gradient(135deg,#fff 0 50%,#b6e94e 50%)}
+#kStil .sg{background:#b6e94e}
+#kStil button.on{background:linear-gradient(135deg,#2e86ff,#8a4dff)}
+@media (max-width:700px){#kStil button{padding:3px 6px!important}#kStil .ksw{width:13px;height:13px;border-radius:4px;border-width:1.5px}}
+.prose pre{overflow:visible!important;padding-top:34px}
+.prose pre code{white-space:pre-wrap!important;overflow-wrap:anywhere;word-break:break-word;font-size:13px}
+.prose pre .kopier,.prose pre button{top:6px}
+.khero{display:block;width:100%;height:auto;border-radius:18px;margin:0 0 14px;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+.prose pre code{line-height:1.5!important}.prose pre{padding-top:30px!important}
