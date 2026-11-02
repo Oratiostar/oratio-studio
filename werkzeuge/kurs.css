@@ -1,8 +1,8 @@
 @font-face{font-family:"Poppins";font-weight:700;font-display:swap;src:url(../fonts/Poppins-Bold.woff) format("woff")}
 /* Oratio Kursland */
-:root{--sea1:#2a86d8;--sea2:#06265a;--sand:#f6e3b0;--rd:#0b6b7a}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sea1:#14508c;--sea2:#041a3d;--sand:#7d6a45}}
-:root[data-theme="dark"]{--sea1:#14508c;--sea2:#041a3d;--sand:#7d6a45}
+:root{--sea1:#69c6f4;--sea2:#2183d6;--sand:#f6e3b0;--rd:#0b6b7a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sea1:#1e6aa8;--sea2:#0b3a73;--sand:#7d6a45}}
+:root[data-theme="dark"]{--sea1:#1e6aa8;--sea2:#0b3a73;--sand:#7d6a45}
 #kprog{position:fixed;left:0;right:0;top:0;height:4px;z-index:60;display:none}
 #kprog.on{display:block}
 #kprog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#2e86ff,#8a4dff,#ff3b8a)}
