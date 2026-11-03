@@ -240,7 +240,7 @@ var FRT = {"t": [["FONDAMENTAUX : Linux et le terminal", "Bases Linux"], ["RASPB
     seite(crumb([[t("land"), "#/"], [t("bef")]]) + '<h1>⌨️ ' + t("bef") + '</h1><p class="sub">' + t("befsub") + '</p>'
       + '<div class="bfil"><input class="in" id="bq" type="search" autocomplete="off" placeholder="' + esc(t("befsuch")) + '"><select class="in" id="bk"><option value="">' + t("kat") + ': ' + t("alle") + '</option></select></div>'
       + '<div class="bart" id="ba"></div><p class="sub" id="bn"></p><div id="bl"><p class="platz">…</p></div><p class="kfoot"><button class="kbtn" id="bm" type="button" hidden>' + t("mehr") + '</button></p>');
-    get(D + "befehle.json", true).then(function(J){
+    (FR ? get(D + "befehle.fr.json", true).catch(function(){ return get(D + "befehle.json", true); }) : get(D + "befehle.json", true)).then(function(J){
       BEF = J.rows; var cats = {};
       BEF.forEach(function(r){ var k = r[4] + " › " + r[5]; cats[k] = 1; });
       var sel = document.getElementById("bk"); Object.keys(cats).forEach(function(k){ var o = document.createElement("option"); o.value = k; o.textContent = k; sel.appendChild(o); });
