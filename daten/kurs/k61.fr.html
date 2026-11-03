@@ -1,0 +1,44 @@
+<section id="s61-1"><h2>61.1 Python : différences importantes</h2><ul>
+<li><strong><code>print</code></strong> écrit du texte dans le terminal. Pour chercher des erreurs, c'est l'outil le plus simple (<code>print("hier")</code>).</li>
+<li><strong><code>os.system("befehl")</code></strong> lance une commande, mais n'est pas sûr avec des entrées venant de l'extérieur. Mieux vaut <strong><code>subprocess.run([...])</code></strong> ou <code>subprocess.Popen([...])</code> avec une <strong>liste</strong> composée de la commande et des arguments.</li>
+<li><strong>JSON comme base de données :</strong> pour de petits programmes, un fichier JSON est le stockage le plus simple (noms, chemins, réglages). Règle de base : <strong>réglages en JSON, logique dans le code.</strong> On peut alors ajouter des applications sans modifier le code.</li>
+<li><strong>Peut-on utiliser n'importe quelle commande Linux ?</strong> Oui, toute commande que le terminal connaît peut être lancée avec <code>subprocess</code>.</li>
+<li><strong>Majuscules et minuscules :</strong> Python distingue <code>Name</code> et <code>name</code>. Les classes s'écrivent habituellement <code>GroßBuchstabe</code>, les fonctions et variables <code>klein_mit_unterstrich</code>.</li>
+<li><strong>ComboBox ou QInputDialog :</strong> une <strong>ComboBox</strong> est un champ de choix qui reste dans la fenêtre. <strong>QInputDialog</strong> est une fenêtre popup avec une saisie ou un choix.</li>
+<li><strong>PyQt5 ou PyQt6 :</strong> les deux se ressemblent, mais ne sont pas compatibles (par exemple <code>exec_()</code> contre <code>exec()</code>). Utiliser une seule version de façon cohérente.</li>
+</ul>
+</section><section id="s61-2"><h2>61.2 Glisser-déposer dans Qt</h2><p>Au lieu de gérer soi-même les événements de souris (<code>mousePressEvent</code>, <code>mouseReleaseEvent</code>), Qt offre une prise en charge intégrée du glisser-déposer. Elle est plus stable quand beaucoup d'éléments sont déplacés. En glissant, on peut assombrir l'élément en calculant sa couleur à partir de la couleur de base.</p>
+</section><section id="s61-3"><h2>61.3 Python ou C++ pour mon projet ?</h2><p>Le C++ (par exemple avec Qt) est plus rapide et demande moins de mémoire, mais le développement prend plus de temps. Pour une interface avec des boutons qui lancent des scripts, Python est assez rapide. Un programme pour le Raspberry Pi peut être réécrit en C++ et compilé là, il ne tourne alors que sur l'architecture adaptée (ARM64).</p>
+</section><section id="s61-4"><h2>61.4 Lancer son programme plus tôt ou comme écran de démarrage</h2><p>Le démarrage automatique (<a class="xr" href="#/kap/5">chapitre 5</a>) démarre après la connexion. Si l'on veut démarrer plus tôt (par exemple une vidéo au démarrage), il faut un <strong>service systemd</strong>. Les services démarrent avant la connexion et peuvent jouer aussitôt un programme ou une vidéo. La durée de lecture se règle avec une heure de début et de fin, par exemple avec <code>mpv --start=8 --end=19 video.mp4</code>.</p>
+</section><section id="s61-5"><h2>61.5 Steam Deck et jeux rétro</h2><p><strong>Formats de fichiers PS1 :</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>BIN</code> + <code>CUE</code></td>
+<td>Image plus description des pistes</td>
+</tr>
+<tr class="even">
+<td><code>CHD</code></td>
+<td>image compressée, économise de la place, lue par la plupart des émulateurs (recommandé)</td>
+</tr>
+<tr class="odd">
+<td><code>PBP</code></td>
+<td>Format de paquet Sony, souvent pour des jeux autonomes</td>
+</tr>
+<tr class="even">
+<td><code>M3U</code></td>
+<td>Liste de lecture pour les jeux à <strong>plusieurs disques</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Conversion : <code>chdman createcd -i spiel.cue -o spiel.chd</code>. Pour plusieurs disques, on crée un CHD par disque et un <code>.m3u</code> avec les noms de fichiers.</p>
+<p><strong>BIOS :</strong> sous RetroDECK dans le dossier <code>~/retrodeck/bios/</code>. La PS2 demande un sous-dossier <code>ps2</code>, parce que l'émulateur (PCSX2) y attend les fichiers.</p>
+<p><strong>Bazzite ou SteamOS ?</strong> SteamOS est le système de Valve pour le Deck. Bazzite est un système semblable basé sur Fedora, qui tourne aussi sur d'autres consoles portables (par exemple appareils Intel et AMD).</p>
+<p><strong>Étendre le stockage :</strong> le Steam Deck et le ROG Ally acceptent une carte microSD ou un SSD M.2 remplaçable (taille 2230 ou 2242). Vérifier le format avant l'achat.</p>
+</section>

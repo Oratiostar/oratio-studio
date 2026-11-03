@@ -1,0 +1,106 @@
+<p><strong>Avertissement préalable :</strong> les circuits de sécurité protègent des personnes. Qui les modifie, les shunte ou les branche mal met des vies en danger. Ce chapitre explique le <strong>principe</strong> à partir d'un appareil concret de mon travail. Font toujours foi la notice d'utilisation du fabricant et les prescriptions de l'installation. Les travaux sur les circuits de sécurité relèvent de professionnels qualifiés.</p>
+<section id="s68-1"><h2>68.1 Ce que fait un relais de sécurité</h2><p>Un relais de sécurité surveille des <strong>dispositifs de protection</strong> comme des boutons d'arrêt d'urgence ou des interrupteurs de porte et <strong>coupe de façon fiable</strong> la machine en cas de danger. Ce n'est pas un relais ordinaire : il est construit <strong>à deux canaux</strong>, se surveille lui-même et, en cas de défaut, passe à l'état sûr (sorties ouvertes). Le principe de base s'appelle <strong>principe du courant de repos</strong> : le circuit de sécurité est <strong>fermé</strong> en fonctionnement normal. Toute interruption (bouton enfoncé, porte ouverte, rupture de ligne, défaut de contact) coupe.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>État</th>
+<th>Contact dans le circuit de sécurité</th>
+<th>Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Arrêt d'urgence non enfoncé, porte fermée</td>
+<td>fermé</td>
+<td>La machine peut tourner</td>
+</tr>
+<tr class="even">
+<td>Arrêt d'urgence enfoncé</td>
+<td>ouvert</td>
+<td>Machine à l'<strong>ARRÊT</strong></td>
+</tr>
+<tr class="odd">
+<td>Rupture de ligne</td>
+<td>ouvert</td>
+<td>Machine à l'ARRÊT</td>
+</tr>
+<tr class="even">
+<td>Soudure de contact / court-circuit entre canaux</td>
+<td>est détecté</td>
+<td>Le relais ne donne pas la validation</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s68-2"><h2>68.2 Cas : duelco NST-2002.2</h2><p>Mon cas était un relais de sécurité <strong>duelco NST-2002.2</strong>. Mes questions étaient de savoir si les bornes T11 et T12 sont pontées ou ouvertes par défaut et ce que l'interrupteur entre elles doit faire.</p>
+<p><strong>Réponse :</strong> entre <strong>T11 et T12</strong> se branche le <strong>circuit de sécurité</strong> (arrêt d'urgence, interrupteur de sécurité). À la livraison, les bornes ne sont <strong>pas pontées</strong>. Le contact de sécurité doit être <strong>fermé</strong> à l'état normal et <strong>s'ouvrir</strong> en cas de danger.</p>
+<p><strong>Ponter simplement les bornes met hors service la fonction de sécurité</strong> et est interdit en fonctionnement. Une fiche de pontage n'est admissible tout au plus que pour un test <strong>documenté</strong> sur l'établi, jamais dans l'installation.</p>
+<p><strong>Dépannage quand le relais ne colle pas :</strong></p>
+<ol type="1">
+<li>Le circuit entre T11 et T12 est-il <strong>fermé</strong> ? Arrêt d'urgence enfoncé ? Porte ouverte ? Vérifier pour chacun des deux canaux.</li>
+<li>La tension d'alimentation est-elle présente (dans mon cas 110 V ; tenir compte de la plaque signalétique) ?</li>
+<li>Le circuit de retour est-il fermé (section 68.4) ?</li>
+<li>Le circuit de démarrage est-il actionné (certains appareils demandent un bouton de démarrage ou d'acquittement) ?</li>
+</ol>
+</section><section id="s68-3"><h2>68.3 Groupes fonctionnels A, B, C dans le schéma</h2><p>Sur le schéma, <strong>A</strong>, <strong>B</strong> et <strong>C</strong> ne désignaient pas des composants, mais des <strong>groupes fonctionnels</strong>. Voici comment je les ai associés :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Groupe</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A</strong></td>
+<td>Évaluation / appareil de commande</td>
+</tr>
+<tr class="even">
+<td><strong>B</strong></td>
+<td>Commande / entrée (bouton, interrupteur, validation)</td>
+</tr>
+<tr class="odd">
+<td><strong>C</strong></td>
+<td>Sortie</td>
+</tr>
+</tbody>
+</table></div>
+<p>Important pour toute documentation : de telles lettres de groupe ne sont pas une norme, mais la désignation de cette installation. En lisant des plans, lire d'abord la <strong>légende</strong>.</p>
+</section><section id="s68-4"><h2>68.4 Structure typique d’un circuit d’arrêt d’urgence à deux canaux</h2><p>Les désignations de bornes diffèrent selon le fabricant (sur beaucoup d'appareils <code>S11/S12</code> et <code>S21/S22</code>, sur le duelco <code>T11/T12</code>). Le <strong>principe</strong> est cependant le même :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Élément</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Alimentation</strong> (par exemple <code>A1/A2</code>)</td>
+<td>alimente le relais</td>
+</tr>
+<tr class="even">
+<td><strong>Canaux d'entrée 1 et 2</strong></td>
+<td>deux <strong>contacts à ouverture (NC)</strong> du bouton d'arrêt d'urgence, câblés séparément (deux canaux)</td>
+</tr>
+<tr class="odd">
+<td><strong>Circuit de démarrage</strong></td>
+<td>bouton de démarrage/d'acquittement, pour que l'installation ne redémarre pas toute seule après l'arrêt d'urgence</td>
+</tr>
+<tr class="even">
+<td><strong>Circuit de retour</strong> (EDM, « External Device Monitoring »)</td>
+<td><strong>contacts à ouverture des contacteurs suivants</strong> en série : montre que les contacteurs sont vraiment retombés. Si un contacteur est soudé, le relais ne donne plus la validation</td>
+</tr>
+<tr class="odd">
+<td><strong>Sorties de sécurité</strong> (par exemple <code>13–14</code>, <code>23–24</code>, <code>33–34</code>)</td>
+<td>contacts du relais, se ferment à l'état validé</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Important :</strong> les contacts de sortie (sur le NST-2002.2 ce sont <code>13–14</code>, <code>23–24</code>, <code>33–34</code>, chacun jusqu'à environ <strong>6 A</strong>) <strong>ne sont pas faits pour commuter directement de grosses charges</strong>. Le relais de sécurité commande des <strong>contacteurs (K1/K2)</strong>, et les contacteurs commutent la charge. Les entrées (T11/T12 etc.) ne conduisent que de très faibles courants.</p>
+</section><section id="s68-5"><h2>68.5 Remplacement quand l’appareil n’est plus disponible</h2><p>On n'a pas besoin d'un <strong>appareil identique</strong>, mais d'un relais de sécurité <strong>fonctionnellement équivalent</strong> qui convient à l'application : à deux canaux, pour arrêt d'urgence, avec une tension d'alimentation adaptée (par exemple 24 V), avec circuit de retour et suffisamment de sorties. Dans la recherche, on m'a cité comme familles courantes : Pilz PNOZ (par exemple PNOZ s1, PNOZ X2.8P), Schneider Electric XPSUEP et Siemens SIRIUS 3TK2830. Lors d'un remplacement, la <strong>catégorie de sécurité ou le Performance Level</strong> (par exemple catégorie 3 ou 4 selon EN ISO 13849) de l'installation est le critère décisif, et l'affectation des bornes doit être revérifiée (T11/T12 correspond par exemple chez Pilz à S11/S12).</p>
+</section><section id="s68-6"><h2>68.6 Exercices avec solutions</h2><ol type="1">
+<li><strong>Exercice :</strong> l'arrêt d'urgence est enfoncé, la machine reste à l'arrêt. Quelle est la position des contacts du circuit de sécurité ? <strong>Solution :</strong> ouverte. C'est l'état sûr voulu.</li>
+<li><strong>Exercice :</strong> pourquoi le relais de sécurité ne doit-il pas commuter directement un moteur de 4 kW ? <strong>Solution :</strong> ses contacts ne sont dimensionnés que pour de petits courants (ici environ 6 A) ; un contacteur prend la charge, et le relais de sécurité surveille le contacteur via le circuit de retour.</li>
+<li><strong>Exercice :</strong> pourquoi deux canaux plutôt qu'un ? <strong>Solution :</strong> un défaut de contact isolé (soudure, rupture de ligne, court-circuit entre canaux) peut ainsi être détecté sans que la fonction de protection ne tombe en panne.</li>
+</ol>
+</section>

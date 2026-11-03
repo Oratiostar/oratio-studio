@@ -1,0 +1,137 @@
+<section id="s55-1"><h2>55.1 Erreurs de compilation</h2><p>Le compilateur indique <strong>fichier:ligne:colonne</strong> et le type de l'erreur. Le plus souvent, la <strong>première</strong> erreur est la vraie, les suivantes sont des erreurs en cascade.</p>
+<h3 id="xyz-was-not-declared-in-this-scope"><code>'xyz' was not declared in this scope</code></h3>
+<p>Le nom est inconnu à cet endroit.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Cause</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>La fonction est appelée <strong>avant</strong> sa définition (<code>'pageOratio' was not declared</code>, <code>playMelody was not declared</code>)</td>
+<td>Définir la fonction plus haut ou ajouter un <strong>prototype</strong> : <code>void pageOratio();</code></td>
+</tr>
+<tr class="even">
+<td>La constante ou la couleur n'existe pas dans la bibliothèque (<code>GC9A01A_LIGHTGREY</code>, <code>NOTE_FS5</code>)</td>
+<td>Créer sa propre constante avec <code>#define</code> ou <code>const</code>, par exemple <code>#define NOTE_FS5 740</code>, ou utiliser une couleur existante</td>
+</tr>
+<tr class="odd">
+<td><code>'sin' was not declared</code>, <code>'cos' was not declared</code></td>
+<td>Ajouter <code>#include &lt;cmath&gt;</code></td>
+</tr>
+<tr class="even">
+<td>Faute de frappe ou mauvaise écriture</td>
+<td>Comparer les noms</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="error-expected-unqualified-id-before-if"><code>error: expected unqualified-id before 'if'</code></h3>
+<p>Une instruction (<code>if</code>, <code>for</code>, <code>x = 1;</code>) se trouve <strong>en dehors d'une fonction</strong>. Tout ce qui est exécutable appartient à <code>setup()</code>, <code>loop()</code> ou une autre fonction. Vérifier si les accolades <code>{ }</code> ont été correctement fermées avant.</p>
+<h3 id="expected--before-"><code>expected ';' before ...</code></h3>
+<p>Un point-virgule manque, le plus souvent dans la <strong>ligne précédente</strong>.</p>
+<h3 id="fatal-error-xyzh-no-such-file-or-directory-zum-beispiel-adafruit_i2cdeviceh-led-matrixh"><code>fatal error: xyz.h: No such file or directory</code> (par exemple <code>Adafruit_I2CDevice.h</code>, <code>led-matrix.h</code>)</h3>
+<p><strong>Signification :</strong> le fichier d'en-tête est introuvable.</p>
+<p><strong>Solution :</strong></p>
+<ul>
+<li>Arduino/PlatformIO : bibliothèque manquante. L'inscrire dans <code>platformio.ini</code> sous <code>lib_deps</code> (<code>adafruit/Adafruit BusIO</code>) ou l'installer dans l'IDE Arduino. <code>Adafruit_I2CDevice.h</code> fait partie d'<strong>Adafruit BusIO</strong>.</li>
+<li>Exemples de matrice sur le Pi : vérifier le chemin relatif (<code>#include "../include/led-matrix.h"</code>) ou compiler depuis le bon dossier.</li>
+</ul>
+<h3 id="-piobuildesp32devsrcmaincppo-error-1"><code>*** [.pio/build/esp32dev/src/main.cpp.o] Error 1</code></h3>
+<p>Ce n'est que la <strong>fin</strong> : le compilateur a échoué sur <code>main.cpp</code>. Le vrai message se trouve <strong>au-dessus</strong>.</p>
+<h3 id="red--has-no-member-named-red"><code>.red</code> ... <code>has no member named 'red'</code></h3>
+<p>Dans les versions récentes de la bibliothèque de matrice, les composantes de couleur s'appellent <code>.r</code>, <code>.g</code>, <code>.b</code>. Remplacer <code>.red</code> par <code>.r</code>. En cas de scintillement : <code>--led-slowdown-gpio=4</code>.</p>
+</section><section id="s55-2"><h2>55.2 Erreurs d’affichage et de déroulement du programme</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Cause</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>L'écran reste vide</td>
+<td><code>display.display()</code> manque, mauvaise adresse, mauvaises broches</td>
+<td><code>display.display()</code> après le dessin, lancer le scanner I²C</td>
+</tr>
+<tr class="even">
+<td>Texte trop petit ou en miroir</td>
+<td>Taille standard et rotation</td>
+<td><code>setTextSize(2)</code>, <code>setRotation(1)</code></td>
+</tr>
+<tr class="odd">
+<td><code>Serial.println("OLED nicht gefunden");</code> apparaît</td>
+<td>Adresse I²C fausse (0x3C ou 0x3D) ou câblage</td>
+<td>Scanner, vérifier SDA/SCL</td>
+</tr>
+<tr class="even">
+<td>L'écran affiche des déchets ou une image décalée</td>
+<td>Mauvais contrôleur ou mauvaise résolution (SSD1306 contre SH1106)</td>
+<td>Choisir la bibliothèque et le contrôleur adaptés à l'écran</td>
+</tr>
+<tr class="odd">
+<td>Couleurs inversées (rouge et bleu)</td>
+<td>Ordre RGB et BGR</td>
+<td>Régler l'option d'ordre des couleurs du pilote ou basculer <code>invert</code></td>
+</tr>
+<tr class="even">
+<td>Le JSON d'Internet n'est pas lu (<code>DeserializationError</code>)</td>
+<td>Réponse trop grande pour le document ou réponse invalide</td>
+<td>Afficher <code>if (error) Serial.println(error.c_str());</code>, choisir un <code>StaticJsonDocument</code> plus grand, vérifier le code HTTP (<code>200</code>)</td>
+</tr>
+<tr class="odd">
+<td>Après quelques minutes, le programme se bloque</td>
+<td>Mémoire pleine, concaténations de <code>String</code></td>
+<td>Utiliser des tableaux <code>char</code>, surveiller le tas (heap)</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s55-3"><h2>55.3 PlatformIO</h2><h3 id="could-not-initialize-project-mit-unknownpackageerror-could-not-find-the-package-with-platformiotoolchain-gccarmnoneeabi--1902010-requirements"><code>Could not initialize Project</code> avec <code>UnknownPackageError: Could not find the package with 'platformio/toolchain-gccarmnoneeabi @ ~1.90201.0' requirements</code></h3>
+<p><strong>Signification :</strong> PlatformIO cherche un paquet de chaîne d'outils précis dans une version fixe et ne trouve aucune version adaptée au système utilisé (par exemple Linux ARM64 sur le Pi). Ce n'est <strong>pas</strong> le Pico, VS Code ou Internet qui est cassé.</p>
+<p><strong>Ce qu'est une chaîne d'outils :</strong> l'ensemble compilateur, assembleur et éditeur de liens qui transforme le code C++ en programme pour la puce.</p>
+<p><strong>Solution :</strong> vérifier la plateforme et sa version et choisir une plateforme construite pour ARM64 (pour le Pico, la plateforme Arduino-Pico d'Earle Philhower), ou compiler le projet sur un ordinateur x86. Les indications sur la plateforme se trouvent dans <code>platformio.ini</code>.</p>
+<h3 id="no-module-named-platformio"><code>No module named platformio</code></h3>
+<p>Dans le terminal normal, PlatformIO n'est pas installé, il se trouve dans VS Code dans un environnement propre. Appel :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="ex">~/.platformio/penv/bin/platformio</span> <span class="at">--version</span></span></code></pre></div>
+<p>Si le fichier manque ou si l'environnement est endommagé, on supprime seulement cet environnement (<code>rm -rf ~/.platformio/penv</code>), on ferme VS Code et on le redémarre. PlatformIO le reconstruit. Les projets sont conservés.</p>
+<h3 id="falsche-boardangabe">Mauvaise indication de carte</h3>
+<p>Un clone de Nano a souvent besoin de <code>board = nanoatmega328</code> avec <code>board_build.mcu</code>/bootloader <code>atmega328old</code>, sinon le téléversement échoue (<code>avrdude: stk500_getsync(): not in sync</code>).</p>
+</section><section id="s55-4"><h2>55.4 Carte non reconnue ou échec du téléversement</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Cause</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Aucun port dans la liste (<code>/dev/ttyUSB0</code> manque)</td>
+<td>Câble de charge seulement, pilote manquant, carte non reconnue</td>
+<td>Utiliser un câble de données, sous Windows installer le pilote <strong>CP210x</strong> ou <strong>CH340</strong>, vérifier <code>ls /dev/ttyUSB* /dev/ttyACM*</code></td>
+</tr>
+<tr class="even">
+<td><code>Permission denied: '/dev/ttyUSB0'</code></td>
+<td>L'utilisateur n'est pas dans le groupe <code>dialout</code></td>
+<td><code>sudo usermod -a -G dialout $USER</code>, puis se reconnecter</td>
+</tr>
+<tr class="odd">
+<td>Le téléversement reste bloqué sur <code>Connecting......</code> (ESP32)</td>
+<td>Mode de démarrage non actif</td>
+<td>Maintenir la touche <strong>BOOT</strong> enfoncée jusqu'à ce que le téléversement commence</td>
+</tr>
+<tr class="even">
+<td><code>avrdude: stk500_getsync(): not in sync</code> (Nano)</td>
+<td>Mauvais bootloader</td>
+<td>Choisir le processeur <code>atmega328old</code></td>
+</tr>
+<tr class="odd">
+<td>Le téléversement réussit, l'écran reste vide</td>
+<td>Le programme tourne, câblage faux</td>
+<td>Scanner I²C (<a class="xr" href="#/kap/17/17.5">chapitre 17.5</a>)</td>
+</tr>
+</tbody>
+</table></div>
+</section>

@@ -1,0 +1,429 @@
+<p>Cet index mène de ce que l'on <strong>voit</strong> au chapitre correspondant. La colonne « Première commande » est la commande avec laquelle on mesure d'abord (<a class="xr" href="#/kap/47">chapitre 47</a>). Qui connaît le message à la lettre cherche en plus dans le lexique des erreurs (partie 17) avec la fonction de recherche du lecteur PDF.</p>
+<section id="sD-x0"><h2>D.1 Messages et symptômes</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Message / symptôme</th>
+<th>Première commande</th>
+<th>Chapitre</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>command not found</code></td>
+<td><code>which name</code>, <code>echo $PATH</code></td>
+<td>48.1, 53</td>
+</tr>
+<tr class="even">
+<td><code>Permission denied</code></td>
+<td><code>ls -l datei</code></td>
+<td>48.2, 2</td>
+</tr>
+<tr class="odd">
+<td><code>No such file or directory</code></td>
+<td><code>pwd</code>, <code>ls</code></td>
+<td>48.1, 53</td>
+</tr>
+<tr class="even">
+<td><code>externally-managed-environment</code> (pip)</td>
+<td><code>python3 -m venv</code></td>
+<td>48.3, 3</td>
+</tr>
+<tr class="odd">
+<td>Le disque affiche <code>0B</code>, « Read Capacity failed »</td>
+<td><code>dmesg | tail</code></td>
+<td>49.5, 56</td>
+</tr>
+<tr class="even">
+<td>Disque en lecture seule / appartient à <code>root</code></td>
+<td><code>ls -ld</code>, <code>mount</code></td>
+<td>48.2, 49.5</td>
+</tr>
+<tr class="odd">
+<td>Disque plein</td>
+<td><code>df -h</code>, <code>du -h --max-depth=1</code></td>
+<td>48.4</td>
+</tr>
+<tr class="even">
+<td>La commande reste bloquée</td>
+<td><code>Strg+C</code>, <code>ps aux</code></td>
+<td>48.5</td>
+</tr>
+<tr class="odd">
+<td>SSH <code>Connection refused</code> / <code>timed out</code></td>
+<td><code>systemctl status ssh</code>, <code>ping</code></td>
+<td>49.8</td>
+</tr>
+<tr class="even">
+<td>Heure fausse</td>
+<td><code>timedatectl</code></td>
+<td>49.8</td>
+</tr>
+<tr class="odd">
+<td>Le Pi ne démarre pas, la LED clignote</td>
+<td>Compter le motif de la LED</td>
+<td>8, 49.1</td>
+</tr>
+<tr class="even">
+<td><code>Waiting for root device</code></td>
+<td><code>blkid</code> vs. <code>cmdline.txt</code></td>
+<td>49.1, 8</td>
+</tr>
+<tr class="odd">
+<td><code>bcm2712-rpi-5-b.dtb not found</code></td>
+<td>Regarder la partition de démarrage</td>
+<td>26.3, 49.1</td>
+</tr>
+<tr class="even">
+<td><code>USB boot requires high current</code></td>
+<td><code>vcgencmd get_throttled</code></td>
+<td>26.4, 49.2</td>
+</tr>
+<tr class="odd">
+<td>Symbole d'éclair, saccades, redémarrages</td>
+<td><code>vcgencmd get_throttled</code></td>
+<td>49.2</td>
+</tr>
+<tr class="even">
+<td>Pas d'image / image minuscule en 4K</td>
+<td><code>wlr-randr</code></td>
+<td>10, 49.3</td>
+</tr>
+<tr class="odd">
+<td>Échelle perdue après redémarrage ou changement de moniteur</td>
+<td><code>ps aux | grep kanshi</code></td>
+<td>10.4, 10.6, 49.3</td>
+</tr>
+<tr class="even">
+<td><code>failed to parse config file</code> (Kanshi)</td>
+<td><code>kanshi</code> dans le terminal</td>
+<td>10, 56</td>
+</tr>
+<tr class="odd">
+<td>Pas de son / mauvais appareil</td>
+<td><code>wpctl status</code></td>
+<td>49.4</td>
+</tr>
+<tr class="even">
+<td><code>/dev/i2c-1</code> manque, <code>i2cdetect</code> vide</td>
+<td><code>ls /dev/i2c*</code>, <code>sudo i2cdetect -y 1</code></td>
+<td>49.6, 51.6</td>
+</tr>
+<tr class="odd">
+<td><code>Cannot determine SOC peripheral base address</code> (Pi 5)</td>
+<td>–</td>
+<td>49.6</td>
+</tr>
+<tr class="even">
+<td>Le ventilateur/OLED/LED du boîtier Freenove ne réagit pas</td>
+<td><code>systemctl status</code>, lancer le fichier dans le terminal</td>
+<td>49.7, 11</td>
+</tr>
+<tr class="odd">
+<td>Le programme de démarrage automatique ne démarre pas</td>
+<td>Exécuter la ligne dans le terminal</td>
+<td>49.9, 5</td>
+</tr>
+<tr class="even">
+<td><code>IndentationError</code>, <code>TabError</code></td>
+<td><code>python3 -m py_compile datei.py</code></td>
+<td>50.2, 54</td>
+</tr>
+<tr class="odd">
+<td><code>SyntaxError</code></td>
+<td><code>python3 -m py_compile datei.py</code></td>
+<td>50.2, 54</td>
+</tr>
+<tr class="even">
+<td><code>NameError</code>, <code>UnboundLocalError</code></td>
+<td><code>grep -n name datei.py</code></td>
+<td>50.2, 54</td>
+</tr>
+<tr class="odd">
+<td><code>KeyError</code>, <code>JSONDecodeError</code></td>
+<td><code>python3 -m json.tool datei.json</code></td>
+<td>50.2, 50.5</td>
+</tr>
+<tr class="even">
+<td><code>ModuleNotFoundError</code></td>
+<td><code>which python3</code>, <code>pip list</code></td>
+<td>50.2</td>
+</tr>
+<tr class="odd">
+<td><code>could not connect to display</code>, plugin Qt <code>xcb</code></td>
+<td><code>echo $WAYLAND_DISPLAY</code>, <code>QT_DEBUG_PLUGINS=1</code></td>
+<td>50.3</td>
+</tr>
+<tr class="even">
+<td>Le bouton ne fait rien</td>
+<td><code>grep -n "def name"</code>, <code>print</code></td>
+<td>22.6, 50.3</td>
+</tr>
+<tr class="odd">
+<td>Le Control Center ne démarre pas / un onglet manque</td>
+<td><code>python3 app_ui.py</code> dans le terminal, <code>Logs/oratio.log</code></td>
+<td>50.5</td>
+</tr>
+<tr class="even">
+<td>Réglages perdus, tuile disparue</td>
+<td><code>ls Json/</code>, <code>Json/Backup/</code></td>
+<td>50.5</td>
+</tr>
+<tr class="odd">
+<td>Un interrupteur (redémarrage, LED …) du Control Center n'a aucun effet</td>
+<td><code>sudo -n true &amp;&amp; echo OK</code></td>
+<td>50.5</td>
+</tr>
+<tr class="even">
+<td><code>cmake: command not found</code>, <code>undefined reference</code> (C++)</td>
+<td><code>bash build.sh</code></td>
+<td>50.6, 42</td>
+</tr>
+<tr class="odd">
+<td>Port manquant, <code>Permission denied</code> sur <code>/dev/ttyUSB0</code></td>
+<td><code>ls /dev/ttyUSB*</code>, <code>groups</code></td>
+<td>51.1</td>
+</tr>
+<tr class="even">
+<td><code>avrdude: stk500_getsync(): not in sync</code></td>
+<td>Vérifier la carte et le bootloader</td>
+<td>51.2, 16</td>
+</tr>
+<tr class="odd">
+<td><code>Wrong boot mode detected</code> (ESP32)</td>
+<td>BOOT + RESET</td>
+<td>51.2</td>
+</tr>
+<tr class="even">
+<td><code>fatal error: X.h: No such file or directory</code></td>
+<td>Gestionnaire de bibliothèques</td>
+<td>51.3</td>
+</tr>
+<tr class="odd">
+<td>Bouillie de caractères dans le moniteur série</td>
+<td>Comparer le débit</td>
+<td>51.4</td>
+</tr>
+<tr class="even">
+<td><code>Brownout detector was triggered</code></td>
+<td>Bloc d'alimentation, câble</td>
+<td>51.4, 69.5</td>
+</tr>
+<tr class="odd">
+<td>Écran noir / décalé / en miroir</td>
+<td>Scanner I²C (17.5)</td>
+<td>51.6, 20</td>
+</tr>
+<tr class="even">
+<td>Ruban de LED : mauvaises couleurs, scintillement</td>
+<td>Niveau, alimentation</td>
+<td>51.7</td>
+</tr>
+<tr class="odd">
+<td>Windows sur le Deck : pas de son, pas de WLAN</td>
+<td>Gestionnaire de périphériques</td>
+<td>52.1, 28</td>
+</tr>
+<tr class="even">
+<td>SteamOS ne démarre plus après Windows</td>
+<td><code>efibootmgr -v</code></td>
+<td>52.4, 27</td>
+</tr>
+<tr class="odd">
+<td><code>Exec format error</code> (Deck)</td>
+<td><code>uname -m</code></td>
+<td>52.2, 43</td>
+</tr>
+<tr class="even">
+<td>Batocera : pas d'image, manette, ROM</td>
+<td><code>config.txt</code>, <code>/userdata</code></td>
+<td>52.3, 26</td>
+</tr>
+<tr class="odd">
+<td>Le bouton donne des valeurs aléatoires</td>
+<td>Pull-up/pull-down</td>
+<td>69.2</td>
+</tr>
+<tr class="even">
+<td>Le moteur ne tourne pas / saccade</td>
+<td>Pilote, masse commune</td>
+<td>67</td>
+</tr>
+<tr class="odd">
+<td>Composant inconnu</td>
+<td>Marquage, environnement, fiche technique</td>
+<td>66.1</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="sD-x1"><h2>D.2 Commande → à quoi elle sert</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Commande</th>
+<th>Aide pour</th>
+<th>Chapitre</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>lsblk</code></td>
+<td>Quel disque est lequel ? Avant <code>mkfs</code>, <code>dd</code>, <code>fdisk</code></td>
+<td>7, 48.4</td>
+</tr>
+<tr class="even">
+<td><code>blkid</code></td>
+<td>UUID/PARTUUID pour <code>fstab</code> et <code>cmdline.txt</code></td>
+<td>7, 8</td>
+</tr>
+<tr class="odd">
+<td><code>df -h</code></td>
+<td>Disque plein ?</td>
+<td>48.4</td>
+</tr>
+<tr class="even">
+<td><code>du -h --max-depth=1</code></td>
+<td>Qu'est-ce qui mange la place ?</td>
+<td>48.4</td>
+</tr>
+<tr class="odd">
+<td><code>dmesg | tail</code></td>
+<td>Qu'a reconnu le noyau au branchement ?</td>
+<td>47.3</td>
+</tr>
+<tr class="even">
+<td><code>journalctl -b -p err</code></td>
+<td>Erreurs depuis le démarrage</td>
+<td>47.3</td>
+</tr>
+<tr class="odd">
+<td><code>systemctl status NAME</code></td>
+<td>Le service tourne-t-il ? Pourquoi pas ?</td>
+<td>5, 48.5</td>
+</tr>
+<tr class="even">
+<td><code>ps aux | grep NAME</code></td>
+<td>Le programme tourne-t-il vraiment ?</td>
+<td>5, 48.5</td>
+</tr>
+<tr class="odd">
+<td><code>vcgencmd get_throttled</code></td>
+<td>Sous-tension, bridage</td>
+<td>49.2</td>
+</tr>
+<tr class="even">
+<td><code>vcgencmd measure_temp</code></td>
+<td>Température</td>
+<td>49.2</td>
+</tr>
+<tr class="odd">
+<td><code>wlr-randr</code></td>
+<td>Nom de sortie, échelle</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td><code>echo $XDG_SESSION_TYPE</code></td>
+<td>Wayland ou X11 ?</td>
+<td>10, 49.3</td>
+</tr>
+<tr class="odd">
+<td><code>wpctl status</code></td>
+<td>Sortie sonore, appareil par défaut</td>
+<td>49.4</td>
+</tr>
+<tr class="even">
+<td><code>sudo i2cdetect -y 1</code></td>
+<td>L'appareil I²C répond-il ?</td>
+<td>49.6</td>
+</tr>
+<tr class="odd">
+<td><code>pinctrl get 17</code></td>
+<td>Fonction et niveau d'une broche GPIO</td>
+<td>49.6</td>
+</tr>
+<tr class="even">
+<td><code>python3 -m py_compile datei.py</code></td>
+<td>Vérifier la syntaxe sans démarrer</td>
+<td>50.4</td>
+</tr>
+<tr class="odd">
+<td><code>python3 -m json.tool datei.json</code></td>
+<td>JSON valide ? Endroit de l'erreur</td>
+<td>50.4</td>
+</tr>
+<tr class="even">
+<td><code>python3 -X faulthandler app.py</code></td>
+<td>plantages durs</td>
+<td>50.4</td>
+</tr>
+<tr class="odd">
+<td><code>grep -rn "text" .</code></td>
+<td>D'où cela vient-il ?</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td><code>sed -n '50,65p' datei</code></td>
+<td>Extrait de ligne pour le message d'erreur</td>
+<td>4, 50.1</td>
+</tr>
+<tr class="odd">
+<td><code>ls -l</code></td>
+<td>Droits et propriétaire</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td><code>chmod +x</code> / <code>chown</code></td>
+<td>rendre exécutable / reprendre la propriété</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td><code>which NAME</code> / <code>command -v NAME</code></td>
+<td>Le programme est-il là ? Quelle version tourne ?</td>
+<td>48.1</td>
+</tr>
+<tr class="even">
+<td><code>uname -m</code>, <code>file programm</code></td>
+<td>Type de processeur (x86_64 / aarch64)</td>
+<td>52.2</td>
+</tr>
+<tr class="odd">
+<td><code>efibootmgr -v</code></td>
+<td>Entrées de démarrage (double démarrage)</td>
+<td>52.4</td>
+</tr>
+<tr class="even">
+<td><code>arduino-cli board list</code></td>
+<td>Quel port, quelle carte ?</td>
+<td>16</td>
+</tr>
+<tr class="odd">
+<td><code>pio run -t clean</code></td>
+<td>Cache de PlatformIO</td>
+<td>51.8</td>
+</tr>
+<tr class="even">
+<td><code>esptool</code> / <code>avrdude</code></td>
+<td>Sauvegarder ou écrire le firmware</td>
+<td>16.9, 17.9</td>
+</tr>
+<tr class="odd">
+<td><code>nmcli dev wifi</code>, <code>rfkill list</code></td>
+<td>Problèmes de WLAN</td>
+<td>49.8</td>
+</tr>
+<tr class="even">
+<td><code>timedatectl</code></td>
+<td>Fuseau horaire et synchronisation de l'heure</td>
+<td>49.8</td>
+</tr>
+<tr class="odd">
+<td><code>ssh-keygen -R IP</code></td>
+<td>Message « host identification changed »</td>
+<td>49.8</td>
+</tr>
+<tr class="even">
+<td><code>Get-FileHash</code>, <code>sha256sum</code></td>
+<td>Vérifier le téléchargement</td>
+<td>25.7, 45</td>
+</tr>
+</tbody>
+</table></div>
+</section>

@@ -1,0 +1,110 @@
+<section id="s32-1"><h2>32.1 Point de départ : le programme Freenove</h2><p>La tour Freenove (<a class="xr" href="#/kap/11">chapitre 11</a>) est livrée avec une interface Python toute faite. Elle a quatre onglets :</p>
+<p><strong>Monitor | LED | Fan | OLED</strong></p>
+<p>Le fichier <code>app_ui.py</code> construit la fenêtre principale. Chaque onglet est une classe à part qui appartient à son propre fichier (LED, ventilateur, OLED). L'interface se lance avec <code>python3 app_ui.py</code> ou via un petit script de démarrage <code>run_app.sh</code>. Tout le reste repose sur cette structure. Le fait que Qt (la bibliothèque d'interface) fournisse un widget d'onglets (<code>QTabWidget</code>) auquel on peut accrocher autant d'onglets que l'on veut est la base des étapes suivantes.</p>
+<p><strong>À retenir :</strong> qui étend un programme étranger étend d'abord une copie. J'ai copié le dossier avec tous les fichiers Python et n'ai travaillé que sur la copie. L'original est ainsi resté pour comparer.</p>
+</section><section id="s32-2"><h2>32.2 Objectif : un onglet « Scripts »</h2><p>Je voulais un cinquième onglet à droite d'OLED :</p>
+<p><strong>Monitor | LED | Fan | OLED | Scripts</strong></p>
+<p>Au clic, quatre rectangles (boutons) devaient apparaître, chacun portant le nom d'un script. Un clic sur un rectangle lance le script. Les premiers scripts étaient des programmes que j'avais déjà : un vérificateur de fichiers (Hash-Checker, voir <a class="xr" href="#/kap/45">chapitre 45</a>), une sauvegarde, un test OLED et un script de mise à jour.</p>
+</section><section id="s32-3"><h2>32.3 Le nouveau fichier</h2><p>L'onglet reçoit son propre fichier pour que <code>app_ui.py</code> ne s'allonge pas davantage : <code>app_ui_scripts.py</code>. Il contient une classe avec une grille (<code>QGridLayout</code>) et quatre boutons :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="im">from</span> PyQt5.QtWidgets <span class="im">import</span> QWidget, QPushButton, QGridLayout</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="im">import</span> subprocess</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="kw">class</span> ScriptsTab(QWidget):</span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb1-6"><a aria-hidden="true" href="#cb1-6" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb1-7"><a aria-hidden="true" href="#cb1-7" tabindex="-1"></a>        layout <span class="op">=</span> QGridLayout()</span>
+<span id="cb1-8"><a aria-hidden="true" href="#cb1-8" tabindex="-1"></a>        <span class="va">self</span>.btn1 <span class="op">=</span> QPushButton(<span class="st">"Backup"</span>)</span>
+<span id="cb1-9"><a aria-hidden="true" href="#cb1-9" tabindex="-1"></a>        <span class="va">self</span>.btn2 <span class="op">=</span> QPushButton(<span class="st">"Update"</span>)</span>
+<span id="cb1-10"><a aria-hidden="true" href="#cb1-10" tabindex="-1"></a>        <span class="va">self</span>.btn3 <span class="op">=</span> QPushButton(<span class="st">"OLED Test"</span>)</span>
+<span id="cb1-11"><a aria-hidden="true" href="#cb1-11" tabindex="-1"></a>        <span class="va">self</span>.btn4 <span class="op">=</span> QPushButton(<span class="st">"Hash Checker"</span>)</span>
+<span id="cb1-12"><a aria-hidden="true" href="#cb1-12" tabindex="-1"></a>        layout.addWidget(<span class="va">self</span>.btn1, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb1-13"><a aria-hidden="true" href="#cb1-13" tabindex="-1"></a>        layout.addWidget(<span class="va">self</span>.btn2, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb1-14"><a aria-hidden="true" href="#cb1-14" tabindex="-1"></a>        layout.addWidget(<span class="va">self</span>.btn3, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb1-15"><a aria-hidden="true" href="#cb1-15" tabindex="-1"></a>        layout.addWidget(<span class="va">self</span>.btn4, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb1-16"><a aria-hidden="true" href="#cb1-16" tabindex="-1"></a>        <span class="va">self</span>.setLayout(layout)</span>
+<span id="cb1-17"><a aria-hidden="true" href="#cb1-17" tabindex="-1"></a></span>
+<span id="cb1-18"><a aria-hidden="true" href="#cb1-18" tabindex="-1"></a>        <span class="va">self</span>.btn1.clicked.<span class="ex">connect</span>(<span class="kw">lambda</span>: <span class="va">self</span>.run_script(<span class="st">"backup.py"</span>))</span>
+<span id="cb1-19"><a aria-hidden="true" href="#cb1-19" tabindex="-1"></a>        <span class="va">self</span>.btn4.clicked.<span class="ex">connect</span>(<span class="kw">lambda</span>: <span class="va">self</span>.run_bash(<span class="st">"hashchecker.sh"</span>))</span>
+<span id="cb1-20"><a aria-hidden="true" href="#cb1-20" tabindex="-1"></a></span>
+<span id="cb1-21"><a aria-hidden="true" href="#cb1-21" tabindex="-1"></a>    <span class="kw">def</span> run_script(<span class="va">self</span>, filename):</span>
+<span id="cb1-22"><a aria-hidden="true" href="#cb1-22" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb1-23"><a aria-hidden="true" href="#cb1-23" tabindex="-1"></a>            subprocess.Popen([<span class="st">"python3"</span>, filename])</span>
+<span id="cb1-24"><a aria-hidden="true" href="#cb1-24" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb1-25"><a aria-hidden="true" href="#cb1-25" tabindex="-1"></a>            <span class="bu">print</span>(e)</span>
+<span id="cb1-26"><a aria-hidden="true" href="#cb1-26" tabindex="-1"></a></span>
+<span id="cb1-27"><a aria-hidden="true" href="#cb1-27" tabindex="-1"></a>    <span class="kw">def</span> run_bash(<span class="va">self</span>, filename):</span>
+<span id="cb1-28"><a aria-hidden="true" href="#cb1-28" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb1-29"><a aria-hidden="true" href="#cb1-29" tabindex="-1"></a>            subprocess.Popen([<span class="st">"lxterminal"</span>, <span class="st">"-e"</span>, <span class="ss">f"bash </span><span class="sc">{</span>filename<span class="sc">}</span><span class="ss">"</span>])</span>
+<span id="cb1-30"><a aria-hidden="true" href="#cb1-30" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb1-31"><a aria-hidden="true" href="#cb1-31" tabindex="-1"></a>            <span class="bu">print</span>(e)</span></code></pre></div>
+<p>Ce que font les éléments :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Élément</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>QGridLayout</code></td>
+<td>dispose des éléments en lignes et colonnes : <code>addWidget(élément, ligne, colonne)</code></td>
+</tr>
+<tr class="even">
+<td><code>QPushButton("Text")</code></td>
+<td>un bouton avec libellé</td>
+</tr>
+<tr class="odd">
+<td><code>.clicked.connect(...)</code></td>
+<td>relie le clic à une fonction</td>
+</tr>
+<tr class="even">
+<td><code>lambda: ...</code></td>
+<td>une petite fonction anonyme ; nécessaire pour transmettre le nom de fichier au moment du clic</td>
+</tr>
+<tr class="odd">
+<td><code>subprocess.Popen([...])</code></td>
+<td>lance un autre programme sans que l'interface attende</td>
+</tr>
+<tr class="even">
+<td><code>lxterminal -e ...</code></td>
+<td>ouvre une fenêtre de terminal et y exécute une commande</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s32-4"><h2>32.4 Accrocher l’onglet dans app_ui.py</h2><p>Dans <code>app_ui.py</code>, trois endroits suffisent :</p>
+<ol type="1">
+<li>en haut <code>from app_ui_scripts import ScriptsTab</code>,</li>
+<li>là où les onglets sont créés, <code>self.tab_widget.addTab(ScriptsTab(), "Scripts")</code>,</li>
+<li>enregistrer et redémarrer.</li>
+</ol>
+<p>C'est le principe pour <strong>chaque</strong> onglet supplémentaire : un fichier propre avec une classe <code>QWidget</code>, un <code>import</code>, un <code>addTab</code>.</p>
+</section><section id="s32-5"><h2>32.5 Le Hash-Checker ne se lançait pas depuis le Control Center</h2><p>Le script <code>hashchecker.sh</code> est un script Bash (shell), pas un script Python. Avec <code>python3 hashchecker.sh</code>, il ne se lançait pas. D'où la seconde fonction <code>run_bash</code>, qui l'exécute avec <code>bash</code> dans une fenêtre de terminal. J'avais testé le script lui-même au préalable dans le terminal, car cela exclut la source d'erreur la plus rapide :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="bu">cd</span> ~/Dokumente/Code</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">bash</span> hashchecker.sh</span></code></pre></div>
+<p>S'il ne fonctionne pas là, l'erreur est dans le script. S'il fonctionne là mais pas depuis le Control Center, elle est dans l'interface.</p>
+<h3 id="der-fehler-mit-sudo">L'erreur avec <code>sudo</code></h3>
+<p>C'est exactement ce cas qui s'est produit : lancé depuis le terminal (<code>python3 app_ui.py</code>), tout fonctionnait ; via <code>./run_app.sh</code>, le Hash-Checker ne démarrait pas. La comparaison des deux chemins a montré : dans <code>run_app.sh</code>, il y avait <code>sudo python app_ui.py</code>. Ainsi, le <strong>programme entier tourne en tant qu'utilisateur root</strong>, et root a un autre dossier personnel, d'autres chemins et un autre environnement que l'utilisateur <code>oratio</code>. Les scripts qui ont besoin de chemins relatifs ou de l'affichage de l'utilisateur normal échouent alors.</p>
+<p>La solution : lancer le programme en tant qu'utilisateur normal et n'utiliser <code>sudo</code> que là où une commande isolée en a vraiment besoin.</p>
+<p><strong>À retenir :</strong> si quelque chose fonctionne dans le terminal mais pas par script de démarrage ou icône, c'est l'<strong>environnement</strong> qui diffère : utilisateur, dossier actuel, variables d'environnement. Comparer d'abord, ne pas deviner. Un test simple : insérer dans la fonction <code>print(os.getlogin())</code> et <code>print(os.getcwd())</code> et essayer les deux chemins.</p>
+</section><section id="s32-6"><h2>32.6 Lancer le script ou dans sa propre fenêtre ?</h2><p>Au début, le script démarrait dans la même fenêtre que l'interface et la recouvrait. Une fenêtre propre (terminal ou <code>QProcess</code>) est la meilleure solution. À retenir : <strong>l'interface lance des programmes, elle ne devient pas elle-même le programme.</strong></p>
+</section><section id="s32-7"><h2>32.7 Quand l’onglet ne s’accroche pas : l’indentation</h2><p>Dans cette partie du travail est apparue l'erreur de débutant la plus fréquente avec Python : l'<strong>indentation</strong>. Python reconnaît les blocs aux espaces en début de ligne. Si l'on mélange tabulations et espaces, le code a l'air correct dans l'éditeur et s'arrête pourtant :</p>
+<pre><code>TabError: inconsistent use of tabs and spaces in indentation
+IndentationError: unexpected indent</code></pre>
+<p>La cause était mon éditeur (Geany) : il insérait en partie des tabulations, alors que je tapais moi-même des espaces. Règles à retenir :</p>
+<ul>
+<li><strong>Quatre espaces par niveau</strong>, jamais de tabulations.</li>
+<li>Régler l'éditeur pour que la touche Tab insère des espaces.</li>
+<li>Vérifier sans lancer : <code>python3 -m py_compile datei.py</code> indique la ligne.</li>
+<li>Nettoyer un fichier mélangé : <code>expand -t 4 datei.py &gt; datei_neu.py</code>.</li>
+</ul>
+<p>Ce qui tourne particulièrement souvent mal en collant du code d'un tutoriel : le nouveau bloc doit commencer <strong>exactement au même niveau</strong> que les lignes voisines. Astuce : sélectionner d'abord la ligne précédente et regarder son indentation, puis coller.</p>
+</section><section id="s32-8"><h2>32.8 La méthode selon laquelle j’ai travaillé</h2><p>De ce chapitre, je retiens la façon dont j'ai abordé chaque étape suivante :</p>
+<ol type="1">
+<li>Modifier une seule chose par étape, puis lancer et tester.</li>
+<li>Lancer dans le terminal (<code>python3 app_ui.py</code>), pas par une icône, pour que les messages d'erreur soient visibles.</li>
+<li>À chaque modification, savoir <strong>dans quel fichier</strong> et <strong>à quel endroit</strong> elle se trouve.</li>
+<li>Une erreur est d'abord circonscrite (script seul, interface seule), puis corrigée.</li>
+<li>Sauvegarder une version qui fonctionne avant de continuer à construire.</li>
+</ol>
+</section>

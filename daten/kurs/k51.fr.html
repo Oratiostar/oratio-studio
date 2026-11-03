@@ -1,0 +1,375 @@
+<p>Avec les microcontrôleurs, il y a trois sources d'erreur que l'on sépare <strong>l'une après l'autre</strong> : <strong>1. la liaison avec l'ordinateur</strong> (câble, port, pilote, mode de démarrage), <strong>2. le programme</strong> (compilation, téléversement), <strong>3. le circuit</strong> (alimentation, niveaux, câblage). Qui fait d'abord tourner un simple programme Blink (seulement la LED intégrée) sait ensuite : ordinateur, câble, carte et outil sont en ordre. Tout le reste est alors le circuit ou le programme.</p>
+<section id="s51-1"><h2>51.1 Connexion : la carte est introuvable</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Commande</th>
+<th>Interprétation</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Aucun port dans l'IDE Arduino/PlatformIO</td>
+<td><code>ls /dev/ttyUSB* /dev/ttyACM*</code> avant et après le branchement</td>
+<td>rien de nouveau n'apparaît : le câble n'a que des lignes de charge, ou la carte est défectueuse</td>
+<td>essayer un autre <strong>câble de données</strong></td>
+</tr>
+<tr class="even">
+<td>Port présent, <code>Permission denied</code></td>
+<td><code>ls -l /dev/ttyUSB0</code>, <code>groups</code></td>
+<td>L'utilisateur n'est pas dans le groupe <code>dialout</code></td>
+<td><code>sudo usermod -aG dialout $USER</code>, se déconnecter et se reconnecter</td>
+</tr>
+<tr class="odd">
+<td>Le port apparaît et disparaît aussitôt</td>
+<td><code>dmesg -w</code> au branchement</td>
+<td><code>brltty</code> accapare le port</td>
+<td><code>sudo apt remove brltty</code></td>
+</tr>
+<tr class="even">
+<td>Le port alterne entre <code>ttyUSB0</code> et <code>ttyUSB1</code></td>
+<td><code>ls /dev/serial/by-id/</code></td>
+<td>noms fixes via le numéro de série</td>
+<td>utiliser ce chemin au lieu de <code>ttyUSB0</code></td>
+</tr>
+<tr class="odd">
+<td>L'ESP32-S3 apparaît comme <code>ttyACM0</code>, autrement après le téléversement</td>
+<td><code>dmesg | tail</code></td>
+<td>l'USB natif redémarre</td>
+<td>Rechoisir le port après chaque téléversement</td>
+</tr>
+<tr class="even">
+<td>Windows : appareil « Inconnu »</td>
+<td>Gestionnaire de périphériques</td>
+<td>Pilote CH340/CP210x manquant</td>
+<td>installer le pilote adapté</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s51-2"><h2>51.2 Le téléversement échoue</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Message</th>
+<th>Signification</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>avrdude: stk500_getsync(): not in sync: resp=0x00</code></td>
+<td>Le Nano ne répond pas</td>
+<td>Choisir la carte « Nano », processeur <strong>« ATmega328P (Old Bootloader) »</strong> (avec PlatformIO <code>board = nanoatmega328</code> ; les clones ont souvent besoin de l'ancien bootloader) ; autre câble ; ne rien laisser branché sur les broches D0/D1</td>
+</tr>
+<tr class="even">
+<td><code>avrdude: ser_open(): can't open device</code></td>
+<td>Port occupé ou manquant</td>
+<td>Moniteur série ouvert ? Le fermer. Rechoisir le port</td>
+</tr>
+<tr class="odd">
+<td><code>A fatal error occurred: Failed to connect to ESP32: Wrong boot mode detected</code></td>
+<td>L'ESP32 n'est pas en mode de chargement</td>
+<td>Maintenir la touche <strong>BOOT</strong>, appuyer brièvement sur <strong>RESET</strong>, relâcher BOOT, puis téléverser</td>
+</tr>
+<tr class="even">
+<td><code>Failed to connect … No serial data received</code></td>
+<td>Câble/port/boot</td>
+<td>Câble de données ; touche comme ci-dessus ; réduire le débit de téléversement (<code>upload_speed = 115200</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>A serial exception error occurred: Could not configure port</code></td>
+<td>Puce USB/pilote</td>
+<td>autre port, câble</td>
+</tr>
+<tr class="even">
+<td>Le téléversement réussit, le programme ne tourne pas</td>
+<td>Le mode de démarrage reste actif</td>
+<td>après le téléversement, appuyer sur <strong>RESET</strong> ; ne pas maintenir BOOT enfoncé</td>
+</tr>
+<tr class="odd">
+<td><code>Sketch too big</code> / <code>region 'iram0_0_seg' overflowed</code></td>
+<td>Mémoire pleine</td>
+<td>Choisir un schéma de partition (ESP32) plus grand, réduire bibliothèques/polices</td>
+</tr>
+<tr class="even">
+<td>Comportement de l'ancien programme</td>
+<td>Le téléversement est-il vraiment terminé ?</td>
+<td>chercher dans la sortie « Hard resetting » ou « bytes written »</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s51-3"><h2>51.3 Compilation (compilateur)</h2><p>La <strong>première</strong> erreur de la sortie est la vraie ; toutes les suivantes sont le plus souvent des erreurs en cascade.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Message</th>
+<th>Cause</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>fatal error: X.h: No such file or directory</code></td>
+<td>Bibliothèque manquante</td>
+<td>installer dans le gestionnaire de bibliothèques ; PlatformIO : <code>lib_deps</code></td>
+</tr>
+<tr class="even">
+<td><code>'X' was not declared in this scope</code></td>
+<td>Faute de frappe, variable hors de son bloc, en-tête manquant</td>
+<td>Vérifier l'orthographe (majuscules/minuscules !)</td>
+</tr>
+<tr class="odd">
+<td><code>expected ';' before …</code></td>
+<td>Point-virgule manquant, <strong>le plus souvent dans la ligne précédente</strong></td>
+<td>Regarder la ligne précédente</td>
+</tr>
+<tr class="even">
+<td><code>expected '}' at end of input</code></td>
+<td>Parenthèse non fermée</td>
+<td>Vérifier l'indentation ; fonction de l'éditeur « parenthèse correspondante »</td>
+</tr>
+<tr class="odd">
+<td><code>multiple definition of …</code></td>
+<td>Fonction/variable dans deux fichiers</td>
+<td>dans l'en-tête, seulement déclarer (<code>extern</code>), définir une seule fois</td>
+</tr>
+<tr class="even">
+<td><code>undefined reference to …</code></td>
+<td>Fonction déclarée mais jamais définie / bibliothèque non incluse</td>
+<td>Ajouter la définition ; <code>lib_deps</code></td>
+</tr>
+<tr class="odd">
+<td><code>conflicting declaration</code></td>
+<td>deux bibliothèques du même nom</td>
+<td>en retirer une</td>
+</tr>
+<tr class="even">
+<td>Erreur seulement avec PlatformIO, pas dans l'IDE</td>
+<td><code>.ino</code> a des prototypes automatiques, <code>.cpp</code> non</td>
+<td>Déclarer les fonctions avant utilisation, <code>#include &lt;Arduino.h&gt;</code></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s51-4"><h2>51.4 Moniteur série</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Interprétation</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bouillie de caractères (<code>ÿþ…</code>)</td>
+<td>Débit dans le moniteur ≠ <code>Serial.begin(…)</code></td>
+<td>régler le même nombre (115200 contre 9600)</td>
+</tr>
+<tr class="even">
+<td>Rien dans le moniteur</td>
+<td>Le programme ne tourne pas, mauvais port, ESP32-S3 sans <code>USB CDC on boot</code></td>
+<td>RESET ; vérifier le port ; option « USB CDC On Boot: Enabled »</td>
+</tr>
+<tr class="odd">
+<td>Du texte seulement au démarrage, puis silence</td>
+<td>Le programme reste dans une boucle ou un <code>delay</code></td>
+<td>poser des repères <code>Serial.println("A");</code> et couper en deux (<a class="xr" href="#/kap/47">chapitre 47</a>)</td>
+</tr>
+<tr class="even">
+<td>Redémarrage sans fin avec <code>Guru Meditation Error</code> / <code>Brownout detector was triggered</code></td>
+<td>Reset dû à une erreur ou à l'alimentation</td>
+<td>Lire le texte d'erreur : <code>Brownout</code> = la tension s'effondre → meilleur câble/bloc, condensateur 100–470 µF ; <code>LoadProhibited</code> = pointeur invalide</td>
+</tr>
+<tr class="odd">
+<td><code>rst:0x1 (POWERON_RESET)</code> à répétition</td>
+<td>Alimentation ou erreur de programme</td>
+<td>voir ci-dessus</td>
+</tr>
+<tr class="even">
+<td><code>E (…) i2c: …</code></td>
+<td>Erreur I²C</td>
+<td><a class="xr" href="#/kap/51/51.6">chapitre 51.6</a></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s51-5"><h2>51.5 Alimentation et niveaux</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Mesurer/vérifier</th>
+<th>Remarque</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>La carte a-t-elle 5 V ou 3,3 V ?</td>
+<td>Multimètre sur VCC/GND</td>
+<td>USB 5 V, les broches de l'ESP32 travaillent à <strong>3,3 V</strong></td>
+</tr>
+<tr class="even">
+<td>Toutes les masses sont-elles reliées ?</td>
+<td>Test de continuité entre les points GND</td>
+<td>Sans masse commune, aucun signal ne fonctionne</td>
+</tr>
+<tr class="odd">
+<td>Le consommateur reçoit-il assez ?</td>
+<td>Mesurer le courant</td>
+<td>Une broche ne fournit que quelques milliampères (Arduino env. 20 mA) ; moteurs, relais, rubans de LED demandent un étage de pilotage et leur propre alimentation</td>
+</tr>
+<tr class="even">
+<td>Signal 5 V sur une entrée 3,3 V ?</td>
+<td>Mesurer le niveau</td>
+<td>peut endommager l'ESP32/Pi → convertisseur de niveau ou diviseur de tension</td>
+</tr>
+<tr class="odd">
+<td>Quelque chose chauffe-t-il ?</td>
+<td>Doigt/caméra thermique</td>
+<td>débrancher aussitôt ; court-circuit, polarité inversée</td>
+</tr>
+<tr class="even">
+<td>La LED ne s'allume pas</td>
+<td>Polarité, résistance série (par ex. 220 Ω à 5 V), mode de broche <code>OUTPUT</code></td>
+<td>Patte longue = plus</td>
+</tr>
+<tr class="odd">
+<td>Le bouton donne des valeurs aléatoires</td>
+<td>L'entrée flotte</td>
+<td>utiliser <code>INPUT_PULLUP</code> ; bouton vers GND</td>
+</tr>
+<tr class="even">
+<td>Le bouton rebondit (déclenché plusieurs fois)</td>
+<td><code>Serial.println</code> à chaque appui</td>
+<td>Anti-rebond : temps de blocage de 20–50 ms</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s51-6"><h2>51.6 I²C et écrans</h2><pre class="text"><code>Muster: 1) Adresse suchen (I²C-Scanner) → 2) Adresse im Programm eintragen
+        → 3) Leitungen/Pegel/Pull-ups prüfen → 4) Bibliothek und Controllertyp prüfen</code></pre>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Interprétation</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Le scanner ne trouve rien</td>
+<td>SDA/SCL inversés, GND manquant, mauvaises broches</td>
+<td>Vérifier les broches de la carte (ESP32 : librement choisissables avec <code>Wire.begin(SDA, SCL)</code>), câbles courts</td>
+</tr>
+<tr class="even">
+<td>Le scanner trouve 0x3C, écran noir</td>
+<td>Le programme utilise une autre adresse ou un autre contrôleur (SSD1306 contre SH1106)</td>
+<td>Adapter l'adresse et la classe de pilote</td>
+</tr>
+<tr class="odd">
+<td>L'écran n'affiche que des points aléatoires</td>
+<td>Mauvais contrôleur</td>
+<td>bibliothèque/classe adaptée</td>
+</tr>
+<tr class="even">
+<td>Écran décalé de pixels (SH1106)</td>
+<td>132 au lieu de 128 pixels de largeur</td>
+<td>utiliser le pilote SH1106</td>
+</tr>
+<tr class="odd">
+<td>L'image est à l'envers</td>
+<td>Orientation</td>
+<td>définir la rotation (<code>setRotation</code>, <code>u8g2.setFlipMode</code>)</td>
+</tr>
+<tr class="even">
+<td>L'écran scintille</td>
+<td>trop de rafraîchissements complets</td>
+<td>ne dessiner que les changements, utiliser un tampon</td>
+</tr>
+<tr class="odd">
+<td>Texte en miroir</td>
+<td>L'écran est monté en miroir</td>
+<td>option miroir du pilote</td>
+</tr>
+<tr class="even">
+<td>L'AMOLED montre des bandes/un décalage</td>
+<td>Décalage (offset) du panneau</td>
+<td>définir le décalage de colonnes/lignes dans le pilote (<a class="xr" href="#/kap/21">chapitre 21</a> du cadran)</td>
+</tr>
+<tr class="odd">
+<td>L'écran devient sombre/vide après quelques minutes</td>
+<td>Chute de tension</td>
+<td>soutenir l'alimentation, réduire la luminosité</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s51-7"><h2>51.7 LED adressables et matrices</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Cause</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>La première LED a la mauvaise couleur</td>
+<td>Niveau de données 3,3 V au lieu de 5 V</td>
+<td>Convertisseur de niveau ou sacrifier la première LED ; 300–500 Ω dans la ligne de données ; 1000 µF sur l'alimentation</td>
+</tr>
+<tr class="even">
+<td>Couleurs inversées (vert ↔︎ rouge)</td>
+<td>Ordre des couleurs <code>GRB</code> au lieu de <code>RGB</code></td>
+<td>régler dans la bibliothèque</td>
+</tr>
+<tr class="odd">
+<td>Tout blanc/scintille à forte luminosité</td>
+<td>Bloc d'alimentation trop faible</td>
+<td>Limiter la luminosité ; env. 60 mA par LED en blanc</td>
+</tr>
+<tr class="even">
+<td>La matrice scintille sous Linux</td>
+<td>Un signal critique en temps est interrompu par le système</td>
+<td>Support matériel (PWM/PIO/bibliothèque de pilote), pas de bit-banging pur en Python</td>
+</tr>
+<tr class="odd">
+<td>La matrice montre des lignes inversées</td>
+<td>Ordre de câblage (zigzag)</td>
+<td>Conversion des coordonnées</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s51-8"><h2>51.8 PlatformIO (particularités)</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Interprétation</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Error: Please specify 'upload_port'</code></td>
+<td>plusieurs ports</td>
+<td><code>upload_port</code> in <code>platformio.ini</code></td>
+</tr>
+<tr class="even">
+<td>Les modifications de la bibliothèque n'agissent pas</td>
+<td>Cache</td>
+<td><code>pio run -t clean</code>, supprimer le dossier <code>.pio</code></td>
+</tr>
+<tr class="odd">
+<td><code>Platform not installed</code></td>
+<td>premier démarrage sans réseau</td>
+<td>Connexion réseau, <code>pio pkg update</code></td>
+</tr>
+<tr class="even">
+<td>Mauvaises valeurs de carte</td>
+<td>Variante</td>
+<td><code>pio boards &lt;Name&gt;</code> montre les identifiants</td>
+</tr>
+<tr class="odd">
+<td>Deux bibliothèques de même nom</td>
+<td>Conflit</td>
+<td><code>lib_ignore</code> ou <code>lib_deps</code> sans ambiguïté</td>
+</tr>
+</tbody>
+</table></div>
+</section>

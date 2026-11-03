@@ -1,0 +1,52 @@
+<p>Quand le message ne figure pas dans le lexique, cette démarche aide (le <a class="xr" href="#/kap/47">chapitre 47</a> l'explique en détail) :</p>
+<ol type="1">
+<li><strong>Lire le message à la lettre</strong>, la dernière ligne d'abord.</li>
+<li><strong>Ouvrir le fichier et la ligne</strong> indiqués dans le message.</li>
+<li><strong>Qu'est-ce qui a été modifié en dernier ?</strong> Annuler la dernière modification ou la vérifier isolément.</li>
+<li><strong>Cerner :</strong> lancer le programme dans le terminal, écrire un petit test, mettre des parties en commentaire.</li>
+<li><strong>Vérifier l'environnement :</strong> bon dossier (<code>pwd</code>), bon utilisateur, bon environnement Python, bonne carte, bon port.</li>
+<li><strong>Soupçonner le matériel en dernier :</strong> d'abord le logiciel et les réglages, puis les câbles, puis le composant.</li>
+<li><strong>Documenter la solution :</strong> écrire le message, la cause et la commande dans son propre fichier de notes.</li>
+</ol>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Message typique</th>
+<th>Première vérification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>not found</code></td>
+<td>Nom et chemin corrects ? Installé ?</td>
+</tr>
+<tr class="even">
+<td><code>Permission denied</code></td>
+<td><code>ls -l</code>, propriétaire, <code>chmod</code>, <code>sudo</code></td>
+</tr>
+<tr class="odd">
+<td><code>not declared</code></td>
+<td>Ordre, include, orthographe</td>
+</tr>
+<tr class="even">
+<td><code>IndentationError</code></td>
+<td>Espaces au lieu de tabulations, même profondeur</td>
+</tr>
+<tr class="odd">
+<td><code>No such file</code></td>
+<td>Indiquer le chemin en absolu</td>
+</tr>
+<tr class="even">
+<td><code>Exec format error</code></td>
+<td>Architecture (<code>uname -m</code>)</td>
+</tr>
+<tr class="odd">
+<td>L'écran reste noir</td>
+<td>Adresse, broches, <code>display.display()</code></td>
+</tr>
+<tr class="even">
+<td>Le téléversement échoue</td>
+<td>Port, câble, touche BOOT, bootloader</td>
+</tr>
+</tbody>
+</table></div>

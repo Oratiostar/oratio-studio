@@ -1,0 +1,185 @@
+<p>Ce chapitre est placé à un seul endroit pour ne pas devoir être répété dans chaque chapitre de projet. Ce sont les choses que j'ai réapprises sans cesse dans des projets très différents – Pi, microcontrôleur, Control Center, Steam Deck, Windows. Pour chaque point est indiqué où il est devenu important pour la première fois.</p>
+<section id="s46-1"><h2>46.1 Façon de travailler</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Leçon</th>
+<th>Comment je l'applique</th>
+<th>Apprise dans</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Mesurer au lieu de deviner</strong></td>
+<td>À chaque erreur, d'abord une commande qui affiche quelque chose (<code>lsblk</code>, <code>ls -l</code>, <code>cat</code>, <code>journalctl</code>), et seulement ensuite modifier</td>
+<td><a class="xr" href="#/kap/7">chapitre 7</a>, 10, 47</td>
+</tr>
+<tr class="even">
+<td><strong>Changer une seule chose, puis tester</strong></td>
+<td>Jamais cinq choses à la fois ; sinon je ne sais pas ce qui a aidé</td>
+<td><a class="xr" href="#/kap/10">chapitre 10</a>, 47</td>
+</tr>
+<tr class="odd">
+<td><strong>Lire le message d'erreur à la lettre</strong></td>
+<td>La dernière ligne nomme le type, les lignes au-dessus le chemin. Ne pas résumer, mais recopier</td>
+<td><a class="xr" href="#/kap/47">chapitre 47</a>, 50</td>
+</tr>
+<tr class="even">
+<td><strong>D'abord la fonction de base</strong></td>
+<td>La LED clignote, <code>ping</code> marche, <code>lsblk</code> montre le disque – et seulement ensuite la couche compliquée</td>
+<td><a class="xr" href="#/kap/47">chapitre 47</a></td>
+</tr>
+<tr class="odd">
+<td><strong>Contre-épreuve</strong></td>
+<td>Autre câble, autre appareil, autre carte, autre port</td>
+<td><a class="xr" href="#/kap/18">chapitre 18</a>, 51</td>
+</tr>
+<tr class="even">
+<td><strong>Afficher d'abord les détails</strong></td>
+<td>Quand un bouton reste gris, la vraie raison se trouve souvent derrière « Détails »</td>
+<td><a class="xr" href="#/kap/28/28.6">chapitre 28.6</a></td>
+</tr>
+<tr class="odd">
+<td><strong>D'abord un essai à blanc, puis pour de vrai</strong></td>
+<td>Les outils dangereux ont un mode « afficher seulement » ; l'utiliser d'abord</td>
+<td><a class="xr" href="#/kap/39/39.2">chapitre 39.2</a></td>
+</tr>
+<tr class="even">
+<td><strong>Noter d'abord ce qui est faux</strong></td>
+<td>Ce qui n'a pas aidé est aussi important que la solution ; cela évite de reprendre le même chemin</td>
+<td>dans chaque chapitre de projet</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s46-2"><h2>46.2 Fichiers, droits, chemins</h2><ul>
+<li><strong>Droits :</strong> les fichiers créés avec <code>sudo</code> appartiennent à <code>root</code> ; le programme en tant qu'utilisateur normal n'a pas le droit de les écrire. Vérifier le propriétaire (<code>ls -l</code>), le changer avec <code>chown</code> (<a class="xr" href="#/kap/2">chapitre 2</a>). Conséquence dans le Control Center : la fenêtre tourne sans <code>sudo</code> (<a class="xr" href="#/kap/32/32.5">chapitre 32.5</a>).</li>
+<li><strong>Rendre les chemins absolus :</strong> <code>BASE_DIR = os.path.dirname(os.path.abspath(__file__))</code>. Les chemins relatifs cassent dès que le programme démarre depuis un autre dossier (icône du bureau, démarrage automatique).</li>
+<li><strong>Une copie avant chaque modification :</strong> <code>cp datei datei.bak</code> ; surtout pour <code>cmdline.txt</code>, <code>config.txt</code>, <code>fstab</code>, mais aussi pour tout fichier Python un peu gros.</li>
+<li><strong>Vérifier la syntaxe avant de lancer :</strong> <code>python3 -m py_compile datei.py</code>, <code>bash -n skript.sh</code>, <code>python3 -m json.tool datei.json</code>.</li>
+<li><strong>Fins de ligne Windows</strong> (<code>^M</code>, <code>bad interpreter</code>) : <code>sed -i 's/\r$//' datei</code>.</li>
+<li><strong>Ne jamais mélanger tabulations et espaces</strong> (<code>TabError</code>) : dans l'éditeur, convertir les tabulations en espaces, ou <code>expand -t 4</code> (<a class="xr" href="#/kap/32/32.4">chapitre 32.4</a>).</li>
+</ul>
+</section><section id="s46-3"><h2>46.3 Des réglages qui « disparaissent »</h2><p>La cause la plus fréquente est qu'un réglage ne vaut <strong>que pour cette session</strong> et est écrasé au démarrage par une étape ultérieure :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Cas</th>
+<th>Pourquoi</th>
+<th>Où le réglage doit aller</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>La résolution d'écran disparaît après le redémarrage</td>
+<td><code>wlr-randr</code> n'agit que dans le compositeur en cours ; <code>cmdline.txt</code> agit plus tôt et est écrasé (<a class="xr" href="#/kap/8/8.8">chapitre 8.8</a>)</td>
+<td>Démarrage automatique, Kanshi, Watchdog</td>
+</tr>
+<tr class="even">
+<td>L'échelle disparaît après extinction et rallumage du moniteur</td>
+<td>Le branchement à chaud remet à zéro ; le démarrage automatique ne tourne qu'à la connexion</td>
+<td>Kanshi (événement) ou Watchdog (vérification permanente)</td>
+</tr>
+<tr class="odd">
+<td>Volume 0 après le démarrage</td>
+<td>Le programme démarre en sourdine</td>
+<td>lever une fois la sourdine au démarrage du programme (<a class="xr" href="#/kap/37/37.5">chapitre 37.5</a>)</td>
+</tr>
+<tr class="even">
+<td>Le programme du démarrage automatique ne démarre pas</td>
+<td>Le bureau n'est pas encore prêt</td>
+<td>placer un <code>sleep</code> avant l'appel</td>
+</tr>
+<tr class="odd">
+<td>La modification dans <code>config.txt</code> n'agit pas</td>
+<td>Le fichier n'est lu qu'au démarrage du firmware</td>
+<td>Redémarrage</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s46-4"><h2>46.4 Architecture et plateforme</h2><ul>
+<li><strong>Ne jamais copier des fichiers de programme entre des appareils d'architecture différente.</strong> <code>uname -m</code> : <code>aarch64</code> = Pi (ARM), <code>x86_64</code> = Deck/PC. Les scripts (Python, Bash) ne posent pas de problème, les binaires oui (<code>Exec format error</code>, <a class="xr" href="#/kap/43/43.6">chapitre 43.6</a>.4).</li>
+<li><strong>Une seule détection, tout ce qui est propre à l'appareil derrière :</strong> un dossier pour le Pi et le Deck, <code>plattform.py</code> reconnaît l'appareil (<a class="xr" href="#/kap/43/43.3">chapitre 43.3</a>).</li>
+<li><strong>Les commandes ne sont pas les mêmes partout :</strong> <code>apt</code> (Pi), <code>pacman</code> (SteamOS), <code>winget</code> (Windows) ; <code>lxterminal</code> (Pi) contre <code>konsole</code> (KDE). Toujours demander d'abord <code>command -v</code>.</li>
+<li><strong>Deux familles de fenêtres noires :</strong> Windows (CMD) et Linux (bash) comprennent des commandes différentes (<a class="xr" href="#/kap/25">chapitre 25</a>, 28.3). Avant de taper, demander : dans quel système suis-je ?</li>
+</ul>
+</section><section id="s46-5"><h2>46.5 Structure du logiciel</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Leçon</th>
+<th>Justification</th>
+<th>Apprise dans</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Une pièce cassée ne doit jamais arrêter l'ensemble</td>
+<td>Les onglets, widgets et zones de la Toolbox se chargent dans <code>try/except</code></td>
+<td><a class="xr" href="#/kap/36/36.3">chapitre 36.3</a></td>
+</tr>
+<tr class="even">
+<td>Un fichier par onglet/widget/application</td>
+<td>Supprimer est aussi simple que créer</td>
+<td><a class="xr" href="#/kap/36">chapitre 36</a>, 37</td>
+</tr>
+<tr class="odd">
+<td>Séparer les données et l'affichage</td>
+<td>Contenus en JSON, code seulement pour montrer ; le même JSON alimente l'application et le site web</td>
+<td><a class="xr" href="#/kap/39/39.6">chapitre 39.6</a>, 44</td>
+</tr>
+<tr class="even">
+<td>Rien de figé pour les noms, chemins, modèles</td>
+<td>Lire les réglages depuis JSON (exemple : modèle <code>gemma3:1b</code> au lieu de <code>4b</code> en dur)</td>
+<td><a class="xr" href="#/kap/43/43.4">chapitre 43.4</a>.3</td>
+</tr>
+<tr class="odd">
+<td>Longs travaux dans des threads, progression par signal</td>
+<td>sinon la fenêtre gèle</td>
+<td><a class="xr" href="#/kap/43/43.4">chapitre 43.4</a>.1</td>
+</tr>
+<tr class="even">
+<td>Ne jamais laisser l'exactitude au modèle de langage</td>
+<td>L'horloge, la météo, le calcul relèvent du code</td>
+<td><a class="xr" href="#/kap/30/30.4">chapitre 30.4</a></td>
+</tr>
+<tr class="odd">
+<td>Marge de la disposition ≥ remplissage intérieur de la surface dessinée</td>
+<td>sinon des boutons dépassent de la fenêtre</td>
+<td><a class="xr" href="#/kap/43/43.5">chapitre 43.5</a>.3</td>
+</tr>
+<tr class="even">
+<td>Les animations doivent convenir au matériel</td>
+<td>sur un graphisme faible, mieux vaut désactiver que saccader</td>
+<td><a class="xr" href="#/kap/37/37.7">chapitre 37.7</a></td>
+</tr>
+<tr class="odd">
+<td>Retirer de nouveau les sorties de test (<code>print</code>)</td>
+<td>elles peuvent fortement ralentir le programme</td>
+<td><a class="xr" href="#/kap/34/34.5">chapitre 34.5</a></td>
+</tr>
+<tr class="even">
+<td>Montrer d'abord l'état attendu, puis confirmer</td>
+<td>L'interface paraît rapide et ne saute pas dans tous les sens</td>
+<td><a class="xr" href="#/kap/37/37.6">chapitre 37.6</a></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s46-6"><h2>46.6 Sécurité des données</h2><ol type="1">
+<li><strong>Avant <code>mkfs</code>, <code>parted</code>, <code>fdisk</code>, <code>dd</code> :</strong> exécuter <code>lsblk</code> et reconnaître le disque à sa <strong>taille</strong>, pas à son nom.</li>
+<li><strong>Avant <code>rm -r</code> :</strong> vérifier le chemin avec <code>ls</code>.</li>
+<li><strong>Jamais le disque système comme cible :</strong> les programmes qui peuvent effacer des disques ne le proposent même pas (<a class="xr" href="#/kap/39/39.2">chapitre 39.2</a>).</li>
+<li><strong>Ne jamais brancher l'original et la copie en même temps</strong> sur un ordinateur (mêmes identifiants, <a class="xr" href="#/kap/28/28.12">chapitre 28.12</a>).</li>
+<li><strong>Sauvegarde des réglages :</strong> chaque jour automatiquement (<a class="xr" href="#/kap/36/36.4">chapitre 36.4</a>), plus les profils (<a class="xr" href="#/kap/38/38.13">chapitre 38.13</a>).</li>
+<li><strong>Scripts d'Internet</strong> (<code>curl … | sh</code>) seulement depuis des sites officiels.</li>
+</ol>
+</section><section id="s46-7"><h2>46.7 Matériel et alimentation</h2><ul>
+<li><strong>L'alimentation d'abord :</strong> un bloc d'alimentation trop faible produit des erreurs apparemment aléatoires. <code>vcgencmd get_throttled</code> sur le Pi ; les matrices de LED et les moteurs ont leur propre alimentation.</li>
+<li><strong>Relier la masse (GND) partout.</strong></li>
+<li><strong>Vérifier la tension :</strong> 3,3 V ou 5 V ? Une entrée 3,3 V ne supporte pas 5 V (<a class="xr" href="#/kap/38/38.5">chapitre 38.5</a>, 51).</li>
+<li><strong>Câble de données contre câble de charge :</strong> certains câbles USB n'ont pas de lignes de données. L'appareil n'apparaît alors nulle part (<a class="xr" href="#/kap/28/28.10">chapitre 28.10</a>, 51).</li>
+<li><strong>Ne jamais alimenter servos et moteurs par le Pi.</strong></li>
+</ul>
+</section><section id="s46-8"><h2>46.8 Écrire et transmettre</h2><ul>
+<li><strong>Mises à jour en ZIP avec seulement les fichiers modifiés dans l'arborescence ;</strong> pour une sauvegarde complète, tout fournir.</li>
+<li><strong>Noter quelle était la solution :</strong> c'est précisément pour cela que ce livre existe.</li>
+<li><strong>Dire honnêtement ce qui n'a pas été testé.</strong> Dans cette documentation, pour beaucoup de fonctions, il est indiqué ce qui n'a été vérifié qu'en essai à blanc ou dans un environnement de test et ce qui reste à vérifier sur du vrai matériel (clone de sauvegarde, point d'accès, caméra, audio, cadran).</li>
+</ul>
+</section>

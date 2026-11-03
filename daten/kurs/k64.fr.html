@@ -1,0 +1,108 @@
+<section id="s64-1"><h2>64.1 Pourquoi du courant comme signal ?</h2><p>Dans l'industrie, une valeur mesurée est souvent transmise sous forme de <strong>courant de 4 à 20 mA</strong>. Il y a trois raisons à cela :</p>
+<ul>
+<li>Le courant est partout identique dans un montage en série. <strong>La résistance et la longueur de la ligne ne gênent pas.</strong></li>
+<li><strong>4 mA = point zéro, 20 mA = valeur finale.</strong> Une valeur inférieure à environ 3,6 mA signifie « ligne interrompue » ou « capteur défectueux ». Avec 0–10 V, « 0 V » serait à la fois une valeur de mesure valide et une rupture de ligne.</li>
+<li>Le capteur reçoit son alimentation par la même ligne (<strong>technique à deux fils</strong>).</li>
+</ul>
+</section><section id="s64-2"><h2>64.2 Cas : capteur de pression à sortie courant sur un appareil qui ne mesure que la tension</h2><p>J'avais un capteur de pression à sortie en courant (4–20 mA) et un appareil de mesure de National Instruments, dont l'entrée analogique ne mesure que la tension. La question : comment lire le courant ?</p>
+<p><strong>Solution : la résistance shunt.</strong> Le courant traverse une résistance connue. On mesure la chute de tension : <code>U = I · R</code>.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Courant</th>
+<th>Tension aux bornes de 250 Ω</th>
+<th>Tension aux bornes de 500 Ω</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>4 mA</td>
+<td>1 V</td>
+<td>2 V</td>
+</tr>
+<tr class="even">
+<td>12 mA</td>
+<td>3 V</td>
+<td>6 V</td>
+</tr>
+<tr class="odd">
+<td>20 mA</td>
+<td>5 V</td>
+<td>10 V</td>
+</tr>
+</tbody>
+</table></div>
+<p>Avec 250 Ω, on obtient la plage de tension 1–5 V, avec 500 Ω la plage 2–10 V. Quelle résistance convient dépend de la plage d'entrée de l'appareil de mesure (par exemple 0–5 V ou ±10 V).</p>
+<p><strong>Reconvertir en valeur mesurée</strong> (exemple : capteur de pression 0–10 bar) :</p>
+<pre class="text"><code>Druck [bar] = (U − 1 V) / (5 V − 1 V) · 10 bar        (bei 250 Ω)</code></pre>
+<p>À 3 V : <code>(3 − 1)/4 · 10 = 5 bar</code>.</p>
+<p><strong>Ce qui compte pour le shunt :</strong></p>
+<ul>
+<li><strong>Précision et stabilité en température :</strong> résistance à film métallique de 0,1 % à 1 %. Une tolérance de 5 % fausse chaque valeur mesurée de 5 %.</li>
+<li><strong>Puissance :</strong> <code>P = I² · R = (0,02 A)² · 250 Ω = 0,1 W</code>. Une résistance de 0,25 W suffit.</li>
+<li><strong>Entrée à haute impédance :</strong> l'appareil de mesure doit mesurer avec au moins 1 MΩ, pour ne pas fausser le courant.</li>
+<li><strong>Tension de boucle :</strong> le capteur a besoin d'alimentation (souvent 12 à 30 V). Le shunt est <strong>en série</strong> avec le capteur, pas en parallèle.</li>
+</ul>
+<p><strong>Pourquoi une entrée analogique en tension ne peut-elle pas simplement mesurer un courant ?</strong> Une « Analog Input » d'un appareil de mesure standard (par exemple NI 9215, NI 9205, PCIe-6363) a une résistance interne élevée (1 MΩ ou plus). Un ampèremètre devrait au contraire avoir une résistance interne très faible. Qui branche 4–20 mA directement sur une entrée en tension mesure n'importe quoi ou rien. Il existe des modules de courant dédiés (par exemple NI 9203 ou NI 9227 ; confirmer les types auprès du fabricant).</p>
+<p><strong>Autres voies :</strong></p>
+<ul>
+<li><strong>Transmetteur</strong> tout fait (4–20 mA vers 0–10 V), souvent avec isolation galvanique. Avantage : l'appareil de mesure est protégé contre la surtension.</li>
+<li>Un <strong>microcontrôleur</strong> avec ADC : là aussi, le courant est d'abord converti en tension avec un shunt, et la plage de tension doit rester sous 3,3 V (ESP32) ou 5 V (Nano). Sur l'ESP32, prévoir donc 100 Ω (0,4–2,0 V) et une protection contre la surtension.</li>
+</ul>
+</section><section id="s64-3"><h2>64.3 Niveaux de signal : 3,3 V et 5 V</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Composant</th>
+<th>Niveau logique</th>
+<th>Remarque</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Arduino Nano / Uno</td>
+<td>5 V</td>
+<td><code>HIGH</code> reconnu à partir d'environ 3 V</td>
+</tr>
+<tr class="even">
+<td>ESP32, ESP32-S3, Pico, Raspberry Pi</td>
+<td>3,3 V</td>
+<td>Entrées <strong>non tolérantes au 5 V</strong></td>
+</tr>
+<tr class="odd">
+<td>Beaucoup de modules capteurs</td>
+<td>3,3 V ou 5 V</td>
+<td>Vérifier la fiche technique/l'inscription sur la carte</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Règle de base :</strong> un signal 5 V ne doit <strong>jamais directement</strong> aller sur une entrée 3,3 V. Solutions possibles :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Solution</th>
+<th>Quand</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Diviseur de tension (section 63.1)</td>
+<td>signaux simples et lents dans un sens</td>
+</tr>
+<tr class="even">
+<td>Module convertisseur de niveau (par exemple avec MOSFET BSS138)</td>
+<td>I²C et lignes bidirectionnelles</td>
+</tr>
+<tr class="odd">
+<td>CI convertisseur de niveau (par exemple 74HCT245, TXS0108)</td>
+<td>signaux rapides, plusieurs lignes (matrice de LED, SPI)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Dans l'autre sens (3,3 V vers une entrée 5 V), un signal 3,3 V suffit souvent, parce que le seuil se situe vers 3 V. Mais c'est <strong>à la limite</strong> et pas sûr ; pour la fiabilité, prendre aussi un convertisseur de niveau.</p>
+<p><strong>Valeurs analogiques sur le microcontrôleur :</strong> l'ADC mesure par rapport à la tension de référence (5 V sur le Nano, 3,3 V sur l'ESP32). Sur le Nano, <code>analogRead</code> donne une valeur de 0 à 1023 pour 0 à 5 V ; un ADC 12 bits (ESP32) fournit 0 à 4095. L'ADC de l'ESP32 est <strong>non linéaire</strong> et bruité ; pour la précision, mesurer plusieurs fois et faire la moyenne.</p>
+</section><section id="s64-4"><h2>64.4 Exercices avec solutions</h2><ol type="1">
+<li><strong>Exercice :</strong> un capteur fournit 4–20 mA. Sur le shunt de 250 Ω, je mesure 2,6 V. Combien de mA cela fait-il et combien de pour cent de la plage de mesure ? <strong>Solution :</strong> <code>I = 2,6 V / 250 Ω = 10,4 mA</code>. Pourcentage : <code>(10,4 − 4)/16 = 40 %</code>.</li>
+<li><strong>Exercice :</strong> quelle puissance absorbe un shunt de 100 Ω à 20 mA ? <strong>Solution :</strong> <code>P = (0,02)² · 100 = 0,04 W</code>.</li>
+<li><strong>Exercice :</strong> un signal 4–20 mA doit aller sur un ADC d'ESP32 (0–3,3 V). Quel shunt au maximum ? <strong>Solution :</strong> <code>R ≤ 3,3 V / 0,02 A = 165 Ω</code> ; avec marge de sécurité 100 Ω → 0,4 à 2,0 V.</li>
+</ol>
+</section>

@@ -1,0 +1,143 @@
+<p>Mon premier grand projet ; beaucoup de choses ont commencé avec la forme de l'affichage.</p>
+<section id="s19-1"><h2>19.1 Le matériel</h2><ul>
+<li><strong>Matrice LED RGB Waveshare 64×32</strong> = 2048 LED</li>
+<li>Câble plat <strong>HUB75</strong> (nombreuses lignes pour les couleurs, la sélection de ligne et l'horloge)</li>
+<li>alimentation séparée pour le panneau (beaucoup de courant !)</li>
+<li>Pilotage par : Raspberry Pi 4, ESP32-WROOM-32, ESP32-S3 ou Pico H</li>
+</ul>
+</section><section id="s19-2"><h2>19.2 La bibliothèque rpi-rgb-led-matrix sur le Pi</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">-y</span> git python3-dev python3-pillow python3-pip build-essential</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="bu">cd</span> ~</span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/hzeller/rpi-rgb-led-matrix.git</span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a><span class="bu">cd</span> ~/rpi-rgb-led-matrix</span>
+<span id="cb1-6"><a aria-hidden="true" href="#cb1-6" tabindex="-1"></a><span class="fu">make</span> build-python PYTHON=<span class="va">$(</span><span class="fu">which</span> python3<span class="va">)</span></span>
+<span id="cb1-7"><a aria-hidden="true" href="#cb1-7" tabindex="-1"></a><span class="fu">sudo</span> make install-python PYTHON=<span class="va">$(</span><span class="fu">which</span> python3<span class="va">)</span></span></code></pre></div>
+<p>Tester :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="bu">cd</span> examples-api-use</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="fu">sudo</span> ./demo <span class="at">-D0</span> <span class="at">--led-rows</span><span class="op">=</span>32 <span class="at">--led-cols</span><span class="op">=</span>64</span></code></pre></div>
+<p>Si le panneau n'affiche rien ou scintille :</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="fu">sudo</span> ./demo <span class="at">-D0</span> <span class="at">--led-rows</span><span class="op">=</span>32 <span class="at">--led-cols</span><span class="op">=</span>64 <span class="at">--led-slowdown-gpio</span><span class="op">=</span>4</span></code></pre></div>
+<p>Les options les plus importantes :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Option</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>--led-rows=32</code></td>
+<td>Lignes du panneau</td>
+</tr>
+<tr class="even">
+<td><code>--led-cols=64</code></td>
+<td>Colonnes du panneau</td>
+</tr>
+<tr class="odd">
+<td><code>--led-chain=1</code></td>
+<td>Nombre de panneaux chaînés</td>
+</tr>
+<tr class="even">
+<td><code>--led-slowdown-gpio=4</code></td>
+<td>Ralentir les GPIO (aide avec un Pi rapide et une image qui scintille)</td>
+</tr>
+<tr class="odd">
+<td><code>--led-no-hardware-pulse</code></td>
+<td>Désactiver l'impulsion matérielle (quand le son est actif)</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s19-3"><h2>19.3 Compiler son propre code C++</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="bu">cd</span> ~/Desktop/RGB-Matrix-Px-xx/example/Rasberry-Pi/examples-api-use</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="ex">g++</span> <span class="at">-Wall</span> <span class="at">-O3</span> <span class="at">-I..</span>/include nature.cc <span class="at">-o</span> nature <span class="at">-L..</span>/lib <span class="at">-lrgbmatrix</span> <span class="at">-lrt</span> <span class="at">-lm</span> <span class="at">-lpthread</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">sudo</span> ./nature <span class="at">--led-rows</span><span class="op">=</span>32 <span class="at">--led-cols</span><span class="op">=</span>64 <span class="at">--led-chain</span><span class="op">=</span>1 <span class="at">--led-slowdown-gpio</span><span class="op">=</span>4 <span class="at">--led-no-hardware-pulse</span></span></code></pre></div>
+<p>Décomposé :</p>
+<ul>
+<li><code>g++</code> – le compilateur C++</li>
+<li><code>-O3</code> – optimiser pour la vitesse</li>
+<li><code>-I../include</code> – les fichiers d'en-tête se trouvent ici</li>
+<li><code>nature.cc -o nature</code> – de <code>nature.cc</code> naît le programme <code>nature</code></li>
+<li><code>-L../lib -lrgbmatrix</code> – la bibliothèque à lier</li>
+<li><code>sudo</code> – la matrice a besoin d'un accès direct aux broches</li>
+</ul>
+<p><strong>Erreurs rencontrées :</strong></p>
+<ol type="1">
+<li><code>'cos' was not declared in this scope</code> → il manque <code>#include &lt;cmath&gt;</code> tout en haut.</li>
+<li>Une erreur avec <code>.red</code>, <code>.green</code>, <code>.blue</code> → dans cette version de la bibliothèque ils s'appellent <code>.r</code>, <code>.g</code>, <code>.b</code>. Résolu avec : <code>sed -i 's/\.red/.r/g; s/\.green/.g/g; s/\.blue/.b/g' arcade.cc</code></li>
+<li>Un programme ne démarre pas → lire tout le message d'erreur, c'est le plus souvent une faute de frappe dans une ligne.</li>
+</ol>
+</section><section id="s19-4"><h2>19.4 Mon écran « Oratio »</h2><p>Le projet d'exemple : l'écran affiche d'abord mon nom <strong>en couleurs d'arc-en-ciel sur fond noir</strong>, puis des pages avec la météo, l'heure et la date, puis des effets. Les enseignements :</p>
+<ul>
+<li>Le blanc dans les couleurs rend l'écriture trop claire, utilisez seulement des couleurs vives.</li>
+<li>Une écriture trop épaisse fait coller les lettres, mieux vaut un peu plus fin.</li>
+<li>Scènes d'effets : <code>matrixRain</code>, <code>cyberText</code>, <code>fireworks</code>, <code>scanner</code>, « Oratio Cosmos » avec ciel de feu et particules.</li>
+</ul>
+<p>L'exécution peut être simplifiée par un alias ou un script de démarrage.</p>
+</section><section id="s19-5"><h2>19.5 Pico H et ESP32-S3</h2><ul>
+<li><strong>Raspberry Pi Pico H</strong> sait faire des animations, une horloge à partir d'une valeur fixe, du texte défilant et des images fixes, mais <strong>pas d'Internet ni d'affichage de l'IP</strong>. Il lui faut le <strong>pilote PIO</strong>, donc des fichiers comme <code>hub75.pio</code> et <code>CMakeLists.txt</code>. Sans les fichiers du pilote, on ne peut pas inventer de code fonctionnel. Avec <code>find . -iname "*pico*" -o -iname "*.pio"</code> on les trouve dans le dossier d'exemple.</li>
+<li><strong>L'ESP32-S3 de Waveshare</strong> a un <strong>brochage fixe</strong> pour HUB75, qu'il faut reprendre de la documentation et non de mémoire :</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>HUB75</th>
+<th>GPIO</th>
+<th>HUB75</th>
+<th>GPIO</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>R1</td>
+<td>1</td>
+<td>A</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>G1</td>
+<td>2</td>
+<td>B</td>
+<td>15</td>
+</tr>
+<tr class="odd">
+<td>B1</td>
+<td>3</td>
+<td>C</td>
+<td>16</td>
+</tr>
+<tr class="even">
+<td>R2</td>
+<td>4</td>
+<td>D</td>
+<td>42</td>
+</tr>
+<tr class="odd">
+<td>G2</td>
+<td>5</td>
+<td>E</td>
+<td>46</td>
+</tr>
+<tr class="even">
+<td>B2</td>
+<td>6</td>
+<td>CLK</td>
+<td>41</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td>LAT</td>
+<td>40</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td>OE</td>
+<td>39</td>
+</tr>
+</tbody>
+</table></div>
+<p>Important : ce brochage vaut pour la <strong>carte ESP32-S3</strong>. Mon ESP32-WROOM-32 a d'autres broches. Avec le mauvais tableau, pas d'image.</p>
+</section><section id="s19-6"><h2>19.6 Exemple de calcul : combien de panneaux pour de la 4K ?</h2><p>Un panneau 64×32 a 2048 pixels. Pour 3840 pixels de large : 3840 ÷ 64 = 60 panneaux. Pour 2160 pixels de haut : 2160 ÷ 32 = 67,5, donc 68 rangées. Cela ferait 60 × 68 = <strong>4080 panneaux</strong>, environ 11,5 m × 6,5 m. Un bel exemple de la façon dont un calcul d'ordre de grandeur permet de vérifier la faisabilité.</p>
+</section><section id="s19-7"><h2>19.7 Idées de projets pour le panneau</h2><p>Horloge numérique, texte défilant, station météo, affichage boursier, résultats de football, animation cyberpunk, affichage de photos, petits jeux (Snake, Pong, Tetris), état de machine (par exemple « MACHINE 3 – PANNE – ERREUR CAPTEUR »), affichage domotique.</p>
+</section>

@@ -1,0 +1,393 @@
+<section id="s36-1"><h2>36.1 La décision de fond</h2><p>Le projet B commence par une phrase dont j'ai fait une règle :</p>
+<blockquote>
+<p><strong><code>app_ui.py</code> lance tout. Chaque onglet et chaque appareil a son propre dossier avec son propre fichier <code>.py</code> et peut être supprimé individuellement.</strong></p>
+</blockquote>
+<p>Un nouvel onglet, c'est donc <strong>un fichier plus environ trois lignes</strong> dans <code>app_ui.py</code>. Un onglet dont je ne veux plus disparaît quand je supprime son dossier. Le programme démarre quand même.</p>
+</section><section id="s36-2"><h2>36.2 Le dossier du projet</h2><pre><code>Oratio_Control_Center/
+  app_ui.py          das Programm: startet alles, die Tab-Zeilen stehen oben
+  glass_ui.py        der Glas-Werkzeugkasten (Farben, Schriften, Fenster, Schalter)
+  app_host.py        holt fremde Programme in ein Glasfenster
+  run_app.sh         startet das Programm (mit automatischem Neustart nach Absturz)
+  install.sh         richtet einen neuen Pi ein
+  Oratio_Menu/       Tabs "Home" und "Oratio Menu" (gehören zusammen)
+  Tower/             Tab "Tower" (LED, Lüfter, OLED)
+  Oratio_Toolbox/    Tab "Oratio Toolbox" (Befehle)
+  LED/ Fan/ OLED/ PS5/   die Geräte, jeweils mit eigener Einstellungsdatei (.json)
+  Json/              Apps, Widgets, Hintergrund, Aussehen, Sprache
+  Sprache/           Deutsch, Français, English, Español
+  Handy/             Server und Seite für das Handy
+  Logs/              Fehlerprotokoll
+  Doku/              Glossar</code></pre>
+<p>Important dans cette répartition :</p>
+<ul>
+<li>Un onglet qui <strong>n'appartient pas</strong> au menu (Tower, Toolbox) a son <strong>propre dossier</strong>.</li>
+<li><code>glass_ui.py</code> appartient à tous les onglets et reste toujours en place. Sans ce fichier, rien ne fonctionne.</li>
+<li>Les fichiers que le programme produit lui-même (réglages, historique) se trouvent dans <code>Json/</code>.</li>
+</ul>
+</section><section id="s36-3"><h2>36.3 app_ui.py : charger les onglets sans qu’un dossier manquant gêne</h2><p>La particularité de <code>app_ui.py</code> est qu'<strong>un onglet manquant n'arrête pas le programme</strong> :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">def</span> _tab_laden(modul, klasse):</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a>    <span class="co">"""Eine Tab-Klasse aus ihrem Ordner holen. Ordner gelöscht oder kaputt?</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="co">    Dann gibt es den Tab einfach nicht - der Rest startet trotzdem."""</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">getattr</span>(<span class="bu">__import__</span>(modul, fromlist<span class="op">=</span>[klasse]), klasse)</span>
+<span id="cb1-6"><a aria-hidden="true" href="#cb1-6" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> _ex:</span>
+<span id="cb1-7"><a aria-hidden="true" href="#cb1-7" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Tab </span><span class="sc">{</span>klasse<span class="sc">}</span><span class="ss"> nicht geladen: </span><span class="sc">{</span>_ex<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-8"><a aria-hidden="true" href="#cb1-8" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb1-9"><a aria-hidden="true" href="#cb1-9" tabindex="-1"></a></span>
+<span id="cb1-10"><a aria-hidden="true" href="#cb1-10" tabindex="-1"></a>HomeTab    <span class="op">=</span> _tab_laden(<span class="st">"Oratio_Menu.oratio_menu"</span>, <span class="st">"HomeTab"</span>)</span>
+<span id="cb1-11"><a aria-hidden="true" href="#cb1-11" tabindex="-1"></a>TowerTab   <span class="op">=</span> _tab_laden(<span class="st">"Tower.tower_tab"</span>, <span class="st">"TowerTab"</span>)</span>
+<span id="cb1-12"><a aria-hidden="true" href="#cb1-12" tabindex="-1"></a>MenuTab    <span class="op">=</span> _tab_laden(<span class="st">"Oratio_Menu.oratio_menu"</span>, <span class="st">"MenuTab"</span>)</span>
+<span id="cb1-13"><a aria-hidden="true" href="#cb1-13" tabindex="-1"></a>ToolboxTab <span class="op">=</span> _tab_laden(<span class="st">"Oratio_Toolbox.toolbox_menu"</span>, <span class="st">"ToolboxTab"</span>)</span>
+<span id="cb1-14"><a aria-hidden="true" href="#cb1-14" tabindex="-1"></a>TABS <span class="op">=</span> [(<span class="st">"Home"</span>, HomeTab), (<span class="st">"Oratio Menu"</span>, MenuTab),</span>
+<span id="cb1-15"><a aria-hidden="true" href="#cb1-15" tabindex="-1"></a>        (<span class="st">"Tower"</span>, TowerTab), (<span class="st">"Oratio Toolbox"</span>, ToolboxTab)]</span></code></pre></div>
+<p>Ce qui se cache ici :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Élément</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>__import__(modul, fromlist=[klasse])</code></td>
+<td>charge un module dont le nom existe sous forme de texte</td>
+</tr>
+<tr class="even">
+<td><code>getattr(modul, klasse)</code></td>
+<td>en tire la classe portant ce nom</td>
+</tr>
+<tr class="odd">
+<td><code>try ... except</code></td>
+<td>intercepte toute erreur au chargement</td>
+</tr>
+<tr class="even">
+<td><code>return None</code></td>
+<td>« cet onglet n'existe pas »</td>
+</tr>
+<tr class="odd">
+<td><code>TABS = [...]</code></td>
+<td>l'ordre de la liste est l'ordre dans la barre</td>
+</tr>
+</tbody>
+</table></div>
+<p>Ensuite, la fenêtre principale ne crée plus que les onglets existants :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="cf">for</span> name, klasse <span class="kw">in</span> TABS:</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a>    <span class="cf">if</span> klasse <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb2-4"><a aria-hidden="true" href="#cb2-4" tabindex="-1"></a>    tab <span class="op">=</span> klasse(<span class="va">self</span>.width(), <span class="va">self</span>.height())</span>
+<span id="cb2-5"><a aria-hidden="true" href="#cb2-5" tabindex="-1"></a>    <span class="va">self</span>.tab_widget.addTab(tab, name)</span></code></pre></div>
+<p><strong>Règle pour chaque classe d'onglet :</strong> le constructeur reçoit largeur et hauteur, donc <code>def __init__(self, width, height)</code>.</p>
+<p><strong>Cette idée traverse tout le projet :</strong> une pièce cassée ne doit jamais arrêter l'ensemble. La même astuce (try/except au chargement) se trouve dans les widgets (<a class="xr" href="#/kap/37">chapitre 37</a>) et dans la Toolbox.</p>
+</section><section id="s36-4"><h2>36.4 Démarrage, redémarrage et installation</h2><p><strong><code>run_app.sh</code></strong> lance le programme <strong>sans <code>sudo</code></strong>. C'est la conséquence du projet A (<a class="xr" href="#/kap/32/32.5">chapitre 32.5</a>) : la fenêtre n'a pas besoin de droits système, c'est pourquoi tous les fichiers continuent d'appartenir à l'utilisateur normal. Ventilateur, LED et OLED tournent comme services propres en arrière-plan, qui apportent eux-mêmes leurs droits. Le script a une autre particularité : il redémarre de lui-même après un plantage.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="va">FEHLER</span><span class="op">=</span>0</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="cf">while</span> <span class="fu">true</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a>    <span class="va">START</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s<span class="va">)</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a>    <span class="ex">python3</span> app_ui.py</span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a>    <span class="va">CODE</span><span class="op">=</span><span class="va">$?</span></span>
+<span id="cb1-6"><a aria-hidden="true" href="#cb1-6" tabindex="-1"></a>    <span class="bu">[</span> <span class="st">"</span><span class="va">$CODE</span><span class="st">"</span> <span class="ot">-eq</span> 0 <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">exit</span> 0          <span class="co"># normales Beenden: nichts neu starten</span></span>
+<span id="cb1-7"><a aria-hidden="true" href="#cb1-7" tabindex="-1"></a>    <span class="va">NOW</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s<span class="va">)</span></span>
+<span id="cb1-8"><a aria-hidden="true" href="#cb1-8" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="va">$((NOW</span> <span class="op">-</span> <span class="va">START))</span> <span class="ot">-lt</span> 60 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span> <span class="va">FEHLER</span><span class="op">=</span><span class="va">$((FEHLER</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span><span class="kw">;</span> <span class="cf">else</span> <span class="va">FEHLER</span><span class="op">=</span>1<span class="kw">;</span> <span class="cf">fi</span></span>
+<span id="cb1-9"><a aria-hidden="true" href="#cb1-9" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Absturz (Code </span><span class="va">$CODE</span><span class="st">) - Details in Logs/oratio.log"</span></span>
+<span id="cb1-10"><a aria-hidden="true" href="#cb1-10" tabindex="-1"></a>    <span class="bu">[</span> <span class="st">"</span><span class="va">$FEHLER</span><span class="st">"</span> <span class="ot">-ge</span> 3 <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="kw">{</span> <span class="bu">echo</span> <span class="st">"Zu viele Abstürze - Abbruch."</span><span class="kw">;</span> <span class="bu">exit</span> <span class="st">"</span><span class="va">$CODE</span><span class="st">"</span><span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb1-11"><a aria-hidden="true" href="#cb1-11" tabindex="-1"></a>    <span class="fu">sleep</span> 2</span>
+<span id="cb1-12"><a aria-hidden="true" href="#cb1-12" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>La logique : si le programme se termine avec le code 0, c'était une fermeture normale. Tout autre code est un plantage, un redémarrage suit après deux secondes. S'il plante trois fois en une minute, le script abandonne pour éviter un redémarrage sans fin.</p>
+<p><strong>Journal d'erreurs :</strong> les plantages et messages d'erreur vont dans <code>Logs/oratio.log</code>. À partir de 1 Mo, le fichier devient <code>oratio.log.1</code> et un nouveau commence. En cas de problème, c'est le premier fichier à consulter.</p>
+<p><strong><code>install.sh</code></strong> configure un nouveau Pi d'un seul coup :</p>
+<ol type="1">
+<li>Installer Raspberry Pi OS avec bureau, utilisateur <code>oratio</code>.</li>
+<li>Copier le dossier <strong>entier</strong> de l'ancien Pi (clé USB) vers <code>/home/oratio/</code>. C'est la seule façon d'emporter applications, widgets, réglages et la clé PS5.</li>
+<li><code>cd ~/Oratio_Control_Center</code> et <code>bash install.sh</code>. Ne pas lancer avec <code>sudo</code>, le script le demande lui-même.</li>
+<li>Suivre les questions, redémarrer à la fin.</li>
+</ol>
+<p>Le script peut tourner autant de fois qu'on veut. Il vérifie d'abord s'il se trouve dans le dossier du projet et s'il <strong>ne</strong> tourne <strong>pas</strong> en root. Ensuite il installe les paquets (<code>apt</code>) et copie les pilotes LED vers <code>/usr/local/lib</code>.</p>
+<p><strong>Sans Internet :</strong> les bibliothèques de pilotes Freenove (<code>libfreenove_ws2812_lib.so</code>, <code>libfreenove_pwm_lib.so</code>) se trouvent dans le projet sous <code>LED/Treiber/</code>. Les deux ont besoin de la bibliothèque PIO du Pi (<code>libpio.so.0</code>), normalement présente. On n'a besoin d'Internet que pour la première étape <code>apt</code>, la météo, l'appairage PS5 et les tuiles de mise à jour.</p>
+<p><strong>Vérifier sudo sans mot de passe</strong> (nécessaire pour redémarrer, éteindre et les interrupteurs d'appareils) :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="fu">sudo</span> <span class="at">-k</span></span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="fu">sudo</span> <span class="at">-n</span> true <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> OK <span class="kw">||</span> <span class="bu">echo</span> <span class="st">"Passwort wird verlangt"</span></span></code></pre></div>
+<p>Si « mot de passe demandé » apparaît, exécuter de nouveau <code>bash install.sh</code>.</p>
+<p><strong>Sauvegarde quotidienne des réglages :</strong> au démarrage, le programme copie une fois par jour tous les réglages de <code>Json/</code> vers <code>Json/Backup/&lt;date&gt;/</code>. Les sept derniers jours sont conservés, les plus anciens supprimés. Pour récupérer : quitter le programme, copier les fichiers du dossier daté vers <code>Json/</code>.</p>
+</section><section id="s36-5"><h2>36.5 glass_ui.py : la boîte à outils en verre</h2><p>Tout ce qui est utilisé en commun se trouve dans un fichier d'environ 1700 lignes :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Élément</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>S(v)</code></td>
+<td>convertit une taille avec le <strong>facteur d'échelle</strong> : le même code a le même aspect en 1080p et en 4K</td>
+</tr>
+<tr class="even">
+<td><code>paint_glass(p, rect, ...)</code></td>
+<td>dessine une surface de verre (translucide, bord clair, reflet)</td>
+</tr>
+<tr class="odd">
+<td><code>GlassPanel</code></td>
+<td>une fenêtre à l'aspect verre (cadre, barre de titre, bouton de fermeture)</td>
+</tr>
+<tr class="even">
+<td><code>GlassButton</code>, <code>GlassToggle</code>, <code>GlassMiniButton</code></td>
+<td>boutons, interrupteurs, petits boutons</td>
+</tr>
+<tr class="odd">
+<td><code>GlassTabBar</code>, <code>GlassTabWidget</code></td>
+<td>la barre d'onglets avec des capsules de verre</td>
+</tr>
+<tr class="even">
+<td><code>ui_font(px, weight)</code></td>
+<td>fournit la police de l'interface (Inter)</td>
+</tr>
+<tr class="odd">
+<td><code>set_night_mode</code>, <code>set_accent</code></td>
+<td>mode nuit et couleur d'accent pour <strong>toutes</strong> les fenêtres</td>
+</tr>
+<tr class="even">
+<td><code>load_icon_pixmap</code>, <code>scaled_cached</code></td>
+<td>charge les icônes limitées à 512 pixels au maximum et mémorise les images mises à l'échelle</td>
+</tr>
+<tr class="odd">
+<td><code>daily_backup</code>, <code>setup_logging</code></td>
+<td>sauvegarde quotidienne, journal d'erreurs</td>
+</tr>
+</tbody>
+</table></div>
+<p>Ainsi toutes les fenêtres ont le même aspect, et un changement de l'aspect verre touche tout avec une seule ligne. Dans le projet A, en revanche, chaque tuile était stylée individuellement avec une feuille de style.</p>
+<p><strong>Les quatre modes :</strong> verre ou mat, chacun en normal ou nuit. Une fenêtre ne demande pas elle-même à quoi elle doit ressembler, mais appelle la boîte à outils. C'est pourquoi une nouvelle fenêtre fonctionne immédiatement dans les quatre modes.</p>
+</section><section id="s36-6"><h2>36.6 Où est quoi ? (dans le dossier Oratio_Menu)</h2><p>Le menu était à un moment <strong>un fichier de plus de 10 000 lignes</strong>. Je l'ai découpé par thèmes sans changer le comportement (le code est caractère pour caractère le même, simplement classé autrement). Le plan est aujourd'hui la carte du projet :</p>
+<p><strong>Kern/</strong> – briques de base sans fenêtre</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Fichier</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>abhaengigkeiten.py</code></td>
+<td>éléments facultatifs avec remplacement (barre de fenêtres, réglages de barre par défaut)</td>
+</tr>
+<tr class="even">
+<td><code>konstanten.py</code></td>
+<td>nombres fixes : limites de la grille, tailles de symboles, palette de couleurs, types de fenêtres d'applications</td>
+</tr>
+<tr class="odd">
+<td><code>stil.py</code></td>
+<td>style verre de la fenêtre de contrôle</td>
+</tr>
+<tr class="even">
+<td><code>symbole.py</code></td>
+<td><strong>tous</strong> les symboles dessinés soi-même (<code>draw_..._icon</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>modell.py</code></td>
+<td><code>MenuItem</code> et le calcul de la grille (pages, places libres)</td>
+</tr>
+<tr class="even">
+<td><code>umzug.py</code></td>
+<td>déménagement unique des anciens dossiers et fichiers JSON au démarrage</td>
+</tr>
+<tr class="odd">
+<td><code>programme.py</code></td>
+<td>programmes installés, modes de lancement, installation</td>
+</tr>
+<tr class="even">
+<td><code>system.py</code></td>
+<td>lancer des commandes, activer WLAN/Bluetooth, luminosité, son</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Bausteine/</strong> – composants visibles : <code>kacheln.py</code> (tuile d'application, grille, points de page, image glissée), <code>menueleiste.py</code> (barre de verre en haut), <code>dock.py</code>, <code>kontrollzentrum.py</code> (fenêtre de contrôle).</p>
+<p><strong>Fenster/</strong> – fenêtres de verre : <code>einstellungen.py</code>, <code>verbindungen.py</code> (WLAN, Bluetooth, microphone, énergie), <code>apps.py</code> (ajouter/modifier une application, médiathèque), <code>galerie.py</code> (galerie de widgets), <code>zentrale.py</code> (la liste de tous les réglages).</p>
+<p><strong>Ansicht/</strong> – la vue principale <code>MenuView</code> en plusieurs parties (toutes ensemble forment <strong>une</strong> classe) :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Fichier</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ansicht.py</code></td>
+<td>Structure, taille, dessin, événements</td>
+</tr>
+<tr class="even">
+<td><code>speicher.py</code></td>
+<td>Chargement, enregistrement, profils, sauvegarde</td>
+</tr>
+<tr class="odd">
+<td><code>leiste.py</code></td>
+<td>Barre de menu et fenêtre de menu</td>
+</tr>
+<tr class="even">
+<td><code>fenster.py</code></td>
+<td>Overlay en haut à droite, fenêtre de pages, clic sur les symboles</td>
+</tr>
+<tr class="odd">
+<td><code>design.py</code></td>
+<td>Style, mode nuit, effets, police, arrière-plan, aspect du dock</td>
+</tr>
+<tr class="even">
+<td><code>laufende.py</code></td>
+<td>Barre des fenêtres en cours</td>
+</tr>
+<tr class="odd">
+<td><code>raster.py</code></td>
+<td>Pages, tuiles, mode édition, changement de taille</td>
+</tr>
+<tr class="even">
+<td><code>dock_ops.py</code></td>
+<td>Applications vers le dock et hors du dock</td>
+</tr>
+<tr class="odd">
+<td><code>ziehen.py</code></td>
+<td>Glisser des applications dans la grille</td>
+</tr>
+<tr class="even">
+<td><code>tastatur.py</code></td>
+<td>Commande au clavier et au joystick</td>
+</tr>
+<tr class="odd">
+<td><code>starten.py</code></td>
+<td>Lancer, créer, supprimer des applications et widgets</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Technique de la répartition :</strong> <code>MenuView</code> hérite de plusieurs classes « Mixin », une par fichier (<code>class MenuView(ZiehenMixin, RasterMixin, ...)</code>). Chaque fichier ne contient qu'une partie des méthodes, ensemble elles forment une classe.</p>
+<p><strong>Où va une nouvelle fonction ?</strong> Dans un fichier propre (comme <code>mitteilungen.py</code>, <code>suche.py</code>) ou comme fenêtre propre dans <code>Fenster/</code> – <strong>pas</strong> de nouveau dans un fichier géant.</p>
+<p><strong>L'inconvénient que je note honnêtement :</strong> une nouvelle idée touche souvent plusieurs parties qui doivent s'accorder (vue, fenêtre, recherche, liste des réglages). Avec un fichier unique, on peut tout chercher et remplacer d'un coup ; avec beaucoup de fichiers, il faut savoir lesquels vont ensemble. Les mises à jour du guide indiquent donc toujours <strong>quels fichiers</strong> changent.</p>
+</section><section id="s36-7"><h2>36.7 Les fichiers de réglages (Json/)</h2><p>Chaque appareil et chaque fonction mémorise son état dans un fichier JSON propre, qui naît de lui-même à la première modification :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Fichier</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>oratio_apps.json</code></td>
+<td>toutes les tuiles (applications <strong>et</strong> widgets) avec nom, couleur, taille, page, ligne, colonne</td>
+</tr>
+<tr class="even">
+<td><code>oratio_home.json</code></td>
+<td>les tuiles de l'onglet « Home »</td>
+</tr>
+<tr class="odd">
+<td><code>oratio_menu_settings.json</code></td>
+<td>Aspect, dock, barres, effets</td>
+</tr>
+<tr class="even">
+<td><code>oratio_wetter.json</code></td>
+<td>Lieu pour la météo</td>
+</tr>
+<tr class="odd">
+<td><code>oratio_stimme.json</code></td>
+<td>Commande vocale</td>
+</tr>
+<tr class="even">
+<td><code>oratio_sperre.json</code></td>
+<td>Écran de verrouillage (le code n'est stocké que sous forme de somme de contrôle)</td>
+</tr>
+<tr class="odd">
+<td><code>oratio_fokus.json</code></td>
+<td>Profils de concentration</td>
+</tr>
+<tr class="even">
+<td><code>oratio_nutzung.json</code></td>
+<td>Statistiques d'utilisation</td>
+</tr>
+<tr class="odd">
+<td><code>Json/Profile/&lt;Name&gt;/</code></td>
+<td>Profils de réglages enregistrés</td>
+</tr>
+<tr class="even">
+<td><code>Json/Backup/&lt;Datum&gt;/</code></td>
+<td>Sauvegarde quotidienne</td>
+</tr>
+</tbody>
+</table></div>
+<p>Une entrée de <code>oratio_apps.json</code> ressemble à ceci :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">{</span><span class="dt">"name"</span><span class="fu">:</span> <span class="st">"Icon Werkstatt"</span><span class="fu">,</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a> <span class="dt">"file"</span><span class="fu">:</span> <span class="st">"/home/oratio/Oratio_Control_Center/Oratio_Menu/Apps/Icon_Werkstatt/icon_werkstatt.py"</span><span class="fu">,</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a> <span class="dt">"icon"</span><span class="fu">:</span> <span class="st">"Oratio_Menu/Apps/Icon_Werkstatt/icon.png"</span><span class="fu">,</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a> <span class="dt">"color"</span><span class="fu">:</span> <span class="st">"#000000"</span><span class="fu">,</span> <span class="dt">"terminal"</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span> <span class="dt">"embed"</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a> <span class="dt">"id"</span><span class="fu">:</span> <span class="st">"icon_werkstatt"</span><span class="fu">,</span> <span class="dt">"slot"</span><span class="fu">:</span> <span class="dv">8</span><span class="fu">,</span> <span class="dt">"row"</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span> <span class="dt">"col"</span><span class="fu">:</span> <span class="dv">8</span><span class="fu">}</span></span></code></pre></div>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Clé</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>file</code></td>
+<td>le script qui est lancé</td>
+</tr>
+<tr class="even">
+<td><code>icon</code></td>
+<td>Image de la tuile</td>
+</tr>
+<tr class="odd">
+<td><code>color</code></td>
+<td>Couleur de la tuile</td>
+</tr>
+<tr class="even">
+<td><code>embed</code></td>
+<td><code>true</code> = l'application tourne <strong>dans la fenêtre de verre</strong> du Control Center (« Ouvrir dans l'aspect Oratio »)</td>
+</tr>
+<tr class="odd">
+<td><code>terminal</code></td>
+<td><code>true</code> = lancer dans une fenêtre de terminal</td>
+</tr>
+<tr class="even">
+<td><code>slot</code>, <code>row</code>, <code>col</code></td>
+<td>Place dans la grille</td>
+</tr>
+</tbody>
+</table></div>
+<p>Un widget a, au lieu de <code>file</code>, la clé <code>"widget": "network"</code> ainsi que <code>w</code> et <code>h</code> pour la taille en cases.</p>
+</section><section id="s36-8"><h2>36.8 En bref</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Projet A</th>
+<th>Projet B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Où se trouve un onglet ?</td>
+<td>dans <code>app_ui.py</code> et un fichier</td>
+<td>dans un dossier propre</td>
+</tr>
+<tr class="even">
+<td>Comment entre-t-il dans le programme ?</td>
+<td><code>import</code> et <code>addTab</code></td>
+<td><code>_tab_laden(...)</code> plus une ligne dans <code>TABS</code></td>
+</tr>
+<tr class="odd">
+<td>Que se passe-t-il en cas d'erreur dans l'onglet ?</td>
+<td>le programme ne démarre pas</td>
+<td>l'onglet manque, le reste fonctionne</td>
+</tr>
+<tr class="even">
+<td>Qui fixe l'aspect ?</td>
+<td>feuille de style par bouton</td>
+<td>boîte à outils de verre commune</td>
+</tr>
+<tr class="odd">
+<td>D'où viennent les tuiles ?</td>
+<td>une liste JSON</td>
+<td>une liste JSON avec tailles, pages, widgets</td>
+</tr>
+</tbody>
+</table></div>
+<p>La comparaison détaillée figure au <a class="xr" href="#/kap/40">chapitre 40</a>.</p>
+</section>

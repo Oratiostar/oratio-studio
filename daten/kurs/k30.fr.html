@@ -1,0 +1,199 @@
+<p>Ce chapitre résume le fonctionnement de principe de la commande vocale et ce que les projets (<a class="xr" href="#/kap/39/39.3">chapitre 39.3</a> sur le Pi, 43.6 sur le Steam Deck) en ont fait. Qui a compris quelles sont les parties et où elles peuvent échouer peut circonscrire lui-même les erreurs.</p>
+<section id="s30-1"><h2>30.1 La chaîne</h2><pre class="text"><code>Mikrofon → Aufnahme → Spracherkennung → Text → Befehl oder KI → Antworttext → Sprachausgabe → Lautsprecher</code></pre>
+<p>Chaque maillon est un programme à part et peut être testé séparément. Le dépannage consiste à vérifier chaque maillon de gauche à droite, jusqu'à ce qu'il se rompe.</p>
+</section><section id="s30-2"><h2>30.2 Les composants</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Tâche</th>
+<th>Programme</th>
+<th>Caractéristique</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Enregistrer</td>
+<td><code>arecord</code> (ALSA), <code>parecord</code> (PulseAudio), <code>pw-record</code> (PipeWire)</td>
+<td>fournit un fichier WAV ou un flux de données</td>
+</tr>
+<tr class="even">
+<td>Reconnaître, rapide (commandes)</td>
+<td><strong>Vosk</strong></td>
+<td>petit, hors ligne, ne comprend que des phrases simples</td>
+</tr>
+<tr class="odd">
+<td>Reconnaître, plus précis (dictée)</td>
+<td><strong>faster-whisper</strong> (modèles tiny, base, small, medium)</td>
+<td>plus grand = meilleur et plus lent</td>
+</tr>
+<tr class="even">
+<td>Répondre, savoir</td>
+<td><strong>Ollama</strong> avec <strong>Gemma</strong> (<code>gemma3:1b</code> ou <code>gemma3:4b</code>)</td>
+<td>tourne en local, demande de la RAM</td>
+</tr>
+<tr class="odd">
+<td>Parler</td>
+<td><strong>Piper</strong> (voix « Thorsten », de_DE)</td>
+<td>voix neuronale, hors ligne ; qualité medium ou high</td>
+</tr>
+<tr class="even">
+<td>Solution de secours pour parler</td>
+<td><code>espeak-ng</code></td>
+<td>sonne robotique, fonctionne presque partout</td>
+</tr>
+<tr class="odd">
+<td>Lire</td>
+<td><code>aplay</code>, <code>paplay</code>, <code>pw-play</code></td>
+<td>lisent le fichier WAV produit</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Wake-Word</strong> (mot de réveil) : un programme qui écoute en permanence et ne réagit qu'à <strong>un seul</strong> nom. Dans le Control Center, cela est assuré par la reconnaissance vocale (Vosk), qui en fonctionnement continu ne surveille que le nom réglé ; tout le reste est rejeté (<a class="xr" href="#/kap/39/39.3">chapitre 39.3</a>, où l'on explique aussi pourquoi un nom personnel pose problème).</p>
+</section><section id="s30-3"><h2>30.3 D’abord vérifier que le micro entend vraiment</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">arecord</span> <span class="at">-l</span>                                   <span class="co"># Aufnahmegeräte (ALSA)</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="ex">pactl</span> list short sources                     <span class="co"># Aufnahmequellen (PulseAudio/PipeWire)</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="ex">pactl</span> get-default-source                     <span class="co"># Standardquelle</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="ex">parecord</span> <span class="at">--channels</span><span class="op">=</span>1 <span class="at">--rate</span><span class="op">=</span>16000 test.wav  <span class="co"># aufnehmen (Strg+C beendet)</span></span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a><span class="ex">paplay</span> test.wav                              <span class="co"># abspielen</span></span></code></pre></div>
+<p>Si l'enregistrement est faible ou vide : choisir le bon périphérique d'entrée dans les réglages audio et vérifier le volume. Si le microphone est coupé, la commande vocale le signale elle-même.</p>
+</section><section id="s30-4"><h2>30.4 Règle : tout ce qui doit être exact n’appartient pas au modèle de langage</h2><p>Un modèle de langage <strong>devine des probabilités</strong>, il ne lit pas une horloge. Interrogé sur l'heure, Gemma 1B a inventé « 17:22 ». C'est pourquoi le programme vérifie, avant chaque requête, par des règles s'il s'agit d'une commande connue :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>La réponse vient de</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>« Quelle heure est-il ? »</td>
+<td>horloge système</td>
+</tr>
+<tr class="even">
+<td>« Quel jour sommes-nous ? »</td>
+<td>date système</td>
+</tr>
+<tr class="odd">
+<td>« Quel temps fera-t-il demain ? »</td>
+<td>service météo (Open-Meteo, gratuit, sans clé)</td>
+</tr>
+<tr class="even">
+<td>« Plus fort », « Ouvre le calendrier »</td>
+<td>liste de commandes locale</td>
+</tr>
+<tr class="odd">
+<td>tout le reste</td>
+<td>Gemma via Ollama</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s30-5"><h2>30.5 Qualité de reconnaissance – un bilan honnête</h2><p>Le microphone fonctionnait, mais la reconnaissance était mauvaise : des phrases devenaient des mots étrangers. Ce n'est pas un défaut du programme, mais la <strong>taille des modèles</strong>.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Modèle Whisper</th>
+<th>Qualité en allemand</th>
+<th>Téléchargement</th>
+<th>Rapidité</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>tiny</td>
+<td>mauvaise</td>
+<td>ca. 75 MB</td>
+<td>très rapide</td>
+</tr>
+<tr class="even">
+<td>base</td>
+<td>moyenne</td>
+<td>ca. 150 MB</td>
+<td>rapide</td>
+</tr>
+<tr class="odd">
+<td>small</td>
+<td>utilisable</td>
+<td>ca. 500 MB</td>
+<td>bonne</td>
+</tr>
+<tr class="even">
+<td>medium</td>
+<td>bonne</td>
+<td>ca. 1,5 GB</td>
+<td>nettement plus lent</td>
+</tr>
+</tbody>
+</table></div>
+<p>Les grands assistants cloud tournent dans des centres de calcul avec d'énormes modèles. Hors ligne sur un petit appareil avec un modèle d'un milliard de paramètres, Gemma comprend simplement moins. Pour être mieux compris, on prend un modèle de reconnaissance plus grand, on parle plus près du microphone et on réduit le bruit de fond.</p>
+</section><section id="s30-6"><h2>30.6 Erreurs typiques et comment les cerner</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Maillon</th>
+<th>Vérifier</th>
+<th>Interprétation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pas d'enregistrement</td>
+<td>Microphone</td>
+<td><code>arecord -l</code>, <code>pactl list short sources</code></td>
+<td>aucun appareil = câble, droits, mauvaise source</td>
+</tr>
+<tr class="even">
+<td>Enregistrement vide ou faible</td>
+<td>Microphone</td>
+<td><code>parecord test.wav</code> + <code>paplay test.wav</code></td>
+<td>volume ou source incorrects</td>
+</tr>
+<tr class="odd">
+<td>Le texte est faux</td>
+<td>Reconnaissance</td>
+<td>même enregistrement avec un modèle plus grand</td>
+<td>Modèle trop petit</td>
+</tr>
+<tr class="even">
+<td>Piper ne dit rien</td>
+<td>Parole</td>
+<td>lire le journal (<code>cat ~/oratio_sprechen.log</code>)</td>
+<td>s'il y a « Exec format error » : le fichier du programme est pour la mauvaise architecture de processeur (Pi : <code>aarch64</code>, Deck : <code>x86_64</code>), voir <a class="xr" href="#/kap/43/43.6">chapitre 43.6</a>.4</td>
+</tr>
+<tr class="odd">
+<td>La voix bégaie ou s'interrompt</td>
+<td>Lecture</td>
+<td>produire d'abord le WAV complet, puis <code>paplay</code></td>
+<td>le streaming direct dans le lecteur est peu fiable</td>
+</tr>
+<tr class="even">
+<td>« Le modèle gemma3:4b n'est pas installé »</td>
+<td>KI</td>
+<td><code>ollama list</code></td>
+<td>le programme contient un autre nom de modèle que celui installé ; comparer les noms</td>
+</tr>
+<tr class="odd">
+<td>L'IA ne répond pas</td>
+<td>KI</td>
+<td><code>curl http://127.0.0.1:11434/api/tags</code></td>
+<td>pas de réponse = le serveur ne tourne pas (<code>ollama serve</code>)</td>
+</tr>
+<tr class="even">
+<td>La question sur l'heure est inventée</td>
+<td>Logique des commandes</td>
+<td>règles avant le modèle</td>
+<td>voir 30.4</td>
+</tr>
+<tr class="odd">
+<td>Le nom personnel n'est pas reconnu</td>
+<td>Wake-Word</td>
+<td>affichage du mot auquel il réagit</td>
+<td>Le nom n'est pas un vrai mot allemand ; prendre des mots à la sonorité proche ou choisir un mot clair</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s30-7"><h2>30.7 Leçons</h2><ol type="1">
+<li>Tester chaque maillon séparément, puis les assembler.</li>
+<li>Ne jamais copier des fichiers de programme finis (Piper, Ollama) entre appareils d'architecture différente.</li>
+<li>Exécuter les longues installations dans un thread d'arrière-plan, signaler la progression par signal.</li>
+<li>Ne jamais laisser au modèle de langage ce qui doit être exact (heure, météo, calcul).</li>
+<li>Les petits modèles sont rapides mais limités ; la qualité s'achète avec la taille et le temps.</li>
+</ol>
+</section>

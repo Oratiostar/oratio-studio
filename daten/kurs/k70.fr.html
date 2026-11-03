@@ -1,0 +1,108 @@
+<section id="s70-1"><h2>70.1 La routine de contrôle pour chaque panne matérielle</h2><p>Toujours dans cet ordre, de l'extérieur vers l'intérieur :</p>
+<ol type="1">
+<li><strong>Vue :</strong> y a-t-il des endroits brûlés, des fissures, des ponts de soudure, des connecteurs lâches ?</li>
+<li><strong>Odeur et chaleur :</strong> quelque chose chauffe-t-il ? Débrancher aussitôt.</li>
+<li><strong>Alimentation :</strong> mesurer la tension à l'entrée du montage, puis à chaque composant (VCC contre GND).</li>
+<li><strong>Masse :</strong> continuité entre tous les points GND.</li>
+<li><strong>Signaux :</strong> niveaux au multimètre (statique) ou à l'oscilloscope/analyseur logique (dynamique).</li>
+<li><strong>Contre-épreuve :</strong> autre câble, autre module, autre broche, programme d'exemple.</li>
+<li><strong>Noter :</strong> consigner les valeurs mesurées (<a class="xr" href="#/kap/47">chapitre 47</a>).</li>
+</ol>
+</section><section id="s70-2"><h2>70.2 Les formules de calcul en un coup d’œil</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Tâche</th>
+<th>Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Résistance série de LED</td>
+<td><code>R = (UB − UF) / IF</code></td>
+</tr>
+<tr class="even">
+<td>Diviseur de tension</td>
+<td><code>Uaus = Uein · R2 / (R1 + R2)</code></td>
+</tr>
+<tr class="odd">
+<td>Résistance parallèle</td>
+<td><code>R = R1 · R2 / (R1 + R2)</code></td>
+</tr>
+<tr class="even">
+<td>Shunt 4–20 mA</td>
+<td><code>U = I · R</code> (250 Ω: 1–5 V)</td>
+</tr>
+<tr class="odd">
+<td>Résistance série de diode Zener</td>
+<td><code>RV = (Uein − UZ) / (IZ + IL)</code></td>
+</tr>
+<tr class="even">
+<td>Autonomie de batterie</td>
+<td><code>t = Kapazität / Strom</code></td>
+</tr>
+<tr class="odd">
+<td>Puissance</td>
+<td><code>P = U · I = U²/R = I²·R</code></td>
+</tr>
+<tr class="even">
+<td>Courant de charge (0,5 C)</td>
+<td><code>I = 0,5 · Kapazität</code></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s70-3"><h2>70.3 Où l’électronique est apparue dans mes projets</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Projet</th>
+<th>Thème d'électronique</th>
+<th>Chapitre</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Matrice de LED (HUB75)</td>
+<td>alimentation 5 V avec plusieurs ampères, niveau 3,3 V → 5 V, scintillement</td>
+<td>19, 51.7</td>
+</tr>
+<tr class="even">
+<td>OLED avec Arduino Nano</td>
+<td>I²C, adresse, niveau</td>
+<td>16, 51.6</td>
+</tr>
+<tr class="odd">
+<td>Oratio Watch</td>
+<td>Batterie, TP4056, ESP32, écran, horloge temps réel</td>
+<td>23, 65.2</td>
+</tr>
+<tr class="even">
+<td>Cadran ESP32-S3</td>
+<td>Batterie, AMOLED, alimentation</td>
+<td>21</td>
+</tr>
+<tr class="odd">
+<td>Tour Freenove</td>
+<td>Ventilateur, LED, OLED, 5 V / 5 A</td>
+<td>11, 65.1</td>
+</tr>
+<tr class="even">
+<td>Control Center (côté matériel)</td>
+<td>GPIO, I²C, commande du ventilateur</td>
+<td>12, 49.6</td>
+</tr>
+<tr class="odd">
+<td>Travail</td>
+<td>4–20 mA, diode Zener, relais de sécurité, moteurs, contrôle de composants</td>
+<td>64, 63, 68, 67, 66</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s70-4"><h2>70.4 Mes règles</h2><ol type="1">
+<li><strong>D'abord mesurer, ensuite deviner.</strong> Une valeur mesurée vaut mieux qu'une supposition.</li>
+<li><strong>D'abord identifier, ensuite contrôler.</strong> Mauvais composant, mauvais contrôle.</li>
+<li><strong>La tension secteur et les gros condensateurs ne sont pas un terrain de jeu.</strong> Couper, attendre, mesurer.</li>
+<li><strong>Les fonctions de sécurité ne sont jamais shuntées.</strong></li>
+<li><strong>La fiche technique fait foi, pas le souvenir.</strong></li>
+<li><strong>Le lithium jamais sans chargeur ni protection.</strong></li>
+<li><strong>Une modification, un test.</strong></li>
+</ol>
+</section>

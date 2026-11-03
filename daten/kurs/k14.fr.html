@@ -1,0 +1,98 @@
+<p>Ce chapitre résume ce qui est dispersé dans les parties précédentes et rassemble les questions restées ouvertes.</p>
+<section id="s14-1"><h2>14.1 Alimentation et stabilité</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Signes</th>
+<th>Vérifier</th>
+<th>Mesure</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Symbole d'éclair, saccades, redémarrages</td>
+<td><code>vcgencmd get_throttled</code></td>
+<td>Alimentation officielle, câble court et de bonne qualité</td>
+</tr>
+<tr class="even">
+<td>Le Pi 5 affiche « USB boot requires high current »</td>
+<td>Message au démarrage</td>
+<td>Alimentation 5 V / 5 A</td>
+</tr>
+<tr class="odd">
+<td>SSD non détecté sur le Pi</td>
+<td><code>lsblk</code>, <code>dmesg</code></td>
+<td>Câble, alimentation, réglages PCIe</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s14-2"><h2>14.2 Écrire des images</h2><p>Ordre éprouvé :</p>
+<ol type="1">
+<li>Se procurer un programme d'écriture : sur le Pi <code>sudo apt install rpi-imager</code>, sur le PC Raspberry Pi Imager ou Etcher.</li>
+<li>Choisir l'image adaptée (tenir compte de l'appareil, <a class="xr" href="#/kap/26/26.2">chapitre 26.2</a>).</li>
+<li>Choisir le support et <strong>vérifier précisément qu'il s'agit du bon lecteur</strong>.</li>
+<li>Écrire, puis ouvrir la partition de démarrage et la contrôler.</li>
+</ol>
+<p>Avec <code>dd</code> dans le terminal : une cible mal choisie (<code>of=</code>) écrase le mauvais lecteur. Regardez donc d'abord <code>lsblk</code>.</p>
+</section><section id="s14-3"><h2>14.3 Plusieurs systèmes</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Variante</th>
+<th>Avantage</th>
+<th>Inconvénient</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Un système par support (SD, NVMe, USB), choix avec la barre d'espace au démarrage</td>
+<td>simple, bien séparé</td>
+<td>clavier nécessaire sur le Pi</td>
+</tr>
+<tr class="even">
+<td>Ordre fixe via <code>raspi-config</code></td>
+<td>aucune saisie nécessaire</td>
+<td>on n'accède à l'autre système qu'à la main</td>
+</tr>
+<tr class="odd">
+<td>Plusieurs systèmes sur un SSD (plusieurs partitions)</td>
+<td>un seul lecteur</td>
+<td>plus de travail, Possibles par exemple : Raspberry Pi OS, Batocera, LibreELEC, RetroPie, DietPi, Ubuntu</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s14-4"><h2>14.4 SSH depuis l’iPhone</h2><p>Par SSH (par exemple depuis le téléphone), on travaille confortablement dans le terminal. C'est pratique pour le terminal, mais cela n'aide pas pour le menu de démarrage du bootloader : là, un clavier doit être branché <strong>directement sur le Pi</strong>.</p>
+</section><section id="s14-5"><h2>14.5 Mises à jour et entretien</h2><p>Un Raspberry Pi comporte trois éléments distincts qui se mettent à jour : le <strong>système d'exploitation</strong>, le <strong>firmware du bootloader</strong> (dans l'EEPROM) et des programmes comme l'<strong>Imager</strong> sur le PC.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sudo</span> apt update                    <span class="co"># Paketliste holen</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">sudo</span> apt full-upgrade <span class="at">-y</span>           <span class="co"># System und Kernel aktualisieren</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">sudo</span> apt autoremove <span class="at">--dry-run</span>      <span class="co"># erst ansehen, was entfernt würde</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="fu">sudo</span> rpi-eeprom-update             <span class="co"># zeigt, ob neuere Bootloader-Firmware bereitsteht</span></span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a><span class="fu">sudo</span> rpi-eeprom-update <span class="at">-a</span>          <span class="co"># einspielen (danach Neustart)</span></span></code></pre></div>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Message / question</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>« Une nouvelle mise à jour est disponible » dans <strong>Raspberry Pi Imager</strong></td>
+<td>concerne l'Imager sur le PC, pas le système sur le Pi. Mettre à jour l'Imager via sa fonction de mise à jour ou le site officiel</td>
+</tr>
+<tr class="even">
+<td>Après une mise à jour du noyau, quelque chose se comporte autrement</td>
+<td>redémarrage nécessaire ; un noyau en cours d'exécution n'est pas remplacé</td>
+</tr>
+<tr class="odd">
+<td>Après la mise à jour, un réglage a disparu</td>
+<td>vérifier <code>config.txt</code>/<code>cmdline.txt</code> (<a class="xr" href="#/kap/8">chapitre 8</a>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Avant les grosses mises à jour</strong>, faire une sauvegarde (<a class="xr" href="#/kap/9">chapitre 9</a>). Si vous utilisez le Control Center, sauvegardez aussi le dossier <code>Json/</code> (il contient tous les réglages).</p>
+</section><section id="s14-6"><h2>14.6 Ordre et restauration</h2><ul>
+<li><strong>Un dossier par projet</strong> (par exemple <code>~/Oratio_Control_Center</code>, <code>~/arduino_projekte/oled_uhr</code>). Cela évite les recherches et les confusions.</li>
+<li><strong>Avant chaque modification importante</strong>, une copie du dossier ou un fichier d'archive : <code>tar -czf ~/Sicherung_$(date +%F).tar.gz -C ~ Projektordner</code>.</li>
+<li><strong>Tester la restauration,</strong> pas seulement sauvegarder : extraire l'archive dans un autre dossier et vérifier que le programme démarre.</li>
+<li><strong>Git</strong> conserve chaque version et permet de revenir en arrière (<a class="xr" href="#/kap/3/3.3">chapitre 3.3</a>).</li>
+</ul>
+</section>

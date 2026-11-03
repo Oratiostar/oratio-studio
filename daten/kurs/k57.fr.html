@@ -1,0 +1,102 @@
+<section id="s57-1"><h2>57.1 Batocera</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Message / symptôme</th>
+<th>Signification</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Device-tree file 'bcm2712-rpi-5-b.dtb' not found</code></td>
+<td>mauvaise image (Pi 4 au lieu de Pi 5)</td>
+<td>écrire la bonne image (24.3)</td>
+</tr>
+<tr class="even">
+<td>Seuls <code>config.txt</code>, <code>cmdline.txt</code> visibles, pas de ROM</td>
+<td>seule la partition de démarrage a été ouverte</td>
+<td>Ouvrir la partition <strong>SHARE</strong> (24.5)</td>
+</tr>
+<tr class="odd">
+<td>En copiant les jeux : <code>Keine Berechtigung</code></td>
+<td>Droits d'écriture de la partition</td>
+<td><code>sudo chmod -R 777 /media/oratio/SHARE</code> (24.6)</td>
+</tr>
+<tr class="even">
+<td>Deux partitions <code>SHARE</code> et <code>SHARE1</code></td>
+<td>deux disques Batocera branchés en même temps</td>
+<td>exécuter la commande pour le bon disque</td>
+</tr>
+<tr class="odd">
+<td><code>EEPROM updates directory ... not found</code></td>
+<td>Batocera peut lire la configuration de démarrage, mais pas la mettre à jour</td>
+<td>Faire la modification sous Raspberry Pi OS (24.7)</td>
+</tr>
+<tr class="even">
+<td><code>sudo raspi-config</code> ne marche pas (<code>root@BATOCERA</code>)</td>
+<td>on est dans Batocera, pas dans Raspberry Pi OS</td>
+<td>démarrer un autre système</td>
+</tr>
+<tr class="odd">
+<td>Image tournée de 90 degrés sur le Steam Deck</td>
+<td>Orientation du jeu/système</td>
+<td>Changer la rotation d'affichage dans le jeu ou dans les réglages</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s57-2"><h2>57.2 Steam Deck et double démarrage</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Cause</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Après l'installation de Windows, SteamOS ne démarre pas</td>
+<td>Windows a écrasé le bootloader</td>
+<td>Gestionnaire de démarrage comme rEFInd ou menu de démarrage par la combinaison de touches, au pire réinstaller SteamOS (<a class="xr" href="#/kap/27">chapitre 27</a>)</td>
+</tr>
+<tr class="even">
+<td>Invite <code>grub&gt;</code></td>
+<td>GRUB ne trouve pas sa configuration</td>
+<td>essayer <code>exit</code>, sinon réparer avec une clé de démarrage</td>
+</tr>
+<tr class="odd">
+<td>SteamOS ne démarre plus après la mise à jour Windows 24H2</td>
+<td>Modification du bootloader/des partitions</td>
+<td>rester sur 23H2, sauvegarder la partition EFI</td>
+</tr>
+<tr class="even">
+<td><code>Free space before</code> prête à confusion</td>
+<td>Place avant (à gauche de) la partition</td>
+<td>Déplacer la partition vers la droite ou réduire le bon côté</td>
+</tr>
+<tr class="odd">
+<td>Un programme ne s'installe pas sous SteamOS</td>
+<td>SteamOS est protégé en écriture</td>
+<td>Utiliser Flatpak ou <code>pacman</code> en mode développeur, en sachant que les mises à jour système peuvent le réinitialiser</td>
+</tr>
+<tr class="even">
+<td>Le Deck lit tout à voix haute</td>
+<td>Lecteur d'écran actif</td>
+<td>Désactiver l'accessibilité dans les réglages</td>
+</tr>
+<tr class="odd">
+<td>Le jeu PS2 ne démarre pas</td>
+<td>BIOS dans le mauvais dossier</td>
+<td><code>~/retrodeck/bios/</code> et le sous-dossier pour PS2 (<a class="xr" href="#/kap/27/27.1">chapitre 27.1</a>)</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s57-3"><h2>57.3 Windows et PowerShell</h2><h3 id="cannot-bind-argument-to-parameter-text-because-it-is-an-empty-string"><code>Cannot bind argument to parameter 'Text' because it is an empty string.</code></h3>
+<p>Un cmdlet comme <code>Write-Host</code> ou <code>Write-Progress</code> a reçu un <strong>texte vide</strong> pour un paramètre obligatoire. La variable est vide ou <code>$null</code>. Vérifier (<code>if ($text) { ... }</code>) ou définir une valeur par défaut (<code>$text = "-"</code>).</p>
+<h3 id="die-datei-kann-nicht-geladen-werden-da-die-ausführung-von-skripts-auf-diesem-system-deaktiviert-ist"><code>Die Datei kann nicht geladen werden, da die Ausführung von Skripts auf diesem System deaktiviert ist.</code></h3>
+<p>La stratégie d'exécution de PowerShell bloque les scripts. L'assouplir seulement pour la session en cours :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">Set-ExecutionPolicy</span> <span class="op">-</span>Scope <span class="kw">Process</span> <span class="op">-</span>ExecutionPolicy Bypass</span></code></pre></div>
+<h3 id="-ist-weder-als-cmdlet-funktion-skriptdatei-noch-als-ausführbares-programm-erkannt"><code>... ist weder als Cmdlet, Funktion, Skriptdatei noch als ausführbares Programm erkannt</code></h3>
+<p>La commande n'existe pas sous Windows (par exemple une commande Linux). La correspondance se trouve au <a class="xr" href="#/kap/25">chapitre 25</a>.</p>
+<h3 id="skript-findet-dateien-mit-sonderzeichen-nicht">Le script ne trouve pas les fichiers avec caractères spéciaux</h3>
+<p>Utiliser <code>-LiteralPath</code> au lieu de <code>-Path</code>, pour que des caractères comme <code>[</code> et <code>]</code> ne soient pas lus comme un motif.</p>
+</section>

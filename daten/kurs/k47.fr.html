@@ -1,0 +1,351 @@
+<section id="s47-1"><h2>47.1 L’attitude de base</h2><p>Une erreur est une déclaration du système : « Je ne peux pas faire X, parce que Y. » La tâche consiste à trouver le Y. Pour cela, il y a toujours le même ordre :</p>
+<ol type="1">
+<li><strong>Décrire précisément le symptôme.</strong> Que devait-il se passer ? Que se passe-t-il à la place ? Noter le message d'erreur à la lettre, ne pas le résumer.</li>
+<li><strong>Déterminer la couche.</strong> Où l'erreur peut-elle se situer : alimentation, câble, matériel, pilote, système d'exploitation, programme, réglage ?</li>
+<li><strong>Regarder avec une commande au lieu de deviner.</strong> Chaque soupçon peut se vérifier avec une commande d'affichage (partie 47.3).</li>
+<li><strong>Cerner en coupant en deux.</strong> La chaîne fonctionne-t-elle jusqu'au milieu ? Alors l'erreur est dans la seconde moitié ; sinon, dans la première.</li>
+<li><strong>Changer une seule chose.</strong> Puis tester. Puis seulement la suivante.</li>
+<li><strong>Contre-épreuve.</strong> Autre câble, autre appareil, autre port, autre carte.</li>
+<li><strong>Noter.</strong> Symptôme, cause, solution, et aussi ce qui <strong>n'a pas</strong> aidé.</li>
+</ol>
+</section><section id="s47-2"><h2>47.2 Les dix questions</h2><p>Quand rien ne vient à l'esprit, on répond à ces questions dans l'ordre :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Question</th>
+<th>Comment vérifier</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Cela a-t-il <strong>déjà jamais</strong> fonctionné ?</td>
+<td>Si oui : qu'est-ce qui a changé depuis (mise à jour, nouveau câble, nouveau fichier) ?</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><strong>Est-ce allumé</strong> et alimenté ?</td>
+<td>LED, <code>vcgencmd get_throttled</code>, bloc d'alimentation, câble</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Le système <strong>voit-il</strong> l'appareil ?</td>
+<td><code>lsblk</code>, <code>lsusb</code>, <code>ls /dev/tty*</code>, <code>i2cdetect -y 1</code>, <code>dmesg | tail</code></td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Le <strong>chemin</strong> est-il correct ?</td>
+<td><code>pwd</code>, <code>ls</code>, <code>ls -l</code></td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Les <strong>droits</strong> sont-ils corrects ?</td>
+<td><code>ls -l</code>, <code>id</code>, <code>groups</code></td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Le <strong>programme est-il installé</strong> ?</td>
+<td><code>which name</code>, <code>command -v name</code>, <code>name --version</code></td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Un <strong>ancien processus</strong> tourne-t-il encore ?</td>
+<td><code>ps aux | grep name</code>, <code>pkill name</code></td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Le fichier a-t-il été <strong>enregistré</strong> et le programme <strong>redémarré</strong> ?</td>
+<td>Date du fichier : <code>ls -l</code> ; redémarrer le programme</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Que dit le <strong>journal</strong> ?</td>
+<td><code>journalctl -b -p err</code>, <code>Logs/oratio.log</code>, <code>dmesg</code></td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Cela marche-t-il <strong>sur un autre</strong> appareil/câble ?</td>
+<td>Contre-épreuve</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s47-3"><h2>47.3 Commandes d’affichage : l’outil de mesure</h2><p>Toutes ces commandes <strong>ne modifient rien</strong> et sont sans danger.</p>
+<h3 id="system-und-hardware">Système et matériel</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Commande</th>
+<th>Comment lire</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Quel appareil, quel système ?</td>
+<td><code>cat /proc/device-tree/model</code> (Pi), <code>cat /etc/os-release</code>, <code>uname -a</code></td>
+<td>Nom de la carte, version</td>
+</tr>
+<tr class="even">
+<td>Quelle architecture de processeur ?</td>
+<td><code>uname -m</code></td>
+<td><code>aarch64</code> (Pi), <code>x86_64</code> (PC, Deck)</td>
+</tr>
+<tr class="odd">
+<td>Combien de mémoire ?</td>
+<td><code>free -h</code></td>
+<td>La colonne <code>available</code> est la plus importante</td>
+</tr>
+<tr class="even">
+<td>À quel point les disques sont-ils pleins ?</td>
+<td><code>df -h</code></td>
+<td>Colonne <code>Use%</code> ; à 100 %, plus rien ne peut être enregistré</td>
+</tr>
+<tr class="odd">
+<td>Les entrées de fichiers (inodes) sont-elles épuisées ?</td>
+<td><code>df -i</code></td>
+<td><code>IUse%</code> à 100 % = « No space left » malgré de la place libre</td>
+</tr>
+<tr class="even">
+<td>Quelle est la température du Pi ?</td>
+<td><code>vcgencmd measure_temp</code></td>
+<td>au-dessus de 80 °C, il est bridé</td>
+</tr>
+<tr class="odd">
+<td>Y a-t-il eu bridage ou sous-tension ?</td>
+<td><code>vcgencmd get_throttled</code></td>
+<td><code>0x0</code> = tout va bien ; autres valeurs : sous-tension, température (<a class="xr" href="#/kap/27">chapitre 27</a> et « Drosselung erklärt » dans la Toolbox)</td>
+</tr>
+<tr class="even">
+<td>Tous les disques et partitions</td>
+<td><code>lsblk</code></td>
+<td>La taille est le signe distinctif</td>
+</tr>
+<tr class="odd">
+<td>Plus de détails sur les disques</td>
+<td><code>lsblk -f</code>, <code>sudo blkid</code></td>
+<td>Système de fichiers, UUID/PARTUUID</td>
+</tr>
+<tr class="even">
+<td>Appareils USB</td>
+<td><code>lsusb</code></td>
+<td>l'appareil apparaît-il seulement ?</td>
+</tr>
+<tr class="odd">
+<td>Qu'a signalé le noyau ?</td>
+<td><code>dmesg | tail -30</code></td>
+<td>montre si et comment un appareil a été reconnu</td>
+</tr>
+<tr class="even">
+<td>Appareils I²C</td>
+<td><code>i2cdetect -y 1</code></td>
+<td>Adresses ; <code>UU</code> = occupée par un pilote</td>
+</tr>
+<tr class="odd">
+<td>Ports série</td>
+<td><code>ls /dev/ttyUSB* /dev/ttyACM*</code></td>
+<td>« No such file » = aucun appareil reconnu</td>
+</tr>
+<tr class="even">
+<td>État du GPIO</td>
+<td><code>pinctrl get 17</code></td>
+<td>fonction et niveau de la broche</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="prozesse-dienste-protokolle">Processus, services, journaux</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Commande</th>
+<th>Comment lire</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Le programme tourne-t-il ?</td>
+<td><code>ps aux | grep name</code></td>
+<td>seule la ligne grep apparaît = ne tourne pas</td>
+</tr>
+<tr class="even">
+<td>Qui occupe le port ?</td>
+<td><code>ss -tulpn | grep 8765</code></td>
+<td>Nom du programme dans la dernière colonne</td>
+</tr>
+<tr class="odd">
+<td>État du service</td>
+<td><code>systemctl status name</code></td>
+<td><code>active (running)</code>, <code>failed</code>, extrait du journal</td>
+</tr>
+<tr class="even">
+<td>Services en échec</td>
+<td><code>systemctl --failed</code></td>
+<td>Liste</td>
+</tr>
+<tr class="odd">
+<td>Journal du service</td>
+<td><code>journalctl -u name -e</code></td>
+<td>Fin du journal</td>
+</tr>
+<tr class="even">
+<td>Tout depuis le démarrage</td>
+<td><code>journalctl -b</code>, <code>journalctl -b -p err</code></td>
+<td><code>-p err</code> seulement les erreurs</td>
+</tr>
+<tr class="odd">
+<td>Suivre en direct</td>
+<td><code>journalctl -f</code>, <code>tail -f Logs/oratio.log</code></td>
+<td>Ctrl+C termine</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="dateien-und-inhalt">Fichiers et contenu</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Commande</th>
+<th>Comment lire</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Où suis-je, qu'y a-t-il ici ?</td>
+<td><code>pwd</code>, <code>ls -la</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Droits et propriétaire</td>
+<td><code>ls -l datei</code></td>
+<td><code>-rwxr-xr-x oratio oratio</code></td>
+</tr>
+<tr class="odd">
+<td>De quel type est le fichier ?</td>
+<td><code>file datei</code></td>
+<td>montre par ex. l'architecture d'un programme ou les fins de ligne</td>
+</tr>
+<tr class="even">
+<td>Début/fin d'un fichier</td>
+<td><code>head -20 datei</code>, <code>tail -20 datei</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Où se trouve un mot dans le projet ?</td>
+<td><code>grep -rn "wort" --include=*.py .</code></td>
+<td>Fichier et numéro de ligne</td>
+</tr>
+<tr class="even">
+<td>Syntaxe d'un fichier Python</td>
+<td><code>python3 -m py_compile datei.py</code></td>
+<td>Ligne et type de l'erreur</td>
+</tr>
+<tr class="odd">
+<td>Syntaxe d'un script shell</td>
+<td><code>bash -n skript.sh</code></td>
+<td>vérifie seulement la syntaxe</td>
+</tr>
+<tr class="even">
+<td>Le fichier JSON est-il valide ?</td>
+<td><code>python3 -m json.tool datei.json</code></td>
+<td>Endroit de l'erreur</td>
+</tr>
+<tr class="odd">
+<td>Qu'est-ce qui a changé ?</td>
+<td><code>diff datei datei.bak</code>, <code>ls -lt | head</code></td>
+<td>fichiers les plus récents d'abord</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="netzwerk">Réseau</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Commande</th>
+<th>Comment lire</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ai-je une adresse ?</td>
+<td><code>ip a</code>, <code>hostname -I</code></td>
+<td><code>inet 192.168…</code></td>
+</tr>
+<tr class="even">
+<td>Le réseau est-il là ?</td>
+<td><code>ping -c 3 8.8.8.8</code></td>
+<td>Réponse = Internet joignable</td>
+</tr>
+<tr class="odd">
+<td>Le DNS fonctionne-t-il ?</td>
+<td><code>ping -c 3 example.com</code></td>
+<td>si seul ceci échoue : résolution de noms</td>
+</tr>
+<tr class="even">
+<td>État du WLAN</td>
+<td><code>nmcli dev status</code>, <code>nmcli dev wifi</code></td>
+<td>connecté/déconnecté, réseaux visibles</td>
+</tr>
+<tr class="odd">
+<td>Quels ports écoutent ?</td>
+<td><code>ss -tulpn</code></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s47-4"><h2>47.4 Lire les messages</h2><p><strong>Programmes Unix et Python :</strong> la dernière ligne nomme le type, les lignes au-dessus le chemin. Lire de bas en haut.</p>
+<p><strong>Compilateur C++ :</strong> la <strong>première</strong> erreur est la vraie ; les suivantes sont souvent des erreurs en cascade. Le format est <code>Datei:Zeile:Spalte: Art: Text</code>.</p>
+<p><strong>Le numéro de ligne est imprécis :</strong> pour <code>expected ';'</code> ou une parenthèse manquante, la cause se trouve le plus souvent dans la <strong>ligne précédente</strong>.</p>
+<p><strong>Sans message :</strong> lancer le programme dans le <strong>terminal</strong> (pas par une icône), c'est là que l'erreur s'affiche. Puis chercher des journaux dans <code>Logs/</code> et dans le dossier personnel.</p>
+</section><section id="s47-5"><h2>47.5 Cerner en coupant en deux</h2><p>Exemple : un programme n'affiche rien. La chaîne est : données → calcul → dessin → écran. Au lieu de tout lire :</p>
+<ol type="1">
+<li>Placer une <strong>instruction de test</strong> (<code>print("A")</code>) au milieu. Apparaît-elle ? Alors l'erreur est après le milieu.</li>
+<li>Répéter sur la moitié problématique jusqu'à trouver la ligne.</li>
+<li><strong>Retirer</strong> ensuite les instructions de test (elles peuvent ralentir le programme, <a class="xr" href="#/kap/34/34.5">chapitre 34.5</a>).</li>
+</ol>
+<p>Il en va de même pour le matériel : l'appareil fonctionne-t-il avec un programme d'exemple simple ? Alors le câblage et l'alimentation sont corrects, et l'erreur est dans son propre programme.</p>
+</section><section id="s47-6"><h2>47.6 La note de dépannage</h2><p>Pour chaque problème, je note quatre lignes :</p>
+<pre class="text"><code>Symptom:    (wörtliche Meldung)
+Befehl:     (was ich eingegeben habe)
+Ergebnis:   (was herauskam)
+Ursache:    (was es war) / Lösung: (was geholfen hat) / Nicht geholfen: (…)</code></pre>
+<p>Cela prend une minute et fait gagner des heures quand le problème revient.</p>
+</section><section id="s47-7"><h2>47.7 Quand demander de l’aide et comment poser sa question</h2><p>L'aide (forum, personne, IA) ne vaut que ce que vaut la question. Une bonne question contient :</p>
+<ol type="1">
+<li>L'appareil et le système (<code>cat /proc/device-tree/model</code>, <code>cat /etc/os-release</code>).</li>
+<li>Ce qu'on veut obtenir.</li>
+<li>Ce qui a été fait (les commandes, dans l'ordre).</li>
+<li>Le message <strong>complet</strong> sous forme de texte.</li>
+<li>Ce qui a déjà été essayé et n'a pas aidé.</li>
+</ol>
+</section><section id="s47-8"><h2>47.8 Règles de sécurité pendant le dépannage</h2><p>Chercher une erreur, c'est souvent essayer des commandes. Certaines commandes causent des dommages durables en cas d'erreur. Ces règles valent toujours :</p>
+<ol type="1">
+<li><strong>Avant tout <code>mkfs</code>, <code>parted</code>, <code>fdisk</code>, <code>dd</code> :</strong> exécuter <code>lsblk</code> et reconnaître le disque à sa <strong>taille</strong>. Le nom de l'appareil peut changer après un redémarrage.</li>
+<li><strong>Avant tout <code>rm -r</code> :</strong> regarder le chemin avec <code>ls</code>. Un espace au mauvais endroit change ce qui est effacé.</li>
+<li><strong>Avant de grosses modifications</strong>, faire une copie de sécurité (<code>cp datei datei.bak</code>).</li>
+<li><strong>Scripts d'Internet</strong> (<code>curl … | sh</code>) à n'exécuter que depuis des sites officiels.</li>
+<li><strong><code>/etc/fstab</code> et <code>cmdline.txt</code></strong> sont à modifier avec une prudence particulière : une erreur peut empêcher le démarrage. Faire une copie avant, et garder prêt l'accès à la carte depuis un autre ordinateur.</li>
+<li><strong>Lire toute l'erreur,</strong> pas seulement la partie qui paraît importante.</li>
+<li><strong>Toujours une modification à la fois.</strong> Sinon on ne sait pas ce qui a aidé.</li>
+</ol>
+</section><section id="s47-9"><h2>47.9 Les deux courtes listes de contrôle</h2><p><strong>Matériel</strong> (de l'extérieur vers l'intérieur) :</p>
+<ul>
+<li><strong>Alimentation :</strong> le bloc suffit-il ? Sur le Pi, <code>vcgencmd get_throttled</code>. Les matrices de LED demandent leur propre alimentation.</li>
+<li><strong>Tension :</strong> 3,3 V ou 5 V ? Un écran 3,3 V sur 5 V peut être détruit.</li>
+<li><strong>Masse :</strong> GND doit être reliée partout.</li>
+<li><strong>Câblage :</strong> comparer exactement avec le tableau des broches.</li>
+<li><strong>Appareil visible ?</strong> Scanner I²C ou <code>i2cdetect -y 1</code>.</li>
+<li><strong>Câble :</strong> certains câbles USB n'ont que l'alimentation et pas de lignes de données.</li>
+<li><strong>Port :</strong> <code>dmesg | tail</code> montre si l'appareil a été reconnu et quel est son port.</li>
+</ul>
+<p><strong>Logiciel :</strong></p>
+<ul>
+<li>Le fichier a-t-il été <strong>enregistré</strong> ? (Ctrl+S dans Geany, Ctrl+O dans nano)</li>
+<li>Le programme a-t-il été <strong>redémarré</strong> ? Un programme en cours ne connaît pas le nouveau fichier.</li>
+<li>Un <strong>ancien processus</strong> tourne-t-il encore ? <code>ps aux | grep &lt;name&gt;</code>, puis <code>pkill</code>.</li>
+<li>Les <strong>chemins</strong> et les <strong>noms de fichiers</strong> sont-ils corrects ? (<code>ls</code>, <code>pwd</code>)</li>
+<li>Le fichier a-t-il les bons <strong>droits</strong> ? (<code>ls -l</code>, <code>chmod +x</code>, <code>chown</code>)</li>
+<li>Y a-t-il une <strong>faute de frappe</strong> en cause ? Un caractère en trop, une mauvaise extension (<code>.sh</code> au lieu de <code>.desktop</code>).</li>
+</ul>
+</section>

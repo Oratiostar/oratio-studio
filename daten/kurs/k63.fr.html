@@ -1,0 +1,173 @@
+<section id="s63-1"><h2>63.1 Le diviseur de tension</h2><p>Deux résistances en série se partagent une tension. La tension de sortie est prélevée aux bornes de <code>R2</code> :</p>
+<pre class="text"><code>Uaus = Uein · R2 / (R1 + R2)</code></pre>
+<p>Exemple de calcul : 5 V doivent être ramenés à environ 3,3 V (par exemple pour un signal de l'Arduino vers l'ESP32).</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Étape</th>
+<th>Calcul</th>
+<th>Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Choisir le rapport</td>
+<td><code>R1 = 1 kΩ</code>, <code>R2 = 2 kΩ</code></td>
+<td>–</td>
+</tr>
+<tr class="even">
+<td>Tension de sortie</td>
+<td><code>5 V · 2000 / (1000 + 2000)</code></td>
+<td>3,33 V</td>
+</tr>
+<tr class="odd">
+<td>Courant dans le diviseur</td>
+<td><code>5 V / 3000 Ω</code></td>
+<td>1,67 mA</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Règle la plus importante : la charge.</strong> Le diviseur n'est valable que tant que la charge est de <strong>très haute impédance par rapport à <code>R2</code></strong>. Si une charge <code>RL</code> est branchée sur <code>Uaus</code>, elle est en parallèle avec <code>R2</code>, et la tension s'effondre.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Charge sur Uaus</th>
+<th>Effet (avec R1 = 1 kΩ, R2 = 2 kΩ, 5 V)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>aucune</td>
+<td>3,33 V</td>
+</tr>
+<tr class="even">
+<td>100 kΩ</td>
+<td>3,31 V (pratiquement inchangé)</td>
+</tr>
+<tr class="odd">
+<td>2 kΩ</td>
+<td>R2‖RL = 1 kΩ → Uaus = 2,5 V (effondré)</td>
+</tr>
+</tbody>
+</table></div>
+<p>D'où la règle de dimensionnement : le courant transversal dans le diviseur doit être <strong>environ dix fois plus grand</strong> que le courant tiré par la charge. La tension reste alors stable.</p>
+<p><strong>Comme adaptation de niveau</strong> (5 V vers 3,3 V), un diviseur ne convient que pour des <strong>signaux lents ou simples</strong> dans un seul sens (par exemple Arduino TX vers ESP32 RX). Pour des bus rapides comme I²C ou SPI, il faut des composants convertisseurs de niveau.</p>
+</section><section id="s63-2"><h2>63.2 Le potentiomètre comme diviseur réglable</h2><p>Un potentiomètre (poti) a trois bornes : deux extrémités fixes et le <strong>curseur</strong> au milieu. Les extrémités sont reliées au plus et à la masse, le curseur fournit la tension réglable. Il y a deux modes de fonctionnement :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Fonctionnement</th>
+<th>Montage</th>
+<th>Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Comme diviseur (trois bornes)</td>
+<td>Extrémités au plus et à la masse, prise au curseur</td>
+<td>Tension de 0 à <code>Uein</code></td>
+</tr>
+<tr class="even">
+<td>Comme résistance variable (deux bornes)</td>
+<td>Curseur relié à une extrémité</td>
+<td>Résistance de 0 à <code>Rmax</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Autres règles :</strong></p>
+<ul>
+<li>Un poti utilisé comme diviseur doit être de <strong>basse impédance par rapport à la charge</strong>, sinon la tension s'effondre (voir plus haut).</li>
+<li>Valeurs typiques : 10 kΩ pour les mesures et les entrées de microcontrôleur (<code>analogRead</code>), 1 kΩ à 5 kΩ quand il peut passer plus de courant.</li>
+<li>Courbe linéaire (type B) pour les consignes, logarithmique (type A) pour le volume.</li>
+</ul>
+<p><strong>Cas : consigne 0–10 V à partir de 12 V.</strong> Un poti R1 devait produire à partir de 12 V une tension réglable de 0 à 10 V à l'entrée d'un capteur. Les valeurs de sortie de deux capteurs dépendent de cette tension et sont affichées sur un écran avec la valeur d'un thermocouple. Mais un poti sur 12 V fournit 0 à 12 V, pas 0 à 10 V. Deux solutions :</p>
+<ol type="1">
+<li><strong>Placer une résistance fixe en série</strong>, pour que le diviseur donne exactement 10 V à pleine course (<code>Rvor / Rpoti = 0,2</code>, donc par exemple 2 kΩ devant un poti de 10 kΩ : <code>12 V · 10 / 12 = 10 V</code>).</li>
+<li><strong>Une diode Zener comme référence</strong> (section suivante). Elle rend la consigne indépendante des variations des 12 V.</li>
+</ol>
+</section><section id="s63-3"><h2>63.3 La diode Zener comme référence de tension</h2><p>Une <strong>diode Zener</strong> fonctionne en <strong>polarisation inverse</strong>. À partir de sa tension Zener <code>UZ</code>, elle se met à conduire et maintient la tension presque constante. Elle a toujours besoin d'une <strong>résistance série</strong> <code>RV</code> qui limite le courant :</p>
+<pre class="text"><code> Uges (12 V) ──[ RV ]──┬──────── Uaus (= UZ, 10 V)
+                       │
+                     Z-Diode (Kathode oben)
+                       │
+ Masse ────────────────┴────────</code></pre>
+<p><strong>Cas : 10 V comme consigne pour une vanne de régulation de pression.</strong> Tâche : produire une tension de 10 V aussi précise que possible, servant de consigne. Pour cela, une diode Zener de 10 V avec résistance série, et un poti de 10 kΩ <strong>en parallèle avec la diode Zener</strong>, au curseur duquel on prélève la tension réglable. L'alimentation est de 12 V.</p>
+<p><strong>Le calcul, étape par étape :</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Étape</th>
+<th>Calcul</th>
+<th>Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Tension aux bornes de la résistance série</td>
+<td><code>URV = Uges − UZ = 12 V − 10 V</code></td>
+<td>2 V</td>
+</tr>
+<tr class="even">
+<td>2. Courant Zener maximal (fiche technique : <code>Ptot = 1,3 W</code>)</td>
+<td><code>IZmax = Ptot / UZ = 1,3 W / 10 V</code></td>
+<td>130 mA</td>
+</tr>
+<tr class="odd">
+<td>3. Courant Zener minimal (supposé 10 % de <code>IZmax</code>)</td>
+<td><code>IZmin = 0,1 · 130 mA</code></td>
+<td>13 mA</td>
+</tr>
+<tr class="even">
+<td>4. Courant de charge (poti 10 kΩ + affichage ensemble environ 9 kΩ)</td>
+<td><code>IL = UZ / RL = 10 V / 9 kΩ</code></td>
+<td>1,11 mA</td>
+</tr>
+<tr class="odd">
+<td>5. Courant total</td>
+<td><code>Iges = IZmin + IL = 13 mA + 1,11 mA</code></td>
+<td>14,1 mA</td>
+</tr>
+<tr class="even">
+<td>6. Résistance série</td>
+<td><code>RV = URV / Iges = 2 V / 14,1 mA</code></td>
+<td>environ 142 Ω</td>
+</tr>
+<tr class="odd">
+<td>7. Valeur normalisée de la série E</td>
+<td>valeurs voisines</td>
+<td><strong>120 Ω ou 150 Ω</strong></td>
+</tr>
+<tr class="even">
+<td>8. Contrôle avec 150 Ω</td>
+<td><code>Iges = 2 V / 150 Ω</code></td>
+<td>13,33 mA</td>
+</tr>
+<tr class="odd">
+<td>9. Courant Zener à 150 Ω</td>
+<td><code>IZ = 13,33 mA − 1,11 mA</code></td>
+<td>12,2 mA</td>
+</tr>
+<tr class="even">
+<td>10. Puissance dissipée dans <code>RV</code></td>
+<td><code>P = URV · Iges = 2 V · 13,33 mA</code></td>
+<td>27 mW</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Pourquoi ces contrôles ?</strong></p>
+<ul>
+<li><strong>Étapes 8–9 :</strong> avec la valeur normalisée choisie, il circule un peu moins de courant que calculé. Le courant Zener (12,2 mA) se situe alors juste en dessous du minimum visé de 13 mA, mais reste nettement dans la zone de conduction. Avec 120 Ω, environ 16,7 mA circuleraient, et le courant Zener serait de 15,6 mA. <strong>Quelle valeur choisir est un compromis :</strong> la plus petite résistance donne plus de sécurité contre les variations, mais charge davantage la diode et la source.</li>
+<li><strong>Étape 10 :</strong> la résistance doit elle aussi supporter la puissance. Ici elle est minuscule (27 mW).</li>
+<li><strong>Sans charge</strong> (affichage débranché), tout le courant passe par la diode Zener. C'est son pire cas : <code>10 V · 13,33 mA = 133 mW</code>, bien en dessous des 1,3 W.</li>
+</ul>
+<p><strong>Dimensionnement général</strong> pour une tension d'entrée variable et une charge variable (les quatre « cas » de l'énoncé) :</p>
+<pre class="text"><code>RV maximal:  RVmax = (Uein,min − UZ) / (IZmin + ILmax)     → die Diode soll auch im schlimmsten Fall noch leiten
+RV minimal:  RVmin = (Uein,max − UZ) / (IZmax + ILmin)     → die Diode darf im schlimmsten Fall nicht überlastet werden</code></pre>
+<p>La résistance série doit se situer entre ces deux limites. S'il n'existe pas de telle valeur, la variation est trop grande pour un simple montage à diode Zener. Il faut alors un régulateur de tension (par exemple LM7810 ou une référence comme le TL431).</p>
+<p><strong>Limites de la diode Zener :</strong> elle a une tolérance (souvent 5 %) et une dépendance à la température ; pour des tensions « aussi précises que possible », une vraie référence (TL431, composants REF) est le meilleur choix. Avec une diode Zener plus un poti, la tension de consigne est de plus <strong>chargée</strong> par le poti (section 63.1).</p>
+</section><section id="s63-4"><h2>63.4 Exercices avec solutions</h2><ol type="1">
+<li><strong>Exercice :</strong> 24 V doivent être stabilisés à 5,1 V avec une diode Zener de 5,1 V, courant de charge 5 mA, <code>IZmin</code> = 5 mA. Résistance série ? <strong>Solution :</strong> <code>Iges = 5 + 5 = 10 mA</code>, <code>URV = 24 − 5,1 = 18,9 V</code>, <code>RV = 18,9 V / 0,01 A = 1890 Ω</code> → 1,8 kΩ ou 2 kΩ. Puissance dans la résistance : <code>18,9 V · 0,01 A = 0,19 W</code> → au moins 0,5 W.</li>
+<li><strong>Exercice :</strong> diviseur de tension 12 V → 3,3 V avec <code>R2 = 3,3 kΩ</code>. Quel <code>R1</code> ? <strong>Solution :</strong> <code>R1 = R2 · (Uein / Uaus − 1) = 3,3 kΩ · (12/3,3 − 1) = 3,3 kΩ · 2,64 ≈ 8,7 kΩ</code> → 8,2 kΩ donne 3,44 V, 9,1 kΩ donne 3,19 V. Les valeurs normalisées tombent rarement juste.</li>
+<li><strong>Exercice :</strong> comment <code>Uaus</code> du diviseur 1 kΩ / 2 kΩ sous 5 V change-t-elle quand on branche une charge de 1 kΩ ? <strong>Solution :</strong> <code>R2‖RL = 2000·1000/3000 = 667 Ω</code>, <code>Uaus = 5 V · 667 / (1000+667) = 2,0 V</code>.</li>
+</ol>
+</section>

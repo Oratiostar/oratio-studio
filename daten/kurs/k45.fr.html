@@ -1,0 +1,157 @@
+<section id="s45-1"><h2>45.1 À quoi il sert</h2><p>Le vérificateur de hash de fichiers et de doublons calcule pour de nombreux fichiers une <strong>empreinte</strong> (SHA-256) et trie ensuite : les fichiers de même empreinte sont <strong>identiques par leur contenu</strong>, même s'ils portent des noms différents. On trouve ainsi les fichiers en double et on sait combien de place on peut gagner. C'était l'un des premiers scripts du projet A (<a class="xr" href="#/kap/32">chapitre 32</a>) et il existe comme programme sous plusieurs formes :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Forme</th>
+<th>Fichier</th>
+<th>Lignes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Script Bash pour terminal (Raspberry Pi et Linux)</td>
+<td><code>hashchecker.sh</code></td>
+<td>ca. 1300</td>
+</tr>
+<tr class="even">
+<td>Script PowerShell pour Windows</td>
+<td><code>hashcheckerpower.ps1</code></td>
+<td>ca. 1370</td>
+</tr>
+<tr class="odd">
+<td>Fenêtre de verre dans le Control Center (Python)</td>
+<td><code>Apps/HashChecker/hash_checker.py</code></td>
+<td>ca. 980</td>
+</tr>
+<tr class="even">
+<td>Fenêtre de verre dans le Control Center (plugin C++)</td>
+<td><code>Apps/HashChecker/hash_checker.cpp</code></td>
+<td>ca. 1700</td>
+</tr>
+</tbody>
+</table></div>
+<p>C'est un bon exemple de ce à quoi ressemble <strong>la même idée</strong> en trois langages – idéal pour comparer.</p>
+</section><section id="s45-2"><h2>45.2 L’idée en quatre étapes</h2><ol type="1">
+<li>Rassembler tous les fichiers (coller les chemins ou les choisir par une fenêtre de sélection).</li>
+<li>Calculer la valeur SHA-256 de chaque fichier.</li>
+<li>Regrouper les fichiers de même valeur dans un groupe.</li>
+<li>Les groupes de plus d'un fichier sont des doublons ; la somme des tailles « en trop » est la place que l'on peut récupérer.</li>
+</ol>
+<p>Pourquoi SHA-256 et pas seulement la taille ? Deux fichiers peuvent avoir la même taille mais être différents. Un hash cryptographique change complètement dès <strong>un seul</strong> bit modifié. Deux fichiers différents avec le même SHA-256 sont pratiquement exclus.</p>
+</section><section id="s45-3"><h2>45.3 Le cœur dans le script Bash</h2><p>Le script contient la boucle principale sur tous les fichiers. Le cœur, légèrement abrégé :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="bu">declare</span> <span class="at">-A</span> <span class="va">hash_known</span> <span class="va">hash_paths</span> <span class="va">hash_counts</span> <span class="va">hash_sizes</span>   <span class="co"># assoziative Felder (Wörterbücher)</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="va">hash_order</span><span class="op">=</span><span class="va">()</span>                                              <span class="co"># Reihenfolge, in der Hashes zuerst vorkamen</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> <span class="st">"</span><span class="va">${files</span><span class="op">[@]</span><span class="va">}</span><span class="st">"</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a>    <span class="va">file_size</span><span class="op">=</span><span class="st">"</span><span class="va">$(</span><span class="fu">stat</span> <span class="at">-c</span> <span class="st">'%s'</span> <span class="at">--</span> <span class="st">"</span><span class="va">$file</span><span class="st">"</span> <span class="dv">2</span><span class="op">&gt;</span>/dev/null <span class="kw">||</span> <span class="bu">printf</span> <span class="st">'0'</span><span class="va">)</span><span class="st">"</span></span>
+<span id="cb1-6"><a aria-hidden="true" href="#cb1-6" tabindex="-1"></a>    <span class="va">hash</span><span class="op">=</span><span class="st">"</span><span class="va">$(</span><span class="fu">sha256sum</span> <span class="at">--</span> <span class="st">"</span><span class="va">$file</span><span class="st">"</span> <span class="dv">2</span><span class="op">&gt;</span>/dev/null <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{print $1}'</span><span class="va">)</span><span class="st">"</span></span>
+<span id="cb1-7"><a aria-hidden="true" href="#cb1-7" tabindex="-1"></a></span>
+<span id="cb1-8"><a aria-hidden="true" href="#cb1-8" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">[[</span> <span class="ot">-z</span> <span class="st">"</span><span class="va">${hash_known</span><span class="op">[</span><span class="va">$hash</span><span class="op">]+</span>vorhanden<span class="va">}</span><span class="st">"</span> <span class="kw">]];</span> <span class="cf">then</span>     <span class="co"># Hash zum ersten Mal gesehen</span></span>
+<span id="cb1-9"><a aria-hidden="true" href="#cb1-9" tabindex="-1"></a>        <span class="va">hash_known</span><span class="op">[</span><span class="st">"</span><span class="va">$hash</span><span class="st">"</span><span class="op">]=</span>1</span>
+<span id="cb1-10"><a aria-hidden="true" href="#cb1-10" tabindex="-1"></a>        <span class="va">hash_order</span><span class="op">+=</span><span class="va">(</span><span class="st">"</span><span class="va">$hash</span><span class="st">"</span><span class="va">)</span></span>
+<span id="cb1-11"><a aria-hidden="true" href="#cb1-11" tabindex="-1"></a>        <span class="va">hash_paths</span><span class="op">[</span><span class="st">"</span><span class="va">$hash</span><span class="st">"</span><span class="op">]=</span><span class="st">"</span><span class="va">$file</span><span class="st">"</span></span>
+<span id="cb1-12"><a aria-hidden="true" href="#cb1-12" tabindex="-1"></a>        <span class="va">hash_counts</span><span class="op">[</span><span class="st">"</span><span class="va">$hash</span><span class="st">"</span><span class="op">]=</span>1</span>
+<span id="cb1-13"><a aria-hidden="true" href="#cb1-13" tabindex="-1"></a>        <span class="va">hash_sizes</span><span class="op">[</span><span class="st">"</span><span class="va">$hash</span><span class="st">"</span><span class="op">]=</span><span class="st">"</span><span class="va">$file_size</span><span class="st">"</span></span>
+<span id="cb1-14"><a aria-hidden="true" href="#cb1-14" tabindex="-1"></a>    <span class="cf">else</span>                                                   <span class="co"># schon bekannt: Duplikat</span></span>
+<span id="cb1-15"><a aria-hidden="true" href="#cb1-15" tabindex="-1"></a>        <span class="va">hash_paths</span><span class="op">[</span><span class="st">"</span><span class="va">$hash</span><span class="st">"</span><span class="op">]+=</span><span class="st">$'</span><span class="dt">\n</span><span class="st">'"</span><span class="va">$file</span><span class="st">"</span></span>
+<span id="cb1-16"><a aria-hidden="true" href="#cb1-16" tabindex="-1"></a>        <span class="va">hash_counts</span><span class="op">[</span><span class="st">"</span><span class="va">$hash</span><span class="st">"</span><span class="op">]=</span><span class="va">$(</span><span class="kw">(</span><span class="va">hash_counts</span><span class="op">[</span><span class="st">"</span><span class="va">$hash</span><span class="st">"</span><span class="op">]</span> <span class="ex">+</span> 1<span class="kw">)</span><span class="va">)</span></span>
+<span id="cb1-17"><a aria-hidden="true" href="#cb1-17" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb1-18"><a aria-hidden="true" href="#cb1-18" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Ligne</th>
+<th>Explication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>declare -A</code></td>
+<td>crée un <strong>tableau associatif</strong> (clé → valeur), ici hash → chemins</td>
+</tr>
+<tr class="even">
+<td><code>stat -c '%s'</code></td>
+<td>taille du fichier en octets</td>
+</tr>
+<tr class="odd">
+<td><code>sha256sum -- "$file"</code></td>
+<td>calcule le hash ; <code>--</code> protège contre les noms de fichiers commençant par <code>-</code></td>
+</tr>
+<tr class="even">
+<td><code>awk '{print $1}'</code></td>
+<td>ne prend que la première colonne (le hash, sans le nom de fichier)</td>
+</tr>
+<tr class="odd">
+<td><code>${hash_known[$hash]+vorhanden}</code></td>
+<td>renvoie « présent » si la clé existe, sinon vide ; c'est ainsi qu'on vérifie l'existence</td>
+</tr>
+<tr class="even">
+<td><code>$'\n'</code></td>
+<td>un saut de ligne comme séparateur, pour que plusieurs chemins tiennent dans une valeur de champ</td>
+</tr>
+</tbody>
+</table></div>
+<p>Vient ensuite l'évaluation :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="cf">for</span> hash <span class="kw">in</span> <span class="st">"</span><span class="va">${hash_order</span><span class="op">[@]</span><span class="va">}</span><span class="st">"</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a>    <span class="va">count</span><span class="op">=</span><span class="st">"</span><span class="va">${hash_counts</span><span class="op">[</span><span class="va">$hash</span><span class="op">]</span><span class="va">}</span><span class="st">"</span></span>
+<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a>    <span class="va">size</span><span class="op">=</span><span class="st">"</span><span class="va">${hash_sizes</span><span class="op">[</span><span class="va">$hash</span><span class="op">]</span><span class="va">}</span><span class="st">"</span></span>
+<span id="cb2-4"><a aria-hidden="true" href="#cb2-4" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">((</span> <span class="va">count</span> <span class="op">&gt;</span> <span class="dv">1</span> <span class="kw">));</span> <span class="cf">then</span></span>
+<span id="cb2-5"><a aria-hidden="true" href="#cb2-5" tabindex="-1"></a>        <span class="va">duplicate_group_count</span><span class="op">=</span><span class="va">$((duplicate_group_count</span> <span class="op">+</span> <span class="dv">1</span><span class="va">))</span></span>
+<span id="cb2-6"><a aria-hidden="true" href="#cb2-6" tabindex="-1"></a>        <span class="va">reclaimable_bytes</span><span class="op">=</span><span class="va">$((reclaimable_bytes</span> <span class="op">+</span> (<span class="va">count</span> <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="va">size))</span></span>
+<span id="cb2-7"><a aria-hidden="true" href="#cb2-7" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb2-8"><a aria-hidden="true" href="#cb2-8" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p><code>(count - 1) * size</code> est la place qui serait libérée s'il ne restait qu'<strong>un seul</strong> fichier par groupe.</p>
+</section><section id="s45-4"><h2>45.4 Ce que le script sait faire en plus</h2><ul>
+<li><strong>Saisie :</strong> chemins un par un, collés en bloc (après 0,35 s sans autre caractère, le bloc collé est considéré comme terminé) ou par une fenêtre graphique de sélection.</li>
+<li><strong>Progression :</strong> un tableau de bord avec fichier X sur Y, octets traités et temps restant.</li>
+<li><strong>Sortie :</strong> sections « Fichiers identiques » (rouge), « Fichiers sans doublon » (vert), « Résumé » (groupes, fichiers en trop, place gagnée) ; sur demande sous forme de rapport texte et de CSV.</li>
+<li><strong>Tolérance aux erreurs :</strong> <code>set -u</code> (variable non définie = erreur), mais <strong>pas</strong> <code>set -e</code> : un fichier illisible n'interrompt pas l'exécution, il atterrit dans une liste d'erreurs.</li>
+<li><strong>Conditions :</strong> <code>bash</code>, <code>sha256sum</code>, <code>find</code>, <code>stat</code>, <code>sort</code>, <code>date</code> – le script les vérifie au démarrage.</li>
+</ul>
+</section><section id="s45-5"><h2>45.5 Différences entre les versions</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Bash</th>
+<th>PowerShell</th>
+<th>Fenêtre Python</th>
+<th>Plugin C++</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Hash</td>
+<td><code>sha256sum</code></td>
+<td><code>Get-FileHash -Algorithm SHA256</code></td>
+<td><code>hashlib.sha256</code></td>
+<td>Qt <code>QCryptographicHash</code></td>
+</tr>
+<tr class="even">
+<td>Regrouper</td>
+<td>tableau associatif</td>
+<td>table de hachage ordonnée (<code>[ordered]@{}</code>)</td>
+<td><code>dict</code></td>
+<td><code>QHash</code></td>
+</tr>
+<tr class="odd">
+<td>Interface</td>
+<td>Terminal</td>
+<td>Console</td>
+<td>Fenêtre de verre</td>
+<td>Fenêtre de verre</td>
+</tr>
+<tr class="even">
+<td>Usage</td>
+<td>Pi, Linux</td>
+<td>Windows</td>
+<td>dans le Control Center</td>
+<td>dans le Control Center</td>
+</tr>
+</tbody>
+</table></div>
+<p>Le tableau montre : l'idée est la même, seuls les outils portent d'autres noms. Qui comprend une version peut lire les autres.</p>
+</section><section id="s45-6"><h2>45.6 À essayer soi-même</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">bash</span> hashchecker.sh</span></code></pre></div>
+<p>ou seulement le cœur dans le terminal :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="fu">find</span> ~/Bilder <span class="at">-type</span> f <span class="at">-exec</span> sha256sum {} + <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-w64</span> <span class="at">-d</span> <span class="at">--all-repeated</span><span class="op">=</span>separate</span></code></pre></div>
+<p>La ligne calcule le hash de tous les fichiers de <code>~/Bilder</code>, trie et n'affiche que les lignes dont les 64 premiers caractères (le hash) apparaissent plusieurs fois. C'est la version courte du programme entier.</p>
+</section>

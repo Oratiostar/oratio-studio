@@ -1,0 +1,160 @@
+<p>Ce chapitre est la <strong>carte routière</strong> du livre. Chaque projet y figure avec son matériel, son objectif, ses principaux obstacles et les chapitres qui le traitent en détail. Qui veut reconstruire un projet précis commence ici et saute au chapitre indiqué. Qui a un problème cherche le projet et trouve sous « Erreurs typiques » la direction à suivre.</p>
+<section id="s29-1"><h2>29.1 Les projets dans un tableau</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Projet</th>
+<th>Matériel</th>
+<th>Objectif</th>
+<th>Erreurs typiques et solution</th>
+<th>Chapitre</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Raspberry Pi comme ordinateur de travail</strong></td>
+<td>Pi 4 et Pi 5, SSD NVMe, boîtier Freenove</td>
+<td>ordinateur du quotidien stable avec sauvegarde</td>
+<td>droits sur les lecteurs, ordre de démarrage, sous-tension</td>
+<td>6, 7, 8, 9</td>
+</tr>
+<tr class="even">
+<td><strong>Écran et 4K</strong></td>
+<td>Pi avec moniteur 4K</td>
+<td>image nette, interface lisible, qui persiste après redémarrage et changement de moniteur</td>
+<td>mise à l'échelle perdue après redémarrage → démarrage automatique ; après extinction/allumage du moniteur → Kanshi/Watchdog</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td><strong>Freenove Tower Cooler</strong></td>
+<td>Pi 5, tour avec OLED, ventilateur, LED</td>
+<td>affichage, commande du ventilateur, éclairage</td>
+<td>ne fonctionne que sous Raspberry Pi OS ; services/pilotes</td>
+<td>11, 26.10</td>
+</tr>
+<tr class="even">
+<td><strong>Matrice LED (HUB75)</strong></td>
+<td>Pi 4, panneau 64×32, plus tard Pico/ESP32-S3</td>
+<td>animations, horloge, texte défilant, inscription « Oratio »</td>
+<td>erreurs de compilation en C++, scintillement → <code>--led-slowdown-gpio</code>, alimentation</td>
+<td>19, 51.7</td>
+</tr>
+<tr class="odd">
+<td><strong>OLED avec Arduino Nano</strong></td>
+<td>clone de Nano, SSD1306</td>
+<td>afficher texte et symboles, le Pi fournit les données</td>
+<td>erreur de téléversement → <code>atmega328old</code>, adresse → scan I²C, écran « vide » → écriture trop petite</td>
+<td>16, 17.5</td>
+</tr>
+<tr class="even">
+<td><strong>Oratio Watch OS</strong></td>
+<td>ESP32-S3, GC9A01 rond, LVGL</td>
+<td>interface de montre connectée personnelle</td>
+<td>broches SPI, mémoire, configuration PlatformIO</td>
+<td>17, 23</td>
+</tr>
+<tr class="odd">
+<td><strong>Cadran AMOLED</strong></td>
+<td>Waveshare ESP32-S3-Touch-AMOLED-1.75 (CO5300, QSPI)</td>
+<td>cadran Casio 1:1 sur écran rond</td>
+<td>réglage PSRAM, décalage de colonne</td>
+<td>21</td>
+</tr>
+<tr class="even">
+<td><strong>IA locale / ORAI</strong></td>
+<td>Pi, Ollama, Whisper, Piper, Vosk</td>
+<td>assistant vocal personnel</td>
+<td>taille du modèle, langue, microphone</td>
+<td>24, 30, 39.3</td>
+</tr>
+<tr class="odd">
+<td><strong>Station Batocera</strong></td>
+<td>Pi 5, SD/SSD</td>
+<td>jeux rétro</td>
+<td>mauvaise image (BCM2711), permissions, ordre de démarrage</td>
+<td>26</td>
+</tr>
+<tr class="even">
+<td><strong>Steam Deck en double démarrage</strong></td>
+<td>Steam Deck OLED</td>
+<td>SteamOS + Windows</td>
+<td>bootloader écrasé, 24H2</td>
+<td>27</td>
+</tr>
+<tr class="odd">
+<td><strong>Windows 11 sur le Steam Deck</strong></td>
+<td>Steam Deck OLED, clé, sans PC</td>
+<td>installer Windows à la main</td>
+<td>pilotes, obligation de compte, clonage, table de partitions</td>
+<td>28</td>
+</tr>
+<tr class="even">
+<td><strong>Oratio Control Center</strong></td>
+<td>Pi 5, Python, PyQt5 ; variantes pour Deck, C++, navigateur</td>
+<td>champ de lancement pour scripts, programmes, widgets, réglages</td>
+<td>indentation, JSON, affichage Qt, démarrage automatique</td>
+<td>31–45</td>
+</tr>
+<tr class="odd">
+<td><strong>Vérificateur de hash</strong></td>
+<td>Windows et Linux</td>
+<td>trouver les fichiers en double, vérifier les téléchargements</td>
+<td>paramètre vide dans PowerShell</td>
+<td>25.7, 45</td>
+</tr>
+<tr class="even">
+<td><strong>Électronique au travail</strong></td>
+<td>multimètre, fer à souder</td>
+<td>vérifier des composants, calculer des circuits, relais de sécurité</td>
+<td>mauvais classement, mauvaise mesure</td>
+<td>62–70</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s29-2"><h2>29.2 Les projets en contexte</h2><p>Les projets ne sont pas indépendants. Beaucoup s'appuient les uns sur les autres :</p>
+<pre class="text"><code>Linux et terminal (1–5)
+  └─ Raspberry Pi au quotidien (6–9) ── démarrage, disques, sauvegarde
+        ├─ Écran / 4K (10) ──────────────┐
+        ├─ Tour Freenove (11) ────────────────┤
+        │                                     ▼
+        │                          Oratio Control Center (31–45)
+        │                           ├─ Projet A « Établi » (32–35)
+        │                           ├─ Projet B « Verre » (36–39)
+        │                           ├─ Variantes : glisser-déposer Qt, C++ (40–42)
+        │                           ├─ Variante Steam Deck (43)
+        │                           └─ Variante navigateur Oratio Place (44)
+        └─ IA locale (24) ── Voix (30) ─────┘
+Mikrocontroller (15–20) ── Displays, LED-Matrix
+        ├─ Oratio Watch OS (23)
+        └─ Zifferblatt (21)
+Betriebssysteme (25–28) ── Windows, Batocera, Steam Deck
+Elektronik (62–70) ── Bauteile, Schaltungen, Messen</code></pre>
+<p>Ce qu'il faut en retenir : une erreur dans une brique inférieure (par exemple des droits mal définis, la mise à l'échelle de l'écran, l'indentation Python) réapparaît dans de nombreux projets supérieurs. C'est pourquoi les bases au début du livre sont importantes, et c'est pourquoi, à partir du <a class="xr" href="#/kap/46">chapitre 46</a>, une coupe transversale propre rassemble les leçons qui se répètent dans tous les projets.</p>
+</section><section id="s29-3"><h2>29.3 Projet par projet : ce qui se cache derrière</h2><h3 id="raspberry-pi-als-arbeitsrechner-kapitel-69">Raspberry Pi comme ordinateur de travail (<a class="xr" href="#/kap/6">chapitre 6</a>–9)</h3>
+<p>Le Pi est l'ordinateur sur lequel tournent la plupart des projets. Les bases : commandes pour les informations système, la température, la fréquence et le courant (<a class="xr" href="#/kap/6">chapitre 6</a>), la mise en place d'un nouveau SSD avec toutes les étapes de la partition à <code>fstab</code> (<a class="xr" href="#/kap/7">chapitre 7</a>), le chemin de l'allumage au bureau (<a class="xr" href="#/kap/8">chapitre 8</a>) et la sauvegarde automatique de tout le système (<a class="xr" href="#/kap/9">chapitre 9</a>). <strong>Leçon :</strong> qui connaît la chaîne de démarrage comprend pourquoi des réglages disparaissent parfois après un redémarrage.</p>
+<h3 id="bildschirm-und-4k-kapitel-10">Écran et 4K (<a class="xr" href="#/kap/10">chapitre 10</a>)</h3>
+<p>Un moniteur 4K affiche tout en minuscule sur le Pi. La résolution doit rester complète, seule l'interface doit grandir. La solution <code>wlr-randr --scale</code> n'agit que dans la session en cours ; d'où le démarrage automatique, puis Kanshi pour le changement de moniteur, puis un watchdog quand le moniteur n'envoie aucun événement à l'extinction et à l'allumage. <strong>Leçon :</strong> un réglage peut figurer dans une couche et être écrasé dans la suivante.</p>
+<h3 id="freenove-tower-cooler-kapitel-11">Freenove Tower Cooler (<a class="xr" href="#/kap/11">chapitre 11</a>)</h3>
+<p>Le boîtier avec OLED, ventilateur et LED est piloté par une interface Python du fabricant. Cette interface a été le <strong>point de départ du Control Center</strong> (<a class="xr" href="#/kap/32">chapitre 32</a>).</p>
+<h3 id="led-matrix-kapitel-19">Matrice LED (<a class="xr" href="#/kap/19">chapitre 19</a>)</h3>
+<p>Un panneau HUB75 de 64×32 pixels est piloté par le Pi avec la bibliothèque <code>rpi-rgb-led-matrix</code> ; plus tard, cela a aussi fonctionné avec Pico et ESP32-S3. <strong>Leçon :</strong> les signaux critiques en temps (scintillement) se résolvent avec une aide matérielle et des paramètres adaptés, pas avec du Python pur.</p>
+<h3 id="oled-mit-arduino-nano-kapitel-16">OLED avec Arduino Nano (<a class="xr" href="#/kap/16">chapitre 16</a>)</h3>
+<p>Le premier chemin complet, de l'environnement de développement au téléversement puis à l'affichage : clone de Nano, <code>arduino-cli</code>, variante du bootloader, adresse I²C, bibliothèque d'écran. <strong>Leçon :</strong> quand on ne lit rien, l'écran est le plus souvent en bon état ; c'est le réglage (taille de l'écriture, rotation) qui est faux.</p>
+<h3 id="oratio-watch-os-und-zifferblatt-kapitel-23-und-21">Oratio Watch OS et cadran (<a class="xr" href="#/kap/23">chapitre 23</a> et 21)</h3>
+<p>Un logiciel de montre personnel sur ESP32-S3 avec écran rond. Le projet de cadran transpose un cadran Casio 1:1 sur un écran AMOLED rond. <strong>Leçon :</strong> séparer le matériel et le contenu ; la même interface peut alors être transférée sur d'autres écrans.</p>
+<h3 id="lokale-ki-und-sprache-kapitel-24-30-393">IA locale et parole (<a class="xr" href="#/kap/24">chapitre 24</a>, 30, 39.3)</h3>
+<p>Un assistant sur le Pi qui écoute, comprend et répond, sans cloud. Le concept : seules la parole et la compréhension sont des modèles ; ce qui doit être <strong>exact</strong> (commandes, nombres) se trouve dans du code ordinaire. <strong>Leçon :</strong> les petits modèles inventent des choses, la décision relève donc du code.</p>
+<h3 id="batocera-steam-deck-und-windows-kapitel-2528">Batocera, Steam Deck et Windows (<a class="xr" href="#/kap/25">chapitre 25</a>–28)</h3>
+<p>Des systèmes d'exploitation sur différents matériels : station rétro sur le Pi 5, double démarrage et installation complète de Windows sur le Steam Deck. <strong>Leçon :</strong> le bootloader est le point le plus sensible ; sauvegarde avant tout travail sur les partitions.</p>
+<h3 id="oratio-control-center-kapitel-3145">Oratio Control Center (<a class="xr" href="#/kap/31">chapitre 31</a>–45)</h3>
+<p>Le grand projet : une interface personnelle pour le Pi, née de la fenêtre Freenove. Le projet A montre le chemin, le projet B l'interface en verre actuelle ; s'y ajoutent des variantes pour le glisser-déposer Qt, C++, le Steam Deck et le navigateur. Tout est décrit de façon à pouvoir être <strong>reconstruit étape par étape</strong>.</p>
+<h3 id="elektronik-kapitel-6270">Électronique (<a class="xr" href="#/kap/62">chapitre 62</a>–70)</h3>
+<p>Reconnaître et vérifier des composants, calculer un diviseur de tension et une diode Zener, mesurer des signaux 4–20 mA, charger des accus en sécurité, moteurs et pilotes, relais de sécurité, électronique sur microcontrôleur.</p>
+</section><section id="s29-4"><h2>29.4 Comment j’aborde un nouveau projet</h2><ol type="1">
+<li><strong>Écrire l'objectif en une phrase.</strong> Sans objectif, on ne peut pas décider si quelque chose a réussi.</li>
+<li><strong>Déterminer le matériel et la puce, lire la fiche technique.</strong> Tension (3,3 V ou 5 V), bus (I²C, SPI, UART), brochage.</li>
+<li><strong>Construire le plus petit test</strong> qui fait quelque chose de visible (la LED clignote, un texte apparaît).</li>
+<li><strong>Tester chaque modification séparément.</strong> Lire le message d'erreur à la lettre (<a class="xr" href="#/kap/47">chapitre 47</a>).</li>
+<li><strong>Sauvegarder la version qui fonctionne</strong> (copie ou Git) avant de continuer à construire.</li>
+<li><strong>Noter quelle était la solution.</strong> C'est exactement pour cela que ce livre est né.</li>
+</ol>
+</section>

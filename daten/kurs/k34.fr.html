@@ -1,0 +1,132 @@
+<section id="s34-1"><h2>34.1 L’objectif</h2><p>Comme sur un téléphone, les tuiles devaient être <strong>déplaçables</strong> à la souris : glisser sur une autre tuile échange les deux, glisser sur une place vide y place la tuile. La nouvelle position doit figurer dans le fichier JSON pour rester après le redémarrage.</p>
+</section><section id="s34-2"><h2>34.2 Le plan en trois étapes</h2><p>J'ai délibérément construit le glissement en plusieurs étapes, car une erreur paralyse tout l'onglet :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Étape</th>
+<th>Objectif</th>
+<th>Contrôle de réussite</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Reconnaître qu'une tuile est glissée</td>
+<td>dans le terminal apparaît « Ziehe: Backup »</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Savoir où elle a été relâchée</td>
+<td>sortie « de (0,0) à (3,2) »</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Échanger et enregistrer dans le JSON</td>
+<td>après redémarrage, l'ordre reste</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s34-3"><h2>34.3 Étape 1 : une classe de bouton à soi</h2><p>Un <code>QPushButton</code> normal ne signale aucun mouvement de souris. C'est pourquoi chaque tuile reçoit sa propre classe, qui hérite de <code>QPushButton</code> et gère elle-même trois événements de souris :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="im">from</span> PyQt5.QtCore <span class="im">import</span> Qt, QPoint</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="kw">class</span> DraggableButton(QPushButton):</span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, text, parent<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(text, parent)</span>
+<span id="cb1-6"><a aria-hidden="true" href="#cb1-6" tabindex="-1"></a>        <span class="va">self</span>.drag_start_position <span class="op">=</span> QPoint()</span>
+<span id="cb1-7"><a aria-hidden="true" href="#cb1-7" tabindex="-1"></a></span>
+<span id="cb1-8"><a aria-hidden="true" href="#cb1-8" tabindex="-1"></a>    <span class="kw">def</span> mousePressEvent(<span class="va">self</span>, event):</span>
+<span id="cb1-9"><a aria-hidden="true" href="#cb1-9" tabindex="-1"></a>        <span class="cf">if</span> event.button() <span class="op">==</span> Qt.LeftButton:</span>
+<span id="cb1-10"><a aria-hidden="true" href="#cb1-10" tabindex="-1"></a>            <span class="va">self</span>.drag_start_position <span class="op">=</span> event.pos()</span>
+<span id="cb1-11"><a aria-hidden="true" href="#cb1-11" tabindex="-1"></a>        <span class="bu">super</span>().mousePressEvent(event)</span>
+<span id="cb1-12"><a aria-hidden="true" href="#cb1-12" tabindex="-1"></a></span>
+<span id="cb1-13"><a aria-hidden="true" href="#cb1-13" tabindex="-1"></a>    <span class="kw">def</span> mouseMoveEvent(<span class="va">self</span>, event):</span>
+<span id="cb1-14"><a aria-hidden="true" href="#cb1-14" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> (event.buttons() <span class="op">&amp;</span> Qt.LeftButton):</span>
+<span id="cb1-15"><a aria-hidden="true" href="#cb1-15" tabindex="-1"></a>            <span class="cf">return</span></span>
+<span id="cb1-16"><a aria-hidden="true" href="#cb1-16" tabindex="-1"></a>        distance <span class="op">=</span> (event.pos() <span class="op">-</span> <span class="va">self</span>.drag_start_position).manhattanLength()</span>
+<span id="cb1-17"><a aria-hidden="true" href="#cb1-17" tabindex="-1"></a>        <span class="cf">if</span> distance <span class="op">&lt;</span> <span class="dv">10</span>:</span>
+<span id="cb1-18"><a aria-hidden="true" href="#cb1-18" tabindex="-1"></a>            <span class="cf">return</span></span>
+<span id="cb1-19"><a aria-hidden="true" href="#cb1-19" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Ziehe: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>text()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div>
+<p>Ce qui se passe ici :</p>
+<ul>
+<li><code>mousePressEvent</code> : bouton enfoncé, mémoriser le point de départ.</li>
+<li><code>mouseMoveEvent</code> : souris déplacée. Ce n'est que lorsqu'elle est à <strong>plus de 10 pixels</strong> du point de départ que cela compte comme un glissement. Cela évite qu'un clic normal soit pris par erreur pour un glissement.</li>
+<li><code>mouseReleaseEvent</code> vient à l'étape 2.</li>
+</ul>
+<p>Dans le code, il suffit alors de remplacer <code>btn = QPushButton(...)</code> par <code>btn = DraggableButton(...)</code>.</p>
+</section><section id="s34-4"><h2>34.4 Étapes 2 et 3 : trouver la cible, échanger, enregistrer</h2><p>Au relâchement, on vérifie au-dessus de quelle autre tuile se trouve la souris. Pour cela, on prend pour chaque tuile son rectangle en <strong>coordonnées de fenêtre</strong> et l'on vérifie si le point de la souris s'y trouve. Il y a alors deux cas :</p>
+<ol type="1">
+<li>La cible est occupée : les deux entrées de la liste échangent leur position.</li>
+<li>La cible est vide : seule l'entrée glissée reçoit la nouvelle position.</li>
+</ol>
+<p>Ensuite, le programme réécrit la liste dans <code>oratio_apps.json</code>.</p>
+<p>Erreurs typiques sur ce chemin :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Message ou symptôme</th>
+<th>Cause</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Le programme ne démarre plus du tout après l'insertion</td>
+<td>Indentation ou syntaxe : lancer dans le terminal, la dernière ligne du message d'erreur indique le type (<code>IndentationError</code>, <code>SyntaxError</code>, <code>NameError</code>)</td>
+</tr>
+<tr class="even">
+<td><code>self.row</code> et <code>print</code> sont à des niveaux différents</td>
+<td>Le nouveau bloc doit se trouver au niveau des lignes voisines</td>
+</tr>
+<tr class="odd">
+<td>La sortie de test (<code>print</code>) n'apparaît jamais pendant le glissement</td>
+<td>La ligne se trouve en dehors de la boucle</td>
+</tr>
+<tr class="even">
+<td>Le glissement ne fonctionne qu'avec l'échange, pas avec une place vide</td>
+<td>Le code ne connaissait que « tuile contre tuile » ; une place vide doit être reconnue comme cible</td>
+</tr>
+<tr class="odd">
+<td>Le programme plante au relâchement</td>
+<td>dans l'événement de relâchement, on accède à un objet qui n'existe plus</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s34-5"><h2>34.5 « Très lentement » – et pourquoi c’est devenu soudain rapide</h2><p>Pendant le glissement, l'interface saccadait fortement. J'avais mis des <code>print(...)</code> à de nombreux endroits pendant le développement pour voir ce qui se passait. Après avoir commenté <strong>toutes</strong> les sorties, le glissement est devenu fluide.</p>
+<p><strong>Leçon :</strong> une sortie vers un terminal est lente, surtout si elle survient à chaque mouvement de la souris (des centaines de fois par seconde). Les sorties de débogage doivent être retirées après le test ou placées derrière une condition. Cela vaut pour tout langage de programmation.</p>
+</section><section id="s34-6"><h2>34.6 L’apparence des tuiles</h2><h3 id="icons-und-namen">Icônes et noms</h3>
+<p>Au début, les tuiles montraient le nom dans le bouton. Je voulais seulement l'icône comme image et le <strong>nom en dessous</strong>, en dehors du bouton. Pour cela, une tuile se compose d'un conteneur qui contient un bouton (avec image) et un champ de texte en dessous.</p>
+<p>Pièges :</p>
+<ul>
+<li>Le chemin de l'image figure dans le JSON. Un chemin faux laisse l'image vide, <strong>et le chemin apparaît comme texte dans le bouton.</strong> Vérifier le chemin : <code>ls Pfad/zur/Datei.png</code>.</li>
+<li>Les images doivent toutes être <strong>carrées et de même taille</strong>. Une icône avec plus de marge paraît plus petite qu'une qui exploite la marge. Mieux : créer toutes les images avec la même zone de dessin (par exemple 512 × 512 pixels, fond transparent).</li>
+<li>Plusieurs tailles en même temps (<code>ICON_SIZE</code>, <code>BUTTON_SIZE</code>, <code>HOVER_ICON_SIZE</code>) : si une ancienne valeur fixe (<code>QSize(40, 40)</code>) subsiste quelque part, les images passent à une mauvaise taille au clic. Rassembler toutes les tailles à <strong>un seul</strong> endroit sous forme de constantes.</li>
+</ul>
+<h3 id="hover-die-kachel-wird-beim-darüberfahren-größer">Survol : la tuile grandit au passage</h3>
+<p>Quand la souris passe sur une tuile, l'icône grandit de quelques pixels (de 40 à 55). Le conteneur doit pour cela laisser de la place, sinon l'image agrandie est coupée.</p>
+<h3 id="der-milchige-effekt-beim-ziehen">L'effet laiteux pendant le glissement</h3>
+<p>Quand une tuile est glissée sur une autre, la tuile <strong>du dessous</strong> doit s'illuminer en blanc laiteux. Le chemin a été long :</p>
+<ol type="1">
+<li>Un rectangle blanc derrière l'image : invisible, car le PNG est devant. Tout ce que l'on donne à l'arrière-plan (<code>background-color</code>) se trouve <strong>derrière</strong> l'image.</li>
+<li>Un effet Qt sur le bouton (<code>QGraphicsColorizeEffect</code>) colore l'image elle-même :</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a>effect <span class="op">=</span> QGraphicsColorizeEffect()</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a>effect.setColor(QColor(<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>))</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a>effect.setStrength(<span class="fl">0.25</span>)</span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a>button.setGraphicsEffect(effect)</span></code></pre></div>
+<ol start="3" type="1">
+<li>Ce qui m'a finalement plu est une <strong>superposition (overlay)</strong> : un widget blanc semi-transparent de la taille de la tuile, aux coins arrondis, placé <strong>devant</strong> l'image. Il ne modifie pas le fichier de l'icône et s'adapte à la taille de la tuile.</li>
+</ol>
+<p>Il faut y ajouter un <strong>masque d'arrondi</strong>, pour que l'effet ne dépasse pas des coins. Marche à suivre : vérifier d'abord si la version de Qt connaît la classe (<code>from PyQt5.QtGui import QPainterPath</code> et une ligne <code>path = QPainterPath()</code>), puis construire le masque avec <code>addRoundedRect</code> et l'utiliser comme découpe.</p>
+<p>Autres améliorations que j'ai testées successivement :</p>
+<ul>
+<li>La tuile glissée devient <strong>plus sombre</strong> (comme en touchant sur le téléphone), la tuile cible plus claire.</li>
+<li>L'effet doit être <strong>symétrique</strong> (distance régulière au bord, pas une tache).</li>
+<li>Pendant le glissement, les <strong>autres</strong> tuiles doivent garder leur propre couleur (le bleu reste bleu).</li>
+<li>L'image agrandie est <strong>coupée</strong> au bord : le conteneur a besoin de plus de place ou l'agrandissement au survol doit être plus petit.</li>
+</ul>
+</section><section id="s34-7"><h2>34.7 Ce que j’emporte de ce chapitre</h2><ul>
+<li>Un effet se construit en couches : qu'y a-t-il derrière, qu'y a-t-il devant l'image ?</li>
+<li>Vérifier d'abord si une fonction Qt existe dans la version installée avant de l'intégrer partout.</li>
+<li>Les sorties de développement ralentissent.</li>
+<li>Une modification, un test.</li>
+</ul>
+</section>

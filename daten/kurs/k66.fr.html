@@ -1,0 +1,231 @@
+<p><strong>Le principe :</strong> d'abord <strong>identifier</strong> le composant, puis mesurer. Qui classe mal un composant mesure selon la mauvaise méthode. Dans l'un de mes cas, sur la photo que j'avais montrée pour le contrôle d'optocoupleurs, il n'y avait pas du tout d'optocoupleurs : les CI étaient un MC3486N, un MAX154 et un PIC16F876. Mesurer n'aurait servi à rien.</p>
+<section id="s66-1"><h2>66.1 Reconnaître des composants : pas à pas</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Étape</th>
+<th>Marche à suivre</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Lire la sérigraphie de la carte</td>
+<td>Les repères disent le type de composant : <code>R</code> résistance, <code>C</code> condensateur, <code>L</code> bobine, <code>D</code> diode, <code>Q</code>/<code>T</code> transistor, <code>U</code>/<code>IC</code> circuit intégré, <code>F</code> fusible, <code>K</code> relais, <code>X</code>/<code>Y</code> quartz</td>
+</tr>
+<tr class="even">
+<td>2. Lire précisément les chiffres</td>
+<td>Une confusion comme <code>D1</code> au lieu de <code>D10</code> ne change rien au type de composant, mais peut compter pour une recommande</td>
+</tr>
+<tr class="odd">
+<td>3. Regarder l'environnement</td>
+<td>Une diode à côté d'une bobine et d'un CI régulateur indique un régulateur à découpage ; c'est le plus souvent une <strong>diode Schottky</strong> ou une <strong>diode de roue libre</strong></td>
+</tr>
+<tr class="even">
+<td>4. Déchiffrer le marquage</td>
+<td>Chercher l'abréviation sur Internet, ouvrir la fiche technique du fabricant</td>
+</tr>
+<tr class="odd">
+<td>5. Vérifier la fonction</td>
+<td>Mesurer selon la méthode (sections ci-dessous)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Cas : composant CMS noir dessoudé, position D10.</strong> À côté se trouvaient une bobine (« 470 », c'est-à-dire 47 µH), un CI régulateur et des condensateurs électrolytiques (220 µF / 16 V). C'est la structure typique d'un <strong>convertisseur abaisseur</strong> (DC/DC). La diode y a le plus souvent l'un de ces rôles :</p>
+<ul>
+<li><strong>chemin de roue libre</strong> pour la bobine, quand l'interrupteur du régulateur coupe,</li>
+<li>redressement,</li>
+<li>protection contre l'inversion de polarité.</li>
+</ul>
+<p>Une soudure décolorée à côté du composant est un indice de surchauffe due à un court-circuit ou une surcharge. D'où la question de la cause de la panne : un fusible a-t-il sauté ? L'appareil était-il déjà tombé en panne avant ?</p>
+</section><section id="s66-2"><h2>66.2 Tester la diode</h2><p>Le contrôle se fait avec le <strong>test de diode</strong> du multimètre, composant dessoudé (ou au moins hors tension) :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Mesure</th>
+<th>Attendu pour une diode intacte</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Rouge sur l'anode, noir sur la cathode (sens passant)</td>
+<td><strong>Silicium</strong> environ 0,5 à 0,7 V, <strong>Schottky</strong> environ 0,15 à 0,45 V, <strong>LED</strong> selon la couleur 1,6 à 3,3 V</td>
+</tr>
+<tr class="even">
+<td>inversement (sens bloquant)</td>
+<td><code>OL</code> (infini)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Défectueuse : continuité dans <strong>les deux</strong> sens (court-circuit) ou <code>OL</code> dans les deux sens (coupée). La cathode est marquée sur la plupart des diodes par un <strong>anneau ou un trait</strong>.</p>
+</section><section id="s66-3"><h2>66.3 Diode TVS : SMBJ15A contre SMBJ15CA</h2><p>Une <strong>diode TVS</strong> (protection contre les surtensions) dérive brièvement de grands courants d'impulsion et écrête ainsi les pics de tension.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>SMBJ15A</th>
+<th>SMBJ15CA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sens</td>
+<td><strong>unidirectionnelle</strong> (un sens)</td>
+<td><strong>bidirectionnelle</strong> (les deux sens, le « C »)</td>
+</tr>
+<tr class="even">
+<td>Usage</td>
+<td>Tension continue, seulement surtension positive</td>
+<td>Tension alternative, lignes de données</td>
+</tr>
+<tr class="odd">
+<td>Tension de service</td>
+<td>15 V</td>
+<td>15 V</td>
+</tr>
+<tr class="even">
+<td>Tension de claquage</td>
+<td>environ 16,7 à 18,5 V</td>
+<td>environ 16,7 à 18,5 V</td>
+</tr>
+<tr class="odd">
+<td>Tension d'écrêtage</td>
+<td>environ 24,4 V</td>
+<td>environ 24,4 V</td>
+</tr>
+<tr class="even">
+<td>Puissance d'impulsion</td>
+<td>600 W</td>
+<td>600 W</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Un remplacement est-il possible ?</strong> La bidirectionnelle remplace <strong>souvent</strong> l'unidirectionnelle quand l'entrée ne reçoit qu'une tension continue sans composantes négatives. Mais le mieux est de remettre le <strong>type d'origine</strong> : une bidirectionnelle ne protège dans le sens négatif qu'à environ −15 V, alors qu'une unidirectionnelle y conduit comme une diode normale et limite la tension à environ −0,7 V. Cela peut faire une différence en cas d'inversion de polarité. (Vérifier les valeurs d'après la fiche technique de la série.)</p>
+</section><section id="s66-4"><h2>66.4 Tester le MOSFET (exemple : STW9NK90Z, canal N, 900 V, TO-247)</h2><p>Un MOSFET est un interrupteur commandé en tension à trois bornes : <strong>grille (G), drain (D), source (S)</strong>. Sur le boîtier TO-247, vu de face (inscription vers moi, pattes vers le bas), depuis la gauche : <strong>1 = grille, 2 = drain, 3 = source</strong> ; la languette métallique est reliée au drain. Entre drain et source se trouve en interne une <strong>diode de corps</strong>.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Étape</th>
+<th>Mesure (test de diode, composant démonté)</th>
+<th>Attendu</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Décharger la grille : relier brièvement les broches 1 et 3</td>
+<td>–</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Noir sur la source (3), rouge sur le drain (2)</td>
+<td><code>OL</code>, pas de conduction</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Rouge sur la source (3), noir sur le drain (2)</td>
+<td>Diode de corps dans le sens passant, environ 0,4 à 0,8 V</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Mesurer la grille contre la source et contre le drain</td>
+<td><code>OL</code> (la grille est isolée)</td>
+</tr>
+<tr class="odd">
+<td>5 (facultatif)</td>
+<td>Toucher brièvement la grille avec le rouge par rapport à la source (« charger »), puis mesurer drain–source</td>
+<td>après la charge, le canal conduit, après la décharge de nouveau non</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Défectueux</strong> si drain–source est proche de 0 V (continuité) dans les deux sens, ou si la grille est à basse impédance vers la source ou le drain.</p>
+<p><strong>Quand le MOSFET chauffe beaucoup dans le montage,</strong> il n'est pas forcément défectueux lui-même. Autres causes possibles :</p>
+<ul>
+<li>courant de charge trop élevé,</li>
+<li>commande de grille trop faible : il ne commute pas complètement et travaille en zone linéaire, où il produit beaucoup de chaleur perdue,</li>
+<li>circuit de pilotage défectueux,</li>
+<li>mauvais refroidissement,</li>
+<li>défaut dans l'environnement : transformateur, diode, condensateur ou snubber (circuit d'amortissement).</li>
+</ul>
+<p><strong>Attention :</strong> le STW9NK90Z est un type 900 V. Dans son environnement (circuit intermédiaire), il y a plusieurs centaines de volts, même après extinction (section 65.3).</p>
+</section><section id="s66-5"><h2>66.5 Tester l’optocoupleur (par exemple PC817, TLP621, « 3G P621 »)</h2><p>Un optocoupleur transmet un signal <strong>isolé galvaniquement</strong> par la lumière : l'entrée est une <strong>LED</strong>, la sortie un <strong>phototransistor</strong>. Pour le type à 4 broches :</p>
+<pre class="text"><code>Pin 1 = Anode (+)       Pin 4 = Kollektor
+Pin 2 = Kathode (−)     Pin 3 = Emitter</code></pre>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Contrôle</th>
+<th>Mesure</th>
+<th>Attendu</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Entrée</td>
+<td>Test de diode, rouge sur la broche 1, noir sur la broche 2</td>
+<td>environ 0,9 à 1,4 V</td>
+</tr>
+<tr class="even">
+<td>Entrée inversée</td>
+<td>Rouge sur la broche 2, noir sur la broche 1</td>
+<td><code>OL</code></td>
+</tr>
+<tr class="odd">
+<td>Sortie sans commande</td>
+<td>Broche 3 contre broche 4</td>
+<td>haute résistance</td>
+</tr>
+<tr class="even">
+<td>Test de commutation</td>
+<td>Entrée : 5 V via 470 Ω sur la broche 1, broche 2 à la masse (environ 8 mA dans la LED). Sortie : broche 4 via 10 kΩ à 5 V, broche 3 à la masse</td>
+<td>LED éteinte : broche 4 environ 5 V. LED allumée : broche 4 environ 0 à 0,3 V</td>
+</tr>
+</tbody>
+</table></div>
+<p>La résistance série découle de <code>R = (UB − UF) / IF = (5 V − 1,2 V) / 8 mA ≈ 475 Ω</code> → 470 Ω. Une autre caractéristique est le <strong>rapport de transfert de courant (CTR)</strong> : quelle part du courant de la LED arrive à la sortie (pour le PC817 selon la classe environ 50 à 600 %). Si l'optocoupleur faiblit avec l'âge, le montage devient lentement peu fiable.</p>
+</section><section id="s66-6"><h2>66.6 Transistors, condensateurs, bobines</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Composant</th>
+<th>Contrôle</th>
+<th>Remarque</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Transistor bipolaire</strong> (NPN)</td>
+<td>Test de diode : base–émetteur et base–collecteur sont chacun une diode (rouge sur la base : environ 0,6 V). Collecteur–émetteur <code>OL</code> dans les deux sens</td>
+<td>Le PNP est inversé</td>
+</tr>
+<tr class="even">
+<td><strong>Condensateur</strong></td>
+<td>Mesurer la capacité (appareil avec fonction C) ; pour les électrolytiques, faire attention au bombement/aux fuites</td>
+<td><strong>Décharger</strong> avant de mesurer</td>
+</tr>
+<tr class="odd">
+<td><strong>Résistance</strong></td>
+<td>Mesure en Ω, dessoudée</td>
+<td>Lire l'anneau de couleur ou le code chiffré</td>
+</tr>
+<tr class="even">
+<td><strong>Bobine</strong></td>
+<td>Continuité (petite résistance)</td>
+<td>Inductance seulement avec un LCR-mètre</td>
+</tr>
+<tr class="odd">
+<td><strong>Fusible</strong></td>
+<td>Continuité</td>
+<td>ne remplacer que par les mêmes valeurs nominales</td>
+</tr>
+<tr class="even">
+<td><strong>Relais</strong></td>
+<td>Mesurer la résistance de la bobine ; clic audible en appliquant la tension nominale</td>
+<td>Ne pas oublier la diode de roue libre</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Code chiffré des résistances CMS :</strong> <code>472</code> signifie 47 avec deux zéros = 4700 Ω = 4,7 kΩ. <code>103</code> = 10 kΩ. <code>4R7</code> = 4,7 Ω.</p>
+</section><section id="s66-7"><h2>66.7 Exercices avec solutions</h2><ol type="1">
+<li><strong>Exercice :</strong> sur une résistance CMS est inscrit <code>222</code>. Quelle valeur ? <strong>Solution :</strong> 22 avec deux zéros = 2200 Ω = 2,2 kΩ.</li>
+<li><strong>Exercice :</strong> au test de diode, une diode affiche 0,00 V dans les deux sens. Diagnostic ? <strong>Solution :</strong> court-circuit, diode défectueuse.</li>
+<li><strong>Exercice :</strong> l'optocoupleur doit fonctionner avec 10 mA, tension de service 12 V, UF = 1,2 V. Résistance série ? <strong>Solution :</strong> <code>R = (12 − 1,2) / 0,01 = 1080 Ω</code> → 1 kΩ (donne environ 10,8 mA) ou 1,2 kΩ (9 mA).</li>
+</ol>
+</section>

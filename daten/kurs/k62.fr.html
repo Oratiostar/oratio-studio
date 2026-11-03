@@ -1,0 +1,227 @@
+<section id="s62-1"><h2>62.1 Les trois formules de base</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Formule</th>
+<th>Nom</th>
+<th>Énoncé</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>U = R · I</code></td>
+<td>Loi d'Ohm</td>
+<td>Tension = résistance fois courant</td>
+</tr>
+<tr class="even">
+<td><code>P = U · I</code></td>
+<td>Puissance</td>
+<td>Puissance = tension fois courant</td>
+</tr>
+<tr class="odd">
+<td><code>P = U² / R</code></td>
+<td>Puissance à tension fixe</td>
+<td>découle des deux du dessus</td>
+</tr>
+<tr class="even">
+<td><code>P = I² · R</code></td>
+<td>Puissance à courant fixe</td>
+<td>également dérivée</td>
+</tr>
+</tbody>
+</table></div>
+<p>De chaque formule, on peut tirer les autres grandeurs :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Cherché</th>
+<th>À partir de la tension et du courant</th>
+<th>À partir de la tension et de la résistance</th>
+<th>À partir du courant et de la résistance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tension <code>U</code></td>
+<td>–</td>
+<td>–</td>
+<td><code>U = R · I</code></td>
+</tr>
+<tr class="even">
+<td>Courant <code>I</code></td>
+<td>–</td>
+<td><code>I = U / R</code></td>
+<td>–</td>
+</tr>
+<tr class="odd">
+<td>Résistance <code>R</code></td>
+<td><code>R = U / I</code></td>
+<td>–</td>
+<td>–</td>
+</tr>
+<tr class="even">
+<td>Puissance <code>P</code></td>
+<td><code>P = U · I</code></td>
+<td><code>P = U² / R</code></td>
+<td><code>P = I² · R</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Unités et préfixes.</strong> Tension en volts (V), courant en ampères (A), résistance en ohms (Ω), puissance en watts (W). On s'épargne les préfixes au calcul en les convertissant en puissances de dix :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Préfixe</th>
+<th>Symbole</th>
+<th>Facteur</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Micro</td>
+<td>µ</td>
+<td>10⁻⁶</td>
+<td>100 µA = 0,0001 A</td>
+</tr>
+<tr class="even">
+<td>Milli</td>
+<td>m</td>
+<td>10⁻³</td>
+<td>20 mA = 0,02 A</td>
+</tr>
+<tr class="odd">
+<td>Kilo</td>
+<td>k</td>
+<td>10³</td>
+<td>4,7 kΩ = 4700 Ω</td>
+</tr>
+<tr class="even">
+<td>Méga</td>
+<td>M</td>
+<td>10⁶</td>
+<td>1 MΩ = 1 000 000 Ω</td>
+</tr>
+<tr class="odd">
+<td>Nano / Pico (condensateurs)</td>
+<td>n / p</td>
+<td>10⁻⁹ / 10⁻¹²</td>
+<td>100 nF = 0,1 µF</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Erreur de calcul la plus fréquente :</strong> mélanger mA et A. C'est pourquoi, avant le calcul, tout convertir en volts, ampères, ohms.</p>
+</section><section id="s62-2"><h2>62.2 Montage en série et en parallèle</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Montage</th>
+<th>Résistance totale</th>
+<th>Courant</th>
+<th>Tension</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Série</td>
+<td><code>R = R1 + R2 + …</code></td>
+<td>partout identique</td>
+<td>se répartit selon les résistances</td>
+</tr>
+<tr class="even">
+<td>Parallèle</td>
+<td><code>1/R = 1/R1 + 1/R2 + …</code> (pour deux : <code>R = R1·R2 / (R1+R2)</code>)</td>
+<td>se répartit</td>
+<td>partout identique</td>
+</tr>
+</tbody>
+</table></div>
+<p>Deux résistances identiques en parallèle donnent la moitié. La résistance totale en parallèle est <strong>toujours plus petite que la plus petite résistance individuelle</strong>. Ce contrôle de plausibilité détecte beaucoup d'erreurs de calcul.</p>
+</section><section id="s62-3"><h2>62.3 Cas : puissance et résistance</h2><p>Ma question était : à 230 V et avec deux lampes, la résistance doit-elle être petite ou grande pour mesurer la puissance la plus élevée ? La réponse se trouve dans <code>P = U² / R</code> : à tension fixe, la puissance est <strong>plus grande quand la résistance est plus petite</strong>.</p>
+<p>Exemple de calcul à 230 V :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Résistance</th>
+<th>Courant <code>I = U/R</code></th>
+<th>Puissance <code>P = U²/R</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>529 Ω</td>
+<td>0,43 A</td>
+<td>100 W</td>
+</tr>
+<tr class="even">
+<td>264,5 Ω</td>
+<td>0,87 A</td>
+<td>200 W</td>
+</tr>
+<tr class="odd">
+<td>52,9 Ω</td>
+<td>4,35 A</td>
+<td>1000 W</td>
+</tr>
+</tbody>
+</table></div>
+<p>En pratique, la résistance ne doit pas devenir arbitrairement petite : le courant surchargerait câbles, fusibles et composants. Une lampe à incandescence a en outre à <strong>froid</strong> une résistance bien plus petite qu'à chaud ; c'est pourquoi, à l'allumage, circule brièvement un multiple du courant nominal.</p>
+</section><section id="s62-4"><h2>62.4 La résistance comme composant</h2><ul>
+<li><strong>Séries E :</strong> les résistances n'existent qu'en valeurs normalisées. La série E12 a 12 valeurs par puissance de dix : 1,0 – 1,2 – 1,5 – 1,8 – 2,2 – 2,7 – 3,3 – 3,9 – 4,7 – 5,6 – 6,8 – 8,2. On calcule d'abord la valeur exacte et l'on choisit ensuite la <strong>valeur normalisée la plus proche</strong>, puis on recalcule en sens inverse et on vérifie que tout convient encore.</li>
+<li><strong>Puissance :</strong> une résistance chauffe avec <code>P = U · I</code>. Les formats usuels supportent 0,25 W ou 0,5 W. Règle empirique : n'utiliser au maximum que la <strong>moitié</strong> de la valeur nominale.</li>
+<li><strong>Tolérance :</strong> couche de carbone le plus souvent 5 %, film métallique 1 % ou mieux. Pour des mesures (shunt, diviseur), prendre du film métallique.</li>
+</ul>
+</section><section id="s62-5"><h2>62.5 Bien utiliser le multimètre</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Type de mesure</th>
+<th>Position</th>
+<th>Branchement</th>
+<th>Important</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tension continue</td>
+<td>V⎓</td>
+<td><strong>en parallèle</strong> avec le composant</td>
+<td>choisir plutôt une plage trop grande</td>
+</tr>
+<tr class="even">
+<td>Tension alternative</td>
+<td>V~</td>
+<td>en parallèle</td>
+<td>pour la tension secteur, tenir compte de la catégorie (CAT) de l'appareil</td>
+</tr>
+<tr class="odd">
+<td>Courant</td>
+<td>A</td>
+<td><strong>en série</strong> (ouvrir le circuit)</td>
+<td>mauvaise prise = le fusible grille</td>
+</tr>
+<tr class="even">
+<td>Résistance</td>
+<td>Ω</td>
+<td>Composant <strong>hors tension</strong> et mieux <strong>dessoudé</strong></td>
+<td>des composants en parallèle faussent la valeur</td>
+</tr>
+<tr class="odd">
+<td>Continuité</td>
+<td>)))</td>
+<td>hors tension</td>
+<td>sonne à faible résistance</td>
+</tr>
+<tr class="even">
+<td>Test de diode</td>
+<td>Symbole de diode</td>
+<td>Rouge sur l'anode, noir sur la cathode</td>
+<td>montre la tension directe</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Les deux plus grosses erreurs :</strong> mesurer le courant en parallèle avec la source de tension (court-circuit à travers l'appareil) et mesurer une résistance sur un montage encore sous tension. D'où la règle : d'abord mesurer la tension, puis couper, puis le reste.</p>
+</section><section id="s62-6"><h2>62.6 Exercices avec solutions</h2><ol type="1">
+<li><strong>Exercice :</strong> une LED (2,0 V, 10 mA) doit fonctionner sur 5 V. Quelle résistance série ? <strong>Solution :</strong> <code>R = (5 V − 2 V) / 0,01 A = 300 Ω</code>. Valeur normalisée la plus proche : 330 Ω. Contrôle : <code>I = 3 V / 330 Ω ≈ 9,1 mA</code>. Puissance dans la résistance : <code>3 V · 9,1 mA ≈ 27 mW</code>, donc 0,25 W suffit.</li>
+<li><strong>Exercice :</strong> quelle tension chute aux bornes de 250 Ω quand 12 mA circulent ? <strong>Solution :</strong> <code>U = 250 Ω · 0,012 A = 3 V</code>.</li>
+<li><strong>Exercice :</strong> deux résistances, 1 kΩ et 2 kΩ, en parallèle. Résistance totale ? <strong>Solution :</strong> <code>R = 1000 · 2000 / 3000 ≈ 667 Ω</code>. C'est plus petit que 1 kΩ, donc plausible.</li>
+<li><strong>Exercice :</strong> un élément chauffant a 40 Ω sous 230 V. Puissance et courant ? <strong>Solution :</strong> <code>P = 230² / 40 = 1322,5 W</code>, <code>I = 230 / 40 = 5,75 A</code>.</li>
+</ol>
+</section>

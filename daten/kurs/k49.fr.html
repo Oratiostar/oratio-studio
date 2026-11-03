@@ -1,0 +1,443 @@
+<section id="s49-1"><h2>49.1 Le Pi ne démarre pas ou se bloque au démarrage</h2><p>D'abord clarifier à <strong>quelle étape</strong> le démarrage se bloque (<a class="xr" href="#/kap/8">chapitre 8</a>). Le tableau va de l'extérieur vers l'intérieur.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Observation</th>
+<th>Étape possible</th>
+<th>Que vérifier</th>
+<th>Interprétation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Aucune LED, rien</td>
+<td>Alimentation</td>
+<td>autre bloc et autre câble ; Pi 5 : 5 V / 5 A</td>
+<td>Bloc d'alimentation ou câble</td>
+</tr>
+<tr class="even">
+<td>LED rouge allumée, verte (ACT) éteinte</td>
+<td>Le bootloader ne trouve aucun support</td>
+<td>Carte/SSD bien enfichée ? Support lisible sur un autre ordinateur ?</td>
+<td>Support ou ordre de démarrage</td>
+</tr>
+<tr class="odd">
+<td>LED verte clignote selon un motif, écran noir</td>
+<td>Le bootloader signale un code d'erreur</td>
+<td>Compter les clignotements, chercher dans la documentation Raspberry Pi</td>
+<td>Support/fichier de firmware manquant</td>
+</tr>
+<tr class="even">
+<td>Du texte défile, puis s'arrête</td>
+<td>Noyau/systemd</td>
+<td>Brancher la carte sur un autre ordinateur, lire les journaux</td>
+<td><code>cmdline.txt</code>, <code>fstab</code>, système de fichiers</td>
+</tr>
+<tr class="odd">
+<td>« Waiting for root device » / <code>rootwait</code> sans fin</td>
+<td>Le noyau ne trouve pas le système de fichiers racine</td>
+<td>Comparer <code>root=PARTUUID=…</code> dans <code>cmdline.txt</code> avec <code>blkid</code></td>
+<td>Mauvais PARTUUID après un clone (<a class="xr" href="#/kap/39/39.2">chapitre 39.2</a>)</td>
+</tr>
+<tr class="even">
+<td>L'écran de connexion revient toujours</td>
+<td>La session s'interrompt</td>
+<td><code>journalctl -b</code>, droits dans le dossier personnel (<code>ls -ld ~</code>), place (<code>df -h</code>)</td>
+<td>Dossier personnel plein ou mauvais propriétaire</td>
+</tr>
+<tr class="odd">
+<td>Le bureau apparaît, mais vide/sans barre</td>
+<td>Programmes de session</td>
+<td><code>ps aux | grep -E "labwc|wf-panel"</code></td>
+<td>Erreur de démarrage automatique</td>
+</tr>
+<tr class="even">
+<td><code>Device-tree file 'bcm2712-rpi-5-b.dtb' not found</code></td>
+<td>Firmware</td>
+<td>Regarder la partition de démarrage</td>
+<td>Image Pi 4 sur Pi 5</td>
+</tr>
+<tr class="odd">
+<td>Démarre depuis le mauvais support</td>
+<td>Bootloader</td>
+<td><code>sudo rpi-eeprom-config | grep BOOT_ORDER</code></td>
+<td><code>0xf461</code> = SD → NVMe → USB (de droite à gauche)</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s49-2"><h2>49.2 Alimentation et stabilité</h2><div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="ex">vcgencmd</span> get_throttled</span></code></pre></div>
+<p>Le nombre est un masque de bits (hexadécimal) :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Bit (valeur)</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0 (<code>0x1</code>)</td>
+<td><strong>maintenant</strong> sous-tension</td>
+</tr>
+<tr class="even">
+<td>1 (<code>0x2</code>)</td>
+<td><strong>maintenant</strong> fréquence d'horloge limitée</td>
+</tr>
+<tr class="odd">
+<td>2 (<code>0x4</code>)</td>
+<td><strong>maintenant</strong> bridé</td>
+</tr>
+<tr class="even">
+<td>3 (<code>0x8</code>)</td>
+<td><strong>maintenant</strong> limite de température (douce)</td>
+</tr>
+<tr class="odd">
+<td>16 (<code>0x10000</code>)</td>
+<td>Sous-tension <strong>survenue depuis le démarrage</strong></td>
+</tr>
+<tr class="even">
+<td>17 (<code>0x20000</code>)</td>
+<td>Limitation de fréquence survenue</td>
+</tr>
+<tr class="odd">
+<td>18 (<code>0x40000</code>)</td>
+<td>Bridage survenu</td>
+</tr>
+<tr class="even">
+<td>19 (<code>0x80000</code>)</td>
+<td>Limite de température survenue</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>0x0</code> est correct. <code>0x50005</code> signifie sous-tension et bridage maintenant et auparavant. <strong>Mesures :</strong> bloc d'alimentation officiel, câble court et bon, rien de gourmand en courant sur l'USB sans alimentation propre. Température : <code>vcgencmd measure_temp</code> ; au-dessus de 80 °C, vérifier le refroidissement (le ventilateur tourne ? le radiateur est-il en place ?).</p>
+</section><section id="s49-3"><h2>49.3 Écran</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Commande</th>
+<th>Interprétation</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pas d'image</td>
+<td><code>dmesg | grep -i -E "hdmi|drm"</code>, autre port HDMI</td>
+<td>Le Pi 5 a deux ports micro-HDMI ; câble ou moniteur</td>
+<td>vérifier un autre port, un autre câble, l'entrée du moniteur</td>
+</tr>
+<tr class="even">
+<td>Tout est minuscule en 4K</td>
+<td><code>wlr-randr</code></td>
+<td>L'échelle est à 1</td>
+<td><code>wlr-randr --output HDMI-A-1 --scale 3</code> (<a class="xr" href="#/kap/10">chapitre 10</a>)</td>
+</tr>
+<tr class="odd">
+<td>Réglage perdu après redémarrage</td>
+<td>–</td>
+<td>n'agit que dans la session</td>
+<td>Démarrage automatique, Kanshi, Watchdog (<a class="xr" href="#/kap/8/8.8">chapitre 8.8</a>, 10)</td>
+</tr>
+<tr class="even">
+<td>Échelle perdue après extinction/rallumage du moniteur</td>
+<td><code>ps aux | grep kanshi</code></td>
+<td>Branchement à chaud ; Kanshi ne tourne pas ou le moniteur ne signale aucun événement</td>
+<td>Watchdog</td>
+</tr>
+<tr class="odd">
+<td><code>failed to connect to display</code></td>
+<td><code>echo $XDG_SESSION_TYPE</code></td>
+<td>L'outil tourne sans environnement Wayland (par ex. via SSH)</td>
+<td>définir <code>export XDG_RUNTIME_DIR=/run/user/1000</code> et <code>export WAYLAND_DISPLAY=wayland-0</code> ou l'exécuter sur le bureau même</td>
+</tr>
+<tr class="even">
+<td>Kanshi ne démarre pas</td>
+<td><code>kanshi</code> dans le terminal</td>
+<td><code>failed to parse config file</code></td>
+<td>Écriture de la version installée (<a class="xr" href="#/kap/10">chapitre 10</a>, 33)</td>
+</tr>
+<tr class="odd">
+<td>Nom de sortie inconnu</td>
+<td><code>wlr-randr</code></td>
+<td><code>HDMI-A-1</code> ou <code>HDMI-A-2</code></td>
+<td>Lire les noms dans la sortie</td>
+</tr>
+<tr class="even">
+<td>Image décalée après changement de moniteur</td>
+<td><code>wlr-randr</code></td>
+<td>Position/échelle</td>
+<td>Profil dans Kanshi par moniteur</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s49-4"><h2>49.4 Son</h2><p>Le trajet du son : <strong>programme → serveur audio (PipeWire) → périphérique de sortie (HDMI, jack, USB, Bluetooth)</strong>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="ex">wpctl</span> status                       <span class="co"># PipeWire: Geräte, Standardgerät (mit *)</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="ex">pactl</span> list short sinks             <span class="co"># Ausgabegeräte</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">aplay</span> <span class="at">-l</span>                           <span class="co"># Tonkarten auf Kernel-Ebene</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="ex">speaker-test</span> <span class="at">-t</span> wav <span class="at">-c</span> 2           <span class="co"># Testton</span></span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a><span class="ex">wpctl</span> set-mute @DEFAULT_AUDIO_SINK@ 0     <span class="co"># Stumm aufheben</span></span>
+<span id="cb1-6"><a aria-hidden="true" href="#cb1-6" tabindex="-1"></a><span class="ex">wpctl</span> set-volume @DEFAULT_AUDIO_SINK@ 0.7 <span class="co"># Lautstärke 70 %</span></span></code></pre></div>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Interprétation</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Appareil absent de <code>aplay -l</code></td>
+<td>Le noyau ne le connaît pas</td>
+<td>Câble/port ; <code>dmesg | tail</code></td>
+</tr>
+<tr class="even">
+<td>Appareil présent, mais pas de son</td>
+<td>mauvais appareil par défaut ou sourdine</td>
+<td>Définir le défaut avec <code>wpctl set-default ID</code>, lever la sourdine</td>
+</tr>
+<tr class="odd">
+<td>Son seulement par le HDMI du moniteur</td>
+<td>Le défaut est sur HDMI</td>
+<td>passer sur jack/USB/Bluetooth</td>
+</tr>
+<tr class="even">
+<td>Son faible ou déformé</td>
+<td>Source/amplificateur</td>
+<td>Vérifier le mixeur <code>alsamixer</code></td>
+</tr>
+<tr class="odd">
+<td>Microphone vide</td>
+<td>Mauvais périphérique d'entrée</td>
+<td><code>pactl list short sources</code>, choisir la source par défaut (<a class="xr" href="#/kap/30/30.3">chapitre 30.3</a>)</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s49-5"><h2>49.5 Disques, SSD, NVMe</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Commande</th>
+<th>Interprétation</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>NVMe invisible</td>
+<td><code>lsblk</code>, <code>lspci</code>, <code>dmesg | grep -i nvme</code></td>
+<td>aucune entrée dans <code>lspci</code> : connexion/adaptateur/alimentation</td>
+<td>rebrancher HAT/câble ; activer PCIe : <code>dtparam=pciex1</code> dans <code>config.txt</code></td>
+</tr>
+<tr class="even">
+<td>NVMe lent</td>
+<td><code>sudo lspci -vv | grep -i LnkSta</code></td>
+<td>La liaison tourne à une génération basse</td>
+<td><code>dtparam=pciex1_gen=3</code> (seulement si l'appareil le supporte)</td>
+</tr>
+<tr class="odd">
+<td>Le disque USB montre <code>0B</code> / « Read Capacity failed »</td>
+<td><code>dmesg | tail</code></td>
+<td>Problème d'adaptateur/disque, <strong>pas</strong> de formatage</td>
+<td>Bien insérer le disque, essayer un autre adaptateur</td>
+</tr>
+<tr class="even">
+<td>Le disque n'est pas monté</td>
+<td><code>lsblk -f</code></td>
+<td>Système de fichiers manquant ou inconnu</td>
+<td><code>sudo mount /dev/sda1 /mnt</code> ; sinon formater (efface tout !)</td>
+</tr>
+<tr class="odd">
+<td>Protection en écriture sur le disque</td>
+<td><code>ls -l</code>, <code>mount | grep NAME</code></td>
+<td>Propriétaire <code>root</code> ou <code>ro</code></td>
+<td><code>sudo chown -R oratio:oratio …</code></td>
+</tr>
+<tr class="even">
+<td>Le système passe soudain en « Read-only file system »</td>
+<td><code>dmesg | grep -i -E "error|remount"</code></td>
+<td>Erreur de système de fichiers, carte/disque défectueux, coupure de courant</td>
+<td>Redémarrer ; <code>fsck</code> ; remplacer le support</td>
+</tr>
+<tr class="odd">
+<td>La carte SD a des erreurs</td>
+<td><code>dmesg | grep -i mmc</code></td>
+<td>Carte défectueuse</td>
+<td>Sauvegarde, nouvelle carte (<a class="xr" href="#/kap/9">chapitre 9</a>)</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s49-6"><h2>49.6 GPIO, I²C, SPI, UART</h2><p><strong>À noter pour le Pi 5 :</strong> l'ancien paquet <code>RPi.GPIO</code> ne fonctionne pas sur le Pi 5 (<code>Cannot determine SOC peripheral base address</code>). Utiliser à la place <code>gpiozero</code> (avec <code>lgpio</code>) ou <code>rpi-lgpio</code>.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Commande</th>
+<th>Interprétation</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>/dev/i2c-1</code> manque</td>
+<td><code>ls /dev/i2c*</code></td>
+<td>I²C non activé</td>
+<td><code>sudo raspi-config</code> → Interface Options → I2C ; redémarrer</td>
+</tr>
+<tr class="even">
+<td><code>i2cdetect</code> n'affiche rien</td>
+<td><code>sudo i2cdetect -y 1</code></td>
+<td>Câblage/alimentation/résistances de rappel</td>
+<td>SDA/SCL non inversés ? 3,3 V au lieu de 5 V ? GND relié ?</td>
+</tr>
+<tr class="odd">
+<td><code>UU</code> au lieu d'une adresse</td>
+<td>–</td>
+<td>un pilote a occupé l'adresse</td>
+<td>correct, l'appareil tourne déjà</td>
+</tr>
+<tr class="even">
+<td>Adresse différente de celle attendue</td>
+<td>–</td>
+<td>0x3C ou 0x3D (OLED), 0x76 ou 0x77 (BME280)</td>
+<td>Adapter l'adresse dans le programme</td>
+</tr>
+<tr class="odd">
+<td><code>Permission denied</code> pour I²C/GPIO</td>
+<td><code>groups</code></td>
+<td>Groupes manquants</td>
+<td><code>sudo usermod -aG i2c,gpio,spi $USER</code>, se reconnecter</td>
+</tr>
+<tr class="even">
+<td>État de la broche inconnu</td>
+<td><code>pinctrl get 17</code></td>
+<td>montre fonction et niveau</td>
+<td>–</td>
+</tr>
+<tr class="odd">
+<td>Entrée flottante (valeurs aléatoires)</td>
+<td>–</td>
+<td>pas de résistance de rappel</td>
+<td>activer le pull-up/pull-down interne</td>
+</tr>
+<tr class="even">
+<td>Tout fonctionne, mais un appareil non</td>
+<td>Contre-épreuve</td>
+<td></td>
+<td>autre broche, autre câble, programme d'exemple</td>
+</tr>
+<tr class="odd">
+<td><code>/dev/ttyAMA0</code> ou <code>serial0</code> occupé</td>
+<td><code>ls -l /dev/serial*</code></td>
+<td>La console utilise l'interface</td>
+<td>désactiver la console dans <code>raspi-config</code>, activer l'UART matériel</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s49-7"><h2>49.7 Ventilateur, LED, OLED du boîtier Freenove</h2><p>Le boîtier a trois appareils avec leurs propres services (<a class="xr" href="#/kap/11">chapitre 11</a>).</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Commande</th>
+<th>Interprétation</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Le ventilateur est à l'arrêt</td>
+<td><code>systemctl status</code> du service du ventilateur ; <code>ps aux | grep fan</code></td>
+<td>Le service ne tourne pas</td>
+<td>Démarrer le service ; vérifier le démarrage automatique ; sous Batocera il ne tourne pas</td>
+</tr>
+<tr class="even">
+<td>L'OLED n'affiche rien après modification</td>
+<td>Lancer le fichier dans le <strong>terminal</strong> (<code>python3 datei.py</code>)</td>
+<td>Sinon l'erreur est avalée</td>
+<td>Lire le message d'erreur</td>
+</tr>
+<tr class="odd">
+<td>La LED ne réagit pas</td>
+<td><code>ls LED/Treiber</code>, <code>ldconfig -p | grep freenove</code></td>
+<td>Bibliothèque de pilote manquante</td>
+<td>Relancer <code>install.sh</code> (<a class="xr" href="#/kap/36/36.4">chapitre 36.4</a>)</td>
+</tr>
+<tr class="even">
+<td>L'interrupteur dans le Control Center n'a aucun effet</td>
+<td><code>sudo -n true &amp;&amp; echo OK</code></td>
+<td><code>sudo</code> demande un mot de passe</td>
+<td>Relancer <code>bash install.sh</code></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s49-8"><h2>49.8 Heure, réseau, SSH</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Commande</th>
+<th>Interprétation</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Heure fausse</td>
+<td><code>timedatectl</code></td>
+<td>Fuseau horaire ou pas de synchronisation de l'heure</td>
+<td><code>sudo timedatectl set-timezone Europe/Berlin</code> (exemple)</td>
+</tr>
+<tr class="even">
+<td>Le WLAN ne se connecte pas</td>
+<td><code>rfkill list</code>, <code>nmcli dev wifi</code></td>
+<td><code>Soft blocked: yes</code></td>
+<td><code>rfkill unblock wifi</code></td>
+</tr>
+<tr class="odd">
+<td>SSH <code>Connection refused</code></td>
+<td><code>sudo systemctl status ssh</code></td>
+<td>Service éteint</td>
+<td><code>sudo systemctl enable --now ssh</code></td>
+</tr>
+<tr class="even">
+<td>SSH <code>timed out</code></td>
+<td><code>ping IP</code></td>
+<td>pas dans le même réseau</td>
+<td>Vérifier l'adresse avec <code>hostname -I</code> sur le Pi</td>
+</tr>
+<tr class="odd">
+<td><code>REMOTE HOST IDENTIFICATION HAS CHANGED</code></td>
+<td>–</td>
+<td>nouveau système à la même adresse</td>
+<td><code>ssh-keygen -R IP</code></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s49-9"><h2>49.9 Démarrage automatique</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Wo</th>
+<th>Agit</th>
+<th>Remarque</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>~/.config/labwc/autostart</code></td>
+<td>Programmes au démarrage de la session</td>
+<td>chaque ligne avec <code>&amp;</code> à la fin</td>
+</tr>
+<tr class="even">
+<td><code>~/.config/autostart/name.desktop</code></td>
+<td>Entrée de bureau</td>
+<td><code>Exec=</code> avec chemin absolu</td>
+</tr>
+<tr class="odd">
+<td>Service systemd</td>
+<td>au démarrage du système (avant la connexion)</td>
+<td><code>systemctl enable</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Le programme de démarrage automatique ne démarre pas :</strong> d'abord exécuter exactement cette ligne dans le terminal. Si cela marche là : faire précéder de <code>sleep 3</code> (le bureau n'est pas encore prêt). Si cela ne marche pas là : lire le message d'erreur.</p>
+</section>

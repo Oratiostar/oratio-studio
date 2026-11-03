@@ -1,0 +1,123 @@
+<section id="s27-1"><h2>27.1 Jeux rétro sur le Steam Deck (RetroDECK)</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Sujet</th>
+<th>Réponse</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Dossier BIOS PS1 et PS2</td>
+<td><code>/home/deck/retrodeck/bios/</code> (PS2 dans un sous-dossier <code>ps2</code>, exactement selon les instructions de l'émulateur)</td>
+</tr>
+<tr class="even">
+<td>BIOS mal enregistré</td>
+<td>Cause la plus fréquente quand la PS2 (PCSX2) ne démarre pas</td>
+</tr>
+<tr class="odd">
+<td>Formats de fichier PS1</td>
+<td><code>BIN</code> + <code>CUE</code> (image plus description), <code>CHD</code> (compressé, recommandé), <code>PBP</code> (format de paquet Sony, par ex. Bowling)</td>
+</tr>
+<tr class="even">
+<td>Ouvrir le menu en jeu</td>
+<td>Raccourci de RetroArch : Select + Start en même temps. Sur une manette PlayStation, les touches sont attribuées autrement</td>
+</tr>
+<tr class="odd">
+<td>Soudain le Deck lit tout à voix haute</td>
+<td>Le lecteur d'écran (accessibilité) a été activé par erreur et peut être désactivé dans les réglages sous Accessibilité</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s27-2"><h2>27.2 Double démarrage : SteamOS et Windows</h2><h3 id="was-passiert-ist">Ce qui s'est passé</h3>
+<ol type="1">
+<li>Windows est installé sur une partition préparée et démarre, <strong>mais SteamOS n'est ensuite plus accessible.</strong></li>
+<li>Même avec le raccourci du menu de démarrage, SteamOS ne démarrait pas. Il a fallu le <strong>réinstaller</strong>, et Windows a été perdu au passage.</li>
+<li>Entre-temps, l'appareil s'est retrouvé en <strong>mode commande GRUB</strong> (un écran avec <code>grub&gt;</code>).</li>
+</ol>
+<h3 id="ursache">Cause</h3>
+<p>Lors de l'installation, Windows écrit son propre bootloader dans la <strong>partition EFI</strong> et se place en tête de l'ordre de démarrage. L'entrée de SteamOS est alors écrasée ou repoussée dans l'ordre de démarrage. S'il faut réinstaller SteamOS à chaque fois, le problème est <strong>plus profond que le bootloader</strong> : la partition SteamOS ou la table de partitions est endommagée ou écrasée.</p>
+<h3 id="hilfsmittel-und-begriffe">Outils et notions</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Notion</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Partition EFI</strong></td>
+<td>Petite partition contenant les fichiers de démarrage de tous les systèmes</td>
+</tr>
+<tr class="even">
+<td><strong>GPT</strong></td>
+<td>Table de partitions moderne</td>
+</tr>
+<tr class="odd">
+<td><strong>Free space before</strong></td>
+<td>Espace libre <strong>avant</strong> (à gauche de) la partition. Important dans l'outil de partitionnement pour ne pas réduire le mauvais côté</td>
+</tr>
+<tr class="even">
+<td><strong>GRUB</strong></td>
+<td>Bootloader utilisé par les systèmes Linux</td>
+</tr>
+<tr class="odd">
+<td><strong>rEFInd</strong></td>
+<td>Gestionnaire de démarrage graphique qui détecte tous les systèmes installés et les propose au choix</td>
+</tr>
+<tr class="even">
+<td><strong>Clover</strong></td>
+<td>Gestionnaire de démarrage surtout répandu dans le monde Hackintosh. rEFInd est considéré comme plus simple et plus universel</td>
+</tr>
+<tr class="odd">
+<td><strong>Windows To Go</strong></td>
+<td>Windows tourne directement depuis une clé USB, sans installation fixe. Rufus propose l'option</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="erste-hilfe-bei-grub">Premiers secours avec <code>grub&gt;</code></h3>
+<pre class="text"><code>exit</code></pre>
+<p>Cela tente de revenir au menu de démarrage. Si cela n'aide pas, il faut une réparation avec une clé de démarrage.</p>
+<h3 id="refind-entfernen">Supprimer rEFInd</h3>
+<p>La méthode dépend du système. Sous Linux, on supprime le dossier rEFInd de la partition EFI et l'entrée de la liste de démarrage (<code>efibootmgr</code>). Sous Windows, cela se fait avec <code>bcdedit</code> et la suppression du dossier. La méthode Mac ne s'applique pas au Steam Deck.</p>
+<h3 id="windows-ohne-product-key-hash-prüfen">Windows sans clé de produit, vérifier le hash</h3>
+<p>L'installation comprend la vérification du téléchargement : comparer <code>Get-FileHash</code> (PowerShell) ou <code>sha256sum</code> (Linux) avec la valeur du site (<a class="xr" href="#/kap/25/25.7">chapitre 25.7</a>). Une activation n'est pas immédiatement nécessaire, Windows fonctionne aussi en mode limité.</p>
+</section><section id="s27-3"><h2>27.3 Windows 11 24H2 et le double démarrage</h2><p><strong>Observation :</strong> la mise à jour 24H2 cause souvent des problèmes en double démarrage avec SteamOS (SteamOS ne démarre plus, écran noir au changement). Il vaut donc mieux rester sur <strong>Windows 11 23H2</strong>.</p>
+<p><strong>Question : 23H2 passe-t-il automatiquement à 24H2 avec « Rechercher des mises à jour » ?</strong> Pas automatiquement par un clic sur les mises à jour de pilotes, mais Microsoft pousse les grandes mises à jour de fonctionnalités avec le temps. On peut l'empêcher, par exemple avec le réglage de la version cible des mises à jour de fonctionnalités dans les options de Windows Update.</p>
+<p><strong>À retenir :</strong> avant chaque grosse mise à jour Windows en double démarrage, faire une <strong>sauvegarde de la partition EFI et de la partition SteamOS</strong>.</p>
+</section><section id="s27-4"><h2>27.4 SteamOS, Bazzite et Batocera</h2><ul>
+<li><strong>SteamOS</strong> est développé par Valve pour le Steam Deck.</li>
+<li><strong>Bazzite</strong> est un système de jeu basé sur Fedora, semblable à SteamOS, mais qui fonctionne aussi sur d'autres appareils.</li>
+<li><strong>Batocera</strong> est un système purement dédié aux jeux rétro (<a class="xr" href="#/kap/26">chapitre 26</a>).</li>
+</ul>
+</section><section id="s27-5"><h2>27.5 Python : Raspberry Pi contre Steam Deck</h2><p><strong>Pour apprendre Python, le Raspberry Pi est dans la plupart des cas le meilleur choix.</strong> Raisons : il est conçu pour apprendre, tourne sous Linux, il existe beaucoup de tutoriels, et l'on pourra plus tard brancher LED, capteurs et moteurs.</p>
+<p><strong>Important :</strong> la phrase « Python est déjà installé sur le Pi » est vraie pour <strong>Raspberry Pi OS</strong> (Python 3 y est inclus). Sur le <strong>Steam Deck (SteamOS)</strong>, Python est également présent dans la base du système, mais SteamOS est un système en <strong>lecture seule</strong>. On y installe des paquets supplémentaires dans un environnement dédié (<code>python3 -m venv</code>, <a class="xr" href="#/kap/3">chapitre 3</a>) ou via Flatpak.</p>
+</section><section id="s27-6"><h2>27.6 La découverte de la « restriction » : Imager en AppImage</h2><p>Il existe un piège qui n'apparaît pas sur le Steam Deck, mais bien sur le Raspberry Pi :</p>
+<p>Un programme de flashage sous forme d'AppImage (par exemple l'Imager) fonctionne sur le <strong>Steam Deck</strong> (x86-64) directement après <code>chmod +x</code>. Sur le <strong>Pi 5</strong> (ARM64), le message <strong><code>Exec format error</code></strong> apparaît, car le fichier est construit pour la mauvaise architecture de processeur.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Appareil</th>
+<th>Processeur</th>
+<th>AppImage pour amd64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Steam Deck</td>
+<td>x86-64 (amd64)</td>
+<td>fonctionne</td>
+</tr>
+<tr class="even">
+<td>Raspberry Pi 5</td>
+<td>ARM64 (aarch64)</td>
+<td><code>Exec format error</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Solution sur le Pi :</strong> installer le programme adapté depuis la source de paquets :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">sudo</span> apt install rpi-imager</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="ex">rpi-imager</span></span></code></pre></div>
+<p>C'est la bonne méthode, car Etcher est officiellement proposé surtout pour x86-64.</p>
+</section>

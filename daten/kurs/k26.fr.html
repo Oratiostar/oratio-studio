@@ -1,0 +1,256 @@
+<section id="s26-1"><h2>26.1 Ce qu’est Batocera</h2><p>Batocera est un <strong>système d'exploitation complet et autonome</strong> pour les jeux rétro. Ce n'est pas une application que l'on lance sous Raspberry Pi OS. On l'écrit sur une carte SD, un SSD ou une clé USB et l'on démarre l'ordinateur dessus. Il prend en charge plus de 100 systèmes et émulateurs.</p>
+<p><strong>Où le trouver ?</strong></p>
+<ul>
+<li><strong>Site officiel de Batocera :</strong> on y télécharge l'image correspondant au matériel. Elle ne contient <strong>aucun jeu</strong>.</li>
+<li><strong>Images toutes prêtes avec jeux :</strong> il existe de grandes images préparées (128 Go à 1 To) qui contiennent déjà jeux, thèmes et BIOS (par exemple chez ArcadePunks, Retro Lunatics ou Batocera Nation). Ces collections contiennent souvent des jeux protégés par le droit d'auteur. Seuls les jeux que l'on possède et les fichiers BIOS de ses propres appareils sont juridiquement sûrs.</li>
+</ul>
+</section><section id="s26-2"><h2>26.2 La bonne image pour le bon appareil</h2><p>Batocera existe en image distincte pour chaque matériel. <strong>Une image Pi 4 ne démarre pas sur le Pi 5.</strong> C'est la cause la plus fréquente des problèmes de démarrage.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Appareil</th>
+<th>Puce</th>
+<th>Nom de fichier dans la zone de démarrage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Raspberry Pi 4</td>
+<td>BCM2711</td>
+<td><code>bcm2711-rpi-4-b.dtb</code>, <code>bcm2711-rpi-400.dtb</code></td>
+</tr>
+<tr class="even">
+<td>Raspberry Pi 5</td>
+<td>BCM2712</td>
+<td><code>bcm2712-rpi-5-b.dtb</code></td>
+</tr>
+<tr class="odd">
+<td>PC, Steam Deck, mini-PC</td>
+<td>x86-64</td>
+<td>image x86-64 dédiée</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s26-3"><h2>26.3 Erreur 1 : « Device-tree file bcm2712-rpi-5-b.dtb not found »</h2><p><strong>Ce qui s'est passé :</strong> le Pi 5 a affiché deux messages à l'écran :</p>
+<pre class="text"><code>The installed operating system (OS) does not indicate support for Raspberry Pi 5
+Device-tree file 'bcm2712-rpi-5-b.dtb' not found.</code></pre>
+<p>L'appareil voyait la partition <code>BATOCERA</code>, mais ne démarrait pas. L'erreur était <strong>identique sur carte SD et sur SSD</strong>.</p>
+<p><strong>Pourquoi ce diagnostic ?</strong> Comme la même erreur apparaissait sur deux supports différents, une carte SD ou un SSD défectueux était exclu. Cela devait venir du <strong>contenu</strong>. Au démarrage, le Pi 5 cherche le fichier de sa puce (<code>bcm2712-...</code>). S'il manque, le système n'est pas conçu pour le Pi 5.</p>
+<p><strong>La vérification :</strong> ouvrir la première partition (<code>BATOCERA</code>) sur le PC et regarder les fichiers. Si l'on y trouve <code>bcm2711-rpi-4-b.dtb</code> et <code>bcm2711-rpi-400.dtb</code>, ce ne sont que des fichiers pour le <strong>Pi 4</strong>. La mauvaise image a donc été téléchargée, même si la page de téléchargement indiquait « Raspberry Pi 5B ».</p>
+<p><strong>Solution :</strong> télécharger la bonne image (BCM2712) et la réécrire. Ensuite l'écran affichait <code>Read bcm2712-rpi-5-b.dtb bytes 78744</code> : le fichier était désormais trouvé.</p>
+<p><strong>À retenir :</strong> quand la même erreur de démarrage apparaît sur plusieurs supports, ce n'est pas le support qui est en cause mais ce qui y a été écrit. On le vérifie avec <code>ls</code> sur la partition de démarrage.</p>
+</section><section id="s26-4"><h2>26.4 Erreur 2 : « USB boot requires high current (5 volt 5 amp) power supply »</h2><p>Juste après la correction, le message suivant peut apparaître. Pour démarrer depuis un SSD USB, le Pi 5 exige une alimentation capable de fournir 5 V et 5 A, et limite sinon le courant USB. Souvent, on peut quand même débloquer le démarrage en appuyant sur le bouton d'alimentation, et Batocera fonctionne.</p>
+<p><strong>À retenir :</strong> ce message est un <strong>avertissement du Pi 5, pas une panne</strong>. Solution durable : utiliser l'alimentation officielle de 27 watts (5 V / 5 A). Voir à ce sujet le <a class="xr" href="#/kap/6">chapitre 6</a> (sous-tension et <code>vcgencmd get_throttled</code>).</p>
+</section><section id="s26-5"><h2>26.5 Erreur 3 : ROM et BIOS invisibles</h2><p><strong>Ce qui s'est passé :</strong> la carte SD Batocera est insérée sous Raspberry Pi OS. On ne voit que <code>config.txt</code>, <code>cmdline.txt</code>, <code>start.elf</code> et <code>batocera-boot.conf</code>, mais pas de dossiers <code>roms</code> ou <code>bios</code>.</p>
+<p><strong>Cause :</strong> Batocera crée <strong>deux partitions</strong> :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Partition</th>
+<th>Système de fichiers</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>BATOCERA</code></td>
+<td>FAT32, petite (environ 6 Go)</td>
+<td>fichiers de démarrage (<code>config.txt</code>, <code>cmdline.txt</code>, ...)</td>
+</tr>
+<tr class="even">
+<td><code>SHARE</code></td>
+<td>ext4, tout le reste</td>
+<td><code>roms</code>, <code>bios</code>, <code>saves</code>, <code>screenshots</code>, <code>themes</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Je n'avais ouvert que la première partition. La seconde (<code>SHARE</code>) apparaît à gauche dans le gestionnaire de fichiers comme un lecteur à part.</p>
+</section><section id="s26-6"><h2>26.6 Erreur 4 : « Permission refusée » lors de la copie des jeux</h2><p><strong>Ce qui s'est passé :</strong> dans le dossier <code>/media/oratio/SHARE/roms/psx</code>, un jeu (par exemple <code>Bowling.PBP</code>) doit être copié depuis la clé USB. Le fichier est presque entièrement copié, puis une erreur d'écriture apparaît à la fin.</p>
+<p><strong>Diagnostic en deux étapes :</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">touch</span> /media/oratio/SHARE/test.txt</span></code></pre></div>
+<p>Réponse : <strong>Permission refusée.</strong> Il est donc clair que le problème n'est ni le fichier ni la clé USB, mais les <strong>droits d'écriture sur la partition ext4</strong>. Sur Batocera, elle appartient à l'utilisateur <code>root</code>, et l'utilisateur normal n'a que la lecture sous Raspberry Pi OS.</p>
+<p><strong>Solution :</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="fu">sudo</span> chmod <span class="at">-R</span> 777 /media/oratio/SHARE</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="fu">touch</span> /media/oratio/SHARE/test.txt</span></code></pre></div>
+<p>Ensuite, plus aucun message d'erreur. Les jeux ont pu être copiés.</p>
+<p><strong>Ce que signifie la commande</strong> (décomposée, voir aussi le <a class="xr" href="#/kap/2/2.10">chapitre 2.10</a>) :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Élément</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>sudo</code></td>
+<td>exécuter en administrateur</td>
+</tr>
+<tr class="even">
+<td><code>chmod</code></td>
+<td>modifier les droits (change mode)</td>
+</tr>
+<tr class="odd">
+<td><code>-R</code></td>
+<td>récursif, donc aussi pour tous les sous-dossiers et fichiers</td>
+</tr>
+<tr class="even">
+<td><code>777</code></td>
+<td>propriétaire 7 (rwx), groupe 7 (rwx), tous les autres 7 (rwx) : chacun peut tout faire</td>
+</tr>
+<tr class="odd">
+<td><code>/media/oratio/SHARE</code></td>
+<td>la cible</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>À retenir :</strong> <code>777</code> est un marteau. Il résout vite le problème, mais ensuite tout le monde peut tout faire. Pour un lecteur de jeux privé, c'est acceptable.</p>
+<h3 id="zwei-share-partitionen-share-und-share1">Deux partitions SHARE : SHARE et SHARE1</h3>
+<p>Plus tard, j'ai branché Batocera <strong>deux fois</strong> : une fois sur la carte SD et une fois sur un disque dur externe. Le gestionnaire de fichiers montrait à gauche deux fois <code>BATOCERA</code> et deux fois <code>SHARE</code>. Linux numérote les noms identiques :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Lecteur</th>
+<th>Partition de démarrage</th>
+<th>Partition de données</th>
+<th>Appareil</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Carte SD</td>
+<td><code>BATOCERA1</code></td>
+<td><code>SHARE</code></td>
+<td><code>/dev/mmcblk0p2</code></td>
+</tr>
+<tr class="even">
+<td>Disque dur externe</td>
+<td><code>BATOCERA2</code></td>
+<td><code>SHARE1</code></td>
+<td><code>/dev/sda2</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>La commande <code>chmod</code> n'avait d'abord été exécutée que sur <code>SHARE</code>, donc seulement sur la carte SD. Sur le disque dur, il fallait refaire la même chose avec <code>SHARE1</code> :</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="fu">touch</span> /media/oratio/SHARE1/test.txt</span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="fu">sudo</span> chmod <span class="at">-R</span> 777 /media/oratio/SHARE1</span></code></pre></div>
+<p><strong>Question : si je donne le disque dur à quelqu'un d'autre, la modification est-elle incluse ?</strong> <strong>Oui.</strong> Les droits sont <strong>enregistrés sur le lecteur</strong> dans le système de fichiers, pas dans le Pi. Pour les rétablir, on prend une valeur raisonnable comme <code>755</code> :</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="fu">sudo</span> chmod <span class="at">-R</span> 755 /media/oratio/SHARE1</span></code></pre></div>
+<p>On ne peut pas retrouver exactement la valeur d'origine, car elle n'a pas été consultée avant. C'est pourquoi : <strong>avant de changer des droits, regarder <code>ls -l</code> et noter le résultat.</strong></p>
+</section><section id="s26-7"><h2>26.7 Choix du démarrage : SD, NVMe et USB</h2><p><strong>Situation de départ :</strong> Batocera sur carte SD, Raspberry Pi OS sur le SSD NVMe dans l'emplacement PCIe du Pi 5. À l'allumage, Batocera démarrait toujours. Je voulais pouvoir choisir.</p>
+<p><strong>Étape 1 : où suis-je exactement ?</strong> Par SSH, l'invite affichait <code>root@BATOCERA</code>. J'étais donc <strong>dans Batocera</strong>, pas dans Raspberry Pi OS. C'est pourquoi <code>sudo raspi-config</code> n'y fonctionnait pas.</p>
+<p><strong>Étape 2 : Batocera voit-il le SSD ?</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="ex">lsblk</span></span></code></pre></div>
+<p>Résultat : <code>nvme0n1</code> avec <code>nvme0n1p1</code> (512 Mo) et <code>nvme0n1p2</code> (223 Go). Les points de montage <code>/media/bootfs</code> et <code>/media/rootfs</code> révélaient la présence d'une disposition de Raspberry Pi OS. La vérification du fichier <code>/etc/os-release</code> indiquait <code>Debian GNU/Linux 13 (trixie)</code> : c'est Raspberry Pi OS. Le SSD était en ordre.</p>
+<p><strong>Étape 3 : lire l'ordre de démarrage</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="ex">rpi-eeprom-config</span></span></code></pre></div>
+<p>Sortie : <code>BOOT_ORDER=0xf461</code>.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Chiffre</th>
+<th>Appareil</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>1</code></td>
+<td>Carte SD</td>
+</tr>
+<tr class="even">
+<td><code>4</code></td>
+<td>Stockage de masse USB</td>
+</tr>
+<tr class="odd">
+<td><code>6</code></td>
+<td>NVMe</td>
+</tr>
+<tr class="even">
+<td><code>f</code></td>
+<td>Fin (recommencer / arrêt)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Comment lire ce nombre ?</strong> Les chiffres se lisent <strong>de droite à gauche</strong>. Le test pratique le confirme : carte SD insérée, Batocera démarre. Carte SD retirée, la NVMe démarre. La SD est donc essayée <strong>en premier</strong>. <code>0xf461</code> signifie : SD, puis NVMe, puis USB.</p>
+<p>Les chiffres se lisent <strong>de droite à gauche</strong> (le chiffre le plus à droite est essayé en premier). Qui veut d'abord la NVMe, puis la carte SD, puis USB écrit <code>0xf416</code>. <code>0xf164</code> serait en revanche USB, puis NVMe, puis SD. <strong>À retenir :</strong> avec ce nombre, ne pas deviner mais tester, et régler de préférence via <code>raspi-config</code>, c'est plus sûr.</p>
+<p><strong>Étape 4 : modifier depuis Batocera ?</strong> La commande <code>rpi-eeprom-update</code> a indiqué <code>EEPROM updates directory ... not found</code>. Batocera peut lire la configuration, mais pas l'écrire de façon sûre. La modification devait donc se faire sous Raspberry Pi OS.</p>
+<p><strong>Étape 5 : solution via raspi-config</strong> (retirer la carte SD, démarrer depuis la NVMe) :</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="fu">sudo</span> raspi-config</span></code></pre></div>
+<p>Puis : <code>Advanced Options</code> → <code>Boot Order</code> → <strong><code>B2 NVMe/USB Boot</code></strong> (au lieu de <code>B1 SD Card Boot</code>) → OK → Finish → redémarrage.</p>
+<p><strong>Priorité avec B2 :</strong> NVMe, puis USB, puis SD.</p>
+</section><section id="s26-8"><h2>26.8 Le vrai menu de démarrage : la barre d’espace</h2><p>Qui veut non seulement un ordre fixe mais choisir au démarrage a besoin du menu de démarrage :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Touche à l'allumage</th>
+<th>Effet sur le Pi 5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Maj</strong></td>
+<td>rien d'utilisable (une fois, l'écran de configuration « Configure this Raspberry Pi 5 » est apparu, quitter avec <code>Esc</code>)</td>
+</tr>
+<tr class="even">
+<td><strong>Échap</strong></td>
+<td>n'affiche que l'affichage détaillé du bootloader (<code>boot mode NVME (06)</code>, <code>order f14</code>...)</td>
+</tr>
+<tr class="odd">
+<td><strong>Barre d'espace</strong></td>
+<td><strong>ouvre le vrai menu de démarrage</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Dans le menu, on choisit avec le chiffre : <code>1</code> = SD (Batocera), <code>4</code> = USB, <code>6</code> = NVMe (Raspberry Pi OS).</p>
+<p><strong>Condition :</strong> un clavier branché <strong>directement sur le Pi</strong> (USB ou clavier sans fil avec récepteur USB). Un clavier via SSH ou un clavier à l'écran ne réagit pas à ce moment-là, car aucun système d'exploitation ne tourne encore.</p>
+<p><strong>À retenir :</strong> Échap n'affiche que l'affichage détaillé du bootloader, Maj ne déclenche rien d'utilisable sur le Pi 5. Le menu de démarrage s'ouvre avec la <strong>barre d'espace</strong>.</p>
+</section><section id="s26-9"><h2>26.9 Éteindre Batocera</h2><p>Ne pas simplement débrancher le courant, car des fichiers peuvent être endommagés. Possibilités :</p>
+<ul>
+<li>Sur la manette : <code>Start</code> → <code>Quit</code> → <strong>Shutdown System</strong>.</li>
+<li>Maintenir le bouton d'alimentation du Pi 5 enfoncé environ 3 secondes (arrêt ordonné).</li>
+<li>Par SSH : <code>shutdown -h now</code>.</li>
+</ul>
+</section><section id="s26-10"><h2>26.10 Batocera et le ventilateur Freenove</h2><p>La tour Freenove (<a class="xr" href="#/kap/11">chapitre 11</a>) règle ventilateur et LED via un <strong>programme Python sous Raspberry Pi OS</strong>. Il n'y a pas de puce de ventilateur propre avec profil enregistré. En passant de Raspberry Pi OS à Batocera, le programme ne tourne plus et le ventilateur ne reçoit plus de commandes.</p>
+<p><strong>Résultat :</strong> Batocera ne se lance <strong>pas</strong> de façon utile comme programme sous Raspberry Pi OS, car c'est un système complet à part. La solution est le <strong>double démarrage</strong> (deux supports, choix au démarrage, voir 24.7 et 24.8). Configurer la commande du ventilateur sous Batocera même est un projet à part.</p>
+</section><section id="s26-11"><h2>26.11 Quels systèmes Batocera gère-t-il sur le Pi 5 ?</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Classe</th>
+<th>Exemples</th>
+<th>Sur le Pi 5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>8 bits et 16 bits</td>
+<td>Atari 2600, NES, SNES, Game Boy, Master System, Mega Drive, PC Engine, Neo Geo</td>
+<td>fonctionne sans problème</td>
+</tr>
+<tr class="even">
+<td>32 bits et 64 bits</td>
+<td>PlayStation 1, Nintendo 64, Dreamcast</td>
+<td>fonctionne bien</td>
+</tr>
+<tr class="odd">
+<td>Plus lourd</td>
+<td>PSP, GameCube, Wii</td>
+<td>selon le jeu</td>
+</tr>
+<tr class="even">
+<td>Trop lourd</td>
+<td>PS2, Wii U, PS3</td>
+<td>non (Steam Deck ou PC x86 plus puissant nécessaire)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Ces indications sont des estimations approximatives, pas des mesures. Des plateformes plus puissantes sont le Steam Deck, le ROG Ally X, le Lenovo Legion Go et les mini-PC avec Ryzen 7 8845HS ou Ryzen AI Max+ 395.</p>
+</section><section id="s26-12"><h2>26.12 Liste de contrôle pour Batocera</h2><ol type="1">
+<li>Télécharger l'image adaptée à l'appareil (Pi 4 ≠ Pi 5 ≠ PC).</li>
+<li>Écrire avec Raspberry Pi Imager (<code>sudo apt install rpi-imager</code>) ou Etcher.</li>
+<li>Vérifier sur la partition de démarrage : le fichier <code>.dtb</code> adapté s'y trouve-t-il ?</li>
+<li>Utiliser une alimentation 5 V / 5 A.</li>
+<li>Copier les jeux sur la partition <code>SHARE</code> dans <code>roms/&lt;système&gt;/</code>, le BIOS dans <code>bios/</code>.</li>
+<li>En cas de « Permission refusée » : tester avec <code>touch</code>, puis <code>sudo chmod -R 777</code> sur la bonne partition <code>SHARE</code>.</li>
+<li>Ordre de démarrage via <code>raspi-config</code> sous Raspberry Pi OS, menu de démarrage avec la barre d'espace.</li>
+</ol>
+</section>

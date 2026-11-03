@@ -1,0 +1,117 @@
+<section id="s31-1"><h2>31.1 Deux projets que je garde séparés</h2><p>J'ai construit deux fois le Control Center avec une méthode différente. Pour que rien ne se mélange, les deux états ont chacun un nom propre :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Nom</th>
+<th>Période</th>
+<th>Principe</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Projet A – « Établi »</strong></td>
+<td>du 31 août à début octobre</td>
+<td>La fenêtre Freenove est étendue pas à pas : nouvel onglet pour les scripts, tuiles avec icônes, fichier JSON pour les applications, glisser avec des événements de souris maison. Tout tenait dans quelques gros fichiers.</td>
+</tr>
+<tr class="even">
+<td><strong>Projet B – « Verre »</strong></td>
+<td>depuis début octobre</td>
+<td>Reconstruit : chaque onglet a son propre dossier, une « boîte à outils en verre » commune (<code>glass_ui.py</code>), des widgets en fichiers individuels, dock, fenêtre de contrôle, Toolbox, langue, sauvegarde, de nombreuses applications.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Quatre variantes et dérivés ont suivi :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Variante</th>
+<th>Ce qu'elle expérimente</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Glisser-déposer Qt</strong></td>
+<td>Ne pas programmer soi-même le glissement des applications, mais utiliser Qt (<code>QDrag</code>).</td>
+</tr>
+<tr class="even">
+<td><strong>Version C++</strong></td>
+<td>Le même programme en C++ avec Qt et CMake.</td>
+</tr>
+<tr class="odd">
+<td><strong>Version Deck</strong></td>
+<td>Le même programme sur le Steam Deck, sans les parties propres au Pi.</td>
+</tr>
+<tr class="even">
+<td><strong>Oratio Place</strong></td>
+<td>Un site web généré à partir des données du programme.</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s31-2"><h2>31.2 Pourquoi A est devenu B</h2><p>Le projet A fonctionnait, mais chaque nouvelle idée touchait plusieurs fichiers à plusieurs endroits. Le code du menu a grossi jusqu'à plus de dix mille lignes dans un seul fichier. La décision pour B a été : <strong>un dossier par onglet, une boîte à outils pour tout ce qui est commun, le neuf toujours dans un fichier à part.</strong> À quoi cela ressemble et pourquoi cela s'adapte mieux à l'échelle, le <a class="xr" href="#/kap/40">chapitre 40</a> le décrit en comparaison.</p>
+</section><section id="s31-3"><h2>31.3 La structure de cette partie</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Chapitre</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>32</td>
+<td>Projet A, partie 1 : de la fenêtre Freenove à l'onglet de scripts</td>
+</tr>
+<tr class="even">
+<td>33</td>
+<td>Projet A, partie 2 : Pi Tools, le fichier JSON et l'outil Kanshi</td>
+</tr>
+<tr class="odd">
+<td>34</td>
+<td>Projet A, partie 3 : glisser les tuiles et les embellir</td>
+</tr>
+<tr class="even">
+<td>35</td>
+<td>Projet A, partie 4 : pages, tailles et places libres</td>
+</tr>
+<tr class="odd">
+<td>36</td>
+<td>Projet B, partie 1 : la nouvelle structure</td>
+</tr>
+<tr class="even">
+<td>37</td>
+<td>Projet B, partie 2 : menu, widgets, applications, dock, fenêtre de contrôle</td>
+</tr>
+<tr class="odd">
+<td>38</td>
+<td>Projet B, partie 3 : les fonctions du menu</td>
+</tr>
+<tr class="even">
+<td>39</td>
+<td>Projet B, partie 4 : Toolbox, clone de sauvegarde, commande vocale, applications d'électronique et guides de construction</td>
+</tr>
+<tr class="odd">
+<td>40</td>
+<td>Projets A et B en comparaison</td>
+</tr>
+<tr class="even">
+<td>41</td>
+<td>Variante glisser-déposer Qt</td>
+</tr>
+<tr class="odd">
+<td>42</td>
+<td>Variante C++</td>
+</tr>
+<tr class="even">
+<td>43</td>
+<td>Variante Steam Deck</td>
+</tr>
+<tr class="odd">
+<td>44</td>
+<td>Oratio Place, le site web</td>
+</tr>
+<tr class="even">
+<td>45</td>
+<td>Le vérificateur de hash comme premier script</td>
+</tr>
+</tbody>
+</table></div>
+</section>

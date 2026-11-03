@@ -1,0 +1,118 @@
+<section id="s41-1"><h2>41.1 De quoi il s’agit</h2><p>Dans le projet A et dans la première forme de B, le glisser est assemblé à partir d'<strong>événements de souris</strong> : <code>mousePressEvent</code> retient le début, <code>mouseMoveEvent</code> déplace une image, <code>mouseReleaseEvent</code> décide. Dans cette variante, c'est <strong>Qt lui-même</strong> qui se charge du glisser avec <code>QDrag</code>, <code>QMimeData</code> et <code>dropEvent</code>. Le comportement est le même : sur une place occupée = échanger, sur une place vide = l'ancienne place reste vide, changement de page au bord (0,75 s, puis 1,1 s), trou dans le dock, verre dépoli sur l'application cible.</p>
+<p><strong>Nouveau grâce à cela :</strong> Échap annule le glisser (l'application reste à sa place). Relâcher en dehors de la fenêtre signifie annulé.</p>
+</section><section id="s41-2"><h2>41.2 Le déroulement en quatre étapes</h2><p>(d'après la description dans <code>Parts/view_dnd.py</code>)</p>
+<ol type="1">
+<li>La tuile ou le symbole du dock signale « tiré assez loin » (signal <code>dragRequested</code>). La vue démarre <code>_start_tile_drag</code> ou <code>_start_dock_drag</code>.</li>
+<li>Là, un <code>QDrag</code> est lancé avec l'image flottante. <code>QDrag.exec_()</code> tourne jusqu'au relâchement ou à l'annulation. Pendant ce temps, les minuteurs et les animations continuent normalement.</li>
+<li><strong>Toute la vue est la cible.</strong> <code>dragEnterEvent</code>, <code>dragMoveEvent</code>, <code>dragLeaveEvent</code> et <code>dropEvent</code> reçoivent la position du pointeur et montrent l'aperçu.</li>
+<li>Après <code>exec_()</code>, <code>_drag_done</code> ou <code>_dock_drag_done</code> place l'application (relâchée) ou annule tout (abandon).</li>
+</ol>
+</section><section id="s41-3"><h2>41.3 Le cœur en quelques lignes</h2><div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="im">from</span> PyQt5.QtCore <span class="im">import</span> QMimeData, Qt</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="im">from</span> PyQt5.QtGui <span class="im">import</span> QDrag</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="kw">def</span> _run_qt_drag(<span class="va">self</span>, image, hotspot, mime_type, payload):</span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a>    <span class="co">"""Kehrt erst zurück, wenn losgelassen oder abgebrochen wurde."""</span></span>
+<span id="cb1-6"><a aria-hidden="true" href="#cb1-6" tabindex="-1"></a>    data <span class="op">=</span> QMimeData()</span>
+<span id="cb1-7"><a aria-hidden="true" href="#cb1-7" tabindex="-1"></a>    data.setData(mime_type, payload)      <span class="co"># welche Art Ding wird gezogen (Kachel, Dock-Symbol)</span></span>
+<span id="cb1-8"><a aria-hidden="true" href="#cb1-8" tabindex="-1"></a>    drag <span class="op">=</span> QDrag(<span class="va">self</span>)</span>
+<span id="cb1-9"><a aria-hidden="true" href="#cb1-9" tabindex="-1"></a>    drag.setMimeData(data)</span>
+<span id="cb1-10"><a aria-hidden="true" href="#cb1-10" tabindex="-1"></a>    drag.setPixmap(image)                 <span class="co"># das schwebende Bild</span></span>
+<span id="cb1-11"><a aria-hidden="true" href="#cb1-11" tabindex="-1"></a>    drag.setHotSpot(hotspot)              <span class="co"># wo im Bild "angefasst" wurde</span></span>
+<span id="cb1-12"><a aria-hidden="true" href="#cb1-12" tabindex="-1"></a>    <span class="cf">return</span> drag.exec_(Qt.MoveAction)</span></code></pre></div>
+<p>Pour que la vue accepte des glissements, elle doit appeler <code>setAcceptDrops(True)</code> et redéfinir les quatre méthodes d'événement. Les noms MIME pour la tuile et le dock se trouvent dans <code>Parts/consts.py</code> (<code>MIME_TILE</code>, <code>MIME_DOCK</code>, et <code>MIME_CC</code> pour la fenêtre de contrôle).</p>
+</section><section id="s41-4"><h2>41.4 Comparaison avec la solution par événements de souris</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Événements de souris (A, premier B)</th>
+<th>Glisser-déposer Qt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Code</td>
+<td>géré soi-même : état, seuil, image</td>
+<td>Qt gère le déroulement, code plus court</td>
+</tr>
+<tr class="even">
+<td>Annulation avec Échap</td>
+<td>à construire soi-même</td>
+<td>offerte</td>
+</tr>
+<tr class="odd">
+<td>Relâcher en dehors</td>
+<td>à traiter soi-même</td>
+<td>offert</td>
+</tr>
+<tr class="even">
+<td>Image flottante</td>
+<td>widget maison qui suit le pointeur</td>
+<td><code>setPixmap</code></td>
+</tr>
+<tr class="odd">
+<td>Les animations continuent-elles ?</td>
+<td>ja</td>
+<td>oui (<code>exec_</code> a sa propre boucle d'événements)</td>
+</tr>
+<tr class="even">
+<td>Image d'erreur</td>
+<td>l'image reste coincée si le relâchement est perdu</td>
+<td>rare</td>
+</tr>
+<tr class="odd">
+<td>Finesses personnelles (délai de bord, aperçu)</td>
+<td>directement dans l'événement Move</td>
+<td>im <code>dragMoveEvent</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Là où le glisser-déposer Qt ne convient pas :</strong> pour <strong>redimensionner</strong> les tuiles dans la fenêtre de contrôle (coin inférieur droit), l'ancienne logique de souris reste, parce que ce n'est pas le glissement d'un objet, mais une modification.</p>
+</section><section id="s41-5"><h2>41.5 Comment le fichier a été découpé</h2><p>Dans la même variante, le fichier de 10 700 lignes <code>oratio_menu.py</code> a été découpé dans <code>Oratio_Menu/Parts/</code> (rien changé au contenu, seulement déplacé) :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Fichier</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>consts.py</code></td>
+<td>grille, tailles, modules optionnels, noms MIME</td>
+</tr>
+<tr class="even">
+<td><code>icons.py</code></td>
+<td>toutes les icônes dessinées (<code>draw_*</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>model.py</code></td>
+<td><code>MenuItem</code>, calcul de la grille, recherche de programmes</td>
+</tr>
+<tr class="even">
+<td><code>tiles.py</code></td>
+<td>tuile d'application (<code>AppTile</code>), surface de dessin, points de page, <code>drag_image()</code></td>
+</tr>
+<tr class="odd">
+<td><code>menu_bar.py</code></td>
+<td>barre de verre avec toutes les animations</td>
+</tr>
+<tr class="even">
+<td><code>dock.py</code></td>
+<td>icônes du dock et barre du dock</td>
+</tr>
+<tr class="odd">
+<td><code>panels_*.py</code></td>
+<td>fenêtres : réglages, connexions, applications, messages</td>
+</tr>
+<tr class="even">
+<td><code>cc_*.py</code></td>
+<td>fenêtre de contrôle (éléments, état, fenêtre)</td>
+</tr>
+<tr class="odd">
+<td><code>view.py</code></td>
+<td>la vue <code>MenuView</code>, composée de <code>view_config</code>, <code>view_window</code>, <code>view_overlay</code>, <code>view_panels</code>, <code>view_home</code>, <code>view_layout</code>, <code>view_dock</code>, <code>view_dnd</code>, <code>view_keys</code>, <code>view_apps</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Dans le projet principal B (<a class="xr" href="#/kap/36/36.6">chapitre 36.6</a>), la même idée s'appelle <code>Kern/</code>, <code>Bausteine/</code>, <code>Fenster/</code>, <code>Ansicht/</code> ; la répartition y est nommée un peu différemment.</p>
+</section>

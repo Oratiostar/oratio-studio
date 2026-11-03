@@ -1,0 +1,139 @@
+<p>Courtes réponses à des questions qui reviennent sans cesse pendant l'apprentissage. Chaque élément se suffit à lui-même.</p>
+<section id="s59-1"><h2>59.1 Quel Raspberry Pi, quel système ?</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Pi 3</th>
+<th>Pi 4</th>
+<th>Pi 5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Processeur</td>
+<td>plus faible</td>
+<td>nettement plus rapide</td>
+<td>nettement plus rapide que le Pi 4</td>
+</tr>
+<tr class="even">
+<td>Mémoire</td>
+<td>1 GB</td>
+<td>2 à 8 Go</td>
+<td>4, 8 ou 16 Go</td>
+</tr>
+<tr class="odd">
+<td>Interface pour SSD</td>
+<td>seulement USB 2</td>
+<td>USB 3</td>
+<td>USB 3 et <strong>PCIe</strong> (NVMe via adaptateur)</td>
+</tr>
+<tr class="even">
+<td>Bloc d'alimentation</td>
+<td>5 V / 2,5 A</td>
+<td>5 V / 3 A</td>
+<td>5 V / 5 A</td>
+</tr>
+<tr class="odd">
+<td>Refroidissement</td>
+<td>le plus souvent inutile</td>
+<td>recommandé</td>
+<td>ventilateur recommandé</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>32 bits contre 64 bits :</strong> sur Pi 4 et 5, on prend le <strong>64 bits</strong>. Beaucoup de programmes (par exemple les versions actuelles de VS Code ou d'Arduino) n'existent plus que pour lui. Le 32 bits n'a de sens que pour de très vieux appareils.</li>
+<li><strong>Lite, Desktop ou Full :</strong> <em>Lite</em> n'a pas d'interface (serveur, terminal), <em>Desktop</em> a l'interface graphique, <em>Full</em> apporte en plus beaucoup de logiciels. Pour apprendre, <em>Desktop</em> suffit.</li>
+<li><strong>Bookworm et Trixie :</strong> noms des versions de Debian (12 et 13). Trixie est plus récente. Les deux utilisent par défaut <strong>Wayland</strong> avec le gestionnaire de fenêtres <code>labwc</code>.</li>
+<li><strong>Mettre la carte SD dans un autre modèle :</strong> cela marche le plus souvent, tant que le système est construit pour les deux modèles. Un système construit pour le Pi 5 ne tourne pas sur un Pi 3 et inversement.</li>
+</ul>
+</section><section id="s59-2"><h2>59.2 Écrire une image sur une carte SD</h2><ol type="1">
+<li>Installer <strong>Raspberry Pi Imager</strong> (<code>sudo apt install rpi-imager</code> ou depuis le site web) et le lancer.</li>
+<li>Choisir le système d'exploitation, choisir le support de stockage, saisir les <strong>réglages</strong> (nom d'utilisateur, WLAN, SSH).</li>
+<li>Écrire et attendre.</li>
+</ol>
+<p>Pour un fichier fini avec l'extension <strong><code>.xz</code></strong>, la décompression est inutile : l'Imager le lit directement (<strong>Choisir une image personnalisée</strong>). Pour décompresser dans le terminal : <code>unxz datei.img.xz</code>.</p>
+<p>Autres programmes : <strong>balenaEtcher</strong> (Windows, Mac, Linux), <strong>Win32 Disk Imager</strong> (Windows, pour écrire <strong>et</strong> sauvegarder une image), <code>dd</code> dans le terminal (rapide, mais un mauvais nom de cible écrase le mauvais disque). Tirer une image <strong>depuis</strong> un disque se fait avec Win32 Disk Imager ou <code>dd</code>.</p>
+</section><section id="s59-3"><h2>59.3 Numérotation des GPIO</h2><p>Une broche a deux numéros :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Numéro</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Numéro de broche physique</strong> (1 à 40)</td>
+<td>Position sur le connecteur à broches</td>
+</tr>
+<tr class="even">
+<td><strong>Numéro BCM</strong> (GPIO 17, GPIO 18 ...)</td>
+<td>Nom de la connexion du processeur</td>
+</tr>
+</tbody>
+</table></div>
+<p>Les schémas sur Internet diffèrent, parce que certains étiquettent le numéro physique et d'autres le numéro BCM. En Python, on utilise en règle générale le <strong>numéro BCM</strong>. Toujours vérifier d'abord quelle numérotation est visée.</p>
+</section><section id="s59-4"><h2>59.4 SSH : à quoi ça sert ?</h2><p>SSH ouvre un terminal sur le Pi <strong>depuis un autre appareil</strong> (PC, téléphone). On peut ainsi saisir des commandes, copier des fichiers (<code>scp</code>, <code>sftp</code>) et faire fonctionner le Pi sans écran (<code>headless</code>). Activer : <code>sudo raspi-config</code> → Interface Options → SSH. Se connecter : <code>ssh oratio@&lt;IP-Adresse&gt;</code> ; l'IP s'affiche avec <code>hostname -I</code>.</p>
+</section><section id="s59-5"><h2>59.5 SSD, NVMe et adaptateurs</h2><ul>
+<li><strong>SSD NVMe sur le Pi 5 :</strong> via un <strong>HAT M.2</strong> sur l'interface PCIe. Le Pi 5 travaille par défaut en PCIe Gen 2 (environ 500 Mo/s) et peut être passé en Gen 3 avec <code>dtparam=pciex1_gen=3</code> (pas officiellement garanti).</li>
+<li><strong>Une seule ligne PCIe :</strong> plus d'appareils sur une ligne ne passent que par un <strong>switch PCIe</strong>, et ils se partagent la vitesse.</li>
+<li><strong>Clés du connecteur M.2 :</strong> les SSD à <strong>clé M</strong> (une encoche) sont NVMe. Un SSD à <strong>deux encoches</strong> (B+M) est souvent un SSD SATA, qu'un adaptateur NVMe ne pilote pas. Faire attention à la plaque signalétique.</li>
+<li><strong>Boîtier USB :</strong> si un SSD sur adaptateur USB affiche <code>0 B</code>, voir le <a class="xr" href="#/kap/56/56.3">chapitre 56.3</a>.</li>
+<li><strong>Démarrer depuis un SSD :</strong> <code>sudo raspi-config</code> → Advanced Options → Boot Order (<a class="xr" href="#/kap/26/26.7">chapitre 26.7</a>).</li>
+<li><strong>Où regarder les valeurs ?</strong> <code>lsblk</code> (disques), <code>sudo fdisk -l</code> (l'option <code>-l</code> signifie <em>list</em>), <code>sudo nvme list</code>.</li>
+</ul>
+</section><section id="s59-6"><h2>59.6 Plus d’accessoires pour le Pi 5</h2><ul>
+<li>Les <strong>HAT</strong> sont des cartes enfichables, par exemple pour SSD, IA ou écran. Les <strong>HAT montés dessous</strong> (HAT+ et similaires) utilisent le connecteur PCIe.</li>
+<li>Le <strong>NPU</strong> (Neural Processing Unit) est un accélérateur pour les tâches d'IA (images, voix). Ce n'est pas un remplaçant du processeur, mais une carte supplémentaire, comme l'<strong>AI HAT</strong>.</li>
+<li>Le <strong>Compute Module</strong> est le Pi sans connecteurs, à intégrer dans ses propres appareils. Le Pi normal a toutes les prises sur la carte.</li>
+<li><strong>Home Assistant OS</strong> est un système pour la maison connectée, qui se commande par le navigateur.</li>
+<li><strong>Connecter des manettes :</strong> par Bluetooth (<code>bluetoothctl</code>) ou par USB. Sous Batocera/RetroPie, il y a une affectation de manettes propre.</li>
+</ul>
+</section><section id="s59-7"><h2>59.7 Température et charge</h2><ul>
+<li>Le Pi 5 se situe en fonctionnement normal autour de 40 à 60 °C. À partir d'environ 80 °C, il réduit la puissance.</li>
+<li>Température : <code>vcgencmd measure_temp</code>. État de la tension et du bridage : <code>vcgencmd get_throttled</code>.</li>
+<li><strong>CPU saturé ?</strong> <code>top</code> ou <code>htop</code> montre quel programme demande la puissance. Terminer avec <code>kill PID</code>.</li>
+</ul>
+</section><section id="s59-8"><h2>59.8 Comparer des fichiers</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Tâche</th>
+<th>Outil</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Comparer deux fichiers texte</td>
+<td><code>diff datei1 datei2</code></td>
+</tr>
+<tr class="even">
+<td>Vérifier que deux fichiers sont identiques</td>
+<td><code>cmp datei1 datei2</code> ou <code>sha256sum datei1 datei2</code> (même hash = même contenu)</td>
+</tr>
+<tr class="odd">
+<td>Comparer graphiquement</td>
+<td><strong>Meld</strong> (<code>sudo apt install meld</code>)</td>
+</tr>
+<tr class="even">
+<td>Trouver des fichiers en double</td>
+<td>Calculer le hash et regrouper (<a class="xr" href="#/kap/25/25.7">chapitre 25.7</a>)</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s59-9"><h2>59.9 Terminal : Bash, sh et scripts</h2><ul>
+<li>Le <strong>shell</strong> est le programme qui lit les entrées. <strong>Bash</strong> (« Bourne Again SHell », un jeu de mots sur son prédécesseur <em>Bourne Shell</em>) est le shell habituel sous Linux.</li>
+<li>Un fichier <code>xyz.sh</code> est un <strong>script shell</strong> : un fichier texte avec des commandes. Il tourne dans Bash si la première ligne est <code>#!/bin/bash</code>.</li>
+<li>Le rendre exécutable : <code>chmod +x xyz.sh</code>, lancer avec <code>./xyz.sh</code>.</li>
+<li><code>alias name='befehl'</code> dans <code>~/.bashrc</code> crée un raccourci, <code>source ~/.bashrc</code> le recharge.</li>
+<li><strong><code>cd</code> et <code>sudo</code> :</strong> <code>cd</code> change de dossier, <code>sudo</code> exécute une commande avec les droits d'administrateur. Ce sont deux choses totalement différentes.</li>
+</ul>
+</section><section id="s59-10"><h2>59.10 Affichages</h2><ul>
+<li><strong>KMS</strong> (<code>dtoverlay=vc4-kms-v3d</code> dans <code>/boot/firmware/config.txt</code>) est le pilote graphique moderne. Le fichier se modifie avec <code>sudo nano /boot/firmware/config.txt</code>, les modifications valent après le redémarrage.</li>
+<li><strong>Full HD contre 4K :</strong> la 4K a quatre fois plus de pixels. Avec une <strong>échelle de 2</strong>, la 4K paraît comme du Full HD, mais plus nette. Le Pi 4 gère la 4K à 60 Hz avec un écran (avec deux écrans 4K, 30 Hz chacun), le Pi 5 gère la 4K à 60 Hz aussi avec deux écrans.</li>
+<li><strong>Faire pivoter l'écran :</strong> <code>wlr-randr --output HDMI-A-1 --transform 180</code>.</li>
+<li><strong>Affichage sur le téléphone :</strong> via VNC (Raspberry Pi Connect ou RealVNC) ou par streaming d'écran. C'est la voie officielle sans matériel supplémentaire : <strong>Raspberry Pi Connect</strong>.</li>
+<li><strong>Signal HDMI :</strong> une image se compose de pixels, chaque pixel de trois valeurs de couleur (rouge, vert, bleu, 8 bits chacune). Ces valeurs sont transmises comme suite de uns et de zéros sur plusieurs paires de lignes. La 4K à 60 Hz demande un câble adapté (HDMI 2.0).</li>
+<li><strong>Écran avec connexion propre (DSI, GPIO) :</strong> vérifier si l'écran a une entrée HDMI ou SPI/DSI. Pour le tactile, il faut en plus une liaison USB ou I²C et le plus souvent une alimentation 5 V.</li>
+</ul>
+</section>

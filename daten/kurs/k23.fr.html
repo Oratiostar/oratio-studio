@@ -1,0 +1,26 @@
+<p>Sur un ESP32 avec écran rond, on peut construire son propre petit système d'exploitation.</p>
+<section id="s23-1"><h2>23.1 L’idée</h2><p>Le matériel (par exemple ESP32-S3 avec écran rond, batterie, puce d'horloge RTC, carte SD, boutons) est là. Le logiciel installé par le fabricant (DSTIKE) n'est <strong>qu'un programme dans la mémoire flash</strong>. Il peut être effacé et remplacé par son propre logiciel. Sauvegardez d'abord l'original avec <code>esptool</code>, le retour en arrière reste alors possible.</p>
+</section><section id="s23-2"><h2>23.2 Structure</h2><pre class="text"><code>Oratio Watch OS
+│
+├── Home        (Uhr, flackerfrei, BACK führt immer hierher)
+├── Menu        (ein großes Icon pro Seite, links/rechts wechseln, OK öffnet)
+├── Contacts
+├── Gallery
+├── Music
+├── Calendar
+├── Alarm
+├── Timer       (Start, Stop, Reset)
+├── Stopwatch
+├── Weather
+├── Settings
+├── Bluetooth
+├── Info        (Versionsnummer)
+└── Storage</code></pre>
+</section><section id="s23-3"><h2>23.3 Réflexions importantes</h2><ul>
+<li><strong>Ne pas écrire 1500 lignes d'un coup.</strong> Un programme aussi grand ne compile presque jamais du premier coup et ne se maintient pas. Mieux vaut procéder par étapes : accueil → menu → une application → la suivante.</li>
+<li><strong>Enregistrer les réglages durablement</strong> avec la bibliothèque ESP32 <code>Preferences</code> (ils restent après l'extinction).</li>
+<li><strong>Se connecter au Raspberry Pi par Wi-Fi</strong> : le Pi peut fournir la température du CPU, la RAM, l'IP, l'heure et la météo.</li>
+<li><strong>Sa propre langue</strong> pour l'interface (par exemple l'éwé) : certains termes techniques n'y existent pas directement et l'on prend un mot descriptif ou un emprunt à l'anglais. Faites vérifier ces listes par un locuteur natif.</li>
+<li><strong>Boutons</strong> : avec seulement quelques boutons (gauche, droite, OK, retour), on construit un menu entier. Le schéma est toujours le même : mémoriser l'état, le bouton change l'état, redessiner l'écran.</li>
+</ul>
+</section>

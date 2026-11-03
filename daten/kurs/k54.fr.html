@@ -1,0 +1,93 @@
+<p>Les erreurs Python s'appellent <strong>Traceback</strong>. Les lire par le bas : la dernière ligne est le type de l'erreur, au-dessus se trouvent le fichier et le numéro de ligne.</p>
+<section id="s54-1"><h2>54.1 Indentation</h2><h3 id="indentationerror-unexpected-indent"><code>IndentationError: unexpected indent</code></h3>
+<p>Une ligne est <strong>plus indentée</strong> que Python ne l'attend.</p>
+<h3 id="indentationerror-expected-an-indented-block-after-function-definition"><code>IndentationError: expected an indented block after function definition</code></h3>
+<p>Après <code>def ...:</code> (ou <code>if</code>, <code>for</code>, <code>class</code>), un bloc indenté manque. Mettre au moins <code>pass</code>.</p>
+<h3 id="indentationerror-unindent-does-not-match-any-outer-indentation-level"><code>IndentationError: unindent does not match any outer indentation level</code></h3>
+<p>L'indentation saute à une profondeur qui n'existe pas plus haut (par exemple 3 au lieu de 4 espaces).</p>
+<h3 id="taberror-inconsistent-use-of-tabs-and-spaces-in-indentation"><code>TabError: inconsistent use of tabs and spaces in indentation</code></h3>
+<p>Tabulation et espaces sont mélangés. <strong>Règle :</strong> toujours 4 espaces. Dans l'éditeur, convertir les tabulations en espaces.</p>
+<p><strong>Cas particulier :</strong> si <code>def run_oled_loop(self):</code> est plus indentée que la fonction précédente, Python la prend pour une <strong>partie de la fonction précédente</strong>. Les méthodes d'une classe doivent être indentées <strong>exactement pareil</strong>. Un programme démarre alors apparemment « sans erreur », mais la fonction n'existe pas.</p>
+</section><section id="s54-2"><h2>54.2 Syntaxe</h2><h3 id="syntaxerror-invalid-syntax"><code>SyntaxError: invalid syntax</code></h3>
+<p>Un caractère manque ou est faux : <code>:</code> en fin de ligne, parenthèse non fermée, <code>=</code> au lieu de <code>==</code>. Regarder aussi la ligne <strong>précédente</strong>, car c'est souvent là que la parenthèse manque.</p>
+<h3 id="syntaxerror-f-string-single--is-not-allowed"><code>SyntaxError: f-string: single '}' is not allowed</code></h3>
+<p>Dans une <strong>f-string</strong>, <code>{</code> et <code>}</code> sont réservés aux variables. Si une accolade doit apparaître littéralement (par exemple dans une feuille de style CSS), il faut la <strong>doubler</strong> :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a>btn.setStyleSheet(<span class="ss">f"""</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="ss">    QPushButton </span><span class="ch">{{</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="ss">        background-color: </span><span class="sc">{</span>farbe<span class="sc">}</span><span class="ss">;</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a><span class="ss">        color: white;</span></span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a><span class="ss">    </span><span class="ch">}}</span></span>
+<span id="cb1-6"><a aria-hidden="true" href="#cb1-6" tabindex="-1"></a><span class="ss">"""</span>)</span></code></pre></div>
+<h3 id="doppeltes-except"><code>except</code> en double</h3>
+<p>Deux blocs <code>except</code> qui interceptent la même chose, ou un <code>try</code> sans <code>except</code> : un <code>try</code> demande au moins un <code>except</code> ou <code>finally</code>, et l'erreur la plus spécifique vient avant la générale (<code>except Exception</code>).</p>
+</section><section id="s54-3"><h2>54.3 Noms et variables</h2><h3 id="nameerror-name-xyz-is-not-defined"><code>NameError: name 'xyz' is not defined</code></h3>
+<p>Le nom n'existe pas à cet endroit. Raisons :</p>
+<ul>
+<li>Faute de frappe (<code>btn_ok</code> au lieu de <code>btn_OK</code>)</li>
+<li>La variable est créée <strong>plus tard</strong> ou <strong>dans une autre fonction</strong></li>
+<li>Import manquant</li>
+<li><code>self.</code> manque : <code>self.name</code> au lieu de <code>name</code> pour des variables de classe</li>
+</ul>
+<h3 id="unboundlocalerror-cannot-access-local-variable-page"><code>UnboundLocalError: cannot access local variable 'page'</code></h3>
+<p>Une variable est <strong>affectée</strong> dans une fonction et <strong>lue avant</strong>. Python la considère alors comme locale. Solution : lui affecter une valeur avant ou la passer en paramètre.</p>
+<h3 id="attributeerror-nonetype-object-has-no-attribute-setcurrentindex"><code>AttributeError: 'NoneType' object has no attribute 'setCurrentIndex'</code></h3>
+<p>L'objet est <code>None</code> : il n'a jamais été créé, ou la fonction n'a rien renvoyé. Vérifier si le widget (par exemple la ComboBox) a été <strong>créé avant avec <code>self.xyz = QComboBox()</code></strong> et si le nom est correct.</p>
+<h3 id="attributeerror-oled_task-object-has-no-attribute-screen4_interchange"><code>AttributeError: 'OLED_TASK' object has no attribute 'screen4_interchange'</code></h3>
+<p>L'attribut manque à l'objet. Il n'a pas été créé dans <code>__init__</code>, ou le nom est écrit autrement. Ajouter l'attribut dans <code>__init__</code>.</p>
+<h3 id="indexerror-list-assignment-index-out-of-range"><code>IndexError: list assignment index out of range</code></h3>
+<p>On affecte une place de liste qui n'existe pas. Exemple : une liste de 3 entrées a les places 0, 1 et 2. <code>liste[4] = ...</code> ou <code>liste[3] = ...</code> échoue. Si on intègre une nouvelle (quatrième) page, il faut <strong>étendre toutes les listes</strong> : <code>[0,0,0,0]</code>, <code>[3.0,3.0,3.0,3.0]</code>, <code>[True,True,True,True]</code>.</p>
+<h3 id="typeerror-"><code>TypeError: ...</code></h3>
+<p>Une valeur a le mauvais type (texte au lieu de nombre) ou une fonction reçoit trop ou trop peu d'arguments. Lire précisément le message : il nomme la fonction et le nombre.</p>
+</section><section id="s54-4"><h2>54.4 Fichiers et droits</h2><h3 id="permissionerror-errno-13-permission-denied-"><code>PermissionError: [Errno 13] Permission denied: '...'</code></h3>
+<p>Le programme n'a pas le droit d'écrire le fichier, par exemple parce qu'il appartient à <code>root</code> (parce qu'il a été créé avec <code>sudo</code>). Changer le propriétaire : <code>sudo chown oratio:oratio datei</code>.</p>
+<h3 id="filenotfounderror"><code>FileNotFoundError</code></h3>
+<p>Le fichier ou le dossier n'existe pas. Travailler avec un <strong>chemin absolu</strong>, par exemple via <code>os.path.join(BASE_DIR, "datei.json")</code> avec <code>BASE_DIR = os.path.dirname(os.path.abspath(__file__))</code>.</p>
+<h3 id="jsondecoderjsondecodeerror"><code>json.decoder.JSONDecodeError</code></h3>
+<p>Le fichier JSON est défectueux : virgule en trop ou en moins, guillemets manquants, accolade non fermée. Avec <code>python3 -m json.tool datei.json</code>, l'endroit apparaît.</p>
+</section><section id="s54-5"><h2>54.5 Problèmes typiques de PyQt5</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Cause</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>La fenêtre ne démarre pas, erreur directe à l'<code>import</code></td>
+<td>Erreur de syntaxe ou d'indentation dans un fichier inclus (par exemple <code>from app_ui_scripts import ScriptsTab</code>)</td>
+<td>Ouvrir le fichier indiqué dans le message, vérifier la ligne</td>
+</tr>
+<tr class="even">
+<td>Le programme plante aussitôt, sans message</td>
+<td>L'erreur est avalée</td>
+<td>Lancer dans le terminal (<code>python3 app_ui.py</code>), l'erreur s'y affiche</td>
+</tr>
+<tr class="odd">
+<td>Le bouton ne fait rien</td>
+<td>Signal non connecté ou mauvaise fonction</td>
+<td><code>button.clicked.connect(self.funktion)</code> sans parenthèses</td>
+</tr>
+<tr class="even">
+<td>La taille de police ou l'espacement ne change pas</td>
+<td>La feuille de style est écrasée par le widget</td>
+<td>Modifier la valeur sur le bon widget et dans la bonne ligne de sélecteur</td>
+</tr>
+<tr class="odd">
+<td>Icône non centrée</td>
+<td>Tailles du bouton et de l'icône non accordées</td>
+<td>Accorder <code>setIconSize()</code> et la taille du bouton</td>
+</tr>
+<tr class="even">
+<td>Le programme ne se lance pas depuis le bureau, mais bien dans le terminal</td>
+<td>Fichier <code>.desktop</code> avec mauvais chemin ou dossier de travail manquant</td>
+<td><code>Exec=</code> avec chemin absolu, définir <code>Path=</code>, <code>chmod +x</code></td>
+</tr>
+<tr class="odd">
+<td>PyQt5 ou PyQt6 mélangés</td>
+<td>Les noms diffèrent (par exemple <code>Qt.AlignCenter</code> contre <code>Qt.AlignmentFlag.AlignCenter</code>, <code>exec_()</code> contre <code>exec()</code>)</td>
+<td>Utiliser une seule version de façon cohérente</td>
+</tr>
+</tbody>
+</table></div>
+</section>

@@ -1,0 +1,221 @@
+<section id="s67-1"><h2>67.1 Pourquoi un microcontrôleur ne pilote pas de moteur</h2><p>Une broche ne fournit que quelques milliampères (Arduino environ 20 mA, ESP32 semblable, Raspberry Pi environ 16 mA). Un petit moteur à courant continu tire de 100 mA à plusieurs ampères, au démarrage un multiple. De plus, une bobine (moteur, relais) produit à la coupure une <strong>pointe de tension</strong>. C'est pourquoi, entre le microcontrôleur et le moteur, il y a toujours un <strong>étage pilote</strong> avec sa propre alimentation. Toutes les masses (GND) du microcontrôleur et du pilote doivent être reliées.</p>
+<p><strong>Diode de roue libre.</strong> Pour toute charge inductive (moteur, relais, électrovanne), une diode se place <strong>en antiparallèle</strong> de la charge : cathode vers le côté plus. Elle absorbe le courant qui veut continuer de circuler à la coupure et protège le transistor de commutation. Beaucoup de CI pilotes (ULN2003, modules L298N) ont déjà de telles diodes intégrées.</p>
+</section><section id="s67-2"><h2>67.2 Les pilotes en un coup d’œil</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Tâche</th>
+<th>Composant</th>
+<th>Données (typiques)</th>
+<th>Remarque</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Une charge marche/arrêt</td>
+<td><strong>MOSFET</strong> (type Logic-Level) ou transistor</td>
+<td>selon le type</td>
+<td>Tenir compte du niveau logique (3,3 V sur l'ESP32) ; prévoir résistance de grille et pull-down</td>
+</tr>
+<tr class="even">
+<td>Plusieurs charges marche/arrêt</td>
+<td><strong>ULN2003</strong> (7 canaux) / <strong>ULN2803</strong> (8 canaux)</td>
+<td>jusqu'à 500 mA par canal, jusqu'à 50 V</td>
+<td>Entrée depuis le microcontrôleur, la sortie commute vers la masse, diodes de roue libre intégrées</td>
+</tr>
+<tr class="odd">
+<td>Moteur à courant continu avec sens et vitesse</td>
+<td><strong>L298N</strong></td>
+<td>Tension moteur jusqu'à environ 46 V, environ 2 A par canal (avec refroidissement)</td>
+<td>ancien et <strong>peu efficace</strong> : perd environ 2 V ou plus</td>
+</tr>
+<tr class="even">
+<td>la même chose, moderne</td>
+<td><strong>TB6612FNG</strong>, <strong>DRV8833</strong>, <strong>MX1508</strong></td>
+<td>pertes plus faibles</td>
+<td>nettement meilleur pour de petits moteurs 3–6 V</td>
+</tr>
+<tr class="odd">
+<td>Moteur pas à pas 28BYJ-48</td>
+<td><strong>Carte ULN2003</strong></td>
+<td>5 V</td>
+<td>quatre LED montrent la bobine active</td>
+</tr>
+<tr class="even">
+<td>Servo</td>
+<td>directement sur la broche de signal, alimentation 5 V propre</td>
+<td>impulsion PWM de 1 à 2 ms toutes les 20 ms</td>
+<td>ne jamais alimenter de gros servos par la broche de la carte</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s67-3"><h2>67.3 Cas : L298N ou autre chose ?</h2><p>Je voulais piloter deux moteurs avec un microcontrôleur. Mes questions étaient : que fait le L298N, en ai-je besoin pour mes deux moteurs, et quelle est la carte que j'avais en main ?</p>
+<p><strong>Ce que le L298N sait faire :</strong></p>
+<ul>
+<li>deux moteurs à courant continu indépendamment l'un de l'autre <strong>ou</strong> un moteur pas à pas,</li>
+<li>changer le <strong>sens de rotation</strong> (deux entrées par moteur),</li>
+<li>régler la <strong>vitesse</strong> par PWM (entrées <code>ENA</code>, <code>ENB</code>).</li>
+</ul>
+<p><strong>Raccordements typiques d'un module L298N :</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Raccordement</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>IN1</code>–<code>IN4</code></td>
+<td>Signaux de commande du microcontrôleur (sens)</td>
+</tr>
+<tr class="even">
+<td><code>ENA</code>, <code>ENB</code></td>
+<td>Validation ou PWM pour la vitesse</td>
+</tr>
+<tr class="odd">
+<td><code>OUT1</code>–<code>OUT4</code></td>
+<td>Raccordements du moteur</td>
+</tr>
+<tr class="even">
+<td><code>+12V</code> (alimentation moteur), <code>5V</code>, <code>GND</code></td>
+<td>Alimentation</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Sens et vitesse (un pont en H, avec <code>EN</code> = H) :</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>IN1</th>
+<th>IN2</th>
+<th>Effet sur le moteur</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>H</td>
+<td>L</td>
+<td>en avant</td>
+</tr>
+<tr class="even">
+<td>L</td>
+<td>H</td>
+<td>en arrière</td>
+</tr>
+<tr class="odd">
+<td>L</td>
+<td>L</td>
+<td>Freinage (bornes du moteur court-circuitées)</td>
+</tr>
+<tr class="even">
+<td>H</td>
+<td>H</td>
+<td>Freinage</td>
+</tr>
+<tr class="odd">
+<td>indifférent, mais <code>EN</code> = L</td>
+<td></td>
+<td>Validation coupée : le moteur s'arrête en roue libre</td>
+</tr>
+</tbody>
+</table></div>
+<p>La vitesse se règle par PWM sur <code>ENA</code> : la broche commute rapidement, le rapport (rapport cyclique) détermine la tension moyenne.</p>
+<p><strong>Si le L298N convient :</strong> seulement si les deux moteurs sont des moteurs à courant continu normaux, si la tension de service correspond au module et si le courant de démarrage ou de blocage n'est pas trop élevé. Avec de petits moteurs 3–6 V, un pilote moderne (TB6612FNG, DRV8833, MX1508) est meilleur, car le L298N perd environ 2 V : sur 5 V d'alimentation, seuls environ 3 V arriveraient au moteur.</p>
+<p><strong>L'autre carte :</strong> sur le CI était inscrit <strong>ULN2003APG</strong>. Ce n'est pas un L298N, mais un composant pilote pour de petites charges et des <strong>moteurs pas à pas comme le 28BYJ-48</strong>. On reconnaissait : la puce ULN2003A, le <strong>connecteur blanc à cinq pôles</strong> pour le moteur pas à pas, quatre LED pour les bobines et les entrées <code>IN1</code> à <code>IN4</code>. Elle <strong>ne</strong> convient <strong>pas</strong> pour deux moteurs à courant continu normaux.</p>
+<p><strong>Leçon :</strong> lire d'abord la plaque signalétique (tension, courant) et le marquage des CI, puis choisir le pilote. Une photo de l'inscription du moteur ou le nombre de fils éclaire souvent aussitôt de quel type il s'agit.</p>
+</section><section id="s67-4"><h2>67.4 Le moteur pas à pas 28BYJ-48 avec ULN2003</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Caractéristique</th>
+<th>Valeur (usuelle, vérifier selon la fiche technique)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Alimentation</td>
+<td>5 V</td>
+</tr>
+<tr class="even">
+<td>Pas</td>
+<td>32 par tour du moteur, réducteur 1:64 → environ 2048 pas (pas complet) ou 4096 (demi-pas) par tour de l'arbre</td>
+</tr>
+<tr class="odd">
+<td>Raccordement</td>
+<td>connecteur à cinq pôles sur la carte ULN2003, entrées <code>IN1</code>–<code>IN4</code></td>
+</tr>
+<tr class="even">
+<td>Commande</td>
+<td>commuter les bobines à la suite (pas complet ou demi-pas), en Arduino par exemple avec la bibliothèque <code>Stepper</code> ou <code>AccelStepper</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Important : donner à la bibliothèque les entrées dans l'ordre <code>IN1, IN3, IN2, IN4</code>, sinon le moteur ne fait que des saccades. (C'est un piège connu avec cette combinaison.)</p>
+</section><section id="s67-5"><h2>67.5 Servo ou moteur pas à pas ?</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Servo</th>
+<th>Moteur pas à pas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mouvement</td>
+<td>rejoint un <strong>angle imposé</strong> (le plus souvent 0 à 180°)</td>
+<td>tourne en <strong>nombreux petits pas</strong>, aussi loin qu'on veut</td>
+</tr>
+<tr class="even">
+<td>Commande</td>
+<td>un signal PWM, la largeur d'impulsion détermine l'angle</td>
+<td>commuter quatre bobines (ou plus) l'une après l'autre</td>
+</tr>
+<tr class="odd">
+<td>Pilote nécessaire</td>
+<td>non (alimentation propre)</td>
+<td>oui (ULN2003, A4988, DRV8825 …)</td>
+</tr>
+<tr class="even">
+<td>Couple de maintien</td>
+<td>tient activement la position</td>
+<td>tient avec du courant, en chauffant</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s67-6"><h2>67.6 Cas : moteur à condensateur et enroulement auxiliaire</h2><p>Les moteurs asynchrones monophasés ont besoin pour démarrer (et en fonctionnement) d'un <strong>second enroulement</strong> dont le courant est déphasé par un <strong>condensateur</strong>. C'est seulement ainsi qu'un champ tournant se crée.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Enroulement</th>
+<th>Bornes typiques</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Enroulement principal</td>
+<td><code>U1</code> / <code>U2</code></td>
+</tr>
+<tr class="even">
+<td>Enroulement auxiliaire (condensateur)</td>
+<td><code>Z1</code> / <code>Z2</code> (très fréquent), selon le fabricant <code>V1</code> / <code>V2</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Le condensateur est employé selon la tâche comme <strong>condensateur de marche</strong> (reste en fonctionnement) ou comme <strong>condensateur de démarrage</strong> (coupé après la montée en vitesse).</p>
+<p><strong>Mon cas : moteur avec trois fils sortis : neutre, 110 V et 230 V.</strong> Cela évoque un <strong>moteur monophasé multi-tension</strong> avec prises sur l'enroulement, pas un moteur triphasé. Savoir si un condensateur est en plus nécessaire dépend de si <strong>un est déjà intégré</strong> :</p>
+<ol type="1">
+<li>Avec condensateur intégré, ce sont précisément ces trois fils qui sortent ; un condensateur externe n'est pas nécessaire. On choisit seulement la bonne tension.</li>
+<li>Sans condensateur intégré, il y aurait normalement des bornes comme <code>Z1/Z2</code>, souvent quatre raccordements ou plus.</li>
+</ol>
+<p>Le déterminant est la <strong>plaque signalétique</strong> (mention « Capacitor », µF ou condensateur de marche) ou un boîtier de condensateur visible sur le moteur (petit cylindre). <strong>Ne jamais brancher 110 V et 230 V en même temps :</strong> toujours seulement le neutre et <strong>une</strong> des deux tensions.</p>
+<p><strong>Cas : condensateur de 100 nF entre la ligne 110 V et le neutre.</strong> Dans une pompe ouverte, quelqu'un avait soudé un condensateur de 100 nF entre la ligne 110 V et le neutre, alors que le fonctionnement se faisait sur 230 V et neutre. Cela n'a <strong>aucun sens</strong> pour le fonctionnement du moteur :</p>
+<ul>
+<li>Les condensateurs de marche pour moteurs se situent dans la plage de <strong>2 µF à 50 µF</strong>. 100 nF = 0,1 µF est un vingtième de la plus petite valeur usuelle.</li>
+<li>100 nF est typique pour des <strong>condensateurs antiparasites</strong> (CEM, déparasitage radio, filtre secteur), le plus souvent entre phase et neutre.</li>
+</ul>
+<p>C'était plutôt un signe d'une solution bricolée qu'une construction propre.</p>
+</section><section id="s67-7"><h2>67.7 Exercices avec solutions</h2><ol type="1">
+<li><strong>Exercice :</strong> un moteur tire 800 mA sous 6 V. Quelle puissance absorbe-t-il, et que reste-t-il de tension avec un L298N (2 V de perte) ? <strong>Solution :</strong> <code>P = 6 V · 0,8 A = 4,8 W</code>. Au moteur arrivent environ 4 V si l'alimentation est de 6 V. Le pilote transforme alors environ <code>2 V · 0,8 A = 1,6 W</code> en chaleur.</li>
+<li><strong>Exercice :</strong> pourquoi un relais a-t-il besoin d'une diode de roue libre ? <strong>Solution :</strong> la bobine produit à la coupure une haute tension d'induction. La diode donne un chemin au courant et protège le transistor de commutation.</li>
+<li><strong>Exercice :</strong> combien de demi-pas faut-il à un 28BYJ-48 pour un tour complet de l'arbre ? <strong>Solution :</strong> 4096.</li>
+</ol>
+</section>

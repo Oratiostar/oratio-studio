@@ -1,0 +1,231 @@
+<section id="s37-1"><h2>37.1 L’interface en un coup d’œil</h2><p>Le Oratio Menu est la partie qui ressemble à un écran d'accueil de téléphone. Il se compose des zones suivantes :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Zone</th>
+<th>Emplacement à l'écran</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Barre de verre</td>
+<td>tout en haut</td>
+<td>Heure, fenêtres en cours, menu</td>
+</tr>
+<tr class="even">
+<td>Groupe de symboles</td>
+<td>en haut à droite</td>
+<td>Loupe, cloche, pinceau, WLAN, Bluetooth, microphone, centre de contrôle, roue dentée</td>
+</tr>
+<tr class="odd">
+<td>Grille avec pages</td>
+<td>milieu de l'écran</td>
+<td>Tuiles (applications et widgets), points de page en bas</td>
+</tr>
+<tr class="even">
+<td>Dock</td>
+<td>en bas</td>
+<td>Applications favorites, toujours visibles</td>
+</tr>
+<tr class="odd">
+<td>Fenêtre de contrôle</td>
+<td>s'ouvre sous le groupe de symboles</td>
+<td>interrupteurs rapides (WLAN, son, luminosité, musique …)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Presque tout le reste est une <strong>fenêtre de verre</strong> qui s'ouvre à côté de cette vue ou par-dessus et qui est dessinée par la boîte à outils <code>glass_ui.py</code> (<a class="xr" href="#/kap/36/36.5">chapitre 36.5</a>).</p>
+</section><section id="s37-2"><h2>37.2 Tuiles, pages et mode d’édition</h2><p><strong>Grille :</strong> par défaut 10 colonnes × 5 lignes par page. Une tuile a dans <code>oratio_apps.json</code> les valeurs <code>slot</code>, <code>row</code>, <code>col</code>. On en déduit la page (calcul comme au <a class="xr" href="#/kap/35">chapitre 35</a> : page = slot divisé par tuiles par page).</p>
+<p><strong>Mode édition :</strong> symbole pinceau en haut à droite → crayon. Alors :</p>
+<ul>
+<li>Glisser une tuile = la déplacer (glisser au-delà du bord change de page, après 0,75 s d'attente, puis 1,1 s jusqu'à la page suivante)</li>
+<li>Clic droit ou appui long sur une tuile = menu : Modifier, Taille, Couleur, Nom, Retirer</li>
+<li>Glisser sur le dock = application dans le dock</li>
+</ul>
+<p><strong>Grandes tuiles :</strong> les widgets et certaines applications ont des tailles en cases (1×1, 2×1, 2×2, 4×2, 4×4).</p>
+<p><strong>Couleur :</strong> clic droit → Couleur. L'interrupteur « Couleur du système » colore la tuile dans l'aspect verre gris des widgets, qui suit le thème.</p>
+<p><strong>Noms :</strong> l'orthographe reste comme on la définit soi-même. Une règle automatique (« chaque mot en majuscule, omettre “Oratio” ») a existé brièvement et a été retirée, parce qu'elle abîmait des noms comme « Oratio Media Player ». Renommer : ouvrir la tuile en mode édition ou modifier le nom directement dans <code>oratio_apps.json</code>.</p>
+</section><section id="s37-3"><h2>37.3 Ajouter une nouvelle appli (depuis l’interface)</h2><p>Menu → « Ajouter une application » ouvre une fenêtre avec des champs pour le nom, le fichier (le script), l'icône, la couleur, le lancement en terminal et « Ouvrir dans l'aspect Oratio » (= <code>embed</code>). Le fichier peut être choisi directement via la médiathèque. Après « Enregistrer », le programme écrit une nouvelle entrée dans <code>oratio_apps.json</code> (<a class="xr" href="#/kap/36/36.7">chapitre 36.7</a>) et la tuile apparaît à la prochaine place libre.</p>
+</section><section id="s37-4"><h2>37.4 Widgets : un fichier par widget</h2><p>Chaque widget est <strong>un fichier</strong> dans le dossier <code>Oratio_Menu/Widget/</code>. Un nouveau fichier ici apparaît de lui-même dans la galerie de widgets. Un fichier de widget contient :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Nom dans le fichier</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>KIND</code></td>
+<td>identifiant interne (par ex. <code>"network"</code>)</td>
+</tr>
+<tr class="even">
+<td><code>NAME</code></td>
+<td>Nom affiché dans la galerie</td>
+</tr>
+<tr class="odd">
+<td><code>SIZES</code></td>
+<td>tailles autorisées sous forme de liste, par ex. <code>[(1,1),(2,1),(2,2),(4,2)]</code></td>
+</tr>
+<tr class="even">
+<td><code>MIN</code></td>
+<td>plus petite taille utile</td>
+</tr>
+<tr class="odd">
+<td><code>FAST</code></td>
+<td><code>True</code> si le widget doit être redessiné rapidement (par ex. égaliseur)</td>
+</tr>
+<tr class="even">
+<td><code>ORDER</code></td>
+<td>Ordre dans la galerie</td>
+</tr>
+<tr class="odd">
+<td><code>paint(c)</code></td>
+<td><strong>la fonction de dessin</strong> : reçoit une zone de dessin <code>c</code> et peint le widget</td>
+</tr>
+<tr class="even">
+<td><code>on_click</code> (facultatif)</td>
+<td>ce qui se passe au toucher</td>
+</tr>
+<tr class="odd">
+<td><code>APP</code> / <code>OPEN_APP</code> (facultatif)</td>
+<td>quelle application s'ouvre au toucher</td>
+</tr>
+<tr class="even">
+<td><code>tick</code>, <code>data_tick</code> (facultatif)</td>
+<td>actualisation régulière ou récupération de données</td>
+</tr>
+</tbody>
+</table></div>
+<p>Les données dont plusieurs widgets ont besoin (CPU, réseau, ventilateur …) sont récupérées par un fichier commun <code>_common</code> (<code>WDATA</code>), pour que chaque widget n'interroge pas lui-même.</p>
+<p><strong>Exemples de widgets existants :</strong> CPU, RAM, réseau, ventilateur, LED, OLED, horloge, météo, calculatrice, minuteur, réveil, égaliseur, musique, sélecteur d'applications, pile.</p>
+<p><strong>Comment un widget cassé est traité :</strong> au chargement, chaque fichier de widget est dans un <code>try/except</code>. Une erreur dans un fichier ne fait disparaître que ce widget de la galerie.</p>
+<h3 id="widget-galerie">Galerie de widgets</h3>
+<p>Menu → « Widgets » (ou roue dentée → Réglages → Applications &amp; pages → Widgets). Chaque widget est montré avec un aperçu en direct. Sous l'aperçu, toucher une taille : le widget atterrit sur la page actuelle.</p>
+<h3 id="widget-stapel">Pile de widgets</h3>
+<p>Dans la galerie, en haut, basculer sur « Pile (plusieurs dans une carte) », toucher au moins deux widgets (coche), choisir la taille (2×2 / 4×2 / 4×4) et « Défilement automatique » (Désactivé / 5 / 10 / 30 s), « Créer la pile ». Ensuite, une carte montre à chaque fois un widget. Glisser ou utiliser les points sur le bord droit pour changer. Modifier : clic droit → « Modifier la pile ». Dans <code>oratio_apps.json</code> apparaît une entrée <code>"widget": "stack"</code>.</p>
+<p><strong>Limites :</strong> la pile ne change pas selon l'heure, seulement selon le rythme. Les widgets à commande propre (touches de la calculatrice) ne peuvent qu'être regardés dans la pile ; toucher ouvre l'application correspondante.</p>
+</section><section id="s37-5"><h2>37.5 La fenêtre de contrôle</h2><p>Le centre de contrôle (symbole en haut à droite) contient des tuiles pour WLAN, Bluetooth, mode avion, son, luminosité, musique, écran, fenêtres d'applications, mode nuit, LED et d'autres. Caractéristiques :</p>
+<ul>
+<li><strong>4 colonnes</strong>, au plus <strong>7 rangées</strong>. Ce qui ne tient pas est désactivé. Dans les réglages du CC, « Défilement » active une longueur illimitée.</li>
+<li>Toutes les tuiles sont librement réglables en largeur (1–4) et en hauteur (1–3) ; le contenu s'adapte.</li>
+<li><strong>Mode édition :</strong> appuyer longuement sur un endroit <strong>vide</strong> (pas sur des boutons !). Ensuite, glisser les tuiles, coin inférieur droit = taille, « Terminé » en bas à droite termine. Le pointeur devient une main au coin de poignée.</li>
+<li>Autres tuiles (désactivées au départ) : redémarrer le Pi, capture d'écran, navigateur, musique, notes. Activer sous « Autres tuiles ».</li>
+<li>« Éteindre », « Pi redémarrer » et « CC redémarrer » ne demandent pas de confirmation, un appui suffit. La fenêtre d'énergie des réglages du menu continue de demander.</li>
+<li>La <strong>tuile musique</strong> commande YouTube &amp; Co. (via <code>playerctl</code>) <strong>et</strong> l'Oratio Media Player (via de petits fichiers <code>/tmp/oratio_medien_state.json</code> et <code>/tmp/oratio_medien_cmd</code>). Toucher le titre ouvre le Media Player.</li>
+<li>Après chaque démarrage du programme, « Muet » est levé une seule fois et le volume 0 est mis à 50 %.</li>
+</ul>
+</section><section id="s37-6"><h2>37.6 Activer le Wi-Fi et le Bluetooth – deux leçons</h2><ol type="1">
+<li><strong>Le Bluetooth repasse sur « désactivé » :</strong> le verrou radio était actif. Avant d'activer, il doit être levé : <code>rfkill unblock bluetooth</code>. Le programme le fait maintenant lui-même.</li>
+<li><strong>Le symbole oscille pendant que le WLAN démarre :</strong> le symbole change maintenant <strong>immédiatement</strong> et reste ainsi jusqu'à ce que la vraie interrogation confirme le nouvel état. Si cela ne réussit pas après environ 12 s, il affiche de nouveau l'état réel. Les interrogations (WLAN, Bluetooth, mode avion, son, réseau) se font en même temps au lieu de successivement, la fenêtre s'ouvre plus vite.</li>
+</ol>
+<p><strong>Leçon :</strong> une interface qui ne fait qu'interroger l'état du système paraît lente. Mieux vaut d'abord montrer l'état attendu, puis le confirmer.</p>
+</section><section id="s37-7"><h2>37.7 Rester fluide : saccades au déplacement et au changement de page</h2><p>Sur le Pi 5 en 4K sans accélération graphique, il y a eu plusieurs problèmes de saccades. Le chemin n'a pas été droit :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Essai</th>
+<th>Résultat</th>
+<th>Pourquoi</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Continuer à animer tous les widgets pendant qu'une application est glissée</td>
+<td>saccade</td>
+<td>chaque pas de souris redessine tout</td>
+</tr>
+<tr class="even">
+<td>Mettre en pause les animations des widgets pendant le glissement, ne dessiner les marquages qu'en cas de changement, recherche de cible au plus 30× par seconde</td>
+<td>ne saccade plus</td>
+<td>moins de travail de dessin par seconde</td>
+</tr>
+<tr class="odd">
+<td>Faire glisser le changement de page comme deux images (ancienne et nouvelle page sous forme de photo)</td>
+<td>éclair blanchâtre</td>
+<td>les images de pages se superposaient pendant 90 ms aux vraies surfaces de verre translucides – du verre empilé en double paraît blanchâtre</td>
+</tr>
+<tr class="even">
+<td>Les deux images dans <strong>un seul</strong> widget, déplacées par pixels entiers</td>
+<td>mieux, mais coûteux</td>
+<td>–</td>
+</tr>
+<tr class="odd">
+<td>Le menu détecte que le glissement tourne à moins d'environ 14 images/s et bascule directement</td>
+<td>propre au lieu de saccadé</td>
+<td>en 4K sans accélération, le glissement n'est pas possible</td>
+</tr>
+<tr class="even">
+<td>État actuel : les <strong>vraies tuiles</strong> glissent vers l'extérieur et vers l'intérieur</td>
+<td>bien</td>
+<td>pas d'images, rien n'est précalculé au repos</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>À retenir :</strong> avec des surfaces translucides, ne jamais superposer deux couches, sinon un saut de luminosité apparaît. Et : si une animation ne tourne pas de façon fluide sur le matériel, mieux vaut la supprimer complètement que la laisser saccader.</p>
+<p>Autres accélérateurs : les images d'icônes sont limitées à 512 pixels au maximum et les images mises à l'échelle sont mises en cache ; le calcul de la police est mémorisé (widgets environ 5× plus rapides). Les widgets en direct normaux tournent à environ 8 au lieu de 15 images par seconde.</p>
+</section><section id="s37-8"><h2>37.8 Applis intégrées (sélection)</h2><p>Dans le dossier <code>Oratio_Menu/Apps/</code>, chaque application se trouve dans son propre sous-dossier (script + <code>icon.png</code>) :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Application</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Oratio Media Player</td>
+<td>Musique avec pochette, barres de niveau, indication de qualité (codec, kHz, bit, kbit/s) ; met en pause l'autre musique (<code>playerctl</code>)</td>
+</tr>
+<tr class="even">
+<td>Navigateur</td>
+<td>Favoris (étoile, Ctrl+D), historique, recherche dans la page (Ctrl+F), zoom (Ctrl +/−/0), vidéo en plein écran, téléchargements vers <code>~/Downloads</code> ; les favoris sont dans <code>~/.local/share/oratio_browser</code></td>
+</tr>
+<tr class="odd">
+<td>Fichiers</td>
+<td>Menu du clic droit, coller avec le même nom demande (Remplacer / Garder les deux / Annuler), aperçu d'image</td>
+</tr>
+<tr class="even">
+<td>Calculatrice</td>
+<td>vraie application avec taille de fenêtre petite/normale/grande/plein écran, verre/mat ; le widget l'ouvre</td>
+</tr>
+<tr class="odd">
+<td>Minuteur, réveil, météo</td>
+<td>suivent le réglage « Fenêtre d'application → Apparence » (Verre / Mat / Système)</td>
+</tr>
+<tr class="even">
+<td>Tâches</td>
+<td>Liste de tâches (<code>oratio_aufgaben.py</code>)</td>
+</tr>
+<tr class="odd">
+<td>Icon Werkstatt</td>
+<td>dessine des icônes d'applications</td>
+</tr>
+<tr class="even">
+<td>Strike</td>
+<td>petit jeu</td>
+</tr>
+<tr class="odd">
+<td>Labor</td>
+<td>Poste de mesure (<a class="xr" href="#/kap/38/38.5">chapitre 38.5</a>)</td>
+</tr>
+<tr class="even">
+<td>Backup</td>
+<td>Clone du système (<a class="xr" href="#/kap/39/39.2">chapitre 39.2</a>)</td>
+</tr>
+<tr class="odd">
+<td>Bauteile, Akademie, Atlas</td>
+<td>Ouvrages de référence d'électronique (<a class="xr" href="#/kap/39/39.6">chapitre 39.6</a>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Leçon importante sur les icônes :</strong> il y a eu un essai pour que les icônes avec leur propre fond remplissent toute la tuile (couper la marge vide). Il a été annulé ; toutes les icônes sont de nouveau dessinées comme « plaque + icône avec une petite marge ». Une icône peut aussi n'avoir <strong>aucun</strong> fond (Media Player : seulement anneau, écriture, rouge) ; alors c'est la couleur de la tuile qui détermine l'aspect.</p>
+</section><section id="s37-9"><h2>37.9 Clavier et joystick</h2><p>Le menu peut aussi se commander sans souris (fichier <code>Ansicht/tastatur.py</code>) : les flèches déplacent le marquage, Entrée ouvre, Échap revient en arrière, Ctrl+Tab ouvre le sélecteur d'applications. Un petit clavier Rii avec joystick convient comme télécommande sur le téléviseur. Pour le joystick, c'est comme pour les flèches.</p>
+</section><section id="s37-10"><h2>37.10 Les principales leçons de ce chapitre</h2><ol type="1">
+<li>Un fichier par widget, un par application : les erreurs restent locales.</li>
+<li>D'abord montrer l'état attendu, puis le faire confirmer.</li>
+<li>Les animations doivent convenir au matériel – sur un graphisme faible, mieux vaut basculer que glisser.</li>
+<li>Tout ce qui est variable dans un fichier JSON, tout l'aspect dans la boîte à outils.</li>
+</ol>
+</section>

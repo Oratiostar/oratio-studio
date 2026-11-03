@@ -1,0 +1,202 @@
+<section id="s52-1"><h2>52.1 Windows sur le Steam Deck</h2><p>Le tableau détaillé se trouve au <a class="xr" href="#/kap/28/28.13">chapitre 28.13</a> ; voici ici le schéma de décision.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Vérifier d'abord</th>
+<th>Voie</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Le support d'installation ne démarre pas</td>
+<td>Deck éteint, maintenir <strong>Volume + + Marche</strong> → menu de démarrage</td>
+<td>Choisir la clé (FAT32/NTFS, <code>install.wim</code> sous 4 Go ou découpé)</td>
+</tr>
+<tr class="even">
+<td>L'installateur ne trouve pas le disque</td>
+<td><code>diskpart</code> → <code>list disk</code></td>
+<td>Charger les pilotes (<a class="xr" href="#/kap/28/28.4">chapitre 28.4</a>)</td>
+</tr>
+<tr class="odd">
+<td>L'installation s'interrompt au réseau</td>
+<td>–</td>
+<td><code>Shift+F10</code>, <code>oobe\bypassnro</code>, redémarrer (<a class="xr" href="#/kap/28/28.8">chapitre 28.8</a>)</td>
+</tr>
+<tr class="even">
+<td>Pas de son / pas de WLAN / pas de tactile</td>
+<td>Gestionnaire de périphériques : point d'exclamation jaune</td>
+<td>Installer les pilotes dans l'ordre (tableau 28.5)</td>
+</tr>
+<tr class="odd">
+<td>Pas de démarrage après le clonage</td>
+<td><code>lsblk</code>, <code>efibootmgr -v</code></td>
+<td>Entrée de démarrage et table de partitions (<a class="xr" href="#/kap/28/28.12">chapitre 28.12</a>)</td>
+</tr>
+<tr class="even">
+<td>Le disque affiche une mauvaise taille après un clone dd</td>
+<td><code>sudo sgdisk -e /dev/…</code>, <code>partprobe</code></td>
+<td>Déplacer la copie GPT à la fin</td>
+</tr>
+<tr class="odd">
+<td>Erreur d'accessoire Xbox</td>
+<td>–</td>
+<td><a class="xr" href="#/kap/28/28.9">chapitre 28.9</a></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s52-2"><h2>52.2 Steam Deck : SteamOS et installation personnelle</h2><p>Le dépannage de la variante Deck du Control Center se trouve au <a class="xr" href="#/kap/43/43.8">chapitre 43.8</a>. Schéma court :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Commande</th>
+<th>Interprétation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Exec format error</code></td>
+<td><code>uname -m</code>, <code>file programm</code></td>
+<td>Programme pour un autre type de processeur (arm64 au lieu de x86_64) → charger le bon programme</td>
+</tr>
+<tr class="even">
+<td><code>externally-managed-environment</code></td>
+<td>–</td>
+<td>Python système bloqué → environnement virtuel <code>python3 -m venv</code></td>
+</tr>
+<tr class="odd">
+<td>Modifications du système perdues après une mise à jour</td>
+<td>–</td>
+<td>Les mises à jour de SteamOS remplacent l'image système ; garder ses affaires dans le dossier personnel</td>
+</tr>
+<tr class="even">
+<td><code>pacman</code> refuse</td>
+<td><code>sudo steamos-readonly disable</code></td>
+<td>Le système est protégé en écriture (ensuite remettre <code>enable</code>)</td>
+</tr>
+<tr class="odd">
+<td>Ollama demande root</td>
+<td>–</td>
+<td>installer sans root dans le dossier personnel (<a class="xr" href="#/kap/43/43.5">chapitre 43.5</a>)</td>
+</tr>
+<tr class="even">
+<td>Fenêtre noire en mode jeu</td>
+<td>–</td>
+<td>Utiliser le mode bureau</td>
+</tr>
+<tr class="odd">
+<td>Entrée manquante</td>
+<td>–</td>
+<td>Steam Input → configuration du bureau</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s52-3"><h2>52.3 Batocera</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Commande / endroit</th>
+<th>Interprétation</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ne démarre pas depuis le NVMe</td>
+<td>Ordre de démarrage du Pi (<a class="xr" href="#/kap/8/8.3">chapitre 8.3</a>)</td>
+<td><code>BOOT_ORDER</code> pas sur NVMe</td>
+<td><code>0xf416</code> ou via <code>raspi-config</code></td>
+</tr>
+<tr class="even">
+<td>Pas d'image</td>
+<td><code>config.txt</code> sur la partition de démarrage</td>
+<td>mauvais réglage HDMI</td>
+<td><code>hdmi_force_hotplug=1</code>, définir le mode</td>
+</tr>
+<tr class="odd">
+<td>La manette n'est pas reconnue</td>
+<td><code>evtest</code>, menu → manettes</td>
+<td>Bluetooth/USB non appairé</td>
+<td>réappairer, affectation</td>
+</tr>
+<tr class="even">
+<td>Les jeux manquent</td>
+<td><code>/userdata/roms/&lt;system&gt;</code></td>
+<td>mauvais dossier/extension de fichier</td>
+<td>Vérifier le dossier système et le BIOS (<code>/userdata/bios</code>)</td>
+</tr>
+<tr class="odd">
+<td>Le jeu ne démarre pas</td>
+<td>Menu → Réglages système → Journal</td>
+<td>BIOS manquant ou mauvais cœur</td>
+<td>Ajouter le BIOS, choisir un autre émulateur</td>
+</tr>
+<tr class="even">
+<td>Réglages disparus</td>
+<td><code>/userdata/system/batocera.conf</code></td>
+<td>Fichier réinitialisé</td>
+<td>Restaurer la sauvegarde</td>
+</tr>
+<tr class="odd">
+<td>Accès par le réseau</td>
+<td><code>ssh root@batocera</code> (changer le mot de passe par défaut !)</td>
+<td>–</td>
+<td><code>\\BATOCERA</code> comme partage</td>
+</tr>
+<tr class="even">
+<td>Le logiciel personnel (ventilateur, OLED) ne tourne pas</td>
+<td>–</td>
+<td>Batocera n'a pas de paquets apt</td>
+<td>Inscrire les services à la main dans <code>/userdata/system</code></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s52-4"><h2>52.4 Double démarrage</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Commande</th>
+<th>Interprétation</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Un seul système démarre</td>
+<td><code>efibootmgr -v</code></td>
+<td>Entrée manquante</td>
+<td><code>efibootmgr</code> / <code>bcdboot</code> (Windows) / recréer GRUB</td>
+</tr>
+<tr class="even">
+<td>La mise à jour de Windows détruit le menu de démarrage</td>
+<td>–</td>
+<td>écrase l'ordre de démarrage</td>
+<td>Ordre dans l'UEFI ou avec <code>efibootmgr -o</code></td>
+</tr>
+<tr class="odd">
+<td>Heure fausse sous Linux/Windows</td>
+<td><code>timedatectl</code></td>
+<td>Windows prend l'heure locale, Linux l'UTC</td>
+<td>Windows : registre <code>RealTimeIsUniversal</code> ; ou Linux : <code>timedatectl set-local-rtc 1</code></td>
+</tr>
+<tr class="even">
+<td>Windows ne voit pas la partition Linux</td>
+<td>–</td>
+<td>ext4 inconnu</td>
+<td>volontaire ; échanger des fichiers via une partition NTFS/exFAT</td>
+</tr>
+<tr class="odd">
+<td>Partition trop petite</td>
+<td><code>lsblk</code></td>
+<td>–</td>
+<td>avant de la réduire, <strong>sauvegarde</strong>, puis avec <code>gparted</code></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s52-5"><h2>52.5 Règle fondamentale commune</h2><ol type="1">
+<li><strong>Sauvegarder avant tout travail sur disque/partition</strong> – les erreurs y sont irréversibles.</li>
+<li><strong>D'abord lire, puis écrire :</strong> <code>lsblk</code>, <code>fdisk -l</code>, <code>blkid</code> montrent l'état sans rien modifier.</li>
+<li><strong>Vérifier deux fois la cible :</strong> avec <code>dd</code>, un mauvais nom de cible, c'est la fin des données.</li>
+</ol>
+</section>

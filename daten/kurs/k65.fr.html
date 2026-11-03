@@ -1,0 +1,163 @@
+<section id="s65-1"><h2>65.1 Blocs d’alimentation et USB Power Delivery</h2><p>Un bloc d'alimentation ne fournit pas autant qu'indiqué dessus, mais <strong>autant que l'appareil en demande</strong> – jusqu'à la limite supérieure. Le nombre de watts est une limite supérieure, pas une consigne.</p>
+<p><strong>Cas : iPhone de 30 W sur le bloc de MacBook de 100 W.</strong> Ma question : mon iPhone charge au maximum à 30 W. Puis-je utiliser un bloc de 100 W ? <strong>Oui.</strong> L'appareil et le bloc négocient via le protocole de charge (USB-PD) la tension et le courant choisis. Le bloc propose plusieurs paliers, l'appareil choisit celui qu'il supporte.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Palier USB-PD (typique)</th>
+<th>Tension</th>
+<th>Courant</th>
+<th>Puissance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Palier de base</td>
+<td>5 V</td>
+<td>3 A</td>
+<td>15 W</td>
+</tr>
+<tr class="even">
+<td>Palier intermédiaire</td>
+<td>9 V</td>
+<td>3 A</td>
+<td>27 W</td>
+</tr>
+<tr class="odd">
+<td>Palier intermédiaire</td>
+<td>15 V</td>
+<td>3 A</td>
+<td>45 W</td>
+</tr>
+<tr class="even">
+<td>Palier supérieur</td>
+<td>20 V</td>
+<td>5 A</td>
+<td>100 W</td>
+</tr>
+</tbody>
+</table></div>
+<p>Les paliers qu'un bloc propose réellement figurent sur sa plaque signalétique. Pour 5 A, il faut en outre un câble avec puce intégrée (« e-marked »).</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Appareil</th>
+<th>Ce dont il a besoin</th>
+<th>Remarque</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Raspberry Pi 4</td>
+<td>5 V, 3 A</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Raspberry Pi 5</td>
+<td>5 V, 5 A (bloc de 27 W)</td>
+<td>sinon le Pi limite la puissance USB et affiche « USB boot requires high current » (<a class="xr" href="#/kap/26/26.4">chapitre 26.4</a>)</td>
+</tr>
+<tr class="odd">
+<td>ESP32 / Arduino</td>
+<td>5 V via USB, quelques centaines de mA</td>
+<td>Les matrices de LED, moteurs et servos demandent leur propre alimentation</td>
+</tr>
+<tr class="even">
+<td>Matrice de LED HUB75 64×32</td>
+<td>5 V, plusieurs ampères</td>
+<td>ne jamais l'alimenter par la broche d'une carte</td>
+</tr>
+</tbody>
+</table></div>
+<p>Sur le Pi, <code>vcgencmd get_throttled</code> montre si l'alimentation suffit (<a class="xr" href="#/kap/49/49.2">chapitre 49.2</a>).</p>
+</section><section id="s65-2"><h2>65.2 Accus au lithium : pourquoi jamais directement sur le bloc d’alimentation</h2><p><strong>Cas : charger une batterie avec un bloc d'alimentation.</strong> Ma question : si je branche le plus et le moins d'un bloc d'alimentation au plus et au moins d'une batterie au lithium, est-elle chargée ? <strong>Réponse : elle est chargée d'une manière ou d'une autre, mais cela ne doit jamais se faire directement.</strong></p>
+<p><strong>Pourquoi c'est dangereux :</strong></p>
+<ol type="1">
+<li><strong>Le bloc ne limite pas le courant de charge de façon adaptée.</strong> Les cellules au lithium doivent être chargées à <strong>courant constant (CC)</strong> puis à <strong>tension constante (CV)</strong>. Un bloc normal ne le fait pas.</li>
+<li><strong>C'est la batterie qui impose la tension, pas le bloc.</strong> Un bloc de 5 V sur une cellule de 3,7 V crée aussitôt un très fort courant de compensation.</li>
+<li><strong>Les cellules au lithium demandent des protections :</strong> contrôle de température, protection contre la surtension, protection contre la décharge profonde, limitation du courant et, avec plusieurs cellules, un équilibreur.</li>
+</ol>
+<p>Conséquences au pire : surchauffe, gonflement, incendie.</p>
+<p><strong>Le déroulement de la charge d'une cellule (CC/CV) :</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Phase</th>
+<th>Ce qui se passe</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Précharge (pour une cellule profondément déchargée)</td>
+<td>petit courant jusqu'à environ 3 V</td>
+</tr>
+<tr class="even">
+<td>2. Courant constant (CC)</td>
+<td>Courant de charge constant (par exemple 0,5 à 1 A), la tension monte à 4,2 V</td>
+</tr>
+<tr class="odd">
+<td>3. Tension constante (CV)</td>
+<td>La tension reste à 4,2 V, le courant diminue</td>
+</tr>
+<tr class="even">
+<td>4. Fin</td>
+<td>à environ un dixième du courant de charge, le chargeur coupe</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Valeurs de tension d'une cellule Li-Ion (usuelles) :</strong> pleine 4,2 V, nominale 3,7 V, vide environ 3,0 V. En dessous, elle ne doit pas être déchargée, sinon elle est endommagée durablement.</p>
+<p><strong>Composants pour une charge sûre</strong> (ma question : « Y a-t-il un CI entre le bloc et la batterie ? » – oui, plusieurs) :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Composant</th>
+<th>Rôle</th>
+<th>Remarque</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>TP4056</strong> (module)</td>
+<td>Chargeur pour <strong>une</strong> cellule, 4,2 V, courant de charge réglable d'environ 0,2 à 1 A, coupe à 4,2 V</td>
+<td>Choisir la variante <strong>avec circuit de protection (DW01 + 8205A)</strong>. Raccordements : bloc sur <code>IN+ / IN−</code>, batterie sur <code>B+ / B−</code>, charge sur <code>OUT+ / OUT−</code></td>
+</tr>
+<tr class="even">
+<td><strong>MCP73831 / MCP73832</strong> (Microchip)</td>
+<td>petit CI chargeur pour une cellule, courant de charge réglable</td>
+<td>bon pour ses propres cartes (SOT23-5)</td>
+</tr>
+<tr class="odd">
+<td><strong>Série BQ2407x</strong> (Texas Instruments)</td>
+<td>Chargeur avec <strong>Power-Path</strong> : charger la batterie et alimenter l'appareil en même temps</td>
+<td>plus professionnel</td>
+</tr>
+<tr class="even">
+<td><strong>Module BMS</strong></td>
+<td>Carte de protection pour packs de batteries à plusieurs cellules (équilibreur, surintensité, décharge profonde)</td>
+<td>toujours pour les packs de 2 cellules en série ou plus</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Sur le TP4056, une résistance <code>RPROG</code> détermine le courant de charge.</strong> D'après la fiche technique, on a à peu près <code>I = 1200 / R</code> (avec R en ohms et I en ampères). 1,2 kΩ donnent donc environ 1 A. Pour une petite cellule (par exemple 300 mAh pour la montre connectée), 1 A est beaucoup trop : on y charge au plus à environ 0,5 C, donc 150 mA, ce qui correspondrait à un <code>RPROG</code> d'environ 8 kΩ. <strong>Vérifier la fiche technique</strong> ; c'est ici mon approximation.</p>
+<p><strong>Autres règles pour les batteries dans un projet :</strong></p>
+<ul>
+<li>Ne jamais court-circuiter les cellules, ne jamais les endommager mécaniquement, ne jamais les charger sans surveillance, ne pas les stocker à la chaleur.</li>
+<li>Éliminer aussitôt une cellule gonflée (point de collecte), ne plus la charger.</li>
+<li>En soudant sur des cellules : travailler vite ou prendre des cellules toutes faites avec cosses à souder.</li>
+<li>Estimer l'autonomie : <code>Autonomie [h] = Capacité [mAh] / courant moyen [mA]</code>. Une montre connectée de 300 mAh avec 60 mA de courant moyen tient environ 5 heures.</li>
+</ul>
+</section><section id="s65-3"><h2>65.3 Cas : condensateur dans une alimentation de PC</h2><p>Un condensateur électrolytique du <strong>côté primaire</strong> d'une alimentation de PC stocke encore, après avoir débranché la prise, <strong>environ 325 à 400 V</strong>. C'est mortel. Les 325 V viennent de la valeur de crête de la tension secteur : <code>230 V · √2 ≈ 325 V</code>.</p>
+<p>Des <strong>résistances de décharge</strong> sont certes intégrées, mais on ne s'y fie jamais (elles peuvent être défectueuses ou le courant trop faible). Marche à suivre avant toute ouverture :</p>
+<ol type="1">
+<li>Débrancher la prise secteur.</li>
+<li>Attendre plusieurs minutes.</li>
+<li>Contrôler <strong>avec l'appareil de mesure</strong> la tension aux gros condensateurs.</li>
+<li>S'il reste de la tension : décharger par une résistance adaptée (ne pas court-circuiter avec un tournevis).</li>
+<li>Ne travailler qu'avec des connaissances techniques. Qui ne les a pas n'ouvre pas l'alimentation.</li>
+</ol>
+<p><strong>En général :</strong> les alimentations, les appareils à flash, les téléviseurs à tube et les circuits intermédiaires d'entraînements stockent une énergie dangereuse même éteints.</p>
+</section><section id="s65-4"><h2>65.4 Exercices avec solutions</h2><ol type="1">
+<li><strong>Exercice :</strong> une batterie de 2000 mAh alimente un circuit qui tire en moyenne 250 mA. Autonomie ? <strong>Solution :</strong> <code>2000 mAh / 250 mA = 8 h</code> (en pratique un peu moins à cause des pertes du convertisseur, environ 80 à 85 % de cela).</li>
+<li><strong>Exercice :</strong> quel courant de charge est usuel pour une cellule de 1000 mAh à 0,5 C ? <strong>Solution :</strong> <code>0,5 · 1000 mAh = 500 mA</code>.</li>
+<li><strong>Exercice :</strong> un bloc d'alimentation indique 20 V à 5 A. Quelle puissance ? <strong>Solution :</strong> <code>P = 20 V · 5 A = 100 W</code>.</li>
+</ol>
+</section>

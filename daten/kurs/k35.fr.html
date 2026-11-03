@@ -1,0 +1,47 @@
+<section id="s35-1"><h2>35.1 Plus d’applis que de place : les pages</h2><p>Avec 25 tuiles, la grille était pleine. Deux voies ont été pesées :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Voie</th>
+<th>Principe</th>
+<th>Inconvénient</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Catégories</td>
+<td>plusieurs groupes avec chacun une grille, commutables</td>
+<td>qui a beaucoup de catégories doit chercher dans chacune</td>
+</tr>
+<tr class="even">
+<td><strong>Pages</strong></td>
+<td>comme sur le téléphone : page 1, page 2, des points en bas</td>
+<td>il faut des règles pour les tuiles qui appartiennent à une autre page</td>
+</tr>
+</tbody>
+</table></div>
+<p>La décision a été pour des <strong>pages avec des points en bas</strong>. Le slot (numéro de place) détermine la page : avec 4 × 6 places, les slots 0 à 23 appartiennent à la page 1, les slots 24 à 47 à la page 2.</p>
+<p>Lors d'un essai, une application a disparu après que j'ai mis son slot à 24. Elle se trouvait maintenant sur la page 2, qui n'existait pas encore. <strong>Leçon :</strong> qui étend le modèle de données (pages) doit aussi étendre l'affichage (changement de page).</p>
+</section><section id="s35-2"><h2>35.2 La grille doit s’adapter</h2><p>La grille n'est pas un nombre fixe : 4 × 4, 4 × 5, 4 × 6 ou 5 × 3 doivent être possibles. Pour que le code s'y retrouve, il calcule <strong>tout à partir du nombre de colonnes et de lignes</strong> :</p>
+<pre><code>Seite = Slot // (Spalten * Zeilen)
+Zeile = (Slot % (Spalten * Zeilen)) // Spalten
+Spalte = Slot % Spalten</code></pre>
+<p>Si l'on change la taille de la grille, les applications se réorganisent automatiquement.</p>
+</section><section id="s35-3"><h2>35.3 Agrandir une appli</h2><p>Une application peut occuper plusieurs places (2 × 1 ou 2 × 2). Pour cela, chaque entrée du JSON reçoit une largeur <code>"w"</code> et une hauteur <code>"h"</code> en cases. Une grande application en repousse d'autres : les voisines glissent plus loin et, s'il n'y a pas de place, vers la page suivante.</p>
+</section><section id="s35-4"><h2>35.4 Glisser vers un emplacement libre</h2><p>Le code n'était d'abord conçu que pour « échanger application contre application ». Maintenant, chaque application devait pouvoir aller sur <strong>n'importe quelle</strong> place libre, y compris sur la page suivante. Pour cela, le programme doit savoir faire trois choses au relâchement :</p>
+<ol type="1">
+<li><strong>Calculer</strong> la case cible (page, ligne, colonne à partir de la position de la souris).</li>
+<li>Vérifier si elle est <strong>libre</strong> ou si une autre application s'y trouve.</li>
+<li>Libre : changer le slot. Occupée : échanger.</li>
+</ol>
+<p>Changement de page pendant le glissement : si l'on maintient la tuile au bord, la page change après un court délai.</p>
+</section><section id="s35-5"><h2>35.5 Une petite fenêtre avec bouton d’agrandissement</h2><p>La fenêtre devait d'abord démarrer petite et s'agrandir par un bouton dans le coin. Cela se fait avec le cadre de fenêtre du système (bouton Agrandir) ou, plus tard, avec des boutons personnels.</p>
+</section><section id="s35-6"><h2>35.6 L’indicateur à points et l’arrondi</h2><p>Les points de page en bas doivent se trouver dans une barre arrondie comme sur l'iPhone. Une différence visible n'est apparue qu'après avoir rendu la barre <strong>aussi large que les points seulement</strong>, et non sur toute la largeur.</p>
+</section><section id="s35-7"><h2>35.7 La fin du projet A</h2><p>Le projet A s'est arrêté à une limite que j'ai consignée dans un tableau comparatif (<a class="xr" href="#/kap/40">chapitre 40</a>) : le fichier avec les tuiles, le glissement, les effets et les pages était devenu très grand. Chaque nouvelle idée (arrière-plan, widgets, réglages) y aurait apporté encore plus. En même temps, des idées sans rapport avec les tuiles sont arrivées :</p>
+<ul>
+<li>une vidéo au démarrage du Pi (une intro avec le logo Oratio),</li>
+<li>une image de système d'exploitation personnelle (Oratio OS),</li>
+<li>la question de savoir si le programme tournerait mieux en C++.</li>
+</ul>
+<p>Telles étaient les raisons de repenser la structure. Le résultat est le projet B « Verre ».</p>
+</section>

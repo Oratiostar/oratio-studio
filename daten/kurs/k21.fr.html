@@ -1,0 +1,48 @@
+<section id="s21-1"><h2>21.1 Le matériel</h2><p>Le Waveshare <strong>ESP32-S3-Touch-AMOLED-1.75</strong> est un écran rond de 466 × 466 pixels, piloté par quatre lignes de données (<strong>QSPI</strong>). Le contrôleur s'appelle <strong>CO5300</strong>. Le processeur ESP32-S3 dispose de 8 Mo de <strong>PSRAM</strong> (mémoire externe), nécessaire pour le tampon d'image.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Signal</th>
+<th>GPIO</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CS</td>
+<td>12</td>
+</tr>
+<tr class="even">
+<td>SCK</td>
+<td>38</td>
+</tr>
+<tr class="odd">
+<td>D0 / D1 / D2 / D3</td>
+<td>4 / 5 / 6 / 7</td>
+</tr>
+<tr class="even">
+<td>RST</td>
+<td>39</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Réglages dans l'IDE Arduino :</strong> mettre PSRAM sur <strong>« OPI PSRAM »</strong>, sinon la mémoire ne suffit pas pour le tampon d'image. Le décalage de colonne du contrôleur est 6 (<code>COL_OFFSET 6</code>), sinon l'image est décalée.</p>
+</section><section id="s21-2"><h2>21.2 Structure du logiciel</h2><div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a>Arduino_DataBus <span class="op">*</span>bus <span class="op">=</span> <span class="kw">new</span> Arduino_ESP32QSPI<span class="op">(</span><span class="dv">12</span><span class="op">,</span> <span class="dv">38</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">7</span><span class="op">);</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a>Arduino_GFX <span class="op">*</span>gfx <span class="op">=</span> <span class="kw">new</span> Arduino_CO5300<span class="op">(</span>bus<span class="op">,</span> <span class="dv">39</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">466</span><span class="op">,</span> <span class="dv">466</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span></code></pre></div>
+<p><code>Arduino_GFX</code> est la bibliothèque graphique. Le bus transmet, la classe <code>Arduino_CO5300</code> connaît les commandes du contrôleur.</p>
+</section><section id="s21-3"><h2>21.3 Comment naît le cadran 1:1</h2><p>Objectif : le cadran d'une montre numérique Casio doit avoir exactement le même aspect sur l'écran. Le calcul :</p>
+<ol type="1">
+<li>Le modèle est recadré ; le centre du cadran se trouve en (324, 295) dans la découpe, l'échelle est 0,6 (unités du modèle → pixels de l'écran).</li>
+<li>Un script Python (PIL) dessine le fond et les glyphes en <strong>résolution quadruple</strong> (suréchantillonnage) et les réduit – cela lisse les bords.</li>
+<li>Les chiffres sont des <strong>masques à sept segments</strong> : grand 50×96 (épaisseur de trait 13,5), secondes 33×60 (9), date 25×45 (7,4). Les jours de la semaine ont leur propre police en capitales.</li>
+<li>Le cadre est créé avec une <strong>transformée de distance</strong> (scipy) : la distance au bord extérieur détermine les bandes de couleur.</li>
+<li>Le script écrit des en-têtes C (<code>face_bg.h</code>, <code>glyphs.h</code>, <code>layout.h</code>) qui sont intégrés au programme sous forme de tableaux RGB565.</li>
+<li>Le sketch dessine le fond une fois, incruste chaque seconde les masques dans la bonne couleur (masque alpha) et rend le tout dans un tampon PSRAM qui part d'un seul coup vers l'écran.</li>
+</ol>
+<p><strong>RGB565 :</strong> 5 bits de rouge, 6 de vert, 5 de bleu, soit 16 bits par pixel – moitié moins que 24 bits et courant pour les écrans.</p>
+<p><strong>Vérification :</strong> un petit programme C++ sur l'ordinateur avec les mêmes fonctions a confirmé que la sortie du sketch est identique au pixel près à l'aperçu Python. <strong>Aucun test sur le vrai matériel.</strong> Le Wi-Fi et NTP pour l'heure sont facultatifs ; l'indicateur de batterie est fixé à 100 %, la liaison avec la puce d'alimentation AXP2101 reste à faire.</p>
+</section><section id="s21-4"><h2>21.4 Évaluation du sketch `Oratio_Casio_Watch.ino`</h2><ul>
+<li><strong>Points positifs :</strong> interrupteur tactile, compteur de pas, structure claire.</li>
+<li><strong>Problèmes :</strong> les coins de l'écran rond sont coupés (contenu trop à l'extérieur) ; certains libellés sont masqués ; les broches diffèrent de celles des exemples Waveshare ; <code>setBrightness()</code> peut provoquer une erreur de compilation selon le pilote.</li>
+<li><strong>Décision en suspens :</strong> reprendre l'interrupteur tactile et le compteur de pas dans le cadran 1:1 ; et déterminer si la carte est la variante 1.75 ou 1.75C.</li>
+</ul>
+</section>

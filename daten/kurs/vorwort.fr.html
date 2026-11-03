@@ -1,0 +1,115 @@
+<p>Ce livre est à la fois un cours, un ouvrage de référence et un livre d'atelier. Il commence par les premières commandes de terminal et mène, en passant par le Raspberry Pi, les microcontrôleurs, les écrans, les matrices de LED, les systèmes d'exploitation et l'IA locale, jusqu'à une grande réalisation personnelle, l'<strong>Oratio Control Center</strong>. À la fin figurent un dépannage détaillé, un lexique des erreurs et une grande partie consacrée à l'électronique.</p>
+<p>Je suis électronicien de métier et j'ai appris Linux, les microcontrôleurs et la programmation en autodidacte, par passion. Le livre consigne ce que j'ai appris en chemin : non seulement <strong>ce qui</strong> fonctionne, mais aussi <strong>ce qui n'a pas fonctionné et pourquoi</strong>. Ce sont justement les échecs qui ont apporté le plus de savoir.</p>
+<section id="sV-x0"><h2>Comment les textes sont écrits</h2><ul>
+<li>Les <strong>récits d'expérience</strong> sont écrits à la première personne (« J'ai essayé X, cela a échoué parce que … »). Pour les problèmes, on trouve d'abord l'essai qui n'a pas fonctionné, puis la solution, et toujours la raison <strong>pour laquelle</strong> elle fonctionne.</li>
+<li>Les <strong>instructions</strong> sont rédigées de façon neutre ou à l'impératif (« ouvrir le fichier, chercher la ligne, enregistrer »), pour qu'on puisse les refaire comme une recette.</li>
+<li>Chaque idée figure une fois, à l'endroit où elle devient importante pour la première fois. Les leçons valables dans <strong>plusieurs</strong> projets sont rassemblées dans la partie transversale (partie 15).</li>
+</ul>
+</section><section id="sV-x1"><h2>Comment le livre est construit</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Partie</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>1 – Bases</strong></td>
+<td>Linux et le terminal (<a class="xr" href="#/kap/1">chapitres 1</a>–5)</td>
+</tr>
+<tr class="even">
+<td><strong>2 – Raspberry Pi</strong></td>
+<td>Commandes, disques, étapes de démarrage, sauvegarde (6–9)</td>
+</tr>
+<tr class="odd">
+<td><strong>3 – Projet écran, boîtier, connexions</strong></td>
+<td>Mise à l'échelle 4K, tour Freenove, GPIO, son (10–14)</td>
+</tr>
+<tr class="even">
+<td><strong>4 – Projet microcontrôleur et écrans</strong></td>
+<td>Arduino, PlatformIO, écrans, matrice de LED (15–20)</td>
+</tr>
+<tr class="odd">
+<td><strong>5 – Projet cadran</strong></td>
+<td>Écran AMOLED rond avec ESP32-S3 (21)</td>
+</tr>
+<tr class="even">
+<td><strong>6 – Python et Oratio Watch OS</strong></td>
+<td>Apprendre à programmer, sa propre montre connectée (22–23)</td>
+</tr>
+<tr class="odd">
+<td><strong>7 – Projet IA locale</strong></td>
+<td>Assistant vocal sans cloud (24)</td>
+</tr>
+<tr class="even">
+<td><strong>8 – Windows et Linux</strong></td>
+<td>Comparaison des consoles (25)</td>
+</tr>
+<tr class="odd">
+<td><strong>9 – Projet Batocera</strong></td>
+<td>Station rétro sur le Pi 5 (26)</td>
+</tr>
+<tr class="even">
+<td><strong>10 – Projet Steam Deck, double démarrage</strong></td>
+<td>SteamOS et Windows (27)</td>
+</tr>
+<tr class="odd">
+<td><strong>11 – Projet Windows 11 sur le Steam Deck</strong></td>
+<td>Installation sans PC (28)</td>
+</tr>
+<tr class="even">
+<td><strong>12 – Vue d'ensemble</strong></td>
+<td>Carte de tous les projets (29)</td>
+</tr>
+<tr class="odd">
+<td><strong>13 – Concept de la voix</strong></td>
+<td>Écouter et parler (30)</td>
+</tr>
+<tr class="even">
+<td><strong>14 – Grand projet Oratio Control Center</strong></td>
+<td>Projet A, projet B, comparaison, variantes, site web (31–45)</td>
+</tr>
+<tr class="odd">
+<td><strong>15 – Transversal</strong></td>
+<td>Leçons valables dans tous les projets (46)</td>
+</tr>
+<tr class="even">
+<td><strong>16 – Dépannage</strong></td>
+<td>Méthode et outils, classés par symptômes (47–52)</td>
+</tr>
+<tr class="odd">
+<td><strong>17 – Lexique des erreurs</strong></td>
+<td>Messages et leur signification (53–58)</td>
+</tr>
+<tr class="even">
+<td><strong>18 – Éléments de savoir</strong></td>
+<td>Courtes réponses à des questions de compréhension (59–61)</td>
+</tr>
+<tr class="odd">
+<td><strong>19 – Électronique</strong></td>
+<td>Bases, montages, contrôle de composants, sécurité (62–70)</td>
+</tr>
+<tr class="even">
+<td><strong>Annexes</strong></td>
+<td>A Commandes de A à Z · B Glossaire · C Ordre d'apprentissage · D Index des erreurs · E Catalogue de commandes de la Toolbox (toutes les commandes avec « À quoi ça sert »)</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="sV-x2"><h2>Trois chemins à travers le livre</h2><ol type="1">
+<li><strong>De l'avant vers l'arrière.</strong> Qui commence de zéro lit les parties 1 et 2, puis choisit un projet.</li>
+<li><strong>Par projet.</strong> Chaque partie de projet est autonome et indique au début ce qui est supposé connu. Le Control Center (partie 14) est décrit de façon à pouvoir être <strong>reconstruit</strong> pas à pas.</li>
+<li><strong>En cas d'erreur.</strong> D'abord le <a class="xr" href="#/kap/47">chapitre 47</a> (méthode), puis le chapitre correspondant au symptôme dans la partie 16. Ensuite le lexique des erreurs (partie 17) ou l'index des erreurs (<a class="xr" href="#/anhang/D">annexe D</a>). Le but est que de nouveaux problèmes puissent être cernés <strong>sans aide extérieure</strong>.</li>
+</ol>
+</section><section id="sV-x3"><h2>Ce qui figure dans les encadrés</h2><ul>
+<li>Les commandes figurent dans des cadres gris et se tapent exactement ainsi dans le terminal.</li>
+<li>Une commande précédée de <code>sudo</code> s'exécute avec les droits d'administrateur. C'est puissant ; de telles commandes sont vérifiées deux fois auparavant.</li>
+<li>Les textes entre chevrons comme <code>&lt;NAME&gt;</code> sont des espaces réservés qu'il faut remplacer.</li>
+<li>Les tableaux <strong>Symptôme → Commande → Interprétation → Suite</strong> (partie 16) sont faits pour la consultation.</li>
+</ul>
+</section><section id="sV-x4"><h2>Ce qui ne figure pas dans ce livre</h2><ul>
+<li><strong>Pas le code source complet de tous les projets.</strong> Le livre contient du code d'exemple et les extraits décisifs, pour que la structure soit compréhensible et reconstructible ; le logiciel complet se trouve dans les dossiers des projets.</li>
+<li><strong>Tout n'est pas testé avec la même rigueur.</strong> Quand une fonction n'a été vérifiée qu'en essai à blanc ou dans un environnement de test, c'est indiqué expressément (par exemple pour le clone de sauvegarde, le point d'accès, la caméra, la commande vocale avec un vrai microphone).</li>
+<li>Les <strong>valeurs d'électronique</strong> n'ont pas été vérifiées composant par composant par rapport à la fiche technique (partie 19).</li>
+</ul>
+<p>Toutes les commandes sont écrites pour Raspberry Pi OS (Debian 13, « Trixie ») avec Wayland. Quand quelque chose ne vaut que pour Windows ou seulement pour un appareil précis, c'est indiqué.</p>
+</section>

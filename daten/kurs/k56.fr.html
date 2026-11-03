@@ -1,0 +1,117 @@
+<section id="s56-1"><h2>56.1 Écran, Wayland et Kanshi</h2><h3 id="failed-to-connect-to-display"><code>failed to connect to display</code></h3>
+<p><strong>Signification :</strong> <code>wlr-randr</code> ou un autre outil Wayland tourne sous <strong>X11</strong> (ou sans session de bureau).</p>
+<p><strong>Solution :</strong> vérifier avec <code>echo $XDG_SESSION_TYPE</code> quel système tourne. Sous <strong>Wayland</strong> vaut <code>wlr-randr</code>, sous <strong>X11</strong> vaut <code>xrandr</code>. Par SSH, l'environnement Wayland doit être défini (<a class="xr" href="#/kap/10/10.3">chapitre 10.3</a>).</p>
+<h3 id="unexpected--in-output-und-failed-to-parse-config-file-error-on-line-2-column-21"><code>unexpected '{' in output</code> et <code>failed to parse config file: error on line 2, column 21</code></h3>
+<p><strong>Signification :</strong> la version installée de Kanshi ne connaît pas l'écriture avec accolades <strong>après</strong> <code>output HDMI-A-1</code>. Kanshi ne démarre donc pas (<code>Exit 1 kanshi</code>, <code>ps aux | grep kanshi</code> n'affiche rien).</p>
+<p><strong>Solution :</strong> utiliser l'ancienne écriture, avec des accolades seulement autour du profil :</p>
+<pre class="text"><code>profile {
+    output HDMI-A-1 scale 3
+}</code></pre>
+<p>Puis lancer <code>kanshi</code> dans le terminal et guetter <code>applying profile</code>.</p>
+<h3 id="skalierung-ist-nach-neustart-oder-monitorwechsel-wieder-falsch">L'échelle est de nouveau fausse après redémarrage ou changement de moniteur</h3>
+<p>Le réglage n'est pas enregistré. Solution : Kanshi avec démarrage automatique plus script Watchdog (<a class="xr" href="#/kap/10/10.6">chapitre 10.6</a>).</p>
+<h3 id="befehl-wirkt-aber-nach-dem-neustart-ist-alles-zurückgesetzt">La commande agit, mais après le redémarrage tout est réinitialisé</h3>
+<p><code>wlr-randr</code> n'agit que pour la session en cours. Pour durer, il faut Kanshi ou une entrée dans <code>~/.config/labwc/autostart</code>.</p>
+</section><section id="s56-2"><h2>56.2 Démarrage et boot</h2><h3 id="device-tree-file-bcm2712-rpi-5-bdtb-not-found-und-the-installed-operating-system-os-does-not-indicate-support-for-raspberry-pi-5"><code>Device-tree file 'bcm2712-rpi-5-b.dtb' not found</code> et <code>The installed operating system (OS) does not indicate support for Raspberry Pi 5</code></h3>
+<p>Le système sur le support n'est pas construit pour le <strong>Pi 5</strong> (BCM2712), le plus souvent une image Pi 4 (BCM2711). Vérifier : sur la partition de démarrage doit se trouver <code>bcm2712-rpi-5-b.dtb</code>. Écrire la bonne image (<a class="xr" href="#/kap/26/26.3">chapitre 26.3</a>).</p>
+<h3 id="usb-boot-requires-high-current-5-volt-5-amp-power-supply"><code>USB boot requires high current (5 volt 5 amp) power supply</code></h3>
+<p>Le Pi 5 exige pour le démarrage USB un bloc d'alimentation 5 V/5 A. Utiliser le bloc officiel de 27 watts.</p>
+<h3 id="es-startet-immer-das-falsche-system-sd-vor-nvme">C'est toujours le mauvais système qui démarre (SD avant NVMe)</h3>
+<p>Changer l'ordre de démarrage dans <code>raspi-config</code> (<code>Advanced Options</code>, <code>Boot Order</code>, <code>B2 NVMe/USB Boot</code>) ou, au démarrage, appuyer sur la <strong>barre d'espace</strong> pour le menu de démarrage (<a class="xr" href="#/kap/26/26.7">chapitre 26.7</a> et 26.8).</p>
+<h3 id="blitz-symbol-ruckeln-neustarts-under-voltage-detected">Symbole d'éclair, saccades, redémarrages, <code>Under-voltage detected</code></h3>
+<p>Sous-tension. <code>vcgencmd get_throttled</code> montre l'état (<code>0x0</code> est correct). Solution : bloc d'alimentation de puissance suffisante et bon câble ; même avec des blocs de 35 watts d'autres fabricants, le Pi peut signaler « pas assez de courant » s'ils ne fournissent pas le palier de tension requis.</p>
+</section><section id="s56-3"><h2>56.3 Disques</h2><h3 id="devnvme0n1-does-not-exist"><code>/dev/nvme0n1 does not exist</code></h3>
+<p>Le SSD NVMe n'est pas reconnu. <code>lsblk</code> montre sous quel nom il apparaît (via USB par exemple <code>sda</code>). Vérifier alors câble, adaptateur, réglages PCIe et alimentation.</p>
+<h3 id="read-capacity10-failed-und-sda-0b"><code>Read Capacity(10) failed</code> et <code>sda 0B</code></h3>
+<p>Le Pi reconnaît l'adaptateur USB, mais le SSD annonce <strong>0 octet</strong>. Ce n'est <strong>pas un problème de formatage</strong>. Vérifier les causes dans cet ordre : le SSD n'est pas bien en place dans le boîtier, l'adaptateur ne supporte pas ce SSD, SSD défectueux. Remettre le SSD, essayer un autre adaptateur, regarder de nouveau <code>lsblk</code>.</p>
+<h3 id="invalid-token-exfat-bei-parted--mkpart-primary-exfat"><code>invalid token: exfat</code> (avec <code>parted ... mkpart primary exfat</code>)</h3>
+<p><code>parted</code> ne connaît pas <code>exfat</code> comme type de partition. Créer la partition avec <code>fat32</code> comme désignation, puis <strong>la formater réellement avec <code>mkfs.exfat</code></strong> :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sudo</span> parted /dev/sda <span class="at">--script</span> mkpart primary fat32 0% 100%</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">sudo</span> apt install exfatprogs</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">sudo</span> mkfs.exfat /dev/sda1</span></code></pre></div>
+<h3 id="fdisk-cannot-open-devsda-das-argument-ist-ungültig"><code>fdisk: cannot open /dev/sda: Das Argument ist ungültig</code></h3>
+<p>La commande a été saisie avec un mauvais caractère : <code>fdisk -l</code> (<strong>L</strong> minuscule), pas <code>-I</code>. Appeler sans disque : <code>sudo fdisk -l</code> ou <code>sudo parted -l</code>.</p>
+<h3 id="umount-devsda1-not-mounted"><code>umount: /dev/sda1: not mounted</code></h3>
+<p>Pas d'erreur. Le disque était déjà démonté.</p>
+<h3 id="mount--wrong-fs-type-bad-option-bad-superblock"><code>mount: ... wrong fs type, bad option, bad superblock</code></h3>
+<p>Le système de fichiers manque ou ne convient pas. Le regarder avec <code>lsblk -f</code>. S'il manque, formater (attention, efface toutes les données) : <code>sudo mkfs.ext4 /dev/sda1</code>.</p>
+</section><section id="s56-4"><h2>56.4 Ventilateur, boîtier, OLED</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Cause</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Le ventilateur et l'OLED du boîtier ne font rien</td>
+<td>Le programme de commande ne tourne pas</td>
+<td>Lancer le programme sous Raspberry Pi OS, vérifier le démarrage automatique. Sous Batocera il ne tourne pas</td>
+</tr>
+<tr class="even">
+<td>L'OLED n'affiche plus rien après une modification</td>
+<td>Erreur dans <code>task_oled.py</code> qui n'est pas visible</td>
+<td><strong>Lancer le fichier dans le terminal</strong> (<code>python3 task_oled.py</code>), l'erreur s'y affiche</td>
+</tr>
+<tr class="odd">
+<td>La quatrième page manque</td>
+<td>Listes ou configuration non étendues</td>
+<td>voir <code>IndexError</code> (<a class="xr" href="#/kap/54/54.3">chapitre 54.3</a>)</td>
+</tr>
+<tr class="even">
+<td>Le programme ne démarre pas depuis l'icône du bureau</td>
+<td>Le fichier <code>.desktop</code> pointe vers l'ancien dossier</td>
+<td>Changer <code>Exec=</code> et <code>Icon=</code> vers le nouveau chemin, <code>update-desktop-database ~/.local/share/applications</code></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s56-5"><h2>56.5 Réseau et SSH</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ssh: connect to host ... Connection refused</code></td>
+<td>Activer SSH (<code>sudo raspi-config</code> → Interface Options → SSH)</td>
+</tr>
+<tr class="even">
+<td><code>Connection timed out</code></td>
+<td>Pi et PC ne sont pas dans le même réseau, vérifier l'IP (<code>hostname -I</code> sur le Pi)</td>
+</tr>
+<tr class="odd">
+<td><code>WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED</code></td>
+<td>Nouveau système à la même IP : <code>ssh-keygen -R &lt;IP&gt;</code></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s56-6"><h2>56.6 Matrice LED sur le Pi</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Message ou symptôme</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ModuleNotFoundError: No module named 'rgbmatrix'</code></td>
+<td>Installer les liaisons Python dans l'<strong>environnement virtuel</strong> (<code>python -m pip install -v .</code>) et lancer le programme avec <code>sudo -E</code></td>
+</tr>
+<tr class="even">
+<td>L'image scintille</td>
+<td><code>--led-slowdown-gpio=4</code></td>
+</tr>
+<tr class="odd">
+<td>Mauvaise taille ou chaînage</td>
+<td><code>--led-rows=32 --led-cols=64 --led-chain=1</code> adaptés au panneau</td>
+</tr>
+<tr class="even">
+<td>Le Pico/ESP32 n'affiche rien</td>
+<td>Affecter les broches d'après le tableau de la carte, pour le Pico intégrer le pilote PIO</td>
+</tr>
+</tbody>
+</table></div>
+</section>

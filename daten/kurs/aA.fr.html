@@ -1,0 +1,935 @@
+<p>Ce répertoire contient les commandes du cours, classées par thème (A.1), comme index de A à Z (A.2) et les appels de ses propres programmes (A.3). Les exemples sont de vraies lignes tirées de projets, en partie abrégées.</p>
+<section id="sA-x0"><h2>A.1 Par thèmes</h2><h3 id="dateien">Fichiers</h3>
+<p><strong><code>cat</code></strong> – afficher le contenu d'un fichier dans le terminal. Bon pour vérifier de petits fichiers de configuration.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">cat</span> /home/oratio/Oratio_Control_Center/ANLEITUNG.txt</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">cat</span> ~/Desktop/FNK0113.desktop ~/Desktop/pi-apps.desktop</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">cat</span> ~/Freenove_Tower_Cooler_for_Raspberry_Pi/Code/app_config.json</span></code></pre></div>
+<p><strong><code>cd</code></strong> – changer de dossier. <code>cd ..</code> remonte d'un niveau, <code>cd ~</code> va dans le dossier personnel.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="bu">cd</span> ~/Desktop/RGB-Matrix-Px-xx/example/Rasberry-Pi/bindings/python/samples</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="bu">cd</span> ~/Desktop/RGB-Matrix-Px-xx/example/Raspberry-Pi/bindings/python/samples</span>
+<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="bu">cd</span> /home/oratio/Desktop/RGB-Matrix-Px-xx/example/Rasberry-Pi/examples-api-use</span></code></pre></div>
+<p><strong><code>cp</code></strong> – copier des fichiers. Avec <code>-r</code> aussi des dossiers.<br/> Options : <code>-r</code> récursif</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="fu">sudo</span> cp /boot/firmware/cmdline.txt.backup /boot/firmware/cmdline.txt</span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> ~/Freenove_Tower_Cooler_for_Raspberry_Pi/<span class="pp">*</span> ~/Oratio_Control_Center/</span>
+<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="fu">cp</span> /pfad/zur/datei /home/oratio/Freenove_Tower_Cooler_for_Raspberry_Pi/Code/</span></code></pre></div>
+<p><strong><code>du</code></strong> – afficher l'espace occupé par les dossiers.<br/> Options : <code>-h</code> tailles lisibles, <code>-s</code> seulement le total</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="fu">du</span> <span class="at">-ah</span> / <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-hr</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-20</span></span>
+<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="fu">du</span> <span class="at">-sh</span> ~/Freenove_Tower_Cooler_for_Raspberry_Pi</span>
+<span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a><span class="fu">sudo</span> du <span class="at">-xh</span> / <span class="at">--max-depth</span><span class="op">=</span>1 <span class="dv">2</span><span class="op">&gt;</span>/dev/null <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-h</span></span></code></pre></div>
+<p><strong><code>echo</code></strong> – afficher du texte. Avec <code>&gt;&gt;</code>, ajouter à un fichier.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Scale wird gesetzt auf: </span><span class="va">$SCALE</span><span class="st">"</span></span>
+<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'export PICO_SDK_PATH=$HOME/pico-sdk'</span> <span class="op">&gt;&gt;</span> ~/.bashrc</span>
+<span id="cb5-3"><a aria-hidden="true" href="#cb5-3" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"alias fhd='wlr-randr --output HDMI-A-1 --mode 1920x1080'"</span> <span class="op">&gt;&gt;</span> ~/.bashrc</span></code></pre></div>
+<p><strong><code>head</code></strong> – montrer les premières lignes d'un fichier ou d'une sortie.<br/> Options : <code>-n 20</code></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="fu">head</span> <span class="at">-100</span> app_ui.py</span>
+<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="fu">head</span> <span class="at">-150</span> app_ui.py</span>
+<span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a><span class="fu">head</span> <span class="at">-20</span> app_ui_pi_tools.py</span></code></pre></div>
+<p><strong><code>ln</code></strong> – créer un lien entre fichiers.<br/> Options : <code>-s</code> lien symbolique</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /home/oratio/Oratio_Control_Center <span class="dt">\</span></span></code></pre></div>
+<p><strong><code>ls</code></strong> – lister fichiers et dossiers.<br/> Options : <code>-l</code> détails et droits, <code>-a</code> aussi les cachés, <code>-d</code> seulement le dossier lui-même</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> ~/Freenove_Tower_Cooler_for_Raspberry_Pi/Code/app_config.json</span>
+<span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> /home/oratio/Oratio_Control_Center/Code/picture/xpm/FNK0113.xpm</span>
+<span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> /home/oratio/Freenove_Tower_Cooler_for_Raspberry_Pi/Code/app_config.json</span></code></pre></div>
+<p><strong><code>mkdir</code></strong> – créer un dossier.<br/> Options : <code>-p</code> crée aussi les dossiers intermédiaires manquants</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/Dokumente/PlatformIO/Projects/PicoTest</span>
+<span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/Dokumente/PlatformIO/Projects/TestPico</span>
+<span id="cb9-3"><a aria-hidden="true" href="#cb9-3" tabindex="-1"></a><span class="fu">sudo</span> mkdir <span class="at">-p</span> /mnt/nvme <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> mount /dev/nvme0n1p1 /mnt/nvme</span></code></pre></div>
+<p><strong><code>mv</code></strong> – déplacer ou renommer des fichiers.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="fu">mv</span> Freenove_Tower_Cooler_for_Raspberry_Pi Oratio_Control_Center</span>
+<span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a><span class="fu">mv</span> Freenove_Tower_Cooler_for_Raspberry_Pi <span class="st">"Horacio_Control_Center"</span></span>
+<span id="cb10-3"><a aria-hidden="true" href="#cb10-3" tabindex="-1"></a><span class="fu">mv</span> Freenove_Tower_Cooler_for_Raspberry_Pi <span class="st">"Oratio_Kontrollzentrum"</span></span></code></pre></div>
+<p><strong><code>nano</code></strong> – éditeur de texte dans le terminal. Enregistrer Ctrl+O, Entrée ; quitter Ctrl+X.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="fu">nano</span> ~/Freenove_Tower_Cooler_for_Raspberry_Pi/Code/app_ui_oled.py</span>
+<span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a><span class="fu">sudo</span> nano ~/Freenove_Tower_Cooler_for_Raspberry_Pi/Code/app_config.json</span>
+<span id="cb11-3"><a aria-hidden="true" href="#cb11-3" tabindex="-1"></a><span class="fu">nano</span> /home/oratio/Freenove_Tower_Cooler_for_Raspberry_Pi/Code/task_oled.py</span></code></pre></div>
+<p><strong><code>rm</code></strong> – supprimer des fichiers. <strong>Définitif, pas de corbeille !</strong><br/> Options : <code>-r</code> dossier, <code>-f</code> sans demande (dangereux)</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="fu">rm</span> /mnt/ssd/fio-testfile /mnt/ssd/test.txt</span>
+<span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> ~/Freenove_Tower_Cooler_for_Raspberry_Pi</span>
+<span id="cb12-3"><a aria-hidden="true" href="#cb12-3" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> ~/.platformio/packages/toolchain-gccarmnoneeabi<span class="pp">*</span></span></code></pre></div>
+<p><strong><code>tail</code></strong> – montrer les dernières lignes.<br/> Options : <code>-f</code> suivre en direct</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a aria-hidden="true" href="#cb13-1" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-f</span> app.log</span>
+<span id="cb13-2"><a aria-hidden="true" href="#cb13-2" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-20</span> api_service.py</span>
+<span id="cb13-3"><a aria-hidden="true" href="#cb13-3" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-100</span> /home/oratio/Oratio_Control_Center/app_ui_menu.py</span></code></pre></div>
+<p><strong><code>tar</code></strong> – créer et extraire des archives (.tar, .tar.gz).<br/> Options : <code>-xzf</code> extraire, <code>-czf</code> créer</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a aria-hidden="true" href="#cb14-1" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-xzvf</span> backup.tar.gz</span>
+<span id="cb14-2"><a aria-hidden="true" href="#cb14-2" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-xf</span> pycharm-<span class="pp">*</span>.tar.gz</span>
+<span id="cb14-3"><a aria-hidden="true" href="#cb14-3" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-czvf</span> backup.tar.gz Dokumente</span></code></pre></div>
+<p><strong><code>touch</code></strong> – créer un fichier vide ou renouveler l'horodatage.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a aria-hidden="true" href="#cb15-1" tabindex="-1"></a><span class="fu">touch</span> test.txt</span>
+<span id="cb15-2"><a aria-hidden="true" href="#cb15-2" tabindex="-1"></a><span class="fu">touch</span> app_ui_scripts.py</span>
+<span id="cb15-3"><a aria-hidden="true" href="#cb15-3" tabindex="-1"></a><span class="fu">touch</span> /mnt/ssd/test.txt <span class="kw">&amp;&amp;</span> <span class="fu">ls</span> <span class="at">-l</span> /mnt/ssd/test.txt</span></code></pre></div>
+<p><strong><code>unzip</code></strong> – extraire des archives ZIP.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a aria-hidden="true" href="#cb16-1" tabindex="-1"></a><span class="fu">unzip</span> backup.zip</span></code></pre></div>
+<p><strong><code>pwd</code></strong> – affiche le dossier courant.</p>
+<h3 id="rechte">Droits</h3>
+<p><strong><code>chmod</code></strong> – changer les droits d'un fichier. <code>chmod +x datei</code> rend un fichier exécutable.<br/> Options : <code>+x</code> exécutable</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a aria-hidden="true" href="#cb17-1" tabindex="-1"></a><span class="fu">chmod</span> +x ~/.local/share/applications/FNK0113.desktop</span>
+<span id="cb17-2"><a aria-hidden="true" href="#cb17-2" tabindex="-1"></a><span class="fu">chmod</span> <span class="at">-R</span> 755 /home/oratio/Freenove_Tower_Cooler_for_Raspberry_Pi</span>
+<span id="cb17-3"><a aria-hidden="true" href="#cb17-3" tabindex="-1"></a><span class="fu">chmod</span> <span class="at">-R</span> u+rw /home/oratio/Freenove_Tower_Cooler_for_Raspberry_Pi</span></code></pre></div>
+<p><strong><code>chown</code></strong> – changer le propriétaire d'un fichier ou d'un dossier.<br/> Options : <code>-R</code> aussi les sous-dossiers</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a aria-hidden="true" href="#cb18-1" tabindex="-1"></a><span class="fu">sudo</span> chown oratio:oratio app_config.json</span>
+<span id="cb18-2"><a aria-hidden="true" href="#cb18-2" tabindex="-1"></a><span class="fu">sudo</span> chown <span class="at">-R</span> oratio:oratio /home/oratio/Freenove_Tower_Cooler_for_Raspberry_Pi</span>
+<span id="cb18-3"><a aria-hidden="true" href="#cb18-3" tabindex="-1"></a><span class="fu">sudo</span> chown oratio:oratio /home/oratio/.local/share/applications/FNK0113.desktop</span></code></pre></div>
+<p><strong><code>passwd</code></strong> – changer le mot de passe.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a aria-hidden="true" href="#cb19-1" tabindex="-1"></a><span class="fu">passwd</span></span></code></pre></div>
+<p><strong><code>usermod</code></strong> – modifier un compte utilisateur, par exemple l'ajouter à un groupe.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a aria-hidden="true" href="#cb20-1" tabindex="-1"></a><span class="fu">sudo</span> usermod <span class="at">-aG</span> dialout <span class="va">$USER</span></span></code></pre></div>
+<p><strong><code>whoami</code></strong> – affiche l'utilisateur connecté.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a aria-hidden="true" href="#cb21-1" tabindex="-1"></a><span class="fu">whoami</span></span></code></pre></div>
+<p><strong><code>sudo</code></strong> – exécuter une commande en tant qu'administrateur.</p>
+<h3 id="suchen">Recherche</h3>
+<p><strong><code>awk</code></strong> – extraire des colonnes d'un texte, par exemple <code>awk '{print $2}'</code>.</p>
+<p><strong><code>find</code></strong> – chercher des fichiers par nom ou type.<br/> Options : <code>-name</code>, <code>-iname</code>, <code>-type f</code></p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a aria-hidden="true" href="#cb22-1" tabindex="-1"></a><span class="fu">find</span> ~/Freenove_Tower_Cooler_for_Raspberry_Pi <span class="at">-iname</span> <span class="st">"*icon*"</span></span>
+<span id="cb22-2"><a aria-hidden="true" href="#cb22-2" tabindex="-1"></a><span class="fu">find</span> /home/oratio/Freenove_Tower_Cooler_for_Raspberry_Pi <span class="at">-type</span> f <span class="at">-exec</span> chmod 644 {} <span class="dt">\;</span></span>
+<span id="cb22-3"><a aria-hidden="true" href="#cb22-3" tabindex="-1"></a><span class="fu">find</span> ~/ <span class="at">-maxdepth</span> 4 <span class="at">-type</span> f <span class="dt">\(</span> <span class="at">-name</span> <span class="st">"app_ui_menu.py"</span> <span class="at">-o</span> <span class="at">-name</span> <span class="st">"main.py"</span> <span class="dt">\)</span> <span class="dv">2</span><span class="op">&gt;</span>/dev/null</span></code></pre></div>
+<p><strong><code>grep</code></strong> – chercher du texte dans des fichiers ou des sorties.<br/> Options : <code>-n</code> numéro de ligne, <code>-i</code> sans tenir compte de la casse, <code>-R</code> récursif, <code>-E</code> motif</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a aria-hidden="true" href="#cb23-1" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-E</span> <span class="st">'^(autologin-user|autologin-session|user-session)'</span> /etc/lightdm/lightdm.conf</span>
+<span id="cb23-2"><a aria-hidden="true" href="#cb23-2" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-R</span> <span class="st">"Name=FNK0113"</span> ~/.local/share/applications /usr/share/applications <span class="dv">2</span><span class="op">&gt;</span>/dev/null</span>
+<span id="cb23-3"><a aria-hidden="true" href="#cb23-3" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-n</span> <span class="st">"screen3_is_run_on_oled"</span> ~/Freenove_Tower_Cooler_for_Raspberry_Pi/Code/task_oled.py</span></code></pre></div>
+<p><strong><code>sed</code></strong> – découper des lignes ou remplacer du texte.<br/> Options : <code>-n 'A,Bp'</code> afficher des lignes, <code>-i</code> modifier le fichier</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a aria-hidden="true" href="#cb24-1" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-i</span> <span class="st">'s/Freenove/Oratio/g'</span> Code/create_desktop_shortcut.py</span>
+<span id="cb24-2"><a aria-hidden="true" href="#cb24-2" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-n</span> <span class="st">'345,385p'</span> ~/Oratio_Control_Center/Code/app_ui_oled.py</span>
+<span id="cb24-3"><a aria-hidden="true" href="#cb24-3" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-i</span> <span class="st">'s/\.red/.r/g; s/\.green/.g/g; s/\.blue/.b/g'</span> arcade.cc</span></code></pre></div>
+<p><strong><code>which</code></strong> – montre où un programme est installé (ou s'il l'est).</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a aria-hidden="true" href="#cb25-1" tabindex="-1"></a><span class="fu">which</span> wmenu-run</span>
+<span id="cb25-2"><a aria-hidden="true" href="#cb25-2" tabindex="-1"></a><span class="fu">which</span> arduino-ide</span>
+<span id="cb25-3"><a aria-hidden="true" href="#cb25-3" tabindex="-1"></a><span class="fu">which</span> labwc-menu-generator</span></code></pre></div>
+<h3 id="pakete">Paquets</h3>
+<p><strong><code>apt</code></strong> – gestionnaire de paquets : installer, mettre à jour et supprimer des programmes.<br/> Options : <code>update</code>, <code>upgrade</code>, <code>full-upgrade</code>, <code>install</code>, <code>remove</code>, <code>autoremove</code>, <code>search</code></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a aria-hidden="true" href="#cb26-1" tabindex="-1"></a><span class="fu">sudo</span> apt install git python3-pip python3-pil python3-requests python3-dev make g++</span>
+<span id="cb26-2"><a aria-hidden="true" href="#cb26-2" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt full-upgrade <span class="at">-y</span> <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt autoremove <span class="at">-y</span> <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt clean</span>
+<span id="cb26-3"><a aria-hidden="true" href="#cb26-3" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">-y</span> git curl python3 python3-venv python3-pip portaudio19-dev espeak alsa-utils</span></code></pre></div>
+<p><strong><code>curl</code></strong> – charger des fichiers ou des scripts d'installation depuis Internet.<br/> Options : <code>-fsSL</code> silencieux, suit les redirections, s'arrête en cas d'erreur</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a aria-hidden="true" href="#cb27-1" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fsSL</span> https://ollama.com/install.sh <span class="kw">|</span> <span class="fu">sh</span></span>
+<span id="cb27-2"><a aria-hidden="true" href="#cb27-2" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fsSL</span> https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh <span class="kw">|</span> <span class="fu">sh</span></span></code></pre></div>
+<p><strong><code>git</code></strong> – télécharger des projets depuis GitHub (<code>git clone</code>) et gérer les versions.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a aria-hidden="true" href="#cb28-1" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/hzeller/rpi-rgb-led-matrix.git</span>
+<span id="cb28-2"><a aria-hidden="true" href="#cb28-2" tabindex="-1"></a><span class="fu">git</span> clone <span class="at">--depth</span> 1 https://github.com/waveshareteam/RGB-Matrix-Px-xx.git</span>
+<span id="cb28-3"><a aria-hidden="true" href="#cb28-3" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/Freenove/Freenove_Tower_Cooler_for_Raspberry_Pi.git</span></code></pre></div>
+<p><strong><code>pip</code></strong> – installer des bibliothèques Python.<br/> Options : <code>pip install &lt;paket&gt;</code></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a aria-hidden="true" href="#cb29-1" tabindex="-1"></a><span class="ex">pip</span> install openwakeword</span>
+<span id="cb29-2"><a aria-hidden="true" href="#cb29-2" tabindex="-1"></a><span class="ex">pip</span> install openai-whisper</span>
+<span id="cb29-3"><a aria-hidden="true" href="#cb29-3" tabindex="-1"></a><span class="ex">pip</span> install kivy requests pillow</span></code></pre></div>
+<p><strong><code>pip3</code></strong> – comme <code>pip</code>, expressément pour Python 3.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a aria-hidden="true" href="#cb30-1" tabindex="-1"></a><span class="ex">pip3</span> <span class="at">--version</span></span></code></pre></div>
+<p><strong><code>snap</code></strong> – gestionnaire de paquets supplémentaire (paquets Snap).</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb31-1"><a aria-hidden="true" href="#cb31-1" tabindex="-1"></a><span class="fu">sudo</span> snap install snapd</span>
+<span id="cb31-2"><a aria-hidden="true" href="#cb31-2" tabindex="-1"></a><span class="fu">sudo</span> snap install pycharm <span class="at">--classic</span></span></code></pre></div>
+<p><strong><code>wget</code></strong> – télécharger des fichiers depuis Internet.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a aria-hidden="true" href="#cb32-1" tabindex="-1"></a><span class="fu">wget</span> URL</span></code></pre></div>
+<h3 id="shell">Shell</h3>
+<p><strong><code>bash</code></strong> – exécuter un script shell (<code>bash script.sh</code>) – marche aussi sans <code>+x</code>.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a aria-hidden="true" href="#cb33-1" tabindex="-1"></a><span class="fu">sudo</span> bash ./raspiBackupInstallUI.sh</span></code></pre></div>
+<p><strong><code>date</code></strong> – afficher la date et l'heure.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb34-1"><a aria-hidden="true" href="#cb34-1" tabindex="-1"></a><span class="fu">date</span> <span class="st">'+%H:%M:%S'</span></span></code></pre></div>
+<p><strong><code>sleep</code></strong> – attendre un certain temps, par exemple <code>sleep 5</code>.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb35-1"><a aria-hidden="true" href="#cb35-1" tabindex="-1"></a><span class="fu">sleep</span> 12</span>
+<span id="cb35-2"><a aria-hidden="true" href="#cb35-2" tabindex="-1"></a><span class="fu">sleep</span> 30</span>
+<span id="cb35-3"><a aria-hidden="true" href="#cb35-3" tabindex="-1"></a><span class="fu">sleep</span> 60</span></code></pre></div>
+<p><strong><code>source</code></strong> – charger un fichier dans le shell en cours, par exemple <code>source ~/.bashrc</code>.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb36-1"><a aria-hidden="true" href="#cb36-1" tabindex="-1"></a><span class="bu">source</span> ~/.bashrc</span>
+<span id="cb36-2"><a aria-hidden="true" href="#cb36-2" tabindex="-1"></a><span class="bu">source</span> venv/bin/activate</span></code></pre></div>
+<p><strong><code>watch</code></strong> – répéter une commande à intervalles fixes.<br/> Options : <code>-n 1</code> chaque seconde</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb37-1"><a aria-hidden="true" href="#cb37-1" tabindex="-1"></a><span class="ex">watch</span> <span class="at">-n</span> 1 vcgencmd get_throttled</span></code></pre></div>
+<p><strong><code>history</code></strong> – toutes les commandes précédentes ; <code>history | grep wlr</code>.</p>
+<p><strong><code>man</code></strong> – mode d'emploi détaillé d'une commande.</p>
+<p><strong><code>alias</code></strong> – raccourci pour une longue commande.</p>
+<p><strong><code>export</code></strong> – définir une variable (variable d'environnement).</p>
+<h3 id="programmieren">Programmation</h3>
+<p><strong><code>arduino-cli</code></strong> – Arduino sans IDE : trouver la carte, compiler, téléverser, bibliothèques.<br/> Options : <code>board list</code>, <code>core install</code>, <code>lib install</code>, <code>compile</code>, <code>upload</code></p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb38-1"><a aria-hidden="true" href="#cb38-1" tabindex="-1"></a><span class="ex">arduino-cli</span> lib install <span class="st">"Adafruit GFX Library"</span></span>
+<span id="cb38-2"><a aria-hidden="true" href="#cb38-2" tabindex="-1"></a><span class="ex">arduino-cli</span> compile <span class="at">--fqbn</span> arduino:avr:nano:cpu=atmega328old OLED_Test</span>
+<span id="cb38-3"><a aria-hidden="true" href="#cb38-3" tabindex="-1"></a><span class="ex">arduino-cli</span> upload <span class="at">-p</span> /dev/ttyUSB0 <span class="at">--fqbn</span> arduino:avr:nano:cpu=atmega328old OLED_Test</span></code></pre></div>
+<p><strong><code>arduino-ide</code></strong> – l'environnement de développement graphique d'Arduino.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb39-1"><a aria-hidden="true" href="#cb39-1" tabindex="-1"></a><span class="ex">arduino-ide</span></span></code></pre></div>
+<p><strong><code>avrdude</code></strong> – lit et écrit des programmes sur les puces AVR (Arduino).<br/> Options : <code>-U flash:r:</code> lire, <code>-U flash:w:</code> écrire</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb40-1"><a aria-hidden="true" href="#cb40-1" tabindex="-1"></a><span class="ex">avrdude</span> <span class="at">-c</span> arduino <span class="at">-p</span> m328p <span class="at">-P</span> COM3 <span class="at">-b</span> 115200 <span class="at">-U</span> flash:w:backup.hex:i</span></code></pre></div>
+<p><strong><code>cmake</code></strong> – produit des instructions de construction pour de plus gros projets C++.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb41-1"><a aria-hidden="true" href="#cb41-1" tabindex="-1"></a><span class="fu">cmake</span> <span class="at">--build</span> build</span>
+<span id="cb41-2"><a aria-hidden="true" href="#cb41-2" tabindex="-1"></a><span class="fu">cmake</span> <span class="at">-S</span> . <span class="at">-B</span> build <span class="at">-G</span> Ninja <span class="at">-DPANEL_PROFILE</span><span class="op">=</span>64X32_1_16</span></code></pre></div>
+<p><strong><code>code</code></strong> – ouvre VS Code.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb42-1"><a aria-hidden="true" href="#cb42-1" tabindex="-1"></a><span class="ex">code</span> <span class="at">--version</span></span></code></pre></div>
+<p><strong><code>esptool.py</code></strong> – lit, écrit et efface la flash des puces ESP32.<br/> Options : <code>read_flash</code>, <code>write_flash</code></p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb43-1"><a aria-hidden="true" href="#cb43-1" tabindex="-1"></a><span class="ex">esptool.py</span> <span class="at">--chip</span> esp32s3 <span class="at">--port</span> COM3 read_flash 0 0x1000000 backup.bin</span></code></pre></div>
+<p><strong><code>g++</code></strong> – compilateur C++. Transforme le code source en programme.<br/> Options : <code>-O3</code> rapide, <code>-o</code> nom de sortie, <code>-I</code> dossier d'en-têtes, <code>-l</code> bibliothèque</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb44-1"><a aria-hidden="true" href="#cb44-1" tabindex="-1"></a><span class="ex">g++</span> <span class="at">-Wall</span> <span class="at">-O3</span> <span class="at">-I..</span>/include nature3.cc <span class="at">-o</span> nature3 <span class="at">-L..</span>/lib <span class="at">-lrgbmatrix</span> <span class="at">-lrt</span> <span class="at">-lm</span> <span class="at">-lpthread</span></span></code></pre></div>
+<p><strong><code>geany</code></strong> – éditeur graphique simple pour Python.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb45-1"><a aria-hidden="true" href="#cb45-1" tabindex="-1"></a><span class="fu">sudo</span> geany ~/Desktop/FNK0113.desktop</span>
+<span id="cb45-2"><a aria-hidden="true" href="#cb45-2" tabindex="-1"></a><span class="fu">sudo</span> geany ~/Oratio_Control_Center/Code/app_ui.py</span></code></pre></div>
+<p><strong><code>make</code></strong> – construit un projet d'après un plan de construction (Makefile).</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb46-1"><a aria-hidden="true" href="#cb46-1" tabindex="-1"></a><span class="fu">make</span> meinprojekt</span>
+<span id="cb46-2"><a aria-hidden="true" href="#cb46-2" tabindex="-1"></a><span class="fu">make</span> build-python PYTHON=<span class="va">$(</span><span class="fu">which</span> python3<span class="va">)</span></span>
+<span id="cb46-3"><a aria-hidden="true" href="#cb46-3" tabindex="-1"></a><span class="fu">sudo</span> make install-python PYTHON=<span class="va">$(</span><span class="fu">which</span> python3<span class="va">)</span></span></code></pre></div>
+<p><strong><code>pio</code></strong> – PlatformIO dans le terminal : compiler, téléverser, paquets.<br/> Options : <code>run</code>, <code>run -t upload</code>, <code>pkg update</code>, <code>system prune</code></p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb47-1"><a aria-hidden="true" href="#cb47-1" tabindex="-1"></a><span class="ex">pio</span> run <span class="at">--target</span> upload</span>
+<span id="cb47-2"><a aria-hidden="true" href="#cb47-2" tabindex="-1"></a><span class="ex">pio</span> system prune <span class="at">--force</span></span>
+<span id="cb47-3"><a aria-hidden="true" href="#cb47-3" tabindex="-1"></a><span class="ex">pio</span> pkg install <span class="at">-g</span> <span class="at">-p</span> platformio/toolchain-gccarmnoneeabi</span></code></pre></div>
+<p><strong><code>python</code></strong> – lancer Python ou exécuter un programme Python.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb48-1"><a aria-hidden="true" href="#cb48-1" tabindex="-1"></a><span class="fu">sudo</span> python app_ui.py</span>
+<span id="cb48-2"><a aria-hidden="true" href="#cb48-2" tabindex="-1"></a><span class="ex">python</span> convert_slots.py</span>
+<span id="cb48-3"><a aria-hidden="true" href="#cb48-3" tabindex="-1"></a><span class="fu">sudo</span> python ~/Freenove_Tower_Cooler_for_Raspberry_Pi/Code/app_ui.py</span></code></pre></div>
+<p><strong><code>python3</code></strong> – lancer Python 3, par exemple <code>python3 app_ui.py</code>.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb49-1"><a aria-hidden="true" href="#cb49-1" tabindex="-1"></a><span class="ex">python3</span> /home/oratio/Oratio_Control_Center/Code/app_ui.py</span>
+<span id="cb49-2"><a aria-hidden="true" href="#cb49-2" tabindex="-1"></a><span class="fu">sudo</span> python3 runtext.py <span class="at">--led-rows</span><span class="op">=</span>32 <span class="at">--led-cols</span><span class="op">=</span>64 <span class="st">"Hallo Oratio"</span></span>
+<span id="cb49-3"><a aria-hidden="true" href="#cb49-3" tabindex="-1"></a><span class="fu">sudo</span> python3 clock.py <span class="at">--led-rows</span><span class="op">=</span>32 <span class="at">--led-cols</span><span class="op">=</span>64 <span class="at">--led-chain</span><span class="op">=</span>1 <span class="at">--led-slowdown-gpio</span><span class="op">=</span>4</span></code></pre></div>
+<h3 id="ki">KI</h3>
+<p><strong><code>ollama</code></strong> – charger et lancer des modèles d'IA locaux.<br/> Options : <code>pull</code>, <code>run</code></p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb50-1"><a aria-hidden="true" href="#cb50-1" tabindex="-1"></a><span class="ex">ollama</span> run gemma3:4b</span>
+<span id="cb50-2"><a aria-hidden="true" href="#cb50-2" tabindex="-1"></a><span class="ex">ollama</span> run qwen2.5:0.5b</span>
+<span id="cb50-3"><a aria-hidden="true" href="#cb50-3" tabindex="-1"></a><span class="ex">ollama</span> pull qwen2.5:0.5b</span></code></pre></div>
+<h3 id="prozesse">Processus</h3>
+<p><strong><code>htop</code></strong> – surveillance du système plus confortable.</p>
+<p><strong><code>kill</code></strong> – terminer un processus par son numéro.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb51-1"><a aria-hidden="true" href="#cb51-1" tabindex="-1"></a><span class="bu">kill</span> PID</span>
+<span id="cb51-2"><a aria-hidden="true" href="#cb51-2" tabindex="-1"></a><span class="bu">kill</span> <span class="va">$PID</span></span>
+<span id="cb51-3"><a aria-hidden="true" href="#cb51-3" tabindex="-1"></a><span class="bu">kill</span> <span class="at">-9</span> PID</span></code></pre></div>
+<p><strong><code>killall</code></strong> – terminer tous les processus portant un nom.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb52-1"><a aria-hidden="true" href="#cb52-1" tabindex="-1"></a><span class="fu">killall</span> pcmanfm</span></code></pre></div>
+<p><strong><code>pkill</code></strong> – terminer un processus par son nom.<br/> Options : <code>-f</code> ligne de commande entière</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb53-1"><a aria-hidden="true" href="#cb53-1" tabindex="-1"></a><span class="ex">pkill</span> <span class="at">-f</span> app_ui.py</span></code></pre></div>
+<p><strong><code>ps</code></strong> – afficher les processus en cours.<br/> Options : <code>aux</code> tous</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb54-1"><a aria-hidden="true" href="#cb54-1" tabindex="-1"></a><span class="fu">ps</span> <span class="at">-ef</span> <span class="kw">|</span> <span class="fu">grep</span> task_</span>
+<span id="cb54-2"><a aria-hidden="true" href="#cb54-2" tabindex="-1"></a><span class="fu">ps</span> aux <span class="kw">|</span> <span class="fu">grep</span> display_watchdog</span></code></pre></div>
+<p><strong><code>top</code></strong> – surveillance du système en direct (quitter avec q).</p>
+<h3 id="dienste">Services</h3>
+<p><strong><code>crontab</code></strong> – tâches planifiées.<br/> Options : <code>-e</code> modifier, <code>-l</code> afficher</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb55-1"><a aria-hidden="true" href="#cb55-1" tabindex="-1"></a><span class="fu">crontab</span> <span class="at">-e</span></span>
+<span id="cb55-2"><a aria-hidden="true" href="#cb55-2" tabindex="-1"></a><span class="fu">crontab</span> <span class="at">-l</span></span></code></pre></div>
+<p><strong><code>dmesg</code></strong> – messages du noyau : qu'est-ce qui a été reconnu en dernier ?</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb56-1"><a aria-hidden="true" href="#cb56-1" tabindex="-1"></a><span class="fu">sudo</span> dmesg <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> 30</span>
+<span id="cb56-2"><a aria-hidden="true" href="#cb56-2" tabindex="-1"></a><span class="fu">dmesg</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-iE</span> <span class="st">'pci|pcie|nvme|ahci|sata'</span></span></code></pre></div>
+<p><strong><code>journalctl</code></strong> – lire les messages système (journaux).<br/> Options : <code>-n 50</code>, <code>-f</code></p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb57-1"><a aria-hidden="true" href="#cb57-1" tabindex="-1"></a><span class="ex">journalctl</span> <span class="at">-n</span> 50</span>
+<span id="cb57-2"><a aria-hidden="true" href="#cb57-2" tabindex="-1"></a><span class="fu">sudo</span> journalctl <span class="at">-u</span> task_led.service <span class="at">-n</span> 50</span></code></pre></div>
+<p><strong><code>loginctl</code></strong> – gérer les sessions et les connexions.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb58-1"><a aria-hidden="true" href="#cb58-1" tabindex="-1"></a><span class="ex">loginctl</span> show-session <span class="va">$(</span><span class="ex">loginctl</span> <span class="kw">|</span> <span class="fu">grep</span> oratio <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{print $1}'</span><span class="va">)</span> <span class="at">-p</span> Type</span></code></pre></div>
+<p><strong><code>systemctl</code></strong> – piloter et afficher les services d'arrière-plan.<br/> Options : <code>status</code>, <code>enable</code>, <code>restart</code>, <code>--user</code></p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb59-1"><a aria-hidden="true" href="#cb59-1" tabindex="-1"></a><span class="fu">sudo</span> systemctl restart task_led.service</span>
+<span id="cb59-2"><a aria-hidden="true" href="#cb59-2" tabindex="-1"></a><span class="fu">sudo</span> systemctl restart task_fan.service</span>
+<span id="cb59-3"><a aria-hidden="true" href="#cb59-3" tabindex="-1"></a><span class="ex">systemctl</span> status display-manager <span class="at">--no-pager</span></span></code></pre></div>
+<h3 id="system">Système</h3>
+<p><strong><code>free</code></strong> – afficher la mémoire vive.<br/> Options : <code>-h</code></p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb60-1"><a aria-hidden="true" href="#cb60-1" tabindex="-1"></a><span class="fu">free</span> <span class="at">-h</span></span></code></pre></div>
+<p><strong><code>hostname</code></strong> – nom de l'appareil ; <code>hostname -I</code> montre l'adresse IP.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb61-1"><a aria-hidden="true" href="#cb61-1" tabindex="-1"></a><span class="fu">hostname</span></span>
+<span id="cb61-2"><a aria-hidden="true" href="#cb61-2" tabindex="-1"></a><span class="fu">hostname</span> <span class="at">-I</span></span></code></pre></div>
+<p><strong><code>hostnamectl</code></strong> – changer le nom de l'appareil durablement.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb62-1"><a aria-hidden="true" href="#cb62-1" tabindex="-1"></a><span class="ex">hostnamectl</span></span></code></pre></div>
+<p><strong><code>lscpu</code></strong> – informations sur le processeur.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb63-1"><a aria-hidden="true" href="#cb63-1" tabindex="-1"></a><span class="ex">lscpu</span></span></code></pre></div>
+<p><strong><code>poweroff</code></strong> – éteindre.</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb64-1"><a aria-hidden="true" href="#cb64-1" tabindex="-1"></a><span class="fu">sudo</span> poweroff</span></code></pre></div>
+<p><strong><code>reboot</code></strong> – redémarrer.</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb65-1"><a aria-hidden="true" href="#cb65-1" tabindex="-1"></a><span class="fu">sudo</span> reboot</span></code></pre></div>
+<p><strong><code>shutdown</code></strong> – arrêter.<br/> Options : <code>now</code>, <code>-h</code></p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb66-1"><a aria-hidden="true" href="#cb66-1" tabindex="-1"></a><span class="fu">sudo</span> shutdown now</span>
+<span id="cb66-2"><a aria-hidden="true" href="#cb66-2" tabindex="-1"></a><span class="fu">sudo</span> shutdown <span class="at">-h</span> now</span></code></pre></div>
+<p><strong><code>uname</code></strong> – infos sur le noyau et le système.<br/> Options : <code>-a</code> tout</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb67-1"><a aria-hidden="true" href="#cb67-1" tabindex="-1"></a><span class="fu">uname</span> <span class="at">-m</span></span>
+<span id="cb67-2"><a aria-hidden="true" href="#cb67-2" tabindex="-1"></a><span class="fu">uname</span> <span class="at">-a</span></span></code></pre></div>
+<p><strong><code>uptime</code></strong> – durée de fonctionnement et charge.</p>
+<h3 id="laufwerke">Disques</h3>
+<p><strong><code>blkid</code></strong> – UUID et type des disques.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb68-1"><a aria-hidden="true" href="#cb68-1" tabindex="-1"></a><span class="fu">sudo</span> blkid</span></code></pre></div>
+<p><strong><code>dd</code></strong> – copier des données bloc par bloc, aussi pour des tests de vitesse. <strong>Une mauvaise cible détruit des données.</strong></p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb69-1"><a aria-hidden="true" href="#cb69-1" tabindex="-1"></a><span class="fu">dd</span> if=/dev/zero of=test.img bs=1M count=1024 conv=fdatasync</span></code></pre></div>
+<p><strong><code>df</code></strong> – afficher l'espace libre.<br/> Options : <code>-h</code></p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb70-1"><a aria-hidden="true" href="#cb70-1" tabindex="-1"></a><span class="fu">df</span> <span class="at">-h</span> /mnt/ssd</span>
+<span id="cb70-2"><a aria-hidden="true" href="#cb70-2" tabindex="-1"></a><span class="fu">df</span> = Disk Free</span></code></pre></div>
+<p><strong><code>fdisk</code></strong> – afficher et modifier les partitions.<br/> Options : <code>-l</code> afficher</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb71-1"><a aria-hidden="true" href="#cb71-1" tabindex="-1"></a><span class="fu">sudo</span> fdisk /dev/sda</span></code></pre></div>
+<p><strong><code>findmnt</code></strong> – montre tous les disques montés sous forme d'arbre.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb72-1"><a aria-hidden="true" href="#cb72-1" tabindex="-1"></a><span class="ex">findmnt</span></span>
+<span id="cb72-2"><a aria-hidden="true" href="#cb72-2" tabindex="-1"></a><span class="ex">findmnt</span> /</span></code></pre></div>
+<p><strong><code>fio</code></strong> – test de vitesse précis pour disques.</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb73-1"><a aria-hidden="true" href="#cb73-1" tabindex="-1"></a><span class="fu">sudo</span> fio <span class="at">--name</span><span class="op">=</span>USB-Read-Test <span class="at">--filename</span><span class="op">=</span>/dev/sda <span class="at">--rw</span><span class="op">=</span>read <span class="at">--bs</span><span class="op">=</span>1M <span class="at">--size</span><span class="op">=</span>2G <span class="at">--direct</span><span class="op">=</span>1</span>
+<span id="cb73-2"><a aria-hidden="true" href="#cb73-2" tabindex="-1"></a><span class="fu">sudo</span> fio <span class="at">--name</span><span class="op">=</span>PCIe-Read-Test <span class="at">--filename</span><span class="op">=</span>/dev/sdb <span class="at">--rw</span><span class="op">=</span>read <span class="at">--bs</span><span class="op">=</span>1M <span class="at">--size</span><span class="op">=</span>2G <span class="at">--direct</span><span class="op">=</span>1</span></code></pre></div>
+<p><strong><code>hdparm</code></strong> – mesurer la vitesse de lecture d'un disque.<br/> Options : <code>-Tt</code></p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb74-1"><a aria-hidden="true" href="#cb74-1" tabindex="-1"></a><span class="fu">sudo</span> hdparm <span class="at">-Tt</span> /dev/sda</span>
+<span id="cb74-2"><a aria-hidden="true" href="#cb74-2" tabindex="-1"></a><span class="fu">sudo</span> hdparm <span class="at">-Tt</span> /dev/nvme0n1</span>
+<span id="cb74-3"><a aria-hidden="true" href="#cb74-3" tabindex="-1"></a><span class="fu">sudo</span> hdparm <span class="at">-Tt</span> /dev/mmcblk0</span></code></pre></div>
+<p><strong><code>lsblk</code></strong> – lister tous les disques et partitions. <strong>À utiliser avant tout formatage.</strong><br/> Options : <code>-f</code> avec système de fichiers</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb75-1"><a aria-hidden="true" href="#cb75-1" tabindex="-1"></a><span class="ex">lsblk</span> <span class="at">-o</span> NAME,SIZE,FSTYPE,MOUNTPOINTS</span>
+<span id="cb75-2"><a aria-hidden="true" href="#cb75-2" tabindex="-1"></a><span class="ex">lsblk</span> <span class="at">-o</span> NAME,SIZE,TYPE,FSTYPE,MOUNTPOINTS</span>
+<span id="cb75-3"><a aria-hidden="true" href="#cb75-3" tabindex="-1"></a><span class="ex">lsblk</span> <span class="at">-o</span> NAME,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINTS</span></code></pre></div>
+<p><strong><code>mkfs.ext4</code></strong> – créer le système de fichiers ext4 (formater). <strong>Efface toutes les données de la partition.</strong><br/> Options : <code>-L NAME</code> désignation</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb76-1"><a aria-hidden="true" href="#cb76-1" tabindex="-1"></a><span class="fu">sudo</span> mkfs.ext4 /dev/nvme0n1p2</span>
+<span id="cb76-2"><a aria-hidden="true" href="#cb76-2" tabindex="-1"></a><span class="fu">sudo</span> mkfs.ext4 /dev/nvme0n1p1</span>
+<span id="cb76-3"><a aria-hidden="true" href="#cb76-3" tabindex="-1"></a><span class="fu">sudo</span> mkfs.ext4 <span class="at">-L</span> BACKUP /dev/sda1</span></code></pre></div>
+<p><strong><code>mount</code></strong> – monter un disque dans un dossier.</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb77-1"><a aria-hidden="true" href="#cb77-1" tabindex="-1"></a><span class="fu">sudo</span> mount /dev/sdb2 /mnt/ssd</span>
+<span id="cb77-2"><a aria-hidden="true" href="#cb77-2" tabindex="-1"></a><span class="fu">sudo</span> mount /dev/sda2 /mnt/ssd</span>
+<span id="cb77-3"><a aria-hidden="true" href="#cb77-3" tabindex="-1"></a><span class="fu">sudo</span> mount /dev/nvme0n1p1 /mnt/nvme</span></code></pre></div>
+<p><strong><code>parted</code></strong> – créer des tables de partitions et des partitions.<br/> Options : <code>mklabel gpt</code>, <code>mkpart</code></p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb78-1"><a aria-hidden="true" href="#cb78-1" tabindex="-1"></a><span class="fu">sudo</span> parted <span class="at">-s</span> /dev/nvme0n1 mkpart primary ext4 0% 100%</span>
+<span id="cb78-2"><a aria-hidden="true" href="#cb78-2" tabindex="-1"></a><span class="fu">sudo</span> parted <span class="at">-s</span> /dev/sda mklabel gpt mkpart primary ext4 0% 100%</span></code></pre></div>
+<p><strong><code>raspiBackup</code></strong> – sauvegarde tout le système, aussi comme clone amorçable.</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb79-1"><a aria-hidden="true" href="#cb79-1" tabindex="-1"></a><span class="fu">sudo</span> raspiBackup</span></code></pre></div>
+<p><strong><code>umount</code></strong> – démonter un disque.</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb80-1"><a aria-hidden="true" href="#cb80-1" tabindex="-1"></a><span class="fu">sudo</span> umount /backup</span>
+<span id="cb80-2"><a aria-hidden="true" href="#cb80-2" tabindex="-1"></a><span class="fu">sudo</span> umount /dev/sda1</span>
+<span id="cb80-3"><a aria-hidden="true" href="#cb80-3" tabindex="-1"></a><span class="fu">sudo</span> umount /mnt/nvme</span></code></pre></div>
+<h3 id="raspberry-pi">Raspberry Pi</h3>
+<p><strong><code>raspi-config</code></strong> – menu de configuration : I²C, SPI, ordre de démarrage, …</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb81-1"><a aria-hidden="true" href="#cb81-1" tabindex="-1"></a><span class="fu">sudo</span> raspi-config</span></code></pre></div>
+<p><strong><code>rpi-eeprom-config</code></strong> – montre les réglages dans l'EEPROM, par exemple BOOT_ORDER.</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb82-1"><a aria-hidden="true" href="#cb82-1" tabindex="-1"></a><span class="fu">sudo</span> rpi-eeprom-config <span class="kw">|</span> <span class="fu">grep</span> BOOT_ORDER</span></code></pre></div>
+<p><strong><code>rpi-eeprom-update</code></strong> – met à jour le firmware de l'EEPROM.</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb83-1"><a aria-hidden="true" href="#cb83-1" tabindex="-1"></a><span class="fu">sudo</span> rpi-eeprom-update</span></code></pre></div>
+<p><strong><code>vcgencmd</code></strong> – valeurs matérielles : température, fréquence, tension, bridage.<br/> Options : <code>measure_temp</code>, <code>get_throttled</code>, <code>measure_clock arm</code></p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb84-1"><a aria-hidden="true" href="#cb84-1" tabindex="-1"></a><span class="ex">vcgencmd</span> get_throttled</span>
+<span id="cb84-2"><a aria-hidden="true" href="#cb84-2" tabindex="-1"></a><span class="ex">vcgencmd</span> measure_volts</span>
+<span id="cb84-3"><a aria-hidden="true" href="#cb84-3" tabindex="-1"></a><span class="ex">vcgencmd</span> measure_clock arm</span></code></pre></div>
+<h3 id="hardware">Matériel</h3>
+<p><strong><code>gpio</code></strong> – ancienne commande pour les broches GPIO.</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb85-1"><a aria-hidden="true" href="#cb85-1" tabindex="-1"></a><span class="ex">gpio</span> readall</span></code></pre></div>
+<p><strong><code>gpiod</code></strong> – bibliothèque/outils GPIO pour les systèmes récents.</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb86-1"><a aria-hidden="true" href="#cb86-1" tabindex="-1"></a><span class="ex">gpiod</span></span></code></pre></div>
+<p><strong><code>gpioinfo</code></strong> – montre toutes les broches GPIO et leurs états.</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb87-1"><a aria-hidden="true" href="#cb87-1" tabindex="-1"></a><span class="ex">gpioinfo</span></span></code></pre></div>
+<p><strong><code>gpiozero</code></strong> – bibliothèque Python simple pour le GPIO.</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb88-1"><a aria-hidden="true" href="#cb88-1" tabindex="-1"></a><span class="ex">gpiozero</span></span></code></pre></div>
+<p><strong><code>i2cdetect</code></strong> – chercher les appareils I²C sur le bus.<br/> Options : <code>-y 1</code></p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb89-1"><a aria-hidden="true" href="#cb89-1" tabindex="-1"></a><span class="ex">i2cdetect</span> <span class="at">-y</span> 1</span></code></pre></div>
+<p><strong><code>lspci</code></strong> – lister les appareils PCIe (Pi 5 : NVMe, AI-HAT).<br/> Options : <code>-vv</code> détails</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb90-1"><a aria-hidden="true" href="#cb90-1" tabindex="-1"></a><span class="fu">sudo</span> lspci <span class="at">-vv</span></span></code></pre></div>
+<p><strong><code>lsusb</code></strong> – lister les appareils USB.</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb91-1"><a aria-hidden="true" href="#cb91-1" tabindex="-1"></a><span class="ex">lsusb</span></span></code></pre></div>
+<p><strong><code>lsmod</code></strong> – modules du noyau chargés.</p>
+<h3 id="netzwerk">Réseau</h3>
+<p><strong><code>bluetoothctl</code></strong> – gérer les appareils Bluetooth.</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb92-1"><a aria-hidden="true" href="#cb92-1" tabindex="-1"></a><span class="ex">bluetoothctl</span> devices</span></code></pre></div>
+<p><strong><code>ip</code></strong> – afficher les interfaces réseau et les adresses.<br/> Options : <code>ip a</code></p>
+<p><strong><code>iwconfig</code></strong> – informations WLAN.</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb93-1"><a aria-hidden="true" href="#cb93-1" tabindex="-1"></a><span class="ex">iwconfig</span></span></code></pre></div>
+<p><strong><code>nmcli</code></strong> – NetworkManager : afficher et connecter des WLAN.<br/> Options : <code>device wifi list</code></p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb94-1"><a aria-hidden="true" href="#cb94-1" tabindex="-1"></a><span class="ex">nmcli</span> device wifi list</span></code></pre></div>
+<p><strong><code>ping</code></strong> – teste la liaison vers une cible.</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb95-1"><a aria-hidden="true" href="#cb95-1" tabindex="-1"></a><span class="fu">ping</span> google.com</span>
+<span id="cb95-2"><a aria-hidden="true" href="#cb95-2" tabindex="-1"></a><span class="fu">ping</span> <span class="at">-c</span> 4 registry.platformio.org</span></code></pre></div>
+<p><strong><code>ssh</code></strong> – se connecter à un autre appareil.</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb96-1"><a aria-hidden="true" href="#cb96-1" tabindex="-1"></a><span class="fu">ssh</span> root@192.168.178.45</span>
+<span id="cb96-2"><a aria-hidden="true" href="#cb96-2" tabindex="-1"></a><span class="fu">ssh</span> oratio@192.168.2.123</span>
+<span id="cb96-3"><a aria-hidden="true" href="#cb96-3" tabindex="-1"></a><span class="fu">ssh</span> oratio@raspberrypi.local</span></code></pre></div>
+<p><strong><code>ss</code></strong> – connexions ouvertes : <code>ss -tulnp</code>.</p>
+<h3 id="ton">Son</h3>
+<p><strong><code>aplay</code></strong> – lire des fichiers audio ; <code>aplay -l</code> liste les périphériques de sortie.</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb97-1"><a aria-hidden="true" href="#cb97-1" tabindex="-1"></a><span class="fu">aplay</span> test.wav</span></code></pre></div>
+<p><strong><code>arecord</code></strong> – enregistrer ; <code>arecord -l</code> liste les microphones.<br/> Options : <code>-D</code> appareil, <code>-d</code> durée</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb98-1"><a aria-hidden="true" href="#cb98-1" tabindex="-1"></a><span class="fu">arecord</span> <span class="at">-d</span> 5 test.wav</span>
+<span id="cb98-2"><a aria-hidden="true" href="#cb98-2" tabindex="-1"></a><span class="fu">arecord</span> <span class="at">-D</span> plughw:1,0 <span class="at">-f</span> cd <span class="at">-t</span> wav <span class="at">-d</span> 5 test.wav</span></code></pre></div>
+<p><strong><code>pactl</code></strong> – piloter le serveur audio (PulseAudio/PipeWire).</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb99-1"><a aria-hidden="true" href="#cb99-1" tabindex="-1"></a><span class="ex">pactl</span> list short sinks</span></code></pre></div>
+<p><strong><code>wpctl</code></strong> – piloter l'audio sous PipeWire, par exemple le volume.</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb100-1"><a aria-hidden="true" href="#cb100-1" tabindex="-1"></a><span class="ex">wpctl</span> status</span></code></pre></div>
+<p><strong><code>speaker-test</code></strong> – test de haut-parleur : <code>speaker-test -t wav</code>.</p>
+<h3 id="bildschirm">Écran</h3>
+<p><strong><code>kanshi</code></strong> – applique automatiquement des profils d'écran quand des moniteurs sont branchés.</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb101-1"><a aria-hidden="true" href="#cb101-1" tabindex="-1"></a><span class="ex">kanshi</span> <span class="at">--version</span></span>
+<span id="cb101-2"><a aria-hidden="true" href="#cb101-2" tabindex="-1"></a><span class="ex">kanshi</span> <span class="at">-c</span> ~/.config/kanshi/config</span></code></pre></div>
+<p><strong><code>wlr-randr</code></strong> – réglages d'écran sous Wayland : résolution, échelle, rotation.<br/> Options : <code>--output</code>, <code>--mode</code>, <code>--scale</code>, <code>--transform</code></p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb102-1"><a aria-hidden="true" href="#cb102-1" tabindex="-1"></a><span class="ex">wlr-randr</span> <span class="at">--output</span> <span class="st">"</span><span class="va">$OUTPUT</span><span class="st">"</span> <span class="at">--scale</span> <span class="st">"</span><span class="va">$SCALE</span><span class="st">"</span></span>
+<span id="cb102-2"><a aria-hidden="true" href="#cb102-2" tabindex="-1"></a><span class="ex">wlr-randr</span> <span class="at">--output</span> HDMI-A-1 <span class="at">--mode</span> 1920x1080 <span class="at">--transform</span> 180</span>
+<span id="cb102-3"><a aria-hidden="true" href="#cb102-3" tabindex="-1"></a><span class="ex">wlr-randr</span> <span class="at">--output</span> HDMI-A-2 <span class="at">--mode</span> 3840x2160 <span class="at">--scale</span> 2 <span class="at">--transform</span> 180</span></code></pre></div>
+<p><strong><code>xrandr</code></strong> – la même chose sous X11.<br/> Options : <code>--output</code>, <code>--mode</code>, <code>--rate</code></p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb103-1"><a aria-hidden="true" href="#cb103-1" tabindex="-1"></a><span class="ex">xrandr</span> <span class="at">--output</span> HDMI-2 <span class="at">--mode</span> 1920x1080</span>
+<span id="cb103-2"><a aria-hidden="true" href="#cb103-2" tabindex="-1"></a><span class="ex">xrandr</span> <span class="at">--output</span> HDMI-1 <span class="at">--mode</span> 1920x1080 <span class="at">--rate</span> 60</span></code></pre></div>
+</section><section id="sA-x1"><h2>A.2 Index alphabétique</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Commande</th>
+<th>Thème</th>
+<th>Court</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>alias</code></td>
+<td>Shell</td>
+<td>Raccourci pour une longue commande</td>
+</tr>
+<tr class="even">
+<td><code>aplay</code></td>
+<td>Son</td>
+<td>Lire des fichiers audio ; <code>aplay -l</code> liste les périphériques de sortie</td>
+</tr>
+<tr class="odd">
+<td><code>apt</code></td>
+<td>Paquets</td>
+<td>Gestionnaire de paquets : installer, mettre à jour et supprimer des programmes</td>
+</tr>
+<tr class="even">
+<td><code>arduino-cli</code></td>
+<td>Programmation</td>
+<td>Arduino sans IDE : trouver la carte, compiler, téléverser, bibliothèques</td>
+</tr>
+<tr class="odd">
+<td><code>arduino-ide</code></td>
+<td>Programmation</td>
+<td>L'environnement de développement graphique d'Arduino</td>
+</tr>
+<tr class="even">
+<td><code>arecord</code></td>
+<td>Son</td>
+<td>Enregistrer ; <code>arecord -l</code> liste les microphones</td>
+</tr>
+<tr class="odd">
+<td><code>avrdude</code></td>
+<td>Programmation</td>
+<td>Lit et écrit des programmes sur les puces AVR (Arduino)</td>
+</tr>
+<tr class="even">
+<td><code>awk</code></td>
+<td>Recherche</td>
+<td>Extraire des colonnes d'un texte, par exemple <code>awk '{print $2}'</code></td>
+</tr>
+<tr class="odd">
+<td><code>bash</code></td>
+<td>Shell</td>
+<td>Exécuter un script shell (`bash script |</td>
+</tr>
+<tr class="even">
+<td><code>blkid</code></td>
+<td>Disques</td>
+<td>UUID et type des disques</td>
+</tr>
+<tr class="odd">
+<td><code>bluetoothctl</code></td>
+<td>Réseau</td>
+<td>Gérer les appareils Bluetooth</td>
+</tr>
+<tr class="even">
+<td><code>cat</code></td>
+<td>Fichiers</td>
+<td>Afficher le contenu d'un fichier dans le terminal</td>
+</tr>
+<tr class="odd">
+<td><code>cd</code></td>
+<td>Fichiers</td>
+<td>Changer de dossier</td>
+</tr>
+<tr class="even">
+<td><code>chmod</code></td>
+<td>Droits</td>
+<td>Changer les droits d'un fichier</td>
+</tr>
+<tr class="odd">
+<td><code>chown</code></td>
+<td>Droits</td>
+<td>Changer le propriétaire d'un fichier ou d'un dossier</td>
+</tr>
+<tr class="even">
+<td><code>cmake</code></td>
+<td>Programmation</td>
+<td>Produit des instructions de construction pour de plus gros projets C++</td>
+</tr>
+<tr class="odd">
+<td><code>code</code></td>
+<td>Programmation</td>
+<td>Ouvre VS Code</td>
+</tr>
+<tr class="even">
+<td><code>cp</code></td>
+<td>Fichiers</td>
+<td>Copier des fichiers</td>
+</tr>
+<tr class="odd">
+<td><code>crontab</code></td>
+<td>Services</td>
+<td>Tâches planifiées</td>
+</tr>
+<tr class="even">
+<td><code>curl</code></td>
+<td>Paquets</td>
+<td>Charger des fichiers ou des scripts d'installation depuis Internet</td>
+</tr>
+<tr class="odd">
+<td><code>date</code></td>
+<td>Shell</td>
+<td>Afficher la date et l'heure</td>
+</tr>
+<tr class="even">
+<td><code>dd</code></td>
+<td>Disques</td>
+<td>Copier des données bloc par bloc, aussi pour des tests de vitesse</td>
+</tr>
+<tr class="odd">
+<td><code>df</code></td>
+<td>Disques</td>
+<td>Afficher l'espace libre</td>
+</tr>
+<tr class="even">
+<td><code>dmesg</code></td>
+<td>Services</td>
+<td>Messages du noyau : qu'est-ce qui a été reconnu en dernier ?</td>
+</tr>
+<tr class="odd">
+<td><code>du</code></td>
+<td>Fichiers</td>
+<td>Afficher l'espace occupé par les dossiers</td>
+</tr>
+<tr class="even">
+<td><code>echo</code></td>
+<td>Fichiers</td>
+<td>Afficher du texte</td>
+</tr>
+<tr class="odd">
+<td><code>esptool.py</code></td>
+<td>Programmation</td>
+<td>Lit, écrit et efface la flash des puces ESP32</td>
+</tr>
+<tr class="even">
+<td><code>export</code></td>
+<td>Shell</td>
+<td>Définir une variable (variable d'environnement)</td>
+</tr>
+<tr class="odd">
+<td><code>fdisk</code></td>
+<td>Disques</td>
+<td>Afficher et modifier les partitions</td>
+</tr>
+<tr class="even">
+<td><code>find</code></td>
+<td>Recherche</td>
+<td>Chercher des fichiers par nom ou type</td>
+</tr>
+<tr class="odd">
+<td><code>findmnt</code></td>
+<td>Disques</td>
+<td>Montre tous les disques montés sous forme d'arbre</td>
+</tr>
+<tr class="even">
+<td><code>fio</code></td>
+<td>Disques</td>
+<td>Test de vitesse précis pour disques</td>
+</tr>
+<tr class="odd">
+<td><code>free</code></td>
+<td>Système</td>
+<td>Afficher la mémoire vive</td>
+</tr>
+<tr class="even">
+<td><code>g++</code></td>
+<td>Programmation</td>
+<td>Compilateur C++</td>
+</tr>
+<tr class="odd">
+<td><code>geany</code></td>
+<td>Programmation</td>
+<td>Éditeur graphique simple pour Python</td>
+</tr>
+<tr class="even">
+<td><code>git</code></td>
+<td>Paquets</td>
+<td>Télécharger des projets depuis GitHub (<code>git clone</code>) et gérer les versions</td>
+</tr>
+<tr class="odd">
+<td><code>gpio</code></td>
+<td>Matériel</td>
+<td>Ancienne commande pour les broches GPIO</td>
+</tr>
+<tr class="even">
+<td><code>gpiod</code></td>
+<td>Matériel</td>
+<td>Bibliothèque/outils GPIO pour les systèmes récents</td>
+</tr>
+<tr class="odd">
+<td><code>gpioinfo</code></td>
+<td>Matériel</td>
+<td>Montre toutes les broches GPIO et leurs états</td>
+</tr>
+<tr class="even">
+<td><code>gpiozero</code></td>
+<td>Matériel</td>
+<td>Bibliothèque Python simple pour le GPIO</td>
+</tr>
+<tr class="odd">
+<td><code>grep</code></td>
+<td>Recherche</td>
+<td>Chercher du texte dans des fichiers ou des sorties</td>
+</tr>
+<tr class="even">
+<td><code>hdparm</code></td>
+<td>Disques</td>
+<td>Mesurer la vitesse de lecture d'un disque</td>
+</tr>
+<tr class="odd">
+<td><code>head</code></td>
+<td>Fichiers</td>
+<td>Montrer les premières lignes d'un fichier ou d'une sortie</td>
+</tr>
+<tr class="even">
+<td><code>history</code></td>
+<td>Shell</td>
+<td>Toutes les commandes précédentes ; <code>history | grep wlr</code></td>
+</tr>
+<tr class="odd">
+<td><code>hostname</code></td>
+<td>Système</td>
+<td>Nom de l'appareil ; <code>hostname -I</code> montre l'adresse IP</td>
+</tr>
+<tr class="even">
+<td><code>hostnamectl</code></td>
+<td>Système</td>
+<td>Changer le nom de l'appareil durablement</td>
+</tr>
+<tr class="odd">
+<td><code>htop</code></td>
+<td>Processus</td>
+<td>Surveillance du système plus confortable</td>
+</tr>
+<tr class="even">
+<td><code>i2cdetect</code></td>
+<td>Matériel</td>
+<td>Chercher les appareils I²C sur le bus</td>
+</tr>
+<tr class="odd">
+<td><code>ip</code></td>
+<td>Réseau</td>
+<td>Afficher les interfaces réseau et les adresses</td>
+</tr>
+<tr class="even">
+<td><code>iwconfig</code></td>
+<td>Réseau</td>
+<td>Informations WLAN</td>
+</tr>
+<tr class="odd">
+<td><code>journalctl</code></td>
+<td>Services</td>
+<td>Lire les messages système (journaux)</td>
+</tr>
+<tr class="even">
+<td><code>kanshi</code></td>
+<td>Écran</td>
+<td>Applique automatiquement des profils d'écran quand des moniteurs sont branchés</td>
+</tr>
+<tr class="odd">
+<td><code>kill</code></td>
+<td>Processus</td>
+<td>Terminer un processus par son numéro</td>
+</tr>
+<tr class="even">
+<td><code>killall</code></td>
+<td>Processus</td>
+<td>Terminer tous les processus portant un nom</td>
+</tr>
+<tr class="odd">
+<td><code>ln</code></td>
+<td>Fichiers</td>
+<td>Créer un lien entre fichiers</td>
+</tr>
+<tr class="even">
+<td><code>loginctl</code></td>
+<td>Services</td>
+<td>Gérer les sessions et les connexions</td>
+</tr>
+<tr class="odd">
+<td><code>ls</code></td>
+<td>Fichiers</td>
+<td>Lister fichiers et dossiers</td>
+</tr>
+<tr class="even">
+<td><code>lsblk</code></td>
+<td>Disques</td>
+<td>Lister tous les disques et partitions</td>
+</tr>
+<tr class="odd">
+<td><code>lscpu</code></td>
+<td>Système</td>
+<td>Informations sur le processeur</td>
+</tr>
+<tr class="even">
+<td><code>lsmod</code></td>
+<td>Matériel</td>
+<td>Modules du noyau chargés</td>
+</tr>
+<tr class="odd">
+<td><code>lspci</code></td>
+<td>Matériel</td>
+<td>Lister les appareils PCIe (Pi 5 : NVMe, AI-HAT)</td>
+</tr>
+<tr class="even">
+<td><code>lsusb</code></td>
+<td>Matériel</td>
+<td>Lister les appareils USB</td>
+</tr>
+<tr class="odd">
+<td><code>make</code></td>
+<td>Programmation</td>
+<td>Construit un projet d'après un plan de construction (Makefile)</td>
+</tr>
+<tr class="even">
+<td><code>man</code></td>
+<td>Shell</td>
+<td>Mode d'emploi détaillé d'une commande</td>
+</tr>
+<tr class="odd">
+<td><code>mkdir</code></td>
+<td>Fichiers</td>
+<td>Créer un dossier</td>
+</tr>
+<tr class="even">
+<td><code>mkfs.ext4</code></td>
+<td>Disques</td>
+<td>Créer le système de fichiers ext4 (formater)</td>
+</tr>
+<tr class="odd">
+<td><code>mount</code></td>
+<td>Disques</td>
+<td>Monter un disque dans un dossier</td>
+</tr>
+<tr class="even">
+<td><code>mv</code></td>
+<td>Fichiers</td>
+<td>Déplacer ou renommer des fichiers</td>
+</tr>
+<tr class="odd">
+<td><code>nano</code></td>
+<td>Fichiers</td>
+<td>Éditeur de texte dans le terminal</td>
+</tr>
+<tr class="even">
+<td><code>nmcli</code></td>
+<td>Réseau</td>
+<td>NetworkManager : afficher et connecter des WLAN</td>
+</tr>
+<tr class="odd">
+<td><code>ollama</code></td>
+<td>KI</td>
+<td>Charger et lancer des modèles d'IA locaux</td>
+</tr>
+<tr class="even">
+<td><code>pactl</code></td>
+<td>Son</td>
+<td>Piloter le serveur audio (PulseAudio/PipeWire)</td>
+</tr>
+<tr class="odd">
+<td><code>parted</code></td>
+<td>Disques</td>
+<td>Créer des tables de partitions et des partitions</td>
+</tr>
+<tr class="even">
+<td><code>passwd</code></td>
+<td>Droits</td>
+<td>Changer le mot de passe</td>
+</tr>
+<tr class="odd">
+<td><code>ping</code></td>
+<td>Réseau</td>
+<td>Teste la liaison vers une cible</td>
+</tr>
+<tr class="even">
+<td><code>pio</code></td>
+<td>Programmation</td>
+<td>PlatformIO dans le terminal : compiler, téléverser, paquets</td>
+</tr>
+<tr class="odd">
+<td><code>pip</code></td>
+<td>Paquets</td>
+<td>Installer des bibliothèques Python</td>
+</tr>
+<tr class="even">
+<td><code>pip3</code></td>
+<td>Paquets</td>
+<td>Comme <code>pip</code>, expressément pour Python 3</td>
+</tr>
+<tr class="odd">
+<td><code>pkill</code></td>
+<td>Processus</td>
+<td>Terminer un processus par son nom</td>
+</tr>
+<tr class="even">
+<td><code>poweroff</code></td>
+<td>Système</td>
+<td>Éteindre</td>
+</tr>
+<tr class="odd">
+<td><code>ps</code></td>
+<td>Processus</td>
+<td>Afficher les processus en cours</td>
+</tr>
+<tr class="even">
+<td><code>pwd</code></td>
+<td>Fichiers</td>
+<td>Affiche le dossier courant</td>
+</tr>
+<tr class="odd">
+<td><code>python</code></td>
+<td>Programmation</td>
+<td>Lancer Python ou exécuter un programme Python</td>
+</tr>
+<tr class="even">
+<td><code>python3</code></td>
+<td>Programmation</td>
+<td>Lancer Python 3, par exemple `python3 app_ui |</td>
+</tr>
+<tr class="odd">
+<td><code>raspi-config</code></td>
+<td>Raspberry Pi</td>
+<td>Menu de configuration : I²C, SPI, ordre de démarrage, …</td>
+</tr>
+<tr class="even">
+<td><code>raspiBackup</code></td>
+<td>Disques</td>
+<td>Sauvegarde tout le système, aussi comme clone amorçable</td>
+</tr>
+<tr class="odd">
+<td><code>reboot</code></td>
+<td>Système</td>
+<td>Redémarrer</td>
+</tr>
+<tr class="even">
+<td><code>rm</code></td>
+<td>Fichiers</td>
+<td>Supprimer des fichiers</td>
+</tr>
+<tr class="odd">
+<td><code>rpi-eeprom-config</code></td>
+<td>Raspberry Pi</td>
+<td>Montre les réglages dans l'EEPROM, par exemple BOOT_ORDER</td>
+</tr>
+<tr class="even">
+<td><code>rpi-eeprom-update</code></td>
+<td>Raspberry Pi</td>
+<td>Met à jour le firmware de l'EEPROM</td>
+</tr>
+<tr class="odd">
+<td><code>sed</code></td>
+<td>Recherche</td>
+<td>Découper des lignes ou remplacer du texte</td>
+</tr>
+<tr class="even">
+<td><code>shutdown</code></td>
+<td>Système</td>
+<td>Arrêter</td>
+</tr>
+<tr class="odd">
+<td><code>sleep</code></td>
+<td>Shell</td>
+<td>Attendre un certain temps, par exemple <code>sleep 5</code></td>
+</tr>
+<tr class="even">
+<td><code>snap</code></td>
+<td>Paquets</td>
+<td>Gestionnaire de paquets supplémentaire (paquets Snap)</td>
+</tr>
+<tr class="odd">
+<td><code>source</code></td>
+<td>Shell</td>
+<td>Charger un fichier dans le shell en cours, par exemple `source ~/ |</td>
+</tr>
+<tr class="even">
+<td><code>speaker-test</code></td>
+<td>Son</td>
+<td>Test de haut-parleur : <code>speaker-test -t wav</code></td>
+</tr>
+<tr class="odd">
+<td><code>ss</code></td>
+<td>Réseau</td>
+<td>Connexions ouvertes : <code>ss -tulnp</code></td>
+</tr>
+<tr class="even">
+<td><code>ssh</code></td>
+<td>Réseau</td>
+<td>Se connecter à un autre appareil</td>
+</tr>
+<tr class="odd">
+<td><code>sudo</code></td>
+<td>Droits</td>
+<td>Exécuter une commande en tant qu'administrateur</td>
+</tr>
+<tr class="even">
+<td><code>systemctl</code></td>
+<td>Services</td>
+<td>Piloter et afficher les services d'arrière-plan</td>
+</tr>
+<tr class="odd">
+<td><code>tail</code></td>
+<td>Fichiers</td>
+<td>Afficher les dernières lignes</td>
+</tr>
+<tr class="even">
+<td><code>tar</code></td>
+<td>Fichiers</td>
+<td>Archives (</td>
+</tr>
+<tr class="odd">
+<td><code>top</code></td>
+<td>Processus</td>
+<td>Surveillance du système en direct (quitter avec q)</td>
+</tr>
+<tr class="even">
+<td><code>touch</code></td>
+<td>Fichiers</td>
+<td>Créer un fichier vide ou renouveler l'horodatage</td>
+</tr>
+<tr class="odd">
+<td><code>umount</code></td>
+<td>Disques</td>
+<td>Démonter un disque</td>
+</tr>
+<tr class="even">
+<td><code>uname</code></td>
+<td>Système</td>
+<td>Infos sur le noyau et le système</td>
+</tr>
+<tr class="odd">
+<td><code>unzip</code></td>
+<td>Fichiers</td>
+<td>Extraire des archives ZIP</td>
+</tr>
+<tr class="even">
+<td><code>uptime</code></td>
+<td>Système</td>
+<td>Durée de fonctionnement et charge</td>
+</tr>
+<tr class="odd">
+<td><code>usermod</code></td>
+<td>Droits</td>
+<td>Modifier un compte utilisateur, par exemple l'ajouter à un groupe</td>
+</tr>
+<tr class="even">
+<td><code>vcgencmd</code></td>
+<td>Raspberry Pi</td>
+<td>Valeurs matérielles : température, fréquence, tension, bridage</td>
+</tr>
+<tr class="odd">
+<td><code>watch</code></td>
+<td>Shell</td>
+<td>Répéter une commande à intervalles fixes</td>
+</tr>
+<tr class="even">
+<td><code>wget</code></td>
+<td>Paquets</td>
+<td>Télécharger des fichiers depuis Internet</td>
+</tr>
+<tr class="odd">
+<td><code>which</code></td>
+<td>Recherche</td>
+<td>Montre où un programme est installé (ou s'il l'est)</td>
+</tr>
+<tr class="even">
+<td><code>whoami</code></td>
+<td>Droits</td>
+<td>Affiche l'utilisateur connecté</td>
+</tr>
+<tr class="odd">
+<td><code>wlr-randr</code></td>
+<td>Écran</td>
+<td>Réglages d'écran sous Wayland : résolution, échelle, rotation</td>
+</tr>
+<tr class="even">
+<td><code>wpctl</code></td>
+<td>Son</td>
+<td>Piloter l'audio sous PipeWire, par exemple le volume</td>
+</tr>
+<tr class="odd">
+<td><code>xrandr</code></td>
+<td>Écran</td>
+<td>La même chose sous X11</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="sA-x2"><h2>A.3 Lancer ses propres programmes (`./nom`)</h2><p>Un programme compilé soi-même se lance avec <code>./</code> devant. Exemples de tels noms de programmes : <code>./arcade</code>, <code>./clock</code>, <code>./demo</code>, <code>./feuerwerk_lernen</code>, <code>./led-image-viewer</code>, <code>./mega</code>, <code>./meinprojekt</code>, <code>./nature</code>, <code>./nature2</code>, <code>./nature3</code>, <code>./nature4</code>, <code>./oratio</code>, <code>./oratio_cosmos</code>, <code>./oratio_cosmos_plus</code>, <code>./oratio_final</code>, <code>./oratio_krass</code>, <code>./oratio_show</code>, <code>./projektname</code>, <code>./runtext</code>, <code>./scrolling-text-example</code>, <code>./smartdisplay</code>, <code>./text-example</code>. Pour la matrice, il faut le plus souvent <code>sudo</code> devant et les options <code>--led-rows=32 --led-cols=64 --led-slowdown-gpio=4</code>.</p>
+</section>

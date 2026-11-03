@@ -1,0 +1,170 @@
+<p>Ce chapitre relie les bases aux projets des parties 2 et 3 : comment une LED, un bouton, un relais, un écran ou un moteur se branche-t-il <strong>correctement</strong> à un Arduino, un ESP32 ou un Raspberry Pi ?</p>
+<section id="s69-1"><h2>69.1 Brancher correctement une LED</h2><p>Chaque LED a besoin d'une <strong>résistance série</strong>, sinon elle est détruite par le courant trop élevé (et la broche aussi).</p>
+<pre class="text"><code>R = (UB − UF) / IF</code></pre>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Couleur</th>
+<th>Tension directe UF (typique)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Rouge, jaune, vert (normales)</td>
+<td>1,8 à 2,2 V</td>
+</tr>
+<tr class="even">
+<td>Bleu, blanc</td>
+<td>2,8 à 3,3 V</td>
+</tr>
+</tbody>
+</table></div>
+<p>Exemple de calcul rouge sur une broche d'ESP32 (3,3 V) avec 5 mA : <code>R = (3,3 V − 2,0 V) / 0,005 A = 260 Ω</code> → 270 Ω. Sous 5 V (Arduino) et 10 mA : 300 Ω → 330 Ω. La <strong>patte longue</strong> de la LED est l'anode (plus).</p>
+<p><strong>Beaucoup de LED :</strong> une broche ne fournit que quelques milliampères. Plus demande un pilote (section 69.4) ou un registre à décalage (section 69.3). Les rubans de LED adressables (WS2812) ont leur pilote dans chaque LED et n'ont besoin que d'<strong>une</strong> broche de données et de leur propre alimentation 5 V (env. 60 mA par LED en blanc).</p>
+</section><section id="s69-2"><h2>69.2 Boutons et interrupteurs</h2><p>Une entrée ne doit jamais « pendre en l'air » (flottante) ; elle lit alors des valeurs aléatoires.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Montage</th>
+<th>Niveau de repos</th>
+<th>Appuyé</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bouton vers la masse, <strong>pull-up interne</strong> (<code>INPUT_PULLUP</code>)</td>
+<td><code>HIGH</code></td>
+<td><code>LOW</code></td>
+</tr>
+<tr class="even">
+<td>Bouton vers le plus avec pull-down externe (10 kΩ vers la masse)</td>
+<td><code>LOW</code></td>
+<td><code>HIGH</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Rebonds :</strong> les contacts mécaniques rebondissent de 1 à 20 ms à la fermeture. Le programme voit alors plusieurs appuis. Remède : ignorer 20 à 50 ms après le premier front (temps d'anti-rebond) ou un condensateur (100 nF) en parallèle avec le bouton.</p>
+<p>Les <strong>codeurs rotatifs (Rotary Encoder)</strong> fournissent deux signaux A et B dont l'ordre donne le sens de rotation, et le plus souvent un bouton.</p>
+</section><section id="s69-3"><h2>69.3 Plus de sorties : le registre à décalage 74HC595</h2><p>Quand les broches manquent, un <strong>registre à décalage</strong> étend les sorties. Il ne demande que <strong>trois lignes</strong> du microcontrôleur (données, horloge, mémorisation) et fournit <strong>8 sorties</strong>. Plusieurs peuvent être mis en cascade (sortie <code>QH'</code> vers l'entrée de données du suivant).</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Raccordement</th>
+<th>Nom</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Données</td>
+<td><code>SER</code> (DS)</td>
+<td>les bits y sont poussés</td>
+</tr>
+<tr class="even">
+<td>Horloge</td>
+<td><code>SRCLK</code> (SHCP)</td>
+<td>chaque front montant pousse un bit</td>
+</tr>
+<tr class="odd">
+<td>Mémorisation</td>
+<td><code>RCLK</code> (STCP)</td>
+<td>reprend les 8 bits simultanément sur les sorties</td>
+</tr>
+<tr class="even">
+<td>Sorties</td>
+<td><code>QA</code> à <code>QH</code></td>
+<td>par broche seulement quelques mA, pour une LED avec résistance série</td>
+</tr>
+<tr class="odd">
+<td>Valider la sortie</td>
+<td><code>OE</code></td>
+<td>LOW = sorties actives</td>
+</tr>
+</tbody>
+</table></div>
+<p>En Arduino, il y a pour cela <code>shiftOut(dataPin, clockPin, MSBFIRST, wert)</code>, puis la broche de mémorisation brièvement à HIGH. Pour une charge supérieure à quelques milliampères (relais, moteurs), un pilote suit de nouveau la sortie (ULN2803).</p>
+</section><section id="s69-4"><h2>69.4 Commuter des charges : transistor, MOSFET, relais</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Charge</th>
+<th>Composant</th>
+<th>Montage (version courte)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>petite charge jusqu'à environ 500 mA (buzzer, petit relais)</td>
+<td>Transistor NPN (BC337) ou ULN2003</td>
+<td>Base via 1 kΩ à la broche ; charge entre le plus et le collecteur ; émetteur à la masse ; diode de roue libre pour une bobine</td>
+</tr>
+<tr class="even">
+<td>charge plus grande (ventilateur, ruban de LED, pompe)</td>
+<td><strong>MOSFET N Logic-Level</strong> (par exemple IRLZ44N, conduit avec 3,3–5 V)</td>
+<td>Grille via 100 Ω à la broche ; <strong>pull-down 10 kΩ</strong> grille–source (garde le MOSFET éteint au démarrage) ; charge entre le plus et le drain ; source à la masse</td>
+</tr>
+<tr class="odd">
+<td>Commuter la tension secteur</td>
+<td><strong>module relais</strong> tout fait ou relais statique</td>
+<td>seulement avec des connaissances techniques, protection contre le contact, boîtier</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Erreurs typiques :</strong></p>
+<ul>
+<li>Charge sur une broche qui ne fournit que 3,3 V, avec un MOSFET qui ne conduit qu'à 10 V → le transistor reste à moitié ouvert et chauffe (voir section 66.4).</li>
+<li>Pas de point de masse commun entre le microcontrôleur et l'alimentation de la charge → le montage ne réagit pas.</li>
+<li>Bobine sans diode de roue libre → la broche ou le transistor meurt après quelques commutations.</li>
+</ul>
+</section><section id="s69-5"><h2>69.5 Soutenir l’alimentation et éviter les parasites</h2><ul>
+<li><strong>Découplage :</strong> un <strong>condensateur céramique de 100 nF</strong> le plus près possible de l'alimentation de chaque CI absorbe les pointes de courant rapides. Un plus gros condensateur électrolytique (100 à 470 µF) sur la carte lisse les creux, par exemple lors de l'activité WLAN de l'ESP32.</li>
+<li><strong>Brownout :</strong> si la tension s'effondre brièvement, l'ESP32 redémarre (« Brownout detector was triggered », <a class="xr" href="#/kap/51/51.4">chapitre 51.4</a>). Causes : câble USB fin ou long, bloc d'alimentation faible, trop de consommateurs.</li>
+<li><strong>Ronflement de masse et bruit :</strong> séparer les lignes de puissance et de signal, un point de masse central (point étoile).</li>
+<li><strong>Longues lignes :</strong> l'I²C est prévu pour quelques centimètres à décimètres. Des distances plus longues demandent des fréquences d'horloge plus basses, des pull-up plus petites ou un autre bus.</li>
+</ul>
+</section><section id="s69-6"><h2>69.6 Résistances de rappel (pull-up) sur l’I²C</h2><p>L'I²C a deux lignes, <code>SDA</code> et <code>SCL</code>, et toutes deux ont besoin de <strong>résistances de pull-up</strong> vers le plus (typiquement 4,7 kΩ à 10 kΩ sous 3,3 V). Beaucoup de modules les ont déjà intégrées ; si plusieurs modules sont sur un bus, les pull-up sont en parallèle et la valeur totale baisse. Règle empirique : pas en dessous d'environ 1 kΩ en parallèle. Le scanner I²C (<a class="xr" href="#/kap/17/17.5">chapitre 17.5</a>) montre si un appareil répond. Le bus fonctionne selon le <strong>principe du drain ouvert</strong> : les participants tirent la ligne vers la masse, les pull-up la tirent vers le haut. C'est pourquoi des participants à tensions différentes ne peuvent être mélangés que par des convertisseurs de niveau (section 64.3).</p>
+</section><section id="s69-7"><h2>69.7 Souder et câbler</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Sujet</th>
+<th>Recommandation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Fer à souder</td>
+<td>à température régulée, environ 320 à 350 °C avec de la soudure au plomb, un peu plus avec de la soudure sans plomb</td>
+</tr>
+<tr class="even">
+<td>Technique</td>
+<td>la panne chauffe la patte du composant <strong>et</strong> le pad en même temps, puis amener la soudure, pas sur la panne</td>
+</tr>
+<tr class="odd">
+<td>Bonne soudure</td>
+<td>brillante, en forme de cône ; mate et en boule = soudure froide</td>
+</tr>
+<tr class="even">
+<td>Dessoudage</td>
+<td>tresse à dessouder ou pompe à dessouder ; CMS à l'air chaud et avec flux</td>
+</tr>
+<tr class="odd">
+<td>Câblage</td>
+<td>fils courts, codés par couleur (rouge plus, noir masse), serre-câble, gaine thermorétractable</td>
+</tr>
+<tr class="even">
+<td>Platine d'essai</td>
+<td>seulement pour des tests ; pour un fonctionnement permanent, carte à pastilles ou circuit imprimé</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s69-8"><h2>69.8 Programmer et outils</h2><ul>
+<li>Un <strong>ESP32</strong> se programme avec l'<strong>IDE Arduino</strong> ou avec <strong>PlatformIO</strong> ; sur le Raspberry Pi, les deux marchent (<a class="xr" href="#/kap/16">chapitre 16</a>, 17).</li>
+<li>Même sans portable, un Raspberry Pi peut servir d'ordinateur de développement (<a class="xr" href="#/kap/17">chapitre 17</a>).</li>
+<li><strong>Flatpak</strong> est une source de paquets avec laquelle les programmes s'installent indépendamment de la version du système (<code>flatpak install …</code>).</li>
+<li>Lire un programme directement dans le microcontrôleur (ISP) n'est possible qu'avec un programmateur et une prise ISP à six pôles, et seulement si l'accès en lecture n'est pas verrouillé (<a class="xr" href="#/kap/16/16.9">chapitre 16.9</a>).</li>
+</ul>
+</section><section id="s69-9"><h2>69.9 Exercices avec solutions</h2><ol type="1">
+<li><strong>Exercice :</strong> une LED bleue (3,0 V) sous 5 V avec 15 mA : résistance série ? <strong>Solution :</strong> <code>R = (5 − 3,0)/0,015 = 133 Ω</code> → 150 Ω (donne 13,3 mA).</li>
+<li><strong>Exercice :</strong> combien de 74HC595 faut-il pour 24 sorties, et combien de broches de microcontrôleur ? <strong>Solution :</strong> 3 composants en série, toujours seulement 3 lignes de données.</li>
+<li><strong>Exercice :</strong> un ventilateur 12 V (200 mA) doit être commuté par un ESP32. Que faut-il ? <strong>Solution :</strong> un MOSFET N Logic-Level, résistance de grille, pull-down sur la grille, diode de roue libre aux bornes du ventilateur, masse commune avec l'alimentation 12 V.</li>
+</ol>
+</section>

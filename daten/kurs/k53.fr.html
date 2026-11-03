@@ -1,0 +1,98 @@
+<p>Voici comment ce lexique est construit : chaque message est en gras, en dessous <strong>signification</strong>, <strong>cause</strong> et <strong>solution</strong>. Avec la fonction de recherche du lecteur PDF, on peut chercher une partie du message. Les messages sont classés par thème (<a class="xr" href="#/kap/53">chapitres 53</a> à 58).</p>
+<p><strong>La règle de base :</strong> lire le message <strong>de bas en haut</strong>. La dernière ligne nomme le plus souvent la vraie cause, les lignes avant montrent où cela s'est produit.</p>
+<section id="s53-1"><h2>53.1 Commande introuvable</h2><h3 id="bash-xyz-kommando-nicht-gefunden--command-not-found"><code>bash: xyz: Kommando nicht gefunden</code> / <code>command not found</code></h3>
+<p><strong>Signification :</strong> le shell ne connaît pas la commande <code>xyz</code>.</p>
+<p><strong>Causes et solutions possibles :</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Cause</th>
+<th>Vérifier</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Faute de frappe (la casse compte)</td>
+<td>Retaper exactement la commande</td>
+<td>corriger</td>
+</tr>
+<tr class="even">
+<td>Programme non installé</td>
+<td><code>which xyz</code> n'affiche rien</td>
+<td><code>sudo apt install xyz</code></td>
+</tr>
+<tr class="odd">
+<td>Programme seulement dans un environnement propre</td>
+<td>par exemple <code>pio</code> (PlatformIO) ou <code>code</code></td>
+<td>utiliser le chemin complet, par exemple <code>~/.platformio/penv/bin/platformio</code>, ou installer VS Code</td>
+</tr>
+<tr class="even">
+<td>La commande appartient à un autre système</td>
+<td><code>sudo: pacman: command not found</code> sur le Pi, <code>sudo: apt: command not found</code> sur le Steam Deck</td>
+<td>sur le Raspberry Pi on utilise <code>apt</code>, sur le Steam Deck (SteamOS, base Arch) <code>pacman</code></td>
+</tr>
+<tr class="odd">
+<td>Le programme de panneau/bureau n'existe pas dans cette version</td>
+<td>par exemple <code>lxpanelctl: command not found</code> sur le nouveau Raspberry Pi OS avec <code>labwc</code></td>
+<td>se déconnecter et se reconnecter au lieu de redémarrer le panneau</td>
+</tr>
+<tr class="even">
+<td>Programme dans le dossier courant</td>
+<td><code>./programm</code> au lieu de <code>programm</code></td>
+<td>indiquer le chemin avec <code>./</code> devant</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="curl-command-not-found"><code>curl: command not found</code></h3>
+<p><code>sudo apt install curl</code>. Puis répéter la commande.</p>
+<h3 id="fehler-paket-powershell-kann-nicht-gefunden-werden"><code>Fehler: Paket powershell kann nicht gefunden werden</code></h3>
+<p><code>apt</code> ne connaît pas le paquet, car PowerShell ne se trouve pas dans les sources de paquets standard. Soit configurer la source de paquets de Microsoft, soit ne pas installer PowerShell sur le Pi. La plupart des tâches se résolvent sous Linux avec <code>bash</code>.</p>
+<h3 id="zeile-1-from-kommando-nicht-gefunden-zeile-2-zeile-3-"><code>Zeile 1: from: Kommando nicht gefunden</code> (ligne 2, ligne 3 ...)</h3>
+<p><strong>Signification :</strong> un <strong>fichier Python</strong> a été lancé comme un script shell. Le shell lit <code>from ... import ...</code> comme la commande <code>from</code> et ne la connaît pas.</p>
+<p><strong>Solution :</strong> toujours lancer les fichiers Python avec l'interpréteur :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="ex">python3</span> datei.py</span></code></pre></div>
+<p>Si le fichier doit tourner directement avec <code>./datei.py</code>, il lui faut en première ligne <code>#!/usr/bin/env python3</code> et <code>chmod +x datei.py</code>.</p>
+<h3 id="bad-interpreter-binbashm"><code>bad interpreter: /bin/bash^M</code></h3>
+<p><strong>Cause :</strong> le fichier a été enregistré sous Windows et a des fins de ligne Windows (CRLF).</p>
+<p><strong>Solution :</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-i</span> <span class="st">'s/\r$//'</span> script.sh</span></code></pre></div>
+</section><section id="s53-2"><h2>53.2 Droits et fichiers</h2><h3 id="permission-denied--keine-berechtigung"><code>Permission denied</code> / <code>Keine Berechtigung</code></h3>
+<p><strong>Signification :</strong> l'utilisateur n'a pas le droit de lire, d'écrire ou d'exécuter le fichier ou le dossier.</p>
+<p><strong>Marche à suivre :</strong></p>
+<ol type="1">
+<li>Regarder les droits : <code>ls -l datei</code></li>
+<li>Changer le propriétaire et les droits, selon le cas :</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">chmod</span> +x script.sh            <span class="co"># ausführbar machen (Zeile ./script.sh Permission denied)</span></span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">sudo</span> chown oratio:oratio datei  <span class="co"># Besitzer ändern</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="fu">sudo</span> chmod <span class="at">-R</span> 755 ordner        <span class="co"># Ordner lesbar und betretbar (siehe 2.10)</span></span></code></pre></div>
+<ol start="3" type="1">
+<li>N'utiliser <code>sudo</code> que si nécessaire. Sur des partitions de données appartenant à un autre système (par exemple Batocera <code>SHARE</code>), <code>sudo chmod -R 777 /media/oratio/SHARE</code> donne les droits d'écriture (<a class="xr" href="#/kap/26/26.6">chapitre 26.6</a>).</li>
+</ol>
+<h3 id="bash-scriptsh-permission-denied"><code>bash: ./script.sh: Permission denied</code></h3>
+<p>Le script n'est pas exécutable : <code>chmod +x script.sh</code>, puis <code>./script.sh</code>.</p>
+<h3 id="no-such-file-or-directory--datei-oder-verzeichnis-nicht-gefunden"><code>No such file or directory</code> / <code>Datei oder Verzeichnis nicht gefunden</code></h3>
+<p><strong>Signification :</strong> le chemin n'est pas correct.</p>
+<p><strong>Vérifier :</strong> <code>pwd</code> (où suis-je ?), <code>ls</code> (qu'y a-t-il ici ?), majuscules/minuscules, espaces (mettre entre guillemets les chemins avec espaces), tilde <code>~</code> seulement au début d'un chemin.</p>
+<p>Important : si <strong>devant une commande se trouve un <code>&lt;</code></strong>, le shell essaie de lire le fichier comme entrée (<code>&lt;wlr-randr ...</code> mène à « fichier introuvable »). Saisir la commande sans le <code>&lt;</code>.</p>
+<h3 id="ls-cannot-access-devttyusb-no-such-file-or-directory"><code>ls: cannot access '/dev/ttyUSB*': No such file or directory</code></h3>
+<p>Aucun appareil USB-série n'est reconnu. Voir le <a class="xr" href="#/kap/55/55.4">chapitre 55.4</a> (carte non reconnue).</p>
+</section><section id="s53-3"><h2>53.3 Programmes et paquets</h2><h3 id="e-unable-to-locate-package-"><code>E: Unable to locate package ...</code></h3>
+<p>Exécuter <code>sudo apt update</code>, vérifier le nom (<code>apt search name</code>).</p>
+<h3 id="error-externally-managed-environment-bei-pip-install"><code>error: externally-managed-environment</code> (avec <code>pip install</code>)</h3>
+<p>Le nouveau Raspberry Pi OS n'autorise pas <code>pip</code> dans le système. Solution : utiliser un <strong>environnement virtuel</strong> (<a class="xr" href="#/kap/3">chapitre 3</a>) :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv ~/.venvs/projekt</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="bu">source</span> ~/.venvs/projekt/bin/activate</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="ex">pip</span> install paket</span></code></pre></div>
+<h3 id="modulenotfounderror-no-module-named-xyz"><code>ModuleNotFoundError: No module named 'xyz'</code></h3>
+<p>Le paquet Python manque <strong>dans l'environnement utilisé</strong>. Vérifier que le bon environnement est actif (<code>source .../activate</code>), puis <code>pip install xyz</code>. Si le programme est lancé avec <code>sudo</code>, il ne voit pas l'environnement : utiliser <code>sudo -E</code> ou le chemin complet du programme Python de l'environnement (typique pour <code>No module named 'rgbmatrix'</code>, voir 33.6).</p>
+<h3 id="cannot-execute-binary-file-exec-format-error"><code>cannot execute binary file: Exec format error</code></h3>
+<p><strong>Signification :</strong> le programme est construit pour <strong>une autre architecture de processeur</strong>. Typique : un fichier <strong>amd64</strong> (Steam Deck, PC) sur le Raspberry Pi <strong>ARM64</strong>.</p>
+<p><strong>Solution :</strong> utiliser la version adaptée à ARM64 ou installer le programme depuis la source de paquets (<code>sudo apt install rpi-imager</code>). Vérifier l'architecture : <code>uname -m</code> (<code>aarch64</code> = ARM64, <code>x86_64</code> = amd64).</p>
+</section><section id="s53-4"><h2>53.4 Particularités du terminal</h2><ul>
+<li><strong><code>^[[A</code> apparaît au lieu de la flèche :</strong> le shell ne connaît pas l'édition de ligne (par exemple dans <code>sh</code> au lieu de <code>bash</code>). Lancer avec <code>bash</code>.</li>
+<li><strong><code>unexpected end of file</code> dans un script :</strong> il manque une parenthèse, un <code>if</code> sans <code>fi</code> ou un <code>do</code> sans <code>done</code>.</li>
+<li><strong>La commande reste bloquée :</strong> <code>Ctrl+C</code> interrompt. Un programme en arrière-plan se termine avec <code>kill PID</code> (PID via <code>ps aux | grep name</code>).</li>
+</ul>
+</section>

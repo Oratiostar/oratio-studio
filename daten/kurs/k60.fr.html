@@ -1,0 +1,64 @@
+<section id="s60-1"><h2>60.1 Quelle carte pour quoi ?</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Réponse</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ESP32 ou Arduino ?</td>
+<td>ESP32 : WLAN, Bluetooth, plus rapide, 3,3 V. Arduino Nano : simple, robuste, 5 V, mais sans radio</td>
+</tr>
+<tr class="even">
+<td>Pi Pico ou Arduino Uno R4 ?</td>
+<td>Pico : très bon marché, PIO (entrée/sortie programmable), bonne puissance. Uno R4 : beaucoup de logiciels, 5 V, grand écosystème</td>
+</tr>
+<tr class="odd">
+<td>Pi Zero ou ESP32 pour une horloge ?</td>
+<td><strong>ESP32</strong> : démarre aussitôt, consomme peu. <strong>Pi Zero</strong> : un Linux complet, démarre lentement, consomme plus</td>
+</tr>
+<tr class="even">
+<td>Y a-t-il quelque chose d'encore plus petit ?</td>
+<td>Oui : ESP32-C3, ATtiny, RP2040 en petits formats</td>
+</tr>
+<tr class="odd">
+<td>Un ESP32 peut-il lire mes scripts Bash ou Python ?</td>
+<td>Non. Il lui faut du C++ (Arduino/PlatformIO) ou MicroPython</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s60-2"><h2>60.2 Avec quoi programme-t-on un ESP32 ?</h2><ul>
+<li><strong>IDE Arduino</strong> ou <strong>PlatformIO dans VS Code</strong> : C++ avec les bibliothèques Arduino.</li>
+<li><strong>MicroPython</strong> : Python sur la puce.</li>
+<li><strong>ESP-IDF</strong> : l'environnement de développement officiel, détaillé.</li>
+</ul>
+<p>Même sans portable, un Raspberry Pi peut servir d'ordinateur de développement (<a class="xr" href="#/kap/17">chapitre 17</a>).</p>
+</section><section id="s60-3"><h2>60.3 Arduino IDE sur le Raspberry Pi</h2><p>L'IDE 1.x tourne sur le Pi, l'IDE 2.x n'existe pas officiellement pour ARM64. Alternatives : <strong>arduino-cli</strong> dans le terminal ou <strong>PlatformIO</strong>. Dans le menu des cartes, on choisit la carte présente, par exemple <em>Arduino Nano</em> (pour les clones avec le processeur <em>ATmega328P (Old Bootloader)</em>).</p>
+</section><section id="s60-4"><h2>60.4 Broches et adresses I²C</h2><ul>
+<li>Sur l'<strong>Arduino Nano/Uno</strong>, <strong>A4 (SDA)</strong> et <strong>A5 (SCL)</strong> sont imposés.</li>
+<li>Sur l'<strong>ESP32</strong>, les broches sont librement choisissables (par défaut : SDA 21, SCL 22), avec <code>Wire.begin(sda, scl)</code>.</li>
+<li>L'<strong>adresse</strong> (par exemple <code>0x3C</code>) se trouve avec le scanner I²C.</li>
+<li><strong>UART, I²C, SPI :</strong> aucun n'est « meilleur ». UART est simple (deux lignes), I²C partage deux lignes avec beaucoup d'appareils, SPI est le plus rapide et demande plus de lignes (<a class="xr" href="#/kap/12">chapitre 12</a>).</li>
+</ul>
+</section><section id="s60-5"><h2>60.5 Sauvegarder un programme de la puce (ISP)</h2><p>Avec un programmateur et la <strong>prise ISP</strong> (six broches), on peut lire le contenu d'une puce AVR, à condition que la protection en lecture ne soit pas activée. Sur l'Arduino, cela marche aussi avec <code>avrdude</code> via USB (<a class="xr" href="#/kap/16">chapitre 16</a>). On obtient le fichier compilé (<code>.hex</code>), pas le code source.</p>
+</section><section id="s60-6"><h2>60.6 Sons et mélodies</h2><ul>
+<li><code>tone(pin, frequenz, dauer)</code> joue un son sur le haut-parleur ou le buzzer.</li>
+<li>Une mélodie est une liste de <strong>notes</strong> (fréquences, par exemple <code>NOTE_E5</code>) et de <strong>durées</strong> (4 = noire, 8 = croche ; un nombre négatif signifie une note pointée).</li>
+<li>Les grands tableaux de mélodie se placent avec <code>PROGMEM</code> dans la mémoire du programme, pour que la mémoire de travail ne soit pas pleine.</li>
+<li><strong>Lire du MP3 :</strong> l'Arduino lui-même non. Il faut pour cela un module comme le <strong>DFPlayer Mini</strong>.</li>
+<li>Un <strong>codeur rotatif</strong> (Rotary Encoder) fournit deux signaux (A et B), dont l'ordre donne le sens de rotation, et le plus souvent un bouton.</li>
+</ul>
+</section><section id="s60-7"><h2>60.7 Principe de programmation EVA et choix de la langue</h2><p><strong>EVA</strong> signifie <strong>E</strong>ntrée, <strong>V</strong>erarbeitung (traitement), <strong>A</strong>usgabe (sortie). Chaque programme suit ce schéma : lire le bouton (entrée), décider (traitement), allumer la LED (sortie).</p>
+<ul>
+<li><strong>C++</strong> tourne nettement plus vite que <strong>Python</strong> et est la norme sur les microcontrôleurs.</li>
+<li><strong>Python</strong> est plus facile à apprendre et idéal pour les interfaces, les scripts et le Raspberry Pi.</li>
+<li>Un long programme (plus de 1000 lignes) est normal en C++. Pour commencer, un petit squelette avec <code>setup()</code> et <code>loop()</code> suffit.</li>
+</ul>
+</section><section id="s60-8"><h2>60.8 Affichages et pixels</h2><ul>
+<li>Piloter chaque pixel un par un : avec une bibliothèque graphique, on écrit dans une <strong>mémoire d'image</strong> (framebuffer). La bibliothèque l'envoie à l'écran. Il ne faut pas saisir chaque pixel individuellement ; on dessine des lignes, des cercles, des textes et des images.</li>
+<li>Les <strong>panneaux HUB75</strong> demandent beaucoup de lignes et un pilotage rapide. Sur le Pi, <code>rpi-rgb-led-matrix</code> s'en charge, sur l'ESP32 une bibliothèque DMA et sur le Pico le pilote PIO (<a class="xr" href="#/kap/19">chapitre 19</a>).</li>
+<li>Les <strong>rubans de LED à pixels individuels</strong> s'appellent <strong>WS2812B</strong> (aussi NeoPixel).</li>
+</ul>
+</section><section id="s60-9"><h2>60.9 Amplifier les sorties et plus de broches</h2><p>Les sorties trop faibles se commandent avec des pilotes (<a class="xr" href="#/kap/67">chapitre 67</a>). Les <strong>registres à décalage</strong> comme le <strong>74HC595</strong> étendent les broches.</p>
+</section>

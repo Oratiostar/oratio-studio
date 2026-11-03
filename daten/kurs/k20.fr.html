@@ -1,0 +1,86 @@
+<section id="s20-1"><h2>20.1 Quelle carte pour quel usage ?</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Carte</th>
+<th>Points forts</th>
+<th>Limites</th>
+<th>Projet typique</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Arduino Nano (clone)</strong></td>
+<td>simple, bon marché, 5 V</td>
+<td>peu de mémoire, pas de Wi-Fi. Sur les clones, <code>:cpu=atmega328old</code> est souvent nécessaire</td>
+<td>affichage OLED, capteurs</td>
+</tr>
+<tr class="even">
+<td><strong>ESP32 / ESP32-S3</strong></td>
+<td>Wi-Fi, Bluetooth, beaucoup de puissance, 3,3 V</td>
+<td>attention aux broches et au comportement au démarrage</td>
+<td>Oratio Watch, domotique</td>
+</tr>
+<tr class="odd">
+<td><strong>Raspberry Pi Pico H</strong></td>
+<td>matériel PIO, économique</td>
+<td><strong>pas de Wi-Fi</strong> (la version W en aurait), pilote PIO nécessaire pour HUB75</td>
+<td>matrice LED</td>
+</tr>
+<tr class="even">
+<td><strong>Raspberry Pi 4 / 5</strong></td>
+<td>Linux complet</td>
+<td>ne fonctionne pas en temps réel, consommation élevée</td>
+<td>Control Center, matrice avec <code>rpi-rgb-led-matrix</code></td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s20-2"><h2>20.2 Le déroulement de chaque projet d’écran</h2><ol type="1">
+<li><strong>Identifier la puce de contrôle</strong> (SSD1306, ST7735S, GC9A01) et vérifier dans la fiche technique.</li>
+<li><strong>Déterminer le bus :</strong> I²C (SDA, SCL, adresse avec un scanner I²C), SPI (MOSI, SCK, CS, DC, RST) ou UART.</li>
+<li><strong>Câbler les broches selon le tableau de la carte.</strong> Le tableau de l'ESP32-S3 se trouve au <a class="xr" href="#/kap/17">chapitre 17</a>.</li>
+<li>Choisir la <strong>bibliothèque</strong> (Adafruit_GFX, TFT_eSPI, LVGL, U8g2).</li>
+<li><strong>Plus petit test :</strong> effacer l'écran, un texte, un cercle.</li>
+<li>Seulement ensuite : l'application.</li>
+</ol>
+</section><section id="s20-3"><h2>20.3 Erreurs typiques</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Message ou symptôme</th>
+<th>Cause la plus fréquente</th>
+<th>Vérifier</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Le téléversement s'interrompt (<code>avrdude: stk500_getsync()</code>)</td>
+<td>mauvais bootloader</td>
+<td><code>:cpu=atmega328old</code></td>
+</tr>
+<tr class="even">
+<td>L'écran reste noir</td>
+<td>mauvaise adresse ou mauvaises broches</td>
+<td>scanner I²C</td>
+</tr>
+<tr class="odd">
+<td>Image décalée ou en miroir</td>
+<td>mauvaise rotation / décalage</td>
+<td>rotation et <code>setRotation()</code></td>
+</tr>
+<tr class="even">
+<td>Couleurs fausses</td>
+<td>RGB et BGR inversés</td>
+<td>option de pilote d'écran</td>
+</tr>
+<tr class="odd">
+<td>Erreur de compilation <code>'cmath' ...</code> ou <code>.red</code></td>
+<td>ancienne bibliothèque avec nouveau compilateur</td>
+<td><code>#include &lt;cmath&gt;</code>, <code>.red</code> zu <code>.r</code></td>
+</tr>
+<tr class="even">
+<td>La matrice scintille sur le Pi</td>
+<td>GPIO trop rapide</td>
+<td><code>--led-slowdown-gpio=4</code></td>
+</tr>
+</tbody>
+</table></div>
+</section>

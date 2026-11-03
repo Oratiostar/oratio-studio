@@ -1,0 +1,1084 @@
+<p>Ce chapitre raconte un projet du début à la fin : Windows 11 tourne depuis une carte SD dans le Steam Deck, le SteamOS interne reste inchangé. Il contient chaque commande, chaque message d'erreur et la cause qui se cache derrière. Qui le travaille peut plus tard tout refaire de zéro et trouver lui-même la cause en cas de problème.</p>
+<section id="s28-1"><h2>28.1 Situation de départ et résultat</h2><p><strong>Problème de départ :</strong> une manette Xbox ne s'appairait pas avec le Steam Deck. Je supposais un firmware trop ancien. Une mise à jour du firmware n'existe que via l'application <strong>Accessoires Xbox</strong>, et celle-ci ne fonctionne que sous Windows. Le Steam Deck tourne d'usine avec SteamOS (Linux). J'avais donc besoin de Windows sur le Deck – sans toucher au lecteur interne, pour que SteamOS et tous les jeux soient conservés. Je n'avais ni ordinateur portable ni second PC Windows, seulement le Deck, un Raspberry Pi 5, un iPhone, une clé USB avec le support d'installation de Windows, un hub USB-C, un SSD externe et une carte SD.</p>
+<p><strong>Résultat :</strong></p>
+<ul>
+<li>Windows 11 tourne depuis une carte SD dans le Steam Deck. Le SteamOS interne est inchangé.</li>
+<li>La manette a été mise à jour par câble USB avec Accessoires Xbox.</li>
+<li>Wi-Fi, graphisme (APU), son et lecteur de cartes fonctionnent avec les pilotes de Valve.</li>
+<li>L'installation de Windows peut être clonée à l'identique sur d'autres cartes avec <code>dd</code>.</li>
+</ul>
+<p><strong>Le chemin en dix lignes :</strong></p>
+<ol type="1">
+<li>Préparer la clé Windows 11 et les pilotes Valve.</li>
+<li>Démarrer le Deck depuis la clé (volume moins + Power).</li>
+<li>Essai : installer directement sur la carte SD – échoue (blocage USB).</li>
+<li>Essai : installer sur un SSD externe – échoue pour la même raison.</li>
+<li>Solution : dans le programme d'installation, ouvrir la fenêtre noire avec Maj + F10 et écrire Windows à la main (<code>diskpart</code>, <code>dism</code>, <code>bcdboot</code>).</li>
+<li>Démarrer Windows depuis le SSD, configuration sans Internet (<code>oobe\bypassnro</code>).</li>
+<li>Installer ensuite les pilotes : Wi-Fi, APU, trois pilotes audio.</li>
+<li>Mettre à jour la manette par USB avec Accessoires Xbox (réparer d'abord Gaming Services).</li>
+<li>Sur le Raspberry Pi, copier le SSD sur la carte SD avec <code>dd</code>.</li>
+<li>Démarrer depuis la carte SD, agrandir la partition ou créer un second lecteur D:.</li>
+</ol>
+<blockquote>
+<p><strong>Important au préalable :</strong> toutes les commandes qui effacent ou écrasent des lecteurs (<code>clean</code>, <code>format</code>, <code>dd</code>) modifient la cible de façon irréversible. Avant chaque Entrée, vérifier que le bon lecteur est sélectionné. Le lecteur interne du Deck (953 Go, plus tard <code>nvme0n1</code> ou lecteur 0) n'est jamais touché.</p>
+</blockquote>
+</section><section id="s28-2"><h2>28.2 Notions nécessaires</h2><p>Beaucoup d'erreurs de ce projet venaient d'une confusion de termes.</p>
+<p><strong>Steam Deck, SteamOS, UEFI.</strong> Le Deck est un PC normal avec une puce AMD (APU : processeur et graphisme dans une même puce). Il démarre via <strong>UEFI</strong>, le pendant moderne du BIOS. Le <strong>menu de démarrage</strong> s'ouvre quand on maintient volume moins et qu'on appuie brièvement sur Power (ne relâcher que lorsque le menu apparaît). On y trouve entre autres SteamOS, <em>EFI USB Device</em> (clé ou SSD sur le hub) et <em>EFI SD/MMC Card</em> (carte SD).</p>
+<p><strong>Lecteur, partition, table de partitions.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>MBR (ancien)</th>
+<th>GPT (moderne)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Taille maximale</td>
+<td>2 TB</td>
+<td>pratiquement illimitée</td>
+</tr>
+<tr class="even">
+<td>Partitions</td>
+<td>4 primaires</td>
+<td>jusqu'à 128</td>
+</tr>
+<tr class="odd">
+<td>Démarrage via</td>
+<td>ancien BIOS</td>
+<td>UEFI</td>
+</tr>
+<tr class="even">
+<td>Sur le Deck</td>
+<td>Windows ne s'y installe pas</td>
+<td>Obligatoire pour l'installation de Windows</td>
+</tr>
+</tbody>
+</table></div>
+<p>Un disque Windows amorçable en mode UEFI a besoin de <strong>deux partitions</strong> : une petite partition EFI (FAT32, env. 260 Mo, contient les fichiers de démarrage) et la grande partition Windows (NTFS).</p>
+<p><strong>Pilotes et fichiers <code>.inf</code>.</strong> Un pilote explique à Windows comment utiliser un composant. Le Deck a des composants que Windows ne connaît pas : Wi-Fi, Bluetooth, graphisme, son, lecteur de cartes. Valve fournit des pilotes (page d'assistance « Steam Deck – Windows Resources », sections séparées pour LCD et OLED). Un fichier <code>.inf</code> s'installe en faisant un clic droit dessus et en choisissant « Installer ». Sur l'écran tactile, un appui long remplace le clic droit ; sous Windows 11 : appui long → « Afficher plus d'options » → « Installer ».</p>
+<p><strong>Image Windows :</strong> sur la clé, dans le dossier <code>sources</code>, se trouve le fichier <code>install.wim</code> : tout Windows sous forme d'archive avec plusieurs <strong>éditions</strong>, chacune avec un numéro, l'<strong>index</strong> (ici : 1 = Famille, 2 = Pro). <code>dism</code> extrait une édition sur une partition ; <code>bcdboot</code> crée ensuite les fichiers de démarrage.</p>
+<p><strong>Support amovible et blocage USB.</strong> Le programme d'installation normal de Windows refuse d'installer sur des lecteurs branchés en USB ou reconnus comme supports amovibles. Les cartes SD dans le lecteur de cartes du Deck en font partie. C'est un blocage de Microsoft, pas de Valve – c'est pourquoi les deux premiers essais ont échoué.</p>
+<p><strong>Monter.</strong> Sous Linux, un système de fichiers doit être « accroché » à un dossier (monter) pour qu'on puisse lire des fichiers ; l'inverse est <code>umount</code>. Les écritures vont d'abord en mémoire vive ; en débranchant un lecteur monté, on risque de perdre des données. Dans <code>lsblk</code>, un lecteur est visible même sans être monté ; la colonne <code>MOUNTPOINTS</code> indique s'il l'est.</p>
+<p><strong><code>dd</code>.</strong> Copie octet par octet d'une source (<code>if=</code>, <em>input file</em>) vers une cible (<code>of=</code>, <em>output file</em>), sans rien comprendre. Il copie ainsi aussi des systèmes de fichiers que Linux ne connaît pas, par ex. NTFS avec table de partitions et fichiers de démarrage. Le surnom « Disk Destroyer » vient de ce que <code>dd</code> ne demande aucune confirmation.</p>
+</section><section id="s28-3"><h2>28.3 Les quatre fenêtres noires</h2><p>Ce qui compte n'est pas la fenêtre, mais le système d'exploitation qui est derrière :</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Fenêtre</th>
+<th>Famille</th>
+<th>Programme derrière</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Invite de commandes (CMD) sous Windows</td>
+<td>Windows</td>
+<td><code>cmd.exe</code></td>
+</tr>
+<tr class="even">
+<td>Programme d'installation de Windows (Maj + F10)</td>
+<td>Windows (Windows allégé en mémoire vive, lecteur <code>X:</code>)</td>
+<td><code>cmd.exe</code></td>
+</tr>
+<tr class="odd">
+<td>Console du Steam Deck (mode Bureau)</td>
+<td>Linux (SteamOS)</td>
+<td><code>bash</code></td>
+</tr>
+<tr class="even">
+<td>Terminal du Raspberry Pi</td>
+<td>Linux (Raspberry Pi OS)</td>
+<td><code>bash</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Sujet</th>
+<th>Windows (CMD)</th>
+<th>Linux (bash)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Noms de lecteurs</td>
+<td><code>C:</code>, <code>F:</code>, <code>W:</code></td>
+<td><code>/dev/sda</code>, <code>/dev/mmcblk0</code>, <code>/dev/nvme0n1</code></td>
+</tr>
+<tr class="even">
+<td>Séparateur de chemin</td>
+<td>Barre oblique inverse <code>\</code></td>
+<td>Barre oblique <code>/</code></td>
+</tr>
+<tr class="odd">
+<td>Majuscules/minuscules</td>
+<td>sans importance</td>
+<td>importantes</td>
+</tr>
+<tr class="even">
+<td>Afficher le contenu</td>
+<td><code>dir</code></td>
+<td><code>ls</code></td>
+</tr>
+<tr class="odd">
+<td>Afficher les lecteurs</td>
+<td><code>diskpart</code>, puis <code>list disk</code></td>
+<td><code>lsblk</code></td>
+</tr>
+<tr class="even">
+<td>Droits d'administrateur</td>
+<td>automatiques dans la fenêtre d'installation</td>
+<td><code>sudo</code> devant</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Noms des lecteurs Linux :</strong> <code>sda</code>, <code>sdb</code> sont des lecteurs USB et des SSD sur le hub ; <code>mmcblk0</code> est la carte SD ; <code>nvme0n1</code> est un lecteur NVMe (sur le Deck l'interne, sur le Pi le disque système). <code>sda1</code>, <code>sda2</code> sont des partitions de <code>sda</code>. Comme <code>mmcblk0</code> et <code>nvme0n1</code> finissent eux-mêmes par un chiffre, un <code>p</code> précède le numéro de partition : <code>mmcblk0p1</code>.</p>
+<p><strong>À retenir :</strong> se demander d'abord : dans quel système d'exploitation suis-je en ce moment ? Les commandes s'ensuivent. L'aspect de la fenêtre noire n'en dit rien. (Plus sur la comparaison des consoles : <a class="xr" href="#/kap/25">chapitre 25</a>.)</p>
+</section><section id="s28-4"><h2>28.4 Préparation</h2><div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Élément</th>
+<th>Rôle</th>
+<th>Remarque</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Steam Deck OLED</td>
+<td>appareil cible</td>
+<td>SteamOS Beta 3.6.9 ou plus récent si le Bluetooth doit fonctionner sous Windows (BIOS)</td>
+</tr>
+<tr class="even">
+<td>Clé USB avec Windows 11</td>
+<td>support d'installation</td>
+<td>sur la clé : petite partition <em>UEFI-NTFS</em> (démarrage seulement) et la grande partition de données</td>
+</tr>
+<tr class="odd">
+<td>Hub USB-C</td>
+<td>plusieurs appareils</td>
+<td>le Deck n'a qu'un seul port USB-C</td>
+</tr>
+<tr class="even">
+<td>Clavier USB (et souris)</td>
+<td>saisie dans le programme d'installation</td>
+<td>Maj + F10 et taper les commandes</td>
+</tr>
+<tr class="odd">
+<td>SSD externe (ici 120 Go)</td>
+<td>installation de Windows</td>
+<td>sera entièrement effacé</td>
+</tr>
+<tr class="even">
+<td>Carte SD (ici 256 Go)</td>
+<td>support cible du clonage</td>
+<td>sera entièrement écrasée</td>
+</tr>
+<tr class="odd">
+<td>Raspberry Pi 5 (ou autre ordinateur Linux)</td>
+<td>clonage avec <code>dd</code></td>
+<td>alternativement SteamOS en mode Bureau</td>
+</tr>
+<tr class="even">
+<td>Câble de données USB</td>
+<td>mise à jour de la manette</td>
+<td>les simples câbles de charge n'affichent pas la manette</td>
+</tr>
+<tr class="odd">
+<td>Compte Microsoft (gratuit)</td>
+<td>application Xbox</td>
+<td>peut être créé sur le téléphone</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="die-valve-treiber">Les pilotes Valve</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Pilote</th>
+<th>Fichier important</th>
+<th>Installation</th>
+<th>À quoi ça sert</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Lecteur de cartes SD</td>
+<td><code>setup.exe</code> (dossier BayHub…)</td>
+<td>dans le programme d'installation : charger le pilote, chemin <code>BayHubTech &gt; BH778 &gt; Win11x64</code></td>
+<td>Windows voit la carte SD</td>
+</tr>
+<tr class="even">
+<td>Wi-Fi</td>
+<td><code>qcwlan64.inf</code></td>
+<td>appui long → Plus d'options → Installer</td>
+<td>Internet</td>
+</tr>
+<tr class="odd">
+<td>APU (graphisme)</td>
+<td><code>setup.exe</code></td>
+<td>lancer, puis redémarrer si nécessaire</td>
+<td>Graphisme, rotation de l'écran, luminosité, économie d'énergie, base audio</td>
+</tr>
+<tr class="even">
+<td>Bluetooth</td>
+<td><code>qcbtuart.inf</code></td>
+<td>installer ; BIOS Beta 3.6.9 nécessaire</td>
+<td>Bluetooth</td>
+</tr>
+<tr class="odd">
+<td>Audio 1/3</td>
+<td><code>cs35l41.inf</code></td>
+<td>installer</td>
+<td>Puce des haut-parleurs</td>
+</tr>
+<tr class="even">
+<td>Audio 2/3</td>
+<td><code>NAU88L21.inf</code></td>
+<td>installer</td>
+<td>Codec audio</td>
+</tr>
+<tr class="odd">
+<td>Audio 3/3</td>
+<td><code>amdi2scodec.inf</code></td>
+<td>installer</td>
+<td>Liaison avec la sortie audio de l'APU</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Ordre :</strong> d'abord le Wi-Fi (pour avoir Internet), puis l'APU, puis l'audio (les trois), puis le Bluetooth. Redémarrer après l'APU et l'audio.</p>
+<h3 id="ein-stolperstein-dateien-vom-iphone-auf-den-stick">Un obstacle : les fichiers de l'iPhone vers la clé</h3>
+<p>La copie des pilotes de l'iPhone vers la clé Windows a échoué : l'application Fichiers ne peut souvent pas copier des fichiers de pilotes sur une clé Windows, et les fichiers ZIP ne peuvent pas être extraits sur la clé. <strong>Solution :</strong> utiliser le Steam Deck lui-même. Passer en mode Bureau dans SteamOS (touche Steam → Power → « Passer au Bureau »), télécharger les pilotes dans le navigateur, dans le gestionnaire de fichiers faire un clic droit « Extraire ici » et glisser le dossier obtenu sur la <strong>grande</strong> partition de la clé Windows (pas sur la petite partition UEFI-NTFS). Éjecter la clé via le gestionnaire de fichiers. Le nom du dossier peut être modifié brièvement ; seuls comptent les fichiers qu'il contient, surtout le <code>.inf</code>.</p>
+</section><section id="s28-5"><h2>28.5 Essai 1 : installer directement sur la carte SD</h2><p>Mon plan évident : brancher la clé, lancer l'installation, choisir la carte SD comme cible.</p>
+<ol type="1">
+<li>Éteindre le Deck, laisser la carte SD insérée, brancher le hub avec la clé Windows.</li>
+<li>Maintenir volume moins, appuyer brièvement sur Power, choisir <em>EFI USB Device</em> (la clé) dans le menu de démarrage.</li>
+<li>Le programme d'installation apparaît. L'écran est en mode paysage tourné – normal, l'écran est monté en portrait. Choisir la langue, « Installer maintenant ».</li>
+<li>Type d'installation <em>Personnalisé : installer uniquement Windows</em>. « Où voulez-vous installer Windows ? » apparaît.</li>
+</ol>
+<p><strong>Problème :</strong> dans la liste des lecteurs, il n'y avait que le lecteur 0 – le lecteur interne du Deck. La carte SD manquait, même après l'avoir retirée et réinsérée.</p>
+<p><strong>Première hypothèse :</strong> pilote du lecteur de cartes manquant. Donc : en bas à gauche « Charger un pilote » → « Parcourir » → sur la clé <code>BayHubTech &gt; BH778 &gt; Win11x64</code> (le dossier <code>Win10x64</code> est pour Windows 10) → OK → cocher l'entrée « BayHub »/« SD Host Controller » → Suivant → « Actualiser ».</p>
+<p><strong>Résultat :</strong> la fenêtre des pilotes montrait un support « bootfs (E:) » – la carte était donc visible (le nom venait d'une utilisation antérieure sur Pi) – mais elle n'apparaissait toujours pas comme cible d'installation.</p>
+<p><strong>Deuxième hypothèse (n'a pas aidé) :</strong> formater d'abord la carte dans SteamOS (touche Steam → Paramètres → Système → Formater la carte SD). Le système de fichiers est sans importance pour l'installation, car elle crée elle-même les partitions.</p>
+<p><strong>On reconnaît le lecteur interne</strong> à ces partitions : <code>esp</code>, <code>efi</code>, 2 × 5 Go, 2 × 256 Mo et une grande d'environ 943 Go (bibliothèque de jeux). <strong>N'en supprimer, formater ou recréer aucune,</strong> sinon SteamOS disparaît.</p>
+<p><strong>Constat :</strong> le programme d'installation ne propose en principe jamais les supports amovibles (clés USB, cartes SD dans le lecteur de cartes) comme cible. Qu'une seconde clé USB sur le hub n'apparaisse pas non plus l'a confirmé. Rien n'était cassé sur le Deck. Qui ne connaît que cette méthode aurait besoin, sur un PC Windows, de Rufus avec l'option « Windows To Go » – ce qui n'était pas disponible.</p>
+</section><section id="s28-6"><h2>28.6 Essai 2 : installer sur un SSD externe</h2><p>Le SSD externe (120 Go) sur le hub est apparu comme lecteur 1 avec deux partitions (« bootfs » 512 Mo et 111,3 Go), également issues d'une utilisation antérieure sur Pi.</p>
+<p><strong>Problème 1 : « Suivant » est grisé.</strong> En touchant la ligne, « Suivant » restait grisé ; « Supprimer », « Formater », « Nouveau » aussi. <em>Astuce :</em> ces boutons ne deviennent actifs que lorsqu'une ligne est sélectionnée (bleue).</p>
+<p><strong>Fausse piste : MBR au lieu de GPT.</strong> Avec Maj + F10 et <code>diskpart</code>, <code>list disk</code> montrait que le disque 1 n'avait pas d'astérisque dans la colonne « GPT » (donc MBR). Avec <code>clean</code> et <code>convert gpt</code>, on a obtenu « Espace non alloué 111,8 Go ». « Suivant » restait pourtant grisé. MBR n'était qu'un détail.</p>
+<p><strong>La vraie cause : « Afficher les détails ».</strong> Sous la liste des lecteurs figure un avertissement jaune « Windows ne peut pas être installé sur ce lecteur. (Afficher les détails) ». Un appui indique la raison :</p>
+<blockquote>
+<p>Windows ne peut pas être installé sur ce disque. La configuration ou l'installation de disques connectés via des ports USB ou IEEE 1394 n'est pas prise en charge.</p>
+</blockquote>
+<p>C'est le même blocage USB que pour la carte SD. <strong>À retenir :</strong> si « Suivant » reste grisé, toucher d'abord « Afficher les détails ». Cela aurait évité le détour par MBR et GPT.</p>
+</section><section id="s28-7"><h2>28.7 La solution : écrire Windows à la main sur le SSD</h2><p>Quand le programme d'installation refuse le lecteur, on écrit soi-même Windows dessus. Il ne faut pour cela que la fenêtre d'installation, le clavier USB et quatre outils : <code>diskpart</code> (partitions), <code>dism</code> (extraire Windows), <code>bcdboot</code> (fichiers de démarrage) et <code>dir</code> (chercher des fichiers).</p>
+<p><strong>Préparation :</strong> dans l'installation, fermer le message USB avec OK (l'installation reste ouverte à l'arrière-plan). Appuyer sur <strong>Maj + F10</strong> : la fenêtre noire s'ouvre avec <code>X:\sources&gt;</code>. Taper chaque ligne exactement ainsi et valider avec Entrée.</p>
+<h3 id="schritt-1-die-ssd-partitionieren">Étape 1 : partitionner le SSD</h3>
+<pre class="text"><code>diskpart
+list disk
+select disk 1
+clean
+convert gpt
+create partition efi size=260
+format quick fs=fat32 label=EFI
+assign letter=S
+create partition primary
+format quick fs=ntfs label=Windows
+assign letter=W
+exit</code></pre>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Commande</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>diskpart</code></td>
+<td>lance le programme de partitionnement (invite <code>DISKPART&gt;</code>)</td>
+</tr>
+<tr class="even">
+<td><code>list disk</code></td>
+<td>affiche tous les disques avec leur taille : ici 0 = 953 Go (Deck interne, tabou), 1 = 111 Go (SSD), 3 = 58 Go (clé Windows). <strong>Reconnaître le numéro du SSD à sa taille !</strong></td>
+</tr>
+<tr class="odd">
+<td><code>select disk 1</code></td>
+<td>sélectionne le SSD</td>
+</tr>
+<tr class="even">
+<td><code>clean</code></td>
+<td>supprime toutes les partitions et données du disque sélectionné</td>
+</tr>
+<tr class="odd">
+<td><code>convert gpt</code></td>
+<td>passe en GPT, compatible UEFI</td>
+</tr>
+<tr class="even">
+<td><code>create partition efi size=260</code></td>
+<td>crée la petite partition EFI (260 Mo)</td>
+</tr>
+<tr class="odd">
+<td><code>format quick fs=fat32 label=EFI</code></td>
+<td>formatage rapide en FAT32</td>
+</tr>
+<tr class="even">
+<td><code>assign letter=S</code></td>
+<td>attribue à la partition EFI la lettre <code>S:</code></td>
+</tr>
+<tr class="odd">
+<td><code>create partition primary</code></td>
+<td>crée la partition Windows sur le reste</td>
+</tr>
+<tr class="even">
+<td><code>format quick fs=ntfs label=Windows</code></td>
+<td>la formate en NTFS</td>
+</tr>
+<tr class="odd">
+<td><code>assign letter=W</code></td>
+<td>lui attribue la lettre <code>W:</code></td>
+</tr>
+<tr class="even">
+<td><code>exit</code></td>
+<td>quitte diskpart ; <code>X:\sources&gt;</code> réapparaît</td>
+</tr>
+</tbody>
+</table></div>
+<p><em>Si <code>clean</code> signale une protection en écriture,</em> saisir avant <code>attributes disk clear readonly</code> et répéter <code>clean</code>.</p>
+<h3 id="schritt-2-die-windows-datei-auf-dem-stick-finden">Étape 2 : trouver le fichier Windows sur la clé</h3>
+<pre class="text"><code>dir F:\sources\install.*</code></pre>
+<p><code>dir</code> affiche des fichiers ; <code>*</code> signifie « n'importe quelle extension ». Ici la clé était <code>F:</code> ; on a trouvé <code>install.wim</code> (env. 6 Go). S'il y a <code>install.esd</code>, seul le nom du fichier change dans les commandes suivantes. Si « chemin introuvable », la clé a une autre lettre : essayer <code>E:</code>, <code>G:</code>, <code>D:</code> ou <code>H:</code> et vérifier avec <code>dir F:\</code> que les dossiers <code>sources</code>, <code>boot</code> et <code>efi</code> s'y trouvent.</p>
+<h3 id="schritt-3-die-edition-wählen">Étape 3 : choisir l'édition</h3>
+<pre class="text"><code>dism /get-wiminfo /wimfile:F:\sources\install.wim</code></pre>
+<p>La sortie liste les éditions : index 1 = Windows 11 Famille, index 2 = Windows 11 Pro. J'ai choisi par erreur l'index 1 (Famille), alors qu'une licence Pro était prévue ; cela peut se changer après coup (28.9). Qui veut Pro prend <code>/index:2</code> à l'étape 4.</p>
+<h3 id="schritt-4-windows-auf-die-ssd-schreiben">Étape 4 : écrire Windows sur le SSD</h3>
+<pre class="text"><code>dism /apply-image /imagefile:F:\sources\install.wim /index:1 /applydir:W:\</code></pre>
+<p>Un pourcentage défile pendant plusieurs minutes. Ne pas éteindre le Deck pendant ce temps. À la fin : « L'opération a réussi. »</p>
+<h3 id="schritt-5-startdateien-anlegen">Étape 5 : créer les fichiers de démarrage</h3>
+<pre class="text"><code>bcdboot W:\Windows /s S: /f UEFI</code></pre>
+<p>Attendu : « Les fichiers de démarrage ont été créés avec succès. » Les fichiers de démarrage sont maintenant sur la partition EFI <code>S:</code>, Windows est complet sur <code>W:</code>.</p>
+<h3 id="schritt-6-neustart-von-der-ssd">Étape 6 : redémarrage depuis le SSD</h3>
+<ol type="1">
+<li>Saisir <code>exit</code>, fermer la fenêtre noire et l'installation (croix rouge, confirmer l'abandon), éteindre le Deck.</li>
+<li>Retirer la clé Windows, le SSD reste sur le hub.</li>
+<li>Maintenir volume moins, appuyer sur Power, choisir le SSD dans le menu de démarrage (« Windows Boot Manager » ou « EFI USB Device » ; pas SteamOS).</li>
+<li>Windows se configure ; un à deux redémarrages sont normaux. À chaque fois, choisir de nouveau le SSD.</li>
+</ol>
+<h3 id="typische-tippfehler">Fautes de frappe typiques</h3>
+<ul>
+<li>« Tape ça et appuie sur Entrée » signifie : taper seulement la ligne de la case de commande, pas le mot « ça ».</li>
+<li>Entre <code>dism</code>, <code>/get-wiminfo</code> et <code>/wimfile</code> il y a des espaces, dans <code>/wimfile:F:\sources\install.wim</code> aucun.</li>
+<li>La barre oblique <code>/</code> introduit des options, la barre oblique inverse <code>\</code> sépare les dossiers – ce sont des caractères différents.</li>
+<li>Dans la fenêtre noire de l'installation, il n'y a pas de copier-coller ; tout se tape à la main. Dans la fenêtre Linux, coller se fait par clic droit ou via le menu.</li>
+</ul>
+</section><section id="s28-8"><h2>28.8 Le premier démarrage de Windows et les pilotes</h2><p><strong>Problème : « Connectons-vous à un réseau ».</strong> La configuration exige Internet, mais sans pilote Wi-Fi il n'y en a pas. Deux voies :</p>
+<ul>
+<li><strong>Contournement :</strong> Maj + F10, puis <code>oobe\bypassnro</code> (barre oblique inverse au milieu). Le Deck redémarre ; choisir le SSD dans le menu de démarrage. Sur la page du réseau apparaît en bas « Je n'ai pas Internet » → « Continuer avec une configuration limitée » → créer un compte local (le mot de passe peut rester vide).</li>
+<li>Placer les <strong>pilotes à l'avance</strong> sur une clé et les installer après le démarrage.</li>
+</ul>
+<p><strong>Installer les pilotes :</strong> Wi-Fi (<code>qcwlan64.inf</code>) → APU (<code>setup.exe</code>, redémarrage) → les trois <code>.inf</code> audio → en option Bluetooth (<code>qcbtuart.inf</code>) → redémarrage.</p>
+<h3 id="problem-kein-ton-chronologisch">Problème : pas de son (chronologique)</h3>
+<p>L'icône du haut-parleur avait un x : « Aucun périphérique audio n'est installé ».</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Observation</th>
+<th>Cause</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Windows Update : « Aucune mise à jour disponible », pas de pilotes facultatifs</td>
+<td>Windows Update ne connaît généralement pas les pilotes du Deck</td>
+<td>Charger les pilotes Valve manuellement</td>
+</tr>
+<tr class="even">
+<td>Seulement deux pilotes audio installés</td>
+<td>la page Valve en liste désormais trois (en plus <code>amdi2scodec.inf</code>)</td>
+<td>installer les trois</td>
+</tr>
+<tr class="odd">
+<td>Trois installés, toujours aucun appareil</td>
+<td>le <strong>pilote APU</strong> manquait ; la sortie audio en dépend</td>
+<td><code>setup.exe</code> de l'APU, redémarrage</td>
+</tr>
+<tr class="even">
+<td>Pilote Bluetooth installé, son absent</td>
+<td>l'audio Bluetooth est une autre voie que les haut-parleurs</td>
+<td>Vérifier le pilote des haut-parleurs</td>
+</tr>
+</tbody>
+</table></div>
+<p>Après le pilote APU, le son fonctionnait. Le hub n'y était pour rien : les haut-parleurs sont reliés à la puce du Deck, pas à l'USB.</p>
+<h3 id="was-bringt-der-apu-treiber">Qu'apporte le pilote APU ?</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Sans</th>
+<th>Avec</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pilote de secours standard (« Microsoft Basic Display ») : graphisme lent</td>
+<td>pleine puissance graphique</td>
+</tr>
+<tr class="even">
+<td>La rotation de l'écran est incorrecte (écran monté en portrait)</td>
+<td>L'affichage tourne correctement</td>
+</tr>
+<tr class="odd">
+<td>Luminosité souvent non réglable, autonomie plus courte</td>
+<td>Luminosité, fréquence de rafraîchissement, économie d'énergie fonctionnent</td>
+</tr>
+<tr class="even">
+<td>La sortie audio de la puce manque : pas de son</td>
+<td>Le son fonctionne dès que les pilotes audio s'ajoutent</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s28-9"><h2>28.9 Famille ou Pro ? Changer après coup</h2><p>Passer à Pro est possible sans réinstallation : menu Démarrer → Paramètres → Système → Activation → « Modifier la clé de produit » → saisir la clé Pro de 25 caractères → Suivant. Windows télécharge Pro et redémarre. Sans licence Pro valide, on obtient une version Pro non activée (filigrane, pas de personnalisation). Pour la manette, les pilotes et les jeux, Famille suffit. Pro apporte surtout BitLocker, le Bureau à distance comme hôte, Hyper-V et les stratégies de groupe. Microsoft fournit une clé d'installation générique (<code>VK7JG-NPHTM-C97JM-9MPGT-3V66T</code>) qui convertit Famille en Pro, mais n'active rien.</p>
+</section><section id="s28-10"><h2>28.10 La manette : mise à jour du firmware avec Accessoires Xbox</h2><p>La mise à jour passe par l'application <strong>Accessoires Xbox</strong> (Microsoft Store) et seulement par câble USB, pas par Bluetooth.</p>
+<p><strong>Déroulement :</strong></p>
+<ol type="1">
+<li>Menu Démarrer → Microsoft Store → dans le champ de recherche « Accessoires Xbox » → installer l'application, l'ouvrir.</li>
+<li>Brancher la manette avec un câble de données sur le hub.</li>
+<li>Dans l'application apparaît la « XBOX Wireless Controller » : bouton aux trois points (…) → « Mise à jour du firmware ».</li>
+<li>Ne pas débrancher le câble ; la manette s'éteint brièvement et se rallume entre-temps.</li>
+<li>S'il est indiqué que la manette est à jour, le problème d'appairage ne vient pas du firmware.</li>
+</ol>
+<h3 id="fehler-1-fehler-beim-anmelden-mit-gaming-runtime-services">Erreur 1 : « Erreur de connexion aux Gaming Runtime Services »</h3>
+<p>Au premier lancement, l'application a signalé : « Erreur de connexion aux services d'exécution de jeux … » avec les boutons <em>Installer l'application XBOX</em>, <em>J'ai besoin d'aide</em>, <em>Annuler</em>.</p>
+<ul>
+<li><strong>Cause :</strong> Accessoires Xbox utilise les services d'arrière-plan <em>Gaming Services</em>. S'ils manquent ou sont périmés, la connexion échoue.</li>
+<li><strong>Ce qui n'a pas aidé :</strong> « Installer l'application XBOX » (l'application était déjà là) ; la recherche « gaming services » dans le Store n'affichait en haut que de la publicité (un jeu de casino avec la mention « Annonce ») – on ne l'installe pas.</li>
+<li><strong>Solution :</strong> ouvrir directement la page du Store par lien. Lancer le navigateur Edge, saisir dans la barre d'adresse <code>ms-windows-store://pdp/?productid=9MWPM2CQNLHN</code>, Entrée, répondre « Ouvrir » à la question. La page <em>Gaming Services</em> apparaît. Le bouton bleu peut s'appeler <em>Installer</em>, <em>Obtenir</em> ou <em>Mettre à jour</em> ; ici l'application était périmée, « Mettre à jour » a téléchargé environ 59 Mo. Fermer Accessoires Xbox et le rouvrir.</li>
+</ul>
+<h3 id="fehler-2-wird-ihr-gerät-nicht-angezeigt">Erreur 2 : « Votre appareil n'apparaît pas ? »</h3>
+<p>La manette clignotait : elle cherche en Bluetooth. Pour la mise à jour, elle doit être reliée par câble. Appui long sur la touche Xbox (éteindre), brancher par câble de données sur le hub (allumée en continu), fermer Accessoires Xbox et le rouvrir. Si cela n'aide pas : autre câble ou autre port ; dans le Gestionnaire de périphériques (appui long sur l'icône du menu Démarrer), chercher des signes d'avertissement jaunes.</p>
+<h3 id="meldung-3-holen-sie-sich-eine-app-um-diesen-ms-gamebar-link-zu-öffnen">Message 3 : « Obtenez une application pour ouvrir ce lien ms-gamebar »</h3>
+<p>Un lien supplémentaire de la Xbox Game Bar (vraisemblablement depuis l'icône en forme d'éprouvette). Sans importance pour la mise à jour : ne pas choisir « Rechercher dans le Store », fermer la fenêtre (toucher un endroit libre ou Échap), puis « … » et « Mise à jour du firmware ».</p>
+<h3 id="nach-dem-update">Après la mise à jour</h3>
+<p>De retour dans SteamOS : touche Steam → Paramètres → activer le Bluetooth. Sur la manette, maintenir le bouton d'appairage (petit bouton rond en haut à l'arrière) trois secondes, jusqu'à ce que la touche Xbox clignote rapidement ; elle apparaît dans la liste des appareils. Si cela ne marche pas, tester d'abord par USB. <strong>Que l'appairage ait réellement fonctionné après la mise à jour n'est pas confirmé dans ce chapitre.</strong></p>
+</section><section id="s28-11"><h2>28.11 Cloner Windows sur une carte SD (`dd` sur le Raspberry Pi)</h2><p>Le SSD est pratique, mais une carte SD reste en permanence dans le Deck. Comme l'installation n'accepte pas la carte comme cible, l'installation terminée a été copiée à l'identique du SSD vers la carte, sur le Raspberry Pi 5 avec SSD (USB) et carte SD (lecteur de cartes).</p>
+<h3 id="erst-die-grafischen-wege--und-warum-sie-scheiterten">D'abord les voies graphiques – et pourquoi elles ont échoué</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Programme</th>
+<th>Message</th>
+<th>Cause</th>
+<th>Conséquence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SD Card Copier (menu Raspberry → Accessoires)</td>
+<td>« Table de partitions non MSDOS sur la source. »</td>
+<td>Le Copier ne connaît que MBR ; le SSD a GPT (Windows UEFI)</td>
+<td>Copie impossible ; formater la carte ne change rien, car l'erreur vient de la source</td>
+</tr>
+<tr class="even">
+<td>Programme de sauvegarde du Control Center</td>
+<td>« ERREUR : aucune zone système (ext4) trouvée sur /dev/sda. »</td>
+<td>Il est conçu pour les systèmes Linux et cherche un système racine ext4 ; Windows a NTFS</td>
+<td>Arrêt à l'étape 1 sur 8, avant que quoi que ce soit soit effacé (<a class="xr" href="#/kap/39/39.2">chapitre 39.2</a>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Toujours vérifier avant de lancer :</strong> dans de tels programmes, la source et la cible figurent côte à côte dans des listes. Une fois, <code>nvme0n1</code> était marqué comme source et <code>sda</code> (le SSD Windows) comme cible, alors que <code>mmcblk0</code> était visé. Comme le programme s'est arrêté, rien ne s'est passé. Avant chaque « Démarrer », contrôler la source et la cible d'après la <strong>taille</strong>.</p>
+<h3 id="die-methode-mit-dd">La méthode avec <code>dd</code></h3>
+<p><strong>Étape 1 : reconnaître les lecteurs</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="ex">lsblk</span></span></code></pre></div>
+<pre class="text"><code>NAME          MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+sda             8:0    0 111,8G  0 disk
+├─sda1          8:1    0   260M  0 part
+└─sda2          8:2    0 111,5G  0 part /media/oratio/Windows
+mmcblk0       179:0    0 238,3G  0 disk
+└─mmcblk0p1   179:1    0 238,3G  0 part
+nvme0n1       259:0    0 223,6G  0 disk
+├─nvme0n1p1   259:1    0   512M  0 part /boot/firmware
+└─nvme0n1p2   259:2    0 223,1G  0 part /</code></pre>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Appareil</th>
+<th>Taille</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>sda</code></td>
+<td>111,8 G (260 M + 111,5 G)</td>
+<td>SSD Windows = <strong>source</strong></td>
+</tr>
+<tr class="even">
+<td><code>mmcblk0</code></td>
+<td>238,3 G (ancienne partition Pi)</td>
+<td>Carte SD = <strong>cible</strong></td>
+</tr>
+<tr class="odd">
+<td><code>nvme0n1</code></td>
+<td>223,6 G (<code>/</code> et <code>/boot/firmware</code>)</td>
+<td>Système du Pi – <strong>ne jamais y toucher</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Étape 2 : démonter la source</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="fu">sudo</span> umount /media/oratio/Windows</span></code></pre></div>
+<p>Démonter empêche les données de changer pendant la copie.</p>
+<p><strong>Étape 3 : copier</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="fu">sudo</span> dd if=/dev/sda of=/dev/mmcblk0 bs=4M status=progress conv=fsync</span></code></pre></div>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Élément</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>sudo</code></td>
+<td>avec les droits d'administrateur</td>
+</tr>
+<tr class="even">
+<td><code>if=/dev/sda</code></td>
+<td>Source : <strong>tout</strong> le SSD (sans chiffre = tout le lecteur, pas une partition)</td>
+</tr>
+<tr class="odd">
+<td><code>of=/dev/mmcblk0</code></td>
+<td>Cible : toute la carte SD – il ne doit jamais y avoir ici un mauvais lecteur</td>
+</tr>
+<tr class="even">
+<td><code>bs=4M</code></td>
+<td>Taille de bloc 4 Mo, plus rapide que la petite valeur par défaut</td>
+</tr>
+<tr class="odd">
+<td><code>status=progress</code></td>
+<td>affiche la progression en direct</td>
+</tr>
+<tr class="even">
+<td><code>conv=fsync</code></td>
+<td>écrit vraiment tout sur la carte à la fin, avant que <code>dd</code> annonce qu'il a terminé</td>
+</tr>
+</tbody>
+</table></div>
+<p>L'affichage va jusqu'à environ 120 Go (SSD : 111,8 GiB = 120 034 123 776 octets). À environ 82 Mo/s, l'exécution a duré environ 24 minutes. C'est terminé quand l'invite réapparaît :</p>
+<pre class="text"><code>28618+1 Datensätze ein
+28618+1 Datensätze aus
+120034123776 Byte (120 GB, 112 GiB) kopiert, 1469,9 s, 81,7 MB/s</code></pre>
+<p>Pendant ce temps, ne pas fermer le terminal et ne pas éteindre le Pi.</p>
+<p><strong>Étape 4 : relire la table de partitions</strong></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="fu">sudo</span> partprobe /dev/mmcblk0</span></code></pre></div>
+<p><code>partprobe</code> dit à Linux de relire la table. Sans cela, <code>lsblk</code> montre encore l'ancienne partition unique. L'avertissement « Not all of the space available to /dev/mmcblk0 appears to be used … » est normal : la carte (238 Go) est plus grande que le SSD (111,8 Go), et la copie a placé la table de partitions de secours (backup GPT) à l'emplacement du plus petit SSD.</p>
+<p><strong>Étape 5 : démonter, réparer la table, terminer</strong></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="fu">sudo</span> umount /dev/mmcblk0p1 /dev/mmcblk0p2</span>
+<span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">-y</span> gdisk</span>
+<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="fu">sudo</span> sgdisk <span class="at">-e</span> /dev/mmcblk0</span>
+<span id="cb7-4"><a aria-hidden="true" href="#cb7-4" tabindex="-1"></a><span class="fu">sync</span></span>
+<span id="cb7-5"><a aria-hidden="true" href="#cb7-5" tabindex="-1"></a><span class="ex">lsblk</span></span></code></pre></div>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Commande</th>
+<th>Signification / message attendu</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>umount …p1 …p2</code></td>
+<td>« not mounted » est normal – rien n'était monté</td>
+</tr>
+<tr class="even">
+<td><code>apt install -y gdisk</code></td>
+<td>installe <code>sgdisk</code> ; « déjà la dernière version » signifie : déjà présent</td>
+</tr>
+<tr class="odd">
+<td><code>sgdisk -e /dev/mmcblk0</code></td>
+<td>déplace la table de partitions de secours à la vraie fin de la carte : « The operation has completed successfully. »</td>
+</tr>
+<tr class="even">
+<td><code>sync</code></td>
+<td>force l'arrivée de toutes les écritures</td>
+</tr>
+<tr class="odd">
+<td><code>lsblk</code></td>
+<td>Contrôle : <code>mmcblk0p1</code> (260 M) et <code>mmcblk0p2</code> (111,5 G) ; <code>MOUNTPOINTS</code> vide</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>« Visible » contre « monté » :</strong> visible signifie seulement que Linux connaît les partitions (apparaît dans <code>lsblk</code>). Monté signifie qu'elles sont reliées à un dossier. Sur la carte terminée, elles sont visibles mais pas montées – le bon état pour la retirer.</p>
+<p><strong>Étape 6 : retirer et démarrer</strong></p>
+<ol type="1">
+<li>Retirer la carte du Pi (l'éjection n'est pas nécessaire, rien n'est monté).</li>
+<li>Mettre la carte dans le Deck, débrancher le SSD du hub.</li>
+<li>Volume moins + Power, choisir <em>EFI SD/MMC Card</em> dans le menu de démarrage.</li>
+<li>Windows a démarré sans erreur, avec tous les réglages, les pilotes, de façon fluide.</li>
+</ol>
+<p><strong>Ne pas cliquer dans le gestionnaire de fichiers :</strong> sur le Pi, deux entrées « Windows » sont apparues à gauche (le SSD et la carte portent le même nom, car <code>dd</code> l'a copié aussi). Cliquer monterait la partition et Linux pourrait y écrire quelque chose ; Windows signale ensuite éventuellement « non déconnecté proprement ».</p>
+<h3 id="regeln-für-dd">Règles pour <code>dd</code></h3>
+<ol type="1">
+<li>Copier le lecteur <strong>entier</strong> (<code>sda</code>, pas <code>sda2</code>), sinon la table de partitions et les fichiers de démarrage manquent.</li>
+<li>La cible doit être au moins aussi grande que la source ; sinon <code>dd</code> s'arrête ou coupe la fin (alors Clonezilla ou Macrium Reflect Free).</li>
+<li>Si la cible est plus grande, le reste reste inutilisé tant qu'on n'agrandit pas la partition (28.12).</li>
+<li>La cible est entièrement écrasée. Une erreur à <code>of=</code> est irréversible.</li>
+<li>La source ne doit pas être utilisée (démontée) ; ne jamais copier depuis le disque système en cours d'utilisation.</li>
+<li>Ne jamais brancher en même temps l'original et la copie sur le même ordinateur Windows (mêmes identifiants).</li>
+<li>Linux clone presque toujours sans problème. Windows démarre le plus souvent sans problème sur le même matériel ; sur un autre matériel, il peut rester bloqué sur « Inaccessible Boot Device » ou demander la clé de récupération BitLocker.</li>
+</ol>
+<h3 id="alternativen-zu-dd">Alternatives à <code>dd</code></h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Programme</th>
+<th>Adéquation ici</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Rufus (Windows To Go)</td>
+<td>ne fonctionne que sous Windows ; écrit un Windows prêt à l'emploi directement sur clé ou carte – sur PC, le chemin le plus court</td>
+</tr>
+<tr class="even">
+<td>Balena Etcher, Raspberry Pi Imager</td>
+<td>écrivent seulement des fichiers image finis, ne copient pas de lecteur à lecteur (une image de 111 Go serait d'abord nécessaire)</td>
+</tr>
+<tr class="odd">
+<td>Clonezilla</td>
+<td>gère GPT et NTFS et réduit lors du clonage ; doit d'abord être écrit sur une clé – plus de travail</td>
+</tr>
+<tr class="even">
+<td>Macrium Reflect Free</td>
+<td>programme de clonage sous Windows, adapté aux cibles plus petites</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="eigene-sicherung-als-datei">Sauvegarde personnelle sous forme de fichier</h3>
+<p>Un Windows qui fonctionne sert de modèle. Au lieu de réinstaller, on peut le sauvegarder sous forme de fichier compressé (méthode standard ; la ligne de restauration n'a pas été testée dans ce projet) :</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="fu">sudo</span> dd if=/dev/mmcblk0 bs=4M status=progress <span class="kw">|</span> <span class="fu">gzip</span> <span class="op">&gt;</span> windows-backup.img.gz</span>
+<span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="fu">gzip</span> <span class="at">-dc</span> windows-backup.img.gz <span class="kw">|</span> <span class="fu">sudo</span> dd of=/dev/mmcblk0 bs=4M status=progress conv=fsync</span></code></pre></div>
+<p>Le fichier de sauvegarde doit se trouver sur un <strong>autre</strong> lecteur.</p>
+</section><section id="s28-12"><h2>28.12 Après le clonage : utiliser l’espace, identifiants en double</h2><p><strong>Pourquoi la carte n'affiche que 111 Go :</strong> <code>dd</code> copie exactement la taille de la source. Sur la carte de 256 Go, la partition Windows ne fait donc qu'environ 111 Go ; les quelque 126 Go restants sont « non alloués ».</p>
+<p><strong>Possibilité A : agrandir C:.</strong> Appui long sur l'icône du menu Démarrer → <em>Gestion des disques</em> → appui long sur <code>C:</code> → <em>Étendre le volume</em> → Suivant, Suivant, Terminer. Si « Étendre le volume » est grisé, une autre partition (par exemple une partition de récupération) se trouve entre <code>C:</code> et l'espace libre ; examiner alors précisément la gestion des disques. Étendre n'efface aucune donnée.</p>
+<p><strong>Possibilité B : créer un second lecteur D:.</strong> Dans la gestion des disques, appui long sur le bloc noir <em>Non alloué</em> → <em>Nouveau volume simple</em> → Suivant, Suivant (taille complète), lettre <code>D</code>, Suivant → NTFS, nom par ex. « Daten » → Terminer.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>D: comme second lecteur</th>
+<th>Étendre C:</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Avantage</td>
+<td>Windows et données séparés ; on peut réinstaller Windows sans toucher aux données</td>
+<td>un grand bloc</td>
+</tr>
+<tr class="even">
+<td>Inconvénient</td>
+<td><code>C:</code> seulement 111 Go ; Windows, pilotes et mises à jour demandent environ 30–40 Go et grandissent</td>
+<td>tout dans un seul pot</td>
+</tr>
+<tr class="odd">
+<td>Conseil</td>
+<td>jeux et fichiers personnels sur D:</td>
+<td>plus tard, supprimer D: et étendre C: reste possible</td>
+</tr>
+</tbody>
+</table></div>
+<p>Un <code>dd</code> ultérieur de toute la carte copie aussi D: (alors 238 Go). <strong>Identifiants en double :</strong> le SSD et la carte sont des jumeaux avec les mêmes ID internes. Sous Windows, ne jamais brancher les deux en même temps ; Windows peut sinon mettre l'un hors ligne à cause de l'ID en double. Le SSD est maintenant la sauvegarde. Le mieux est de garder les dossiers de pilotes sur D:.</p>
+</section><section id="s28-13"><h2>28.13 Dépannage : symptôme → cause → mesure</h2><p>La méthode : 1. Décrire précisément le symptôme (noter le texte exact). 2. Circonscrire la cause (quel système d'exploitation, quel lecteur). 3. Vérifier avec une commande de contrôle au lieu de deviner. 4. Ensuite seulement modifier quelque chose qui efface des données.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Symptôme / message</th>
+<th>Cause</th>
+<th>Mesure</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>La carte SD manque dans la liste des lecteurs de l'installation</td>
+<td>Le support amovible n'est pas proposé ; de plus, le pilote du lecteur de cartes manque dans l'installation</td>
+<td>Charger le pilote (BayHubTech, BH778, Win11x64) ; si cela n'aide pas : écrire Windows à la main (28.7)</td>
+</tr>
+<tr class="even">
+<td>Une seconde clé/SSD n'apparaît pas, « Suivant » grisé</td>
+<td>même blocage pour les lecteurs USB</td>
+<td>Sélectionner la ligne, lire « Afficher les détails »</td>
+</tr>
+<tr class="odd">
+<td>« …disques connectés via des ports USB ou IEEE 1394 n'est pas prise en charge »</td>
+<td>blocage USB de Microsoft</td>
+<td>écrire avec <code>diskpart</code>/<code>dism</code>/<code>bcdboot</code></td>
+</tr>
+<tr class="even">
+<td>Supprimer/Formater/Nouveau grisés</td>
+<td>aucune ligne sélectionnée, ou lecteur protégé en écriture</td>
+<td>Toucher la ligne (bleue) ; sinon <code>attributes disk clear readonly</code> dans <code>diskpart</code></td>
+</tr>
+<tr class="odd">
+<td>La liste des lecteurs montre <code>esp</code>, <code>efi</code>, 2×5 Go, 2×256 Mo, 943 Go</td>
+<td>c'est le lecteur interne du Deck</td>
+<td>ne pas y toucher</td>
+</tr>
+<tr class="even">
+<td>Au démarrage, de nouveau le choix de langue de l'installation</td>
+<td>dans le menu de démarrage, la clé a été choisie au lieu du SSD</td>
+<td>Quitter l'installation avec X, retirer la clé, choisir la bonne entrée</td>
+</tr>
+<tr class="odd">
+<td><code>F:\sources\install.*</code> introuvable</td>
+<td>la clé a une autre lettre</td>
+<td>essayer <code>dir E:\</code>, <code>G:\</code>, <code>D:\</code> ; chercher les dossiers <code>sources</code>, <code>boot</code>, <code>efi</code></td>
+</tr>
+<tr class="even">
+<td>« Connectons-vous à un réseau », Suivant grisé</td>
+<td>pas de pilote Wi-Fi, Windows 11 exige Internet</td>
+<td><code>oobe\bypassnro</code>, puis « Je n'ai pas Internet »</td>
+</tr>
+<tr class="odd">
+<td>Haut-parleur avec x, « aucun périphérique audio »</td>
+<td>pilotes audio ou APU manquants</td>
+<td>les trois <code>.inf</code> audio et <code>setup.exe</code> de l'APU, redémarrage</td>
+</tr>
+<tr class="even">
+<td>Windows Update : pas de mises à jour, pas de pilotes facultatifs</td>
+<td>ne connaît pas les pilotes du Deck</td>
+<td>pilotes depuis la page Valve</td>
+</tr>
+<tr class="odd">
+<td>« Erreur de connexion aux Gaming Runtime Services »</td>
+<td>Gaming Services manquent ou sont périmés</td>
+<td>ouvrir la page du Store via <code>ms-windows-store://pdp/?productid=9MWPM2CQNLHN</code>, installer/mettre à jour</td>
+</tr>
+<tr class="even">
+<td>« Votre appareil n'apparaît pas ? », la manette clignote</td>
+<td>la manette cherche en Bluetooth ; la mise à jour exige un câble</td>
+<td>éteindre, brancher par câble de données USB, rouvrir l'application</td>
+</tr>
+<tr class="odd">
+<td>« …pour ouvrir ce lien ms-gamebar »</td>
+<td>lien supplémentaire de la Game Bar</td>
+<td>fermer, ne pas « Rechercher dans le Store »</td>
+</tr>
+<tr class="even">
+<td>Les fichiers ne peuvent pas être copiés de l'iPhone vers la clé Windows</td>
+<td>l'application Fichiers de l'iPhone et la clé Windows s'entendent mal</td>
+<td>charger les pilotes sur le Deck en mode Bureau et les copier de là</td>
+</tr>
+<tr class="odd">
+<td>Un dossier ne peut pas être copié</td>
+<td>nom trop long, caractères spéciaux, ou ZIP au lieu du dossier extrait</td>
+<td>renommer brièvement, extraire avant</td>
+</tr>
+<tr class="even">
+<td>SD Card Copier : « Table de partitions non MSDOS sur la source. »</td>
+<td>la source a GPT, le Copier ne connaît que MBR</td>
+<td>utiliser <code>dd</code></td>
+</tr>
+<tr class="odd">
+<td>Programme de sauvegarde : « aucune zone système (ext4) trouvée »</td>
+<td>cherche un système Linux</td>
+<td>utiliser <code>dd</code></td>
+</tr>
+<tr class="even">
+<td>« umount: …: not mounted. »</td>
+<td>la partition n'était pas montée</td>
+<td>normal, continuer</td>
+</tr>
+<tr class="odd">
+<td>« Warning: Not all of the space available to /dev/mmcblk0 appears to be used »</td>
+<td>cible plus grande que la source</td>
+<td><code>sudo sgdisk -e /dev/mmcblk0</code></td>
+</tr>
+<tr class="even">
+<td><code>mmcblk0</code> n'affiche pas <code>p1</code>/<code>p2</code> après <code>dd</code></td>
+<td>Linux ne relit la table que sur demande</td>
+<td><code>sudo partprobe /dev/mmcblk0</code>, puis <code>lsblk</code></td>
+</tr>
+<tr class="odd">
+<td>Deux entrées « Windows » dans le gestionnaire de fichiers</td>
+<td>l'original et la copie portent le même nom</td>
+<td>ne pas cliquer</td>
+</tr>
+<tr class="even">
+<td>La carte n'affiche que 111 Go dans Windows</td>
+<td><code>dd</code> ne copie que la taille de la source</td>
+<td>étendre <code>C:</code> ou créer <code>D:</code> (28.12)</td>
+</tr>
+<tr class="odd">
+<td>« Étendre le volume » est grisé</td>
+<td>une autre partition se trouve devant</td>
+<td>vérifier la gestion des disques</td>
+</tr>
+<tr class="even">
+<td>Écran bleu « Inaccessible Boot Device » après le clonage</td>
+<td>pilote de stockage inconnu au début du démarrage (non rencontré dans le projet)</td>
+<td>exécuter une réparation depuis la clé Windows ; si besoin, ajouter les pilotes à l'image</td>
+</tr>
+<tr class="odd">
+<td>L'écran est en mode paysage tourné</td>
+<td>l'écran est monté en portrait, pas encore de pilote APU</td>
+<td>installer le pilote APU</td>
+</tr>
+<tr class="even">
+<td>Le menu de démarrage n'apparaît pas</td>
+<td>touche relâchée trop tôt</td>
+<td>maintenir volume moins, appuyer brièvement sur Power, ne relâcher que lorsque le menu est là</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="prüfbefehle">Commandes de contrôle</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Wo</th>
+<th>Commande</th>
+<th>Ce que l'on voit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Linux (Pi, SteamOS)</td>
+<td><code>lsblk</code></td>
+<td>tous les lecteurs avec taille, partitions, <code>MOUNTPOINTS</code> ; reconnaître le lecteur à sa <strong>taille</strong>, pas à son nom</td>
+</tr>
+<tr class="even">
+<td>Linux</td>
+<td><code>sudo parted /dev/mmcblk0 print</code></td>
+<td>la table de partitions ; propose une réparation (Fix) en cas d'écart</td>
+</tr>
+<tr class="odd">
+<td>Installation de Windows</td>
+<td><code>diskpart</code> → <code>list disk</code></td>
+<td>disques avec taille ; l'astérisque GPT indique GPT</td>
+</tr>
+<tr class="even">
+<td>Installation de Windows</td>
+<td><code>dir F:\</code></td>
+<td>contenu de la clé</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s28-14"><h2>28.14 Guide rapide pour partir de zéro</h2><p><strong>A. Préparer (28.4) :</strong> clé Windows 11, charger et extraire les pilotes sur le Deck en mode Bureau, dossier sur la grande partition de la clé.</p>
+<p><strong>B. Écrire Windows sur le SSD (28.7) :</strong> menu de démarrage → clé → installation → Maj + F10 → <code>diskpart</code> (partitions), <code>dir</code>, <code>dism /get-wiminfo</code>, <code>dism /apply-image</code>, <code>bcdboot</code>.</p>
+<p><strong>C. Premier démarrage (28.8) :</strong> SSD dans le menu de démarrage, <code>oobe\bypassnro</code>, pilote Wi-Fi, APU, audio (les trois), redémarrage.</p>
+<p><strong>D. Manette (28.10) :</strong> mettre à jour Gaming Services, Accessoires Xbox, câble de données USB, mise à jour du firmware.</p>
+<p><strong>E. Cloner sur la carte SD (28.11–28.12) :</strong> sur le Pi <code>lsblk</code>, <code>umount</code>, <code>dd</code>, <code>partprobe</code>, <code>sgdisk -e</code>, <code>sync</code> ; ensuite étendre <code>C:</code> ou créer <code>D:</code>.</p>
+</section><section id="s28-15"><h2>28.15 Aperçu des commandes</h2><p><strong>Installation de Windows (Maj + F10)</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Commande</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>diskpart</code></td>
+<td>Lancer le programme de partitionnement</td>
+</tr>
+<tr class="even">
+<td><code>list disk</code></td>
+<td>Afficher les disques</td>
+</tr>
+<tr class="odd">
+<td><code>select disk N</code></td>
+<td>Sélectionner le disque N</td>
+</tr>
+<tr class="even">
+<td><code>clean</code></td>
+<td>supprimer toutes les partitions et données du disque sélectionné</td>
+</tr>
+<tr class="odd">
+<td><code>convert gpt</code></td>
+<td>passer en GPT</td>
+</tr>
+<tr class="even">
+<td><code>create partition efi size=260</code></td>
+<td>créer la partition EFI</td>
+</tr>
+<tr class="odd">
+<td><code>create partition primary</code></td>
+<td>partition Windows sur le reste</td>
+</tr>
+<tr class="even">
+<td><code>format quick fs=fat32 label=EFI</code> / <code>fs=ntfs label=Windows</code></td>
+<td>formatage rapide</td>
+</tr>
+<tr class="odd">
+<td><code>assign letter=X</code></td>
+<td>attribuer des lettres de lecteur</td>
+</tr>
+<tr class="even">
+<td><code>attributes disk clear readonly</code></td>
+<td>retirer la protection en écriture</td>
+</tr>
+<tr class="odd">
+<td><code>exit</code></td>
+<td>quitter diskpart</td>
+</tr>
+<tr class="even">
+<td><code>dir PFAD</code></td>
+<td>lister les fichiers (<code>*</code> = n'importe lequel)</td>
+</tr>
+<tr class="odd">
+<td><code>dism /get-wiminfo /wimfile:PFAD</code></td>
+<td>afficher les éditions de l'image</td>
+</tr>
+<tr class="even">
+<td><code>dism /apply-image /imagefile:PFAD /index:N /applydir:W:\</code></td>
+<td>écrire l'édition N sur <code>W:</code></td>
+</tr>
+<tr class="odd">
+<td><code>bcdboot W:\Windows /s S: /f UEFI</code></td>
+<td>créer les fichiers de démarrage UEFI sur <code>S:</code></td>
+</tr>
+<tr class="even">
+<td><code>oobe\bypassnro</code></td>
+<td>désactiver l'obligation de réseau de la première configuration (redémarrage)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Linux (Pi, SteamOS)</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Commande</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>lsblk</code></td>
+<td>Lecteurs et partitions</td>
+</tr>
+<tr class="even">
+<td><code>sudo umount PFAD</code></td>
+<td>démonter</td>
+</tr>
+<tr class="odd">
+<td><code>sudo dd if=QUELLE of=ZIEL bs=4M status=progress conv=fsync</code></td>
+<td>copier octet par octet</td>
+</tr>
+<tr class="even">
+<td><code>sudo partprobe /dev/GERÄT</code></td>
+<td>relire la table de partitions</td>
+</tr>
+<tr class="odd">
+<td><code>sudo apt install -y gdisk</code></td>
+<td>installer le programme <code>gdisk</code> (fournit <code>sgdisk</code>) (Pi OS/Debian)</td>
+</tr>
+<tr class="even">
+<td><code>sudo sgdisk -e /dev/GERÄT</code></td>
+<td>table GPT de secours à la fin du disque</td>
+</tr>
+<tr class="odd">
+<td><code>sync</code></td>
+<td>vider le tampon d'écriture</td>
+</tr>
+<tr class="even">
+<td><code>passwd</code></td>
+<td>définir le mot de passe <code>sudo</code> sur le Deck (une seule fois)</td>
+</tr>
+<tr class="odd">
+<td><code>sudo steamos-readonly disable</code></td>
+<td>désactiver la protection en écriture du lecteur système SteamOS (les mises à jour peuvent effacer les modifications)</td>
+</tr>
+</tbody>
+</table></div>
+</section><section id="s28-16"><h2>28.16 Contexte et alternatives</h2><p><strong>Installer Windows depuis la console de SteamOS ?</strong> En partie. En mode Bureau, il y a la console (<code>bash</code>). On peut y préparer des lecteurs avec <code>sgdisk</code> et <code>mkfs.ntfs</code>, et l'image Windows pourrait être écrite sur le disque avec le programme <code>wimlib</code>. <code>wimlib</code> n'est pas préinstallé, nécessite que la protection en écriture soit désactivée et peut disparaître après une mise à jour de SteamOS. Les fichiers de démarrage ne sont créés que par <code>bcdboot</code>, qui n'existe que sous Windows ; l'installation de Windows avec Maj + F10 reste donc nécessaire pour cette seule commande. Avantage dans SteamOS : on peut coller des commandes depuis le navigateur, alors que dans l'installation de Windows il faut tout taper.</p>
+<p><strong><code>dd</code> dans le Bureau SteamOS</strong> fonctionne comme sur le Pi, sans restriction. Sur le Deck : <code>nvme0n1</code> = lecteur interne (jamais comme cible), <code>sda</code> = SSD externe, <code>mmcblk0</code> = carte SD ; vérifier tout de même toujours les tailles avec <code>lsblk</code>. Si <code>sgdisk</code> est préinstallé n'a pas été vérifié (<code>sgdisk --version</code>) ; sinon <code>sudo parted /dev/mmcblk0 print</code> aide. Avant cela, une fois <code>passwd</code> pour le mot de passe <code>sudo</code>.</p>
+<p><strong>SteamOS est-il restreint ?</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>SteamOS (Deck)</th>
+<th>Raspberry Pi OS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Base</td>
+<td>Arch Linux</td>
+<td>Debian</td>
+</tr>
+<tr class="even">
+<td>Lecteur système</td>
+<td>en lecture seule (volontairement, pour des mises à jour sûres)</td>
+<td>librement inscriptible</td>
+</tr>
+<tr class="odd">
+<td>Installer des programmes</td>
+<td>Flatpak (Discover) ; <code>apt</code> n'existe pas ; <code>pacman</code> seulement après désactivation de la protection</td>
+<td><code>sudo apt install</code></td>
+</tr>
+<tr class="even">
+<td>Mises à jour</td>
+<td>peuvent effacer des modifications du lecteur système</td>
+<td>ne modifient que ce que l'on autorise</td>
+</tr>
+<tr class="odd">
+<td><code>dd</code>, <code>lsblk</code>, <code>sudo</code></td>
+<td>sans restriction (définir d'abord le mot de passe <code>sudo</code>)</td>
+<td>sans restriction</td>
+</tr>
+</tbody>
+</table></div>
+<p>Le blocage USB lors de l'installation de Windows (28.5 et 28.6) vient de Microsoft, pas de Valve. Le lecteur de cartes absent dans le programme d'installation était un pilote manquant.</p>
+<p><strong>Apprendre Python : Steam Deck ou Raspberry Pi 5 ?</strong></p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Raspberry Pi 5</th>
+<th>Steam Deck</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Python</td>
+<td>Python 3 préinstallé, Thonny comme éditeur d'apprentissage</td>
+<td>Python 3 dans le système</td>
+</tr>
+<tr class="even">
+<td>Programmes</td>
+<td><code>sudo apt install</code> directement</td>
+<td>Flatpak (VS Code, Thonny, PyCharm)</td>
+</tr>
+<tr class="odd">
+<td>Paquets Python (pip)</td>
+<td>dans un environnement virtuel (<code>python3 -m venv</code>)</td>
+<td>pareil, librement utilisable dans le dossier personnel</td>
+</tr>
+<tr class="even">
+<td>Piloter du matériel (GPIO, LED, capteurs, écran)</td>
+<td>ja (<code>gpiozero</code> u. a.)</td>
+<td>non</td>
+</tr>
+<tr class="odd">
+<td>Clavier</td>
+<td>présent</td>
+<td>Écran tactile ; pénible pour programmer</td>
+</tr>
+<tr class="even">
+<td>Performances</td>
+<td>suffisantes largement pour apprendre</td>
+<td>nettement plus rapide</td>
+</tr>
+<tr class="odd">
+<td>Tutoriels</td>
+<td>presque tous partent de Debian, Windows ou macOS</td>
+<td>les particularités de SteamOS ne correspondent souvent pas</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Recommandation :</strong> apprendre sur le Pi (icône Raspberry en haut à gauche → Programmation → Thonny). Utiliser le Deck comme second ordinateur avec un clavier Bluetooth, ou le Windows de la carte SD (Python depuis python.org). De petites tâches issues du hobby motivent le plus : faire clignoter une LED, afficher la valeur d'un capteur, l'heure sur l'OLED.</p>
+</section>
