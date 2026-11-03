@@ -1,0 +1,5 @@
+Update 16 – Kursland komplett auf Französisch
+NEU: daten/kurs/k12..k70.fr.html, vorwort.fr.html, aA..aD.fr.html, befehle.fr.json (Befehlskatalog, 2051 Einträge)
+GEÄNDERT: werkzeuge/kurs.js (lädt befehle.fr.json bei Französisch; fällt auf Deutsch zurück)
+Alle Dateien in die gleichen Ordner der Webseite kopieren (Ordner ersetzen/zusammenführen).
+Hinweis: Code-Kommentare innerhalb von Code-Blöcken sind noch deutsch; die Übersetzung ist nicht von Muttersprachlern geprüft.

@@ -1,0 +1,7 @@
+Update 12 bis 16 zusammen (alles in einem ZIP)
+12-15: Französischkurs A2, B1, B2, C1, Grammatik (G), Nachschlagen (R)
+  werkzeuge/fr_a2.js, fr_b1.js, fr_b2.js, fr_c1.js, fr_ref.js, franzoesisch.html, sprachkurse.html
+16: Kursland komplett auf Französisch
+  werkzeuge/kurs.js (GEÄNDERT)
+  daten/kurs/*.fr.html, fr.json, befehle.fr.json (NEU, Befehlskatalog)
+Alle Ordner in die Webseite kopieren und ersetzen. Keine bestehenden JSON-Dateien enthalten außer den neuen französischen.
