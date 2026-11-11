@@ -11,17 +11,35 @@
 <style>
 /* ===== PC-Check "Prüfstand": dunkler Hardware-Look mit RGB-Akzent ===== */
 .opc{
- --bg:#0a0c13;--card:#131724;--card2:#1a2032;--soft:#1a2031;--fg:#eef1f8;--muted:#9aa5ba;--line:#283047;--input:#0f121b;
- --acc:#a07bff;--accrgb:160,123,255;--onacc:#fff;--acc2:#c6f432;--accfg:#14210a;
- --cy:#4cc9ff;--pk:#ff5fa8;--or:#ff9f43;
- --ok:#38d98f;--warn:#ffb629;--bad:#ff5a73;
- --okbg:rgba(56,217,143,.13);--warn-bg:rgba(255,182,41,.13);--badbg:rgba(255,90,115,.14);--track:#252d42;--shadow:none;
- --rgb:linear-gradient(120deg,#7c5cff 0%,#ff5fa8 55%,#ff9f43 100%);
- position:relative;color:var(--fg);border-radius:28px;border:1px solid #232b40;
+ --bg:#f6f3ff;--card:#ffffff;--card2:#ffffff;--soft:#f0ecfd;--fg:#1f1b3d;--muted:#5f5b80;--line:#ddd6f4;--input:#ffffff;
+ --acc:#6a45ff;--accrgb:106,69,255;--onacc:#fff;--acc2:#c6f432;--accfg:#14210a;
+ --cy:#0a86d0;--pk:#e02a7c;--or:#f08a1c;
+ --ok:#10a35c;--warn:#d98600;--bad:#e0304d;
+ --okbg:rgba(16,163,92,.12);--warn-bg:rgba(240,150,0,.14);--badbg:rgba(224,48,77,.12);--track:#e5dff8;--shadow:0 8px 24px -12px rgba(80,50,160,.35);
+ --hd:#ebe6fb;--txt2:#3d3961;--pop:#ffffff;--popsh:0 18px 40px rgba(60,40,120,.25);--edge:#d9d0f5;
+ --mok:#4fd69a;--mwarn:#ffcb4d;--mbad:#ff7b90;--mring:#1f1b3d;
+ --rgb:linear-gradient(120deg,#6a45ff 0%,#e02a7c 55%,#ff9a2e 100%);
+ position:relative;color:var(--fg);border-radius:28px;border:1px solid var(--edge);
  padding:clamp(16px,3vw,34px);
- background:radial-gradient(900px 420px at 92% -8%,rgba(160,123,255,.24),transparent 62%),radial-gradient(760px 380px at -6% 4%,rgba(76,201,255,.15),transparent 60%),radial-gradient(600px 300px at 50% 110%,rgba(255,95,168,.10),transparent 60%),var(--bg);
+ background:radial-gradient(800px 380px at 95% -10%,rgba(255,120,190,.20),transparent 62%),radial-gradient(700px 360px at -5% 0%,rgba(90,190,255,.22),transparent 60%),radial-gradient(600px 300px at 50% 115%,rgba(255,190,90,.16),transparent 60%),var(--bg);
  font-variant-numeric:tabular-nums;
 }
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .opc{
+ --bg:#0d0f1a;--card:#161a2b;--card2:#1c2136;--soft:#1c2136;--fg:#eef1f8;--muted:#a3adc2;--line:#2c3550;--input:#10131f;
+ --acc:#a07bff;--accrgb:160,123,255;--cy:#4cc9ff;--pk:#ff5fa8;--or:#ff9f43;--ok:#38d98f;--warn:#ffb629;--bad:#ff5a73;
+ --okbg:rgba(56,217,143,.14);--warn-bg:rgba(255,182,41,.14);--badbg:rgba(255,90,115,.15);--track:#2a3350;--shadow:none;
+ --hd:#1d2338;--txt2:#c6cddc;--pop:#1a2033;--popsh:0 18px 40px rgba(0,0,0,.55);--edge:#2a3350;
+ --mok:#2fae77;--mwarn:#c99a1f;--mbad:#c64a63;--mring:#fff;
+ --rgb:linear-gradient(120deg,#7c5cff 0%,#ff5fa8 55%,#ff9f43 100%);
+ background:radial-gradient(800px 380px at 95% -10%,rgba(160,123,255,.18),transparent 62%),radial-gradient(700px 360px at -5% 0%,rgba(76,201,255,.10),transparent 60%),var(--bg)}}
+:root[data-theme="dark"] .opc{
+ --bg:#0d0f1a;--card:#161a2b;--card2:#1c2136;--soft:#1c2136;--fg:#eef1f8;--muted:#a3adc2;--line:#2c3550;--input:#10131f;
+ --acc:#a07bff;--accrgb:160,123,255;--cy:#4cc9ff;--pk:#ff5fa8;--or:#ff9f43;--ok:#38d98f;--warn:#ffb629;--bad:#ff5a73;
+ --okbg:rgba(56,217,143,.14);--warn-bg:rgba(255,182,41,.14);--badbg:rgba(255,90,115,.15);--track:#2a3350;--shadow:none;
+ --hd:#1d2338;--txt2:#c6cddc;--pop:#1a2033;--popsh:0 18px 40px rgba(0,0,0,.55);--edge:#2a3350;
+ --mok:#2fae77;--mwarn:#c99a1f;--mbad:#c64a63;--mring:#fff;
+ --rgb:linear-gradient(120deg,#7c5cff 0%,#ff5fa8 55%,#ff9f43 100%);
+ background:radial-gradient(800px 380px at 95% -10%,rgba(160,123,255,.18),transparent 62%),radial-gradient(700px 360px at -5% 0%,rgba(76,201,255,.10),transparent 60%),var(--bg)}
 .opc *{box-sizing:border-box}
 .opc h1{margin:0;font-size:clamp(32px,5.4vw,52px);line-height:1.04;letter-spacing:-.035em;font-weight:800;background:var(--rgb);-webkit-background-clip:text;background-clip:text;color:transparent;width:fit-content;max-width:100%}
 .opc .eyebrow{margin:0 0 8px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--cy);font-weight:700}
@@ -48,7 +66,7 @@
 /* Grundelemente */
 .pgrid{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:22px;align-items:start}
 @media (max-width:980px){.pgrid{grid-template-columns:minmax(0,1fr)}}
-.panel{background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,0)),var(--card);border:1px solid var(--line);border-radius:22px;padding:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:var(--shadow)}
 .panel+.panel{margin-top:16px}
 .flds{display:grid;gap:14px}
 .fld{display:grid;gap:6px;min-width:0}
@@ -58,7 +76,7 @@
 .opc .selbtn{background:var(--input);border:2px solid var(--line);color:var(--fg);border-radius:12px;font-weight:600;font-size:14.5px}
 @media (hover:hover){.opc .selbtn:hover{border-color:var(--acc)}}
 .opc .selbtn::after{border-color:var(--cy)}
-.opc .sel .pop{background:#171c2b;border:2px solid var(--acc);box-shadow:0 18px 40px rgba(0,0,0,.55)}
+.opc .sel .pop{background:var(--pop);border:2px solid var(--acc);box-shadow:var(--popsh)}
 .opc .sel .opt{color:var(--fg);font-weight:500}
 .opc .sel .opt.cur{background:var(--acc);color:#fff}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -150,8 +168,8 @@
 .opc table{border-collapse:collapse;width:100%;font-size:14px}
 .opc th,.opc td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
 .opc td.nm{font-weight:700;white-space:normal;min-width:220px}
-.opc th{background:#171d2d;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-@media (hover:hover){.opc tbody tr:hover td{background:rgba(160,123,255,.07)}}
+.opc th{background:var(--hd);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+@media (hover:hover){.opc tbody tr:hover td{background:rgba(var(--accrgb),.07)}}
 .sorter{all:unset;cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit}
 .sorter:focus-visible{outline:3px solid var(--cy)}
 .opc tbody tr:last-child td{border-bottom:0}
@@ -166,24 +184,23 @@
 .mxbar .fld{min-width:200px;flex:1 1 200px;max-width:300px}
 .mxax{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
 .mxax span{background:var(--card);border:2px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--fg)}
-.mxax span:first-child{border-color:rgba(76,201,255,.6)}.mxax span:last-child{border-color:rgba(255,95,168,.6)}
+.mxax span:first-child{border-color:var(--cy)}.mxax span:last-child{border-color:var(--pk)}
 .tw.mxw{max-height:min(78vh,760px);overflow:auto;padding:0;position:relative;isolation:isolate}
 .mx{border-collapse:separate!important;border-spacing:3px;width:auto!important}
 .opc .mx th,.opc .mx td{padding:0;border:0;text-transform:none;letter-spacing:0;background:transparent}
-.opc .mx thead th{position:sticky;top:0;z-index:20;background:#171d2d!important}
-.opc .mx th.cor{left:0;z-index:30;min-width:96px;max-width:96px;font-size:11.5px;font-weight:800;line-height:1.3;text-align:center;vertical-align:middle;color:var(--fg);background:#171d2d!important}
+.opc .mx thead th{position:sticky;top:0;z-index:20;background:var(--hd)!important}
+.opc .mx th.cor{left:0;z-index:30;min-width:96px;max-width:96px;font-size:11.5px;font-weight:800;line-height:1.3;text-align:center;vertical-align:middle;color:var(--fg);background:var(--hd)!important}
 .opc .mx th.cor span{display:block;color:var(--pk)}.opc .mx th.cor em{display:block;color:var(--cy);font-style:normal}
-.opc .mx th[scope=row]{text-align:right;padding:0 10px!important;font-size:12.5px;white-space:nowrap;color:var(--fg);position:sticky;left:0;z-index:10;background:#171d2d!important;border-radius:8px}
+.opc .mx th[scope=row]{text-align:right;padding:0 10px!important;font-size:12.5px;white-space:nowrap;color:var(--fg);position:sticky;left:0;z-index:10;background:var(--hd)!important;border-radius:8px}
 .opc .mx thead th.v{height:120px;vertical-align:bottom;font-size:12px;color:var(--fg);border-radius:8px}
 .mx th.v span{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;display:inline-block;padding-bottom:8px}
-.opc .mx th.hl{background:rgba(160,123,255,.35)!important;color:#fff;font-weight:800}
-.mc{width:40px;height:32px;border:0;border-radius:8px;font:700 12.5px inherit;font-family:inherit;cursor:pointer;color:var(--fg);display:block}
-.mc.v-ok{background:var(--okbg);color:#8ff0bf;box-shadow:inset 0 0 0 1.5px rgba(56,217,143,.7)}
-.mc.v-warn{background:var(--warn-bg);color:#ffd166;box-shadow:inset 0 0 0 1.5px rgba(255,182,41,.75)}
-.mc.v-bad{background:var(--badbg);color:#ff9aad;box-shadow:inset 0 0 0 1.5px rgba(255,90,115,.8)}
-.mc.fx{width:48px}
-.opc .mc.cur{box-shadow:inset 0 0 0 3px #fff;background:rgba(255,255,255,.22);color:#fff}
-@media (hover:hover){.mc:hover{filter:brightness(1.35)}}
+.opc .mx th.hl{background:rgba(var(--accrgb),.28)!important;color:var(--fg);font-weight:800}
+.mc{width:34px;height:30px;border:0;border-radius:8px;cursor:pointer;display:block;padding:0}
+.mc.v-ok{background:var(--mok)}
+.mc.v-warn{background:var(--mwarn)}
+.mc.v-bad{background:var(--mbad)}
+.opc .mc.cur{box-shadow:inset 0 0 0 3px var(--mring),inset 0 0 0 5px #fff6}
+@media (hover:hover){.mc:hover{opacity:.78}}
 
 /* Wissen */
 .wbar{display:grid;gap:12px;margin-bottom:16px}
@@ -195,7 +212,7 @@
 .opc .fqh::after{content:"";flex:1;height:1px;background:var(--line)}
 .opc .fqh:first-child{margin-top:0}
 .opc details{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:0 18px;margin-bottom:10px}
-.opc details[open]{border-color:rgba(var(--accrgb),.55);background:linear-gradient(180deg,rgba(160,123,255,.06),transparent 120px),var(--card)}
+.opc details[open]{border-color:rgba(var(--accrgb),.55);background:linear-gradient(180deg,rgba(var(--accrgb),.07),transparent 120px),var(--card)}
 .opc summary{cursor:pointer;font-weight:700;font-size:16px;padding:16px 0;list-style:none;display:flex;gap:12px;align-items:center}
 .opc summary::-webkit-details-marker{display:none}
 .opc summary::after{content:"+";margin-left:auto;font-size:24px;color:var(--cy);line-height:1;flex:none}
@@ -206,9 +223,9 @@
 .lv2{color:var(--cy);background:rgba(76,201,255,.12);border-color:rgba(76,201,255,.5)}
 .lv3{color:var(--pk);background:rgba(255,95,168,.12);border-color:rgba(255,95,168,.5)}
 .fqb{padding:0 0 8px}
-.fqb p{margin:0 0 12px;max-width:78ch;color:#c6cddc;line-height:1.65}
+.fqb p{margin:0 0 12px;max-width:78ch;color:var(--txt2);line-height:1.65}
 .fqb p.fn{margin:0 0 7px 4px;color:var(--fg)}
-.fqb ul{margin:0 0 14px;padding-left:22px;max-width:78ch;color:#c6cddc;line-height:1.65}
+.fqb ul{margin:0 0 14px;padding-left:22px;max-width:78ch;color:var(--txt2);line-height:1.65}
 .fqb li{margin-bottom:6px}
 .fqb li::marker{color:var(--acc)}
 .fqb .tg{display:inline-block;font-size:11.5px;color:var(--muted);margin-top:4px}
@@ -222,7 +239,7 @@
 .mcard{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:6px;align-content:start}
 .mcard small{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
 .mcard strong{font-size:32px;line-height:1.05;font-weight:800;letter-spacing:-.035em}
-.mcard p{margin:0;font-size:14px;color:#c6cddc;line-height:1.5}
+.mcard p{margin:0;font-size:14px;color:var(--txt2);line-height:1.5}
 .mcard.ok{border-top:4px solid var(--ok)}.mcard.warn{border-top:4px solid var(--warn)}.mcard.bad{border-top:4px solid var(--bad)}.mcard.info{border-top:4px solid var(--cy)}
 .cab{display:grid;gap:8px}
 .cab div{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;background:var(--soft);border:1px solid var(--line);font-size:14px}
@@ -246,6 +263,18 @@
 .opc .wbar .psg small{opacity:.7;font-weight:600;margin-left:2px}
 #opc-mxl,#mon-tip,#opc-socktip{margin-top:14px}
 #mon-table table{min-width:760px}
+
+/* Stärke-Balken in Matrix-Köpfen */
+.opc .mx .sb{display:block;height:4px;border-radius:3px;background:var(--track);margin-top:5px;position:relative;overflow:hidden}
+.opc .mx .sb::after{content:"";position:absolute;inset:0;width:var(--w);background:var(--rgb);border-radius:3px}
+.opc .mx th[scope=row] .sb{margin-top:3px;min-width:60px}
+.opc .mx thead th.v{width:34px}
+.opc .mx thead th.v .sb{width:100%;margin:6px 0 0}
+.mxscale{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);margin:0 0 10px;flex-wrap:wrap}
+.mxscale i{display:inline-block;width:120px;max-width:30vw;height:6px;border-radius:3px;background:var(--rgb)}
+.mxkey{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--txt2);margin:0 0 12px}
+.mxkey span::before{content:"";display:inline-block;width:14px;height:14px;border-radius:5px;margin-right:6px;vertical-align:-2px;background:var(--c)}
+.mxbar .fld:nth-child(3){display:none}
 </style>
 </head>
 <body>
@@ -943,28 +972,28 @@ var LANG=(window.WZ&&WZ.lang==="fr")?"fr":"de";
 var M=function(de,fr){return {de:de,fr:fr}};
 var UI={
 de:{title:"PC-Check",sub:"Prüfe, ob CPU, Grafikkarte, Mainboard, RAM, SSD, Netzteil und Kühler zusammenpassen, und sieh in Prozent, wo es hakt.",
-tabs:["Konfigurator","Engpass-Matrix","Monitor","Teile-Datenbank","Sockel-Guide","Wissen"],tabsub:["Teile prüfen & Ziel wählen","CPU × Grafikkarte","Panel, Hz & Kabel","Alle Bauteile","Welche CPU passt wohin?","Vom Einsteiger zum Profi"],st1:"Wofür brauchst du den PC?",st1d:"Das bestimmt, welche Teile wichtig sind: Spiele brauchen Grafikleistung, Videoschnitt Kerne und viel RAM.",auto:"✨ Rest automatisch ergänzen",share:"🔗 Link kopieren",copied:"Link kopiert",copyfail:"Kopiere diesen Link:",mx:"Welche CPU passt zu welcher Grafikkarte?",mxd:"Spalten (oben) sind Prozessoren, Zeilen (links) sind Grafikkarten. Jede Zelle zeigt, wie gut dieses Paar zusammenpasst. Das Mainboard spielt hier keine Rolle; es wird erst im Konfigurator geprüft. Beim Scrollen bleiben Kopfzeile und erste Spalte stehen. Klicke auf eine Zelle: Das Paar landet im Konfigurator und der Rest wird passend ergänzt.",mxl:"Grün ab 80 %, orange 50–79 %, rot darunter. Rot heißt: Die CPU bremst die Grafikkarte, oder umgekehrt.",autoMsg:"Rest wurde passend zur CPU und GPU ergänzt.",
+tabs:["Konfigurator","Engpass-Matrix","Monitor","Teile-Datenbank","Sockel-Guide","Wissen"],tabsub:["Teile prüfen & Ziel wählen","CPU × Grafikkarte","Panel, Hz & Kabel","Alle Bauteile","Welche CPU passt wohin?","Vom Einsteiger zum Profi"],st1:"Wofür brauchst du den PC?",st1d:"Das bestimmt, welche Teile wichtig sind: Spiele brauchen Grafikleistung, Videoschnitt Kerne und viel RAM.",auto:"✨ Rest automatisch ergänzen",share:"🔗 Link kopieren",copied:"Link kopiert",copyfail:"Kopiere diesen Link:",mx:"Welche CPU passt zu welcher Grafikkarte?",mxd:"Jedes Feld ist ein Paar aus Prozessor (oben) und Grafikkarte (links). Die Farbe zeigt, wie gut die beiden zusammenpassen. Die Balken an den Namen zeigen, wie stark das Teil ist: nach rechts werden die Prozessoren stärker, nach unten die Grafikkarten. Klicke auf ein Feld: Das Paar landet im Konfigurator.",mxl:"",autoMsg:"Rest wurde passend zur CPU und GPU ergänzt.",
 parts:"Deine Teile",cpu:"Prozessor (CPU)",board:"Mainboard",gpu:"Grafikkarte (GPU)",ram:"Arbeitsspeicher (RAM)",ssd:"Speicher (SSD/HDD)",psu:"Netzteil",cool:"CPU-Kühler",
 use:"Verwendung",res:"Auflösung",uses:["Gaming","Streaming + Gaming","Videoschnitt & 3D","Büro & Programmieren"],
 presets:"Schnellstart: fertige Beispiele",result:"Ergebnis",overall:"Gesamtwertung",
 ok:"Passt sehr gut",good:"Passt gut",mid:"Mit Einschränkungen",bad:"Nicht empfohlen",fail:"Nicht kompatibel",
 legend:"Grün: passt · Orange: geht, aber mit Einschränkung · Rot: Problem",
 hints:"Hinweise",stats:["Spitzenleistung","Netzteil empfohlen ab","Kerne / Threads","Grafikspeicher"],
-hhh:"Vergleich mit Handhelds",hhd:"So viel stärker ist deine Konfiguration als diese Handhelds (Faktor, höher = stärker). Die Handhelds sind auf 15–30 W begrenzt.",hhc:"CPU (Spiele)",hhm:"CPU (Mehrkern)",hhg:"Grafik",hhall:"Gesamt",hhx:"so stark wie",hhn:"Faustwerte aus meinem Wissen, keine Messungen.",hhs:"Stärke im Vergleich",hhw:"schwächer",tgh:"Ziel-Stärke: Bauteile automatisch wählen",tgd:"Sag, wie viel stärker dein PC als ein Handheld sein soll. Die App wählt CPU, Grafikkarte, Mainboard, RAM, SSD, Netzteil und Kühler passend dazu (für die oben gewählte Verwendung und Auflösung).",tgb:"Vergleich mit",tgf:"Ziel: wie viel stärker?",tgp:"CPU-Hersteller",tgg:"GPU-Hersteller",tgany:"egal",tgnew:"Nur Teile ab 2022 verwenden",tgbtn:"🎯 Bauteile automatisch wählen",mxv:"Anzeige",mxvs:["Balance in %","Stärke × Steam Deck OLED","Stärke × Legion Go 2"],mxcor:"GPU ↓ / CPU →",mxcg:"Zeilen: GPU ↓",mxcc:"Spalten: CPU →",mxcol:"Spalten = Prozessoren (CPU) →",mxrow:"Zeilen = Grafikkarten (GPU) ↓",mxcur:"Deine Auswahl ist mit einem Rahmen markiert.",perfCPU:"Gaming-Leistung",perfMT:"Multicore",perfGPU:"Leistung",
+hhh:"Vergleich mit Handhelds",hhd:"So viel stärker ist deine Konfiguration als diese Handhelds (Faktor, höher = stärker). Die Handhelds sind auf 15–30 W begrenzt.",hhc:"CPU (Spiele)",hhm:"CPU (Mehrkern)",hhg:"Grafik",hhall:"Gesamt",hhx:"so stark wie",hhn:"Faustwerte aus meinem Wissen, keine Messungen.",hhs:"Stärke im Vergleich",hhw:"schwächer",tgh:"Ziel-Stärke: Bauteile automatisch wählen",tgd:"Sag, wie viel stärker dein PC als ein Handheld sein soll. Die App wählt CPU, Grafikkarte, Mainboard, RAM, SSD, Netzteil und Kühler passend dazu (für die oben gewählte Verwendung und Auflösung).",tgb:"Vergleich mit",tgf:"Ziel: wie viel stärker?",tgp:"CPU-Hersteller",tgg:"GPU-Hersteller",tgany:"egal",tgnew:"Nur Teile ab 2022 verwenden",tgbtn:"🎯 Bauteile automatisch wählen",mxv:"Anzeige",mxvs:["Balance in %","Stärke × Steam Deck OLED","Stärke × Legion Go 2"],mxcor:"GPU ↓ / CPU →",mxcg:"GPU ↓ stärker",mxcc:"CPU → stärker",mxcol:"Prozessoren (CPU): links schwächer, rechts stärker →",mxrow:"Grafikkarten (GPU): oben schwächer, unten stärker ↓",mxcur:"Deine Auswahl ist mit einem Rahmen markiert.",perfCPU:"Gaming-Leistung",perfMT:"Multicore",perfGPU:"Leistung",
 search:"Suchen …",all:"Alle",rows:"Einträge",
 dbTabs:["CPU","GPU","Mainboards","RAM","SSD","Netzteile","Kühler"],
 cols:{name:"Name",brand:"Marke",socket:"Sockel",ram:"RAM",cores:"Kerne",year:"Jahr",w:"Watt",g:"Gaming",mt:"Multicore",vram:"VRAM",pcie:"PCIe",conn:"Stecker",perf:"Leistung",chip:"Chipsatz",ff:"Format",gpupcie:"GPU-Slot",nvme:"NVMe",m2:"M.2",cls:"Klasse",type:"Typ",gb:"GB",mts:"MT/s",cl:"CL",prof:"Profil",mbs:"MB/s",eff:"Effizienz",native:"12V-2x6",build:"Bauart",socks:"Sockel",xsd:"× Steam Deck",xlg:"× Legion Go 2"},
 disc:"Hinweis: Leistungswerte sind relative Faustwerte (CPU: Ryzen 7 9800X3D = 100, GPU: RTX 5090 = 100), keine eigenen Messungen. Stand der Datenbank: Mitte 2026, neuere Teile fehlen eventuell. Vor dem Kauf immer die Herstellerseite und die Gehäusemaße (Kartenlänge, Kühlerhöhe) prüfen. Preise sind nicht enthalten.",
 yes:"ja",no:"nein",classes:["Einsteiger","Mittelklasse","Oberklasse"],none:"Keine Treffer."},
 fr:{title:"PC-Check",sub:"Vérifie si processeur, carte graphique, carte mère, RAM, SSD, alimentation et ventirad vont ensemble, et vois en pourcentage où ça coince.",
-tabs:["Configurateur","Matrice des goulots","Écran","Base de composants","Guide des sockets","Savoir"],tabsub:["Vérifier les pièces & viser","CPU × carte graphique","Dalle, Hz & câbles","Tous les composants","Quel CPU va où ?","Du débutant au pro"],st1:"À quoi sert le PC ?",st1d:"Cela décide des pièces importantes : le jeu demande de la puissance graphique, le montage vidéo des cœurs et beaucoup de RAM.",auto:"✨ Compléter automatiquement",share:"🔗 Copier le lien",copied:"Lien copié",copyfail:"Copie ce lien :",mx:"Quel CPU va avec quelle carte graphique ?",mxd:"Les colonnes (en haut) sont des processeurs, les lignes (à gauche) des cartes graphiques. Chaque case montre l’accord de la paire. La carte mère n’intervient pas ici ; elle est vérifiée dans le configurateur. En faisant défiler, l’en-tête et la première colonne restent visibles. Clique sur une case : la paire va dans le configurateur et le reste est complété.",mxl:"Vert dès 80 %, orange 50–79 %, rouge en dessous. Rouge : le CPU freine la carte graphique, ou l’inverse.",autoMsg:"Le reste a été complété selon le CPU et le GPU.",
+tabs:["Configurateur","Matrice des goulots","Écran","Base de composants","Guide des sockets","Savoir"],tabsub:["Vérifier les pièces & viser","CPU × carte graphique","Dalle, Hz & câbles","Tous les composants","Quel CPU va où ?","Du débutant au pro"],st1:"À quoi sert le PC ?",st1d:"Cela décide des pièces importantes : le jeu demande de la puissance graphique, le montage vidéo des cœurs et beaucoup de RAM.",auto:"✨ Compléter automatiquement",share:"🔗 Copier le lien",copied:"Lien copié",copyfail:"Copie ce lien :",mx:"Quel CPU va avec quelle carte graphique ?",mxd:"Chaque case est une paire : processeur (en haut) et carte graphique (à gauche). La couleur montre si les deux vont bien ensemble. Les barres à côté des noms montrent la puissance : vers la droite les processeurs sont plus forts, vers le bas les cartes graphiques. Clique sur une case : la paire va dans le configurateur.",mxl:"",autoMsg:"Le reste a été complété selon le CPU et le GPU.",
 parts:"Tes composants",cpu:"Processeur (CPU)",board:"Carte mère",gpu:"Carte graphique (GPU)",ram:"Mémoire vive (RAM)",ssd:"Stockage (SSD/HDD)",psu:"Alimentation",cool:"Ventirad CPU",
 use:"Usage",res:"Résolution",uses:["Jeux vidéo","Streaming + jeux","Montage vidéo & 3D","Bureautique & programmation"],
 presets:"Démarrage rapide : exemples prêts",result:"Résultat",overall:"Note globale",
 ok:"Très bien assorti",good:"Bien assorti",mid:"Avec des limites",bad:"Déconseillé",fail:"Incompatible",
 legend:"Vert : compatible · Orange : possible mais limité · Rouge : problème",
 hints:"Remarques",stats:["Consommation de pointe","Alimentation conseillée dès","Cœurs / threads","Mémoire vidéo"],
-hhh:"Comparaison avec les consoles portables",hhd:"De combien ta configuration est plus puissante que ces portables (facteur, plus haut = plus fort). Les portables sont limités à 15–30 W.",hhc:"CPU (jeux)",hhm:"CPU (multicœur)",hhg:"Graphique",hhall:"Global",hhx:"aussi puissante que",hhn:"Repères issus de mes connaissances, pas des mesures.",hhs:"Puissance comparée",hhw:"plus faible",tgh:"Puissance visée : choisir les composants automatiquement",tgd:"Indique de combien ton PC doit dépasser une console portable. L’appli choisit alors CPU, carte graphique, carte mère, RAM, SSD, alimentation et ventirad adaptés (pour l’usage et la résolution choisis plus haut).",tgb:"Comparer à",tgf:"Objectif : combien de fois plus fort ?",tgp:"Fabricant du CPU",tgg:"Fabricant du GPU",tgany:"peu importe",tgnew:"Uniquement des composants de 2022 ou plus récents",tgbtn:"🎯 Choisir les composants automatiquement",mxv:"Affichage",mxvs:["Équilibre en %","Puissance × Steam Deck OLED","Puissance × Legion Go 2"],mxcor:"GPU ↓ / CPU →",mxcg:"Lignes : GPU ↓",mxcc:"Colonnes : CPU →",mxcol:"Colonnes = processeurs (CPU) →",mxrow:"Lignes = cartes graphiques (GPU) ↓",mxcur:"Ta sélection est entourée d’un cadre.",perfCPU:"Perf. jeux",perfMT:"Multicœur",perfGPU:"Performance",
+hhh:"Comparaison avec les consoles portables",hhd:"De combien ta configuration est plus puissante que ces portables (facteur, plus haut = plus fort). Les portables sont limités à 15–30 W.",hhc:"CPU (jeux)",hhm:"CPU (multicœur)",hhg:"Graphique",hhall:"Global",hhx:"aussi puissante que",hhn:"Repères issus de mes connaissances, pas des mesures.",hhs:"Puissance comparée",hhw:"plus faible",tgh:"Puissance visée : choisir les composants automatiquement",tgd:"Indique de combien ton PC doit dépasser une console portable. L’appli choisit alors CPU, carte graphique, carte mère, RAM, SSD, alimentation et ventirad adaptés (pour l’usage et la résolution choisis plus haut).",tgb:"Comparer à",tgf:"Objectif : combien de fois plus fort ?",tgp:"Fabricant du CPU",tgg:"Fabricant du GPU",tgany:"peu importe",tgnew:"Uniquement des composants de 2022 ou plus récents",tgbtn:"🎯 Choisir les composants automatiquement",mxv:"Affichage",mxvs:["Équilibre en %","Puissance × Steam Deck OLED","Puissance × Legion Go 2"],mxcor:"GPU ↓ / CPU →",mxcg:"GPU ↓ plus fort",mxcc:"CPU → plus fort",mxcol:"Processeurs (CPU) : à gauche plus faible, à droite plus fort →",mxrow:"Cartes graphiques (GPU) : en haut plus faible, en bas plus forte ↓",mxcur:"Ta sélection est entourée d’un cadre.",perfCPU:"Perf. jeux",perfMT:"Multicœur",perfGPU:"Performance",
 search:"Rechercher …",all:"Tous",rows:"entrées",
 dbTabs:["CPU","GPU","Cartes mères","RAM","SSD","Alimentations","Ventirads"],
 cols:{name:"Nom",brand:"Marque",socket:"Socket",ram:"RAM",cores:"Cœurs",year:"Année",w:"Watts",g:"Jeux",mt:"Multicœur",vram:"VRAM",pcie:"PCIe",conn:"Connecteur",perf:"Performance",chip:"Chipset",ff:"Format",gpupcie:"Slot GPU",nvme:"NVMe",m2:"M.2",cls:"Gamme",type:"Type",gb:"Go",mts:"MT/s",cl:"CL",prof:"Profil",mbs:"Mo/s",eff:"Rendement",native:"12V-2x6",build:"Type",socks:"Sockets",xsd:"× Steam Deck",xlg:"× Legion Go 2"},
@@ -1537,13 +1566,15 @@ var MG=["GeForce GTX 1650","GeForce GTX 1660 Super","Radeon RX 6600","GeForce RT
 var MXV=0;
 function renderMatrix(){
   var T=t();$("#opc-mxh").textContent=T.mx;$("#opc-mxd").textContent=T.mxd;$("#opc-mxl").textContent=T.mxl+" "+T.mxcur;
-  $("#opc-mxax").innerHTML='<span><b>'+esc(T.mxcol)+'</b></span><span><b>'+esc(T.mxrow)+'</b></span>';
   $("label[for=m_use] span").textContent=T.use;$("label[for=m_res] span").textContent=T.res;$("label[for=m_view] span").textContent=T.mxv;
   var mu=$("#m_use"),mr=$("#m_res"),mv=$("#m_view");mu.innerHTML=T.uses.map(function(u,i){return '<option value="'+i+'">'+esc(u)+'</option>'}).join("");mr.innerHTML=RES.map(function(r,i){return '<option value="'+i+'">'+esc(r[1])+'</option>'}).join("");mv.innerHTML=T.mxvs.map(function(u,i){return '<option value="'+i+'">'+esc(u)+'</option>'}).join("");mu.value=S.use;mr.value=S.res;mv.value=MXV;
-  var ci=MC.map(function(n){return find(CPUS,n)}),gi=MG.map(function(n){return find(GPUS,n)}),use=USEK[S.use];
-  var h='<table class="mx"><thead><tr><th class="cor" scope="col"><span>'+esc(T.mxcg)+'</span><em>'+esc(T.mxcc)+'</em></th>'+ci.map(function(c){return '<th class="v'+(c===S.cpu?' hl':'')+'" scope="col"><span>'+esc(CPUS[c][0].replace("Core ","").replace("Ryzen ","R").replace(/\(F\)/,""))+'</span></th>'}).join("")+'</tr></thead><tbody>';
-  gi.forEach(function(g){h+='<tr><th scope="row"'+(g===S.gpu?' class="hl"':'')+'>'+esc(GPUS[g][0].replace("GeForce ","").replace("Radeon ",""))+'</th>'+ci.map(function(c){var v=balOf(CPUS[c],GPUS[g],use,S.res),f1=hhAll(HH[0],CPUS[c],GPUS[g],use),f2=hhAll(HH[1],CPUS[c],GPUS[g],use),txt=MXV===0?v:"×"+fx(MXV===1?f1:f2);
-    return '<td><button type="button" class="mc v-'+lvl(v)+(c===S.cpu&&g===S.gpu?' cur':'')+(MXV?' fx':'')+'" data-c="'+c+'" data-g="'+g+'" title="'+esc(CPUS[c][0]+" + "+GPUS[g][0]+": "+v+" % · ×"+fx(f1)+" Steam Deck OLED · ×"+fx(f2)+" Legion Go 2")+'">'+txt+'</button></td>'}).join("")+'</tr>'});
+  var ci=MC.map(function(n){return find(CPUS,n)}).sort(function(a,b){return CPUS[a][5]-CPUS[b][5]}),gi=MG.map(function(n){return find(GPUS,n)}).sort(function(a,b){return GPUS[a][3]-GPUS[b][3]}),use=USEK[S.use];
+  var cmax=Math.max.apply(null,ci.map(function(c){return CPUS[c][5]})),gmax=Math.max.apply(null,gi.map(function(g){return GPUS[g][3]}));
+  var fr=LANG==="fr";
+  $("#opc-mxax").innerHTML='<div class="mxkey"><span style="--c:var(--mok)">'+(fr?"passe bien":"passt gut")+'</span><span style="--c:var(--mwarn)">'+(fr?"limite":"geht, mit Einschränkung")+'</span><span style="--c:var(--mbad)">'+(fr?"déséquilibré":"unausgewogen")+'</span></div>';
+  var h='<table class="mx"><thead><tr><th class="cor" scope="col"><span>'+esc(T.mxcg)+'</span><em>'+esc(T.mxcc)+'</em></th>'+ci.map(function(c){return '<th class="v'+(c===S.cpu?' hl':'')+'" scope="col" title="'+esc(CPUS[c][0])+'"><span>'+esc(CPUS[c][0].replace("Core ","").replace("Ryzen ","R").replace(/\(F\)/,""))+'</span><i class="sb" style="--w:'+Math.round(CPUS[c][5]/cmax*100)+'%"></i></th>'}).join("")+'</tr></thead><tbody>';
+  gi.forEach(function(g){h+='<tr><th scope="row"'+(g===S.gpu?' class="hl"':'')+' title="'+esc(GPUS[g][0])+'">'+esc(GPUS[g][0].replace("GeForce ","").replace("Radeon ",""))+'<i class="sb" style="--w:'+Math.round(GPUS[g][3]/gmax*100)+'%"></i></th>'+ci.map(function(c){var v=balOf(CPUS[c],GPUS[g],use,S.res);
+    return '<td><button type="button" class="mc v-'+lvl(v)+(c===S.cpu&&g===S.gpu?' cur':'')+'" data-c="'+c+'" data-g="'+g+'" title="'+esc(CPUS[c][0]+" + "+GPUS[g][0]+": "+v+" %")+'" aria-label="'+esc(CPUS[c][0]+" + "+GPUS[g][0]+": "+v+" %")+'"></button></td>'}).join("")+'</tr>'});
   $("#opc-matrix").innerHTML=h+'</tbody></table>';
 }
 /* ---------- Ziel-Stärke: Bauteile automatisch wählen ---------- */
