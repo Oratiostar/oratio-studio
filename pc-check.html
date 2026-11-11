@@ -17,7 +17,7 @@
  --ok:#10a35c;--warn:#d98600;--bad:#e0304d;
  --okbg:rgba(16,163,92,.12);--warn-bg:rgba(240,150,0,.14);--badbg:rgba(224,48,77,.12);--track:#e5dff8;--shadow:0 8px 24px -12px rgba(80,50,160,.35);
  --hd:#ebe6fb;--txt2:#3d3961;--pop:#ffffff;--popsh:0 18px 40px rgba(60,40,120,.25);--edge:#d9d0f5;
- --mok:#4fd69a;--mwarn:#ffcb4d;--mbad:#ff7b90;--mring:#1f1b3d;
+ --mtxt:#14122b;--mok:#4fd69a;--mwarn:#ffcb4d;--mbad:#ff7b90;--mring:#1f1b3d;
  --rgb:linear-gradient(120deg,#6a45ff 0%,#e02a7c 55%,#ff9a2e 100%);
  position:relative;color:var(--fg);border-radius:28px;border:1px solid var(--edge);
  padding:clamp(16px,3vw,34px);
@@ -29,7 +29,7 @@
  --acc:#a07bff;--accrgb:160,123,255;--cy:#4cc9ff;--pk:#ff5fa8;--or:#ff9f43;--ok:#38d98f;--warn:#ffb629;--bad:#ff5a73;
  --okbg:rgba(56,217,143,.14);--warn-bg:rgba(255,182,41,.14);--badbg:rgba(255,90,115,.15);--track:#2a3350;--shadow:none;
  --hd:#1d2338;--txt2:#c6cddc;--pop:#1a2033;--popsh:0 18px 40px rgba(0,0,0,.55);--edge:#2a3350;
- --mok:#2fae77;--mwarn:#c99a1f;--mbad:#c64a63;--mring:#fff;
+ --mtxt:#06100b;--mok:#2fae77;--mwarn:#c99a1f;--mbad:#c64a63;--mring:#fff;
  --rgb:linear-gradient(120deg,#7c5cff 0%,#ff5fa8 55%,#ff9f43 100%);
  background:radial-gradient(800px 380px at 95% -10%,rgba(160,123,255,.18),transparent 62%),radial-gradient(700px 360px at -5% 0%,rgba(76,201,255,.10),transparent 60%),var(--bg)}}
 :root[data-theme="dark"] .opc{
@@ -37,7 +37,7 @@
  --acc:#a07bff;--accrgb:160,123,255;--cy:#4cc9ff;--pk:#ff5fa8;--or:#ff9f43;--ok:#38d98f;--warn:#ffb629;--bad:#ff5a73;
  --okbg:rgba(56,217,143,.14);--warn-bg:rgba(255,182,41,.14);--badbg:rgba(255,90,115,.15);--track:#2a3350;--shadow:none;
  --hd:#1d2338;--txt2:#c6cddc;--pop:#1a2033;--popsh:0 18px 40px rgba(0,0,0,.55);--edge:#2a3350;
- --mok:#2fae77;--mwarn:#c99a1f;--mbad:#c64a63;--mring:#fff;
+ --mtxt:#06100b;--mok:#2fae77;--mwarn:#c99a1f;--mbad:#c64a63;--mring:#fff;
  --rgb:linear-gradient(120deg,#7c5cff 0%,#ff5fa8 55%,#ff9f43 100%);
  background:radial-gradient(800px 380px at 95% -10%,rgba(160,123,255,.18),transparent 62%),radial-gradient(700px 360px at -5% 0%,rgba(76,201,255,.10),transparent 60%),var(--bg)}
 .opc *{box-sizing:border-box}
@@ -195,7 +195,7 @@
 .opc .mx thead th.v{height:120px;vertical-align:bottom;font-size:12px;color:var(--fg);border-radius:8px}
 .mx th.v span{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;display:inline-block;padding-bottom:8px}
 .opc .mx th.hl{background:color-mix(in srgb,var(--acc) 30%,var(--card))!important;color:var(--fg);font-weight:800}
-.mc{width:34px;height:30px;border:0;border-radius:8px;cursor:pointer;display:block;padding:0}
+.mc{width:38px;height:30px;border:0;border-radius:8px;cursor:pointer;display:block;padding:0;font:700 12.5px/1 inherit;font-family:inherit;color:var(--mtxt)}
 .mc.v-ok{background:var(--mok)}
 .mc.v-warn{background:var(--mwarn)}
 .mc.v-bad{background:var(--mbad)}
@@ -268,7 +268,7 @@
 .opc .mx .sb{display:block;height:4px;border-radius:3px;background:var(--track);margin-top:5px;position:relative;overflow:hidden}
 .opc .mx .sb::after{content:"";position:absolute;inset:0;width:var(--w);background:var(--rgb);border-radius:3px}
 .opc .mx th[scope=row] .sb{margin-top:3px;min-width:60px}
-.opc .mx thead th.v{width:34px}
+.opc .mx thead th.v{width:38px}
 .opc .mx thead th.v .sb{width:100%;margin:6px 0 0}
 .mxscale{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);margin:0 0 10px;flex-wrap:wrap}
 .mxscale i{display:inline-block;width:120px;max-width:30vw;height:6px;border-radius:3px;background:var(--rgb)}
@@ -284,6 +284,20 @@
 .opc .mx th.cor{border:0;border-right:8px solid var(--card);border-bottom:6px solid var(--card);border-radius:0}
 .tw.mxw{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .opc .mx th[scope=row],.opc .mx th.cor,.opc .mx thead th{transform:translateZ(0)}
+
+/* Balken: Spalten senkrecht, Zeilen waagerecht, jeweils am Rand zur Matrix */
+.opc .mx thead th.v{position:sticky}
+.opc .mx .sb.vb{position:absolute;right:5px;left:auto;top:8px;bottom:8px;width:4px;height:auto;margin:0;background:var(--track)}
+.opc .mx .sb.vb::after{inset:auto 0 0 0;width:auto;height:var(--w);background:linear-gradient(0deg,#ff9a2e,#e02a7c,#6a45ff)}
+.opc .mx thead th.v span{padding-bottom:6px;padding-right:12px}
+.opc .mx th[scope=row]{position:sticky}
+.opc .mx th[scope=row] .sb{position:absolute;left:8px;right:8px;bottom:2px;margin:0;height:3px}
+.hhmore{margin-top:14px}
+.hhmore summary{font-size:15px}
+.hhmore .hhg{padding:4px 0 14px}
+
+.opc .mx thead th.v .sb.vb{position:absolute;right:5px;left:auto;top:8px;bottom:8px;width:4px;height:auto;margin:0}
+.opc .mx thead th.v .sb.vb::after{inset:auto 0 0 0;width:auto;height:var(--w)}
 </style>
 </head>
 <body>
@@ -338,6 +352,7 @@
             <label class="fld" for="s_ssd"><span></span><select id="s_ssd"></select></label>
             <label class="fld" for="s_psu"><span></span><select id="s_psu"></select></label>
             <label class="fld" for="s_cool"><span></span><select id="s_cool"></select></label>
+            <label class="fld" for="s_case"><span></span><select id="s_case"></select></label>
           </div>
           <div class="acts"><button type="button" class="pbtn" id="opc-auto"></button><button type="button" class="pbtn" id="opc-share"></button><span class="cmsg" id="opc-copymsg" role="status"></span></div>
         </div>
@@ -432,9 +447,11 @@ const CPUS=[
 ["Ryzen 7 7700X","AMD","AM5","D5",142,76,48,"8/16","r7k",2022,5,"AMD Ryzen 7000 (AM5)"],
 ["Ryzen 7 7700","AMD","AM5","D5",88,74,46,"8/16","r7k",2023,5,"AMD Ryzen 7000 (AM5)"],
 ["Ryzen 7 8700F","AMD","AM5","D5",88,70,42,"8/16","r7k",2024,5,"AMD Ryzen 7000 (AM5)"],
+["Ryzen 7 8700G","AMD","AM5","D5",88,72,43,"8/16","r7k",2024,5,"AMD Ryzen 7000 (AM5)"],
 ["Ryzen 5 7600X","AMD","AM5","D5",142,72,36,"6/12","r7k",2022,5,"AMD Ryzen 7000 (AM5)"],
 ["Ryzen 5 7600","AMD","AM5","D5",88,69,35,"6/12","r7k",2023,5,"AMD Ryzen 7000 (AM5)"],
 ["Ryzen 5 8400F","AMD","AM5","D5",88,62,32,"6/12","r7k",2024,5,"AMD Ryzen 7000 (AM5)"],
+["Ryzen 5 8600G","AMD","AM5","D5",88,66,34,"6/12","r7k",2024,5,"AMD Ryzen 7000 (AM5)"],
 ["Ryzen 5 7500F","AMD","AM5","D5",88,67,34,"6/12","r7k",2023,5,"AMD Ryzen 7000 (AM5)"],
 ["Ryzen 9 5950X","AMD","AM4","D4",142,62,70,"16/32","r5k",2020,4,"AMD Ryzen 5000 (AM4)"],
 ["Ryzen 9 5900X","AMD","AM4","D4",142,60,55,"12/24","r5k",2020,4,"AMD Ryzen 5000 (AM4)"],
@@ -444,10 +461,15 @@ const CPUS=[
 ["Ryzen 7 5800X","AMD","AM4","D4",142,62,42,"8/16","r5k",2020,4,"AMD Ryzen 5000 (AM4)"],
 ["Ryzen 7 5800XT","AMD","AM4","D4",144,63,43,"8/16","r5k",2024,4,"AMD Ryzen 5000 (AM4)"],
 ["Ryzen 7 5700X","AMD","AM4","D4",88,57,38,"8/16","r5k",2022,4,"AMD Ryzen 5000 (AM4)"],
+["Ryzen 7 5700G","AMD","AM4","D4",88,55,40,"8/16","r5k",2021,4,"AMD Ryzen 5000 (AM4)"],
 ["Ryzen 5 5600X","AMD","AM4","D4",88,55,28,"6/12","r5k",2020,4,"AMD Ryzen 5000 (AM4)"],
 ["Ryzen 5 5600","AMD","AM4","D4",88,54,28,"6/12","r5k",2022,4,"AMD Ryzen 5000 (AM4)"],
 ["Ryzen 5 5600T","AMD","AM4","D4",88,56,28,"6/12","r5k",2022,4,"AMD Ryzen 5000 (AM4)"],
+["Ryzen 5 5600G","AMD","AM4","D4",88,52,26,"6/12","r5k",2021,4,"AMD Ryzen 5000 (AM4)"],
 ["Ryzen 5 5500","AMD","AM4","D4",88,46,22,"6/12","r5k",2022,3,"AMD Ryzen 5000 (AM4)"],
+["Ryzen 5 4600G","AMD","AM4","D4",88,40,22,"6/12","r4k",2022,3,"AMD Ryzen 5000 (AM4)"],
+["Ryzen 5 4500","AMD","AM4","D4",88,39,21,"6/12","r4k",2022,3,"AMD Ryzen 5000 (AM4)"],
+["Ryzen 3 4100","AMD","AM4","D4",88,35,13,"4/8","r4k",2022,3,"AMD Ryzen 5000 (AM4)"],
 ["Ryzen 9 3950X","AMD","AM4","D4",144,46,58,"16/32","r3k",2019,4,"AMD Ryzen 3000 (AM4)"],
 ["Ryzen 9 3900X","AMD","AM4","D4",144,46,46,"12/24","r3k",2019,4,"AMD Ryzen 3000 (AM4)"],
 ["Ryzen 7 3700X","AMD","AM4","D4",88,44,30,"8/16","r3k",2019,4,"AMD Ryzen 3000 (AM4)"],
@@ -535,18 +557,23 @@ const GPUS=[
 ["GeForce RTX 2070 Super","NVIDIA",215,26,8,3,16,"8-pin + 6-pin",2019,"NVIDIA RTX 20 / GTX"],
 ["GeForce RTX 2070","NVIDIA",175,24,8,3,16,"8-pin",2018,"NVIDIA RTX 20 / GTX"],
 ["GeForce RTX 2060 Super","NVIDIA",175,19,8,3,16,"8-pin",2019,"NVIDIA RTX 20 / GTX"],
+["GeForce RTX 2060 12 GB","NVIDIA",185,16,12,3,16,"8-pin",2022,"NVIDIA RTX 20 / GTX"],
 ["GeForce RTX 2060","NVIDIA",160,14,6,3,16,"8-pin",2019,"NVIDIA RTX 20 / GTX"],
 ["GeForce GTX 1080 Ti","NVIDIA",250,22,11,3,16,"8-pin + 6-pin",2017,"NVIDIA RTX 20 / GTX"],
 ["GeForce GTX 1080","NVIDIA",180,17,8,3,16,"8-pin",2016,"NVIDIA RTX 20 / GTX"],
 ["GeForce GTX 1070 Ti","NVIDIA",180,15,8,3,16,"8-pin",2017,"NVIDIA RTX 20 / GTX"],
 ["GeForce GTX 1070","NVIDIA",150,13,8,3,16,"8-pin",2016,"NVIDIA RTX 20 / GTX"],
+["GeForce GTX 980 Ti","NVIDIA",250,12,6,3,16,"8-pin + 6-pin",2015,"NVIDIA RTX 20 / GTX"],
 ["GeForce GTX 1660 Ti","NVIDIA",120,12,6,3,16,"8-pin",2019,"NVIDIA RTX 20 / GTX"],
 ["GeForce GTX 1660 Super","NVIDIA",125,11,6,3,16,"8-pin",2019,"NVIDIA RTX 20 / GTX"],
 ["GeForce GTX 1660","NVIDIA",120,10,6,3,16,"8-pin",2019,"NVIDIA RTX 20 / GTX"],
 ["GeForce GTX 1060 6 GB","NVIDIA",120,9,6,3,16,"6-pin",2016,"NVIDIA RTX 20 / GTX"],
+["GeForce GTX 970","NVIDIA",145,7.5,4,3,16,"2× 6-pin",2014,"NVIDIA RTX 20 / GTX"],
 ["GeForce GTX 1650 Super","NVIDIA",100,9,4,3,16,"6-pin",2019,"NVIDIA RTX 20 / GTX"],
 ["GeForce GTX 1650","NVIDIA",75,7,4,3,16,"ohne Stecker",2019,"NVIDIA RTX 20 / GTX"],
 ["GeForce GTX 1050 Ti","NVIDIA",75,5,4,3,16,"ohne Stecker",2016,"NVIDIA RTX 20 / GTX"],
+["GeForce GTX 1630","NVIDIA",75,4.5,4,3,16,"ohne Stecker",2022,"NVIDIA RTX 20 / GTX"],
+["GeForce GTX 1050 (2 GB)","NVIDIA",75,3.5,2,3,16,"ohne Stecker",2016,"NVIDIA RTX 20 / GTX"],
 ["Radeon RX 9070 XT","AMD",304,58,16,5,16,"2× 8-pin",2025,"AMD Radeon RX 9000"],
 ["Radeon RX 9070","AMD",220,51,16,5,16,"2× 8-pin",2025,"AMD Radeon RX 9000"],
 ["Radeon RX 9060 XT 16 GB","AMD",160,33,16,5,16,"8-pin",2025,"AMD Radeon RX 9000"],
@@ -574,10 +601,14 @@ const GPUS=[
 ["Radeon RX 5700","AMD",180,19,8,4,16,"8-pin + 6-pin",2019,"AMD Radeon RX 5000 / Vega / 500"],
 ["Radeon RX 5600 XT","AMD",150,16,6,4,16,"8-pin",2020,"AMD Radeon RX 5000 / Vega / 500"],
 ["Radeon RX Vega 64","AMD",295,16,8,3,16,"2× 8-pin",2017,"AMD Radeon RX 5000 / Vega / 500"],
+["Radeon VII","AMD",295,20,16,3,16,"2× 8-pin",2019,"AMD Radeon RX 5000 / Vega / 500"],
+["Radeon RX Vega 56","AMD",210,14.5,8,3,16,"2× 8-pin",2017,"AMD Radeon RX 5000 / Vega / 500"],
 ["Radeon RX 5500 XT 8 GB","AMD",130,10,8,4,8,"8-pin",2019,"AMD Radeon RX 5000 / Vega / 500"],
+["Radeon RX 5500 XT 4 GB","AMD",130,9,4,4,8,"8-pin",2019,"AMD Radeon RX 5000 / Vega / 500"],
 ["Radeon RX 590","AMD",225,11,8,3,16,"8-pin + 6-pin",2018,"AMD Radeon RX 5000 / Vega / 500"],
 ["Radeon RX 580 8 GB","AMD",185,10,8,3,16,"8-pin",2017,"AMD Radeon RX 5000 / Vega / 500"],
 ["Radeon RX 570","AMD",150,8,4,3,16,"8-pin",2017,"AMD Radeon RX 5000 / Vega / 500"],
+["Radeon RX 480 8 GB","AMD",150,9,8,3,16,"6-pin",2016,"AMD Radeon RX 5000 / Vega / 500"],
 ["Arc B580","Intel",190,28,12,4,8,"8-pin",2024,"Intel Arc"],
 ["Arc B570","Intel",150,25,10,4,8,"8-pin",2025,"Intel Arc"],
 ["Arc A770 16 GB","Intel",225,23,16,4,16,"8-pin + 6-pin",2022,"Intel Arc"],
@@ -973,6 +1004,39 @@ const COOLERS=[
 ["Arctic Liquid Freezer III Pro 360","AIO 360",370,ALLS],
 ["NZXT Kraken Elite 420","AIO 420",400,ALLS]
 ];
+const CASES=[
+["Kompakt-Gehäuse Mini-ITX (generisch)","Generisch","ITX",310,120,0,2,"SFX"],
+["Cooler Master NR200P","Cooler Master","ITX",330,155,280,4,"SFX"],
+["Mini-Tower Micro-ATX (generisch)","Generisch","mATX",320,155,240,3,"ATX"],
+["Cooler Master MasterBox Q300L","Cooler Master","mATX",360,158,240,3,"ATX"],
+["Fractal Design Pop Mini Air","Fractal Design","mATX",335,169,280,4,"ATX"],
+["DeepCool CH360","DeepCool","mATX",380,173,360,4,"ATX"],
+["Midi-Tower ATX (generisch)","Generisch","ATX",350,160,280,3,"ATX"],
+["Corsair 3000D Airflow","Corsair","ATX",360,170,360,4,"ATX"],
+["Corsair 4000D Airflow","Corsair","ATX",360,170,360,4,"ATX"],
+["Corsair 5000D Airflow","Corsair","ATX",420,170,360,4,"ATX"],
+["DeepCool CC560","DeepCool","ATX",370,163,360,4,"ATX"],
+["DeepCool CH560","DeepCool","ATX",380,175,360,4,"ATX"],
+["Montech Air 903 Max","Montech","ATX",400,165,360,5,"ATX"],
+["Fractal Design Pop Air","Fractal Design","ATX",405,170,360,4,"ATX"],
+["Fractal Design North","Fractal Design","ATX",355,170,360,4,"ATX"],
+["NZXT H5 Flow","NZXT","ATX",365,165,280,4,"ATX"],
+["NZXT H6 Flow","NZXT","ATX",365,163,360,4,"ATX"],
+["NZXT H7 Flow","NZXT","ATX",400,185,360,4,"ATX"],
+["NZXT H9 Flow","NZXT","ATX",435,165,360,4,"ATX"],
+["Lian Li Lancool 216","Lian Li","ATX",392,180,360,5,"ATX"],
+["Phanteks Eclipse P400A","Phanteks","ATX",420,160,360,5,"ATX"],
+["Phanteks Eclipse G360A","Phanteks","ATX",400,162,360,5,"ATX"],
+["be quiet! Pure Base 500DX","be quiet!","ATX",369,190,360,4,"ATX"],
+["be quiet! Silent Base 802","be quiet!","ATX",432,185,420,2,"ATX"],
+["Cooler Master TD500 Mesh","Cooler Master","ATX",410,165,360,5,"ATX"],
+["Hyte Y60","Hyte","ATX",422,160,360,3,"ATX"],
+["Big-Tower E-ATX (generisch)","Generisch","E-ATX",420,175,360,4,"ATX"],
+["Fractal Design Meshify 2","Fractal Design","E-ATX",467,185,420,5,"ATX"],
+["Fractal Design Torrent","Fractal Design","E-ATX",423,188,420,5,"ATX"],
+["Lian Li O11 Dynamic EVO","Lian Li","E-ATX",426,167,360,3,"ATX"],
+["Lian Li Lancool 3","Lian Li","E-ATX",435,187,360,5,"ATX"]
+];
 (function(){
 "use strict";
 var $=function(s,r){return (r||document).querySelector(s)};
@@ -982,7 +1046,7 @@ var M=function(de,fr){return {de:de,fr:fr}};
 var UI={
 de:{title:"PC-Check",sub:"Prüfe, ob CPU, Grafikkarte, Mainboard, RAM, SSD, Netzteil und Kühler zusammenpassen, und sieh in Prozent, wo es hakt.",
 tabs:["Konfigurator","Engpass-Matrix","Monitor","Teile-Datenbank","Sockel-Guide","Wissen"],tabsub:["Teile prüfen & Ziel wählen","CPU × Grafikkarte","Panel, Hz & Kabel","Alle Bauteile","Welche CPU passt wohin?","Vom Einsteiger zum Profi"],st1:"Wofür brauchst du den PC?",st1d:"Das bestimmt, welche Teile wichtig sind: Spiele brauchen Grafikleistung, Videoschnitt Kerne und viel RAM.",auto:"✨ Rest automatisch ergänzen",share:"🔗 Link kopieren",copied:"Link kopiert",copyfail:"Kopiere diesen Link:",mx:"Welche CPU passt zu welcher Grafikkarte?",mxd:"Jedes Feld ist ein Paar aus Prozessor (oben) und Grafikkarte (links). Die Farbe zeigt, wie gut die beiden zusammenpassen. Die Balken an den Namen zeigen, wie stark das Teil ist: nach rechts werden die Prozessoren stärker, nach unten die Grafikkarten. Klicke auf ein Feld: Das Paar landet im Konfigurator.",mxl:"",autoMsg:"Rest wurde passend zur CPU und GPU ergänzt.",
-parts:"Deine Teile",cpu:"Prozessor (CPU)",board:"Mainboard",gpu:"Grafikkarte (GPU)",ram:"Arbeitsspeicher (RAM)",ssd:"Speicher (SSD/HDD)",psu:"Netzteil",cool:"CPU-Kühler",
+parts:"Deine Teile",cpu:"Prozessor (CPU)",board:"Mainboard",gpu:"Grafikkarte (GPU)",ram:"Arbeitsspeicher (RAM)",ssd:"Speicher (SSD/HDD)",psu:"Netzteil",cool:"CPU-Kühler",case:"Gehäuse",
 use:"Verwendung",res:"Auflösung",uses:["Gaming","Streaming + Gaming","Videoschnitt & 3D","Büro & Programmieren"],
 presets:"Schnellstart: fertige Beispiele",result:"Ergebnis",overall:"Gesamtwertung",
 ok:"Passt sehr gut",good:"Passt gut",mid:"Mit Einschränkungen",bad:"Nicht empfohlen",fail:"Nicht kompatibel",
@@ -990,13 +1054,13 @@ legend:"Grün: passt · Orange: geht, aber mit Einschränkung · Rot: Problem",
 hints:"Hinweise",stats:["Spitzenleistung","Netzteil empfohlen ab","Kerne / Threads","Grafikspeicher"],
 hhh:"Vergleich mit Handhelds",hhd:"So viel stärker ist deine Konfiguration als diese Handhelds (Faktor, höher = stärker). Die Handhelds sind auf 15–30 W begrenzt.",hhc:"CPU (Spiele)",hhm:"CPU (Mehrkern)",hhg:"Grafik",hhall:"Gesamt",hhx:"so stark wie",hhn:"Faustwerte aus meinem Wissen, keine Messungen.",hhs:"Stärke im Vergleich",hhw:"schwächer",tgh:"Ziel-Stärke: Bauteile automatisch wählen",tgd:"Sag, wie viel stärker dein PC als ein Handheld sein soll. Die App wählt CPU, Grafikkarte, Mainboard, RAM, SSD, Netzteil und Kühler passend dazu (für die oben gewählte Verwendung und Auflösung).",tgb:"Vergleich mit",tgf:"Ziel: wie viel stärker?",tgp:"CPU-Hersteller",tgg:"GPU-Hersteller",tgany:"egal",tgnew:"Nur Teile ab 2022 verwenden",tgbtn:"🎯 Bauteile automatisch wählen",mxv:"Anzeige",mxvs:["Balance in %","Stärke × Steam Deck OLED","Stärke × Legion Go 2"],mxcor:"GPU ↓ / CPU →",mxcg:"GPU ↓ stärker",mxcc:"CPU → stärker",mxcol:"Prozessoren (CPU): links schwächer, rechts stärker →",mxrow:"Grafikkarten (GPU): oben schwächer, unten stärker ↓",mxcur:"Deine Auswahl ist mit einem Rahmen markiert.",perfCPU:"Gaming-Leistung",perfMT:"Multicore",perfGPU:"Leistung",
 search:"Suchen …",all:"Alle",rows:"Einträge",
-dbTabs:["CPU","GPU","Mainboards","RAM","SSD","Netzteile","Kühler"],
-cols:{name:"Name",brand:"Marke",socket:"Sockel",ram:"RAM",cores:"Kerne",year:"Jahr",w:"Watt",g:"Gaming",mt:"Multicore",vram:"VRAM",pcie:"PCIe",conn:"Stecker",perf:"Leistung",chip:"Chipsatz",ff:"Format",gpupcie:"GPU-Slot",nvme:"NVMe",m2:"M.2",cls:"Klasse",type:"Typ",gb:"GB",mts:"MT/s",cl:"CL",prof:"Profil",mbs:"MB/s",eff:"Effizienz",native:"12V-2x6",build:"Bauart",socks:"Sockel",xsd:"× Steam Deck",xlg:"× Legion Go 2"},
+dbTabs:["CPU","GPU","Mainboards","RAM","SSD","Netzteile","Kühler","Gehäuse"],
+cols:{name:"Name",brand:"Marke",socket:"Sockel",ram:"RAM",cores:"Kerne",year:"Jahr",w:"Watt",g:"Gaming",mt:"Multicore",vram:"VRAM",pcie:"PCIe",conn:"Stecker",perf:"Leistung",chip:"Chipsatz",ff:"Format",gpupcie:"GPU-Slot",nvme:"NVMe",m2:"M.2",cls:"Klasse",type:"Typ",gb:"GB",mts:"MT/s",cl:"CL",prof:"Profil",mbs:"MB/s",eff:"Effizienz",native:"12V-2x6",build:"Bauart",socks:"Sockel",cgpu:"max. GPU-Länge",ccool:"max. Kühlerhöhe",crad:"max. Radiator",air:"Luftstrom",cpsu:"Netzteil-Typ",xsd:"× Steam Deck",xlg:"× Legion Go 2"},
 disc:"Hinweis: Leistungswerte sind relative Faustwerte (CPU: Ryzen 7 9800X3D = 100, GPU: RTX 5090 = 100), keine eigenen Messungen. Stand der Datenbank: Mitte 2026, neuere Teile fehlen eventuell. Vor dem Kauf immer die Herstellerseite und die Gehäusemaße (Kartenlänge, Kühlerhöhe) prüfen. Preise sind nicht enthalten.",
 yes:"ja",no:"nein",classes:["Einsteiger","Mittelklasse","Oberklasse"],none:"Keine Treffer."},
 fr:{title:"PC-Check",sub:"Vérifie si processeur, carte graphique, carte mère, RAM, SSD, alimentation et ventirad vont ensemble, et vois en pourcentage où ça coince.",
 tabs:["Configurateur","Matrice des goulots","Écran","Base de composants","Guide des sockets","Savoir"],tabsub:["Vérifier les pièces & viser","CPU × carte graphique","Dalle, Hz & câbles","Tous les composants","Quel CPU va où ?","Du débutant au pro"],st1:"À quoi sert le PC ?",st1d:"Cela décide des pièces importantes : le jeu demande de la puissance graphique, le montage vidéo des cœurs et beaucoup de RAM.",auto:"✨ Compléter automatiquement",share:"🔗 Copier le lien",copied:"Lien copié",copyfail:"Copie ce lien :",mx:"Quel CPU va avec quelle carte graphique ?",mxd:"Chaque case est une paire : processeur (en haut) et carte graphique (à gauche). La couleur montre si les deux vont bien ensemble. Les barres à côté des noms montrent la puissance : vers la droite les processeurs sont plus forts, vers le bas les cartes graphiques. Clique sur une case : la paire va dans le configurateur.",mxl:"",autoMsg:"Le reste a été complété selon le CPU et le GPU.",
-parts:"Tes composants",cpu:"Processeur (CPU)",board:"Carte mère",gpu:"Carte graphique (GPU)",ram:"Mémoire vive (RAM)",ssd:"Stockage (SSD/HDD)",psu:"Alimentation",cool:"Ventirad CPU",
+parts:"Tes composants",cpu:"Processeur (CPU)",board:"Carte mère",gpu:"Carte graphique (GPU)",ram:"Mémoire vive (RAM)",ssd:"Stockage (SSD/HDD)",psu:"Alimentation",cool:"Ventirad CPU",case:"Boîtier",
 use:"Usage",res:"Résolution",uses:["Jeux vidéo","Streaming + jeux","Montage vidéo & 3D","Bureautique & programmation"],
 presets:"Démarrage rapide : exemples prêts",result:"Résultat",overall:"Note globale",
 ok:"Très bien assorti",good:"Bien assorti",mid:"Avec des limites",bad:"Déconseillé",fail:"Incompatible",
@@ -1004,24 +1068,29 @@ legend:"Vert : compatible · Orange : possible mais limité · Rouge : problème
 hints:"Remarques",stats:["Consommation de pointe","Alimentation conseillée dès","Cœurs / threads","Mémoire vidéo"],
 hhh:"Comparaison avec les consoles portables",hhd:"De combien ta configuration est plus puissante que ces portables (facteur, plus haut = plus fort). Les portables sont limités à 15–30 W.",hhc:"CPU (jeux)",hhm:"CPU (multicœur)",hhg:"Graphique",hhall:"Global",hhx:"aussi puissante que",hhn:"Repères issus de mes connaissances, pas des mesures.",hhs:"Puissance comparée",hhw:"plus faible",tgh:"Puissance visée : choisir les composants automatiquement",tgd:"Indique de combien ton PC doit dépasser une console portable. L’appli choisit alors CPU, carte graphique, carte mère, RAM, SSD, alimentation et ventirad adaptés (pour l’usage et la résolution choisis plus haut).",tgb:"Comparer à",tgf:"Objectif : combien de fois plus fort ?",tgp:"Fabricant du CPU",tgg:"Fabricant du GPU",tgany:"peu importe",tgnew:"Uniquement des composants de 2022 ou plus récents",tgbtn:"🎯 Choisir les composants automatiquement",mxv:"Affichage",mxvs:["Équilibre en %","Puissance × Steam Deck OLED","Puissance × Legion Go 2"],mxcor:"GPU ↓ / CPU →",mxcg:"GPU ↓ plus fort",mxcc:"CPU → plus fort",mxcol:"Processeurs (CPU) : à gauche plus faible, à droite plus fort →",mxrow:"Cartes graphiques (GPU) : en haut plus faible, en bas plus forte ↓",mxcur:"Ta sélection est entourée d’un cadre.",perfCPU:"Perf. jeux",perfMT:"Multicœur",perfGPU:"Performance",
 search:"Rechercher …",all:"Tous",rows:"entrées",
-dbTabs:["CPU","GPU","Cartes mères","RAM","SSD","Alimentations","Ventirads"],
-cols:{name:"Nom",brand:"Marque",socket:"Socket",ram:"RAM",cores:"Cœurs",year:"Année",w:"Watts",g:"Jeux",mt:"Multicœur",vram:"VRAM",pcie:"PCIe",conn:"Connecteur",perf:"Performance",chip:"Chipset",ff:"Format",gpupcie:"Slot GPU",nvme:"NVMe",m2:"M.2",cls:"Gamme",type:"Type",gb:"Go",mts:"MT/s",cl:"CL",prof:"Profil",mbs:"Mo/s",eff:"Rendement",native:"12V-2x6",build:"Type",socks:"Sockets",xsd:"× Steam Deck",xlg:"× Legion Go 2"},
+dbTabs:["CPU","GPU","Cartes mères","RAM","SSD","Alimentations","Ventirads","Boîtiers"],
+cols:{name:"Nom",brand:"Marque",socket:"Socket",ram:"RAM",cores:"Cœurs",year:"Année",w:"Watts",g:"Jeux",mt:"Multicœur",vram:"VRAM",pcie:"PCIe",conn:"Connecteur",perf:"Performance",chip:"Chipset",ff:"Format",gpupcie:"Slot GPU",nvme:"NVMe",m2:"M.2",cls:"Gamme",type:"Type",gb:"Go",mts:"MT/s",cl:"CL",prof:"Profil",mbs:"Mo/s",eff:"Rendement",native:"12V-2x6",build:"Type",socks:"Sockets",cgpu:"Long. GPU max",ccool:"Hauteur ventirad max",crad:"Radiateur max",air:"Flux d'air",cpsu:"Type d'alim.",xsd:"× Steam Deck",xlg:"× Legion Go 2"},
 disc:"Remarque : les valeurs de performance sont des repères relatifs (CPU : Ryzen 7 9800X3D = 100, GPU : RTX 5090 = 100), pas des mesures personnelles. Base de données arrêtée à mi-2026, les composants plus récents peuvent manquer. Avant l'achat, vérifie toujours le site du fabricant et les dimensions du boîtier (longueur de la carte, hauteur du ventirad). Les prix ne sont pas inclus.",
 yes:"oui",no:"non",classes:["Entrée de gamme","Milieu de gamme","Haut de gamme"],none:"Aucun résultat."}
 };
 var RES=[["1080p","1080p (Full HD)"],["1440p","1440p (WQHD)"],["4k","4K (UHD)"]];
 var USEK=["gaming","stream","video","office"];
-var CHECKN={compat:M("Sockel & RAM-Typ","Socket & type de RAM"),bal:M("CPU ↔ GPU Balance","Équilibre CPU ↔ GPU"),res:M("Grafikleistung","Puissance graphique"),vram:M("Grafikspeicher","Mémoire vidéo"),psu:M("Netzteil","Alimentation"),ram:M("Arbeitsspeicher","Mémoire vive"),cool:M("Kühlung","Refroidissement"),board:M("Mainboard-Eignung","Carte mère adaptée"),ssd:M("Speicher","Stockage"),pcie:M("PCIe-Anbindung","Liaison PCIe")};
-var W={bal:18,res:14,psu:16,ram:12,cool:12,vram:10,board:8,ssd:5,pcie:5};
+var CHECKN={case:M("Gehäuse-Passform","Compatibilité du boîtier"),air:M("Belüftung","Ventilation"),compat:M("Sockel & RAM-Typ","Socket & type de RAM"),bal:M("CPU ↔ GPU Balance","Équilibre CPU ↔ GPU"),res:M("Grafikleistung","Puissance graphique"),vram:M("Grafikspeicher","Mémoire vidéo"),psu:M("Netzteil","Alimentation"),ram:M("Arbeitsspeicher","Mémoire vive"),cool:M("Kühlung","Refroidissement"),board:M("Mainboard-Eignung","Carte mère adaptée"),ssd:M("Speicher","Stockage"),pcie:M("PCIe-Anbindung","Liaison PCIe")};
+var W={bal:18,res:14,psu:16,ram:12,cool:12,vram:10,board:8,ssd:5,pcie:5,case:8,air:6};
+var FORMR={"ITX":1,"mATX":2,"ATX":3,"E-ATX":4};
+function gpuLen(w){return w<=75?170:w<=130?200:w<=180?250:w<=250?285:w<=320?320:w<=400?335:w<=460?340:350}
+var COOLH={"Noctua NH-L12S":70,"Noctua NH-D15 G2":168,"Noctua NH-U14S":165,"Noctua NH-U12S":158,"Noctua NH-U12A":158,"be quiet! Dark Rock Pro 5":168,"be quiet! Dark Rock 5":168,"be quiet! Shadow Rock 3":163,"AK620":160,"DeepCool AK620":160,"DeepCool Assassin IV":164,"DeepCool AK500":165,"DeepCool AK400":155,"DeepCool AG400":155,"Cooler Master Hyper 212":159,"Cooler Master Hyper 212 Halo":159,"Thermalright Assassin X 120 Refined SE":148,"Thermalright Peerless Assassin 120 SE":155,"Thermalright Phantom Spirit 120 SE":154,"Scythe Mugen 6":154,"Arctic Freezer 36":157,"ID-Cooling SE-214-XT":160,"be quiet! Pure Rock 2 FX":155,"be quiet! Pure Rock 3":155,"Thermaltake UX200 SE":153};
+function coolH(c){if(COOLH[c[0]])return COOLH[c[0]];return c[2]<=150?157:c[2]<=200?162:166}
+function radSz(c){var m=/(\d{3})/.exec(c[1]);return m?+m[1]:0}
 var PRESETS=[
-{n:M("Einsteiger 1080p","Entrée de gamme 1080p"),v:["Ryzen 5 5600","MSI MAG B550 Tomahawk","Radeon RX 7600","16 GB (2×8) DDR4-3200 CL16","Crucial P3 1 TB","Corsair CX550 (550 W)","DeepCool AK400"],u:0,r:0},
-{n:M("Mittelklasse 1440p","Milieu de gamme 1440p"),v:["Ryzen 5 9600X","Gigabyte B850 Aorus Elite WiFi7","GeForce RTX 5070","32 GB (2×16) DDR5-6000 CL30 (EXPO)","WD_BLACK SN850X 2 TB","Corsair RM750e (750 W)","Thermalright Peerless Assassin 120 SE"],u:0,r:1},
-{n:M("High-End 4K","Haut de gamme 4K"),v:["Ryzen 7 9800X3D","MSI MAG X870 Tomahawk WiFi","GeForce RTX 5080","32 GB (2×16) DDR5-6000 CL30 (EXPO)","Samsung 990 Pro 2 TB","Corsair RM1000x (1000 W)","Arctic Liquid Freezer III 360"],u:0,r:2},
-{n:M("Enthusiast mit RTX 5090","Enthousiaste RTX 5090"),v:["Ryzen 9 9950X3D","ASUS ROG Crosshair X870E Hero","GeForce RTX 5090","64 GB (2×32) DDR5-6000 CL30","Samsung 9100 Pro 2 TB","Corsair HX1200i (1200 W)","Corsair iCUE Link H150i 360"],u:0,r:2},
-{n:M("Intel-Allrounder","Intel polyvalent"),v:["Core Ultra 7 265K(F)","MSI MAG Z890 Tomahawk WiFi","GeForce RTX 5070 Ti","32 GB (2×16) DDR5-6400 CL32 (XMP)","WD_BLACK SN850X 2 TB","Corsair RM850x (850 W)","Arctic Liquid Freezer III 280"],u:0,r:1},
-{n:M("Videoschnitt & 3D","Montage vidéo & 3D"),v:["Ryzen 9 9950X","ASUS TUF Gaming X870-Plus WiFi","GeForce RTX 5070 Ti","64 GB (2×32) DDR5-6000 CL30","Samsung 990 Pro 2 TB","Corsair RM850x (850 W)","Noctua NH-D15 G2"],u:2,r:2},
-{n:M("Büro & Programmieren","Bureautique & programmation"),v:["Ryzen 5 7600","MSI PRO B650M-A WiFi","Radeon RX 7600","32 GB (2×16) DDR5-5600 CL40","Crucial P3 Plus 1 TB","Corsair CX550 (550 W)","AMD Wraith Stealth (Boxed)"],u:3,r:0},
-{n:M("Fehlerbeispiel (rot)","Exemple d'erreurs (rouge)"),v:["Ryzen 7 9800X3D","MSI MAG B550 Tomahawk","GeForce RTX 4090","32 GB (2×16) DDR5-6000 CL30 (EXPO)","Seagate Barracuda 4 TB (HDD)","Corsair CX450 (450 W)","AMD Wraith Stealth (Boxed)"],u:0,r:2}
+{n:M("Einsteiger 1080p","Entrée de gamme 1080p"),v:["Ryzen 5 5600","MSI MAG B550 Tomahawk","Radeon RX 7600","16 GB (2×8) DDR4-3200 CL16","Crucial P3 1 TB","Corsair CX550 (550 W)","DeepCool AK400","Corsair 3000D Airflow"],u:0,r:0},
+{n:M("Mittelklasse 1440p","Milieu de gamme 1440p"),v:["Ryzen 5 9600X","Gigabyte B850 Aorus Elite WiFi7","GeForce RTX 5070","32 GB (2×16) DDR5-6000 CL30 (EXPO)","WD_BLACK SN850X 2 TB","Corsair RM750e (750 W)","Thermalright Peerless Assassin 120 SE","Corsair 4000D Airflow"],u:0,r:1},
+{n:M("High-End 4K","Haut de gamme 4K"),v:["Ryzen 7 9800X3D","MSI MAG X870 Tomahawk WiFi","GeForce RTX 5080","32 GB (2×16) DDR5-6000 CL30 (EXPO)","Samsung 990 Pro 2 TB","Corsair RM1000x (1000 W)","Arctic Liquid Freezer III 360","Lian Li Lancool 216"],u:0,r:2},
+{n:M("Enthusiast mit RTX 5090","Enthousiaste RTX 5090"),v:["Ryzen 9 9950X3D","ASUS ROG Crosshair X870E Hero","GeForce RTX 5090","64 GB (2×32) DDR5-6000 CL30","Samsung 9100 Pro 2 TB","Corsair HX1200i (1200 W)","Corsair iCUE Link H150i 360","Fractal Design Torrent"],u:0,r:2},
+{n:M("Intel-Allrounder","Intel polyvalent"),v:["Core Ultra 7 265K(F)","MSI MAG Z890 Tomahawk WiFi","GeForce RTX 5070 Ti","32 GB (2×16) DDR5-6400 CL32 (XMP)","WD_BLACK SN850X 2 TB","Corsair RM850x (850 W)","Arctic Liquid Freezer III 280","NZXT H7 Flow"],u:0,r:1},
+{n:M("Videoschnitt & 3D","Montage vidéo & 3D"),v:["Ryzen 9 9950X","ASUS TUF Gaming X870-Plus WiFi","GeForce RTX 5070 Ti","64 GB (2×32) DDR5-6000 CL30","Samsung 990 Pro 2 TB","Corsair RM850x (850 W)","Noctua NH-D15 G2","Fractal Design Meshify 2"],u:2,r:2},
+{n:M("Büro & Programmieren","Bureautique & programmation"),v:["Ryzen 5 7600","MSI PRO B650M-A WiFi","Radeon RX 7600","32 GB (2×16) DDR5-5600 CL40","Crucial P3 Plus 1 TB","Corsair CX550 (550 W)","AMD Wraith Stealth (Boxed)","Mini-Tower Micro-ATX (generisch)"],u:3,r:0},
+{n:M("Fehlerbeispiel (rot)","Exemple d'erreurs (rouge)"),v:["Ryzen 7 9800X3D","MSI MAG B550 Tomahawk","GeForce RTX 4090","32 GB (2×16) DDR5-6000 CL30 (EXPO)","Seagate Barracuda 4 TB (HDD)","Corsair CX450 (450 W)","AMD Wraith Stealth (Boxed)","Corsair 3000D Airflow"],u:0,r:2}
 ];
 var SOCK=[
 ["AM5","2022 →",M("Ryzen 7000, 8000G, 9000","Ryzen 7000, 8000G, 9000"),"X870E, X870, B850, B840, X670E, X670, B650E, B650, A620","DDR5","5.0 (CPU)",M("Läuft bis mindestens 2027 weiter. Alte Kühler passen oft von AM4.","Supporté au moins jusqu'en 2027. Les anciens ventirads AM4 vont souvent.")],
@@ -1102,9 +1171,12 @@ var FAQ=[
 [3,"ram",M("RAM-Timings, Ranks und Latenz: was zählt wirklich?","Timings RAM, ranks et latence : ce qui compte vraiment"),M("Wenn du genauer wissen willst:\n• MT/s (zum Beispiel 6000): Datenrate. Höher ist besser, aber bei AMD AM5 gibt es einen Sweet Spot um 6000 mit niedriger Latenz.\n• CL (CAS-Latenz, zum Beispiel CL30): Verzögerung in Takten. Niedriger ist besser. Die echte Latenz in Nanosekunden ist CL × 2000 ÷ MT/s: DDR5-6000 CL30 liegt bei 10 ns, DDR5-5600 CL40 bei etwa 14,3 ns.\n• Ranks: ein Modul kann Single-Rank oder Dual-Rank sein. Dual-Rank kann etwas schneller sein, ist aber schwerer zu übertakten.\n• 1DPC/2DPC: Module pro Kanal. 4 Module belasten den Speichercontroller stärker und senken den erreichbaren Takt.\n• ECC: Fehlerkorrektur, nur bei Workstations oder Servern.\n• Fabric-Takt (AMD): läuft bei DDR5-6000 mit 2000 MHz im 1:1-Modus, das ist der Grund für den Sweet Spot.\nFür die meisten reichen die Profile der Kits (XMP/EXPO).","Pour qui veut plus de précision :\n• MT/s (par exemple 6000) : débit de données. Plus haut est mieux, mais chez AMD AM5, il y a un compromis autour de 6000 avec une faible latence.\n• CL (latence CAS, par exemple CL30) : délai en cycles. Plus bas est mieux. La vraie latence en nanosecondes est CL × 2000 ÷ MT/s : DDR5-6000 CL30 donne 10 ns, DDR5-5600 CL40 environ 14,3 ns.\n• Ranks : un module peut être single-rank ou dual-rank. Le dual-rank peut être un peu plus rapide, mais plus difficile à overclocker.\n• 1DPC/2DPC : modules par canal. 4 modules sollicitent davantage le contrôleur mémoire et réduisent la fréquence atteignable.\n• ECC : correction d'erreurs, seulement pour stations de travail ou serveurs.\n• Fréquence du fabric (AMD) : à DDR5-6000, elle est de 2000 MHz en mode 1:1, ce qui explique le compromis.\nPour la plupart, les profils des kits (XMP/EXPO) suffisent.")],
 [2,"psu",M("Netzteil lesen: 80+, ATX 3.1, modular und Schutzschaltungen","Lire une alimentation : 80+, ATX 3.1, modulaire et protections"),M("Was auf dem Aufkleber und im Datenblatt wichtig ist:\n• 80+ (Bronze, Silber, Gold, Platin, Titan): Wirkungsgrad bei 20, 50 und 100 % Last. Gold ist ein gutes Ziel, Bronze reicht für sparsame Systeme.\n• ATX 3.0/3.1 und 12V-2x6: Neue Netzteile sind für Lastspitzen moderner Grafikkarten ausgelegt und haben den Stecker nativ. ATX 3.1 hat dabei verbesserte Anforderungen an kurze Überlast.\n• Modulare Kabel: Du steckst nur die Kabel an, die du brauchst. Das erleichtert Kabelmanagement und Luftstrom. Teilmodular: nur die Hauptstränge sind fest.\n• Schutzschaltungen: OCP, OVP, UVP, SCP, OTP. Gute Netzteile haben alle.\n• Garantie: 5–10 Jahre sind ein Zeichen für Vertrauen des Herstellers.\n• Lüfter: Hybrid-Betrieb (Lüfter aus bei geringer Last) macht leise.\nDie Auswahl in diesem Check bezieht sich auf bekannte Marken. Unbekannte No-Name-Netzteile sind ein Risiko für den ganzen PC.","Ce qui compte sur l'étiquette et dans la fiche technique :\n• 80+ (Bronze, Silver, Gold, Platinum, Titanium) : rendement à 20, 50 et 100 % de charge. Gold est un bon objectif, Bronze suffit pour des systèmes économes.\n• ATX 3.0/3.1 et 12V-2x6 : les alimentations récentes sont conçues pour les pics de charge des cartes graphiques modernes et ont le connecteur en natif. L'ATX 3.1 a des exigences améliorées pour les courtes surcharges.\n• Câbles modulaires : tu ne branches que les câbles nécessaires. Cela facilite la gestion des câbles et le flux d'air. Semi-modulaire : seuls les câbles principaux sont fixes.\n• Protections : OCP, OVP, UVP, SCP, OTP. Les bonnes alimentations les ont toutes.\n• Garantie : 5–10 ans est un signe de confiance du fabricant.\n• Ventilateur : le mode hybride (ventilateur éteint à faible charge) rend silencieux.\nLa sélection dans ce check porte sur des marques connues. Les alimentations inconnues sans marque sont un risque pour tout le PC.")],
 [3,"board",M("Mainboard-Qualität: VRM, Phasen, Kühlkörper und was sie bedeuten","Qualité de la carte mère : VRM, phases, dissipateurs et leur signification"),M("Das VRM (Voltage Regulator Module) wandelt die 12 V des Netzteils in die Spannung der CPU:\n• Phasen: mehr Phasen verteilen die Belastung (zum Beispiel 12+2). Wichtiger als die Zahl ist die Qualität der Bauteile (Stromstufen „Power Stages“ mit 60–110 A).\n• Kühlkörper auf dem VRM: Sie verhindern Überhitzung bei Dauerlast. Bei starken CPUs (Core i9, Ryzen 9) sind sie wichtig.\n• Chipsatz-Klasse: Einsteigerboards (A620, H610) sparen oft am VRM. Das ist bei Sechskern-CPUs unkritisch, bei starken CPUs kann die CPU drosseln.\n• Weitere Qualitätsmerkmale: PCB-Lagen (6 Layer), M.2-Kühlkörper, Metallverstärkter PCIe-Slot, BIOS-Flashback, USB-Anschlüsse, Audio und LAN.\nDer Punkt „Mainboard-Eignung“ im Check vergleicht die CPU-Leistung mit der Chipsatzklasse und warnt bei grenzwertigen Kombinationen.","Le VRM (Voltage Regulator Module) convertit les 12 V de l'alimentation en tension du CPU :\n• Phases : plus de phases répartissent la charge (par exemple 12+2). Plus important que le nombre, la qualité des composants (étages de puissance « power stages » de 60–110 A).\n• Dissipateurs sur le VRM : ils évitent la surchauffe en charge continue. Pour les CPU puissants (Core i9, Ryzen 9), ils sont importants.\n• Gamme du chipset : les cartes d'entrée de gamme (A620, H610) économisent souvent sur le VRM. C'est sans importance avec des CPU six cœurs, mais un CPU puissant peut brider.\n• Autres critères de qualité : couches du PCB (6 layers), dissipateurs M.2, slot PCIe renforcé de métal, BIOS Flashback, connectique USB, audio et réseau.\nLe point « Compatibilité carte mère » du check compare la puissance du CPU à la gamme du chipset et avertit en cas de combinaisons limites.")],
-[1,"tips",M("Wie nutze ich den PC-Check am besten? Ein Überblick über alle Reiter","Comment utiliser au mieux le PC-Check ? Aperçu de tous les onglets"),M("Der PC-Check ist in sechs Reiter gegliedert, die du der Reihe nach nutzen kannst:\n• 01 Konfigurator: Verwendung und Auflösung wählen, optional eine Ziel-Stärke festlegen (die App wählt die Teile) und dann deine Teile prüfen. Rechts siehst du Wertung, Handheld-Vergleich und Hinweise.\n• 02 Engpass-Matrix: Zeigt CPU gegen Grafikkarte, damit du erkennst, ob ein Paar zusammenpasst. Ein Klick übernimmt es in den Konfigurator.\n• 03 Monitor: Pixeldichte, FPS, Kabel und Panel-Typ prüfen.\n• 04 Teile-Datenbank: Alle Bauteile mit Suche, Sortierung und Leistungswerten.\n• 05 Sockel-Guide: Welche CPU passt auf welches Mainboard.\n• 06 Wissen: Erklärungen vom Einsteiger bis zum Profi, mit Suche und Filter.\nTipp: Der Link-Knopf kopiert deine Konfiguration als Link, den du speichern oder teilen kannst.","Le PC-Check est organisé en six onglets que tu peux utiliser dans l'ordre :\n• 01 Configurateur : choisir l'usage et la résolution, fixer éventuellement une puissance visée (l'appli choisit les pièces), puis vérifier tes pièces. À droite, tu vois la note, la comparaison avec les portables et les remarques.\n• 02 Matrice des goulots : montre CPU contre carte graphique pour voir si une paire va bien ensemble. Un clic la reprend dans le configurateur.\n• 03 Écran : vérifier densité de pixels, FPS, câbles et type de dalle.\n• 04 Base de composants : tous les composants avec recherche, tri et valeurs de performance.\n• 05 Guide des sockets : quel CPU va sur quelle carte mère.\n• 06 Savoir : explications du débutant au pro, avec recherche et filtres.\nConseil : le bouton lien copie ta configuration sous forme de lien à enregistrer ou partager.")]
+[1,"tips",M("Wie nutze ich den PC-Check am besten? Ein Überblick über alle Reiter","Comment utiliser au mieux le PC-Check ? Aperçu de tous les onglets"),M("Der PC-Check ist in sechs Reiter gegliedert, die du der Reihe nach nutzen kannst:\n• 01 Konfigurator: Verwendung und Auflösung wählen, optional eine Ziel-Stärke festlegen (die App wählt die Teile) und dann deine Teile prüfen. Rechts siehst du Wertung, Handheld-Vergleich und Hinweise.\n• 02 Engpass-Matrix: Zeigt CPU gegen Grafikkarte, damit du erkennst, ob ein Paar zusammenpasst. Ein Klick übernimmt es in den Konfigurator.\n• 03 Monitor: Pixeldichte, FPS, Kabel und Panel-Typ prüfen.\n• 04 Teile-Datenbank: Alle Bauteile mit Suche, Sortierung und Leistungswerten.\n• 05 Sockel-Guide: Welche CPU passt auf welches Mainboard.\n• 06 Wissen: Erklärungen vom Einsteiger bis zum Profi, mit Suche und Filter.\nTipp: Der Link-Knopf kopiert deine Konfiguration als Link, den du speichern oder teilen kannst.","Le PC-Check est organisé en six onglets que tu peux utiliser dans l'ordre :\n• 01 Configurateur : choisir l'usage et la résolution, fixer éventuellement une puissance visée (l'appli choisit les pièces), puis vérifier tes pièces. À droite, tu vois la note, la comparaison avec les portables et les remarques.\n• 02 Matrice des goulots : montre CPU contre carte graphique pour voir si une paire va bien ensemble. Un clic la reprend dans le configurateur.\n• 03 Écran : vérifier densité de pixels, FPS, câbles et type de dalle.\n• 04 Base de composants : tous les composants avec recherche, tri et valeurs de performance.\n• 05 Guide des sockets : quel CPU va sur quelle carte mère.\n• 06 Savoir : explications du débutant au pro, avec recherche et filtres.\nConseil : le bouton lien copie ta configuration sous forme de lien à enregistrer ou partager.")],
+[1,"case",M("Das richtige Gehäuse wählen: Format, Platz und Luft","Bien choisir son boîtier : format, place et air"),M("Das Gehäuse muss zu allem passen, was hineinkommt:\n• Mainboard-Format: Mini-ITX (klein), Micro-ATX (mittel), ATX (Standard), E-ATX (groß). Ein kleineres Board passt in ein größeres Gehäuse, umgekehrt nicht.\n• Grafikkartenlänge: Starke Karten sind oft 30–35 cm lang. Das Gehäuse nennt die maximale Länge. Die Angabe im Check ist ein Richtwert nach Leistungsklasse, die genaue Länge deines Modells steht beim Hersteller.\n• Kühlerhöhe: Luftkühler sind 15–17 cm hoch. Ist das Gehäuse zu schmal, schließt das Seitenteil nicht.\n• Radiator: Eine AIO mit 240, 280 oder 360 mm braucht einen passenden Platz vorn oder oben.\n• Netzteil: Manche kleinen Gehäuse nehmen nur das kleinere SFX-Format.\n• Luftstrom: Gitter (Mesh) in der Front und mehrere Lüfter halten starke Teile kühl und leise. Geschlossene Glasfronten werden wärmer.\nIm Konfigurator prüft der Check Format, Grafikkarte, Kühler, Netzteil und Belüftung automatisch.","Le boîtier doit convenir à tout ce qu'on y met :\n• Format de carte mère : Mini-ITX (petit), Micro-ATX (moyen), ATX (standard), E-ATX (grand). Une carte plus petite entre dans un boîtier plus grand, pas l'inverse.\n• Longueur de la carte graphique : les cartes puissantes font souvent 30–35 cm. Le boîtier indique la longueur maximale. L'indication du check est un repère par gamme de puissance ; la longueur exacte de ton modèle est chez le fabricant.\n• Hauteur du ventirad : les ventirads à air font 15–17 cm. Si le boîtier est trop étroit, le panneau latéral ne ferme pas.\n• Radiateur : un AIO de 240, 280 ou 360 mm demande la place adaptée à l'avant ou en haut.\n• Alimentation : certains petits boîtiers n'acceptent que le format SFX, plus petit.\n• Flux d'air : une façade grillagée (mesh) et plusieurs ventilateurs gardent les pièces puissantes fraîches et silencieuses. Les façades vitrées fermées chauffent davantage.\nDans le configurateur, le check vérifie automatiquement format, carte graphique, ventirad, alimentation et ventilation.")],
+[3,"case",M("Kleine Gehäuse (Mini-ITX): Vorteile und Fallen","Petits boîtiers (Mini-ITX) : avantages et pièges"),M("Kleine PCs sind beliebt, aber anspruchsvoller:\n• Platz: Grafikkarte, Kühler und Netzteil haben wenige Millimeter Luft. Vorher alles nachmessen.\n• Netzteil: Meist SFX oder SFX-L mit weniger Leistung und höherem Preis.\n• Kühlung: Starke CPUs und GPUs werden heiß. Oft hilft ein flacher Kühler oder eine AIO mit 240 mm, dazu eine Grafikkarte mit niedriger Leistung (Undervolting).\n• Mainboard: Mini-ITX-Boards haben nur einen PCIe-Slot, meist 1–2 M.2-Slots und weniger Anschlüsse, sind aber oft teurer.\n• Lautstärke: Kleine Lüfter drehen höher. Größere 120-mm-Lüfter sind leiser.\n• Aufrüsten: Später etwas auszutauschen ist schwieriger.\nWer Platz hat, fährt mit einem Micro-ATX- oder ATX-Gehäuse einfacher und leiser.","Les petits PC sont populaires mais plus exigeants :\n• Place : carte graphique, ventirad et alimentation n'ont que quelques millimètres de marge. Tout mesurer avant.\n• Alimentation : souvent SFX ou SFX-L, moins puissante et plus chère.\n• Refroidissement : les CPU et GPU puissants chauffent. Souvent un ventirad bas ou un AIO de 240 mm aide, avec une carte graphique à puissance réduite (undervolting).\n• Carte mère : les cartes Mini-ITX n'ont qu'un slot PCIe, généralement 1–2 slots M.2 et moins de connecteurs, mais sont souvent plus chères.\n• Bruit : les petits ventilateurs tournent plus vite. Les ventilateurs de 120 mm plus grands sont plus silencieux.\n• Évolution : remplacer une pièce plus tard est plus difficile.\nQui a de la place s'en sort plus facilement et plus silencieusement avec un boîtier Micro-ATX ou ATX.")],
+[1,"handheld",M("Handheld-PCs im Überblick: Steam Deck, ROG Ally, Legion Go und Co.","Aperçu des PC portables de jeu : Steam Deck, ROG Ally, Legion Go et autres"),M("Handhelds sind kleine Spiele-PCs mit Display und Controllern:\n• Steam Deck (Valve): läuft mit SteamOS (Linux), sehr gut abgestimmt, viele Spiele laufen mit Proton. Chip mit 4 Zen-2-Kernen. Das OLED-Modell hat das bessere Display und mehr Akkuzeit.\n• ROG Ally und Ally X (ASUS): Windows, Ryzen Z1 Extreme mit 8 Kernen. Der Ally X hat mehr RAM (24 GB) und einen größeren Akku.\n• ROG Xbox Ally und Ally X: Windows mit Xbox-Oberfläche. Die X-Version nutzt den Ryzen Z2 Extreme.\n• Lenovo Legion Go, Go 2 und Go S: größeres Display (8–8,8 Zoll), abnehmbare Controller, das Go 2 mit OLED und Z2 Extreme.\n• MSI Claw: Modelle mit Intel (Claw 8 AI+) oder AMD (Claw A8).\n• Strix-Halo-Geräte (GPD Win 5, AYANEO Next 2): sehr stark, ähnlich einer kleinen Desktop-Grafikkarte, aber teuer und mit viel Wärme.\nDer Vergleich im PC-Check zeigt, um welchen Faktor dein Desktop-System stärker ist. Die Handhelds laufen mit etwa 15–30 W und haben deshalb deutlich weniger Leistung als ein Desktop-PC.","Les portables de jeu sont de petits PC de jeu avec écran et manettes :\n• Steam Deck (Valve) : fonctionne sous SteamOS (Linux), très bien optimisé, beaucoup de jeux tournent avec Proton. Puce à 4 cœurs Zen 2. Le modèle OLED a le meilleur écran et plus d'autonomie.\n• ROG Ally et Ally X (ASUS) : Windows, Ryzen Z1 Extreme à 8 cœurs. L'Ally X a plus de RAM (24 Go) et une plus grosse batterie.\n• ROG Xbox Ally et Ally X : Windows avec interface Xbox. La version X utilise le Ryzen Z2 Extreme.\n• Lenovo Legion Go, Go 2 et Go S : écran plus grand (8–8,8 pouces), manettes amovibles, le Go 2 avec OLED et Z2 Extreme.\n• MSI Claw : modèles Intel (Claw 8 AI+) ou AMD (Claw A8).\n• Appareils Strix Halo (GPD Win 5, AYANEO Next 2) : très puissants, proches d'une petite carte graphique de bureau, mais chers et très chauds.\nLa comparaison dans le PC-Check montre de quel facteur ton système de bureau est plus puissant. Les portables tournent à environ 15–30 W et ont donc nettement moins de puissance qu'un PC de bureau.")]
 ];
-var FQT=[["monitor",M("Monitor & Display","Écran & affichage")],["pcie",M("PCIe & Lanes","PCIe & lanes")],["board",M("Mainboard & Sockel","Carte mère & socket")],["cpu",M("Prozessor","Processeur")],["gpu",M("Grafikkarte","Carte graphique")],["ram",M("Arbeitsspeicher","Mémoire vive")],["storage",M("SSD & Daten","SSD & données")],["psu",M("Netzteil","Alimentation")],["cool",M("Kühlung","Refroidissement")],["case",M("Gehäuse","Boîtier")],["power",M("Strom & Takt","Énergie & fréquence")],["build",M("Zusammenbau","Montage")],["os",M("BIOS & System","BIOS & système")],["net",M("Netzwerk","Réseau")],["periph",M("Zubehör & USB","Accessoires & USB")],["tips",M("Kaufen & Planen","Acheter & planifier")]];
+var FQT=[["monitor",M("Monitor & Display","Écran & affichage")],["pcie",M("PCIe & Lanes","PCIe & lanes")],["board",M("Mainboard & Sockel","Carte mère & socket")],["cpu",M("Prozessor","Processeur")],["gpu",M("Grafikkarte","Carte graphique")],["ram",M("Arbeitsspeicher","Mémoire vive")],["storage",M("SSD & Daten","SSD & données")],["psu",M("Netzteil","Alimentation")],["cool",M("Kühlung","Refroidissement")],["case",M("Gehäuse","Boîtier")],["power",M("Strom & Takt","Énergie & fréquence")],["build",M("Zusammenbau","Montage")],["os",M("BIOS & System","BIOS & système")],["net",M("Netzwerk","Réseau")],["periph",M("Zubehör & USB","Accessoires & USB")],["tips",M("Kaufen & Planen","Acheter & planifier")],["handheld",M("Handhelds","Portables")]];
 var FQS={lv:0,tp:"",q:""};
 function faqBody(txt){
   var out="",ul=false;
@@ -1274,7 +1346,7 @@ function renderMon(){
 }
 
 var DBKEYS=["cpu","gpu","board","ram","ssd","psu","cool"];
-var S={cpu:0,board:0,gpu:0,ram:0,ssd:0,psu:0,cool:0,use:0,res:1};
+var S={cpu:0,board:0,gpu:0,ram:0,ssd:0,psu:0,cool:0,case:0,use:0,res:1};
 var DB={tab:0,q:"",brand:"",sortK:null,sortD:1};
 var t=function(){return UI[LANG]};
 var tx=function(o){return o[LANG]};
@@ -1284,7 +1356,7 @@ function find(arr,name){for(var i=0;i<arr.length;i++)if(arr[i][0]===name)return 
 function isK(c){return c[1]==="Intel"&&/K/.test(c[0])}
 
 function evaluate(s){
-  var cpu=CPUS[s.cpu],bd=BOARDS[s.board],ch=CHIP[bd[1]],gpu=GPUS[s.gpu],ram=RAMS[s.ram],ssd=SSDS[s.ssd],psu=PSUS[s.psu],cool=COOLERS[s.cool];
+  var cpu=CPUS[s.cpu],bd=BOARDS[s.board],ch=CHIP[bd[1]],gpu=GPUS[s.gpu],ram=RAMS[s.ram],ssd=SSDS[s.ssd],psu=PSUS[s.psu],cool=COOLERS[s.cool],cse=CASES[s.case]||CASES[0];
   var use=USEK[s.use],res=RES[s.res][0];
   var C={},hints=[],hard=[];
   /* Kompatibilität */
@@ -1390,6 +1462,26 @@ function evaluate(s){
   else{ps2=eff>=4?85:35}
   pp.push(ps2>=95?M("Die Karte (×"+ls+") läuft ohne Verlust (PCIe "+eff+".0).","La carte (×"+ls+") fonctionne sans perte (PCIe "+eff+".0)."):M("Die Karte hat nur "+ls+" Lanes und läuft mit PCIe "+eff+".0: je nach Spiel spürbarer Leistungsverlust.","La carte n'a que "+ls+" lignes et tourne en PCIe "+eff+".0 : perte de performance parfois sensible selon le jeu."));
   C.pcie={score:ps2,parts:pp};
+  /* Gehäuse */
+  var cp=[],cscore=100,bf=FORMR[bd[2]]||3,cf=FORMR[cse[2]]||3,gl=gpuLen(gpu[2]);
+  if(bf>cf){hard.push(1);cscore=0;cp.push(M("Das Board ("+bd[2]+") ist größer, als das Gehäuse zulässt (höchstens "+cse[2]+").","La carte ("+bd[2]+") est plus grande que ce que le boîtier accepte (au maximum "+cse[2]+")."))}
+  else cp.push(M("Board-Format "+bd[2]+" passt ins Gehäuse.","Le format "+bd[2]+" de la carte convient au boîtier."));
+  if(gl>cse[3]){cscore=Math.min(cscore,20);cp.push(M("Die Grafikkarte wird voraussichtlich ca. "+gl+" mm lang, das Gehäuse nimmt "+cse[3]+" mm. Such ein kürzeres Modell oder ein größeres Gehäuse.","La carte graphique fera probablement env. "+gl+" mm, le boîtier accepte "+cse[3]+" mm. Choisis un modèle plus court ou un plus grand boîtier."))}
+  else if(gl>cse[3]-20){cscore=Math.min(cscore,80);cp.push(M("Grafikkarte (ca. "+gl+" mm) passt, aber knapp (erlaubt "+cse[3]+" mm). Länge des Modells nachmessen.","La carte (env. "+gl+" mm) passe, mais juste (accepté "+cse[3]+" mm). Mesure la longueur du modèle."))}
+  else cp.push(M("Grafikkarte passt (typisch ca. "+gl+" mm, erlaubt "+cse[3]+" mm).","La carte graphique passe (typiquement env. "+gl+" mm, accepté "+cse[3]+" mm)."));
+  if(cool[1]==="Luft"){var chh=coolH(cool);
+    if(chh>cse[4]){cscore=Math.min(cscore,22);cp.push(M("Der Kühler ist ca. "+chh+" mm hoch, das Gehäuse erlaubt "+cse[4]+" mm. Der Seitenteil schließt nicht.","Le ventirad fait env. "+chh+" mm, le boîtier en accepte "+cse[4]+". Le panneau latéral ne fermera pas."))}
+    else if(chh>cse[4]-5){cscore=Math.min(cscore,85);cp.push(M("Kühler (ca. "+chh+" mm) passt gerade so (erlaubt "+cse[4]+" mm).","Ventirad (env. "+chh+" mm) passe tout juste (accepté "+cse[4]+" mm)."))}
+    else cp.push(M("Kühlerhöhe passt (ca. "+chh+" mm, erlaubt "+cse[4]+" mm).","La hauteur du ventirad convient (env. "+chh+" mm, accepté "+cse[4]+" mm)."))}
+  else if(cool[1]!=="Boxed"){var rs2=radSz(cool);
+    if(rs2>cse[5]){cscore=Math.min(cscore,25);cp.push(M("Der "+rs2+"-mm-Radiator passt nicht (Gehäuse höchstens "+(cse[5]||"kein")+" mm).","Le radiateur de "+rs2+" mm ne passe pas (boîtier : au maximum "+(cse[5]||"aucun")+" mm)."))}
+    else cp.push(M(rs2+"-mm-Radiator wird unterstützt (bis "+cse[5]+" mm).","Radiateur de "+rs2+" mm pris en charge (jusqu'à "+cse[5]+" mm)."))}
+  if(cse[7]==="SFX"&&!/SFX/.test(psu[0])){hard.push(1);cscore=0;cp.push(M("Das Gehäuse nimmt nur SFX-Netzteile; dieses Netzteil ist ein ATX-Modell.","Le boîtier n'accepte que des alimentations SFX ; cette alimentation est au format ATX."))}
+  C.case={score:cscore,parts:cp};
+  var heat=cpu[4]*0.8+gpu[2],ned=heat<250?2:heat<400?3:heat<550?4:5,asc=100,ap=[];
+  if(cse[6]>=ned){ap.push(M("Der Luftstrom passt zur Abwärme (ca. "+Math.round(heat)+" W).","Le flux d'air convient à la chaleur dégagée (env. "+Math.round(heat)+" W)."))}
+  else{asc=Math.max(30,100-(ned-cse[6])*24);ap.push(M("Bei ca. "+Math.round(heat)+" W Abwärme ist das Gehäuse eher geschlossen. Mit Mesh-Front und mehr Lüftern bleibt es kühler und leiser.","Avec env. "+Math.round(heat)+" W de chaleur, le boîtier est plutôt fermé. Une façade mesh et plus de ventilateurs garderaient le PC plus frais et plus silencieux."))}
+  C.air={score:asc,parts:ap};
   /* BIOS und weitere Hinweise */
   var se=cpu[8];
   if(se==="r9k"&&/^(B650|X670|A620|B650E|X670E)$/.test(bd[1]))hints.push({l:"warn",m:M("Ryzen 9000 auf einem "+bd[1]+"-Board braucht je nach Lagerstand ein BIOS-Update (AGESA 1.2.0.2 oder neuer). Ohne Update startet der PC eventuell nicht; „BIOS Flashback“ am Board hilft.","Ryzen 9000 sur une carte "+bd[1]+" demande selon le stock une mise à jour du BIOS (AGESA 1.2.0.2 ou plus récent). Sans cela, le PC peut ne pas démarrer ; le « BIOS Flashback » de la carte aide.")});
@@ -1402,7 +1494,7 @@ function evaluate(s){
   if(use==="video"&&gpu[1]==="NVIDIA")hints.push({l:"info",m:M("NVIDIA bietet CUDA und NVENC, die Premiere, DaVinci Resolve und Blender besonders gut nutzen.","NVIDIA offre CUDA et NVENC, très bien exploités par Premiere, DaVinci Resolve et Blender.")});
   if(use==="video"&&gpu[1]!=="NVIDIA")hints.push({l:"info",m:M("Für Videoschnitt und 3D laufen viele Programme (Premiere, Blender OptiX) mit NVIDIA am besten; "+gpu[1]+" funktioniert, ist aber je nach Software langsamer.","Pour le montage vidéo et la 3D, beaucoup de logiciels (Premiere, Blender OptiX) tournent mieux avec NVIDIA ; "+gpu[1]+" fonctionne mais peut être plus lent selon le logiciel.")});
   if(bd[4]<2&&ssd[1]!=="HDD")hints.push({l:"info",m:M("Das Board hat nur "+bd[4]+" M.2-Steckplatz. Für eine zweite SSD brauchst du ein Board mit mehr Slots oder SATA.","La carte n'a que "+bd[4]+" slot M.2. Pour un second SSD, il faut plus de slots ou du SATA.")});
-  hints.push({l:"info",m:M("Nicht geprüft: Länge der Grafikkarte und Höhe des Kühlers im Gehäuse. Vor dem Kauf nachmessen.","Non vérifié : longueur de la carte graphique et hauteur du ventirad dans le boîtier. À mesurer avant l'achat.")});
+  hints.push({l:"info",m:M("Kartenlänge und Kühlerhöhe sind Richtwerte nach Leistungsklasse. Die genauen Maße deines Modells vor dem Kauf nachmessen.","La longueur de la carte et la hauteur du ventirad sont des repères par gamme de puissance. Mesure les dimensions exactes de ton modèle avant l'achat.")});
   /* Gesamt */
   var total=0,wsum=0,k;for(k in W){total+=W[k]*C[k].score;wsum+=W[k]}
   total=Math.round(total/wsum);
@@ -1432,7 +1524,7 @@ function buildStatic(){
   $$(".opc-tab").forEach(function(b,i){b.querySelector("b").textContent=T.tabs[i];b.querySelector("small").textContent=T.tabsub[i]});$("#st1").textContent=T.st1;$("#st1d").textContent=T.st1d;
   $("#opc-parts-h").textContent=T.parts;$("#opc-presets-h").textContent=T.presets;$("#opc-res-h").textContent=T.result;$("#opc-hints-h").textContent=T.hints;$("#opc-legend").textContent=T.legend;
   $("#opc-disc").textContent=T.disc;$("#opc-auto").textContent=T.auto;$("#opc-share").textContent=T.share;
-  var labels={s_cpu:T.cpu,s_board:T.board,s_gpu:T.gpu,s_ram:T.ram,s_ssd:T.ssd,s_psu:T.psu,s_cool:T.cool};
+  var labels={s_cpu:T.cpu,s_board:T.board,s_gpu:T.gpu,s_ram:T.ram,s_ssd:T.ssd,s_psu:T.psu,s_cool:T.cool,s_case:T.case};
   for(var k in labels){$("label[for="+k+"] span").textContent=labels[k]}
   $("label[for=s_use] span").textContent=T.use;$("label[for=s_res] span").textContent=T.res;
   var us=$("#s_use");us.innerHTML=T.uses.map(function(u,i){return '<option value="'+i+'">'+esc(u)+'</option>'}).join("");us.value=S.use;
@@ -1446,17 +1538,34 @@ function selectsInit(){
   fillSelect("s_ssd",SSDS,function(s){return {N5:"NVMe PCIe 5.0",N4:"NVMe PCIe 4.0",N3:"NVMe PCIe 3.0",SATA:"SATA",HDD:"HDD"}[s[1]]},function(s){return s[0]});
   fillSelect("s_psu",PSUS,null,function(p){return p[0]+" · "+p[2]});
   fillSelect("s_cool",COOLERS,function(c){return c[1]==="Boxed"?"Boxed":c[1]==="Luft"?(LANG==="fr"?"Air":"Luft"):"AIO"},function(c){return c[0]+"  (≈ "+c[2]+" W)"});
+  fillSelect("s_case",CASES,function(c){return c[2]==="ITX"?"Mini-ITX":c[2]==="mATX"?"Micro-ATX":c[2]},function(c){return c[0]+"  (GPU bis "+c[3]+" mm)"});
   var rs=$("#s_res");rs.innerHTML=RES.map(function(r,i){return '<option value="'+i+'">'+esc(r[1])+'</option>'}).join("");
 }
 function annotate(){
   var cpu=CPUS[S.cpu],bd=BOARDS[S.board],ch=CHIP[bd[1]];
   $$("#s_board option").forEach(function(o){var b=BOARDS[+o.value],base=b[0]+" ("+b[2]+", "+(b[3]==="D5"?"DDR5":"DDR4")+")";o.textContent=(CHIP[b[1]][0]!==cpu[2]?"✖ ":"")+base});
   $$("#s_ram option").forEach(function(o){var r=RAMS[+o.value];o.textContent=(r[1]!==bd[3]?"✖ ":"")+r[0]});
+  $$("#s_case option").forEach(function(o){var c=CASES[+o.value];o.textContent=((FORMR[bd[2]]||3)>(FORMR[c[2]]||3)?"✖ ":"")+c[0]+"  (GPU bis "+c[3]+" mm)"});
   $$("#s_cool option").forEach(function(o){var c=COOLERS[+o.value];o.textContent=(c[3].indexOf(cpu[2])<0?"✖ ":"")+c[0]+"  (≈ "+c[2]+" W)"});
 }
 var HH=[
- {n:"Steam Deck OLED",s:"Steam Deck OLED",g:35,mt:12,gpu:4.5,d:M("7,4\" OLED · 4 Zen-2-Kerne · RDNA 2 (8 CU) · 16 GB","7,4\" OLED · 4 cœurs Zen 2 · RDNA 2 (8 CU) · 16 Go")},
- {n:"Lenovo Legion Go 2 (Ryzen Z2 Extreme)",s:"Legion Go 2",g:58,mt:40,gpu:9,d:M("8,8\" OLED · 8 Zen-5-Kerne · RDNA 3.5 (16 CU) · bis 32 GB","8,8\" OLED · 8 cœurs Zen 5 · RDNA 3.5 (16 CU) · jusqu’à 32 Go")}];
+ {n:"Steam Deck OLED",s:"Steam Deck OLED",g:35,mt:12,gpu:4.5,top:1,d:M("7,4\" OLED · 4 Zen-2-Kerne · RDNA 2 (8 CU) · 16 GB","7,4\" OLED · 4 cœurs Zen 2 · RDNA 2 (8 CU) · 16 Go")},
+ {n:"Lenovo Legion Go 2 (Ryzen Z2 Extreme)",s:"Legion Go 2",g:58,mt:40,gpu:9,top:1,d:M("8,8\" OLED · 8 Zen-5-Kerne · RDNA 3.5 (16 CU) · bis 32 GB","8,8\" OLED · 8 cœurs Zen 5 · RDNA 3.5 (16 CU) · jusqu’à 32 Go")},
+ {n:"ASUS ROG Xbox Ally X (Ryzen Z2 Extreme)",s:"Xbox Ally X",g:58,mt:40,gpu:9.5,top:1,d:M("7\" LCD 120 Hz · 8 Zen-5-Kerne · RDNA 3.5 (16 CU) · 24 GB","7\" LCD 120 Hz · 8 cœurs Zen 5 · RDNA 3.5 (16 CU) · 24 Go")},
+ {n:"ASUS ROG Ally X (Ryzen Z1 Extreme)",s:"ROG Ally X",g:50,mt:28,gpu:7.3,top:1,d:M("7\" LCD 120 Hz · 8 Zen-4-Kerne · RDNA 3 (12 CU) · 24 GB","7\" LCD 120 Hz · 8 cœurs Zen 4 · RDNA 3 (12 CU) · 24 Go")},
+ {n:"ASUS ROG Xbox Ally (Ryzen Z2 A)",s:"Xbox Ally",g:35,mt:12,gpu:4.3,top:0,d:M("7\" LCD 120 Hz · 4 Zen-2-Kerne · RDNA 2 · 16 GB (Steam-Deck-Klasse)","7\" LCD 120 Hz · 4 cœurs Zen 2 · RDNA 2 · 16 Go (classe Steam Deck)")},
+ {n:"ASUS ROG Ally (Ryzen Z1 Extreme)",s:"ROG Ally",g:50,mt:28,gpu:6.8,top:0,d:M("7\" LCD 120 Hz · 8 Zen-4-Kerne · RDNA 3 (12 CU) · 16 GB","7\" LCD 120 Hz · 8 cœurs Zen 4 · RDNA 3 (12 CU) · 16 Go")},
+ {n:"Steam Deck LCD",s:"Steam Deck LCD",g:35,mt:12,gpu:4.2,top:0,d:M("7\" LCD · 4 Zen-2-Kerne · RDNA 2 (8 CU) · 16 GB","7\" LCD · 4 cœurs Zen 2 · RDNA 2 (8 CU) · 16 Go")},
+ {n:"Lenovo Legion Go (Ryzen Z1 Extreme)",s:"Legion Go",g:50,mt:28,gpu:7.0,top:0,d:M("8,8\" LCD 144 Hz · 8 Zen-4-Kerne · RDNA 3 (12 CU) · 16 GB","8,8\" LCD 144 Hz · 8 cœurs Zen 4 · RDNA 3 (12 CU) · 16 Go")},
+ {n:"Lenovo Legion Go S (Ryzen Z2 Go)",s:"Legion Go S",g:38,mt:13,gpu:5.2,top:0,d:M("8\" LCD 120 Hz · 4 Zen-3+-Kerne · RDNA 2 (12 CU) · 16 GB","8\" LCD 120 Hz · 4 cœurs Zen 3+ · RDNA 2 (12 CU) · 16 Go")},
+ {n:"MSI Claw A8 (Ryzen Z2 Extreme)",s:"Claw A8",g:58,mt:40,gpu:9.2,top:0,d:M("8\" LCD 120 Hz · 8 Zen-5-Kerne · RDNA 3.5 (16 CU) · 24 GB","8\" LCD 120 Hz · 8 cœurs Zen 5 · RDNA 3.5 (16 CU) · 24 Go")},
+ {n:"MSI Claw 8 AI+ (Core Ultra 7 258V)",s:"Claw 8 AI+",g:46,mt:24,gpu:8.5,top:0,d:M("8\" LCD 120 Hz · Intel Lunar Lake 4P+4E · Arc 140V · 32 GB","8\" LCD 120 Hz · Intel Lunar Lake 4P+4E · Arc 140V · 32 Go")},
+ {n:"Zotac Zone (Ryzen Z1 Extreme)",s:"Zotac Zone",g:50,mt:28,gpu:7.0,top:0,d:M("7\" AMOLED 120 Hz · 8 Zen-4-Kerne · RDNA 3 (12 CU) · 16 GB","7\" AMOLED 120 Hz · 8 cœurs Zen 4 · RDNA 3 (12 CU) · 16 Go")},
+ {n:"GPD Win 4 (Ryzen 7 8840U)",s:"GPD Win 4",g:48,mt:26,gpu:6.8,top:0,d:M("6\" LCD · 8 Zen-4-Kerne · Radeon 780M (12 CU) · bis 64 GB","6\" LCD · 8 cœurs Zen 4 · Radeon 780M (12 CU) · jusqu’à 64 Go")},
+ {n:"OneXPlayer OneXFly F1 Pro (Ryzen AI 9 HX 370)",s:"OneXFly F1 Pro",g:56,mt:38,gpu:9.5,top:0,d:M("7\" OLED 120 Hz · 12 Zen-5-Kerne · Radeon 890M (16 CU) · bis 64 GB","7\" OLED 120 Hz · 12 cœurs Zen 5 · Radeon 890M (16 CU) · jusqu’à 64 Go")},
+ {n:"GPD Win 5 (Ryzen AI Max+ 395)",s:"GPD Win 5",g:62,mt:70,gpu:22,top:0,d:M("6\" LCD · 16 Zen-5-Kerne · Radeon 8060S (40 CU) · bis 128 GB","6\" LCD · 16 cœurs Zen 5 · Radeon 8060S (40 CU) · jusqu’à 128 Go")},
+ {n:"AYANEO Next 2 (Ryzen AI Max+ 395)",s:"AYANEO Next 2",g:62,mt:70,gpu:22,top:0,d:M("8\" OLED · 16 Zen-5-Kerne · Radeon 8060S (40 CU) · bis 128 GB","8\" OLED · 16 cœurs Zen 5 · Radeon 8060S (40 CU) · jusqu’à 128 Go")},
+ {n:"Nintendo Switch 2 (Konsole, kein PC)",s:"Switch 2",g:18,mt:12,gpu:5.0,top:0,d:M("7,9\" LCD · 8 ARM-A78C-Kerne · Nvidia-Ampere-GPU · 12 GB (nur zum Größenvergleich)","7,9\" LCD · 8 cœurs ARM A78C · GPU Nvidia Ampere · 12 Go (comparaison seulement)")}];
 function fx(v){var r=v>=10?Math.round(v):Math.round(v*10)/10;return String(r).replace(".",",")}
 function lpos(f){return clamp((Math.log(f)-Math.log(0.25))/(Math.log(40)-Math.log(0.25))*100,3,100)}
 function hhAll(x,cpu,gpu,use){
@@ -1465,33 +1574,36 @@ function hhAll(x,cpu,gpu,use){
   if(use==="office")return cf;
   return Math.exp(0.7*Math.log(gf)+0.3*Math.log(cf));
 }
+var HHOPEN=false;
 function renderHH(e){
   var T=t(),cpu=e.cpu,gpu=e.gpu,use=USEK[S.use];
-  var h='<h2>'+esc(T.hhh)+'</h2><p class="legend">'+esc(T.hhd)+'</p><div class="hhg">';
-  HH.forEach(function(x){
+  function card(x){
     var cf=cpu[5]/x.g,mf=cpu[6]/x.mt,gf=gpu[3]/x.gpu,all=hhAll(x,cpu,gpu,use);
     var rows=[[T.hhc,cf],[T.hhm,mf],[T.hhg,gf]].map(function(r){return '<div class="hr"><span>'+esc(r[0])+'</span><div class="pbar" role="img" aria-label="'+esc(r[0])+' ×'+fx(r[1])+'"><i style="width:'+lpos(r[1]).toFixed(0)+'%"></i><u style="left:'+lpos(1).toFixed(0)+'%"></u></div><b>×'+fx(r[1])+'</b></div>'}).join("");
-    h+='<div class="hhc"><div class="hht"><b>'+esc(x.n)+'</b><small>'+esc(tx(x.d))+'</small></div><div class="hha"><span>'+esc(T.hhall)+'</span><strong>×'+fx(all)+'</strong></div>'+rows+'</div>'});
-  $("#opc-hh").innerHTML=h+'</div><p class="legend">'+esc(T.hhn)+'</p>';
+    return '<div class="hhc"><div class="hht"><b>'+esc(x.n)+'</b><small>'+esc(tx(x.d))+'</small></div><div class="hha"><span>'+esc(T.hhall)+'</span><strong>×'+fx(all)+'</strong></div>'+rows+'</div>'}
+  var top=HH.filter(function(x){return x.top}),more=HH.filter(function(x){return !x.top});
+  var h='<h2>'+esc(T.hhh)+'</h2><p class="legend">'+esc(T.hhd)+'</p><div class="hhg">'+top.map(card).join("")+'</div>';
+  h+='<details class="hhmore"'+(HHOPEN?' open':'')+'><summary>'+esc(LANG==="fr"?"Tous les autres portables ("+more.length+")":"Alle weiteren Handhelds ("+more.length+")")+'</summary><div class="hhg">'+more.map(card).join("")+'</div></details>';
+  $("#opc-hh").innerHTML=h+'<p class="legend">'+esc(T.hhn)+'</p>';
 }
-function enc(){return [S.cpu,S.board,S.gpu,S.ram,S.ssd,S.psu,S.cool,S.use,S.res].join("-")}
-function dec(h){var m=/#pc=(\d+(?:-\d+){8})/.exec(h||"");if(!m)return false;var a=m[1].split("-").map(Number);
-  if(a[0]>=CPUS.length||a[1]>=BOARDS.length||a[2]>=GPUS.length||a[3]>=RAMS.length||a[4]>=SSDS.length||a[5]>=PSUS.length||a[6]>=COOLERS.length||a[7]>3||a[8]>2)return false;
-  S.cpu=a[0];S.board=a[1];S.gpu=a[2];S.ram=a[3];S.ssd=a[4];S.psu=a[5];S.cool=a[6];S.use=a[7];S.res=a[8];return true}
+function enc(){return [S.cpu,S.board,S.gpu,S.ram,S.ssd,S.psu,S.cool,S.use,S.res,S.case].join("-")}
+function dec(h){var m=/#pc=(\d+(?:-\d+){8,9})/.exec(h||"");if(!m)return false;var a=m[1].split("-").map(Number);
+  if(a[0]>=CPUS.length||a[1]>=BOARDS.length||a[2]>=GPUS.length||a[3]>=RAMS.length||a[4]>=SSDS.length||a[5]>=PSUS.length||a[6]>=COOLERS.length||a[7]>3||a[8]>2||(a.length>9&&a[9]>=CASES.length))return false;
+  S.cpu=a[0];S.board=a[1];S.gpu=a[2];S.ram=a[3];S.ssd=a[4];S.psu=a[5];S.cool=a[6];S.use=a[7];S.res=a[8];if(a.length>9)S.case=a[9];else pickCase();return true}
 function render(){
   var T=t(),e=evaluate(S),lb=label(e);
   try{history.replaceState(null,"","#pc="+enc())}catch(x){}
   annotate();
-  ["cpu","board","gpu","ram","ssd","psu","cool"].forEach(function(k){$("#s_"+k).value=S[k]});
+  ["cpu","board","gpu","ram","ssd","psu","cool","case"].forEach(function(k){$("#s_"+k).value=S[k]});
   $("#s_use").value=S.use;$("#s_res").value=S.res;
   var ring=$("#opc-ring");ring.className="ring v-"+lb.c;ring.style.setProperty("--p",e.total);
   $("#opc-score").innerHTML=e.total+"<i>%</i>";
   $("#opc-verdict").textContent=T[lb.k];$("#opc-verdict").className="verdict v-"+lb.c;
-  var order=["compat","bal","res","vram","psu","ram","cool","board","ssd","pcie"];
+  var order=["compat","bal","res","vram","psu","ram","cool","case","air","board","ssd","pcie"];
   $("#opc-checks").innerHTML=order.map(function(k){var c=e.C[k],l=lvl(c.score);
     return '<div class="pchk v-'+l+'"><div class="pch"><span class="cn">'+esc(tx(CHECKN[k]))+'</span><span class="cp">'+c.score+' %</span></div><div class="pbar" role="img" aria-label="'+esc(tx(CHECKN[k]))+' '+c.score+' %"><i style="width:'+c.score+'%"></i></div><p class="cm">'+c.parts.map(function(m){return esc(tx(m))}).join(" ")+'</p></div>'}).join("");
   renderHH(e);
-  $("#opc-chip").innerHTML='<span class="chl">'+esc(T.hhs)+(LANG==="fr"?" :":":")+'</span>'+HH.map(function(x){var a=hhAll(x,e.cpu,e.gpu,USEK[S.use]);return '<span class="hch'+(a<1?' lo':'')+'"><b>×'+fx(a)+'</b> '+esc(x.s)+(a<1?' ('+esc(T.hhw)+')':'')+'</span>'}).join("");
+  $("#opc-chip").innerHTML='<span class="chl">'+esc(T.hhs)+(LANG==="fr"?" :":":")+'</span>'+HH.filter(function(x){return x.top}).map(function(x){var a=hhAll(x,e.cpu,e.gpu,USEK[S.use]);return '<span class="hch'+(a<1?' lo':'')+'"><b>×'+fx(a)+'</b> '+esc(x.s)+(a<1?' ('+esc(T.hhw)+')':'')+'</span>'}).join("");
   $("#opc-hints").innerHTML=e.hints.map(function(h){return '<li class="v-'+h.l+'">'+esc(tx(h.m))+'</li>'}).join("");
   var ts=T.stats,cpu=e.cpu,gpu=e.gpu;
   $("#opc-stats").innerHTML=[[ts[0],e.load+" W"],[ts[1],e.rec+" W"],[ts[2],cpu[7]],[ts[3],gpu[4]+" GB"]].map(function(x){return '<div class="st"><span>'+esc(x[0])+'</span><b>'+esc(x[1])+'</b></div>'}).join("");
@@ -1504,7 +1616,8 @@ var DBDEF=function(){return [
  {k:"ram",data:RAMS,cols:[["name",0],["type",1,function(v){return v==="D5"?"DDR5":"DDR4"}],["gb",2],["mts",3],["cl",4],["prof",5,function(v){return {xmp:"XMP",expo:"EXPO",both:"XMP + EXPO"}[v]}]],brands:[]},
  {k:"ssd",data:SSDS,cols:[["name",0],["type",1,function(v){return {N5:"NVMe 5.0",N4:"NVMe 4.0",N3:"NVMe 3.0",SATA:"SATA",HDD:"HDD"}[v]}],["mbs",2,"bar"],["gb",3]],brands:[]},
  {k:"psu",data:PSUS,cols:[["name",0],["w",1],["eff",2],["native",3,function(v){return v?t().yes:t().no}]],brands:[]},
- {k:"cool",data:COOLERS,cols:[["name",0],["build",1],["w",2,"bar"],["socks",3,function(v){return v.length===ALLS.length?ALLS.join(" / "):v.join(" / ")}]],brands:[]}
+ {k:"cool",data:COOLERS,cols:[["name",0],["build",1],["w",2,"bar"],["socks",3,function(v){return v.length===ALLS.length?ALLS.join(" / "):v.join(" / ")}]],brands:[]},
+ {k:"case",data:CASES,cols:[["name",0],["brand",1],["ff",2],["cgpu",3,function(v){return v+" mm"}],["ccool",4,function(v){return v+" mm"}],["crad",5,function(v){return v?v+" mm":"–"}],["air",6,"bar"],["cpsu",7]],brands:[]}
 ]};
 function renderDB(){
   var T=t(),defs=DBDEF(),d=defs[DB.tab];
@@ -1537,6 +1650,19 @@ function showTab(i){
   $$(".opc-pane").forEach(function(p,j){p.hidden=j!==i});if(i===1)renderMatrix();if(i===2)monOut();
   try{history.replaceState&&0}catch(e){}
 }
+function pickCase(){
+  var bd=BOARDS[S.board],gpu=GPUS[S.gpu],cpu=CPUS[S.cpu],cool=COOLERS[S.cool],psu=PSUS[S.psu],gl=gpuLen(gpu[2]),heat=cpu[4]*0.8+gpu[2],ned=heat<250?2:heat<400?3:heat<550?4:5,bf=FORMR[bd[2]]||3,best=-1,bs=-1e9,i;
+  for(i=0;i<CASES.length;i++){var c=CASES[i];if(c[0].indexOf("(generisch)")>0)continue;
+    if((FORMR[c[2]]||3)<bf||c[3]<gl+15)continue;
+    if(cool[1]==="Luft"&&c[4]<coolH(cool)+5)continue;
+    if(cool[1]!=="Luft"&&cool[1]!=="Boxed"&&c[5]<radSz(cool))continue;
+    if(c[7]==="SFX"&&!/SFX/.test(psu[0]))continue;
+    var sc=Math.min(c[6],ned+1)*10-Math.abs((FORMR[c[2]]||3)-bf)*6-(c[3]-gl)/40;
+    if(sc>bs){bs=sc;best=i}}
+  if(best<0)for(i=0;i<CASES.length;i++){if((FORMR[CASES[i][2]]||3)>=bf&&CASES[i][0].indexOf("(generisch)")<0&&CASES[i][3]>=gl){best=i;break}}
+  if(best<0)best=CASES.length-1;
+  S.case=best;
+}
 function suggest(){
   var cpu=CPUS[S.cpu],gpu=GPUS[S.gpu],use=USEK[S.use],i,best=-1;
   var ct=cpu[4]>=200?3:cpu[4]>=140?2:1;
@@ -1559,6 +1685,7 @@ function suggest(){
   if(pk>=0)S.psu=pk;
   var ck=-1;for(i=0;i<COOLERS.length;i++){var c=COOLERS[i];if(c[3].indexOf(cpu[2])<0||c[2]<cpu[4]*0.8*0.9)continue;if(c[1]==="Boxed"&&cpu[4]>95)continue;if(ck<0||c[2]<COOLERS[ck][2])ck=i}
   if(ck>=0)S.cool=ck;
+  pickCase();
   render();
 }
 function balOf(cpu,gpu,use,res){
@@ -1581,9 +1708,9 @@ function renderMatrix(){
   var cmax=Math.max.apply(null,ci.map(function(c){return CPUS[c][5]})),gmax=Math.max.apply(null,gi.map(function(g){return GPUS[g][3]}));
   var fr=LANG==="fr";
   $("#opc-mxax").innerHTML='<div class="mxkey"><span style="--c:var(--mok)">'+(fr?"passe bien":"passt gut")+'</span><span style="--c:var(--mwarn)">'+(fr?"limite":"geht, mit Einschränkung")+'</span><span style="--c:var(--mbad)">'+(fr?"déséquilibré":"unausgewogen")+'</span></div>';
-  var h='<table class="mx"><thead><tr><th class="cor" scope="col"><span>'+esc(T.mxcg)+'</span><em>'+esc(T.mxcc)+'</em></th>'+ci.map(function(c){return '<th class="v'+(c===S.cpu?' hl':'')+'" scope="col" title="'+esc(CPUS[c][0])+'"><span>'+esc(CPUS[c][0].replace("Core ","").replace("Ryzen ","R").replace(/\(F\)/,""))+'</span><i class="sb" style="--w:'+Math.round(CPUS[c][5]/cmax*100)+'%"></i></th>'}).join("")+'</tr></thead><tbody>';
+  var h='<table class="mx"><thead><tr><th class="cor" scope="col"><em>'+esc(T.mxcc)+'</em><span>'+esc(T.mxcg)+'</span></th>'+ci.map(function(c){return '<th class="v'+(c===S.cpu?' hl':'')+'" scope="col" title="'+esc(CPUS[c][0])+'"><span>'+esc(CPUS[c][0].replace("Core ","").replace("Ryzen ","R").replace(/\(F\)/,""))+'</span><i class="sb vb" style="--w:'+Math.round(CPUS[c][5]/cmax*100)+'%"></i></th>'}).join("")+'</tr></thead><tbody>';
   gi.forEach(function(g){h+='<tr><th scope="row"'+(g===S.gpu?' class="hl"':'')+' title="'+esc(GPUS[g][0])+'">'+esc(GPUS[g][0].replace("GeForce ","").replace("Radeon ",""))+'<i class="sb" style="--w:'+Math.round(GPUS[g][3]/gmax*100)+'%"></i></th>'+ci.map(function(c){var v=balOf(CPUS[c],GPUS[g],use,S.res);
-    return '<td><button type="button" class="mc v-'+lvl(v)+(c===S.cpu&&g===S.gpu?' cur':'')+'" data-c="'+c+'" data-g="'+g+'" title="'+esc(CPUS[c][0]+" + "+GPUS[g][0]+": "+v+" %")+'" aria-label="'+esc(CPUS[c][0]+" + "+GPUS[g][0]+": "+v+" %")+'"></button></td>'}).join("")+'</tr>'});
+    return '<td><button type="button" class="mc v-'+lvl(v)+(c===S.cpu&&g===S.gpu?' cur':'')+'" data-c="'+c+'" data-g="'+g+'" title="'+esc(CPUS[c][0]+" + "+GPUS[g][0]+": "+v+" %")+'" aria-label="'+esc(CPUS[c][0]+" + "+GPUS[g][0]+": "+v+" %")+'">'+v+'</button></td>'}).join("")+'</tr>'});
   $("#opc-matrix").innerHTML=h+'</tbody></table>';
 }
 /* ---------- Ziel-Stärke: Bauteile automatisch wählen ---------- */
@@ -1620,14 +1747,14 @@ function pickTarget(){
 }
 function applyPreset(i){
   var p=PRESETS[i],v=p.v;
-  S.cpu=find(CPUS,v[0]);S.board=find(BOARDS,v[1]);S.gpu=find(GPUS,v[2]);S.ram=find(RAMS,v[3]);S.ssd=find(SSDS,v[4]);S.psu=find(PSUS,v[5]);S.cool=find(COOLERS,v[6]);S.use=p.u;S.res=p.r;
+  S.cpu=find(CPUS,v[0]);S.board=find(BOARDS,v[1]);S.gpu=find(GPUS,v[2]);S.ram=find(RAMS,v[3]);S.ssd=find(SSDS,v[4]);S.psu=find(PSUS,v[5]);S.cool=find(COOLERS,v[6]);S.case=find(CASES,v[7]);S.use=p.u;S.res=p.r;
   render();
 }
 function renderAll(){buildStatic();tgInit();selectsInit();render();renderDB();renderSock();renderFaq();renderMon();$$(".lang").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.l===LANG?"true":"false")});document.documentElement.setAttribute("lang",LANG)}
 function init(){
   var HASHOK=dec(location.hash);
   renderAll();
-  ["cpu","board","gpu","ram","ssd","psu","cool","use","res"].forEach(function(k){$("#s_"+k).addEventListener("change",function(ev){S[k]=+ev.target.value;render()})});
+  ["cpu","board","gpu","ram","ssd","psu","cool","case","use","res"].forEach(function(k){$("#s_"+k).addEventListener("change",function(ev){S[k]=+ev.target.value;render()})});
   $("#t_base").addEventListener("change",function(ev){TG.base=+ev.target.value});
   $("#t_f").addEventListener("change",function(ev){TG.f=+ev.target.value});
   $("#t_cb").addEventListener("change",function(ev){TG.cb=ev.target.value});
