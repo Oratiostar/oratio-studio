@@ -724,7 +724,7 @@ function placeseite(){
 }
 function werkzeugseite(){
   document.title = U("wzName")+" – Oratio Place"; brand("wz");
-  const nEl = x => !x[0].startsWith("elektro.html"), fin = WTOOLS.slice(-5).filter(nEl), alle = WTOOLS.slice(0,-5).filter(nEl);
+  const nEl = x => !x[0].startsWith("elektro.html") && !x[0].startsWith("pc-check.html"), fin = WTOOLS.slice(-5).filter(nEl), alle = WTOOLS.slice(0,-5).filter(nEl);
   const kachel = (x, gross) => { const [href,sym,t1,t2,s1,s2,kw] = x; return '<a class="wzk'+(gross?" gross":"")+'" href="'+esc(href)+'" data-t="'+esc(nrm(t1+" "+t2+" "+s1+" "+s2+" "+kw))+'"><span class="wzs">'+sym+'</span><b>'+esc(LANG==="fr"?t2:t1)+'</b><small>'+esc(LANG==="fr"?s2:s1)+'</small></a>'; };
   app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("wzName"))+'</div><h1>🧰 '+esc(U("wzName"))+'</h1><p class="sub">'+esc(U("wzSub"))+'</p>'
     + '<input id="wzq" class="in" type="search" autocomplete="off" placeholder="'+esc(U("wzSuche"))+'" style="margin:6px 0 18px;max-width:560px">'
@@ -751,7 +751,8 @@ function startseite(){
   const dk = w => hell(w.farbe) ? dunkler(w.farbe,.62) : hexOf(w.farbe);
   const karte = (href, kat, col, sym, name, sub, n) => '<a class="sc" data-k="'+kat+'" href="'+href+'" style="--wc:'+col+'"><div class="sh"><b'+(/\S{14,}/.test(name)?' style="font-size:12.5px;letter-spacing:0"':'')+'>'+esc(name)+'</b></div><div class="sbad">'+sym+'</div><p>'+esc(sub)+'</p><i class="sn">'+esc(n)+'</i></a>';
   const elK = karte("elektro.html", "labor schaltungen bauteile grundlagen", "#12b8a6", '<span class="emo">🔌</span>', LANG==="fr"?"Labo d’électronique":"Elektronik-Labor", LANG==="fr"?"Code couleur, loi d’Ohm, LED, filtres, 555, logique, brochage Pi – avec calculs":"Farbcode, Ohm, LED, Filter, 555, Logik, Pi-Pinout – zum Rechnen", "9 "+(LANG==="fr"?"outils":"Werkzeuge"));
-  const karten = elK + INDEX.welten.map(w => karte("#/w/"+w.id, weltKat(w.id).join(" "), dk(w), '<span class="emo">'+weltSym(w)+'</span>', T(w.name), T(w.untertitel), w.seiten.length+" "+U("seiten"))).join("");
+  const pcK = karte("pc-check.html", "informatik geraete", "#3b6fd6", '<span class="emo">🖥️</span>', "PC-Check", LANG==="fr"?"Compatibilité en pourcentage : CPU, GPU, carte mère, RAM, alimentation, ventirad":"Passt alles zusammen? CPU, GPU, Mainboard, RAM, Netzteil, Kühler – in Prozent", LANG==="fr"?"Configurateur · matrice · base":"Konfigurator · Matrix · Datenbank");
+  const karten = elK + pcK + INDEX.welten.map(w => karte("#/w/"+w.id, weltKat(w.id).join(" "), dk(w), '<span class="emo">'+weltSym(w)+'</span>', T(w.name), T(w.untertitel), w.seiten.length+" "+U("seiten"))).join("");
   app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("studio"))+'</div><div class="ribwrap"><div class="ribbon">'+esc(U("fachW"))+'</div></div>'+chips+'<div class="scgrid">'+karten+'</div>';
   const filtere = () => {
     document.querySelectorAll(".kat").forEach(b => b.classList.toggle("on", b.dataset.k === KATWAHL));
@@ -829,6 +830,7 @@ const WTOOLS = [
  ["elektro.html#timer555", "⏲️", "555-Timer", "Timer 555", "Blinker und Impuls berechnen, mit Pinbelegung des NE555.", "Calculer clignotant et impulsion, avec brochage du NE555.", "555 ne555 timer blinker astabil monostabil oszillator pwm frequenz tastgrad"],
  ["elektro.html#logik", "🔢", "Logik & Zahlensysteme", "Logique et numération", "Wahrheitstabellen, 74xx-Gatter, Binär/Hex/Dezimal umrechnen.", "Tables de vérité, portes 74xx, binaire/hexa/décimal.", "logik wahrheitstabelle gatter and or nand nor xor 74xx binaer hex dezimal zahlensystem bin dez boolesche algebra"],
  ["elektro.html#pinout", "🍓", "Raspberry-Pi-Pinout", "Brochage Raspberry Pi", "Alle 40 GPIO-Pins mit Funktion, I²C, SPI, UART und PWM.", "Les 40 broches GPIO avec fonctions I²C, SPI, UART et PWM.", "raspberry pi pinout gpio pins header i2c spi uart pwm bcm 40 pin belegung pi5 pi4"],
+ ["pc-check.html", "🖥️", "PC-Check", "PC-Check", "Passen CPU, Grafikkarte, Mainboard, RAM, Netzteil und Kühler zusammen? Mit Prozent-Balken, Engpass-Matrix und Teile-Datenbank.", "CPU, GPU, carte mère, RAM, alimentation et ventirad vont-ils ensemble ? Avec barres en pourcentage, matrice des goulots et base de composants.", "pc check computer zusammenbauen konfigurator cpu gpu grafikkarte prozessor mainboard ram netzteil kuehler nvidia amd intel ryzen geforce radeon bottleneck engpass kompatibel kompatibilitaet gaming pc bauen"],
  ["datei-werkstatt.html","🗂️","Datei-Werkstatt","Atelier de fichiers","PDF, Word, Bilder und ZIP: zusammenfügen, umwandeln, komprimieren – direkt im Browser, ohne Upload.","PDF, Word, images et ZIP, sans envoi.","datei werkstatt pdf word zip bilder werkzeug tool"],
  ["icon-werkstatt.html","🎨","Icon-Werkstatt","Atelier d’icônes","Bild in Form bringen, zuschneiden und als Symbol speichern (PNG, JPG, WebP, ICO).","Mettre une image en forme et l’enregistrer comme icône.","icon symbol logo favicon ico app icon bild zuschneiden rund form png webp werkstatt"],
  ["alltag.html", "🧰", "Alltags-Helfer", "Assistants du quotidien", "QR-Code, Passwort, Umrechner, Rechner, Text, Bild, Zufall, Zeit und Farbe – alles im Browser.", "Code QR, mot de passe, convertisseur, calculatrices, texte, image, hasard, temps et couleur.", "alltag helfer werkzeuge qr passwort rechner umrechner wuerfel stoppuhr"],
