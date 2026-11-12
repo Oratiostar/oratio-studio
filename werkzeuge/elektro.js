@@ -411,15 +411,22 @@ const TOOLS = [
 window.Elektro = { start: function(){
   const grid = $("#toolgrid"), hostEl = $("#toolhost");
   grid.innerHTML = TOOLS.map(t => '<a class="tcard" style="--wc:' + t[2] + '" href="#' + t[0] + '" data-id="' + t[0] + '"><span class="ts" style="background:' + t[2] + '">' + t[1] + '</span><span><b>' + esc(t[3]) + '</b><small>' + esc(t[4]) + '</small></span></a>').join("");
+  const crumb = document.querySelector("main .crumb"), crumb0 = crumb ? crumb.innerHTML : "", sub = document.querySelector("main > .sub"), titel0 = T("Elektronik-Labor", "Labo d’électronique");
   function zeigen(){
-    const id = (location.hash || "").slice(1), t = TOOLS.find(x => x[0] === id) || TOOLS[0];
-    $$(".tcard", grid).forEach(a => a.classList.toggle("on", a.dataset.id === t[0]));
+    const id = (location.hash || "").slice(1), t = TOOLS.find(x => x[0] === id);
+    if (!t){
+      grid.style.display = ""; if (sub) sub.style.display = ""; hostEl.innerHTML = "";
+      if (crumb) crumb.innerHTML = crumb0;
+      document.title = titel0 + " – Oratio"; return;
+    }
+    grid.style.display = "none"; if (sub) sub.style.display = "none";
+    if (crumb) crumb.innerHTML = crumb0.replace(/ › [^›]*$/, ' › <a href="#">' + titel0 + '</a> › ' + esc(t[3]));
     hostEl.innerHTML = '<section class="card toolcard" id="' + t[0] + '"><h2><span class="ts" style="background:' + t[2] + '">' + t[1] + '</span> ' + esc(t[3]) + '</h2><div class="tbody"></div></section>';
-    try { t[5]($(".tbody", hostEl)); } catch(e){ $(".tbody", hostEl).textContent = e.message; }
+    try { t[5]($(".tbody", hostEl)); } catch(err){ $(".tbody", hostEl).textContent = err.message; }
     if (window.WZ && WZ.selects) WZ.selects();
-    document.title = t[3] + " – " + T("Elektronik-Labor", "Labo d’électronique") + " – Oratio";
+    document.title = t[3] + " – " + titel0 + " – Oratio";
   }
-  window.addEventListener("hashchange", () => { zeigen(); const el = $(".toolcard"); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); });
+  window.addEventListener("hashchange", () => { zeigen(); window.scrollTo(0, 0); });
   zeigen();
 } };
 })();
