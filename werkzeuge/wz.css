@@ -198,3 +198,5 @@ body.sl .tcard.on{outline:3px solid var(--wc,#00b3a4);outline-offset:1px;border-
 @media (hover:hover){body.sl .tcard:hover{border-color:var(--wc,#00b3a4);border-top:0;filter:brightness(1.03)}}
 :root[data-theme="dark"] body.sl .tcard{background:linear-gradient(#2a3446,#1f2838)}:root[data-theme="dark"] body.sl .tcard b{color:#9ec5ff}:root[data-theme="dark"] body.sl .tcard small{color:#a9b6cc}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.sl .tcard{background:linear-gradient(#2a3446,#1f2838)}:root:not([data-theme="light"]) body.sl .tcard b{color:#9ec5ff}:root:not([data-theme="light"]) body.sl .tcard small{color:#a9b6cc}}
+
+body.sl .tcard{--wc:#00b3a4!important}
