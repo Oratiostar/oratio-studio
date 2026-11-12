@@ -188,3 +188,13 @@ body.sl main>h1,body.sl main>.sub{color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.4
 @media (max-width:560px){.ph{padding-left:66px}.phbad{width:68px;height:68px;left:-6px}.ph h1{font-size:19px}.phsub{margin-left:66px}}
 .phbad .emo{font-size:38px;line-height:1}@media (max-width:560px){.phbad .emo{font-size:32px}}body.sl main>.ph{margin-top:14px}body.sl main>.sub{margin:10px 0 14px}.wzrib{margin:0 0 10px}
 body.sl main>.ph{margin-bottom:16px}
+
+/* Elektronik-Labor: Werkzeug-Karten wie die Listen der Welten */
+body.sl .tcard{position:relative;border:0;border-left:8px solid var(--wc,#00b3a4);border-radius:10px;background:linear-gradient(#fbfffa,#dcebd2);box-shadow:0 3px 0 rgba(0,0,0,.22);padding:11px 38px 11px 14px;color:#1f4a86}
+body.sl .tcard b{color:#1f4a86;font-size:16px}
+body.sl .tcard small{color:#4d6b53}
+body.sl .tcard::after{content:"›";position:absolute;right:14px;top:50%;transform:translateY(-52%);font-size:26px;font-weight:900;color:var(--wc,#00b3a4)}
+body.sl .tcard.on{outline:3px solid var(--wc,#00b3a4);outline-offset:1px;border-top:0}
+@media (hover:hover){body.sl .tcard:hover{border-color:var(--wc,#00b3a4);border-top:0;filter:brightness(1.03)}}
+:root[data-theme="dark"] body.sl .tcard{background:linear-gradient(#2a3446,#1f2838)}:root[data-theme="dark"] body.sl .tcard b{color:#9ec5ff}:root[data-theme="dark"] body.sl .tcard small{color:#a9b6cc}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.sl .tcard{background:linear-gradient(#2a3446,#1f2838)}:root:not([data-theme="light"]) body.sl .tcard b{color:#9ec5ff}:root:not([data-theme="light"]) body.sl .tcard small{color:#a9b6cc}}

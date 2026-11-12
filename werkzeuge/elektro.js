@@ -410,7 +410,7 @@ const TOOLS = [
 ];
 window.Elektro = { start: function(){
   const grid = $("#toolgrid"), hostEl = $("#toolhost");
-  grid.innerHTML = TOOLS.map(t => '<a class="tcard" href="#' + t[0] + '" data-id="' + t[0] + '"><span class="ts" style="background:' + t[2] + '">' + t[1] + '</span><span><b>' + esc(t[3]) + '</b><small>' + esc(t[4]) + '</small></span></a>').join("");
+  grid.innerHTML = TOOLS.map(t => '<a class="tcard" style="--wc:' + t[2] + '" href="#' + t[0] + '" data-id="' + t[0] + '"><span class="ts" style="background:' + t[2] + '">' + t[1] + '</span><span><b>' + esc(t[3]) + '</b><small>' + esc(t[4]) + '</small></span></a>').join("");
   function zeigen(){
     const id = (location.hash || "").slice(1), t = TOOLS.find(x => x[0] === id) || TOOLS[0];
     $$(".tcard", grid).forEach(a => a.classList.toggle("on", a.dataset.id === t[0]));
