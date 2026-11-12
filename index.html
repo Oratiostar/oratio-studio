@@ -154,9 +154,10 @@ footer a{color:var(--muted)}
 .flag{border-radius:3px;vertical-align:-2px;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
 @media (max-width:700px){.bar{padding-left:10px;padding-right:10px}.lg{font-size:23px}.lg .lgO{width:35px;height:35px}.seg{border-width:1.5px;border-radius:9px}.seg button{padding:3px 6px;font-size:11px;gap:3px;line-height:1.2}.seg button .e{font-size:11px}.seg .flag{width:15px;height:10px}.seg button+button{border-left-width:1.5px}.seg .flag{width:16px;height:11px}.bar .logo{order:1}.bar .sp{display:none}.bar #bLang{margin-left:auto}.bar #bLang{order:3}.bar #bTheme{order:4}.bar #q{order:5;flex:1 1 100%;max-width:none}.bar{gap:6px 6px}}
 /* ================= Studio-Look wie im Control Center ================= */
-body.sl{--sg1:#9bd83f;--sg2:#52ad2c;--sgl:rgba(255,255,255,.9);--sink:#1f4a86;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1400' height='900' viewBox='0 0 1400 900'><g fill='%23fff' fill-opacity='.07'><polygon points='0,0 420,0 160,300'/><polygon points='520,0 980,0 700,240'/><polygon points='1100,60 1400,0 1400,320'/><polygon points='200,420 560,300 480,640'/><polygon points='760,420 1160,380 980,700'/><polygon points='0,620 300,760 0,900'/></g><g fill='%23000' fill-opacity='.05'><polygon points='420,0 700,240 160,300'/><polygon points='980,0 1400,0 1100,60'/><polygon points='560,300 760,420 480,640'/><polygon points='1160,380 1400,320 1400,700'/><polygon points='300,760 700,900 0,900'/><polygon points='980,700 1400,700 1400,900'/></g></svg>") center/cover fixed,linear-gradient(160deg,var(--sg1),var(--sg2) 70%,#3f9a2a);background-color:#58b02c}
-:root[data-theme="dark"] body.sl{--sg1:#2f6f2f;--sg2:#1d4a22;--sgl:rgba(28,34,48,.92);--sink:#9ec5ff;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1400' height='900' viewBox='0 0 1400 900'><g fill='%23fff' fill-opacity='.07'><polygon points='0,0 420,0 160,300'/><polygon points='520,0 980,0 700,240'/><polygon points='1100,60 1400,0 1400,320'/><polygon points='200,420 560,300 480,640'/><polygon points='760,420 1160,380 980,700'/><polygon points='0,620 300,760 0,900'/></g><g fill='%23000' fill-opacity='.05'><polygon points='420,0 700,240 160,300'/><polygon points='980,0 1400,0 1100,60'/><polygon points='560,300 760,420 480,640'/><polygon points='1160,380 1400,320 1400,700'/><polygon points='300,760 700,900 0,900'/><polygon points='980,700 1400,700 1400,900'/></g></svg>") center/cover fixed,linear-gradient(160deg,var(--sg1),var(--sg2) 70%,#143a1a);background-color:#1d4a22}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.sl{--sg1:#2f6f2f;--sg2:#1d4a22;--sgl:rgba(28,34,48,.92);--sink:#9ec5ff;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1400' height='900' viewBox='0 0 1400 900'><g fill='%23fff' fill-opacity='.07'><polygon points='0,0 420,0 160,300'/><polygon points='520,0 980,0 700,240'/><polygon points='1100,60 1400,0 1400,320'/><polygon points='200,420 560,300 480,640'/><polygon points='760,420 1160,380 980,700'/><polygon points='0,620 300,760 0,900'/></g><g fill='%23000' fill-opacity='.05'><polygon points='420,0 700,240 160,300'/><polygon points='980,0 1400,0 1100,60'/><polygon points='560,300 760,420 480,640'/><polygon points='1160,380 1400,320 1400,700'/><polygon points='300,760 700,900 0,900'/><polygon points='980,700 1400,700 1400,900'/></g></svg>") center/cover fixed,linear-gradient(160deg,var(--sg1),var(--sg2) 70%,#143a1a);background-color:#1d4a22}}
+body.sl{--sg1:#9bd83f;--sg2:#52ad2c;--sgl:rgba(255,255,255,.9);--sink:#1f4a86;background:var(--sg2)}
+:root[data-theme="dark"] body.sl{--sg1:#2f6f2f;--sg2:#1d4a22;--sgl:rgba(28,34,48,.92);--sink:#9ec5ff;background:var(--sg2)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.sl{--sg1:#2f6f2f;--sg2:#1d4a22;--sgl:rgba(28,34,48,.92);--sink:#9ec5ff;background:var(--sg2)}}
+body.sl::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1400' height='900' viewBox='0 0 1400 900'><g fill='%23fff' fill-opacity='.07'><polygon points='0,0 420,0 160,300'/><polygon points='520,0 980,0 700,240'/><polygon points='1100,60 1400,0 1400,320'/><polygon points='200,420 560,300 480,640'/><polygon points='760,420 1160,380 980,700'/><polygon points='0,620 300,760 0,900'/></g><g fill='%23000' fill-opacity='.05'><polygon points='420,0 700,240 160,300'/><polygon points='980,0 1400,0 1100,60'/><polygon points='560,300 760,420 480,640'/><polygon points='1160,380 1400,320 1400,700'/><polygon points='300,760 700,900 0,900'/><polygon points='980,700 1400,700 1400,900'/></g></svg>") center/cover,linear-gradient(160deg,var(--sg1),var(--sg2) 70%,#3f9a2a)}
 body.sl .crumb{display:inline-block;background:rgba(255,255,255,.82);color:#2a3f66;border-radius:99px;padding:4px 14px;font-weight:700;box-shadow:0 2px 0 rgba(0,0,0,.12)}
 body.sl .crumb a{color:#1f6fb8}
 :root[data-theme="dark"] body.sl .crumb{background:rgba(20,26,38,.8);color:#c8d4ea}
@@ -224,7 +225,7 @@ body.sl main>h1,body.sl main>.sub{color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.4
 body.sl{min-height:100vh}
 body.sl footer,body.sl footer a{color:rgba(255,255,255,.92)}
 body.sl #app>.phsub{margin-top:8px}body.sl #app>.phsub em{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.45)}body.sl #app>.phsub .phw{display:none}
-.sc .sh b{overflow-wrap:break-word}
+.sc .sh b{overflow-wrap:break-word}.sc.lt .sh b{color:#2a1740;text-shadow:none}.ph.lt h1{color:#2a1740;text-shadow:none}
 .emo{font-size:36px;line-height:1}.ph .emo{font-size:42px}@media (max-width:560px){.emo{font-size:30px}.ph .emo{font-size:34px}}
 
 
@@ -748,8 +749,8 @@ function startseite(){
   document.title = "Oratio Tech Studio"; brand("studio");
   const chips = '<div class="kats" role="tablist">'+["alle"].concat(KATS).map(k =>
     '<button class="kat'+(k===KATWAHL?" on":"")+'" data-k="'+k+'">'+esc(k==="alle" ? U("katAlle") : U("kat")[k])+'</button>').join("")+'</div>';
-  const dk = w => hell(w.farbe) ? dunkler(w.farbe,.82) : hexOf(w.farbe);
-  const karte = (href, kat, col, sym, name, sub, n) => '<a class="sc" data-k="'+kat+'" href="'+href+'" style="--wc:'+col+'"><div class="sh"><b'+(/\S{14,}/.test(name)?' style="font-size:12.5px;letter-spacing:0"':'')+'>'+esc(name)+'</b></div><div class="sbad">'+sym+'</div><p>'+esc(sub)+'</p><i class="sn">'+esc(n)+'</i></a>';
+  const dk = w => hexOf(w.farbe);
+  const karte = (href, kat, col, sym, name, sub, n) => '<a class="sc'+(hell(col)?' lt':'')+'" data-k="'+kat+'" href="'+href+'" style="--wc:'+col+'"><div class="sh"><b'+(/\S{14,}/.test(name)?' style="font-size:12.5px;letter-spacing:0"':'')+'>'+esc(name)+'</b></div><div class="sbad">'+sym+'</div><p>'+esc(sub)+'</p><i class="sn">'+esc(n)+'</i></a>';
   const elK = karte("elektro.html", "labor schaltungen bauteile grundlagen", "#00b3a4", '<span class="emo">🔌</span>', LANG==="fr"?"Labo d’électronique":"Elektronik-Labor", LANG==="fr"?"Code couleur, loi d’Ohm, LED, filtres, 555, logique, brochage Pi – avec calculs":"Farbcode, Ohm, LED, Filter, 555, Logik, Pi-Pinout – zum Rechnen", "9 "+(LANG==="fr"?"outils":"Werkzeuge"));
   const pcK = karte("pc-check.html", "informatik geraete", "#ff5a3c", '<span class="emo">🖥️</span>', "PC-Check", LANG==="fr"?"Compatibilité en pourcentage : CPU, GPU, carte mère, RAM, alimentation, ventirad":"Passt alles zusammen? CPU, GPU, Mainboard, RAM, Netzteil, Kühler – in Prozent", LANG==="fr"?"Configurateur · matrice · base":"Konfigurator · Matrix · Datenbank");
   const karten = elK + pcK + INDEX.welten.map(w => karte("#/w/"+w.id, weltKat(w.id).join(" "), dk(w), '<span class="emo">'+weltSym(w)+'</span>', T(w.name), T(w.untertitel), w.seiten.length+" "+U("seiten"))).join("");
@@ -762,14 +763,14 @@ function startseite(){
   filtere();
 }
 function pageHead(w, titel, kurz, sym, kopf){
-  const c = hell(w.farbe) ? dunkler(w.farbe,.82) : hexOf(w.farbe);
+  const c = hexOf(w.farbe);
   const em = sym ? symbol(sym) : weltSym(w);
-  return '<div class="ph" style="--wc:'+c+'"><div class="phbad"><span class="emo">'+em+'</span></div><h1>'+esc(T(titel))+'</h1></div><div class="phsub"><span class="phw">'+esc(T(kopf||w.name))+'</span>'+(kurz?'<em>'+esc(T(kurz))+'</em>':'')+'</div>';
+  return '<div class="ph'+(hell(c)?' lt':'')+'" style="--wc:'+c+'"><div class="phbad"><span class="emo">'+em+'</span></div><h1>'+esc(T(titel))+'</h1></div><div class="phsub"><span class="phw">'+esc(T(kopf||w.name))+'</span>'+(kurz?'<em>'+esc(T(kurz))+'</em>':'')+'</div>';
 }
 function weltseite(id){
   const w = weltInfo(id); if (!w) return nichts();
   document.title = T(w.name)+" – Oratio Tech Studio";brand("studio");
-  const c = hell(w.farbe) ? dunkler(w.farbe,.82) : hexOf(w.farbe);
+  const c = hexOf(w.farbe);
   const grp = new Map(); w.seiten.forEach(s => { const g = s.gruppe || ""; if(!grp.has(g)) grp.set(g, []); grp.get(g).push(s); });
   const offen = grp.size <= 3;
   let h = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › <a href="#/studio">'+esc(U("studio"))+'</a> › '+esc(T(w.name))+'</div>'+pageHead(w, w.name, w.untertitel, null, "")+'';
@@ -784,7 +785,7 @@ async function seitenansicht(wid, sid){
   const w = weltInfo(wid); if (!w) return nichts();
   const wd = await welt(wid), s = wd.seiten.find(p => p.id === sid); if (!s) return nichts();
   document.title = T(s.titel)+" – Oratio Tech Studio";brand("studio");
-  const wc = hell(w.farbe) ? dunkler(w.farbe,.82) : hexOf(w.farbe);
+  const wc = hexOf(w.farbe);
   const nav = w.seiten.map(p => '<a href="#/s/'+w.id+'/'+encodeURIComponent(p.id)+'"'+(p.id===sid?' class="act"':'')+'>'+esc(T(p.titel))+'</a>').join("");
   let h = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › <a href="#/studio">'+esc(U("studio"))+'</a> › <a href="#/w/'+w.id+'">'+esc(T(w.name))+'</a> › '+esc(T(s.titel))+'</div><div class="slw"><nav class="slnav" aria-label="'+esc(T(w.name))+'">'+nav+'</nav><section class="slmain">'+pageHead(w, s.titel, s.kurz, s.symbol);
   if (s.tags && s.tags.length) h += '<div class="tags">'+s.tags.filter(t=>t.length>2&&!/[\/()]/.test(t)).slice(0,10).map(t=>'<span class="tag">'+esc(t)+'</span>').join("")+'</div>';
