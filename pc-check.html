@@ -326,18 +326,16 @@ body.sl .opc .sub#opc-sub{color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.4);margin
 body.sl .ptabs{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
 body.sl .opc-tab{--tc:#ff5a3c;border:0;border-left:8px solid var(--tc);border-radius:10px;background:linear-gradient(#fbfffa,#dcebd2);box-shadow:0 3px 0 rgba(0,0,0,.22);padding:11px 12px}
 body.sl .opc-tab b{color:var(--sink)}body.sl .opc-tab small{color:#4d6b53}body.sl .opc-tab i{color:var(--tc)}
-body.sl .ptabs{padding:8px 6px 12px}
-body.sl .opc-tab{transition:transform .15s,box-shadow .15s}
-body.sl .opc-tab[aria-selected="true"]{background:#fff;border:0;border-left:8px solid var(--tc);transform:scale(1.08);position:relative;z-index:2;box-shadow:0 7px 0 rgba(0,0,0,.2)}
-body.sl .opc-tab[aria-selected="true"] b{color:var(--tc)}
+body.sl .ptabs{display:flex;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:10px;overflow-x:auto;overflow-y:hidden;padding:12px 16px 16px;margin:0 -16px 10px;scrollbar-width:none;-ms-overflow-style:none;overscroll-behavior-x:contain}
+body.sl .ptabs::-webkit-scrollbar{display:none;width:0;height:0}
+body.sl .opc-tab{flex:0 0 auto;min-width:0;padding:9px 13px;transform:none;transition:padding .15s,box-shadow .15s}
+body.sl .opc-tab b{font-size:14px}body.sl .opc-tab small{font-size:11px}body.sl .opc-tab i{font-size:10px}
+body.sl .opc-tab[aria-selected="true"]{background:#fff;border:0;border-left:8px solid var(--tc);transform:none;padding:15px 19px;box-shadow:0 7px 0 rgba(0,0,0,.2)}
+body.sl .opc-tab[aria-selected="true"] b{color:var(--tc);font-size:17px}body.sl .opc-tab[aria-selected="true"] small{font-size:12.5px}
 :root[data-theme="dark"] body.sl .opc-tab[aria-selected="true"]{background:#2a3446}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.sl .opc-tab[aria-selected="true"]{background:#2a3446}}
-@media (hover:hover){body.sl .opc-tab:hover{transform:none}body.sl .opc-tab[aria-selected="true"]:hover{transform:scale(1.08)}}
+@media (hover:hover){body.sl .opc-tab:hover,body.sl .opc-tab[aria-selected="true"]:hover{transform:none}}
 /* Farben und Schrift im Inhalt */
-body.sl .opc .opc-pane{--pc:#ff8a00}
-body.sl .opc .opc-pane:nth-of-type(2){--pc:#2f7bff}body.sl .opc .opc-pane:nth-of-type(3){--pc:#ffd400}body.sl .opc .opc-pane:nth-of-type(4){--pc:#2fbf4a}body.sl .opc .opc-pane:nth-of-type(5){--pc:#ff4f9a}body.sl .opc .opc-pane:nth-of-type(6){--pc:#9b5cff}body.sl .opc .opc-pane:nth-of-type(7){--pc:#1ed0c0}
-body.sl .opc .panel{border-top:7px solid var(--pc)}
-body.sl .opc h2.step::before{background:var(--pc);color:#2a1740}
 body.sl .opc .fld span{font:700 14px/1.2 Inter,system-ui,sans-serif;letter-spacing:0;text-transform:none;color:var(--cy)}
 body.sl .opc strong,body.sl .opc .mcard strong{letter-spacing:-.01em}
 body.sl .opc .selbtn{background:linear-gradient(#f2f9ff,#dcecfb);border-color:#7fb4ec;font-weight:600}
@@ -346,6 +344,44 @@ body.sl .opc .presets h2{color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.4)}
 :root[data-theme="light"] body.sl main .opc.opc{--soft:#e9f3df;--line:#cadcbb;--track:#d5e6c6;--hd:#dcebd2;--okbg:rgba(47,191,74,.16)}
 body.sl .opc .opc-pane>h2,body.sl .opc .opc-pane>.sub,body.sl .opc .opc-pane>.tip,body.sl .opc .opc-pane>p,body.sl .opc .opc-pane>div>h2{color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.45)}
 body.sl .opc .mxbar .fld span{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.45)}
+
+/* ===== Neutral + Blau, Gruen aus dem Hintergrund ===== */
+body.sl main .opc.opc{--ok:#3fbf2f;--mok:#8fe36a}
+body.sl .opc .panel{border-top:1px solid var(--line)}
+body.sl .opc h2.step::before{background:#2f7bff;color:#fff}
+body.sl .opc .mcard.ok,body.sl .opc .mcard.warn,body.sl .opc .mcard.bad,body.sl .opc .mcard.info{border-top:1px solid var(--line)}
+body.sl .opc .pbtn.go{background:linear-gradient(#4f9bff,#2f7bff);border:2px solid #1f5fd0;color:#fff}
+body.sl .opc .pbtn:not(.go){background:linear-gradient(#f2f9ff,#dcecfb);border:2px solid #7fb4ec;color:#1f4a86}
+/* Glas-Schalter */
+.glassbar{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin:0 0 4px;color:#fff;font-weight:700;font-size:14px;text-shadow:0 1px 3px rgba(0,0,0,.45)}
+.glassbar button{all:unset;cursor:pointer;width:50px;height:28px;border-radius:99px;background:rgba(255,255,255,.35);border:2px solid #fff;position:relative;box-shadow:inset 0 2px 5px rgba(0,0,0,.25);transition:background .2s}
+.glassbar button i{position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.35);transition:transform .2s}
+.glassbar button[aria-checked="true"]{background:#2f7bff}.glassbar button[aria-checked="true"] i{transform:translateX(22px)}
+.glassbar button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+/* ===== GLAS ===== */
+body.sl .opc.glass{--card:rgba(255,255,255,.46);--card2:rgba(255,255,255,.46);--soft:rgba(255,255,255,.34);--line:rgba(255,255,255,.75);--input:rgba(255,255,255,.7);--g1:rgba(255,255,255,.62);--g2:rgba(255,255,255,.2);--gs:rgba(0,60,0,.3);--gh:rgba(255,255,255,.55)}
+:root[data-theme="dark"] body.sl .opc.glass{--card:rgba(24,34,52,.5);--card2:rgba(24,34,52,.5);--soft:rgba(255,255,255,.07);--line:rgba(255,255,255,.22);--input:rgba(10,16,28,.55);--g1:rgba(30,42,64,.62);--g2:rgba(30,42,64,.3);--gs:rgba(0,0,0,.5);--gh:rgba(255,255,255,.16)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.sl .opc.glass{--card:rgba(24,34,52,.5);--card2:rgba(24,34,52,.5);--soft:rgba(255,255,255,.07);--line:rgba(255,255,255,.22);--input:rgba(10,16,28,.55);--g1:rgba(30,42,64,.62);--g2:rgba(30,42,64,.3);--gs:rgba(0,0,0,.5);--gh:rgba(255,255,255,.16)}}
+body.sl .opc.glass .panel,body.sl .opc.glass .mcard,body.sl .opc.glass .tw,body.sl .opc.glass details,body.sl .opc.glass .mres>div>.mcard{
+ background:linear-gradient(115deg,var(--gh) 0%,rgba(255,255,255,0) 42%),linear-gradient(135deg,var(--g1),var(--g2));
+ -webkit-backdrop-filter:blur(20px) saturate(1.7);backdrop-filter:blur(20px) saturate(1.7);
+ border:1px solid var(--line);
+ box-shadow:0 14px 34px -10px var(--gs),inset 0 1.5px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(255,255,255,.25),inset 0 0 40px rgba(255,255,255,.1)}
+body.sl .opc.glass .chip,body.sl .opc.glass .psg{background:linear-gradient(135deg,var(--g1),var(--g2));-webkit-backdrop-filter:blur(12px) saturate(1.5);backdrop-filter:blur(12px) saturate(1.5);border:1px solid var(--line);box-shadow:0 6px 16px -6px var(--gs),inset 0 1px 0 rgba(255,255,255,.85)}
+body.sl .opc.glass .pbtn:not(.go){background:linear-gradient(135deg,rgba(255,255,255,.75),rgba(200,225,255,.4));-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.9);color:#1f4a86;box-shadow:0 6px 16px -6px var(--gs),inset 0 1px 0 #fff}
+body.sl .opc.glass .pbtn.go{background:linear-gradient(135deg,rgba(90,160,255,.95),rgba(40,110,240,.8));border:1px solid rgba(255,255,255,.7);box-shadow:0 8px 18px -6px rgba(20,70,200,.6),inset 0 1.5px 0 rgba(255,255,255,.7)}
+body.sl .opc.glass .selbtn{background:linear-gradient(135deg,rgba(255,255,255,.8),rgba(190,220,255,.45));border:1px solid rgba(255,255,255,.95);box-shadow:inset 0 1px 0 #fff,0 3px 8px -3px var(--gs)}
+body.sl .opc.glass .opc-tab:not([aria-selected="true"]){background:linear-gradient(135deg,rgba(255,255,255,.6),rgba(255,255,255,.22));-webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);box-shadow:0 8px 18px -8px var(--gs),inset 0 1.5px 0 rgba(255,255,255,.9)}
+body.sl .opc.glass .opc-tab[aria-selected="true"]{background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,255,255,.7));box-shadow:0 10px 22px -8px var(--gs),inset 0 1.5px 0 #fff}
+:root[data-theme="dark"] body.sl main .opc.opc{--cy:#8cc8ff}
+:root[data-theme="dark"] body.sl .opc .selbtn,:root[data-theme="dark"] body.sl .opc.glass .selbtn{background:rgba(10,16,28,.6);border:1px solid rgba(255,255,255,.28);color:#eef1f8;box-shadow:none}
+:root[data-theme="dark"] body.sl .opc .pbtn:not(.go),:root[data-theme="dark"] body.sl .opc.glass .pbtn:not(.go){background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:#cfe6ff;box-shadow:none}
+:root[data-theme="dark"] body.sl .opc-tab:not([aria-selected="true"]),:root[data-theme="dark"] body.sl .opc.glass .opc-tab:not([aria-selected="true"]){background:rgba(24,34,52,.6)}
+@media (prefers-color-scheme:dark){
+:root:not([data-theme="light"]) body.sl main .opc.opc{--cy:#8cc8ff}
+:root:not([data-theme="light"]) body.sl .opc .selbtn,:root:not([data-theme="light"]) body.sl .opc.glass .selbtn{background:rgba(10,16,28,.6);border:1px solid rgba(255,255,255,.28);color:#eef1f8;box-shadow:none}
+:root:not([data-theme="light"]) body.sl .opc .pbtn:not(.go),:root:not([data-theme="light"]) body.sl .opc.glass .pbtn:not(.go){background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:#cfe6ff;box-shadow:none}
+:root:not([data-theme="light"]) body.sl .opc-tab:not([aria-selected="true"]),:root:not([data-theme="light"]) body.sl .opc.glass .opc-tab:not([aria-selected="true"]){background:rgba(24,34,52,.6)}}
 </style>
 </head>
 <body>
@@ -354,6 +390,7 @@ body.sl .opc .mxbar .fld span{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.45)}
 <div class="opc" id="opc">
   <p class="eyebrow" id="opc-eyebrow">Passt alles zusammen?</p>
   <h1 id="opc-title">PC-Check</h1><p class="sub" id="opc-sub"></p>
+  <div class="glassbar"><span id="opc-gl-l">Glas-Effekt</span><button type="button" id="opc-glass" role="switch" aria-checked="true" aria-labelledby="opc-gl-l"><i></i></button></div>
   <div class="ptabs" role="tablist">
     <button type="button" class="opc-tab" role="tab" aria-selected="true"><i>01</i><b></b><small></small></button>
     <button type="button" class="opc-tab" role="tab" aria-selected="false"><i>02</i><b></b><small></small></button>
@@ -1484,7 +1521,17 @@ function tlList(){
   L.push(location.href);
   return L.join("\n");
 }
+function glassSet(on){
+  var o=$("#opc"),b=$("#opc-glass");if(!o||!b)return;
+  o.classList.toggle("glass",on);b.setAttribute("aria-checked",on?"true":"false");
+  try{localStorage.setItem("opc-glass",on?"1":"0")}catch(e){}
+}
+function glassInit(){
+  var on=true;try{on=localStorage.getItem("opc-glass")!=="0"}catch(e){}
+  glassSet(on);var b=$("#opc-glass");if(b)b.addEventListener("click",function(){glassSet(b.getAttribute("aria-checked")!=="true")});
+}
 function renderTools(){
+  var gl=$("#opc-gl-l");if(gl)gl.textContent=LANG==="fr"?"Effet verre":"Glas-Effekt";
   var el=$("#tl-root");if(!el)return;
   var T=tlt(),cpu=CPUS[S.cpu],gpu=GPUS[S.gpu],bd=BOARDS[S.board],psu=PSUS[S.psu],cool=COOLERS[S.cool],ssd=SSDS[S.ssd],h="",i;
   var p=tlPower(cpu,gpu,cool),rec=tlRecPsu(p.tot),ld=Math.round(p.tot/psu[1]*100),cl=psu[1]>=rec?"ok":psu[1]>=p.tot*1.1?"warn":"bad";
@@ -1546,6 +1593,7 @@ function apFix(n){
   L.forEach(function(y){y.nodeValue=y.nodeValue.replace(/≈ ?/g,LANG==="fr"?"env. ":"ca. ")});
 }
 function tlInit(){
+  glassInit();
   try{var root=$("#opc");apFix(root);new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(a){if(a.nodeType===1)apFix(a);else if(a.nodeType===3&&a.nodeValue.indexOf("≈")>=0)a.nodeValue=a.nodeValue.replace(/≈ ?/g,LANG==="fr"?"env. ":"ca. ")})})}).observe(root,{childList:true,subtree:true})}catch(e){}
   var el=$("#tl-root");if(!el)return;
   el.addEventListener("change",function(ev){
