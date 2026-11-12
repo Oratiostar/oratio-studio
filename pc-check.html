@@ -298,13 +298,33 @@
 
 .opc .mx thead th.v .sb.vb{position:absolute;right:5px;left:auto;top:8px;bottom:8px;width:4px;height:auto;margin:0}
 .opc .mx thead th.v .sb.vb::after{inset:auto 0 0 0;width:auto;height:var(--w)}
+
+/* Rechner & Tools */
+.tlh{margin:0 0 4px;font-size:20px;letter-spacing:-.02em}
+.mcard .three{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.mcard .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.mcard.ok{border-color:var(--mok)}.mcard.warn{border-color:var(--mwarn)}.mcard.bad{border-color:var(--mbad)}
+.opc .pnl .r b.tb{font-size:17px}
+.lbar{height:12px;border-radius:99px;background:var(--line);overflow:hidden}
+.lbar i{display:block;height:100%;border-radius:99px;background:var(--acc)}
+.lbar i.ok{background:var(--mok)}.lbar i.warn{background:var(--mwarn)}.lbar i.bad{background:var(--mbad)}
+.fpsc{display:inline-block;min-width:68px;text-align:center;padding:5px 10px;border-radius:9px;font-weight:700;color:var(--mtxt)}
+.fpsc.v-ok{background:var(--mok)}.fpsc.v-warn{background:var(--mwarn)}.fpsc.v-bad{background:var(--mbad)}
+.ckl{list-style:none;margin:6px 0 14px;padding:0;display:grid;gap:8px;counter-reset:ck}
+.ckl li{counter-increment:ck;background:var(--card);border:1px solid var(--line);border-radius:12px}
+.ckl label{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:11px 14px;cursor:pointer;line-height:1.5;font-size:14.5px}
+.ckl label span::before{content:counter(ck) ". ";font-weight:800;color:var(--acc)}
+.ckl input{width:20px;height:20px;margin-top:2px;accent-color:var(--acc)}
+.ckl input:checked+span{opacity:.55;text-decoration:line-through}
+.tltxt{width:100%;box-sizing:border-box;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:inherit;resize:vertical;margin-bottom:10px}
+@media (max-width:560px){.mcard .tw th,.mcard .tw td{padding-left:8px;padding-right:8px}.fpsc{min-width:0;padding:4px 7px;font-size:13px}.mcard .tw td.nm{font-size:13px}}
 </style>
 </head>
 <body>
 <main>
 <div class="crumb" id="opc-crumb"></div>
 <div class="opc" id="opc">
-  <p class="eyebrow" id="opc-eyebrow">Oratio Tech Studio</p>
+  <p class="eyebrow" id="opc-eyebrow">Passt alles zusammen?</p>
   <h1 id="opc-title">PC-Check</h1><p class="sub" id="opc-sub"></p>
   <div class="ptabs" role="tablist">
     <button type="button" class="opc-tab" role="tab" aria-selected="true"><i>01</i><b></b><small></small></button>
@@ -313,6 +333,7 @@
     <button type="button" class="opc-tab" role="tab" aria-selected="false"><i>04</i><b></b><small></small></button>
     <button type="button" class="opc-tab" role="tab" aria-selected="false"><i>05</i><b></b><small></small></button>
     <button type="button" class="opc-tab" role="tab" aria-selected="false"><i>06</i><b></b><small></small></button>
+    <button type="button" class="opc-tab" role="tab" aria-selected="false"><i>07</i><b></b><small></small></button>
   </div>
 
   <section class="opc-pane">
@@ -414,6 +435,11 @@
       <div class="wtop" id="w-tp"></div>
     </div>
     <div id="opc-faq"></div>
+  </section>
+
+  <section class="opc-pane" hidden>
+    <h2 id="tl-h"></h2><p class="sub" id="tl-d" style="max-width:75ch"></p>
+    <div class="mres" id="tl-root"></div>
   </section>
 
   <p class="disc" id="opc-disc"></p>
@@ -1045,7 +1071,7 @@ var LANG=(window.WZ&&WZ.lang==="fr")?"fr":"de";
 var M=function(de,fr){return {de:de,fr:fr}};
 var UI={
 de:{title:"PC-Check",sub:"Prüfe, ob CPU, Grafikkarte, Mainboard, RAM, SSD, Netzteil und Kühler zusammenpassen, und sieh in Prozent, wo es hakt.",
-tabs:["Konfigurator","Engpass-Matrix","Monitor","Teile-Datenbank","Sockel-Guide","Wissen"],tabsub:["Teile prüfen & Ziel wählen","CPU × Grafikkarte","Panel, Hz & Kabel","Alle Bauteile","Welche CPU passt wohin?","Vom Einsteiger zum Profi"],st1:"Wofür brauchst du den PC?",st1d:"Das bestimmt, welche Teile wichtig sind: Spiele brauchen Grafikleistung, Videoschnitt Kerne und viel RAM.",auto:"✨ Rest automatisch ergänzen",share:"🔗 Link kopieren",copied:"Link kopiert",copyfail:"Kopiere diesen Link:",mx:"Welche CPU passt zu welcher Grafikkarte?",mxd:"Jedes Feld ist ein Paar aus Prozessor (oben) und Grafikkarte (links). Die Farbe zeigt, wie gut die beiden zusammenpassen. Die Balken an den Namen zeigen, wie stark das Teil ist: nach rechts werden die Prozessoren stärker, nach unten die Grafikkarten. Klicke auf ein Feld: Das Paar landet im Konfigurator.",mxl:"",autoMsg:"Rest wurde passend zur CPU und GPU ergänzt.",
+tabs:["Konfigurator","Engpass-Matrix","Monitor","Teile-Datenbank","Sockel-Guide","Wissen","Rechner"],tabsub:["Teile prüfen & Ziel wählen","CPU × Grafikkarte","Panel, Hz & Kabel","Alle Bauteile","Welche CPU passt wohin?","Vom Einsteiger zum Profi","Strom, Netzteil, Upgrade"],st1:"Wofür brauchst du den PC?",st1d:"Das bestimmt, welche Teile wichtig sind: Spiele brauchen Grafikleistung, Videoschnitt Kerne und viel RAM.",auto:"✨ Rest automatisch ergänzen",share:"🔗 Link kopieren",copied:"Link kopiert",copyfail:"Kopiere diesen Link:",mx:"Welche CPU passt zu welcher Grafikkarte?",mxd:"Jedes Feld ist ein Paar aus Prozessor (oben) und Grafikkarte (links). Die Farbe zeigt, wie gut die beiden zusammenpassen. Die Balken an den Namen zeigen, wie stark das Teil ist: nach rechts werden die Prozessoren stärker, nach unten die Grafikkarten. Klicke auf ein Feld: Das Paar landet im Konfigurator.",mxl:"",autoMsg:"Rest wurde passend zur CPU und GPU ergänzt.",
 parts:"Deine Teile",cpu:"Prozessor (CPU)",board:"Mainboard",gpu:"Grafikkarte (GPU)",ram:"Arbeitsspeicher (RAM)",ssd:"Speicher (SSD/HDD)",psu:"Netzteil",cool:"CPU-Kühler",case:"Gehäuse",
 use:"Verwendung",res:"Auflösung",uses:["Gaming","Streaming + Gaming","Videoschnitt & 3D","Büro & Programmieren"],
 presets:"Schnellstart: fertige Beispiele",result:"Ergebnis",overall:"Gesamtwertung",
@@ -1059,7 +1085,7 @@ cols:{name:"Name",brand:"Marke",socket:"Sockel",ram:"RAM",cores:"Kerne",year:"Ja
 disc:"Hinweis: Leistungswerte sind relative Faustwerte (CPU: Ryzen 7 9800X3D = 100, GPU: RTX 5090 = 100), keine eigenen Messungen. Stand der Datenbank: Mitte 2026, neuere Teile fehlen eventuell. Vor dem Kauf immer die Herstellerseite und die Gehäusemaße (Kartenlänge, Kühlerhöhe) prüfen. Preise sind nicht enthalten.",
 yes:"ja",no:"nein",classes:["Einsteiger","Mittelklasse","Oberklasse"],none:"Keine Treffer."},
 fr:{title:"PC-Check",sub:"Vérifie si processeur, carte graphique, carte mère, RAM, SSD, alimentation et ventirad vont ensemble, et vois en pourcentage où ça coince.",
-tabs:["Configurateur","Matrice des goulots","Écran","Base de composants","Guide des sockets","Savoir"],tabsub:["Vérifier les pièces & viser","CPU × carte graphique","Dalle, Hz & câbles","Tous les composants","Quel CPU va où ?","Du débutant au pro"],st1:"À quoi sert le PC ?",st1d:"Cela décide des pièces importantes : le jeu demande de la puissance graphique, le montage vidéo des cœurs et beaucoup de RAM.",auto:"✨ Compléter automatiquement",share:"🔗 Copier le lien",copied:"Lien copié",copyfail:"Copie ce lien :",mx:"Quel CPU va avec quelle carte graphique ?",mxd:"Chaque case est une paire : processeur (en haut) et carte graphique (à gauche). La couleur montre si les deux vont bien ensemble. Les barres à côté des noms montrent la puissance : vers la droite les processeurs sont plus forts, vers le bas les cartes graphiques. Clique sur une case : la paire va dans le configurateur.",mxl:"",autoMsg:"Le reste a été complété selon le CPU et le GPU.",
+tabs:["Configurateur","Matrice des goulots","Écran","Base de composants","Guide des sockets","Savoir","Calculateurs"],tabsub:["Vérifier les pièces & viser","CPU × carte graphique","Dalle, Hz & câbles","Tous les composants","Quel CPU va où ?","Du débutant au pro","Énergie, alim, upgrade"],st1:"À quoi sert le PC ?",st1d:"Cela décide des pièces importantes : le jeu demande de la puissance graphique, le montage vidéo des cœurs et beaucoup de RAM.",auto:"✨ Compléter automatiquement",share:"🔗 Copier le lien",copied:"Lien copié",copyfail:"Copie ce lien :",mx:"Quel CPU va avec quelle carte graphique ?",mxd:"Chaque case est une paire : processeur (en haut) et carte graphique (à gauche). La couleur montre si les deux vont bien ensemble. Les barres à côté des noms montrent la puissance : vers la droite les processeurs sont plus forts, vers le bas les cartes graphiques. Clique sur une case : la paire va dans le configurateur.",mxl:"",autoMsg:"Le reste a été complété selon le CPU et le GPU.",
 parts:"Tes composants",cpu:"Processeur (CPU)",board:"Carte mère",gpu:"Carte graphique (GPU)",ram:"Mémoire vive (RAM)",ssd:"Stockage (SSD/HDD)",psu:"Alimentation",cool:"Ventirad CPU",case:"Boîtier",
 use:"Usage",res:"Résolution",uses:["Jeux vidéo","Streaming + jeux","Montage vidéo & 3D","Bureautique & programmation"],
 presets:"Démarrage rapide : exemples prêts",result:"Résultat",overall:"Note globale",
@@ -1343,6 +1369,163 @@ function renderMon(){
   var th='<table><thead><tr><th>'+(LANG==="fr"?"Dalle":"Panel")+'</th>'+T.q.map(function(q){return '<th>'+esc(q)+'</th>'}).join("")+'<th>'+esc(T.best)+'</th></tr></thead><tbody>'+
    MPAN.map(function(p){return '<tr><td class="nm">'+esc(p.n)+'</td>'+p.v.map(function(v,i){return '<td><div style="min-width:76px">'+monBars(v,i===5||i===6)+'</div></td>'}).join("")+'<td style="white-space:normal;min-width:220px">'+esc(p[LANG].b)+'</td></tr>'}).join("")+'</tbody></table>';
   $("#mon-table").innerHTML=th;
+}
+
+/* ---------- Rechner & Tools ---------- */
+var TLT={
+de:{h:"Rechner & Tools",d:"Praktische Rechner rund um dein Konfigurator-System: Netzteil, Stromkosten, Spiele-FPS, Upgrade-Planer, Speicher und eine Zusammenbau-Checkliste. Alle Teile kommen aus dem Konfigurator (Tab 01).",
+ sys:"Dein System",psuH:"Netzteil-Rechner",psuD:"Wie viel Leistung braucht dein System wirklich?",
+ cpuw:"CPU unter Volllast",gpuw:"Grafikkarte (Board Power)",rest:"Board, RAM, SSD, Lüfter",peak:"Spitzenbedarf",rec:"Empfohlenes Netzteil",have:"Dein Netzteil",load:"Auslastung bei Volllast",
+ psuOk:"Dein Netzteil hat genug Reserve. Netzteile sind bei etwa 40 bis 70 % Last am effizientesten und leisesten.",psuWarn:"Es reicht rechnerisch, hat aber wenig Reserve. Kurze Lastspitzen der Grafikkarte können das Netzteil abschalten lassen. Ein Modell mit mehr Leistung ist sicherer.",psuBad:"Zu schwach. Das System kann abstürzen oder das Netzteil überlasten. Nimm mindestens das empfohlene Netzteil.",
+ psuNote:"Faustregel: Spitzenbedarf mal 1,25, dann auf die nächste Standardgröße aufrunden. Die Reserve deckt Lastspitzen, Alterung und den besten Wirkungsgradbereich ab.",
+ conn:"Stromanschluss der Grafikkarte",
+ pwH:"Stromkosten",pwD:"Was kostet dein PC im Betrieb? Das sind Schätzwerte für den typischen Verbrauch, keine Messung.",
+ gh:"Spielen / Volllast pro Tag",oh:"Büro / Surfen pro Tag",ep:"Strompreis",hrs:"Std.",day:"pro Tag",mon:"pro Monat",yr:"pro Jahr",
+ avgG:"Ø beim Spielen",avgO:"Ø im Büro",kwh:"Verbrauch",cost:"Kosten",co2:"CO₂ (Strommix Deutschland, grob)",
+ pwTip:"Ein Netzteil mit besserem Wirkungsgrad und der Energiesparmodus von Windows sparen im Büro-Betrieb spürbar. Die größte Stellschraube ist die Grafikkarte: ein Framelimit (zum Beispiel 60 oder 120 FPS) senkt den Verbrauch beim Spielen deutlich.",
+ fpsH:"FPS-Schätzer nach Spieletyp",fpsD:"Grobe Einordnung, was dein CPU/GPU-Paar in typischen Spielarten schafft (hohe Details, ohne DLSS/FSR).",
+ game:"Spieletyp",g:["Esport (Counter-Strike, Valorant)","Aktuelle Blockbuster (hohe Details)","Blockbuster mit Raytracing","Strategie & Simulation","Open World (große Karten)"],
+ fpsTip:"Unter 60 FPS wird es ruckelig, ab 100 FPS fühlt es sich sehr flüssig an. Mit Upscaling (DLSS, FSR) und Frame Generation sind je nach Spiel deutlich mehr FPS drin. Echte Werte hängen stark vom Spiel ab.",
+ upH:"Upgrade-Planer",upD:"Was bringt dir eine neue CPU oder Grafikkarte? Wähle ein Ziel und vergleiche mit deinem System.",
+ upC:"Neue CPU",upG:"Neue Grafikkarte",same:"unverändert",bal:"Balance (Engpass)",gam:"Gaming-Leistung CPU",mul:"Multicore",gpf:"Grafikleistung",
+ now:"Jetzt",then:"Danach",sock:"Sockel",sockOk:"passt zu deinem Mainboard",sockBad:"passt NICHT zu deinem Mainboard: Mainboard (und evtl. RAM) müssten mit getauscht werden",
+ upPsu:"Netzteil nach dem Upgrade",upNone:"Wähle oben eine neue CPU oder Grafikkarte, um den Vergleich zu sehen.",
+ stH:"Speicher-Rechner",stD:"Warum zeigt die 1-TB-SSD nur etwa 931 GB an, und wie lange dauert das Kopieren?",
+ cap:"Angegebene Kapazität",fsz:"Datenmenge",real:"Angezeigt in Windows",why:"Hersteller rechnen 1 TB = 1.000.000.000.000 Byte. Windows zeigt in GiB (1024er-Schritte) an. Daher wirkt die Platte kleiner. Ein Teil geht außerdem für Formatierung und Wiederherstellungspartition drauf.",
+ dev:"Gerät",spd:"Tempo (ca.)",time:"Dauer",ssdSel:"Deine SSD (Konfigurator)",
+ ckH:"Zusammenbau-Checkliste",ckD:"Die Reihenfolge, die sich beim PC-Bau bewährt hat. Setze Haken, dein Fortschritt bleibt in diesem Browser gespeichert.",
+ ckReset:"Zurücksetzen",
+ ck:["Arbeitsplatz vorbereiten: freier Tisch, kleiner Kreuzschlitz-Schraubendreher, Antistatik-Armband oder vorher ein geerdetes Metallteil anfassen","Mainboard-Handbuch bereithalten und auf der Verpackung des Mainboards aufbauen (isolierende Unterlage)","CPU in den Sockel setzen (Dreieck an Dreieck, kein Druck) und Halterung schließen. Bei AMD AM5/Intel LGA ist nichts zu drücken","RAM in die richtigen Steckplätze (meist A2 und B2, Handbuch prüfen) bis es klickt","M.2-SSD unter den Kühlkörper-Schraube einsetzen, Schutzfolie vom Wärmeleitpad abziehen","CPU-Kühler montieren: Wärmeleitpaste (erbsengroß) oder vorinstallierte Paste, Halterung gleichmäßig über Kreuz anziehen, Lüfterkabel an CPU_FAN","Netzteil ins Gehäuse einbauen (Lüfter nach unten, wenn Platz) und Kabel vorsichtig verlegen","I/O-Blende des Mainboards einsetzen, Abstandshalter prüfen, Mainboard ins Gehäuse schrauben","24-Pin-ATX, 8-Pin-CPU (EPS) und Frontpanel-Stecker (Power-Schalter, LEDs) anschließen","Grafikkarte in den obersten PCIe-x16-Slot stecken, mit den Schrauben am Gehäuse sichern, PCIe-Stromkabel (nicht gesplittet bei starken Karten) anschließen","Laufwerke, Gehäuselüfter und USB-Kabel anschließen und die Kabel hinter dem Mainboardschlitten sauber verlegen","Vor dem Schließen testen: Monitor an die Grafikkarte (nicht ans Mainboard), einschalten, BIOS erreichen, RAM-Menge und Temperaturen prüfen","BIOS: XMP/EXPO für den RAM aktivieren, Lüfterkurven prüfen, bei Bedarf Boot-Reihenfolge einstellen","Windows oder Linux per USB-Stick installieren, danach Treiber (Chipsatz, Grafik) aktualisieren","Stresstest (zum Beispiel 15 Minuten Prime95/Cinebench und ein Spiel) und Temperaturen beobachten"],
+ lstH:"Teileliste kopieren",lstD:"Erzeugt eine Textliste deines Systems mit Leistungswerten, die du an Freunde oder in ein Forum schicken kannst.",lstB:"Liste kopieren",lstOk:"Kopiert.",lstFail:"Kopieren nicht möglich. Markiere den Text unten und kopiere ihn von Hand.",
+ sum:"Zusammenfassung"},
+fr:{h:"Calculateurs & outils",d:"Des calculateurs pratiques pour ton système du configurateur : alimentation, coût électrique, FPS, planificateur de mise à niveau, stockage et liste de montage. Toutes les pièces viennent du configurateur (onglet 01).",
+ sys:"Ton système",psuH:"Calculateur d'alimentation",psuD:"De quelle puissance ton système a-t-il vraiment besoin ?",
+ cpuw:"CPU à pleine charge",gpuw:"Carte graphique (Board Power)",rest:"Carte mère, RAM, SSD, ventilateurs",peak:"Besoin de pointe",rec:"Alimentation recommandée",have:"Ton alimentation",load:"Charge à pleine puissance",
+ psuOk:"Ton alimentation a assez de réserve. Les alimentations sont les plus efficaces et silencieuses à environ 40 à 70 % de charge.",psuWarn:"Elle suffit sur le papier mais a peu de réserve. De brefs pics de la carte graphique peuvent la faire couper. Un modèle plus puissant est plus sûr.",psuBad:"Trop faible. Le système peut planter ou surcharger l'alimentation. Prends au moins celle recommandée.",
+ psuNote:"Règle pratique : besoin de pointe × 1,25, puis arrondir à la taille standard supérieure. La réserve couvre les pics, le vieillissement et la plage de rendement optimale.",
+ conn:"Connecteur d'alimentation de la carte",
+ pwH:"Coût électrique",pwD:"Combien coûte ton PC en fonctionnement ? Ce sont des estimations de consommation typique, pas des mesures.",
+ gh:"Jeu / pleine charge par jour",oh:"Bureautique / web par jour",ep:"Prix de l'électricité",hrs:"h",day:"par jour",mon:"par mois",yr:"par an",
+ avgG:"Moy. en jeu",avgO:"Moy. en bureautique",kwh:"Consommation",cost:"Coût",co2:"CO₂ (mix électrique allemand, approx.)",
+ pwTip:"Une alimentation au meilleur rendement et le mode économie d'énergie de Windows font gagner sensiblement en bureautique. Le plus gros levier est la carte graphique : une limite d'images (par exemple 60 ou 120 FPS) réduit nettement la consommation en jeu.",
+ fpsH:"Estimateur de FPS par type de jeu",fpsD:"Estimation grossière de ce que ton couple CPU/GPU fait dans les types de jeux courants (détails élevés, sans DLSS/FSR).",
+ game:"Type de jeu",g:["Esport (Counter-Strike, Valorant)","Grosses productions actuelles (détails élevés)","Grosses productions avec ray tracing","Stratégie & simulation","Monde ouvert (grandes cartes)"],
+ fpsTip:"Sous 60 FPS, ça saccade ; à partir de 100 FPS, c'est très fluide. Avec l'upscaling (DLSS, FSR) et la génération d'images, on gagne nettement selon le jeu. Les valeurs réelles dépendent beaucoup du jeu.",
+ upH:"Planificateur de mise à niveau",upD:"Que t'apporte un nouveau CPU ou une nouvelle carte graphique ? Choisis une cible et compare avec ton système.",
+ upC:"Nouveau CPU",upG:"Nouvelle carte graphique",same:"inchangé",bal:"Équilibre (goulot)",gam:"Performance jeu du CPU",mul:"Multicœur",gpf:"Puissance graphique",
+ now:"Maintenant",then:"Après",sock:"Socket",sockOk:"compatible avec ta carte mère",sockBad:"NON compatible avec ta carte mère : il faudrait changer la carte mère (et peut-être la RAM)",
+ upPsu:"Alimentation après la mise à niveau",upNone:"Choisis ci-dessus un nouveau CPU ou une nouvelle carte graphique pour voir la comparaison.",
+ stH:"Calculateur de stockage",stD:"Pourquoi un SSD de 1 To n'affiche-t-il qu'environ 931 Go, et combien de temps dure une copie ?",
+ cap:"Capacité annoncée",fsz:"Quantité de données",real:"Affiché dans Windows",why:"Les fabricants comptent 1 To = 1 000 000 000 000 octets. Windows affiche en Gio (paliers de 1024). Le disque paraît donc plus petit. Une partie sert aussi au formatage et à la partition de récupération.",
+ dev:"Support",spd:"Débit (approx.)",time:"Durée",ssdSel:"Ton SSD (configurateur)",
+ ckH:"Liste de montage",ckD:"L'ordre qui a fait ses preuves pour monter un PC. Coche les étapes, ta progression reste enregistrée dans ce navigateur.",
+ ckReset:"Réinitialiser",
+ ck:["Préparer le poste : table dégagée, petit tournevis cruciforme, bracelet antistatique ou toucher d'abord une pièce métallique reliée à la terre","Garder le manuel de la carte mère à portée et monter sur son carton (support isolant)","Placer le CPU dans le socket (triangle sur triangle, sans forcer) et fermer le support","Insérer la RAM dans les bons emplacements (souvent A2 et B2, voir le manuel) jusqu'au clic","Insérer le SSD M.2 sous la vis du dissipateur, retirer le film du pad thermique","Monter le ventirad : pâte thermique (taille d'un petit pois) ou pâte préappliquée, serrer en croix, brancher le câble sur CPU_FAN","Installer l'alimentation dans le boîtier (ventilateur vers le bas si possible) et passer les câbles avec soin","Mettre la plaque I/O, vérifier les entretoises, visser la carte mère dans le boîtier","Brancher le 24 broches ATX, le 8 broches CPU (EPS) et les connecteurs du panneau avant","Insérer la carte graphique dans le slot PCIe x16 du haut, la fixer au boîtier, brancher le câble PCIe (non dédoublé pour les cartes puissantes)","Brancher disques, ventilateurs et câbles USB et ranger les câbles derrière le plateau","Tester avant de fermer : écran sur la carte graphique (pas la carte mère), allumer, accéder au BIOS, vérifier la RAM et les températures","BIOS : activer XMP/EXPO pour la RAM, vérifier les courbes de ventilateurs, régler l'ordre de démarrage si besoin","Installer Windows ou Linux depuis une clé USB, puis mettre à jour les pilotes (chipset, graphique)","Test de stress (par exemple 15 minutes de Prime95/Cinebench et un jeu) en surveillant les températures"],
+ lstH:"Copier la liste des pièces",lstD:"Crée une liste texte de ton système avec les valeurs de performance, à envoyer à des amis ou sur un forum.",lstB:"Copier la liste",lstOk:"Copié.",lstFail:"Copie impossible. Sélectionne le texte ci-dessous et copie-le à la main.",
+ sum:"Résumé"}
+};
+var TL={gh:3,oh:6,ep:35,fg:1,cap:1000,fs:50,uc:-1,ug:-1};
+var PSUSZ=[300,350,400,450,500,550,600,650,700,750,850,1000,1200,1300,1600,2000];
+function tlt(){return TLT[LANG]}
+function tlNum(x){return String(x).replace(".",",")}
+function tlEur(x){return x.toFixed(2).replace(".",",")+" €"}
+function tlPower(cpu,gpu,cool){
+  var cw=cpu[4],gw=gpu[2],rest=45+(cool[1]==="AIO"?12:6)+14;
+  return {c:cw,g:gw,r:rest,tot:cw+gw+rest};
+}
+function tlRecPsu(tot){var need=tot*1.25,i;for(i=0;i<PSUSZ.length;i++)if(PSUSZ[i]>=need)return PSUSZ[i];return PSUSZ[PSUSZ.length-1]}
+function tlRow(l,v,cl){return '<div class="r"><span>'+esc(l)+'</span><b'+(cl?' class="'+cl+'"':'')+'>'+v+'</b></div>'}
+function tlSel(id,lab,opts,val){return '<label class="fld" for="'+id+'"><span>'+esc(lab)+'</span><select id="'+id+'">'+opts.map(function(o){return '<option value="'+o[0]+'"'+(String(o[0])===String(val)?' selected':'')+'>'+esc(o[1])+'</option>'}).join("")+'</select></label>'}
+function tlFps(cpu,gpu,kind,pix){
+  /* kind: [GPU-Last-Faktor, CPU-FPS bei Gaming 100, Raytracing-Abschlag] */
+  var K=[[2.6,520,1],[1,190,1],[1,170,0.55],[1.6,95,1],[1,150,1]][kind];
+  var gf=60*gpu[3]/monNeed(pix)*K[0]*K[2],cf=cpu[5]/100*K[1];
+  var f=Math.min(gf,cf)*0.93+Math.max(0,Math.min(gf,cf)*0+0);
+  return Math.max(5,Math.round(f));
+}
+function tlSize(n){return n>=1000?(n/1000)+" TB":n+" GB"}
+function tlTime(sec){if(sec<1)return "< 1 s";if(sec<90)return Math.round(sec)+" s";if(sec<5400)return Math.round(sec/60)+" min";return tlNum((sec/3600).toFixed(1))+" h"}
+function tlChkGet(){try{return JSON.parse(localStorage.getItem("opc-chk")||"[]")}catch(e){return []}}
+function tlChkSet(a){try{localStorage.setItem("opc-chk",JSON.stringify(a))}catch(e){}}
+function tlList(){
+  var T=tlt(),cpu=CPUS[S.cpu],gpu=GPUS[S.gpu],bd=BOARDS[S.board],ram=RAMS[S.ram],ssd=SSDS[S.ssd],psu=PSUS[S.psu],cool=COOLERS[S.cool],cs=CASES[S.case]||CASES[0];
+  var p=tlPower(cpu,gpu,cool),L=[];
+  L.push("PC-Check · Oratio");L.push("CPU: "+cpu[0]+" ("+cpu[2]+", "+cpu[7]+" Kerne)");L.push("Mainboard: "+bd[0]);L.push("GPU: "+gpu[0]+" ("+gpu[4]+" GB)");
+  L.push("RAM: "+ram[0]);L.push("SSD: "+ssd[0]);L.push((LANG==="fr"?"Alimentation: ":"Netzteil: ")+psu[0]);L.push((LANG==="fr"?"Refroidissement: ":"Kühler: ")+cool[0]);L.push((LANG==="fr"?"Boîtier: ":"Gehäuse: ")+cs[0]);
+  L.push(T.peak+": ≈ "+p.tot+" W · "+T.rec+": "+tlRecPsu(p.tot)+" W");
+  L.push(location.href);
+  return L.join("\n");
+}
+function renderTools(){
+  var el=$("#tl-root");if(!el)return;
+  var T=tlt(),cpu=CPUS[S.cpu],gpu=GPUS[S.gpu],bd=BOARDS[S.board],psu=PSUS[S.psu],cool=COOLERS[S.cool],ssd=SSDS[S.ssd],h="",i;
+  var p=tlPower(cpu,gpu,cool),rec=tlRecPsu(p.tot),ld=Math.round(p.tot/psu[1]*100),cl=psu[1]>=rec?"ok":psu[1]>=p.tot*1.1?"warn":"bad";
+  /* System */
+  h+='<div class="mcard info"><small>'+esc(T.sys)+'</small><p style="margin:4px 0 0"><b>'+esc(cpu[0])+'</b> · <b>'+esc(gpu[0])+'</b> · '+esc(psu[0])+'</p></div>';
+  /* Netzteil */
+  h+='<div class="mcard"><h3 class="tlh">'+esc(T.psuH)+'</h3><p>'+esc(T.psuD)+'</p><div class="pnl">'+tlRow(T.cpuw,'≈ '+p.c+' W')+tlRow(T.gpuw,'≈ '+p.g+' W')+tlRow(T.rest,'≈ '+p.r+' W')+tlRow(T.peak,'≈ '+p.tot+' W','tb')+'</div>'+
+   '<div class="mgrid"><div class="mcard '+cl+'"><small>'+esc(T.have)+'</small><strong>'+psu[1]+' W</strong><p>'+esc(T.load)+': '+ld+' %</p></div><div class="mcard info"><small>'+esc(T.rec)+'</small><strong>≥ '+rec+' W</strong><p>'+esc(T.conn)+': '+esc(gpu[7])+'</p></div></div>'+
+   '<div class="lbar"><i style="width:'+clamp(ld,2,100)+'%" class="'+cl+'"></i></div><ul class="hints"><li class="v-'+(cl==="ok"?"info":cl)+'">'+esc(cl==="ok"?T.psuOk:cl==="warn"?T.psuWarn:T.psuBad)+'</li></ul><p class="tip">'+esc(T.psuNote)+'</p></div>';
+  /* Strom */
+  var avgG=Math.round(45+cpu[4]*0.35+gpu[2]*0.8),avgO=Math.round(30+cpu[4]*0.08+10+gpu[2]*0.03);
+  var kd=(TL.gh*avgG+TL.oh*avgO)/1000,pr=TL.ep/100;
+  var eh=[];for(i=0;i<=12;i++)eh.push([i,i+" "+T.hrs]);var oh=[];for(i=0;i<=16;i+=1)oh.push([i,i+" "+T.hrs]);
+  var epo=[];for(i=20;i<=60;i+=5)epo.push([i,tlNum((i/100).toFixed(2))+" €/kWh"]);
+  h+='<div class="mcard"><h3 class="tlh">'+esc(T.pwH)+'</h3><p>'+esc(T.pwD)+'</p><div class="three">'+tlSel("tl_gh",T.gh,eh,TL.gh)+tlSel("tl_oh",T.oh,oh,TL.oh)+tlSel("tl_ep",T.ep,epo,TL.ep)+'</div>'+
+   '<div class="pnl">'+tlRow(T.avgG,'≈ '+avgG+' W')+tlRow(T.avgO,'≈ '+avgO+' W')+'</div>'+
+   '<div class="mgrid"><div class="mcard info"><small>'+esc(T.day)+'</small><strong>'+tlEur(kd*pr)+'</strong><p>'+tlNum(kd.toFixed(2))+' kWh</p></div><div class="mcard info"><small>'+esc(T.mon)+'</small><strong>'+tlEur(kd*pr*30.4)+'</strong><p>'+tlNum((kd*30.4).toFixed(0))+' kWh</p></div><div class="mcard info"><small>'+esc(T.yr)+'</small><strong>'+tlEur(kd*pr*365)+'</strong><p>'+tlNum((kd*365).toFixed(0))+' kWh · '+esc(T.co2)+': ≈ '+Math.round(kd*365*0.38)+' kg</p></div></div><p class="tip">'+esc(T.pwTip)+'</p></div>';
+  /* FPS */
+  var RR=[["1080p",1920*1080],["1440p",2560*1440],["4K",3840*2160]];
+  h+='<div class="mcard"><h3 class="tlh">'+esc(T.fpsH)+'</h3><p>'+esc(T.fpsD)+'</p><div class="tw"><table><thead><tr><th>'+esc(T.game)+'</th>'+RR.map(function(r){return '<th>'+r[0]+'</th>'}).join("")+'</tr></thead><tbody>'+
+   T.g.map(function(g,k){return '<tr><td class="nm" style="white-space:normal;min-width:120px">'+esc(g)+'</td>'+RR.map(function(r){var f=tlFps(cpu,gpu,k,r[1]),c=f>=100?"ok":f>=60?"warn":"bad";return '<td><span class="fpsc v-'+c+'">≈ '+f+'</span></td>'}).join("")+'</tr>'}).join("")+'</tbody></table></div><p class="tip">'+esc(T.fpsTip)+'</p></div>';
+  /* Upgrade */
+  var co=[[-1,T.same]],go=[[-1,T.same]];
+  CPUS.forEach(function(c,k){if(c[8]!==undefined&&c[9]>=2019)co.push([k,c[0]+" ("+c[2]+")"])});
+  GPUS.forEach(function(g,k){if(g[8]>=2019)go.push([k,g[0]])});
+  var nc=TL.uc>=0?CPUS[TL.uc]:cpu,ng=TL.ug>=0?GPUS[TL.ug]:gpu,up="";
+  if(TL.uc>=0||TL.ug>=0){
+    var ch=CHIP[bd[1]],u=USEK[S.use],rs=S.res,b0=balOf(cpu,gpu,u,rs),b1=balOf(nc,ng,u,rs),pn=tlPower(nc,ng,cool),rc2=tlRecPsu(pn.tot);
+    var dl=function(a,b){var d=Math.round((b/a-1)*100);return (d>0?"+":"")+d+" %"};
+    up='<div class="tw"><table><thead><tr><th></th><th>'+esc(T.now)+'</th><th>'+esc(T.then)+'</th><th>Δ</th></tr></thead><tbody>'+
+     '<tr><td class="nm">'+esc(T.gam)+'</td><td>'+cpu[5]+'</td><td>'+nc[5]+'</td><td>'+dl(cpu[5],nc[5])+'</td></tr>'+
+     '<tr><td class="nm">'+esc(T.mul)+'</td><td>'+cpu[6]+'</td><td>'+nc[6]+'</td><td>'+dl(cpu[6],nc[6])+'</td></tr>'+
+     '<tr><td class="nm">'+esc(T.gpf)+'</td><td>'+gpu[3]+'</td><td>'+ng[3]+'</td><td>'+dl(gpu[3],ng[3])+'</td></tr>'+
+     '<tr><td class="nm">'+esc(T.bal)+'</td><td><span class="fpsc v-'+lvl(b0)+'">'+b0+' %</span></td><td><span class="fpsc v-'+lvl(b1)+'">'+b1+' %</span></td><td>'+(b1-b0>0?"+":"")+(b1-b0)+'</td></tr></tbody></table></div><ul class="hints">';
+    if(TL.uc>=0){var okS=nc[2]===ch[0];up+='<li class="v-'+(okS?"info":"bad")+'"><b>'+esc(T.sock)+' '+esc(nc[2])+':</b> '+esc(okS?T.sockOk:T.sockBad)+'</li>'}
+    var pc2=psu[1]>=rc2?"info":psu[1]>=pn.tot*1.1?"warn":"bad";
+    up+='<li class="v-'+pc2+'"><b>'+esc(T.upPsu)+':</b> ≈ '+pn.tot+' W → '+esc(T.rec)+' ≥ '+rc2+' W ('+esc(T.have)+': '+psu[1]+' W)</li></ul>';
+  }else up='<p class="tip">'+esc(T.upNone)+'</p>';
+  h+='<div class="mcard"><h3 class="tlh">'+esc(T.upH)+'</h3><p>'+esc(T.upD)+'</p><div class="two">'+tlSel("tl_uc",T.upC,co,TL.uc)+tlSel("tl_ug",T.upG,go,TL.ug)+'</div>'+up+'</div>';
+  /* Speicher */
+  var caps=[[128,"128 GB"],[256,"256 GB"],[500,"500 GB"],[512,"512 GB"],[1000,"1 TB"],[2000,"2 TB"],[4000,"4 TB"],[8000,"8 TB"]],fsz=[[1,"1 GB"],[10,"10 GB"],[50,"50 GB (Spiel)"],[100,"100 GB"],[500,"500 GB"],[1000,"1 TB"]];
+  var gib=TL.cap*1e9/Math.pow(1024,3),dv=[[T.ssdSel+": "+ssd[0],Math.min(ssd[2],7000)*0.6],["SATA-SSD",500],["HDD (3,5″)",160],["USB-3.0-Stick",90],["Gigabit-LAN",112],["WLAN (ca. Wi-Fi 6)",70]];
+  h+='<div class="mcard"><h3 class="tlh">'+esc(T.stH)+'</h3><p>'+esc(T.stD)+'</p><div class="two">'+tlSel("tl_cap",T.cap,caps,TL.cap)+tlSel("tl_fs",T.fsz,fsz,TL.fs)+'</div>'+
+   '<div class="mgrid"><div class="mcard info"><small>'+esc(T.real)+'</small><strong>≈ '+Math.round(gib)+' GiB</strong><p>'+esc(T.why)+'</p></div></div>'+
+   '<div class="tw"><table><thead><tr><th>'+esc(T.dev)+'</th><th>'+esc(T.spd)+'</th><th>'+esc(T.time)+'</th></tr></thead><tbody>'+dv.map(function(d){return '<tr><td class="nm" style="white-space:normal">'+esc(d[0])+'</td><td>≈ '+Math.round(d[1])+' MB/s</td><td><b>'+tlTime(TL.fs*1000/d[1])+'</b></td></tr>'}).join("")+'</tbody></table></div></div>';
+  /* Checkliste */
+  var cd=tlChkGet(),done=0;T.ck.forEach(function(x,k){if(cd.indexOf(k)>=0)done++});
+  h+='<div class="mcard"><h3 class="tlh">'+esc(T.ckH)+'</h3><p>'+esc(T.ckD)+'</p><div class="lbar"><i style="width:'+Math.round(done/T.ck.length*100)+'%" class="ok"></i></div><p class="tip" style="margin:0">'+done+' / '+T.ck.length+'</p><ol class="ckl">'+
+   T.ck.map(function(x,k){return '<li><label><input type="checkbox" data-k="'+k+'"'+(cd.indexOf(k)>=0?' checked':'')+'><span>'+esc(x)+'</span></label></li>'}).join("")+'</ol><button type="button" class="pbtn" id="tl_reset">'+esc(T.ckReset)+'</button></div>';
+  /* Liste */
+  h+='<div class="mcard"><h3 class="tlh">'+esc(T.lstH)+'</h3><p>'+esc(T.lstD)+'</p><textarea id="tl_txt" class="tltxt" readonly rows="11">'+esc(tlList())+'</textarea><div><button type="button" class="pbtn go" id="tl_copy">'+esc(T.lstB)+'</button> <span id="tl_msg" class="tip"></span></div></div>';
+  var keep=window.scrollY;
+  el.innerHTML=h;
+  $("#tl-h").textContent=T.h;$("#tl-d").textContent=T.d;
+}
+function tlInit(){
+  var el=$("#tl-root");if(!el)return;
+  el.addEventListener("change",function(ev){
+    var t=ev.target,id=t.id;
+    if(t.type==="checkbox"&&t.dataset.k!==undefined){var a=tlChkGet(),k=+t.dataset.k,j=a.indexOf(k);if(t.checked&&j<0)a.push(k);if(!t.checked&&j>=0)a.splice(j,1);tlChkSet(a);var y=window.scrollY;renderTools();window.scrollTo(0,y);return}
+    var map={tl_gh:"gh",tl_oh:"oh",tl_ep:"ep",tl_cap:"cap",tl_fs:"fs",tl_uc:"uc",tl_ug:"ug"};
+    if(map[id]){TL[map[id]]=+t.value;var y2=window.scrollY;renderTools();window.scrollTo(0,y2)}
+  });
+  el.addEventListener("click",function(ev){
+    if(ev.target.id==="tl_reset"){tlChkSet([]);var y=window.scrollY;renderTools();window.scrollTo(0,y)}
+    if(ev.target.id==="tl_copy"){var T=tlt(),m=$("#tl_msg"),tx=tlList();
+      var ok=function(){m.textContent=T.lstOk},fail=function(){m.textContent=T.lstFail;var a=$("#tl_txt");a.focus();a.select()};
+      try{navigator.clipboard.writeText(tx).then(ok,fail)}catch(e){fail()}}
+  });
 }
 
 var DBKEYS=["cpu","gpu","board","ram","ssd","psu","cool"];
@@ -1647,7 +1830,7 @@ function renderSock(){
 }
 function showTab(i){
   $$(".opc-tab").forEach(function(b,j){b.setAttribute("aria-selected",j===i?"true":"false")});
-  $$(".opc-pane").forEach(function(p,j){p.hidden=j!==i});if(i===1)renderMatrix();if(i===2)monOut();
+  $$(".opc-pane").forEach(function(p,j){p.hidden=j!==i});if(i===1)renderMatrix();if(i===2)monOut();if(i===6)renderTools();
   try{history.replaceState&&0}catch(e){}
 }
 function pickCase(){
@@ -1750,10 +1933,10 @@ function applyPreset(i){
   S.cpu=find(CPUS,v[0]);S.board=find(BOARDS,v[1]);S.gpu=find(GPUS,v[2]);S.ram=find(RAMS,v[3]);S.ssd=find(SSDS,v[4]);S.psu=find(PSUS,v[5]);S.cool=find(COOLERS,v[6]);S.case=find(CASES,v[7]);S.use=p.u;S.res=p.r;
   render();
 }
-function renderAll(){buildStatic();tgInit();selectsInit();render();renderDB();renderSock();renderFaq();renderMon();$$(".lang").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.l===LANG?"true":"false")});document.documentElement.setAttribute("lang",LANG)}
+function renderAll(){buildStatic();tgInit();selectsInit();render();renderDB();renderSock();renderFaq();renderMon();renderTools();$$(".lang").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.l===LANG?"true":"false")});document.documentElement.setAttribute("lang",LANG)}
 function init(){
   var HASHOK=dec(location.hash);
-  renderAll();
+  renderAll();tlInit();
   ["cpu","board","gpu","ram","ssd","psu","cool","case","use","res"].forEach(function(k){$("#s_"+k).addEventListener("change",function(ev){S[k]=+ev.target.value;render()})});
   $("#t_base").addEventListener("change",function(ev){TG.base=+ev.target.value});
   $("#t_f").addEventListener("change",function(ev){TG.f=+ev.target.value});
