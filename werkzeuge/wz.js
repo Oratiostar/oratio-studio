@@ -188,6 +188,11 @@ window.WZ = {
     }
     var nm = aktiv === "icon" ? "Icon-Werkstatt" : aktiv === "datei" ? "Datei-Werkstatt" : aktiv === "alltag" ? (WZ.lang === "fr" ? "Assistants du quotidien" : "Alltags-Helfer") : aktiv === "elektro" ? (WZ.lang === "fr" ? "Labo d’électronique" : "Elektronik-Labor") : aktiv === "desk" ? "Oratio Desk" : null, m = document.querySelector("main");
     if (nm && m) { var c = document.createElement("div"); c.className = "crumb"; c.innerHTML = aktiv === "elektro" ? '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › ' + nm : '<a href="index.html">Oratio Place</a> › <a href="index.html#/werkzeuge">' + (WZ.lang === "fr" ? "Outils" : "Werkzeuge") + '</a> › ' + nm; m.insertBefore(c, m.firstChild); }
+    if ((aktiv === "elektro" || aktiv === "pccheck") && m) { document.body.classList.add("sl"); var fr2 = WZ.lang === "fr", ti = aktiv === "elektro" ? (fr2 ? "Labo d’électronique" : "Elektronik-Labor") : "PC-Check", fa = aktiv === "elektro" ? "#12b8a6" : "#3b6fd6", em = aktiv === "elektro" ? "🔌" : "🖥️";
+      var cr = m.querySelector(".crumb"); if (!cr) { cr = document.createElement("div"); cr.className = "crumb"; cr.innerHTML = '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › ' + ti; m.insertBefore(cr, m.firstChild); }
+      var rb = document.createElement("div"); rb.className = "wzrib"; rb.innerHTML = '<a class="ribbon s" href="index.html#/studio">Oratio Tech Studio</a>'; m.insertBefore(rb, m.firstChild);
+      var ph = document.createElement("div"); ph.className = "ph"; ph.style.setProperty("--wc", fa); ph.innerHTML = '<div class="phbad"><span class="emo">' + em + '</span></div><h1>' + ti + '</h1>'; cr.insertAdjacentElement("afterend", ph);
+      var h1 = m.querySelector(":scope > h1"); if (h1) h1.remove(); }
     if (aktiv === "icon") {
       var p = document.querySelector(".panel"), fb = document.createElement("div"); fb.className = "farbbox";
       fb.innerHTML = '<span>Farbe</span><span class="farben">' + Object.keys(WZ_FARBEN).map(function(k){ return '<button type="button" data-f="' + k + '" style="background:' + (k === "schwarz" ? "#30343f" : WZ_FARBEN[k][0]) + '" title="' + k.charAt(0).toUpperCase() + k.slice(1) + '" aria-label="' + k + '" data-nt></button>'; }).join("") + '</span>';
