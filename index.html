@@ -409,7 +409,7 @@ const WSCH = {grund:"batterie",passiv:"kondensator",halbleiter:"npn",messen:"vol
 function schSym(key, color, px){ const p = SCH[key]; if (!p) return ""; return '<svg viewBox="0 0 48 24" width="'+(px||56)+'" height="'+((px||56)/2)+'" fill="none" stroke="'+(color||"#333")+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:'+(color||"#333")+'" aria-hidden="true">'+p+'</svg>'; }
 
 const hexOf = f => FARBEN[f] || f || "#ff8c1a";
-function hell(f){ const h = hexOf(f).replace("#",""); const r=parseInt(h.substr(0,2),16),g=parseInt(h.substr(2,2),16),b=parseInt(h.substr(4,2),16); return (0.299*r+0.587*g+0.114*b) > 165; }
+function hell(f){ const h = hexOf(f).replace("#",""); const r=parseInt(h.substr(0,2),16),g=parseInt(h.substr(2,2),16),b=parseInt(h.substr(4,2),16); return (0.299*r+0.587*g+0.114*b) > 190; }
 function dunkler(f, k){ const h = hexOf(f).replace("#",""); const c=[0,2,4].map(i=>Math.round(parseInt(h.substr(i,2),16)*k)); return "rgb("+c.join(",")+")"; }
 const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 let LANG = "de", FR = null, INDEX = null, SUCHE = null;
@@ -748,10 +748,10 @@ function startseite(){
   document.title = "Oratio Tech Studio"; brand("studio");
   const chips = '<div class="kats" role="tablist">'+["alle"].concat(KATS).map(k =>
     '<button class="kat'+(k===KATWAHL?" on":"")+'" data-k="'+k+'">'+esc(k==="alle" ? U("katAlle") : U("kat")[k])+'</button>').join("")+'</div>';
-  const dk = w => hell(w.farbe) ? dunkler(w.farbe,.62) : hexOf(w.farbe);
+  const dk = w => hell(w.farbe) ? dunkler(w.farbe,.82) : hexOf(w.farbe);
   const karte = (href, kat, col, sym, name, sub, n) => '<a class="sc" data-k="'+kat+'" href="'+href+'" style="--wc:'+col+'"><div class="sh"><b'+(/\S{14,}/.test(name)?' style="font-size:12.5px;letter-spacing:0"':'')+'>'+esc(name)+'</b></div><div class="sbad">'+sym+'</div><p>'+esc(sub)+'</p><i class="sn">'+esc(n)+'</i></a>';
-  const elK = karte("elektro.html", "labor schaltungen bauteile grundlagen", "#12b8a6", '<span class="emo">🔌</span>', LANG==="fr"?"Labo d’électronique":"Elektronik-Labor", LANG==="fr"?"Code couleur, loi d’Ohm, LED, filtres, 555, logique, brochage Pi – avec calculs":"Farbcode, Ohm, LED, Filter, 555, Logik, Pi-Pinout – zum Rechnen", "9 "+(LANG==="fr"?"outils":"Werkzeuge"));
-  const pcK = karte("pc-check.html", "informatik geraete", "#3b6fd6", '<span class="emo">🖥️</span>', "PC-Check", LANG==="fr"?"Compatibilité en pourcentage : CPU, GPU, carte mère, RAM, alimentation, ventirad":"Passt alles zusammen? CPU, GPU, Mainboard, RAM, Netzteil, Kühler – in Prozent", LANG==="fr"?"Configurateur · matrice · base":"Konfigurator · Matrix · Datenbank");
+  const elK = karte("elektro.html", "labor schaltungen bauteile grundlagen", "#00b3a4", '<span class="emo">🔌</span>', LANG==="fr"?"Labo d’électronique":"Elektronik-Labor", LANG==="fr"?"Code couleur, loi d’Ohm, LED, filtres, 555, logique, brochage Pi – avec calculs":"Farbcode, Ohm, LED, Filter, 555, Logik, Pi-Pinout – zum Rechnen", "9 "+(LANG==="fr"?"outils":"Werkzeuge"));
+  const pcK = karte("pc-check.html", "informatik geraete", "#ff5a3c", '<span class="emo">🖥️</span>', "PC-Check", LANG==="fr"?"Compatibilité en pourcentage : CPU, GPU, carte mère, RAM, alimentation, ventirad":"Passt alles zusammen? CPU, GPU, Mainboard, RAM, Netzteil, Kühler – in Prozent", LANG==="fr"?"Configurateur · matrice · base":"Konfigurator · Matrix · Datenbank");
   const karten = elK + pcK + INDEX.welten.map(w => karte("#/w/"+w.id, weltKat(w.id).join(" "), dk(w), '<span class="emo">'+weltSym(w)+'</span>', T(w.name), T(w.untertitel), w.seiten.length+" "+U("seiten"))).join("");
   app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("studio"))+'</div><div class="ribwrap"><div class="ribbon">'+esc(U("fachW"))+'</div></div>'+chips+'<div class="scgrid">'+karten+'</div>';
   const filtere = () => {
@@ -762,14 +762,14 @@ function startseite(){
   filtere();
 }
 function pageHead(w, titel, kurz, sym, kopf){
-  const c = hell(w.farbe) ? dunkler(w.farbe,.62) : hexOf(w.farbe);
+  const c = hell(w.farbe) ? dunkler(w.farbe,.82) : hexOf(w.farbe);
   const em = sym ? symbol(sym) : weltSym(w);
   return '<div class="ph" style="--wc:'+c+'"><div class="phbad"><span class="emo">'+em+'</span></div><h1>'+esc(T(titel))+'</h1></div><div class="phsub"><span class="phw">'+esc(T(kopf||w.name))+'</span>'+(kurz?'<em>'+esc(T(kurz))+'</em>':'')+'</div>';
 }
 function weltseite(id){
   const w = weltInfo(id); if (!w) return nichts();
   document.title = T(w.name)+" – Oratio Tech Studio";brand("studio");
-  const c = hell(w.farbe) ? dunkler(w.farbe,.62) : hexOf(w.farbe);
+  const c = hell(w.farbe) ? dunkler(w.farbe,.82) : hexOf(w.farbe);
   const grp = new Map(); w.seiten.forEach(s => { const g = s.gruppe || ""; if(!grp.has(g)) grp.set(g, []); grp.get(g).push(s); });
   const offen = grp.size <= 3;
   let h = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › <a href="#/studio">'+esc(U("studio"))+'</a> › '+esc(T(w.name))+'</div>'+pageHead(w, w.name, w.untertitel, null, "")+'';
@@ -784,7 +784,7 @@ async function seitenansicht(wid, sid){
   const w = weltInfo(wid); if (!w) return nichts();
   const wd = await welt(wid), s = wd.seiten.find(p => p.id === sid); if (!s) return nichts();
   document.title = T(s.titel)+" – Oratio Tech Studio";brand("studio");
-  const wc = hell(w.farbe) ? dunkler(w.farbe,.62) : hexOf(w.farbe);
+  const wc = hell(w.farbe) ? dunkler(w.farbe,.82) : hexOf(w.farbe);
   const nav = w.seiten.map(p => '<a href="#/s/'+w.id+'/'+encodeURIComponent(p.id)+'"'+(p.id===sid?' class="act"':'')+'>'+esc(T(p.titel))+'</a>').join("");
   let h = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › <a href="#/studio">'+esc(U("studio"))+'</a> › <a href="#/w/'+w.id+'">'+esc(T(w.name))+'</a> › '+esc(T(s.titel))+'</div><div class="slw"><nav class="slnav" aria-label="'+esc(T(w.name))+'">'+nav+'</nav><section class="slmain">'+pageHead(w, s.titel, s.kurz, s.symbol);
   if (s.tags && s.tags.length) h += '<div class="tags">'+s.tags.filter(t=>t.length>2&&!/[\/()]/.test(t)).slice(0,10).map(t=>'<span class="tag">'+esc(t)+'</span>').join("")+'</div>';
