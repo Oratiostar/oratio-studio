@@ -857,7 +857,7 @@ function paintLCD(cv, d, S){
     var ce = cells[r][q], ox = LPAD + q * LCW, oy = LPAD + r * LCH;
     for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { var on = (ce.g[y] >> (4 - x)) & 1; c.fillStyle = on ? (green ? "#16210a" : "#f2f8ff") : (green ? "rgba(70,95,10,.22)" : "rgba(0,20,110,.35)"); c.fillRect(ox + x * (LP + 1), oy + y * (LP + 1), LP, LP); }
   }
-  if (S.sel && S.active && S.blink !== false) { c.strokeStyle = "#ffd400"; c.lineWidth = 3; c.strokeRect(LPAD + S.sel.c * LCW - 2, LPAD + S.sel.r * LCH - 2, LCW - 1, LCH - 3); }
+  if (S.sel && S.active) { c.strokeStyle = "#ffd400"; c.lineWidth = 3; c.strokeRect(LPAD + S.sel.c * LCW - 2, LPAD + S.sel.r * LCH - 2, LCW - 1, LCH - 3); }
 }
 function viewLCD(area, d, S, upd){
   var card = el("div", "lcard"); card.style.position = "relative"; area.appendChild(card);
@@ -889,36 +889,41 @@ function viewLCD(area, d, S, upd){
   var cla = el("button", "lbtn bad", L("Alles leeren", "Tout effacer")); cla.onclick = function(){ pushUndo(); S.cells = cellsFromLines([], d); syncLines(S, d); S.sel = { r: 0, c: 0 }; upd(); }; look.appendChild(cla);
   card.appendChild(look);
   var h1 = el("h2", "", L("Eigene Zeichen", "Mes caractères")); h1.style.fontSize = "17px"; card.appendChild(h1);
-  card.appendChild(el("p", "lmut", L("Zeichen wählen und unten bearbeiten – das Display ändert sich erst, wenn du oben ins Display getippt hast (gelber Rahmen). Danach setzt ein Tipp auf ein Zeichen es an die gelbe Stelle.", "Choisis un caractère et modifie-le en bas – l’écran ne change qu’après avoir touché l’écran (cadre jaune). Ensuite un appui sur un caractère l’insère à l’endroit jaune.")));
+  card.appendChild(el("p", "lmut", L("Ohne markierte Stelle im Display ändern diese Felder nur die 8 Zeichen-Plätze. Tippst du ins Display (gelber Rahmen), wirken Tipps und Zeichnen direkt auf die markierte Stelle. Tippe in die Leere, um das Display wieder abzuschalten.", "Sans cellule marquée, ces champs ne modifient que les 8 emplacements. Si tu touches l’écran (cadre jaune), tout agit directement sur la cellule marquée. Touche dans le vide pour désactiver l’écran.")));
   var ins = el("div", "lrow"); ins.style.gap = "6px"; card.appendChild(ins);
   var thumbs = [];
   for (var k = 0; k < 8; k++) (function(k){ var b = el("button", "lbtn"); b.style.cssText = "padding:5px;min-height:0;display:flex;flex-direction:column;align-items:center;gap:1px"; b.onclick = function(){ S.slot = k; if (S.active) put(k); else { drawEd(); drawThumbs(); } }; b.appendChild(el("span")); b.appendChild(el("span", "lmut", "" + (k + 1))); ins.appendChild(b); thumbs.push(b); })(k);
-  function drawThumbs(){ var Lc = LCOL(S.look); thumbs.forEach(function(b, k){ var c = icThumb(S.cc[k], 4, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "3px"; b.replaceChild(c, b.firstChild); b.classList.toggle("on", k === S.slot); }); }
+  function drawThumbs(){ var Lc = LCOL(S.look); thumbs.forEach(function(b, k){ var c = icThumb(S.cc[k], 4, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "3px"; b.replaceChild(c, b.firstChild); b.classList.toggle("on", !S.active && k === S.slot); }); }
+  function curCell(){ return S.cells[S.sel.r][S.sel.c]; }
+  function edRows(){ if (S.active) { var c = curCell(); return c && typeof c === "object" ? c.g : (c && c !== " " ? glyphRows(c) : [0, 0, 0, 0, 0, 0, 0, 0]); } return S.cc[S.slot]; }
+  function edSet(rows){ if (S.active) { S.cells[S.sel.r][S.sel.c] = { s: -1, g: rows.slice() }; syncLines(S, d); } else S.cc[S.slot] = rows.slice(); }
   var dt = el("div"); dt.style.marginTop = "14px"; card.appendChild(dt);
   var sm = el("div"); sm.style.cssText = "font-weight:700;padding:2px 0"; dt.appendChild(sm);
-  function sumTxt(){ sm.textContent = "✏️ " + L("Zeichen ", "Caractère ") + (S.slot + 1) + L(" bearbeiten", " – modifier"); }
+  function sumTxt(){ sm.textContent = S.active ? "✏️ " + L("Markierte Stelle im Display bearbeiten", "Modifier la cellule marquée") : "✏️ " + L("Eigenes Zeichen ", "Caractère ") + (S.slot + 1) + L(" bearbeiten", " – modifier"); }
   var eb = el("div", "lrow"); eb.style.cssText = "align-items:flex-start;gap:14px;margin-top:6px;flex-wrap:nowrap"; dt.appendChild(eb);
   var ed = el("canvas"); ed.width = 5 * 88; ed.height = 8 * 88; ed.style.cssText = "width:130px;flex:0 0 130px;display:block;border-radius:8px;touch-action:pan-y;cursor:pointer";
   var side = el("div"); side.style.cssText = "display:flex;flex-direction:column;gap:8px;flex:1;min-width:0"; eb.appendChild(ed); eb.appendChild(side);
-  var cl = el("button", "lbtn", L("Dieses Zeichen leeren", "Vider ce caractère")); cl.onclick = function(){ pushUndo(); S.cc[S.slot] = [0, 0, 0, 0, 0, 0, 0, 0]; syncMark(); drawEd(); drawThumbs(); upd(); };
+  var cl = el("button", "lbtn", L("Leeren", "Vider")); cl.onclick = function(){ pushUndo(); if (S.active) { S.cells[S.sel.r][S.sel.c] = " "; syncLines(S, d); } else S.cc[S.slot] = [0, 0, 0, 0, 0, 0, 0, 0]; drawEd(); drawThumbs(); upd(); };
   side.appendChild(cl);
+  var sv2 = el("button", "lbtn"); sv2.onclick = function(){ pushUndo(); S.cc[S.slot] = edRows().slice(); drawThumbs(); upd(); }; side.appendChild(sv2);
   side.appendChild(el("p", "lmut", L("Tippe auf einen Punkt = an/aus. Wischen scrollt die Seite.", "Touche un point = on/off. Glisser fait défiler.")));
-  function drawEd(){ sumTxt(); var c = ed.getContext("2d"), Lc = LCOL(S.look), n = 88, g = 6; c.fillStyle = Lc.bg; c.fillRect(0, 0, ed.width, ed.height); for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { c.fillStyle = (S.cc[S.slot][y] >> (4 - x)) & 1 ? Lc.on : Lc.off; c.fillRect(x * n, y * n, n - g, n - g); } }
+  function drawEd(){ sumTxt(); sv2.hidden = !S.active; sv2.textContent = "💾 " + L("In Zeichen ", "Dans caractère ") + (S.slot + 1) + L(" speichern", " enregistrer"); var rows = edRows(), c = ed.getContext("2d"), Lc = LCOL(S.look), n = 88, g = 6; c.fillStyle = Lc.bg; c.fillRect(0, 0, ed.width, ed.height); for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { c.fillStyle = (rows[y] >> (4 - x)) & 1 ? Lc.on : Lc.off; c.fillRect(x * n, y * n, n - g, n - g); } }
   var paintTo = null;
   function edXY(e){ var r = ed.getBoundingClientRect(); return [Math.floor((e.clientX - r.left) / r.width * 5), Math.floor((e.clientY - r.top) / r.height * 8)]; }
   press(ed, {
-    start: function(e){ var q = edXY(e), x = q[0], y = q[1]; if (x < 0 || x > 4 || y < 0 || y > 7) return; pushUndo(); var cur = (S.cc[S.slot][y] >> (4 - x)) & 1; paintTo = cur ? 0 : 1; S.cc[S.slot][y] ^= 1 << (4 - x); syncMark(); drawEd(); drawThumbs(); upd(); },
-    move: function(e){ if (paintTo === null) return; var q = edXY(e), x = q[0], y = q[1]; if (x < 0 || x > 4 || y < 0 || y > 7) return; var bit = 1 << (4 - x); if (paintTo) S.cc[S.slot][y] |= bit; else S.cc[S.slot][y] &= ~bit; syncMark(); drawEd(); drawThumbs(); upd(true); },
+    start: function(e){ var q = edXY(e), x = q[0], y = q[1]; if (x < 0 || x > 4 || y < 0 || y > 7) return; pushUndo(); var rows = edRows().slice(), cur = (rows[y] >> (4 - x)) & 1; paintTo = cur ? 0 : 1; rows[y] ^= 1 << (4 - x); edSet(rows); drawEd(); drawThumbs(); upd(); },
+    move: function(e){ if (paintTo === null) return; var q = edXY(e), x = q[0], y = q[1]; if (x < 0 || x > 4 || y < 0 || y > 7) return; var rows = edRows().slice(), bit = 1 << (4 - x); if (paintTo) rows[y] |= bit; else rows[y] &= ~bit; edSet(rows); drawEd(); drawThumbs(); upd(true); },
     end: function(){ paintTo = null; }
   }, { direct: true });
-  var h3 = el("div", "", L("Vorlagen – Tipp lädt sie in das gewählte Zeichen", "Modèles – touche pour charger dans le caractère choisi")); h3.style.cssText = "font-weight:700;margin:16px 0 8px"; card.appendChild(h3);
+  var h3 = el("div", "", L("Vorlagen – Tipp lädt sie in die Bearbeitung", "Modèles – touche pour charger dans l’édition")); h3.style.cssText = "font-weight:700;margin:16px 0 8px"; card.appendChild(h3);
   var tp = el("div"); tp.style.cssText = "display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:8px"; card.appendChild(tp);
   var tplLook = null;
   function drawTpl(){ if (tplLook === S.look) return; tplLook = S.look; var Lc = LCOL(S.look); tp.innerHTML = "";
-    ICONS.forEach(function(ic, i){ var b = el("button", "lbtn"); b.style.cssText = "padding:6px 0;min-height:0;line-height:0;display:flex;justify-content:center"; b.title = iconName(i); var c = icThumb(ic[2], 5, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "4px"; b.appendChild(c); b.onclick = function(){ pushUndo(); S.cc[S.slot] = ic[2].slice(); syncMark(); drawEd(); drawThumbs(); upd(); }; tp.appendChild(b); }); }
+    ICONS.forEach(function(ic, i){ var b = el("button", "lbtn"); b.style.cssText = "padding:6px 0;min-height:0;line-height:0;display:flex;justify-content:center"; b.title = iconName(i); var c = icThumb(ic[2], 5, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "4px"; b.appendChild(c); b.onclick = function(){ pushUndo(); edSet(ic[2]); drawEd(); drawThumbs(); upd(); }; tp.appendChild(b); }); }
   drawEd(); drawThumbs(); drawTpl();
-  var bt = null;
-  return { paint: function(){ S.blink = true; paintLCD(cv, d, S); drawEd(); drawThumbs(); drawTpl(); }, stop: function(){} };
+  var outside = function(e){ if (!S.active) return; var t = e.target; if (!t || !t.closest || cv.contains(t) || t.closest("button,input,select,textarea,label,canvas,summary,a")) return; S.active = false; hid.blur(); upd(); };
+  document.addEventListener("pointerdown", outside, true);
+  return { paint: function(){ paintLCD(cv, d, S); drawEd(); drawThumbs(); drawTpl(); }, stop: function(){ document.removeEventListener("pointerdown", outside, true); } };
 }
 
 /* ----- Pixel-Displays (schwarz-weiß + Farbe) ----- */
