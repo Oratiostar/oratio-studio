@@ -824,16 +824,20 @@ function paintLCD(cv, d, S){
     var ce = cells[r][q], ox = LPAD + q * LCW, oy = LPAD + r * LCH;
     for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { var on = (ce.g[y] >> (4 - x)) & 1; c.fillStyle = on ? (green ? "#16210a" : "#f2f8ff") : (green ? "rgba(70,95,10,.22)" : "rgba(0,20,110,.35)"); c.fillRect(ox + x * (LP + 1), oy + y * (LP + 1), LP, LP); }
   }
-  if (S.sel) { c.strokeStyle = "#ffd400"; c.lineWidth = 3; c.strokeRect(LPAD + S.sel.c * LCW - 2, LPAD + S.sel.r * LCH - 2, LCW - 1, LCH - 3); }
+  if (S.sel && S.active) { c.strokeStyle = "#ffd400"; c.lineWidth = 3; c.strokeRect(LPAD + S.sel.c * LCW - 2, LPAD + S.sel.r * LCH - 2, LCW - 1, LCH - 3); }
 }
 function viewLCD(area, d, S, upd){
   var card = el("div", "lcard"); card.style.position = "relative"; area.appendChild(card);
-  var cv = el("canvas", "mcv"); cv.style.background = "none"; cv.style.border = "0"; cv.style.imageRendering = "auto"; cv.style.maxWidth = d.cols === 16 ? "760px" : "880px"; cv.style.touchAction = "manipulation"; cv.style.cursor = "text"; card.appendChild(cv);
+  var cv = el("canvas", "mcv"); cv.style.background = "none"; cv.style.border = "0"; cv.style.imageRendering = "auto"; cv.style.maxWidth = d.cols === 16 ? "760px" : "880px"; cv.style.touchAction = "pan-y"; cv.style.cursor = "text"; card.appendChild(cv);
   var hid = el("input"); hid.type = "text"; hid.setAttribute("autocapitalize", "off"); hid.setAttribute("autocomplete", "off"); hid.setAttribute("autocorrect", "off"); hid.spellcheck = false; hid.style.cssText = "position:absolute;left:12px;top:12px;width:2px;height:2px;opacity:0;border:0;padding:0;font-size:16px"; card.appendChild(hid);
-  card.appendChild(el("p", "lmut", "👆 " + L("Tippe auf eine Stelle im Display (gelber Rahmen) und schreib los. Mit den Symbolen darunter setzt du Zeichen ein. Umlaute hat der Standard-Zeichensatz nicht („?“).", "Touche un endroit de l’écran (cadre jaune) et écris. Les symboles dessous insèrent des caractères. Pas d’accents dans le jeu standard (« ? »).")));
+  card.appendChild(el("p", "lmut", "👆 " + L("Tippe kurz auf eine Stelle im Display (gelber Rahmen) und schreib los. Wischen scrollt nur die Seite. Mit den Symbolen darunter setzt du Zeichen ein. Umlaute hat der Standard-Zeichensatz nicht („?“).", "Touche brièvement un endroit de l’écran (cadre jaune) et écris. Glisser fait seulement défiler. Les symboles dessous insèrent des caractères. Pas d’accents dans le jeu standard (« ? »).")));
   function advance(){ var s = S.sel; s.c++; if (s.c >= d.cols) { s.c = 0; if (s.r < d.rows - 1) s.r++; else s.c = d.cols - 1; } }
-  function put(v){ S.cells[S.sel.r][S.sel.c] = v; syncLines(S, d); advance(); upd(); }
-  cv.onpointerdown = function(e){ var r = cv.getBoundingClientRect(), sc = cv.width / r.width, x = ((e.clientX - r.left) * sc - LPAD) / LCW, y = ((e.clientY - r.top) * sc - LPAD) / LCH; var cc = Math.max(0, Math.min(d.cols - 1, Math.floor(x))), rr = Math.max(0, Math.min(d.rows - 1, Math.floor(y))); S.sel = { r: rr, c: cc }; hid.focus(); upd(); };
+  function put(v){ S.active = true; S.cells[S.sel.r][S.sel.c] = v; syncLines(S, d); advance(); upd(); }
+  var tap0 = null;
+  cv.onpointerdown = function(e){ tap0 = { x: e.clientX, y: e.clientY, t: Date.now() }; };
+  cv.onpointercancel = function(){ tap0 = null; };
+  cv.onpointerup = function(e){ if (!tap0) return; var m = Math.abs(e.clientX - tap0.x) + Math.abs(e.clientY - tap0.y), dt = Date.now() - tap0.t; tap0 = null; if (m > 10 || dt > 600) return;
+    var r = cv.getBoundingClientRect(), sc = cv.width / r.width, x = ((e.clientX - r.left) * sc - LPAD) / LCW, y = ((e.clientY - r.top) * sc - LPAD) / LCH; var cc = Math.max(0, Math.min(d.cols - 1, Math.floor(x))), rr = Math.max(0, Math.min(d.rows - 1, Math.floor(y))); S.sel = { r: rr, c: cc }; S.active = true; hid.focus(); upd(); };
   hid.oninput = function(){ var v = hid.value; hid.value = ""; for (var i = 0; i < v.length; i++) { var ch = v.charAt(i), code = ch.charCodeAt(0); put(code < 32 || code > 126 ? "?" : ch); } };
   hid.onkeydown = function(e){ var s = S.sel, k = e.key;
     if (k === "Backspace") { if (S.cells[s.r][s.c] === " " || S.cells[s.r][s.c] === undefined) { if (s.c > 0) s.c--; else if (s.r > 0) { s.r--; s.c = d.cols - 1; } } S.cells[s.r][s.c] = " "; syncLines(S, d); upd(); e.preventDefault(); }
@@ -858,10 +862,10 @@ function viewLCD(area, d, S, upd){
   var slb = [];
   for (var j = 0; j < 8; j++) (function(j){ var b = el("button", "lbtn" + (S.slot === j ? " on" : ""), "" + (j + 1)); b.style.minWidth = "44px"; b.onclick = function(){ S.slot = j; slb.forEach(function(y, i){ y.classList.toggle("on", i === j); }); drawEd(); }; sl.appendChild(b); slb.push(b); })(j);
   card.appendChild(el("p", "lmut", L("Platz wählen (nur auswählen, es wird nichts gezeichnet) – dann auf die Punkte tippen. Die Zahl entspricht dem Platz im Code (Platz 1 = createChar(0, …)).", "Choisis un emplacement (rien n’est dessiné) – puis touche les points. Le numéro correspond à l’emplacement dans le code (n° 1 = createChar(0, …).")));
-  var ed = el("canvas"); ed.width = 5 * 44; ed.height = 8 * 44; ed.style.cssText = "width:min(100%,220px);display:block;border-radius:10px;touch-action:pan-y;cursor:pointer"; card.appendChild(ed);
+  var ed = el("canvas"); ed.width = 5 * 44; ed.height = 8 * 44; ed.style.cssText = "width:min(100%,220px);display:block;border-radius:10px;touch-action:pan-y;cursor:pointer"; var okEd = guard(ed, card, null); card.appendChild(ed);
   function drawEd(){ var c = ed.getContext("2d"), green = S.look === "green"; c.fillStyle = green ? "#aac43a" : "#1f4fd1"; c.fillRect(0, 0, ed.width, ed.height); for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { c.fillStyle = (S.cc[S.slot][y] >> (4 - x)) & 1 ? (green ? "#16210a" : "#f2f8ff") : (green ? "rgba(70,95,10,.25)" : "rgba(0,20,110,.4)"); c.fillRect(x * 44 + 2, y * 44 + 2, 40, 40); } }
   var paintTo = null;
-  ed.onpointerdown = function(e){ var r = ed.getBoundingClientRect(), x = Math.floor((e.clientX - r.left) / r.width * 5), y = Math.floor((e.clientY - r.top) / r.height * 8); if (x < 0 || x > 4 || y < 0 || y > 7) return; var cur = (S.cc[S.slot][y] >> (4 - x)) & 1; paintTo = cur ? 0 : 1; S.cc[S.slot][y] ^= 1 << (4 - x); if (e.pointerType === "mouse") ed.setPointerCapture(e.pointerId); else paintTo = null; drawEd(); drawThumbs(); upd(); };
+  ed.onpointerdown = function(e){ if (!okEd(e)) return; var r = ed.getBoundingClientRect(), x = Math.floor((e.clientX - r.left) / r.width * 5), y = Math.floor((e.clientY - r.top) / r.height * 8); if (x < 0 || x > 4 || y < 0 || y > 7) return; var cur = (S.cc[S.slot][y] >> (4 - x)) & 1; paintTo = cur ? 0 : 1; S.cc[S.slot][y] ^= 1 << (4 - x); if (e.pointerType === "mouse") ed.setPointerCapture(e.pointerId); else paintTo = null; drawEd(); drawThumbs(); upd(); };
   ed.onpointermove = function(e){ if (paintTo === null || e.pointerType !== "mouse") return; var r = ed.getBoundingClientRect(), x = Math.floor((e.clientX - r.left) / r.width * 5), y = Math.floor((e.clientY - r.top) / r.height * 8); if (x < 0 || x > 4 || y < 0 || y > 7) return; var bit = 1 << (4 - x); if (paintTo) S.cc[S.slot][y] |= bit; else S.cc[S.slot][y] &= ~bit; drawEd(); drawThumbs(); upd(true); };
   ed.onpointerup = ed.onpointercancel = function(){ paintTo = null; };
   var cl = el("button", "lbtn", L("Dieses Zeichen leeren", "Vider ce caractère")); cl.style.marginTop = "8px"; cl.onclick = function(){ S.cc[S.slot] = [0, 0, 0, 0, 0, 0, 0, 0]; drawEd(); drawThumbs(); upd(); }; card.appendChild(cl);
