@@ -17,6 +17,7 @@ var TABS = [
   ["start", "🏠", L("Start", "Accueil")],
   ["sim", "⚡", L("Schaltungen", "Circuits")],
   ["watch", "⌚", "Oratio Watch"],
+  ["disp", "📺", L("Displays", "Écrans")],
   ["matrix", "🟦", L("LED-Matrix", "Matrice LED")],
   ["term", "💻", "Terminal"],
   ["game", "🎮", L("Spiel", "Jeu")]
@@ -51,6 +52,7 @@ function route(){
 MODS.start = { show: function(b){
   var T = [
     ["sim", "⚡", L("Schaltungs-Simulator", "Simulateur de circuits"), "linear-gradient(135deg,#ff8a00,#ff4f9a)", L("Batterie, Widerstand, LED, Schalter, Messgeräte, Kondensator und Transistor per Drag & Drop. Überlast? Dann brennt etwas durch.", "Pile, résistance, LED, interrupteur, instruments, condensateur et transistor par glisser-déposer. Surcharge ? Quelque chose grille."), L("Stufe 1–3 live", "Niveaux 1–3 en direct")],
+    ["disp", "📺", L("Display-Werkstatt", "Atelier d’écrans"), "linear-gradient(135deg,#2f7bff,#12c2e9)", L("12 Displays wählen (LCD 16×2, OLED, Nokia, TFT, 7-Segment …), darauf schreiben, zeichnen oder ein Bild laden – fertiger Code für Arduino Uno, ESP32 und Raspberry Pi.", "12 écrans au choix (LCD 16×2, OLED, Nokia, TFT, 7 segments …) : écris, dessine ou charge une image – code prêt pour Arduino Uno, ESP32 et Raspberry Pi."), L("Neu", "Nouveau")],
     ["watch", "⌚", "Oratio Watch", "linear-gradient(135deg,#12c2e9,#2f7bff)", L("Das Zifferblatt live im Browser – Farben, Zeiger und Stil frei wählbar. Gleiche Formen wie auf der echten Uhr.", "Le cadran en direct – couleurs, aiguilles et style au choix. Mêmes formes que sur la vraie montre."), L("Live", "En direct")],
     ["matrix", "🟦", L("LED-Matrix-Maler", "Éditeur de matrice LED"), "linear-gradient(135deg,#7a3cff,#ff4f9a)", L("64×32 Pixel malen und als fertigen ESP32-Code exportieren.", "Dessine 64×32 pixels et exporte le code ESP32 prêt à l’emploi."), L("Export ESP32", "Export ESP32")],
     ["term", "💻", L("Terminal-Trainer", "Entraîneur de terminal"), "linear-gradient(135deg,#1c2230,#2fe38a)", L("Ein Übungs-Terminal mit 10 kleinen Missionen. Nichts kann kaputtgehen.", "Un terminal d’entraînement avec 10 petites missions. Rien ne peut casser."), L("10 Missionen", "10 missions")],
@@ -656,6 +658,381 @@ MODS.term = { show: function(b){
   });
   tm.onclick = function(){ inp.focus(); };
   pp(); mis();
+} };
+
+/* ---------- DISPLAYS ---------- */
+var FONT57 = "000000000000005f00000007000700147f147f14242a7f2a12231308646236495620500008070300001c2241000041221c002a1c7f1c2a08083e080800807030000808080808000060600020100804023e5149453e00427f400072494949462141494d331814127f1027454545393c4a49493141211109073649494936464949291e0000140000004034000000081422411414141414004122140802015909063e415d594e7c1211127c7f494949363e414141227f4141413e7f494949417f090909013e414151737f0808087f00417f41002040413f017f081422417f404040407f021c027f7f0408107f3e4141413e7f090909063e4151215e7f09192946264949493203017f01033f4040403f1f2040201f3f4038403f631408146303047804036159494d43007f4141410204081020004141417f04020102044040404040000307080020545478407f284444383844444428384444287f385454541800087e090218a4a49c787f0804047800447d40002040403d007f1028440000417f40007c047804787c080404783844444438fc1824241818242418fc7c08040408485454542404043f44243c4040207c1c2040201c3c4030403c44281028444c9090907c4464544c440008364100000077000000413608000201020402";
+function glyph(ch){ var c = ch.charCodeAt(0); if (c < 32 || c > 126) c = 63; var o = (c - 32) * 10, g = []; for (var i = 0; i < 5; i++) g.push(parseInt(FONT57.substr(o + i * 2, 2), 16)); return g; }
+function glyphRows(ch){ var g = glyph(ch), rows = []; for (var r = 0; r < 8; r++) { var v = 0; for (var c = 0; c < 5; c++) if ((g[c] >> r) & 1) v |= 1 << (4 - c); rows.push(v); } return rows; }
+function newB(w, h){ return { w: w, h: h, d: new Uint32Array(w * h) }; }
+function bset(B, x, y, v){ if (x >= 0 && y >= 0 && x < B.w && y < B.h) B.d[y * B.w + x] = v; }
+function bline(B, x0, y0, x1, y1, v){ var dx = Math.abs(x1 - x0), dy = -Math.abs(y1 - y0), sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1, e = dx + dy, n = 0; while (n++ < 5000) { bset(B, x0, y0, v); if (x0 === x1 && y0 === y1) break; var e2 = 2 * e; if (e2 >= dy) { e += dy; x0 += sx; } if (e2 <= dx) { e += dx; y0 += sy; } } }
+function brect(B, x0, y0, x1, y1, v){ bline(B, x0, y0, x1, y0, v); bline(B, x1, y0, x1, y1, v); bline(B, x1, y1, x0, y1, v); bline(B, x0, y1, x0, y0, v); }
+function bflood(B, x, y, v){ if (x < 0 || y < 0 || x >= B.w || y >= B.h) return; var t = B.d[y * B.w + x]; if (t === v) return; var q = [[x, y]]; while (q.length) { var p = q.pop(); if (p[0] < 0 || p[1] < 0 || p[0] >= B.w || p[1] >= B.h || B.d[p[1] * B.w + p[0]] !== t) continue; B.d[p[1] * B.w + p[0]] = v; q.push([p[0] + 1, p[1]], [p[0] - 1, p[1]], [p[0], p[1] + 1], [p[0], p[1] - 1]); } }
+function btext(B, x, y, t, s, v){ for (var i = 0; i < t.length; i++) { var g = glyph(t.charAt(i)); for (var c = 0; c < 5; c++) for (var r = 0; r < 8; r++) if ((g[c] >> r) & 1) for (var a = 0; a < s; a++) for (var b2 = 0; b2 < s; b2++) bset(B, x + (i * 6 + c) * s + a, y + r * s + b2, v); } }
+function bcopy(B){ var n = newB(B.w, B.h); n.d.set(B.d); return n; }
+
+var DISPS = [
+  { id: "lcd1602", grp: "lcd", n: "LCD 16×2", cols: 16, rows: 2 },
+  { id: "lcd2004", grp: "lcd", n: "LCD 20×4", cols: 20, rows: 4 },
+  { id: "oled64", grp: "mono", n: "OLED 0,96″ 128×64", w: 128, h: 64, ctrl: "SSD1306", look: "oled" },
+  { id: "oled32", grp: "mono", n: "OLED 0,91″ 128×32", w: 128, h: 32, ctrl: "SSD1306", look: "oled" },
+  { id: "sh1106", grp: "mono", n: "OLED 1,3″ 128×64", w: 128, h: 64, ctrl: "SH1106", look: "oled" },
+  { id: "nokia", grp: "mono", n: "Nokia 5110 84×48", w: 84, h: 48, ctrl: "PCD8544", look: "nokia" },
+  { id: "st7735", grp: "color", n: "TFT 1,8″ 128×160", w: 128, h: 160, ctrl: "ST7735" },
+  { id: "st7789", grp: "color", n: "TFT 1,3″ 240×240", w: 240, h: 240, ctrl: "ST7789" },
+  { id: "ili9341", grp: "color", n: "TFT 2,8″ 240×320", w: 240, h: 320, ctrl: "ILI9341" },
+  { id: "max8", grp: "mono", n: "LED-Matrix 8×8", w: 8, h: 8, ctrl: "MAX7219", look: "led", mods: 1 },
+  { id: "max32", grp: "mono", n: "LED-Matrix 32×8 (4 Module)", w: 32, h: 8, ctrl: "MAX7219", look: "led", mods: 4 },
+  { id: "tm1637", grp: "seg", n: "7-Segment 4-stellig", ctrl: "TM1637" }
+];
+var GRPN = { lcd: L("Zeichen-LCD", "LCD à caractères"), mono: L("Pixel · Schwarz-Weiß", "Pixels · monochrome"), color: L("Pixel · Farbe (TFT)", "Pixels · couleur (TFT)"), seg: L("Segmentanzeige", "Afficheur 7 segments") };
+var BOARDS = [["uno", "Arduino Uno"], ["esp32", "ESP32"], ["pi", "Raspberry Pi"]];
+var FLASH = { uno: 30720, esp32: 1310720, pi: Infinity };
+var DD = { sel: "lcd1602", board: "uno", S: {}, loaded: false };
+function dget(id){ for (var i = 0; i < DISPS.length; i++) if (DISPS[i].id === id) return DISPS[i]; return DISPS[0]; }
+function dinit(d){
+  if (DD.S[d.id]) return DD.S[d.id];
+  var S;
+  if (d.grp === "lcd") { var cc = []; for (var i = 0; i < 8; i++) cc.push([0, 0, 0, 0, 0, 0, 0, 0]); cc[0] = [0, 10, 31, 31, 31, 14, 4, 0]; cc[1] = [4, 14, 14, 14, 31, 0, 4, 0];
+    S = { look: "blue", cc: cc, slot: 0, lines: d.rows === 2 ? ["Hallo Oratio!", "{0} Oratio Lab {1}"] : ["Hallo Oratio!", "{0} Oratio Lab {1}", "Zeile 3", "Zeile 4"] }; }
+  else if (d.grp === "seg") S = { t: "12:34" };
+  else S = { mode: "draw", B: newB(d.w, d.h), tool: "pen", col: "#ff3b3b", ent: [{ t: "Hallo!", x: 0, y: 0, s: d.w >= 100 ? 2 : 1, c: "#ffffff" }], inv: false, thr: 128, dith: true, stretch: false, oledc: "white", img: null };
+  DD.S[d.id] = S; return S;
+}
+function dsave(){
+  var o = { sel: DD.sel, board: DD.board, S: {} };
+  DISPS.forEach(function(d){ var S = DD.S[d.id]; if (!S) return;
+    if (d.grp === "mono") o.S[d.id] = { mode: S.mode, tool: S.tool, ent: S.ent, px: Array.prototype.join.call(S.B.d, "") , oledc: S.oledc };
+    else if (d.grp === "color") o.S[d.id] = { mode: S.mode, ent: S.ent, col: S.col };
+    else o.S[d.id] = S; });
+  st("disp", o);
+}
+function dload(){
+  if (DD.loaded) return; DD.loaded = true; var o = sv("disp"); if (!o) return;
+  DD.sel = o.sel || DD.sel; DD.board = o.board || DD.board;
+  DISPS.forEach(function(d){ var p = o.S && o.S[d.id]; if (!p) return; var S = dinit(d);
+    if (d.grp === "mono") { S.mode = p.mode || "draw"; S.tool = p.tool || "pen"; S.ent = p.ent || S.ent; S.oledc = p.oledc || "white"; if (p.px && p.px.length === d.w * d.h) for (var i = 0; i < p.px.length; i++) S.B.d[i] = p.px.charAt(i) === "1" ? 1 : 0; }
+    else if (d.grp === "color") { S.mode = p.mode || "draw"; S.ent = p.ent || S.ent; S.col = p.col || S.col; }
+    else if (d.grp === "lcd") { S.look = p.look || "blue"; S.cc = p.cc || S.cc; S.lines = p.lines || S.lines; }
+    else if (d.grp === "seg") S.t = p.t || S.t; });
+}
+function hexc(h){ return parseInt(h.slice(1), 16); }
+function rgb565(n){ return ((((n >> 16) & 255) >> 3) << 11) | ((((n >> 8) & 255) >> 2) << 5) | ((n & 255) >> 3); }
+function hx(n, w){ return "0x" + ("0000000" + n.toString(16)).slice(-w).toUpperCase().replace("X", "x"); }
+function cstr(s){ return s.replace(/\\/g, "\\\\").replace(/"/g, '\\"'); }
+function carr(vals, per, w){ var out = []; for (var i = 0; i < vals.length; i += per) out.push("  " + vals.slice(i, i + per).map(function(v){ return "0x" + ("0000000" + v.toString(16)).slice(-w).toUpperCase(); }).join(", ")); return out.join(",\n"); }
+function packMono(B, lsb){ var bw = Math.ceil(B.w / 8), out = []; for (var y = 0; y < B.h; y++) for (var bx = 0; bx < bw; bx++) { var by = 0; for (var k = 0; k < 8; k++) { var x = bx * 8 + k, bit = x < B.w && B.d[y * B.w + x] ? 1 : 0; by |= lsb ? bit << k : bit << (7 - k); } out.push(by); } return { bytes: out, bw: bw }; }
+function curB(d, S){
+  if (S.mode !== "text") return S.B;
+  var T = newB(d.w, d.h); S.ent.forEach(function(e){ btext(T, e.x, e.y, e.t, e.s, d.grp === "color" ? hexc(e.c) : 1); }); return T;
+}
+
+/* ----- Zeichen-LCD ----- */
+function lcdCells(d, S){
+  var rowsOut = [];
+  for (var r = 0; r < d.rows; r++) { var line = S.lines[r] || "", cells = [], i = 0;
+    while (i < line.length && cells.length < d.cols) {
+      var m = line.slice(i).match(/^\{([0-7])\}/);
+      if (m) { cells.push({ cc: +m[1], g: S.cc[+m[1]] }); i += 3; } else { cells.push({ ch: line.charAt(i), g: glyphRows(line.charAt(i)) }); i++; }
+    }
+    while (cells.length < d.cols) cells.push({ ch: " ", g: glyphRows(" ") });
+    rowsOut.push(cells); }
+  return rowsOut;
+}
+function paintLCD(cv, d, S){
+  var p = 5, cw = 5 * (p + 1) + 5, ch = 8 * (p + 1) + 6, pad = 22;
+  cv.width = d.cols * cw + pad * 2; cv.height = d.rows * ch + pad * 2;
+  var c = cv.getContext("2d"), green = S.look === "green";
+  c.fillStyle = "#1b1f27"; c.fillRect(0, 0, cv.width, cv.height);
+  c.fillStyle = green ? "#aac43a" : "#1f4fd1"; c.fillRect(8, 8, cv.width - 16, cv.height - 16);
+  var cells = lcdCells(d, S);
+  for (var r = 0; r < d.rows; r++) for (var q = 0; q < d.cols; q++) {
+    var ce = cells[r][q], ox = pad + q * cw, oy = pad + r * ch;
+    for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { var on = (ce.g[y] >> (4 - x)) & 1; c.fillStyle = on ? (green ? "#16210a" : "#f2f8ff") : (green ? "rgba(70,95,10,.22)" : "rgba(0,20,110,.35)"); c.fillRect(ox + x * (p + 1), oy + y * (p + 1), p, p); }
+  }
+}
+function viewLCD(area, d, S, upd){
+  var card = el("div", "lcard"); area.appendChild(card);
+  var cv = el("canvas", "mcv"); cv.style.background = "none"; cv.style.border = "0"; cv.style.imageRendering = "auto"; cv.style.maxWidth = d.cols === 16 ? "760px" : "880px"; card.appendChild(cv);
+  card.appendChild(el("p", "lmut", L("Jedes Zeichen besteht aus 5 × 8 Punkten. Schreib deinen Text in die Zeilen. Mit {0} bis {7} setzt du ein selbst gemaltes Zeichen ein. Umlaute und Sonderzeichen hat der Standard-Zeichensatz nicht (hier als „?“).", "Chaque caractère est fait de 5 × 8 points. Écris ton texte dans les lignes. Avec {0} à {7} tu insères un caractère dessiné par toi. Les accents ne sont pas dans le jeu standard (affichés « ? »).")));
+  var last = null;
+  for (var r = 0; r < d.rows; r++) (function(r){ var i = el("input"); i.type = "text"; i.value = S.lines[r] || ""; i.placeholder = L("Zeile ", "Ligne ") + (r + 1); i.style.cssText = "width:100%;margin:4px 0;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--input);color:var(--fg);font:15px ui-monospace,Menlo,Consolas,monospace"; i.autocapitalize = "off"; i.spellcheck = false; i.oninput = function(){ S.lines[r] = i.value; upd(); }; i.onfocus = function(){ last = { i: i, r: r }; }; card.appendChild(i); if (r === 0) last = { i: i, r: 0 }; })(r);
+  var row = el("div", "lrow"); row.style.margin = "10px 0";
+  [["blue", L("Blau / weiß", "Bleu / blanc")], ["green", L("Grün / schwarz", "Vert / noir")]].forEach(function(o){ var x = el("button", "lbtn" + (S.look === o[0] ? " on" : ""), o[1]); x.onclick = function(){ S.look = o[0]; row.querySelectorAll("button").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); upd(); }; row.appendChild(x); });
+  card.appendChild(row);
+  var h = el("h2", "", L("Eigene Zeichen (8 Plätze)", "Caractères perso (8 emplacements)")); h.style.fontSize = "17px"; card.appendChild(h);
+  var grid = el("div", "lrow"); card.appendChild(grid);
+  var ed = [];
+  function drawCC(k){ var cc = ed[k], c = cc.getContext("2d"); c.fillStyle = "#1b1f27"; c.fillRect(0, 0, cc.width, cc.height); for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { c.fillStyle = (S.cc[k][y] >> (4 - x)) & 1 ? "#f2f8ff" : "#2a4fb0"; c.fillRect(2 + x * 12, 2 + y * 12, 11, 11); } c.strokeStyle = S.slot === k ? "#12c2e9" : "transparent"; c.lineWidth = 3; c.strokeRect(1, 1, cc.width - 2, cc.height - 2); }
+  for (var k = 0; k < 8; k++) (function(k){ var w = el("div"); w.style.textAlign = "center"; var cc = el("canvas"); cc.width = 64; cc.height = 100; cc.style.cssText = "border-radius:8px;cursor:pointer;touch-action:none"; ed.push(cc);
+    cc.onpointerdown = function(e){ var rc = cc.getBoundingClientRect(), x = Math.floor((e.clientX - rc.left) / rc.width * 64 / 12), y = Math.floor((e.clientY - rc.top) / rc.height * 100 / 12); S.slot = k; if (x >= 0 && x < 5 && y >= 0 && y < 8) S.cc[k][y] ^= 1 << (4 - x); ed.forEach(function(_, j){ drawCC(j); }); upd(); };
+    var b = el("button", "lbtn", "{" + k + "}"); b.style.cssText = "margin-top:4px;min-height:32px;padding:6px 10px"; b.title = L("In die Zeile einfügen", "Insérer dans la ligne"); b.onclick = function(){ if (!last) return; last.i.value += "{" + k + "}"; S.lines[last.r] = last.i.value; upd(); };
+    w.appendChild(cc); w.appendChild(el("br")); w.appendChild(b); grid.appendChild(w); drawCC(k); })(k);
+  var cl = el("button", "lbtn", L("Gewähltes Zeichen leeren", "Vider le caractère choisi")); cl.style.marginTop = "8px"; cl.onclick = function(){ S.cc[S.slot] = [0, 0, 0, 0, 0, 0, 0, 0]; ed.forEach(function(_, j){ drawCC(j); }); upd(); }; card.appendChild(cl);
+  return { paint: function(){ paintLCD(cv, d, S); } };
+}
+
+/* ----- Pixel-Displays (schwarz-weiß + Farbe) ----- */
+function gfxScale(d){ return Math.max(1, Math.min(60, Math.floor(900 / d.w), Math.floor(700 / d.h))); }
+var OLEDC = { white: "#eaf2ff", blue: "#7cc8ff", yellow: "#ffd23a" };
+function paintGfx(cv, d, S, B){
+  var s = gfxScale(d), c = cv.getContext("2d"); cv.width = d.w * s; cv.height = d.h * s;
+  var look = d.look, x, y, v;
+  if (d.grp === "color") {
+    var oc = document.createElement("canvas"); oc.width = d.w; oc.height = d.h; var ox = oc.getContext("2d"), im = ox.createImageData(d.w, d.h);
+    for (var i = 0; i < B.d.length; i++) { v = B.d[i]; im.data[i * 4] = (v >> 16) & 255; im.data[i * 4 + 1] = (v >> 8) & 255; im.data[i * 4 + 2] = v & 255; im.data[i * 4 + 3] = 255; }
+    ox.putImageData(im, 0, 0); c.imageSmoothingEnabled = false; c.drawImage(oc, 0, 0, cv.width, cv.height); return;
+  }
+  var bg = look === "nokia" ? "#b7c8a0" : look === "led" ? "#190c0c" : "#000", off = look === "nokia" ? "#aebf96" : look === "led" ? "#3b1616" : "#07090d", on = look === "nokia" ? "#222c1b" : look === "led" ? "#ff3030" : OLEDC[S.oledc || "white"];
+  c.fillStyle = bg; c.fillRect(0, 0, cv.width, cv.height);
+  for (y = 0; y < d.h; y++) for (x = 0; x < d.w; x++) { var lit = B.d[y * d.w + x] ? 1 : 0;
+    if (look === "led") { c.fillStyle = lit ? on : off; c.beginPath(); c.arc(x * s + s / 2, y * s + s / 2, s * 0.38, 0, 7); c.fill(); }
+    else if (s >= 4) { c.fillStyle = lit ? on : off; c.fillRect(x * s, y * s, s - 1, s - 1); }
+    else if (lit) { c.fillStyle = on; c.fillRect(x * s, y * s, s, s); } }
+}
+function importImg(d, S){
+  if (!S.img) return; var o = document.createElement("canvas"); o.width = d.w; o.height = d.h; var c = o.getContext("2d");
+  c.fillStyle = "#000"; c.fillRect(0, 0, d.w, d.h); c.imageSmoothingQuality = "high";
+  var iw = S.img.naturalWidth || S.img.width, ih = S.img.naturalHeight || S.img.height;
+  if (S.stretch) c.drawImage(S.img, 0, 0, d.w, d.h); else { var sc = Math.min(d.w / iw, d.h / ih), w = iw * sc, h = ih * sc; c.drawImage(S.img, (d.w - w) / 2, (d.h - h) / 2, w, h); }
+  var px = c.getImageData(0, 0, d.w, d.h).data, B = S.B, i;
+  if (d.grp === "color") { for (i = 0; i < d.w * d.h; i++) B.d[i] = (px[i * 4] << 16) | (px[i * 4 + 1] << 8) | px[i * 4 + 2]; return; }
+  var g = new Float32Array(d.w * d.h); for (i = 0; i < g.length; i++) { var v = 0.299 * px[i * 4] + 0.587 * px[i * 4 + 1] + 0.114 * px[i * 4 + 2]; g[i] = S.inv ? 255 - v : v; }
+  if (S.dith) { for (var y = 0; y < d.h; y++) for (var x = 0; x < d.w; x++) { var k = y * d.w + x, old = g[k], nw = old < S.thr ? 0 : 255, er = old - nw; B.d[k] = nw ? 1 : 0;
+      if (x + 1 < d.w) g[k + 1] += er * 7 / 16; if (y + 1 < d.h) { if (x > 0) g[k + d.w - 1] += er * 3 / 16; g[k + d.w] += er * 5 / 16; if (x + 1 < d.w) g[k + d.w + 1] += er * 1 / 16; } } }
+  else for (i = 0; i < g.length; i++) B.d[i] = g[i] >= S.thr ? 1 : 0;
+}
+function viewGfx(area, d, S, upd){
+  var color = d.grp === "color", card = el("div", "lcard"); area.appendChild(card);
+  var mb = el("div", "lrow"); mb.style.marginBottom = "10px"; card.appendChild(mb);
+  var body = el("div"); card.appendChild(body);
+  [["draw", "✏️ " + L("Zeichnen / Bild", "Dessin / image")], ["text", "🔤 " + L("Text schreiben", "Écrire du texte")]].forEach(function(o){ var x = el("button", "lbtn" + (S.mode === o[0] ? " on" : ""), o[1]); x.onclick = function(){ S.mode = o[0]; mb.querySelectorAll("button").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); build(); upd(); }; mb.appendChild(x); });
+  var cv, ref = {};
+  function pxAt(e){ var r = cv.getBoundingClientRect(); return [Math.floor((e.clientX - r.left) / r.width * d.w), Math.floor((e.clientY - r.top) / r.height * d.h)]; }
+  function build(){
+    body.innerHTML = ""; var cur = color ? hexc(S.col) : 1;
+    if (S.mode === "draw") {
+      var tb = el("div", "lrow"); tb.style.marginBottom = "10px"; body.appendChild(tb);
+      [["pen", "✏️"], ["erase", "🧽"], ["fill", "🪣"], ["line", "／"], ["rect", "▭"]].forEach(function(t){ var x = el("button", "lbtn" + (S.tool === t[0] ? " on" : ""), t[1]); x.title = { pen: L("Stift", "Crayon"), erase: L("Radierer", "Gomme"), fill: L("Füllen", "Remplir"), line: L("Linie", "Ligne"), rect: L("Rechteck", "Rectangle") }[t[0]]; x.onclick = function(){ S.tool = t[0]; tb.querySelectorAll(".lbtn").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); }; tb.appendChild(x); });
+      if (color) { var ci = el("input"); ci.type = "color"; ci.value = S.col; ci.style.cssText = "width:46px;height:40px;border:1px solid var(--line);border-radius:10px;padding:2px;background:none"; ci.oninput = function(){ S.col = ci.value; }; tb.appendChild(ci); }
+      if (d.look === "oled") [["white", L("weiß", "blanc")], ["blue", L("blau", "bleu")], ["yellow", L("gelb", "jaune")]].forEach(function(o){ var x = el("button", "lbtn" + (S.oledc === o[0] ? " on" : ""), o[1]); x.onclick = function(){ S.oledc = o[0]; upd(); tb.querySelectorAll(".oc").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); }; x.classList.add("oc"); tb.appendChild(x); });
+      var clr = el("button", "lbtn bad", L("Leeren", "Effacer")); clr.onclick = function(){ S.B.d.fill(0); upd(); }; tb.appendChild(clr);
+      if (!color) { var iv = el("button", "lbtn", L("Invertieren", "Inverser")); iv.onclick = function(){ for (var i = 0; i < S.B.d.length; i++) S.B.d[i] = S.B.d[i] ? 0 : 1; upd(); }; tb.appendChild(iv); }
+    } else {
+      var lst = el("div"); body.appendChild(lst);
+      function rows(){ lst.innerHTML = ""; S.ent.forEach(function(e, k){ var r = el("div", "lrow"); r.style.marginBottom = "8px";
+        var t = el("input"); t.type = "text"; t.value = e.t; t.style.cssText = "flex:1;min-width:120px;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--input);color:var(--fg)"; t.oninput = function(){ e.t = t.value; upd(); };
+        function num(lbl, key, max){ var w = el("label", "lmut", lbl + " "); var n = el("input"); n.type = "number"; n.min = 0; n.max = max; n.value = e[key]; n.style.cssText = "width:62px;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--input);color:var(--fg)"; n.oninput = function(){ e[key] = Math.max(key === "s" ? 1 : 0, Math.min(max, +n.value || 0)); upd(); }; w.appendChild(n); return w; }
+        r.appendChild(t); r.appendChild(num("x", "x", d.w)); r.appendChild(num("y", "y", d.h)); r.appendChild(num(L("Größe", "Taille"), "s", 6));
+        if (color) { var ci = el("input"); ci.type = "color"; ci.value = e.c; ci.style.cssText = "width:42px;height:38px;border:1px solid var(--line);border-radius:8px;padding:2px;background:none"; ci.oninput = function(){ e.c = ci.value; upd(); }; r.appendChild(ci); }
+        var dl = el("button", "lbtn bad", "✕"); dl.onclick = function(){ S.ent.splice(k, 1); rows(); upd(); }; r.appendChild(dl); lst.appendChild(r); }); }
+      rows();
+      var ad = el("button", "lbtn", "+ " + L("Textzeile", "Ligne de texte")); ad.onclick = function(){ var ly = S.ent.length ? S.ent[S.ent.length - 1].y + 8 * S.ent[S.ent.length - 1].s + 2 : 0; S.ent.push({ t: "Text", x: 0, y: Math.min(ly, d.h - 8), s: 1, c: "#ffffff" }); rows(); upd(); }; body.appendChild(ad);
+      body.appendChild(el("p", "lmut", L("Die Schrift hat 5 × 7 Punkte (Größe 1). Größe 2 macht jeden Punkt zu 2 × 2 Punkten. x/y ist die linke obere Ecke in Pixeln.", "La police fait 5 × 7 points (taille 1). Taille 2 = chaque point devient 2 × 2. x/y = coin supérieur gauche en pixels.")));
+    }
+    cv = el("canvas", "mcv"); cv.style.maxWidth = (d.w * gfxScale(d)) + "px"; cv.style.imageRendering = "pixelated"; body.appendChild(cv);
+    if (S.mode === "draw") {
+      var drag = null, snap = null;
+      cv.onpointerdown = function(e){ cv.setPointerCapture(e.pointerId); var p = pxAt(e); cur = color ? hexc(S.col) : 1; var val = S.tool === "erase" ? 0 : cur;
+        if (S.tool === "fill") { bflood(S.B, p[0], p[1], cur); upd(); return; }
+        drag = { p0: p, last: p, val: val }; snap = bcopy(S.B); if (S.tool === "pen" || S.tool === "erase") { bset(S.B, p[0], p[1], val); } upd(); };
+      cv.onpointermove = function(e){ if (!drag) return; var p = pxAt(e);
+        if (S.tool === "pen" || S.tool === "erase") { bline(S.B, drag.last[0], drag.last[1], p[0], p[1], drag.val); drag.last = p; }
+        else { S.B.d.set(snap.d); if (S.tool === "line") bline(S.B, drag.p0[0], drag.p0[1], p[0], p[1], drag.val); else brect(S.B, drag.p0[0], drag.p0[1], p[0], p[1], drag.val); }
+        upd(true); };
+      var end = function(){ if (drag) { drag = null; upd(); } };
+      cv.onpointerup = end; cv.onpointercancel = end;
+      var ib = el("div", "lrow"); ib.style.margin = "12px 0 0"; body.appendChild(ib);
+      var fi = el("input"); fi.type = "file"; fi.accept = "image/*"; fi.hidden = true;
+      var up = el("button", "lbtn pri", "🖼️ " + L("Bild hochladen (z. B. Mario)", "Importer une image (ex. Mario)")); up.onclick = function(){ fi.click(); };
+      fi.onchange = function(){ var f = fi.files && fi.files[0]; if (!f) return; var im = new Image(); im.onload = function(){ S.img = im; importImg(d, S); upd(); sl.hidden = false; }; im.src = URL.createObjectURL(f); fi.value = ""; };
+      ib.appendChild(up); ib.appendChild(fi);
+      var sl = el("div", "lrow"); sl.style.marginTop = "8px"; sl.hidden = !S.img; body.appendChild(sl);
+      function re(){ importImg(d, S); upd(); }
+      if (!color) {
+        var lb = el("label", "lmut", L("Helligkeitsschwelle ", "Seuil de luminosité ")), rg = el("input"); rg.type = "range"; rg.min = 10; rg.max = 245; rg.value = S.thr; rg.oninput = function(){ S.thr = +rg.value; re(); }; lb.appendChild(rg); sl.appendChild(lb);
+        var dc = el("label", "lmut"), dk = el("input"); dk.type = "checkbox"; dk.checked = S.dith; dk.onchange = function(){ S.dith = dk.checked; re(); }; dc.appendChild(dk); dc.appendChild(document.createTextNode(" " + L("Raster (Dithering) für Grautöne", "Tramage (dithering) pour les gris"))); sl.appendChild(dc);
+        var ic = el("label", "lmut"), ik = el("input"); ik.type = "checkbox"; ik.checked = S.inv; ik.onchange = function(){ S.inv = ik.checked; re(); }; ic.appendChild(ik); ic.appendChild(document.createTextNode(" " + L("Hell/Dunkel tauschen", "Inverser clair/sombre"))); sl.appendChild(ic);
+      }
+      var sc = el("label", "lmut"), sk = el("input"); sk.type = "checkbox"; sk.checked = S.stretch; sk.onchange = function(){ S.stretch = sk.checked; re(); }; sc.appendChild(sk); sc.appendChild(document.createTextNode(" " + L("Bild strecken (statt einpassen)", "Étirer l’image (au lieu d’ajuster)"))); sl.appendChild(sc);
+    }
+    ref.cv = cv;
+  }
+  build();
+  var pb = el("div", "lrow"); pb.style.marginTop = "10px"; card.appendChild(pb);
+  var png = el("button", "lbtn", L("Als PNG speichern (1:1)", "Enregistrer en PNG (1:1)")); png.onclick = function(){ var B = curB(d, S), oc = document.createElement("canvas"); oc.width = d.w; oc.height = d.h; var x = oc.getContext("2d"), im = x.createImageData(d.w, d.h); for (var i = 0; i < B.d.length; i++) { var v = B.d[i], r, g, b; if (color) { r = (v >> 16) & 255; g = (v >> 8) & 255; b = v & 255; } else { r = g = b = v ? 255 : 0; } im.data[i * 4] = r; im.data[i * 4 + 1] = g; im.data[i * 4 + 2] = b; im.data[i * 4 + 3] = 255; } x.putImageData(im, 0, 0); oc.toBlob(function(bl){ if (bl) save("bild_" + d.w + "x" + d.h + ".png", bl); }); }; pb.appendChild(png);
+  return { paint: function(){ if (ref.cv) paintGfx(ref.cv, d, S, curB(d, S)); } };
+}
+
+/* ----- 7-Segment ----- */
+var SEG = { "0": 0x3F, "1": 0x06, "2": 0x5B, "3": 0x4F, "4": 0x66, "5": 0x6D, "6": 0x7D, "7": 0x07, "8": 0x7F, "9": 0x6F, "-": 0x40, " ": 0, "_": 0x08, A: 0x77, B: 0x7C, C: 0x39, D: 0x5E, E: 0x79, F: 0x71, H: 0x76, L: 0x38, N: 0x54, O: 0x5C, P: 0x73, R: 0x50, S: 0x6D, T: 0x78, U: 0x3E };
+function segData(t){ var out = [0, 0, 0, 0], k = 0, colon = false; for (var i = 0; i < t.length && k < 4; i++) { var ch = t.charAt(i).toUpperCase(); if (ch === ":" || ch === ".") { if (ch === ":") colon = true; else if (k > 0) out[k - 1] |= 0x80; continue; } out[k++] = SEG[ch] || 0; } if (colon) out[1] |= 0x80; return out; }
+function paintSeg(cv, S){
+  var data = segData(S.t); cv.width = 520; cv.height = 220; var c = cv.getContext("2d");
+  c.fillStyle = "#120808"; c.fillRect(0, 0, 520, 220);
+  var polys = [[[16, 12], [88, 12], [76, 26], [28, 26]], [[92, 16], [92, 90], [78, 78], [78, 28]], [[92, 100], [92, 174], [78, 162], [78, 112]], [[88, 178], [16, 178], [28, 164], [76, 164]], [[12, 174], [12, 100], [26, 112], [26, 162]], [[12, 90], [12, 16], [26, 28], [26, 78]], [[18, 95], [86, 95], [76, 107], [28, 107]]];
+  for (var dg = 0; dg < 4; dg++) { var ox = 20 + dg * 118, oy = 16;
+    polys.forEach(function(p, s){ c.fillStyle = (data[dg] >> s) & 1 ? "#ff3a2a" : "#3a1512"; c.beginPath(); p.forEach(function(q, i){ i ? c.lineTo(ox + q[0], oy + q[1]) : c.moveTo(ox + q[0], oy + q[1]); }); c.closePath(); c.fill(); });
+    if (dg === 1) { c.fillStyle = data[1] & 0x80 ? "#ff3a2a" : "#3a1512"; c.beginPath(); c.arc(ox + 112, oy + 60, 7, 0, 7); c.fill(); c.beginPath(); c.arc(ox + 112, oy + 130, 7, 0, 7); c.fill(); }
+    else { c.fillStyle = (data[dg] & 0x80) ? "#ff3a2a" : "#3a1512"; c.beginPath(); c.arc(ox + 104, oy + 172, 6, 0, 7); c.fill(); } }
+}
+function viewSeg(area, d, S, upd){
+  var card = el("div", "lcard"); area.appendChild(card);
+  var cv = el("canvas", "mcv"); cv.style.maxWidth = "520px"; card.appendChild(cv);
+  var i = el("input"); i.type = "text"; i.value = S.t; i.maxLength = 8; i.style.cssText = "display:block;margin:12px 0;width:200px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--input);color:var(--fg);font:20px ui-monospace,Menlo,Consolas,monospace"; i.oninput = function(){ S.t = i.value; upd(); };
+  card.appendChild(i);
+  card.appendChild(el("p", "lmut", L("Tippe 4 Zeichen, z. B. 12:34 (der Doppelpunkt schaltet die Mitte ein), -.5 oder HELP. Möglich: Ziffern, - _ und die Buchstaben A B C D E F H L N O P R S T U.", "Tape 4 caractères, ex. 12:34 (les deux-points allument le milieu), -.5 ou HELP. Possible : chiffres, - _ et les lettres A B C D E F H L N O P R S T U.")));
+  return { paint: function(){ paintSeg(cv, S); } };
+}
+
+/* ----- Anschluss-Infos ----- */
+function pinsFor(d, b){
+  var i2c = b === "uno" ? "SDA = A4, SCL = A5" : b === "esp32" ? "SDA = GPIO 21, SCL = GPIO 22" : "SDA = GPIO 2 (Pin 3), SCL = GPIO 3 (Pin 5), I²C aktivieren: sudo raspi-config";
+  var spi = b === "uno" ? "SCK = 13, MOSI = 11" : b === "esp32" ? "SCK = 18, MOSI = 23" : "SCLK = GPIO 11, MOSI = GPIO 10, CE0 = GPIO 8 (SPI aktivieren)";
+  var o = { t: [], w: [] };
+  if (d.grp === "lcd") { o.t.push("I²C-Backpack (PCF8574): " + i2c, "VCC = 5 V, GND = GND, Adresse meist 0x27 (oder 0x3F)"); if (b !== "uno") o.w.push(L("Das LCD braucht 5 V. Am " + (b === "pi" ? "Raspberry Pi" : "ESP32") + " ist I²C aber 3,3 V: Pegelwandler nutzen oder Pull-ups des Backpacks prüfen, sonst kann der Pin Schaden nehmen.", "Le LCD veut 5 V mais l’I²C du " + (b === "pi" ? "Raspberry Pi" : "ESP32") + " est en 3,3 V : utilise un convertisseur de niveau, sinon risque pour la broche.")); }
+  else if (d.ctrl === "SSD1306" || d.ctrl === "SH1106") { o.t.push("I²C: " + i2c, "VCC = 3,3 V (oder 5 V je nach Modul), Adresse meist 0x3C"); if (b === "uno" && d.h >= 64) o.w.push(L("128×64 braucht im Uno 1 KB RAM von nur 2 KB – knapp, aber machbar.", "128×64 utilise 1 Ko des 2 Ko de RAM de l’Uno – juste, mais possible.")); }
+  else if (d.ctrl === "PCD8544") { o.t.push(b === "uno" ? "CLK = 7, DIN = 6, DC = 5, CE = 4, RST = 3" : b === "esp32" ? "CLK = 18, DIN = 23, DC = 19, CE = 5, RST = 4" : "SPI: " + spi + ", DC = GPIO 25, RST = GPIO 27", "VCC = 3,3 V (Display), Hintergrundlicht über 330 Ω"); if (b === "uno") o.w.push(L("Das Nokia-Display verträgt nur 3,3 V an den Datenpins. Am Uno 5 V: Widerstände (z. B. 10 kΩ + 20 kΩ Teiler) oder Pegelwandler.", "L’écran Nokia ne supporte que 3,3 V sur les données. Sur l’Uno 5 V : diviseur de tension ou convertisseur de niveau.")); }
+  else if (d.grp === "color") { o.t.push(b === "uno" ? "CS = 10, DC = 9, RST = 8, " + spi : b === "esp32" ? "CS = 5, DC = 2, RST = 4, " + spi : "SPI: " + spi + ", DC = GPIO 25, RST = GPIO 27", "VCC = 3,3 V, LED/BL = 3,3 V"); if (b === "uno") o.w.push(L("TFTs sind 3,3-V-Geräte. Am Uno mit 5 V brauchst du Pegelwandler oder Vorwiderstände an den Datenleitungen.", "Les TFT sont en 3,3 V. Sur l’Uno 5 V il faut un convertisseur ou des résistances sur les lignes de données.")); }
+  else if (d.ctrl === "MAX7219") o.t.push(b === "uno" ? "DIN = 12, CLK = 11, CS = 10" : b === "esp32" ? "DIN = 23, CLK = 18, CS = 5" : "SPI: " + spi, "VCC = 5 V, GND = GND");
+  else if (d.ctrl === "TM1637") o.t.push(b === "uno" ? "CLK = 2, DIO = 3" : b === "esp32" ? "CLK = 18, DIO = 19" : "CLK = GPIO 23, DIO = GPIO 24", "VCC = 5 V (3,3 V geht oft auch)");
+  return o;
+}
+var LIBS = { uno: { lcd: "LiquidCrystal_I2C", ssd1306: "Adafruit SSD1306 + Adafruit GFX", sh1106: "U8g2", pcd8544: "Adafruit PCD8544 + Adafruit GFX", st7735: "Adafruit ST7735 + Adafruit GFX", st7789: "Adafruit ST7789 + Adafruit GFX", ili9341: "Adafruit ILI9341 + Adafruit GFX", max7219: "LedControl", tm1637: "TM1637 (avishorp)" } };
+var PYLIBS = { lcd: "RPLCD smbus2", ssd1306: "luma.oled", sh1106: "luma.oled", pcd8544: "luma.lcd", st7735: "luma.lcd", st7789: "luma.lcd", ili9341: "luma.lcd", max7219: "luma.led_matrix", tm1637: "raspberrypi-tm1637" };
+function libOf(d){ return d.grp === "lcd" ? "lcd" : d.grp === "seg" ? "tm1637" : d.ctrl.toLowerCase(); }
+function sizeBytes(d, S){ if (d.grp === "color") return d.w * d.h * 2; if (d.grp === "mono") return Math.ceil(d.w / 8) * d.h; return 0; }
+
+/* ----- Code-Erzeugung ----- */
+function genCode(d, S, b){
+  var py = b === "pi", t = "", ext = py ? "py" : "ino";
+  var textual = (d.grp === "mono" || d.grp === "color") && S.mode === "text" && d.ctrl !== "MAX7219";
+  var cur = d.grp === "mono" || d.grp === "color" ? curB(d, S) : null;
+  var head = (py ? "#!/usr/bin/env python3\n# " : "// ") + "Oratio Lab – " + d.n + " · " + (b === "uno" ? "Arduino Uno" : b === "esp32" ? "ESP32" : "Raspberry Pi") + "\n";
+  var cm = py ? "# " : "// ";
+  if (d.grp === "lcd") {
+    var cells = lcdCells(d, S), used = {}, lines = [];
+    for (var r = 0; r < d.rows; r++) { var ln = S.lines[r] || "", segs = [], cur2 = "", i = 0;
+      while (i < ln.length) { var m = ln.slice(i).match(/^\{([0-7])\}/); if (m) { if (cur2) segs.push({ s: cur2 }); cur2 = ""; segs.push({ c: +m[1] }); used[+m[1]] = 1; i += 3; } else { var chh = ln.charAt(i); cur2 += (chh.charCodeAt(0) < 32 || chh.charCodeAt(0) > 126) ? "?" : chh; i++; } }
+      if (cur2) segs.push({ s: cur2 }); lines.push(segs); }
+    if (!py) {
+      t = head + "// Bibliothek: LiquidCrystal_I2C (Bibliotheksverwalter)\n#include <Wire.h>\n#include <LiquidCrystal_I2C.h>\n\nLiquidCrystal_I2C lcd(0x27, " + d.cols + ", " + d.rows + ");   // Adresse 0x27 oder 0x3F\n\n";
+      Object.keys(used).forEach(function(k){ t += "byte zeichen" + k + "[8] = { " + S.cc[k].map(function(v){ return "0b" + ("00000" + v.toString(2)).slice(-5); }).join(", ") + " };\n"; });
+      t += "\nvoid setup() {\n" + (b === "esp32" ? "  Wire.begin(21, 22);   // SDA, SCL\n" : "") + "  lcd.init();\n  lcd.backlight();\n";
+      Object.keys(used).forEach(function(k){ t += "  lcd.createChar(" + k + ", zeichen" + k + ");\n"; });
+      lines.forEach(function(sg, r2){ if (!sg.length) return; t += "  lcd.setCursor(0, " + r2 + ");\n"; sg.forEach(function(x){ t += x.s !== undefined ? '  lcd.print("' + cstr(x.s) + '");\n' : "  lcd.write(byte(" + x.c + "));\n"; }); });
+      t += "}\n\nvoid loop() {\n}\n";
+    } else {
+      t = head + "# Installieren: pip install RPLCD smbus2   (I²C aktivieren nicht vergessen)\nfrom RPLCD.i2c import CharLCD\n\nlcd = CharLCD('PCF8574', 0x27, cols=" + d.cols + ", rows=" + d.rows + ")   # Adresse 0x27 oder 0x3F\n\n";
+      Object.keys(used).forEach(function(k){ t += "lcd.create_char(" + k + ", (" + S.cc[k].map(function(v){ return "0b" + ("00000" + v.toString(2)).slice(-5); }).join(", ") + "))\n"; });
+      lines.forEach(function(sg, r2){ if (!sg.length) return; t += "lcd.cursor_pos = (" + r2 + ", 0)\nlcd.write_string(\"" + sg.map(function(x){ return x.s !== undefined ? cstr(x.s) : "\\x0" + x.c; }).join("") + "\")\n"; });
+    }
+    return { txt: t, ext: ext };
+  }
+  if (d.grp === "seg") {
+    var dt = segData(S.t), arr = dt.map(function(v){ return hx(v, 2); }).join(", ");
+    if (!py) t = head + "// Bibliothek: TM1637 von Avishay Orpaz (Bibliotheksverwalter)\n#include <TM1637Display.h>\n\n#define CLK " + (b === "uno" ? 2 : 18) + "\n#define DIO " + (b === "uno" ? 3 : 19) + "\nTM1637Display display(CLK, DIO);\n\n// Segmente: Bit0 = a (oben) ... Bit6 = g (Mitte), Bit7 = Punkt/Doppelpunkt\nconst uint8_t daten[] = { " + arr + " };\n\nvoid setup() {\n  display.setBrightness(7);   // 0 bis 7\n  display.setSegments(daten);\n}\n\nvoid loop() {\n}\n";
+    else t = head + "# Installieren: pip install raspberrypi-tm1637\nimport tm1637\n\ntm = tm1637.TM1637(clk=23, dio=24)\ntm.brightness(7)   # 0 bis 7\n# Segmente: Bit0 = a (oben) ... Bit6 = g (Mitte), Bit7 = Punkt/Doppelpunkt\ndaten = [" + arr + "]\ntm.write(daten)\n";
+    return { txt: t, ext: ext };
+  }
+  var W = d.w, H = d.h, ctrl = d.ctrl, col = d.grp === "color";
+  if (py) {
+    var dev = { SSD1306: "from luma.core.interface.serial import i2c\nfrom luma.oled.device import ssd1306\nserial = i2c(port=1, address=0x3C)\ndevice = ssd1306(serial, width=" + W + ", height=" + H + ")", SH1106: "from luma.core.interface.serial import i2c\nfrom luma.oled.device import sh1106\nserial = i2c(port=1, address=0x3C)\ndevice = sh1106(serial)", PCD8544: "from luma.core.interface.serial import spi\nfrom luma.lcd.device import pcd8544\nserial = spi(port=0, device=0, gpio_DC=25, gpio_RST=27)\ndevice = pcd8544(serial)", ST7735: "from luma.core.interface.serial import spi\nfrom luma.lcd.device import st7735\nserial = spi(port=0, device=0, gpio_DC=25, gpio_RST=27)\ndevice = st7735(serial, width=128, height=160)", ST7789: "from luma.core.interface.serial import spi\nfrom luma.lcd.device import st7789\nserial = spi(port=0, device=0, gpio_DC=25, gpio_RST=27)\ndevice = st7789(serial, width=240, height=240)", ILI9341: "from luma.core.interface.serial import spi\nfrom luma.lcd.device import ili9341\nserial = spi(port=0, device=0, gpio_DC=25, gpio_RST=27)\ndevice = ili9341(serial, width=240, height=320)", MAX7219: "from luma.core.interface.serial import spi, noop\nfrom luma.led_matrix.device import max7219\nserial = spi(port=0, device=0, gpio=noop())\ndevice = max7219(serial, cascaded=" + (d.mods || 1) + ", block_orientation=0)   # bei gedrehter Anzeige: 90 / -90" }[ctrl];
+    t = head + "# Installieren: pip install " + PYLIBS[libOf(d)] + "\nimport time\n" + dev + "\n\n";
+    if (textual) { t += "from luma.core.render import canvas\nfrom PIL import ImageFont\n\n" + (col ? "" : "") + "with canvas(device) as draw:\n";
+      S.ent.forEach(function(e){ var f = e.s > 1 ? "ImageFont.load_default(size=" + (8 * e.s) + ")" : "ImageFont.load_default()"; t += "    draw.text((" + e.x + ", " + e.y + "), \"" + cstr(e.t) + "\", fill=" + (col ? "(" + ((hexc(e.c) >> 16) & 255) + ", " + ((hexc(e.c) >> 8) & 255) + ", " + (hexc(e.c) & 255) + ")" : "\"white\"") + ", font=" + f + ")\n"; });
+      if (!S.ent.length) t += "    pass\n";
+      t += "\ntry:\n    while True:\n        time.sleep(1)\nexcept KeyboardInterrupt:\n    pass\n";
+    } else if (col) { t += "from PIL import Image\n\n" + cm + "Speichere dein Bild mit \"Als PNG speichern (1:1)\" unter bild.png neben dieses Skript.\nbild = Image.open(\"bild.png\").convert(\"RGB\")\ndevice.display(bild)\n\ntry:\n    while True:\n        time.sleep(1)\nexcept KeyboardInterrupt:\n    pass\n"; }
+    else { var rowsP = []; for (var y = 0; y < H; y++) { var s2 = ""; for (var x = 0; x < W; x++) s2 += cur.d[y * W + x] ? "#" : "."; rowsP.push('    "' + s2 + '"'); }
+      t += "from PIL import Image\n\n# '#' = Pixel an, '.' = Pixel aus\nBILD = [\n" + rowsP.join(",\n") + "\n]\n\nbild = Image.new(\"1\", (" + W + ", " + H + "))\nfor y, zeile in enumerate(BILD):\n    for x, c in enumerate(zeile):\n        if c == \"#\":\n            bild.putpixel((x, y), 1)\ndevice.display(bild)\n\ntry:\n    while True:\n        time.sleep(1)\nexcept KeyboardInterrupt:\n    pass\n"; }
+    return { txt: t, ext: ext };
+  }
+  var sda = b === "esp32" ? "  Wire.begin(21, 22);   // SDA, SCL\n" : "";
+  if (ctrl === "MAX7219") {
+    var pk = packMono(cur, false), n = d.mods, pins = b === "uno" ? "12, 11, 10" : "23, 18, 5";
+    t = head + "// Bibliothek: LedControl (Bibliotheksverwalter)\n#include <LedControl.h>\n\nLedControl lc = LedControl(" + pins + ", " + n + ");   // DIN, CLK, CS, Anzahl Module\n\n// Pro Zeile ein Byte (Bit7 = linke Spalte). " + (n > 1 ? "Je Zeile " + n + " Bytes: Modul 0 = das am Eingang (DIN).\n" : "\n") + "const byte bild[" + H + "][" + n + "] = {\n" + (function(){ var o = []; for (var y2 = 0; y2 < H; y2++) o.push("  { " + pk.bytes.slice(y2 * pk.bw, y2 * pk.bw + pk.bw).map(function(v){ return hx(v, 2); }).join(", ") + " }"); return o.join(",\n"); })() + "\n};\n\nvoid setup() {\n  for (int m = 0; m < " + n + "; m++) {\n    lc.shutdown(m, false);\n    lc.setIntensity(m, 8);   // 0 bis 15\n    lc.clearDisplay(m);\n  }\n  for (int y = 0; y < 8; y++)\n    for (int m = 0; m < " + n + "; m++)\n      lc.setRow(m, y, bild[y][m]);   // wenn gespiegelt: Module oder Bits tauschen\n}\n\nvoid loop() {\n}\n";
+    return { txt: t, ext: ext };
+  }
+  // Pixel-Displays Arduino
+  var inc = { SSD1306: "#include <SPI.h>\n#include <Wire.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_SSD1306.h>\n\nAdafruit_SSD1306 display(" + W + ", " + H + ", &Wire, -1);\n", SH1106: "#include <U8g2lib.h>\n\nU8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);\n", PCD8544: "#include <SPI.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_PCD8544.h>\n\n// CLK, DIN, DC, CE, RST\nAdafruit_PCD8544 display = Adafruit_PCD8544(" + (b === "uno" ? "7, 6, 5, 4, 3" : "18, 23, 19, 5, 4") + ");\n", ST7735: "#include <SPI.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_ST7735.h>\n\n#define TFT_CS  " + (b === "uno" ? 10 : 5) + "\n#define TFT_DC  " + (b === "uno" ? 9 : 2) + "\n#define TFT_RST " + (b === "uno" ? 8 : 4) + "\nAdafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);\n", ST7789: "#include <SPI.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_ST7789.h>\n\n#define TFT_CS  " + (b === "uno" ? 10 : 5) + "\n#define TFT_DC  " + (b === "uno" ? 9 : 2) + "\n#define TFT_RST " + (b === "uno" ? 8 : 4) + "\nAdafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);\n", ILI9341: "#include <SPI.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_ILI9341.h>\n\n#define TFT_CS  " + (b === "uno" ? 10 : 5) + "\n#define TFT_DC  " + (b === "uno" ? 9 : 2) + "\n#define TFT_RST " + (b === "uno" ? 8 : 4) + "\nAdafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);\n" }[ctrl];
+  var libn = { SSD1306: "Adafruit SSD1306 und Adafruit GFX", SH1106: "U8g2", PCD8544: "Adafruit PCD8544 und Adafruit GFX", ST7735: "Adafruit ST7735 und Adafruit GFX", ST7789: "Adafruit ST7789 und Adafruit GFX", ILI9341: "Adafruit ILI9341 und Adafruit GFX" }[ctrl];
+  t = head + "// Bibliotheken (Bibliotheksverwalter): " + libn + "\n" + inc + "\n";
+  var bmp = "", init = "", body = "", obj = ctrl === "SH1106" ? "u8g2" : col ? "tft" : "display";
+  if (!textual) {
+    if (col) { var vals = []; for (var q = 0; q < cur.d.length; q++) vals.push(rgb565(cur.d[q])); bmp = "const uint16_t bild[" + (W * H) + "] PROGMEM = {\n" + carr(vals, 16, 4) + "\n};\n\n"; }
+    else { var pk2 = packMono(cur, ctrl === "SH1106"); bmp = "const unsigned char bild[] PROGMEM = {   // " + pk2.bytes.length + " Bytes\n" + carr(pk2.bytes, 16, 2) + "\n};\n\n"; }
+  }
+  t += bmp;
+  if (ctrl === "SSD1306") init = "  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {\n    Serial.println(F(\"SSD1306 nicht gefunden\"));\n    for (;;);\n  }\n  display.clearDisplay();\n";
+  else if (ctrl === "PCD8544") init = "  display.begin();\n  display.setContrast(50);   // 40 bis 60 ausprobieren\n  display.clearDisplay();\n";
+  else if (ctrl === "SH1106") init = "  u8g2.begin();\n  u8g2.clearBuffer();\n";
+  else if (ctrl === "ST7735") init = "  tft.initR(INITR_BLACKTAB);   // je nach Display: INITR_GREENTAB / INITR_REDTAB\n  tft.fillScreen(0x0000);\n";
+  else if (ctrl === "ST7789") init = "  tft.init(" + W + ", " + H + ");\n  tft.fillScreen(0x0000);\n";
+  else init = "  tft.begin();\n  tft.fillScreen(0x0000);\n";
+  if (textual) {
+    S.ent.forEach(function(e){
+      if (ctrl === "SH1106") { var fnt = e.s <= 1 ? "u8g2_font_6x10_tr" : e.s === 2 ? "u8g2_font_10x20_tr" : "u8g2_font_logisoso24_tr", asc = e.s <= 1 ? 8 : e.s === 2 ? 16 : 24; body += "  u8g2.setFont(" + fnt + ");\n  u8g2.drawStr(" + e.x + ", " + (e.y + asc) + ", \"" + cstr(e.t) + "\");\n"; }
+      else if (col) body += "  tft.setTextSize(" + e.s + ");\n  tft.setTextColor(" + hx(rgb565(hexc(e.c)), 4) + ");\n  tft.setCursor(" + e.x + ", " + e.y + ");\n  tft.print(\"" + cstr(e.t) + "\");\n";
+      else body += "  display.setTextSize(" + e.s + ");\n  display.setTextColor(" + (ctrl === "PCD8544" ? "BLACK" : "SSD1306_WHITE") + ");\n  display.setCursor(" + e.x + ", " + e.y + ");\n  display.println(\"" + cstr(e.t) + "\");\n"; });
+  } else {
+    if (ctrl === "SH1106") body = "  u8g2.drawXBM(0, 0, " + W + ", " + H + ", bild);\n";
+    else if (col) body = "  tft.drawRGBBitmap(0, 0, bild, " + W + ", " + H + ");\n";
+    else body = "  display.drawBitmap(0, 0, bild, " + W + ", " + H + ", " + (ctrl === "PCD8544" ? "BLACK" : "SSD1306_WHITE") + ");\n";
+  }
+  var send = ctrl === "SH1106" ? "  u8g2.sendBuffer();\n" : (!col ? "  display.display();\n" : "");
+  t += "void setup() {\n" + (ctrl === "SSD1306" ? "  Serial.begin(115200);\n" : "") + sda + init + body + send + "}\n\nvoid loop() {\n}\n";
+  return { txt: t, ext: ext };
+}
+
+/* ----- Oberfläche ----- */
+MODS.disp = { show: function(b){
+  dload();
+  var top = el("div", "lcard"); b.appendChild(top);
+  var h = el("h2", "", L("Display wählen", "Choisir un écran")); top.appendChild(h);
+  var chips = el("div"); top.appendChild(chips);
+  var brow = el("div", "lrow"); brow.style.marginTop = "10px"; top.appendChild(el("div", "lmut", L("Dein Board:", "Ta carte :")));
+  top.appendChild(brow);
+  var area = el("div"); area.style.marginTop = "16px"; b.appendChild(area);
+  var info = el("div", "lcard"); info.style.marginTop = "16px"; b.appendChild(info);
+  var cc = el("div", "lcard"); cc.style.marginTop = "16px"; b.appendChild(cc);
+  var view = null, ta = null, memEl = null;
+  ["lcd", "mono", "color", "seg"].forEach(function(g){ var gl = el("div", "lmut", GRPN[g]); gl.style.margin = "8px 0 4px"; chips.appendChild(gl); var r = el("div", "lrow"); chips.appendChild(r);
+    DISPS.filter(function(x){ return x.grp === g; }).forEach(function(d){ var x = el("button", "lbtn" + (DD.sel === d.id ? " on" : ""), d.n); x.dataset.id = d.id; x.onclick = function(){ DD.sel = d.id; chips.querySelectorAll("button").forEach(function(y){ y.classList.toggle("on", y.dataset.id === d.id); }); render(); }; r.appendChild(x); }); });
+  BOARDS.forEach(function(o){ var x = el("button", "lbtn" + (DD.board === o[0] ? " on" : ""), o[1]); x.dataset.b = o[0]; x.onclick = function(){ DD.board = o[0]; brow.querySelectorAll("button").forEach(function(y){ y.classList.toggle("on", y.dataset.b === o[0]); }); updCode(); infoPanel(); dsave(); }; brow.appendChild(x); });
+  function infoPanel(){
+    var d = dget(DD.sel), S = dinit(d), p = pinsFor(d, DD.board), bd = BOARDS.filter(function(x){ return x[0] === DD.board; })[0][1], lib = DD.board === "pi" ? "pip install " + PYLIBS[libOf(d)] : LIBS.uno[libOf(d)];
+    info.innerHTML = "<h2>" + d.n + "</h2>";
+    var rows = [[L("Controller", "Contrôleur"), d.ctrl || "HD44780 (PCF8574 I²C)"], [L("Auflösung", "Résolution"), d.grp === "lcd" ? d.cols + " × " + d.rows + " " + L("Zeichen", "caractères") + " (je 5×8 Punkte)" : d.grp === "seg" ? "4 × 7 Segmente" : d.w + " × " + d.h + " Pixel · " + (d.grp === "color" ? L("65 536 Farben (RGB565)", "65 536 couleurs (RGB565)") : L("2 Farben", "2 couleurs"))], [L("Anschluss", "Branchement") + " " + bd, p.t.join(" · ")], [L("Bibliothek", "Bibliothèque"), lib]];
+    var tb = el("div"); rows.forEach(function(r){ tb.appendChild(el("p", "", "<b>" + r[0] + ":</b> " + r[1])); }); info.appendChild(tb);
+    var sz = sizeBytes(d, S);
+    if (sz) { var fl = FLASH[DD.board], ok = sz <= fl * 0.9, msg = "💾 " + L("Ein ganzes Bild braucht ", "Une image complète utilise ") + (sz >= 1024 ? (sz / 1024).toFixed(1) + " KB" : sz + " Bytes");
+      if (fl === Infinity) msg += L(" – auf dem Raspberry Pi kein Problem.", " – aucun souci sur le Raspberry Pi.");
+      else if (ok) msg += L(" (von ca. ", " (sur env. ") + Math.round(fl / 1024) + L(" KB Programmspeicher): passt.", " Ko de mémoire programme) : ça passe.");
+      else msg += L(" – das passt NICHT in den Programmspeicher (", " – ça ne tient PAS en mémoire programme (") + Math.round(fl / 1024) + " KB). " + L("Nimm ein kleineres Display oder einen ESP32.", "Prends un écran plus petit ou un ESP32.");
+      info.appendChild(el("p", ok ? "lmut" : "swarn", msg)); }
+    p.w.forEach(function(w){ info.appendChild(el("p", "swarn", "⚠️ " + w)); });
+  }
+  function render(){
+    var d = dget(DD.sel), S = dinit(d); area.innerHTML = ""; var up = function(light){ view.paint(); updCode(light); };
+    view = d.grp === "lcd" ? viewLCD(area, d, S, up) : d.grp === "seg" ? viewSeg(area, d, S, up) : viewGfx(area, d, S, up);
+    infoPanel(); view.paint(); updCode(); dsave();
+  }
+  cc.innerHTML = "<h2>" + L("Fertiger Code", "Code prêt") + "</h2>";
+  ta = el("textarea", "code"); ta.readOnly = true; ta.style.height = "300px"; cc.appendChild(ta);
+  var r2 = el("div", "lrow"); r2.style.marginTop = "10px"; cc.appendChild(r2);
+  var cb = el("button", "lbtn pri", L("Code kopieren", "Copier le code")); r2.appendChild(cb);
+  var sb = el("button", "lbtn"); r2.appendChild(sb);
+  var timer = null, lastExt = "ino";
+  function updCode(light){
+    var d = dget(DD.sel), S = dinit(d);
+    var run = function(){ var o = genCode(d, S, DD.board); ta.value = o.txt; lastExt = o.ext; sb.textContent = L("Als .", "Enregistrer .") + o.ext + L(" speichern", ""); dsave(); infoPanel(); };
+    if (light) { clearTimeout(timer); timer = setTimeout(run, 250); } else run();
+  }
+  cb.onclick = function(){ copy(ta.value, ta, function(){ cb.textContent = L("Kopiert ✓", "Copié ✓"); setTimeout(function(){ cb.textContent = L("Code kopieren", "Copier le code"); }, 1500); }); };
+  sb.onclick = function(){ var d = dget(DD.sel); save("oratio_" + d.id + "." + lastExt, new Blob([ta.value], { type: "text/plain" })); };
+  render();
 } };
 
 /* ---------- GAME ---------- */
