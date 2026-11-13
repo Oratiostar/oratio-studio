@@ -855,26 +855,29 @@ function viewLCD(area, d, S, upd){
   var clr = el("button", "lbtn", "⌫ " + L("Zelle leeren", "Vider la cellule")); clr.onclick = function(){ pushUndo(); S.cells[S.sel.r][S.sel.c] = " "; syncLines(S, d); upd(); }; look.appendChild(clr);
   var cla = el("button", "lbtn bad", L("Alles leeren", "Tout effacer")); cla.onclick = function(){ pushUndo(); S.cells = cellsFromLines([], d); syncLines(S, d); S.sel = { r: 0, c: 0 }; upd(); }; look.appendChild(cla);
   card.appendChild(look);
-  var h1 = el("h2", "", L("Eigene Zeichen einsetzen", "Insérer mes caractères")); h1.style.fontSize = "17px"; card.appendChild(h1);
-  var ins = el("div", "lrow"); card.appendChild(ins);
+  var h1 = el("h2", "", L("Eigene Zeichen", "Mes caractères")); h1.style.fontSize = "17px"; card.appendChild(h1);
+  card.appendChild(el("p", "lmut", L("Tipp auf ein Zeichen setzt es ins Display (gelbe Stelle) und wählt es zum Bearbeiten.", "Touche un caractère pour l’insérer (endroit jaune) et le choisir pour l’éditer.")));
+  var ins = el("div", "lrow"); ins.style.gap = "6px"; card.appendChild(ins);
   var thumbs = [];
-  for (var k = 0; k < 8; k++) (function(k){ var b = el("button", "lbtn"); b.style.cssText = "padding:6px;min-height:0;display:flex;flex-direction:column;align-items:center;gap:2px"; b.title = L("Einsetzen an der gelben Stelle", "Insérer à l’endroit jaune"); b.onclick = function(){ put(k); hid.focus(); }; var t = el("span", "lmut", "" + (k + 1)); b.appendChild(el("span")); b.appendChild(t); ins.appendChild(b); thumbs.push(b); })(k);
-  function drawThumbs(){ var green = S.look === "green"; thumbs.forEach(function(b, k){ var c = icThumb(S.cc[k], 5, green ? "#16210a" : "#f2f8ff", green ? "#aac43a" : "#1f4fd1"); c.style.borderRadius = "4px"; b.replaceChild(c, b.firstChild); }); }
-  var h2 = el("h2", "", L("Eigenes Zeichen bearbeiten", "Modifier un caractère")); h2.style.cssText = "font-size:17px;margin-top:16px"; card.appendChild(h2);
-  var sl = el("div", "lrow"); card.appendChild(sl);
-  var slb = [];
-  for (var j = 0; j < 8; j++) (function(j){ var b = el("button", "lbtn" + (S.slot === j ? " on" : ""), "" + (j + 1)); b.style.minWidth = "44px"; b.onclick = function(){ S.slot = j; slb.forEach(function(y, i){ y.classList.toggle("on", i === j); }); drawEd(); }; sl.appendChild(b); slb.push(b); })(j);
-  card.appendChild(el("p", "lmut", L("Platz wählen (nur auswählen, es wird nichts gezeichnet) – dann auf die Punkte tippen. Die Zahl entspricht dem Platz im Code (Platz 1 = createChar(0, …)).", "Choisis un emplacement (rien n’est dessiné) – puis touche les points. Le numéro correspond à l’emplacement dans le code (n° 1 = createChar(0, …).")));
-  var ed = el("canvas"); ed.width = 5 * 44; ed.height = 8 * 44; ed.style.cssText = "width:min(100%,220px);display:block;border-radius:10px;touch-action:pan-y;cursor:pointer"; var okEd = guard(ed, card, null); card.appendChild(ed);
-  function drawEd(){ var c = ed.getContext("2d"), green = S.look === "green"; c.fillStyle = green ? "#aac43a" : "#1f4fd1"; c.fillRect(0, 0, ed.width, ed.height); for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { c.fillStyle = (S.cc[S.slot][y] >> (4 - x)) & 1 ? (green ? "#16210a" : "#f2f8ff") : (green ? "rgba(70,95,10,.25)" : "rgba(0,20,110,.4)"); c.fillRect(x * 44 + 2, y * 44 + 2, 40, 40); } }
+  for (var k = 0; k < 8; k++) (function(k){ var b = el("button", "lbtn"); b.style.cssText = "padding:5px;min-height:0;display:flex;flex-direction:column;align-items:center;gap:1px"; b.onclick = function(){ S.slot = k; put(k); drawEd(); drawThumbs(); }; b.appendChild(el("span")); b.appendChild(el("span", "lmut", "" + (k + 1))); ins.appendChild(b); thumbs.push(b); })(k);
+  function drawThumbs(){ var green = S.look === "green"; thumbs.forEach(function(b, k){ var c = icThumb(S.cc[k], 4, green ? "#16210a" : "#f2f8ff", green ? "#aac43a" : "#1f4fd1"); c.style.borderRadius = "3px"; b.replaceChild(c, b.firstChild); b.classList.toggle("on", k === S.slot); }); }
+  var dt = document.createElement("details"); dt.style.marginTop = "10px"; card.appendChild(dt);
+  var sm = document.createElement("summary"); sm.style.cssText = "cursor:pointer;font-weight:700;padding:6px 0"; dt.appendChild(sm);
+  function sumTxt(){ sm.textContent = "✏️ " + L("Zeichen ", "Caractère ") + (S.slot + 1) + L(" bearbeiten", " – modifier"); }
+  var eb = el("div", "lrow"); eb.style.cssText = "align-items:flex-start;gap:14px;margin-top:6px"; dt.appendChild(eb);
+  var ed = el("canvas"); ed.width = 5 * 44; ed.height = 8 * 44; ed.style.cssText = "width:110px;flex:0 0 110px;display:block;border-radius:8px;touch-action:pan-y;cursor:pointer";
+  var side = el("div"); side.style.cssText = "display:flex;flex-direction:column;gap:8px;flex:1;min-width:150px"; eb.appendChild(ed); eb.appendChild(side);
+  var okEd = guard(ed, side, null);
+  function drawEd(){ sumTxt(); var c = ed.getContext("2d"), green = S.look === "green"; c.fillStyle = green ? "#aac43a" : "#1f4fd1"; c.fillRect(0, 0, ed.width, ed.height); for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { c.fillStyle = (S.cc[S.slot][y] >> (4 - x)) & 1 ? (green ? "#16210a" : "#f2f8ff") : (green ? "rgba(70,95,10,.25)" : "rgba(0,20,110,.4)"); c.fillRect(x * 44 + 2, y * 44 + 2, 40, 40); } }
   var paintTo = null;
   ed.onpointerdown = function(e){ if (!okEd(e)) return; var r = ed.getBoundingClientRect(), x = Math.floor((e.clientX - r.left) / r.width * 5), y = Math.floor((e.clientY - r.top) / r.height * 8); if (x < 0 || x > 4 || y < 0 || y > 7) return; pushUndo(); var cur = (S.cc[S.slot][y] >> (4 - x)) & 1; paintTo = cur ? 0 : 1; S.cc[S.slot][y] ^= 1 << (4 - x); if (e.pointerType === "mouse") ed.setPointerCapture(e.pointerId); else paintTo = null; drawEd(); drawThumbs(); upd(); };
   ed.onpointermove = function(e){ if (paintTo === null || e.pointerType !== "mouse") return; var r = ed.getBoundingClientRect(), x = Math.floor((e.clientX - r.left) / r.width * 5), y = Math.floor((e.clientY - r.top) / r.height * 8); if (x < 0 || x > 4 || y < 0 || y > 7) return; var bit = 1 << (4 - x); if (paintTo) S.cc[S.slot][y] |= bit; else S.cc[S.slot][y] &= ~bit; drawEd(); drawThumbs(); upd(true); };
   ed.onpointerup = ed.onpointercancel = function(){ paintTo = null; };
-  var cl = el("button", "lbtn", L("Dieses Zeichen leeren", "Vider ce caractère")); cl.style.marginTop = "8px"; cl.onclick = function(){ pushUndo(); S.cc[S.slot] = [0, 0, 0, 0, 0, 0, 0, 0]; drawEd(); drawThumbs(); upd(); }; card.appendChild(cl);
-  var h3 = el("h2", "", L("Vorlagen (Tipp = in diesen Platz laden)", "Modèles (touche = charger dans cet emplacement)")); h3.style.cssText = "font-size:17px;margin-top:16px"; card.appendChild(h3);
-  var tp = el("div", "lrow"); tp.style.gap = "8px"; card.appendChild(tp);
-  ICONS.forEach(function(ic, i){ var b = el("button", "lbtn"); b.style.cssText = "padding:6px;min-height:0;display:flex;flex-direction:column;align-items:center;gap:2px"; b.title = iconName(i); var c = icThumb(ic[2], 4, "#f2f8ff", "#1f4fd1"); c.style.borderRadius = "3px"; b.appendChild(c); b.appendChild(el("span", "lmut", iconName(i))); b.lastChild.style.fontSize = "10px"; b.onclick = function(){ pushUndo(); S.cc[S.slot] = ic[2].slice(); drawEd(); drawThumbs(); upd(); }; tp.appendChild(b); });
+  var sel = document.createElement("select"); sel.style.cssText = "padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--input);color:var(--fg);font:inherit"; var o0 = document.createElement("option"); o0.value = ""; o0.textContent = L("Vorlage laden …", "Charger un modèle …"); sel.appendChild(o0);
+  ICONS.forEach(function(ic, i){ var o = document.createElement("option"); o.value = i; o.textContent = iconName(i); sel.appendChild(o); });
+  sel.onchange = function(){ if (sel.value === "") return; pushUndo(); S.cc[S.slot] = ICONS[+sel.value][2].slice(); sel.value = ""; drawEd(); drawThumbs(); upd(); };
+  var cl = el("button", "lbtn", L("Dieses Zeichen leeren", "Vider ce caractère")); cl.onclick = function(){ pushUndo(); S.cc[S.slot] = [0, 0, 0, 0, 0, 0, 0, 0]; drawEd(); drawThumbs(); upd(); };
+  side.appendChild(sel); side.appendChild(cl);
   drawEd(); drawThumbs();
   return { paint: function(){ paintLCD(cv, d, S); drawThumbs(); } };
 }
