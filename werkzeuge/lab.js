@@ -766,12 +766,14 @@ function dget(id){ for (var i = 0; i < DISPS.length; i++) if (DISPS[i].id === id
 function cellsFromLines(lines, d){ var cells = [];
   for (var r = 0; r < d.rows; r++) { var line = lines[r] || "", row = [], i = 0; while (i < line.length && row.length < d.cols) { var m = line.slice(i).match(/^\{([0-7])\}/); if (m) { row.push(+m[1]); i += 3; } else { row.push(line.charAt(i)); i++; } } while (row.length < d.cols) row.push(" "); cells.push(row); }
   return cells; }
-function syncLines(S, d){ S.lines = S.cells.map(function(row){ return row.map(function(c){ return typeof c === "number" ? "{" + c + "}" : c; }).join("").replace(/ +$/, ""); }); }
+function cellMap(cells, cc){ return cells.map(function(row){ return row.map(function(c){ return typeof c === "number" ? { s: c, g: cc[c].slice() } : c; }); }); }
+function lcdBank(S){ var keys = [], bank = [], idx = []; S.cells.forEach(function(row){ row.forEach(function(c){ if (c && typeof c === "object") { var k = c.g.join(","); if (keys.indexOf(k) < 0) { keys.push(k); bank.push(c.g); } } }); }); return { bank: bank, keys: keys }; }
+function syncLines(S, d){ S.lines = S.cells.map(function(row){ return row.map(function(c){ return typeof c === "object" ? "§" : c; }).join("").replace(/ +$/, ""); }); }
 function dinit(d){
   if (DD.S[d.id]) return DD.S[d.id];
   var S, i;
   if (d.grp === "lcd") { var cc = []; for (i = 0; i < 8; i++) cc.push([0, 0, 0, 0, 0, 0, 0, 0]); cc[0] = ICONS[0][2].slice(); cc[1] = ICONS[1][2].slice();
-    S = { look: "blue", cc: cc, slot: 0, sel: { r: 0, c: 0 } }; S.cells = cellsFromLines(d.rows === 2 ? ["Hallo Oratio!", "{0} Oratio Lab {1}"] : ["Hallo Oratio!", "{0} Oratio Lab {1}", "Zeile 3", "Zeile 4"], d); syncLines(S, d); }
+    S = { look: "blue", cc: cc, slot: 0, sel: { r: 0, c: 0 } }; S.cells = cellsFromLines(d.rows === 2 ? ["Hallo Oratio!", "{0} Oratio Lab {1}"] : ["Hallo Oratio!", "{0} Oratio Lab {1}", "Zeile 3", "Zeile 4"], d); S.cells = cellMap(S.cells, S.cc); syncLines(S, d); }
   else if (d.grp === "seg") S = { t: "12:34" };
   else { var objs = [];
     if (d.w >= 60) objs.push({ k: "text", t: "Hallo!", x: 2, y: 2, s: d.w >= 100 ? 2 : 1, c: "#ffffff" });
@@ -785,7 +787,7 @@ function dsave(){
   DISPS.forEach(function(d){ var S = DD.S[d.id]; if (!S) return;
     if (d.grp === "mono") o.S[d.id] = { objs: S.objs, oledc: S.oledc, px: Array.prototype.join.call(S.B.d, "") };
     else if (d.grp === "color") o.S[d.id] = { objs: S.objs, col: S.col };
-    else if (d.grp === "lcd") o.S[d.id] = { look: S.look, cc: S.cc, lines: S.lines };
+    else if (d.grp === "lcd") o.S[d.id] = { look: S.look, cc: S.cc, cells: S.cells };
     else o.S[d.id] = S; });
   st("disp", o);
 }
@@ -795,7 +797,7 @@ function dload(){
   DISPS.forEach(function(d){ var p = o.S && o.S[d.id]; if (!p) return; var S = dinit(d);
     if (d.grp === "mono") { if (p.objs) S.objs = p.objs; S.oledc = p.oledc || "white"; if (p.px && p.px.length === d.w * d.h) for (var i = 0; i < p.px.length; i++) S.B.d[i] = p.px.charAt(i) === "1" ? 1 : 0; }
     else if (d.grp === "color") { if (p.objs) S.objs = p.objs; S.col = p.col || S.col; }
-    else if (d.grp === "lcd") { S.look = p.look || "blue"; if (p.cc) S.cc = p.cc; if (p.lines) { S.cells = cellsFromLines(p.lines, d); syncLines(S, d); } }
+    else if (d.grp === "lcd") { S.look = p.look || "blue"; if (p.cc) S.cc = p.cc; if (p.cells) { S.cells = p.cells; syncLines(S, d); } else if (p.lines) { S.cells = cellMap(cellsFromLines(p.lines, d), S.cc); syncLines(S, d); } }
     else if (d.grp === "seg") S.t = p.t || S.t; });
 }
 function hexc(h){ return parseInt(h.slice(1), 16); }
@@ -808,28 +810,29 @@ function inp(css){ var i = el("input"); i.style.cssText = "padding:9px;border:1p
 
 /* Scroll-Schalter: auf dem Handy wird erst nach Tipp auf „Zeichnen“ gemalt, sonst scrollt die Seite */
 function guard(cv, host){
-  if (window.matchMedia && matchMedia("(pointer:coarse)").matches) host.appendChild(el("p", "lmut", "☝️ " + L("Wischen = Seite scrollen. Zum Zeichnen: Finger kurz festhalten (es vibriert, Rahmen leuchtet), dann ziehen. Kurzer Tipp = einzelner Punkt.", "Glisser = faire défiler. Pour dessiner : garde le doigt appuyé un instant (vibration, cadre allumé), puis glisse. Appui court = un point.")));
+  if (window.matchMedia && matchMedia("(pointer:coarse)").matches) host.appendChild(el("p", "lmut", "☝️ " + L("Tippe aufs Feld = Zeichnen an (Rahmen leuchtet). Tippe daneben = wieder scrollen. Auf dem Feld selbst wischt du nur im Zeichnen-Modus.", "Touche le champ = dessin actif (cadre allumé). Touche à côté = défilement. Sur le champ tu ne glisses que en mode dessin.")));
   return function(){ return true; };
 }
+var ARMED = [];
+document.addEventListener("pointerdown", function(e){ if (e.pointerType === "mouse") return; var t = e.target; ARMED.slice().forEach(function(a){ if (a.cv.contains(t)) return; if (t.closest && t.closest("button,input,select,textarea,label,summary")) return; a.disarm(); }); }, true);
 function press(cv, h){
-  var s = null;
+  var s = null, armed = false;
   cv.style.touchAction = "pan-y"; cv.style.webkitTouchCallout = "none"; cv.style.webkitUserSelect = "none"; cv.style.userSelect = "none";
-  function clear(){ if (s && s.timer) clearTimeout(s.timer); cv.style.outline = "none"; s = null; }
-  cv.addEventListener("touchmove", function(e){ if (s && s.armed && e.cancelable) e.preventDefault(); }, { passive: false });
-  cv.addEventListener("contextmenu", function(e){ if (s) e.preventDefault(); });
+  var reg = { cv: cv, disarm: function(){ armed = false; cv.style.touchAction = "pan-y"; cv.style.outline = "none"; var i = ARMED.indexOf(reg); if (i >= 0) ARMED.splice(i, 1); } };
+  function arm(){ if (armed) return; armed = true; cv.style.touchAction = "none"; cv.style.outline = "3px solid #12c2e9"; try { navigator.vibrate && navigator.vibrate(15); } catch (x) {} if (ARMED.indexOf(reg) < 0) ARMED.push(reg); }
+  cv.addEventListener("touchmove", function(e){ if (armed && e.cancelable) e.preventDefault(); }, { passive: false });
+  cv.addEventListener("contextmenu", function(e){ if (armed) e.preventDefault(); });
   cv.addEventListener("pointerdown", function(e){
-    if (e.pointerType === "mouse") { s = { armed: true, mouse: true }; try { cv.setPointerCapture(e.pointerId); } catch (x) {} h.start(e); return; }
-    clear(); var me = s = { x: e.clientX, y: e.clientY, t: Date.now(), armed: false, last: e };
-    me.timer = setTimeout(function(){ if (s !== me) return; me.armed = true; try { navigator.vibrate && navigator.vibrate(18); } catch (x) {} cv.style.outline = "3px solid #12c2e9"; h.start(me.last); }, 280);
+    if (e.pointerType === "mouse") { s = { go: true }; try { cv.setPointerCapture(e.pointerId); } catch (x) {} h.start(e); return; }
+    if (armed) { s = { go: true }; try { cv.setPointerCapture(e.pointerId); } catch (x) {} h.start(e); return; }
+    s = { go: false, x: e.clientX, y: e.clientY, t: Date.now() };
   });
-  cv.addEventListener("pointermove", function(e){ if (!s) return; if (s.armed) { h.move(e); return; } s.last = e; if (Math.abs(e.clientX - s.x) + Math.abs(e.clientY - s.y) > 8) clear(); });
-  cv.addEventListener("pointerup", function(e){ if (!s) return; var a = s; clear(); if (a.armed) h.end(e); else { h.start(e); h.end(e); } });
-  cv.addEventListener("pointercancel", function(e){ if (!s) return; var a = s; clear(); if (a.armed) h.end(e); });
+  cv.addEventListener("pointermove", function(e){ if (!s) return; if (s.go) { h.move(e); return; } if (Math.abs(e.clientX - s.x) + Math.abs(e.clientY - s.y) > 10) s = null; });
+  cv.addEventListener("pointerup", function(e){ if (!s) return; var a = s; s = null; if (a.go) { h.end(e); return; } if (Date.now() - a.t < 500) { arm(); if (h.armTap) h.armTap(e); } });
+  cv.addEventListener("pointercancel", function(e){ if (!s) return; var a = s; s = null; if (a.go) h.end(e); });
 }
-
-/* ----- Zeichen-LCD ----- */
 function lcdCells(d, S){
-  return S.cells.map(function(row){ return row.map(function(c){ return typeof c === "number" ? { cc: c, g: ((S.active || !S.ccView) ? S.cc : S.ccView)[c] } : { ch: c, g: glyphRows(c) }; }); });
+  return S.cells.map(function(row){ return row.map(function(c){ return typeof c === "object" ? { g: c.g } : { ch: c, g: glyphRows(c) }; }); });
 }
 var LP = 5, LCW = 5 * (LP + 1) + 5, LCH = 8 * (LP + 1) + 6, LPAD = 22;
 function paintLCD(cv, d, S){
@@ -842,7 +845,7 @@ function paintLCD(cv, d, S){
     var ce = cells[r][q], ox = LPAD + q * LCW, oy = LPAD + r * LCH;
     for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { var on = (ce.g[y] >> (4 - x)) & 1; c.fillStyle = on ? (green ? "#16210a" : "#f2f8ff") : (green ? "rgba(70,95,10,.22)" : "rgba(0,20,110,.35)"); c.fillRect(ox + x * (LP + 1), oy + y * (LP + 1), LP, LP); }
   }
-  if (S.sel && S.active) { c.strokeStyle = "#ffd400"; c.lineWidth = 3; c.strokeRect(LPAD + S.sel.c * LCW - 2, LPAD + S.sel.r * LCH - 2, LCW - 1, LCH - 3); }
+  if (S.sel && S.active && S.blink !== false) { c.strokeStyle = "#ffd400"; c.lineWidth = 3; c.strokeRect(LPAD + S.sel.c * LCW - 2, LPAD + S.sel.r * LCH - 2, LCW - 1, LCH - 3); }
 }
 function viewLCD(area, d, S, upd){
   var card = el("div", "lcard"); card.style.position = "relative"; area.appendChild(card);
@@ -850,7 +853,8 @@ function viewLCD(area, d, S, upd){
   var hid = el("input"); hid.type = "text"; hid.setAttribute("autocapitalize", "off"); hid.setAttribute("autocomplete", "off"); hid.setAttribute("autocorrect", "off"); hid.spellcheck = false; hid.style.cssText = "position:absolute;left:12px;top:12px;width:2px;height:2px;opacity:0;border:0;padding:0;font-size:16px"; card.appendChild(hid);
   card.appendChild(el("p", "lmut", "👆 " + L("Tippe kurz auf eine Stelle im Display (gelber Rahmen) und schreib los. Wischen scrollt nur die Seite. Mit den Symbolen darunter setzt du Zeichen ein. Umlaute hat der Standard-Zeichensatz nicht („?“).", "Touche brièvement un endroit de l’écran (cadre jaune) et écris. Glisser fait seulement défiler. Les symboles dessous insèrent des caractères. Pas d’accents dans le jeu standard (« ? »).")));
   function advance(){ var s = S.sel; s.c++; if (s.c >= d.cols) { s.c = 0; if (s.r < d.rows - 1) s.r++; else s.c = d.cols - 1; } }
-  function put(v){ S.active = true; S.cells[S.sel.r][S.sel.c] = v; syncLines(S, d); advance(); upd(); }
+  function put(v){ S.active = true; var stay = typeof v === "number"; S.cells[S.sel.r][S.sel.c] = stay ? { s: v, g: S.cc[v].slice() } : v; syncLines(S, d); if (!stay) advance(); upd(); }
+  function syncMark(){ if (!S.active) return; var c = S.cells[S.sel.r][S.sel.c]; if (c && typeof c === "object" && c.s === S.slot) { c.g = S.cc[S.slot].slice(); syncLines(S, d); } }
   var tap0 = null;
   cv.onpointerdown = function(e){ tap0 = { x: e.clientX, y: e.clientY, t: Date.now() }; };
   cv.onpointercancel = function(){ tap0 = null; };
@@ -882,25 +886,25 @@ function viewLCD(area, d, S, upd){
   var eb = el("div", "lrow"); eb.style.cssText = "align-items:flex-start;gap:14px;margin-top:6px;flex-wrap:nowrap"; dt.appendChild(eb);
   var ed = el("canvas"); ed.width = 5 * 88; ed.height = 8 * 88; ed.style.cssText = "width:130px;flex:0 0 130px;display:block;border-radius:8px;touch-action:pan-y;cursor:pointer";
   var side = el("div"); side.style.cssText = "display:flex;flex-direction:column;gap:8px;flex:1;min-width:0"; eb.appendChild(ed); eb.appendChild(side);
-  var cl = el("button", "lbtn", L("Dieses Zeichen leeren", "Vider ce caractère")); cl.onclick = function(){ pushUndo(); S.cc[S.slot] = [0, 0, 0, 0, 0, 0, 0, 0]; drawEd(); drawThumbs(); upd(); };
+  var cl = el("button", "lbtn", L("Dieses Zeichen leeren", "Vider ce caractère")); cl.onclick = function(){ pushUndo(); S.cc[S.slot] = [0, 0, 0, 0, 0, 0, 0, 0]; syncMark(); drawEd(); drawThumbs(); upd(); };
   side.appendChild(cl);
   var okEd = guard(ed, side, null);
   function drawEd(){ sumTxt(); var c = ed.getContext("2d"), Lc = LCOL(S.look), n = 88, g = 6; c.fillStyle = Lc.bg; c.fillRect(0, 0, ed.width, ed.height); for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { c.fillStyle = (S.cc[S.slot][y] >> (4 - x)) & 1 ? Lc.on : Lc.off; c.fillRect(x * n, y * n, n - g, n - g); } }
   var paintTo = null;
   function edXY(e){ var r = ed.getBoundingClientRect(); return [Math.floor((e.clientX - r.left) / r.width * 5), Math.floor((e.clientY - r.top) / r.height * 8)]; }
   press(ed, {
-    start: function(e){ var q = edXY(e), x = q[0], y = q[1]; if (x < 0 || x > 4 || y < 0 || y > 7) return; pushUndo(); var cur = (S.cc[S.slot][y] >> (4 - x)) & 1; paintTo = cur ? 0 : 1; S.cc[S.slot][y] ^= 1 << (4 - x); drawEd(); drawThumbs(); upd(); },
-    move: function(e){ if (paintTo === null) return; var q = edXY(e), x = q[0], y = q[1]; if (x < 0 || x > 4 || y < 0 || y > 7) return; var bit = 1 << (4 - x); if (paintTo) S.cc[S.slot][y] |= bit; else S.cc[S.slot][y] &= ~bit; drawEd(); drawThumbs(); upd(true); },
+    start: function(e){ var q = edXY(e), x = q[0], y = q[1]; if (x < 0 || x > 4 || y < 0 || y > 7) return; pushUndo(); var cur = (S.cc[S.slot][y] >> (4 - x)) & 1; paintTo = cur ? 0 : 1; S.cc[S.slot][y] ^= 1 << (4 - x); syncMark(); drawEd(); drawThumbs(); upd(); },
+    move: function(e){ if (paintTo === null) return; var q = edXY(e), x = q[0], y = q[1]; if (x < 0 || x > 4 || y < 0 || y > 7) return; var bit = 1 << (4 - x); if (paintTo) S.cc[S.slot][y] |= bit; else S.cc[S.slot][y] &= ~bit; syncMark(); drawEd(); drawThumbs(); upd(true); },
     end: function(){ paintTo = null; }
   });
   var h3 = el("div", "", L("Vorlagen – Tipp lädt sie in das gewählte Zeichen", "Modèles – touche pour charger dans le caractère choisi")); h3.style.cssText = "font-weight:700;margin:16px 0 8px"; card.appendChild(h3);
   var tp = el("div"); tp.style.cssText = "display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:8px"; card.appendChild(tp);
   var tplLook = null;
   function drawTpl(){ if (tplLook === S.look) return; tplLook = S.look; var Lc = LCOL(S.look); tp.innerHTML = "";
-    ICONS.forEach(function(ic, i){ var b = el("button", "lbtn"); b.style.cssText = "padding:6px 0;min-height:0;line-height:0;display:flex;justify-content:center"; b.title = iconName(i); var c = icThumb(ic[2], 5, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "4px"; b.appendChild(c); b.onclick = function(){ pushUndo(); S.cc[S.slot] = ic[2].slice(); drawEd(); drawThumbs(); upd(); }; tp.appendChild(b); }); }
-  if (!S.active) S.ccView = JSON.parse(JSON.stringify(S.cc));
+    ICONS.forEach(function(ic, i){ var b = el("button", "lbtn"); b.style.cssText = "padding:6px 0;min-height:0;line-height:0;display:flex;justify-content:center"; b.title = iconName(i); var c = icThumb(ic[2], 5, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "4px"; b.appendChild(c); b.onclick = function(){ pushUndo(); S.cc[S.slot] = ic[2].slice(); syncMark(); drawEd(); drawThumbs(); upd(); }; tp.appendChild(b); }); }
   drawEd(); drawThumbs(); drawTpl();
-  return { paint: function(){ paintLCD(cv, d, S); drawEd(); drawThumbs(); drawTpl(); } };
+  var bt = setInterval(function(){ if (!S.active) return; S.blink = !(S.blink !== false); paintLCD(cv, d, S); }, 450);
+  return { paint: function(){ S.blink = true; paintLCD(cv, d, S); drawEd(); drawThumbs(); drawTpl(); }, stop: function(){ clearInterval(bt); } };
 }
 
 /* ----- Pixel-Displays (schwarz-weiß + Farbe) ----- */
@@ -985,7 +989,8 @@ function viewGfx(area, d, S, upd){
       if (drag.obj) { var dx = p[0] - drag.last[0], dy = p[1] - drag.last[1]; if (dx || dy) { oMove(drag.obj, dx, dy); drag.last = p; props(true); upd(true); } }
       else if (drag.pen) { bline(S.B, drag.last[0], drag.last[1], p[0], p[1], drag.val); drag.last = p; upd(true); }
     },
-    end: function(){ if (drag) upd(); drag = null; }
+    end: function(){ if (drag) upd(); drag = null; },
+    armTap: function(e){ if (S.tool === "select") { var i = hit(pxAt(e)); S.sel = i; props(); upd(); } }
   });
   // Eigenschaften + Ebenen
   card.appendChild(propEl);
@@ -1084,19 +1089,19 @@ function genCode(d, S, b){
   var head = (py ? "#!/usr/bin/env python3\n# " : "// ") + "Oratio Lab – " + d.n + " · " + BNAME[b] + "\n" + (py ? "" : coreNote(b));
   var cm = py ? "# " : "// ";
   if (d.grp === "lcd") {
-    var used = {}, lines = [];
+    var used = {}, lines = [], bk = lcdBank(S);
     for (var r = 0; r < d.rows; r++) { var segs = [], cur = ""; S.cells[r].join("|"); var rowCells = S.cells[r].slice(), last = rowCells.length; while (last > 0 && rowCells[last - 1] === " ") last--; rowCells = rowCells.slice(0, last);
-      rowCells.forEach(function(c){ if (typeof c === "number") { if (cur) segs.push({ s: cur }); cur = ""; segs.push({ c: c }); used[c] = 1; } else cur += c; }); if (cur) segs.push({ s: cur }); lines.push(segs); }
+      rowCells.forEach(function(c){ if (typeof c === "object") { if (cur) segs.push({ s: cur }); cur = ""; var ix = Math.min(7, bk.keys.indexOf(c.g.join(","))); segs.push({ c: ix }); used[ix] = bk.bank[ix]; } else cur += c; }); if (cur) segs.push({ s: cur }); lines.push(segs); }
     if (!py) {
       t = head + "// Bibliothek: LiquidCrystal_I2C (Bibliotheksverwalter)\n#include <Wire.h>\n#include <LiquidCrystal_I2C.h>\n\nLiquidCrystal_I2C lcd(0x27, " + d.cols + ", " + d.rows + ");   // Adresse 0x27 oder 0x3F\n\n";
-      Object.keys(used).forEach(function(k){ t += "byte zeichen" + k + "[8] = { " + S.cc[k].map(function(v){ return "0b" + ("00000" + v.toString(2)).slice(-5); }).join(", ") + " };\n"; });
+      Object.keys(used).forEach(function(k){ t += "byte zeichen" + k + "[8] = { " + used[k].map(function(v){ return "0b" + ("00000" + v.toString(2)).slice(-5); }).join(", ") + " };\n"; });
       t += "\nvoid setup() {\n" + P.begin + "  lcd.init();\n  lcd.backlight();\n";
       Object.keys(used).forEach(function(k){ t += "  lcd.createChar(" + k + ", zeichen" + k + ");\n"; });
       lines.forEach(function(sg, r2){ if (!sg.length) return; t += "  lcd.setCursor(0, " + r2 + ");\n"; sg.forEach(function(x){ t += x.s !== undefined ? '  lcd.print("' + cstr(x.s) + '");\n' : "  lcd.write(byte(" + x.c + "));\n"; }); });
       t += "}\n\nvoid loop() {\n}\n";
     } else {
       t = head + "# Installieren: pip install RPLCD smbus2   (I²C aktivieren nicht vergessen)\nfrom RPLCD.i2c import CharLCD\n\nlcd = CharLCD('PCF8574', 0x27, cols=" + d.cols + ", rows=" + d.rows + ")   # Adresse 0x27 oder 0x3F\n\n";
-      Object.keys(used).forEach(function(k){ t += "lcd.create_char(" + k + ", (" + S.cc[k].map(function(v){ return "0b" + ("00000" + v.toString(2)).slice(-5); }).join(", ") + "))\n"; });
+      Object.keys(used).forEach(function(k){ t += "lcd.create_char(" + k + ", (" + used[k].map(function(v){ return "0b" + ("00000" + v.toString(2)).slice(-5); }).join(", ") + "))\n"; });
       lines.forEach(function(sg, r2){ if (!sg.length) return; t += "lcd.cursor_pos = (" + r2 + ", 0)\nlcd.write_string(\"" + sg.map(function(x){ return x.s !== undefined ? cstr(x.s) : "\\x0" + x.c; }).join("") + "\")\n"; });
     }
     return { txt: t, ext: ext };
@@ -1208,6 +1213,7 @@ MODS.disp = { show: function(b){
       else msg += L(" – das passt NICHT in den Programmspeicher (", " – ça ne tient PAS en mémoire programme (") + Math.round(fl / 1024) + " KB). " + L("Nimm ein kleineres Display oder ein größeres Board.", "Prends un écran plus petit ou une carte plus grande.");
       info.appendChild(el("p", ok ? "lmut" : "swarn", msg)); }
     else if (sz && d.grp === "color") info.appendChild(el("p", "lmut", "💾 " + L("Nur Formen und Text brauchen fast keinen Speicher. Ein ganzes Bild (Freihand/Upload) würde ", "Formes et texte n’utilisent presque pas de mémoire. Une image complète (main levée/import) utiliserait ") + (sz / 1024).toFixed(1) + " KB."));
+    if (d.grp === "lcd" && lcdBank(S).bank.length > 8) info.appendChild(el("p", "swarn", "⚠️ " + L("Du nutzt mehr als 8 verschiedene eigene Zeichen – das LCD kann nur 8 gleichzeitig. Die überzähligen werden im Code durch das 8. ersetzt.", "Plus de 8 caractères différents – le LCD n’en gère que 8. Les surplus sont remplacés par le 8e dans le code.")));
     p.w.forEach(function(w){ info.appendChild(el("p", "swarn", "⚠️ " + w)); });
   }
   function render(){
