@@ -889,25 +889,28 @@ function viewLCD(area, d, S, upd){
   var cla = el("button", "lbtn bad", L("Alles leeren", "Tout effacer")); cla.onclick = function(){ pushUndo(); S.cells = cellsFromLines([], d); syncLines(S, d); S.sel = { r: 0, c: 0 }; upd(); }; look.appendChild(cla);
   card.appendChild(look);
   var h1 = el("h2", "", L("Eigene Zeichen", "Mes caractères")); h1.style.fontSize = "17px"; card.appendChild(h1);
-  card.appendChild(el("p", "lmut", L("Ohne markierte Stelle im Display ändern diese Felder nur die 8 Zeichen-Plätze. Tippst du ins Display (gelber Rahmen), wirken Tipps und Zeichnen direkt auf die markierte Stelle. Tippe in die Leere, um das Display wieder abzuschalten.", "Sans cellule marquée, ces champs ne modifient que les 8 emplacements. Si tu touches l’écran (cadre jaune), tout agit directement sur la cellule marquée. Touche dans le vide pour désactiver l’écran.")));
+  card.appendChild(el("p", "lmut", L("Tipp auf Zeichen 1–8 oder eine Vorlage lädt sie ins große Feld – deine gespeicherten Zeichen bleiben unverändert. Gespeichert wird nur, wenn du unten bei „Speichern in“ eine Nummer wählst. Ist ein Display-Feld markiert (gelb), landet alles dort.", "Un appui sur 1–8 ou un modèle le charge dans la grande zone – tes caractères enregistrés ne changent pas. Seul « Enregistrer dans » les modifie. Si une cellule est marquée (jaune), tout y arrive.")));
   var ins = el("div", "lrow"); ins.style.gap = "6px"; card.appendChild(ins);
   var thumbs = [];
-  for (var k = 0; k < 8; k++) (function(k){ var b = el("button", "lbtn"); b.style.cssText = "padding:5px;min-height:0;display:flex;flex-direction:column;align-items:center;gap:1px"; b.onclick = function(){ S.slot = k; S.pick = { t: "slot", i: k }; if (S.active) put(k); else { drawEd(); drawThumbs(); } }; b.appendChild(el("span")); b.appendChild(el("span", "lmut", "" + (k + 1))); ins.appendChild(b); thumbs.push(b); })(k);
+  for (var k = 0; k < 8; k++) (function(k){ var b = el("button", "lbtn"); b.style.cssText = "padding:5px;min-height:0;display:flex;flex-direction:column;align-items:center;gap:1px"; b.onclick = function(){ S.slot = k; S.pick = { t: "slot", i: k }; if (S.active) put(k); else { S.work = S.cc[k].slice(); drawEd(); drawThumbs(); } }; b.appendChild(el("span")); b.appendChild(el("span", "lmut", "" + (k + 1))); ins.appendChild(b); thumbs.push(b); })(k);
   function drawThumbs(){ var Lc = LCOL(S.look); thumbs.forEach(function(b, k){ var c = icThumb(S.cc[k], 4, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "3px"; b.replaceChild(c, b.firstChild); b.classList.toggle("on", !!S.pick ? (S.pick.t === "slot" && S.pick.i === k) : k === S.slot); }); if (typeof tp !== "undefined") Array.prototype.forEach.call(tp.children, function(b, i){ b.classList.toggle("on", !!S.pick && S.pick.t === "tpl" && S.pick.i === i); }); }
   function curCell(){ return S.cells[S.sel.r][S.sel.c]; }
-  function edRows(){ if (S.active) { var c = curCell(); return c && typeof c === "object" ? c.g : (c && c !== " " ? glyphRows(c) : [0, 0, 0, 0, 0, 0, 0, 0]); } return S.cc[S.slot]; }
-  function edSet(rows){ if (S.active) { S.cells[S.sel.r][S.sel.c] = { s: -1, g: rows.slice() }; syncLines(S, d); } else S.cc[S.slot] = rows.slice(); }
+  function edRows(){ if (S.active) { var c = curCell(); return c && typeof c === "object" ? c.g : (c && c !== " " ? glyphRows(c) : [0, 0, 0, 0, 0, 0, 0, 0]); } return S.work; }
+  function edSet(rows){ if (S.active) { S.cells[S.sel.r][S.sel.c] = { s: -1, g: rows.slice() }; syncLines(S, d); } else S.work = rows.slice(); }
   var dt = el("div"); dt.style.marginTop = "14px"; card.appendChild(dt);
   var sm = el("div"); sm.style.cssText = "font-weight:700;padding:2px 0"; dt.appendChild(sm);
-  function sumTxt(){ sm.textContent = S.active ? "✏️ " + L("Markierte Stelle im Display bearbeiten", "Modifier la cellule marquée") : "✏️ " + L("Eigenes Zeichen ", "Caractère ") + (S.slot + 1) + L(" bearbeiten", " – modifier"); }
+  function sumTxt(){ sm.textContent = S.active ? "✏️ " + L("Markierte Stelle im Display bearbeiten", "Modifier la cellule marquée") : "✏️ " + L("Arbeitsfeld (noch nicht gespeichert)", "Zone de travail (pas enregistrée)"); }
   var eb = el("div", "lrow"); eb.style.cssText = "align-items:flex-start;gap:14px;margin-top:6px;flex-wrap:nowrap"; dt.appendChild(eb);
-  var ed = el("canvas"); ed.width = 5 * 88; ed.height = 8 * 88; ed.style.cssText = "width:130px;flex:0 0 130px;display:block;border-radius:8px;touch-action:pan-y;cursor:pointer";
+  var ed = el("canvas"); ed.width = 5 * 88; ed.height = 8 * 88; ed.style.cssText = "width:130px;flex:0 0 130px;display:block;border-radius:8px;border:3px solid #1b1f27;box-sizing:border-box;touch-action:pan-y;cursor:pointer";
   var side = el("div"); side.style.cssText = "display:flex;flex-direction:column;gap:8px;flex:1;min-width:0"; eb.appendChild(ed); eb.appendChild(side);
-  var cl = el("button", "lbtn", L("Leeren", "Vider")); cl.onclick = function(){ pushUndo(); if (S.active) { S.cells[S.sel.r][S.sel.c] = " "; syncLines(S, d); } else S.cc[S.slot] = [0, 0, 0, 0, 0, 0, 0, 0]; drawEd(); drawThumbs(); upd(); };
+  if (!S.work) S.work = S.cc[0].slice();
+  var cl = el("button", "lbtn", L("Leeren", "Vider")); cl.onclick = function(){ pushUndo(); if (S.active) { S.cells[S.sel.r][S.sel.c] = " "; syncLines(S, d); } else S.work = [0, 0, 0, 0, 0, 0, 0, 0]; drawEd(); drawThumbs(); upd(); };
   side.appendChild(cl);
-  var sv2 = el("button", "lbtn"); sv2.onclick = function(){ pushUndo(); S.cc[S.slot] = edRows().slice(); drawThumbs(); upd(); }; side.appendChild(sv2);
+  var svl = el("div", "lmut", ""); svl.style.fontWeight = "600"; side.appendChild(svl);
+  var svr = el("div", "lrow"); svr.style.gap = "5px"; side.appendChild(svr);
+  for (var q = 0; q < 8; q++) (function(q){ var b = el("button", "lbtn", "" + (q + 1)); b.style.cssText = "min-width:34px;min-height:34px;padding:4px 0"; b.onclick = function(){ pushUndo(); S.cc[q] = edRows().slice(); S.slot = q; S.pick = { t: "slot", i: q }; drawThumbs(); upd(); }; svr.appendChild(b); })(q);
   side.appendChild(el("p", "lmut", L("Tippe auf einen Punkt = an/aus. Wischen scrollt die Seite.", "Touche un point = on/off. Glisser fait défiler.")));
-  function drawEd(){ sumTxt(); sv2.hidden = !S.active; sv2.textContent = "💾 " + L("In Zeichen ", "Dans caractère ") + (S.slot + 1) + L(" speichern", " enregistrer"); var rows = edRows(), c = ed.getContext("2d"), Lc = LCOL(S.look), n = 88, g = 6; c.fillStyle = Lc.bg; c.fillRect(0, 0, ed.width, ed.height); for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { c.fillStyle = (rows[y] >> (4 - x)) & 1 ? Lc.on : Lc.off; c.fillRect(x * n, y * n, n - g, n - g); } }
+  function drawEd(){ sumTxt(); svl.textContent = "💾 " + L("Als eigenes Zeichen speichern in:", "Enregistrer comme caractère dans :"); var rows = edRows(), c = ed.getContext("2d"), Lc = LCOL(S.look), n = 88, g = 6; c.fillStyle = Lc.bg; c.fillRect(0, 0, ed.width, ed.height); for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { c.fillStyle = (rows[y] >> (4 - x)) & 1 ? Lc.on : Lc.off; c.fillRect(x * n, y * n, n - g, n - g); } }
   var paintTo = null;
   function edXY(e){ var r = ed.getBoundingClientRect(); return [Math.floor((e.clientX - r.left) / r.width * 5), Math.floor((e.clientY - r.top) / r.height * 8)]; }
   press(ed, {
@@ -919,7 +922,7 @@ function viewLCD(area, d, S, upd){
   var tp = el("div"); tp.style.cssText = "display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:8px"; card.appendChild(tp);
   var tplLook = null;
   function drawTpl(){ if (tplLook === S.look) return; tplLook = S.look; var Lc = LCOL(S.look); tp.innerHTML = "";
-    ICONS.forEach(function(ic, i){ var b = el("button", "lbtn"); b.style.cssText = "padding:6px 0;min-height:0;line-height:0;display:flex;justify-content:center"; b.title = iconName(i); var c = icThumb(ic[2], 5, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "4px"; b.appendChild(c); b.onclick = function(){ pushUndo(); S.pick = { t: "tpl", i: i }; edSet(ic[2]); drawEd(); drawThumbs(); upd(); }; tp.appendChild(b); }); drawThumbs(); }
+    ICONS.forEach(function(ic, i){ var b = el("button", "lbtn"); b.style.cssText = "padding:6px 0;min-height:0;line-height:0;display:flex;justify-content:center"; b.title = iconName(i); var c = icThumb(ic[2], 5, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "4px"; c.style.border = "2px solid #1b1f27"; c.style.boxSizing = "content-box"; b.appendChild(c); b.onclick = function(){ pushUndo(); S.pick = { t: "tpl", i: i }; edSet(ic[2]); drawEd(); drawThumbs(); upd(); }; tp.appendChild(b); }); drawThumbs(); }
   drawEd(); drawThumbs(); drawTpl();
   var o0 = null;
   var outDown = function(e){ var t = e.target; o0 = (S.active && t && t.closest && !cv.contains(t) && !t.closest("button,input,select,textarea,label,canvas,summary,a")) ? { x: e.clientX, y: e.clientY, t: Date.now() } : null; };
