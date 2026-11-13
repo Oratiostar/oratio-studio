@@ -757,6 +757,9 @@ function BP(b){
 }
 var DD = { sel: "lcd1602", board: "uno", S: {}, loaded: false, draw: null };
 function touchMode(){ if (DD.draw === null) DD.draw = !(window.matchMedia && matchMedia("(pointer:coarse)").matches); return DD.draw; }
+function cloneS(S){ var o = {}; Object.keys(S).forEach(function(k){ var v = S[k]; if (k === "img") o[k] = v; else if (v && v.d instanceof Uint32Array) o[k] = { w: v.w, h: v.h, d: v.d.slice() }; else if (v && typeof v === "object") o[k] = JSON.parse(JSON.stringify(v)); else o[k] = v; }); return o; }
+DD.undo = {};
+function pushUndo(){ var id = DD.sel, S = DD.S[id]; if (!S) return; var a = DD.undo[id] = DD.undo[id] || []; a.push(cloneS(S)); if (a.length > 30) a.shift(); if (DD.undoBtn) DD.undoBtn.hidden = false; }
 function dget(id){ for (var i = 0; i < DISPS.length; i++) if (DISPS[i].id === id) return DISPS[i]; return DISPS[0]; }
 function cellsFromLines(lines, d){ var cells = [];
   for (var r = 0; r < d.rows; r++) { var line = lines[r] || "", row = [], i = 0; while (i < line.length && row.length < d.cols) { var m = line.slice(i).match(/^\{([0-7])\}/); if (m) { row.push(+m[1]); i += 3; } else { row.push(line.charAt(i)); i++; } } while (row.length < d.cols) row.push(" "); cells.push(row); }
@@ -849,8 +852,8 @@ function viewLCD(area, d, S, upd){
     else if (k === "Enter") { s.c = 0; s.r = Math.min(d.rows - 1, s.r + 1); upd(); e.preventDefault(); } };
   var look = el("div", "lrow"); look.style.margin = "10px 0";
   [["blue", L("Blau / weiß", "Bleu / blanc")], ["green", L("Grün / schwarz", "Vert / noir")]].forEach(function(o){ var x = el("button", "lbtn" + (S.look === o[0] ? " on" : ""), o[1]); x.onclick = function(){ S.look = o[0]; look.querySelectorAll("button").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); upd(); }; look.appendChild(x); });
-  var clr = el("button", "lbtn", "⌫ " + L("Zelle leeren", "Vider la cellule")); clr.onclick = function(){ S.cells[S.sel.r][S.sel.c] = " "; syncLines(S, d); upd(); }; look.appendChild(clr);
-  var cla = el("button", "lbtn bad", L("Alles leeren", "Tout effacer")); cla.onclick = function(){ S.cells = cellsFromLines([], d); syncLines(S, d); S.sel = { r: 0, c: 0 }; upd(); }; look.appendChild(cla);
+  var clr = el("button", "lbtn", "⌫ " + L("Zelle leeren", "Vider la cellule")); clr.onclick = function(){ pushUndo(); S.cells[S.sel.r][S.sel.c] = " "; syncLines(S, d); upd(); }; look.appendChild(clr);
+  var cla = el("button", "lbtn bad", L("Alles leeren", "Tout effacer")); cla.onclick = function(){ pushUndo(); S.cells = cellsFromLines([], d); syncLines(S, d); S.sel = { r: 0, c: 0 }; upd(); }; look.appendChild(cla);
   card.appendChild(look);
   var h1 = el("h2", "", L("Eigene Zeichen einsetzen", "Insérer mes caractères")); h1.style.fontSize = "17px"; card.appendChild(h1);
   var ins = el("div", "lrow"); card.appendChild(ins);
@@ -865,13 +868,13 @@ function viewLCD(area, d, S, upd){
   var ed = el("canvas"); ed.width = 5 * 44; ed.height = 8 * 44; ed.style.cssText = "width:min(100%,220px);display:block;border-radius:10px;touch-action:pan-y;cursor:pointer"; var okEd = guard(ed, card, null); card.appendChild(ed);
   function drawEd(){ var c = ed.getContext("2d"), green = S.look === "green"; c.fillStyle = green ? "#aac43a" : "#1f4fd1"; c.fillRect(0, 0, ed.width, ed.height); for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { c.fillStyle = (S.cc[S.slot][y] >> (4 - x)) & 1 ? (green ? "#16210a" : "#f2f8ff") : (green ? "rgba(70,95,10,.25)" : "rgba(0,20,110,.4)"); c.fillRect(x * 44 + 2, y * 44 + 2, 40, 40); } }
   var paintTo = null;
-  ed.onpointerdown = function(e){ if (!okEd(e)) return; var r = ed.getBoundingClientRect(), x = Math.floor((e.clientX - r.left) / r.width * 5), y = Math.floor((e.clientY - r.top) / r.height * 8); if (x < 0 || x > 4 || y < 0 || y > 7) return; var cur = (S.cc[S.slot][y] >> (4 - x)) & 1; paintTo = cur ? 0 : 1; S.cc[S.slot][y] ^= 1 << (4 - x); if (e.pointerType === "mouse") ed.setPointerCapture(e.pointerId); else paintTo = null; drawEd(); drawThumbs(); upd(); };
+  ed.onpointerdown = function(e){ if (!okEd(e)) return; var r = ed.getBoundingClientRect(), x = Math.floor((e.clientX - r.left) / r.width * 5), y = Math.floor((e.clientY - r.top) / r.height * 8); if (x < 0 || x > 4 || y < 0 || y > 7) return; pushUndo(); var cur = (S.cc[S.slot][y] >> (4 - x)) & 1; paintTo = cur ? 0 : 1; S.cc[S.slot][y] ^= 1 << (4 - x); if (e.pointerType === "mouse") ed.setPointerCapture(e.pointerId); else paintTo = null; drawEd(); drawThumbs(); upd(); };
   ed.onpointermove = function(e){ if (paintTo === null || e.pointerType !== "mouse") return; var r = ed.getBoundingClientRect(), x = Math.floor((e.clientX - r.left) / r.width * 5), y = Math.floor((e.clientY - r.top) / r.height * 8); if (x < 0 || x > 4 || y < 0 || y > 7) return; var bit = 1 << (4 - x); if (paintTo) S.cc[S.slot][y] |= bit; else S.cc[S.slot][y] &= ~bit; drawEd(); drawThumbs(); upd(true); };
   ed.onpointerup = ed.onpointercancel = function(){ paintTo = null; };
-  var cl = el("button", "lbtn", L("Dieses Zeichen leeren", "Vider ce caractère")); cl.style.marginTop = "8px"; cl.onclick = function(){ S.cc[S.slot] = [0, 0, 0, 0, 0, 0, 0, 0]; drawEd(); drawThumbs(); upd(); }; card.appendChild(cl);
+  var cl = el("button", "lbtn", L("Dieses Zeichen leeren", "Vider ce caractère")); cl.style.marginTop = "8px"; cl.onclick = function(){ pushUndo(); S.cc[S.slot] = [0, 0, 0, 0, 0, 0, 0, 0]; drawEd(); drawThumbs(); upd(); }; card.appendChild(cl);
   var h3 = el("h2", "", L("Vorlagen (Tipp = in diesen Platz laden)", "Modèles (touche = charger dans cet emplacement)")); h3.style.cssText = "font-size:17px;margin-top:16px"; card.appendChild(h3);
   var tp = el("div", "lrow"); tp.style.gap = "8px"; card.appendChild(tp);
-  ICONS.forEach(function(ic, i){ var b = el("button", "lbtn"); b.style.cssText = "padding:6px;min-height:0;display:flex;flex-direction:column;align-items:center;gap:2px"; b.title = iconName(i); var c = icThumb(ic[2], 4, "#f2f8ff", "#1f4fd1"); c.style.borderRadius = "3px"; b.appendChild(c); b.appendChild(el("span", "lmut", iconName(i))); b.lastChild.style.fontSize = "10px"; b.onclick = function(){ S.cc[S.slot] = ic[2].slice(); drawEd(); drawThumbs(); upd(); }; tp.appendChild(b); });
+  ICONS.forEach(function(ic, i){ var b = el("button", "lbtn"); b.style.cssText = "padding:6px;min-height:0;display:flex;flex-direction:column;align-items:center;gap:2px"; b.title = iconName(i); var c = icThumb(ic[2], 4, "#f2f8ff", "#1f4fd1"); c.style.borderRadius = "3px"; b.appendChild(c); b.appendChild(el("span", "lmut", iconName(i))); b.lastChild.style.fontSize = "10px"; b.onclick = function(){ pushUndo(); S.cc[S.slot] = ic[2].slice(); drawEd(); drawThumbs(); upd(); }; tp.appendChild(b); });
   drawEd(); drawThumbs();
   return { paint: function(){ paintLCD(cv, d, S); drawThumbs(); } };
 }
@@ -913,7 +916,7 @@ function viewGfx(area, d, S, upd){
   var color = d.grp === "color", card = el("div", "lcard"); area.appendChild(card);
   var ref = {}, cv, propEl = el("div");
   function sizeU(){ return Math.max(4, Math.round(Math.min(d.w, d.h) / 4)); }
-  function addObj(o){ S.objs.push(o); S.sel = S.objs.length - 1; S.tool = "select"; syncTools(); props(); upd(); }
+  function addObj(o){ pushUndo(); S.objs.push(o); S.sel = S.objs.length - 1; S.tool = "select"; syncTools(); props(); upd(); }
   function baseO(){ return { c: color ? S.col : "#ffffff" }; }
   var u;
   // Werkzeuge
@@ -948,7 +951,8 @@ function viewGfx(area, d, S, upd){
     var p = pxAt(e), touchScroll = !okEvt(e);
     if (touchScroll) { drag = { tap: true, p0: [e.clientX, e.clientY] }; return; }
     cv.setPointerCapture(e.pointerId);
-    if (S.tool === "select") { var i = hit(p); S.sel = i; if (i >= 0) drag = { obj: S.objs[i], last: p }; props(); upd(); return; }
+    if (S.tool !== "select") pushUndo();
+    if (S.tool === "select") { var i = hit(p); S.sel = i; if (i >= 0) { pushUndo(); drag = { obj: S.objs[i], last: p }; } props(); upd(); return; }
     var val = S.tool === "erase" ? 0 : (color ? hexc(S.col) : 1);
     if (S.tool === "fill") { bflood(S.B, p[0], p[1], val || (color ? hexc(S.col) : 1)); upd(); return; }
     drag = { pen: true, last: p, val: val }; bset(S.B, p[0], p[1], val); upd();
@@ -975,7 +979,7 @@ function viewGfx(area, d, S, upd){
     var lay = el("div", "lrow"); lay.style.gap = "6px"; propEl.appendChild(lay);
     if (!S.objs.length) lay.appendChild(el("span", "lmut", L("Noch nichts eingefügt. Nimm oben ein Symbol, eine Form oder Text.", "Rien d’inséré. Prends un symbole, une forme ou du texte ci-dessus.")));
     S.objs.forEach(function(ob, i){ var c = el("span"); c.style.cssText = "display:inline-flex;border-radius:999px;overflow:hidden;border:1px solid var(--line)"; var a = el("button", "lbtn" + (i === S.sel ? " on" : ""), oName(ob)); a.style.cssText = "border:0;border-radius:0;min-height:34px;padding:6px 10px"; a.onclick = function(){ S.sel = i; props(); upd(); };
-      var x = el("button", "lbtn bad", "✕"); x.style.cssText = "border:0;border-radius:0;min-height:34px;padding:6px 10px"; x.title = L("Dieses Objekt löschen", "Supprimer cet objet"); x.onclick = function(){ S.objs.splice(i, 1); S.sel = -1; props(); upd(); }; c.appendChild(a); c.appendChild(x); lay.appendChild(c); });
+      var x = el("button", "lbtn bad", "✕"); x.style.cssText = "border:0;border-radius:0;min-height:34px;padding:6px 10px"; x.title = L("Dieses Objekt löschen", "Supprimer cet objet"); x.onclick = function(){ pushUndo(); S.objs.splice(i, 1); S.sel = -1; props(); upd(); }; c.appendChild(a); c.appendChild(x); lay.appendChild(c); });
     if (!o) return;
     var f = el("div", "lrow"); f.style.cssText = "margin-top:10px;gap:10px"; propEl.appendChild(f);
     if (o.k === "text") { var t = inp("flex:1;min-width:140px"); t.value = o.t; t.oninput = function(){ o.t = t.value; upd(true); }; f.appendChild(t); f.appendChild(field(L("Größe", "Taille"), o, "s", 1, 8)); }
@@ -989,7 +993,7 @@ function viewGfx(area, d, S, upd){
     var ab = el("div", "lrow"); ab.style.marginTop = "10px"; propEl.appendChild(ab);
     var du = el("button", "lbtn", "⧉ " + L("Duplizieren", "Dupliquer")); du.onclick = function(){ var n = JSON.parse(JSON.stringify(o)); oMove(n, 3, 3); S.objs.push(n); S.sel = S.objs.length - 1; props(); upd(); }; ab.appendChild(du);
     var fr = el("button", "lbtn", "⬆ " + L("Nach vorn", "Au premier plan")); fr.onclick = function(){ S.objs.splice(S.sel, 1); S.objs.push(o); S.sel = S.objs.length - 1; props(); upd(); }; ab.appendChild(fr);
-    var dl = el("button", "lbtn bad", "🗑 " + L("Löschen", "Supprimer")); dl.onclick = function(){ S.objs.splice(S.sel, 1); S.sel = -1; props(); upd(); }; ab.appendChild(dl);
+    var dl = el("button", "lbtn bad", "🗑 " + L("Löschen", "Supprimer")); dl.onclick = function(){ pushUndo(); S.objs.splice(S.sel, 1); S.sel = -1; props(); upd(); }; ab.appendChild(dl);
   }
   var kd = function(e){ if ((e.key === "Delete") && S.sel >= 0 && !/INPUT|TEXTAREA/.test((e.target || {}).tagName || "") && cur === "disp") { S.objs.splice(S.sel, 1); S.sel = -1; props(); upd(); } };
   document.addEventListener("keydown", kd); ref.kd = kd;
@@ -999,9 +1003,9 @@ function viewGfx(area, d, S, upd){
   var ib = el("div", "lrow"); card.appendChild(ib);
   var fi = el("input"); fi.type = "file"; fi.accept = "image/*"; fi.hidden = true;
   var up = el("button", "lbtn pri", "🖼️ " + L("Bild hochladen (z. B. Mario)", "Importer une image (ex. Mario)")); up.onclick = function(){ fi.click(); };
-  var cl = el("button", "lbtn bad", L("Freihand-Ebene leeren", "Vider le calque")); cl.onclick = function(){ S.B.d.fill(0); S.img = null; sl.hidden = true; upd(); };
+  var cl = el("button", "lbtn bad", L("Freihand-Ebene leeren", "Vider le calque")); cl.onclick = function(){ pushUndo(); S.B.d.fill(0); S.img = null; sl.hidden = true; upd(); };
   ib.appendChild(up); ib.appendChild(fi); ib.appendChild(cl);
-  if (!color) { var iv = el("button", "lbtn", L("Freihand invertieren", "Inverser le calque")); iv.onclick = function(){ for (var i = 0; i < S.B.d.length; i++) S.B.d[i] = S.B.d[i] ? 0 : 1; upd(); }; ib.appendChild(iv); }
+  if (!color) { var iv = el("button", "lbtn", L("Freihand invertieren", "Inverser le calque")); iv.onclick = function(){ pushUndo(); for (var i = 0; i < S.B.d.length; i++) S.B.d[i] = S.B.d[i] ? 0 : 1; upd(); }; ib.appendChild(iv); }
   var sl = el("div", "lrow"); sl.style.marginTop = "8px"; sl.hidden = !S.img; card.appendChild(sl);
   fi.onchange = function(){ var f = fi.files && fi.files[0]; if (!f) return; var im = new Image(); im.onload = function(){ S.img = im; importImg(d, S); upd(); sl.hidden = false; }; im.src = URL.createObjectURL(f); fi.value = ""; };
   function re(){ importImg(d, S); upd(); }
@@ -1160,6 +1164,12 @@ MODS.disp = { show: function(b){
   var chips = el("div"); top.appendChild(chips);
   var brow = el("div", "lrow"); brow.style.marginTop = "6px"; top.appendChild(el("div", "lmut", L("Dein Board:", "Ta carte :")));
   top.appendChild(brow);
+  var rs = el("div", "lrow"); rs.style.marginTop = "12px"; top.appendChild(rs);
+  var undoB = el("button", "lbtn", "↶ " + L("Rückgängig", "Annuler")); DD.undoBtn = undoB; rs.appendChild(undoB);
+  var resB = el("button", "lbtn bad", "↺ " + L("Dieses Display zurücksetzen", "Réinitialiser cet écran")); rs.appendChild(resB);
+  var resMsg = el("span", "lmut"); rs.appendChild(resMsg);
+  undoB.onclick = function(){ var a = DD.undo[DD.sel]; if (!a || !a.length) return; DD.S[DD.sel] = a.pop(); undoB.hidden = !a.length; render(); };
+  resB.onclick = function(){ pushUndo(); delete DD.S[DD.sel]; render(); resMsg.textContent = L("Zurückgesetzt – mit „Rückgängig“ holst du alles zurück.", "Réinitialisé – « Annuler » rend tout."); setTimeout(function(){ resMsg.textContent = ""; }, 5000); };
   var area = el("div"); area.style.marginTop = "16px"; b.appendChild(area);
   var info = el("div", "lcard"); info.style.marginTop = "16px"; b.appendChild(info);
   var cc = el("div", "lcard"); cc.style.marginTop = "16px"; b.appendChild(cc);
@@ -1183,7 +1193,7 @@ MODS.disp = { show: function(b){
   }
   function render(){
     if (view && view.stop) view.stop();
-    var d = dget(DD.sel), S = dinit(d); area.innerHTML = ""; var up = function(light){ view.paint(); updCode(light); };
+    var d = dget(DD.sel), S = dinit(d); undoB.hidden = !(DD.undo[DD.sel] && DD.undo[DD.sel].length); area.innerHTML = ""; var up = function(light){ view.paint(); updCode(light); };
     view = d.grp === "lcd" ? viewLCD(area, d, S, up) : d.grp === "seg" ? viewSeg(area, d, S, up) : viewGfx(area, d, S, up);
     view.paint(); updCode(); dsave();
   }
