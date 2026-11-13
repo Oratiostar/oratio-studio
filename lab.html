@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Oratio Lab – Oratio Place</title>
+<meta name="description" content="Oratio Lab: Schaltungs-Simulator, Oratio Watch im Browser, LED-Matrix-Maler, Terminal-Trainer und Mini-Spiele – live im Browser, kostenlos, ohne Anmeldung.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Oratio Place">
+<meta property="og:title" content="Oratio Lab – Oratio Place">
+<meta property="og:description" content="Schaltungs-Simulator, Oratio Watch, LED-Matrix-Maler, Terminal-Trainer und Mini-Spiele – live im Browser.">
+<meta property="og:url" content="https://oratioplace.com/lab.html">
+<meta property="og:image" content="https://oratioplace.com/bilder/lab.jpg">
+<link rel="icon" href="logo-place.png">
+<link rel="apple-touch-icon" href="logo-place.png">
+<link rel="stylesheet" href="werkzeuge/wz.css">
+<link rel="stylesheet" href="werkzeuge/lab.css">
+</head>
+<body class="lab">
+<main id="lab"></main>
+<script src="werkzeuge/wz.js"></script>
+<script src="werkzeuge/lab.js"></script>
+<script>
+WZ.kopf("lab");
+document.documentElement.lang = WZ.lang === "fr" ? "fr" : "de";
+LAB.start();
+</script>
+</body>
+</html>
