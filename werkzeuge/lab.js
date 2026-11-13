@@ -24,15 +24,21 @@ var TABS = [
 ];
 var MODS = {}, cur = "", root, body;
 
+var HERO = {
+  start: ["🔬", "Oratio Lab", L("Probieren, bauen, kaputtmachen – ohne Risiko. Alles läuft live in deinem Browser.", "Essayer, construire, casser – sans risque. Tout tourne en direct dans ton navigateur."), "linear-gradient(135deg,#7a3cff,#12c2e9 62%,#2fe38a)"],
+  sim: ["⚡", L("Schaltungs-Simulator", "Simulateur de circuits"), L("Bauteile verbinden, Strom und Spannung live sehen.", "Relie des composants, vois courant et tension en direct."), "linear-gradient(135deg,#ff8a00,#ff4f9a)"],
+  watch: ["⌚", "Oratio Watch", L("Das Zifferblatt live im Browser gestalten.", "Crée le cadran en direct dans le navigateur."), "linear-gradient(135deg,#12c2e9,#2f7bff)"],
+  disp: ["📺", L("Display-Werkstatt", "Atelier d’écrans"), L("Display wählen, darauf schreiben oder zeichnen – der Code entsteht dazu.", "Choisis un écran, écris ou dessine – le code est généré."), "linear-gradient(135deg,#2f7bff,#12c2e9)"],
+  matrix: ["🟦", L("LED-Matrix-Maler", "Éditeur de matrice LED"), L("64×32 Pixel malen und als ESP32- oder Pi-Code exportieren.", "Dessine 64×32 pixels et exporte le code ESP32 ou Pi."), "linear-gradient(135deg,#7a3cff,#ff4f9a)"],
+  term: ["💻", L("Terminal-Trainer", "Entraîneur de terminal"), L("Linux-Befehle üben – hier kann nichts kaputtgehen.", "Entraîne-toi aux commandes Linux – rien ne peut casser."), "linear-gradient(135deg,#1c2230,#2fe38a)"],
+  game: ["🎮", L("Mini-Spiele", "Mini-jeux"), L("Memory, Ohm-Quiz, Farbcode und Reaktionstest.", "Mémoire, quiz d’Ohm, code couleur et test de réaction."), "linear-gradient(135deg,#2fe38a,#ffd400)"]
+};
+var heroEl, crumbEl, backEl;
 function start(){
   root = $("#lab");
-  var m = el("div", "crumb");
-  m.innerHTML = '<a href="index.html">Oratio Place</a> › Oratio Lab';
-  root.appendChild(m);
-  root.appendChild(el("div", "lhero", '<div class="lic">🔬</div><div><h1>Oratio Lab</h1><p>' + L("Probieren, bauen, kaputtmachen – ohne Risiko. Alles läuft live in deinem Browser.", "Essayer, construire, casser – sans risque. Tout tourne en direct dans ton navigateur.") + '</p></div>'));
-  var tb = el("div", "ltabs"); tb.id = "ltabs";
-  TABS.forEach(function(t){ var b = el("button", "", t[1] + " " + t[2]); b.dataset.t = t[0]; b.onclick = function(){ location.hash = t[0]; }; tb.appendChild(b); });
-  root.appendChild(tb);
+  crumbEl = el("div", "crumb"); root.appendChild(crumbEl);
+  heroEl = el("div", "lhero"); root.appendChild(heroEl);
+  backEl = el("a", "lback", "← " + L("Zurück zu Oratio Lab", "Retour à Oratio Lab")); backEl.href = "#start"; backEl.hidden = true; root.appendChild(backEl);
   body = el("div"); root.appendChild(body);
   window.addEventListener("hashchange", route);
   route();
@@ -42,9 +48,13 @@ function route(){
   if (!MODS[h]) h = "start";
   if (MODS[cur] && MODS[cur].stop) MODS[cur].stop();
   cur = h; body.innerHTML = "";
-  document.querySelectorAll("#ltabs button").forEach(function(b){ b.classList.toggle("on", b.dataset.t === h); });
+  var hd = HERO[h];
+  heroEl.style.background = hd[3]; heroEl.className = "lhero" + (h === "start" ? "" : " small");
+  heroEl.innerHTML = '<div class="lic">' + hd[0] + '</div><div><h1>' + hd[1] + '</h1><p>' + hd[2] + '</p></div>';
+  crumbEl.innerHTML = '<a href="index.html">Oratio Place</a> › ' + (h === "start" ? "Oratio Lab" : '<a href="#start">Oratio Lab</a> › ' + hd[1]);
+  backEl.hidden = h === "start";
+  document.title = (h === "start" ? "Oratio Lab" : hd[1]) + " – Oratio Place";
   MODS[h].show(body);
-  if (h !== "start") { var tb = $("#ltabs"); if (tb) { var on = tb.querySelector(".on"); if (on && on.scrollIntoView) { try { tb.scrollLeft = on.offsetLeft - 16; } catch(e){} } } }
   window.scrollTo(0, 0);
 }
 
