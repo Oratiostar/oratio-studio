@@ -702,7 +702,8 @@ var ICONS = [
 ];
 function iconName(i){ return L(ICONS[i][0], ICONS[i][1]); }
 function iconBitmap(o){ var s = o.s, B = newB(5 * s, 8 * s), rows = ICONS[o.n][2]; for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) if ((rows[y] >> (4 - x)) & 1) for (var a = 0; a < s; a++) for (var b2 = 0; b2 < s; b2++) bset(B, x * s + a, y * s + b2, 1); return B; }
-function icThumb(rows, px, on, off){ var c = document.createElement("canvas"); c.width = 5 * px; c.height = 8 * px; var x = c.getContext("2d"); x.fillStyle = off; x.fillRect(0, 0, c.width, c.height); x.fillStyle = on; for (var y = 0; y < 8; y++) for (var q = 0; q < 5; q++) if ((rows[y] >> (4 - q)) & 1) x.fillRect(q * px, y * px, px - 0.5, px - 0.5); return c; }
+function LCOL(look){ return look === "green" ? { bg: "#aac43a", on: "#16210a", off: "rgba(70,95,10,.22)" } : { bg: "#1f4fd1", on: "#f2f8ff", off: "rgba(0,20,110,.38)" }; }
+function icThumb(rows, px, on, off, bg){ var k = Math.max(2, Math.ceil(window.devicePixelRatio || 1) * 2), cell = px * k, gap = Math.max(1, Math.round(cell * 0.14)), c = document.createElement("canvas"); c.width = 5 * cell; c.height = 8 * cell; c.style.width = 5 * px + "px"; c.style.height = 8 * px + "px"; var x = c.getContext("2d"); x.fillStyle = bg || off; x.fillRect(0, 0, c.width, c.height); for (var y = 0; y < 8; y++) for (var q = 0; q < 5; q++) { var lit = (rows[y] >> (4 - q)) & 1; if (!lit && !bg) continue; x.fillStyle = lit ? on : off; x.fillRect(q * cell, y * cell, cell - gap, cell - gap); } return c; }
 
 /* Objekte auf dem Display */
 function oBox(o){
@@ -828,7 +829,7 @@ function press(cv, h){
 
 /* ----- Zeichen-LCD ----- */
 function lcdCells(d, S){
-  return S.cells.map(function(row){ return row.map(function(c){ return typeof c === "number" ? { cc: c, g: S.cc[c] } : { ch: c, g: glyphRows(c) }; }); });
+  return S.cells.map(function(row){ return row.map(function(c){ return typeof c === "number" ? { cc: c, g: ((S.active || !S.ccView) ? S.cc : S.ccView)[c] } : { ch: c, g: glyphRows(c) }; }); });
 }
 var LP = 5, LCW = 5 * (LP + 1) + 5, LCH = 8 * (LP + 1) + 6, LPAD = 22;
 function paintLCD(cv, d, S){
@@ -870,19 +871,21 @@ function viewLCD(area, d, S, upd){
   var cla = el("button", "lbtn bad", L("Alles leeren", "Tout effacer")); cla.onclick = function(){ pushUndo(); S.cells = cellsFromLines([], d); syncLines(S, d); S.sel = { r: 0, c: 0 }; upd(); }; look.appendChild(cla);
   card.appendChild(look);
   var h1 = el("h2", "", L("Eigene Zeichen", "Mes caractères")); h1.style.fontSize = "17px"; card.appendChild(h1);
-  card.appendChild(el("p", "lmut", L("Tipp auf ein Zeichen setzt es ins Display (gelbe Stelle) und wählt es zum Bearbeiten.", "Touche un caractère pour l’insérer (endroit jaune) et le choisir pour l’éditer.")));
+  card.appendChild(el("p", "lmut", L("Zeichen wählen und unten bearbeiten – das Display ändert sich erst, wenn du oben ins Display getippt hast (gelber Rahmen). Danach setzt ein Tipp auf ein Zeichen es an die gelbe Stelle.", "Choisis un caractère et modifie-le en bas – l’écran ne change qu’après avoir touché l’écran (cadre jaune). Ensuite un appui sur un caractère l’insère à l’endroit jaune.")));
   var ins = el("div", "lrow"); ins.style.gap = "6px"; card.appendChild(ins);
   var thumbs = [];
-  for (var k = 0; k < 8; k++) (function(k){ var b = el("button", "lbtn"); b.style.cssText = "padding:5px;min-height:0;display:flex;flex-direction:column;align-items:center;gap:1px"; b.onclick = function(){ S.slot = k; put(k); drawEd(); drawThumbs(); }; b.appendChild(el("span")); b.appendChild(el("span", "lmut", "" + (k + 1))); ins.appendChild(b); thumbs.push(b); })(k);
-  function drawThumbs(){ var green = S.look === "green"; thumbs.forEach(function(b, k){ var c = icThumb(S.cc[k], 4, green ? "#16210a" : "#f2f8ff", green ? "#aac43a" : "#1f4fd1"); c.style.borderRadius = "3px"; b.replaceChild(c, b.firstChild); b.classList.toggle("on", k === S.slot); }); }
-  var dt = el("div"); dt.style.marginTop = "12px"; card.appendChild(dt);
+  for (var k = 0; k < 8; k++) (function(k){ var b = el("button", "lbtn"); b.style.cssText = "padding:5px;min-height:0;display:flex;flex-direction:column;align-items:center;gap:1px"; b.onclick = function(){ S.slot = k; if (S.active) put(k); else { drawEd(); drawThumbs(); } }; b.appendChild(el("span")); b.appendChild(el("span", "lmut", "" + (k + 1))); ins.appendChild(b); thumbs.push(b); })(k);
+  function drawThumbs(){ var Lc = LCOL(S.look); thumbs.forEach(function(b, k){ var c = icThumb(S.cc[k], 4, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "3px"; b.replaceChild(c, b.firstChild); b.classList.toggle("on", k === S.slot); }); }
+  var dt = el("div"); dt.style.marginTop = "14px"; card.appendChild(dt);
   var sm = el("div"); sm.style.cssText = "font-weight:700;padding:2px 0"; dt.appendChild(sm);
   function sumTxt(){ sm.textContent = "✏️ " + L("Zeichen ", "Caractère ") + (S.slot + 1) + L(" bearbeiten", " – modifier"); }
-  var eb = el("div", "lrow"); eb.style.cssText = "align-items:flex-start;gap:14px;margin-top:6px"; dt.appendChild(eb);
-  var ed = el("canvas"); ed.width = 5 * 44; ed.height = 8 * 44; ed.style.cssText = "width:110px;flex:0 0 110px;display:block;border-radius:8px;touch-action:pan-y;cursor:pointer";
-  var side = el("div"); side.style.cssText = "display:flex;flex-direction:column;gap:8px;flex:1;min-width:200px"; eb.appendChild(ed); eb.appendChild(side);
+  var eb = el("div", "lrow"); eb.style.cssText = "align-items:flex-start;gap:14px;margin-top:6px;flex-wrap:nowrap"; dt.appendChild(eb);
+  var ed = el("canvas"); ed.width = 5 * 88; ed.height = 8 * 88; ed.style.cssText = "width:130px;flex:0 0 130px;display:block;border-radius:8px;touch-action:pan-y;cursor:pointer";
+  var side = el("div"); side.style.cssText = "display:flex;flex-direction:column;gap:8px;flex:1;min-width:0"; eb.appendChild(ed); eb.appendChild(side);
+  var cl = el("button", "lbtn", L("Dieses Zeichen leeren", "Vider ce caractère")); cl.onclick = function(){ pushUndo(); S.cc[S.slot] = [0, 0, 0, 0, 0, 0, 0, 0]; drawEd(); drawThumbs(); upd(); };
+  side.appendChild(cl);
   var okEd = guard(ed, side, null);
-  function drawEd(){ sumTxt(); var c = ed.getContext("2d"), green = S.look === "green"; c.fillStyle = green ? "#aac43a" : "#1f4fd1"; c.fillRect(0, 0, ed.width, ed.height); for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { c.fillStyle = (S.cc[S.slot][y] >> (4 - x)) & 1 ? (green ? "#16210a" : "#f2f8ff") : (green ? "rgba(70,95,10,.25)" : "rgba(0,20,110,.4)"); c.fillRect(x * 44 + 2, y * 44 + 2, 40, 40); } }
+  function drawEd(){ sumTxt(); var c = ed.getContext("2d"), Lc = LCOL(S.look), n = 88, g = 6; c.fillStyle = Lc.bg; c.fillRect(0, 0, ed.width, ed.height); for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { c.fillStyle = (S.cc[S.slot][y] >> (4 - x)) & 1 ? Lc.on : Lc.off; c.fillRect(x * n, y * n, n - g, n - g); } }
   var paintTo = null;
   function edXY(e){ var r = ed.getBoundingClientRect(); return [Math.floor((e.clientX - r.left) / r.width * 5), Math.floor((e.clientY - r.top) / r.height * 8)]; }
   press(ed, {
@@ -890,13 +893,14 @@ function viewLCD(area, d, S, upd){
     move: function(e){ if (paintTo === null) return; var q = edXY(e), x = q[0], y = q[1]; if (x < 0 || x > 4 || y < 0 || y > 7) return; var bit = 1 << (4 - x); if (paintTo) S.cc[S.slot][y] |= bit; else S.cc[S.slot][y] &= ~bit; drawEd(); drawThumbs(); upd(true); },
     end: function(){ paintTo = null; }
   });
-  var cl = el("button", "lbtn", L("Dieses Zeichen leeren", "Vider ce caractère")); cl.onclick = function(){ pushUndo(); S.cc[S.slot] = [0, 0, 0, 0, 0, 0, 0, 0]; drawEd(); drawThumbs(); upd(); };
-  side.appendChild(cl);
-  side.appendChild(el("div", "lmut", L("Vorlagen – Tipp lädt sie in dieses Zeichen:", "Modèles – touche pour charger dans ce caractère :")));
-  var tp = el("div", "lrow"); tp.style.gap = "5px"; side.appendChild(tp);
-  ICONS.forEach(function(ic, i){ var b = el("button", "lbtn"); b.style.cssText = "padding:4px;min-height:0;line-height:0"; b.title = iconName(i); var c = icThumb(ic[2], 4, "#f2f8ff", "#1f4fd1"); c.style.borderRadius = "3px"; b.appendChild(c); b.onclick = function(){ pushUndo(); S.cc[S.slot] = ic[2].slice(); drawEd(); drawThumbs(); upd(); }; tp.appendChild(b); });
-  drawEd(); drawThumbs();
-  return { paint: function(){ paintLCD(cv, d, S); drawThumbs(); } };
+  var h3 = el("div", "", L("Vorlagen – Tipp lädt sie in das gewählte Zeichen", "Modèles – touche pour charger dans le caractère choisi")); h3.style.cssText = "font-weight:700;margin:16px 0 8px"; card.appendChild(h3);
+  var tp = el("div"); tp.style.cssText = "display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:8px"; card.appendChild(tp);
+  var tplLook = null;
+  function drawTpl(){ if (tplLook === S.look) return; tplLook = S.look; var Lc = LCOL(S.look); tp.innerHTML = "";
+    ICONS.forEach(function(ic, i){ var b = el("button", "lbtn"); b.style.cssText = "padding:6px 0;min-height:0;line-height:0;display:flex;justify-content:center"; b.title = iconName(i); var c = icThumb(ic[2], 5, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "4px"; b.appendChild(c); b.onclick = function(){ pushUndo(); S.cc[S.slot] = ic[2].slice(); drawEd(); drawThumbs(); upd(); }; tp.appendChild(b); }); }
+  if (!S.active) S.ccView = JSON.parse(JSON.stringify(S.cc));
+  drawEd(); drawThumbs(); drawTpl();
+  return { paint: function(){ paintLCD(cv, d, S); drawEd(); drawThumbs(); drawTpl(); } };
 }
 
 /* ----- Pixel-Displays (schwarz-weiß + Farbe) ----- */
