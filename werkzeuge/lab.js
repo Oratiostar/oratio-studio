@@ -892,8 +892,8 @@ function viewLCD(area, d, S, upd){
   card.appendChild(el("p", "lmut", L("Ohne markierte Stelle im Display ändern diese Felder nur die 8 Zeichen-Plätze. Tippst du ins Display (gelber Rahmen), wirken Tipps und Zeichnen direkt auf die markierte Stelle. Tippe in die Leere, um das Display wieder abzuschalten.", "Sans cellule marquée, ces champs ne modifient que les 8 emplacements. Si tu touches l’écran (cadre jaune), tout agit directement sur la cellule marquée. Touche dans le vide pour désactiver l’écran.")));
   var ins = el("div", "lrow"); ins.style.gap = "6px"; card.appendChild(ins);
   var thumbs = [];
-  for (var k = 0; k < 8; k++) (function(k){ var b = el("button", "lbtn"); b.style.cssText = "padding:5px;min-height:0;display:flex;flex-direction:column;align-items:center;gap:1px"; b.onclick = function(){ S.slot = k; if (S.active) put(k); else { drawEd(); drawThumbs(); } }; b.appendChild(el("span")); b.appendChild(el("span", "lmut", "" + (k + 1))); ins.appendChild(b); thumbs.push(b); })(k);
-  function drawThumbs(){ var Lc = LCOL(S.look); thumbs.forEach(function(b, k){ var c = icThumb(S.cc[k], 4, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "3px"; b.replaceChild(c, b.firstChild); b.classList.toggle("on", !S.active && k === S.slot); }); }
+  for (var k = 0; k < 8; k++) (function(k){ var b = el("button", "lbtn"); b.style.cssText = "padding:5px;min-height:0;display:flex;flex-direction:column;align-items:center;gap:1px"; b.onclick = function(){ S.slot = k; S.pick = { t: "slot", i: k }; if (S.active) put(k); else { drawEd(); drawThumbs(); } }; b.appendChild(el("span")); b.appendChild(el("span", "lmut", "" + (k + 1))); ins.appendChild(b); thumbs.push(b); })(k);
+  function drawThumbs(){ var Lc = LCOL(S.look); thumbs.forEach(function(b, k){ var c = icThumb(S.cc[k], 4, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "3px"; b.replaceChild(c, b.firstChild); b.classList.toggle("on", !!S.pick ? (S.pick.t === "slot" && S.pick.i === k) : k === S.slot); }); if (typeof tp !== "undefined") Array.prototype.forEach.call(tp.children, function(b, i){ b.classList.toggle("on", !!S.pick && S.pick.t === "tpl" && S.pick.i === i); }); }
   function curCell(){ return S.cells[S.sel.r][S.sel.c]; }
   function edRows(){ if (S.active) { var c = curCell(); return c && typeof c === "object" ? c.g : (c && c !== " " ? glyphRows(c) : [0, 0, 0, 0, 0, 0, 0, 0]); } return S.cc[S.slot]; }
   function edSet(rows){ if (S.active) { S.cells[S.sel.r][S.sel.c] = { s: -1, g: rows.slice() }; syncLines(S, d); } else S.cc[S.slot] = rows.slice(); }
@@ -919,11 +919,14 @@ function viewLCD(area, d, S, upd){
   var tp = el("div"); tp.style.cssText = "display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:8px"; card.appendChild(tp);
   var tplLook = null;
   function drawTpl(){ if (tplLook === S.look) return; tplLook = S.look; var Lc = LCOL(S.look); tp.innerHTML = "";
-    ICONS.forEach(function(ic, i){ var b = el("button", "lbtn"); b.style.cssText = "padding:6px 0;min-height:0;line-height:0;display:flex;justify-content:center"; b.title = iconName(i); var c = icThumb(ic[2], 5, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "4px"; b.appendChild(c); b.onclick = function(){ pushUndo(); edSet(ic[2]); drawEd(); drawThumbs(); upd(); }; tp.appendChild(b); }); }
+    ICONS.forEach(function(ic, i){ var b = el("button", "lbtn"); b.style.cssText = "padding:6px 0;min-height:0;line-height:0;display:flex;justify-content:center"; b.title = iconName(i); var c = icThumb(ic[2], 5, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "4px"; b.appendChild(c); b.onclick = function(){ pushUndo(); S.pick = { t: "tpl", i: i }; edSet(ic[2]); drawEd(); drawThumbs(); upd(); }; tp.appendChild(b); }); drawThumbs(); }
   drawEd(); drawThumbs(); drawTpl();
-  var outside = function(e){ if (!S.active) return; var t = e.target; if (!t || !t.closest || cv.contains(t) || t.closest("button,input,select,textarea,label,canvas,summary,a")) return; S.active = false; hid.blur(); upd(); };
-  document.addEventListener("pointerdown", outside, true);
-  return { paint: function(){ paintLCD(cv, d, S); drawEd(); drawThumbs(); drawTpl(); }, stop: function(){ document.removeEventListener("pointerdown", outside, true); } };
+  var o0 = null;
+  var outDown = function(e){ var t = e.target; o0 = (S.active && t && t.closest && !cv.contains(t) && !t.closest("button,input,select,textarea,label,canvas,summary,a")) ? { x: e.clientX, y: e.clientY, t: Date.now() } : null; };
+  var outUp = function(e){ if (!o0 || !S.active) { o0 = null; return; } var m = Math.abs(e.clientX - o0.x) + Math.abs(e.clientY - o0.y), dt2 = Date.now() - o0.t; o0 = null; if (m < 10 && dt2 < 600) { S.active = false; hid.blur(); upd(); } };
+  var outCancel = function(){ o0 = null; };
+  document.addEventListener("pointerdown", outDown, true); document.addEventListener("pointerup", outUp, true); document.addEventListener("pointercancel", outCancel, true);
+  return { paint: function(){ paintLCD(cv, d, S); drawEd(); drawThumbs(); drawTpl(); }, stop: function(){ document.removeEventListener("pointerdown", outDown, true); document.removeEventListener("pointerup", outUp, true); document.removeEventListener("pointercancel", outCancel, true); } };
 }
 
 /* ----- Pixel-Displays (schwarz-weiß + Farbe) ----- */
