@@ -516,10 +516,11 @@ MODS.matrix = { show: function(b){
   function put(x, y){ if (x < 0 || y < 0 || x >= MW || y >= MH) return; MX.px[y * MW + x] = MX.tool === "erase" ? "#000000" : MX.col; }
   function line(a, c){ var n = Math.max(Math.abs(c[0] - a[0]), Math.abs(c[1] - a[1]), 1); for (var i = 0; i <= n; i++) put(Math.round(a[0] + (c[0] - a[0]) * i / n), Math.round(a[1] + (c[1] - a[1]) * i / n)); }
   function flood(x, y){ var t = MX.px[y * MW + x], n = MX.col; if (t === n) return; var q = [[x, y]]; while (q.length) { var p = q.pop(); if (p[0] < 0 || p[1] < 0 || p[0] >= MW || p[1] >= MH || MX.px[p[1] * MW + p[0]] !== t) continue; MX.px[p[1] * MW + p[0]] = n; q.push([p[0] + 1, p[1]], [p[0] - 1, p[1]], [p[0], p[1] + 1], [p[0], p[1] - 1]); } }
-  cv.addEventListener("pointerdown", function(e){ if (!okEvt(e)) return; cv.setPointerCapture(e.pointerId); var c = cell(e); if (MX.tool === "fill") { if (c[0] >= 0 && c[0] < MW && c[1] >= 0 && c[1] < MH) flood(c[0], c[1]); } else { MX.draw = true; last = c; put(c[0], c[1]); } paint(); code(); });
-  cv.addEventListener("pointermove", function(e){ if (!MX.draw) return; var c = cell(e); line(last, c); last = c; paint(); });
-  var end = function(){ if (MX.draw) { MX.draw = false; st("matrix", MX.px); code(); } else st("matrix", MX.px); };
-  cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end);
+  press(cv, {
+    start: function(e){ var c = cell(e); if (MX.tool === "fill") { if (c[0] >= 0 && c[0] < MW && c[1] >= 0 && c[1] < MH) flood(c[0], c[1]); } else { MX.draw = true; last = c; put(c[0], c[1]); } paint(); code(); },
+    move: function(e){ if (!MX.draw) return; var c = cell(e); line(last, c); last = c; paint(); },
+    end: function(){ if (MX.draw) { MX.draw = false; st("matrix", MX.px); code(); } else st("matrix", MX.px); }
+  });
   var r = el("div", "lrow"); r.style.margin = "12px 0";
   function btn(t, fn, c){ var x = el("button", "lbtn " + (c || ""), t); x.onclick = fn; r.appendChild(x); }
   btn(L("Leeren", "Effacer"), function(){ MX.px.fill("#000000"); paint(); code(); st("matrix", MX.px); }, "bad");
@@ -805,11 +806,24 @@ function packMono(B, lsb){ var bw = Math.ceil(B.w / 8), out = []; for (var y = 0
 function inp(css){ var i = el("input"); i.style.cssText = "padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--input);color:var(--fg);" + (css || ""); return i; }
 
 /* Scroll-Schalter: auf dem Handy wird erst nach Tipp auf „Zeichnen“ gemalt, sonst scrollt die Seite */
-function guard(cv, host, onChange){
-  var row = el("div", "lrow"); row.style.margin = "8px 0"; var b = el("button", "lbtn"), hint = el("span", "lmut"); row.appendChild(b); row.appendChild(hint); host.appendChild(row); row.hidden = !(window.matchMedia && matchMedia("(pointer:coarse)").matches);
-  function apply(){ var on = touchMode(); b.textContent = on ? "✏️ " + L("Zeichnen AN – Finger malt", "Dessin ACTIF – le doigt dessine") : "👆 " + L("Scrollen – Finger scrollt", "Défilement – le doigt fait défiler"); b.classList.toggle("pri", on); cv.style.touchAction = on ? "none" : "pan-y"; cv.style.outline = on ? "3px solid var(--lacc2)" : "none"; hint.textContent = on ? L("Zum Scrollen der Seite hier tippen.", "Touche ici pour faire défiler la page.") : L("Tippe hier, um zu zeichnen oder Objekte zu bewegen.", "Touche ici pour dessiner ou déplacer des objets."); if (onChange) onChange(on); }
-  b.onclick = function(){ DD.draw = !touchMode(); apply(); };
-  apply(); return function(e){ return e.pointerType !== "touch" || touchMode(); };
+function guard(cv, host){
+  if (window.matchMedia && matchMedia("(pointer:coarse)").matches) host.appendChild(el("p", "lmut", "☝️ " + L("Wischen = Seite scrollen. Zum Zeichnen: Finger kurz festhalten (es vibriert, Rahmen leuchtet), dann ziehen. Kurzer Tipp = einzelner Punkt.", "Glisser = faire défiler. Pour dessiner : garde le doigt appuyé un instant (vibration, cadre allumé), puis glisse. Appui court = un point.")));
+  return function(){ return true; };
+}
+function press(cv, h){
+  var s = null;
+  cv.style.touchAction = "pan-y"; cv.style.webkitTouchCallout = "none"; cv.style.webkitUserSelect = "none"; cv.style.userSelect = "none";
+  function clear(){ if (s && s.timer) clearTimeout(s.timer); cv.style.outline = "none"; s = null; }
+  cv.addEventListener("touchmove", function(e){ if (s && s.armed && e.cancelable) e.preventDefault(); }, { passive: false });
+  cv.addEventListener("contextmenu", function(e){ if (s) e.preventDefault(); });
+  cv.addEventListener("pointerdown", function(e){
+    if (e.pointerType === "mouse") { s = { armed: true, mouse: true }; try { cv.setPointerCapture(e.pointerId); } catch (x) {} h.start(e); return; }
+    clear(); var me = s = { x: e.clientX, y: e.clientY, t: Date.now(), armed: false, last: e };
+    me.timer = setTimeout(function(){ if (s !== me) return; me.armed = true; try { navigator.vibrate && navigator.vibrate(18); } catch (x) {} cv.style.outline = "3px solid #12c2e9"; h.start(me.last); }, 280);
+  });
+  cv.addEventListener("pointermove", function(e){ if (!s) return; if (s.armed) { h.move(e); return; } s.last = e; if (Math.abs(e.clientX - s.x) + Math.abs(e.clientY - s.y) > 8) clear(); });
+  cv.addEventListener("pointerup", function(e){ if (!s) return; var a = s; clear(); if (a.armed) h.end(e); else { h.start(e); h.end(e); } });
+  cv.addEventListener("pointercancel", function(e){ if (!s) return; var a = s; clear(); if (a.armed) h.end(e); });
 }
 
 /* ----- Zeichen-LCD ----- */
@@ -861,23 +875,26 @@ function viewLCD(area, d, S, upd){
   var thumbs = [];
   for (var k = 0; k < 8; k++) (function(k){ var b = el("button", "lbtn"); b.style.cssText = "padding:5px;min-height:0;display:flex;flex-direction:column;align-items:center;gap:1px"; b.onclick = function(){ S.slot = k; put(k); drawEd(); drawThumbs(); }; b.appendChild(el("span")); b.appendChild(el("span", "lmut", "" + (k + 1))); ins.appendChild(b); thumbs.push(b); })(k);
   function drawThumbs(){ var green = S.look === "green"; thumbs.forEach(function(b, k){ var c = icThumb(S.cc[k], 4, green ? "#16210a" : "#f2f8ff", green ? "#aac43a" : "#1f4fd1"); c.style.borderRadius = "3px"; b.replaceChild(c, b.firstChild); b.classList.toggle("on", k === S.slot); }); }
-  var dt = document.createElement("details"); dt.style.marginTop = "10px"; card.appendChild(dt);
-  var sm = document.createElement("summary"); sm.style.cssText = "cursor:pointer;font-weight:700;padding:6px 0"; dt.appendChild(sm);
+  var dt = el("div"); dt.style.marginTop = "12px"; card.appendChild(dt);
+  var sm = el("div"); sm.style.cssText = "font-weight:700;padding:2px 0"; dt.appendChild(sm);
   function sumTxt(){ sm.textContent = "✏️ " + L("Zeichen ", "Caractère ") + (S.slot + 1) + L(" bearbeiten", " – modifier"); }
   var eb = el("div", "lrow"); eb.style.cssText = "align-items:flex-start;gap:14px;margin-top:6px"; dt.appendChild(eb);
   var ed = el("canvas"); ed.width = 5 * 44; ed.height = 8 * 44; ed.style.cssText = "width:110px;flex:0 0 110px;display:block;border-radius:8px;touch-action:pan-y;cursor:pointer";
-  var side = el("div"); side.style.cssText = "display:flex;flex-direction:column;gap:8px;flex:1;min-width:150px"; eb.appendChild(ed); eb.appendChild(side);
+  var side = el("div"); side.style.cssText = "display:flex;flex-direction:column;gap:8px;flex:1;min-width:200px"; eb.appendChild(ed); eb.appendChild(side);
   var okEd = guard(ed, side, null);
   function drawEd(){ sumTxt(); var c = ed.getContext("2d"), green = S.look === "green"; c.fillStyle = green ? "#aac43a" : "#1f4fd1"; c.fillRect(0, 0, ed.width, ed.height); for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { c.fillStyle = (S.cc[S.slot][y] >> (4 - x)) & 1 ? (green ? "#16210a" : "#f2f8ff") : (green ? "rgba(70,95,10,.25)" : "rgba(0,20,110,.4)"); c.fillRect(x * 44 + 2, y * 44 + 2, 40, 40); } }
   var paintTo = null;
-  ed.onpointerdown = function(e){ if (!okEd(e)) return; var r = ed.getBoundingClientRect(), x = Math.floor((e.clientX - r.left) / r.width * 5), y = Math.floor((e.clientY - r.top) / r.height * 8); if (x < 0 || x > 4 || y < 0 || y > 7) return; pushUndo(); var cur = (S.cc[S.slot][y] >> (4 - x)) & 1; paintTo = cur ? 0 : 1; S.cc[S.slot][y] ^= 1 << (4 - x); if (e.pointerType === "mouse") ed.setPointerCapture(e.pointerId); else paintTo = null; drawEd(); drawThumbs(); upd(); };
-  ed.onpointermove = function(e){ if (paintTo === null || e.pointerType !== "mouse") return; var r = ed.getBoundingClientRect(), x = Math.floor((e.clientX - r.left) / r.width * 5), y = Math.floor((e.clientY - r.top) / r.height * 8); if (x < 0 || x > 4 || y < 0 || y > 7) return; var bit = 1 << (4 - x); if (paintTo) S.cc[S.slot][y] |= bit; else S.cc[S.slot][y] &= ~bit; drawEd(); drawThumbs(); upd(true); };
-  ed.onpointerup = ed.onpointercancel = function(){ paintTo = null; };
-  var sel = document.createElement("select"); sel.style.cssText = "padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--input);color:var(--fg);font:inherit"; var o0 = document.createElement("option"); o0.value = ""; o0.textContent = L("Vorlage laden …", "Charger un modèle …"); sel.appendChild(o0);
-  ICONS.forEach(function(ic, i){ var o = document.createElement("option"); o.value = i; o.textContent = iconName(i); sel.appendChild(o); });
-  sel.onchange = function(){ if (sel.value === "") return; pushUndo(); S.cc[S.slot] = ICONS[+sel.value][2].slice(); sel.value = ""; drawEd(); drawThumbs(); upd(); };
+  function edXY(e){ var r = ed.getBoundingClientRect(); return [Math.floor((e.clientX - r.left) / r.width * 5), Math.floor((e.clientY - r.top) / r.height * 8)]; }
+  press(ed, {
+    start: function(e){ var q = edXY(e), x = q[0], y = q[1]; if (x < 0 || x > 4 || y < 0 || y > 7) return; pushUndo(); var cur = (S.cc[S.slot][y] >> (4 - x)) & 1; paintTo = cur ? 0 : 1; S.cc[S.slot][y] ^= 1 << (4 - x); drawEd(); drawThumbs(); upd(); },
+    move: function(e){ if (paintTo === null) return; var q = edXY(e), x = q[0], y = q[1]; if (x < 0 || x > 4 || y < 0 || y > 7) return; var bit = 1 << (4 - x); if (paintTo) S.cc[S.slot][y] |= bit; else S.cc[S.slot][y] &= ~bit; drawEd(); drawThumbs(); upd(true); },
+    end: function(){ paintTo = null; }
+  });
   var cl = el("button", "lbtn", L("Dieses Zeichen leeren", "Vider ce caractère")); cl.onclick = function(){ pushUndo(); S.cc[S.slot] = [0, 0, 0, 0, 0, 0, 0, 0]; drawEd(); drawThumbs(); upd(); };
-  side.appendChild(sel); side.appendChild(cl);
+  side.appendChild(cl);
+  side.appendChild(el("div", "lmut", L("Vorlagen – Tipp lädt sie in dieses Zeichen:", "Modèles – touche pour charger dans ce caractère :")));
+  var tp = el("div", "lrow"); tp.style.gap = "5px"; side.appendChild(tp);
+  ICONS.forEach(function(ic, i){ var b = el("button", "lbtn"); b.style.cssText = "padding:4px;min-height:0;line-height:0"; b.title = iconName(i); var c = icThumb(ic[2], 4, "#f2f8ff", "#1f4fd1"); c.style.borderRadius = "3px"; b.appendChild(c); b.onclick = function(){ pushUndo(); S.cc[S.slot] = ic[2].slice(); drawEd(); drawThumbs(); upd(); }; tp.appendChild(b); });
   drawEd(); drawThumbs();
   return { paint: function(){ paintLCD(cv, d, S); drawThumbs(); } };
 }
@@ -950,27 +967,22 @@ function viewGfx(area, d, S, upd){
   function pxAt(e){ var r = cv.getBoundingClientRect(); return [Math.floor((e.clientX - r.left) / r.width * d.w), Math.floor((e.clientY - r.top) / r.height * d.h)]; }
   function hit(p){ for (var i = S.objs.length - 1; i >= 0; i--) { var b = oBox(S.objs[i]), m = S.objs[i].k === "line" ? 2 : 0; if (p[0] >= b[0] - m && p[0] <= b[2] + m && p[1] >= b[1] - m && p[1] <= b[3] + m) return i; } return -1; }
   var drag = null;
-  cv.onpointerdown = function(e){
-    var p = pxAt(e), touchScroll = !okEvt(e);
-    if (touchScroll) { drag = { tap: true, p0: [e.clientX, e.clientY] }; return; }
-    cv.setPointerCapture(e.pointerId);
-    if (S.tool !== "select") pushUndo();
-    if (S.tool === "select") { var i = hit(p); S.sel = i; if (i >= 0) { pushUndo(); drag = { obj: S.objs[i], last: p }; } props(); upd(); return; }
-    var val = S.tool === "erase" ? 0 : (color ? hexc(S.col) : 1);
-    if (S.tool === "fill") { bflood(S.B, p[0], p[1], val || (color ? hexc(S.col) : 1)); upd(); return; }
-    drag = { pen: true, last: p, val: val }; bset(S.B, p[0], p[1], val); upd();
-  };
-  cv.onpointermove = function(e){
-    if (!drag || drag.tap) return; var p = pxAt(e);
-    if (drag.obj) { var dx = p[0] - drag.last[0], dy = p[1] - drag.last[1]; if (dx || dy) { oMove(drag.obj, dx, dy); drag.last = p; props(true); upd(true); } }
-    else if (drag.pen) { bline(S.B, drag.last[0], drag.last[1], p[0], p[1], drag.val); drag.last = p; upd(true); }
-  };
-  var end = function(e){
-    if (drag && drag.tap && Math.abs(e.clientX - drag.p0[0]) + Math.abs(e.clientY - drag.p0[1]) < 8 && e.type === "pointerup") { var i = hit(pxAt(e)); S.sel = i; props(); upd(); }
-    else if (drag) upd();
-    drag = null;
-  };
-  cv.onpointerup = end; cv.onpointercancel = function(){ drag = null; };
+  press(cv, {
+    start: function(e){
+      var p = pxAt(e);
+      if (S.tool === "select") { var i = hit(p); S.sel = i; if (i >= 0) { pushUndo(); drag = { obj: S.objs[i], last: p }; } props(); upd(); return; }
+      pushUndo();
+      var val = S.tool === "erase" ? 0 : (color ? hexc(S.col) : 1);
+      if (S.tool === "fill") { bflood(S.B, p[0], p[1], val || (color ? hexc(S.col) : 1)); upd(); return; }
+      drag = { pen: true, last: p, val: val }; bset(S.B, p[0], p[1], val); upd();
+    },
+    move: function(e){
+      if (!drag) return; var p = pxAt(e);
+      if (drag.obj) { var dx = p[0] - drag.last[0], dy = p[1] - drag.last[1]; if (dx || dy) { oMove(drag.obj, dx, dy); drag.last = p; props(true); upd(true); } }
+      else if (drag.pen) { bline(S.B, drag.last[0], drag.last[1], p[0], p[1], drag.val); drag.last = p; upd(true); }
+    },
+    end: function(){ if (drag) upd(); drag = null; }
+  });
   // Eigenschaften + Ebenen
   card.appendChild(propEl);
   function field(lbl, o, key, min, max){ var w = el("label", "lmut", lbl + " "), n = inp("width:68px"); n.type = "number"; n.inputMode = "numeric"; n.value = o[key]; n.oninput = function(){ var v = parseInt(n.value, 10); if (isNaN(v)) return; o[key] = Math.max(min, Math.min(max, v)); upd(true); }; n.dataset.k = key; w.appendChild(n); return w; }
