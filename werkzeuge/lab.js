@@ -526,15 +526,25 @@ MODS.matrix = { show: function(b){
   fi.onchange = function(){ var fl = fi.files && fi.files[0]; if (!fl) return; var im = new Image(); im.onload = function(){ var o = document.createElement("canvas"); o.width = MW; o.height = MH; var x2 = o.getContext("2d"); x2.fillStyle = "#000"; x2.fillRect(0, 0, MW, MH); var sc = Math.min(MW / im.width, MH / im.height), w = im.width * sc, h = im.height * sc; x2.imageSmoothingQuality = "high"; x2.drawImage(im, (MW - w) / 2, (MH - h) / 2, w, h); var d2 = x2.getImageData(0, 0, MW, MH).data; for (var q = 0; q < MW * MH; q++) MX.px[q] = "#" + [0, 1, 2].map(function(k){ return ("0" + d2[q * 4 + k].toString(16)).slice(-2); }).join(""); paint(); code(); st("matrix", MX.px); URL.revokeObjectURL(im.src); }; im.src = URL.createObjectURL(fl); fi.value = ""; };
   r3.appendChild(ti); r3.appendChild(document.createTextNode("x")); r3.appendChild(tx); r3.appendChild(document.createTextNode("y")); r3.appendChild(ty); r3.appendChild(tb2); r3.appendChild(ib); r3.appendChild(fi);
   card.appendChild(r3);
-  var h2 = el("h2", "", L("ESP32-Code", "Code ESP32")); h2.style.marginTop = "6px"; card.appendChild(h2);
-  card.appendChild(el("p", "lmut", L("Für ein 64×32-HUB75-Panel mit der Bibliothek „ESP32-HUB75-MatrixPanel-DMA“. Die Pixel liegen als RGB565-Tabelle im Flash.", "Pour un panneau HUB75 64×32 avec la bibliothèque « ESP32-HUB75-MatrixPanel-DMA ». Les pixels sont une table RGB565 en flash.")));
+  var h2 = el("h2", "", L("Code exportieren", "Exporter le code")); h2.style.marginTop = "6px"; card.appendChild(h2);
+  card.appendChild(el("p", "lmut", L("Für ein 64×32-HUB75-Panel. ESP32: Bibliothek „ESP32-HUB75-MatrixPanel-DMA“, Pixel als RGB565-Tabelle im Flash. Raspberry Pi: Python mit der Bibliothek „rpi-rgb-led-matrix“.", "Pour un panneau HUB75 64×32. ESP32 : bibliothèque « ESP32-HUB75-MatrixPanel-DMA », pixels en table RGB565. Raspberry Pi : Python avec la bibliothèque « rpi-rgb-led-matrix ».")));
+  var lr = el("div", "lrow"); lr.style.marginBottom = "10px";
+  var cl = sv("mxlang") || "cpp";
+  [["cpp", "ESP32 · C++"], ["py", "Raspberry Pi · Python"]].forEach(function(o){ var x = el("button", "lbtn" + (cl === o[0] ? " on" : ""), o[1]); x.onclick = function(){ cl = o[0]; st("mxlang", cl); lr.querySelectorAll("button").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); db.textContent = cl === "py" ? L(".py speichern", "Enregistrer .py") : L(".ino speichern", "Enregistrer .ino"); code(); }; lr.appendChild(x); });
+  card.appendChild(lr);
   var ta = el("textarea", "code"); ta.readOnly = true; card.appendChild(ta);
   var r2 = el("div", "lrow"); r2.style.marginTop = "10px";
   var cb = el("button", "lbtn pri", L("Code kopieren", "Copier le code")); cb.onclick = function(){ copy(ta.value, ta, function(){ cb.textContent = L("Kopiert ✓", "Copié ✓"); setTimeout(function(){ cb.textContent = L("Code kopieren", "Copier le code"); }, 1600); }); }; r2.appendChild(cb);
-  var db = el("button", "lbtn", L(".ino speichern", "Enregistrer .ino")); db.onclick = function(){ save("oratio_matrix.ino", new Blob([ta.value], { type: "text/plain" })); }; r2.appendChild(db);
+  var db = el("button", "lbtn", cl === "py" ? L(".py speichern", "Enregistrer .py") : L(".ino speichern", "Enregistrer .ino")); db.onclick = function(){ save(cl === "py" ? "oratio_matrix.py" : "oratio_matrix.ino", new Blob([ta.value], { type: "text/plain" })); }; r2.appendChild(db);
   var pb = el("button", "lbtn", L("Bild als PNG", "Image en PNG")); pb.onclick = function(){ cv.toBlob(function(bl){ if (bl) save("oratio-matrix.png", bl); }); }; r2.appendChild(pb);
   card.appendChild(r2);
+  function codePy(){
+    var rows = [], y, x;
+    for (y = 0; y < MH; y++) { var row = []; for (x = 0; x < MW; x++) row.push(MX.px[y * MW + x].slice(1)); rows.push('    "' + row.join(" ") + '"'); }
+    return "#!/usr/bin/env python3\n# Oratio Lab – LED-Matrix 64x32 für Raspberry Pi (Bibliothek rpi-rgb-led-matrix von hzeller)\n# Start:  sudo python3 oratio_matrix.py\nimport time\nfrom rgbmatrix import RGBMatrix, RGBMatrixOptions\n\n# Ein Pixel = RRGGBB (Hex), eine Zeile = 64 Pixel, 32 Zeilen\nBILD = [\n" + rows.join(",\n") + "\n]\n\nopt = RGBMatrixOptions()\nopt.rows = 32\nopt.cols = 64\nopt.chain_length = 1\nopt.hardware_mapping = \"regular\"   # mit Adafruit-HAT: \"adafruit-hat\"\nopt.brightness = 60\nmatrix = RGBMatrix(options=opt)\ncanvas = matrix.CreateFrameCanvas()\n\nfor y, zeile in enumerate(BILD):\n    for x, farbe in enumerate(zeile.split()):\n        r, g, b = int(farbe[0:2], 16), int(farbe[2:4], 16), int(farbe[4:6], 16)\n        canvas.SetPixel(x, y, r, g, b)\ncanvas = matrix.SwapOnVSync(canvas)\n\ntry:\n    while True:\n        time.sleep(1)\nexcept KeyboardInterrupt:\n    matrix.Clear()\n";
+  }
   function code(){
+    if (cl === "py") { ta.value = codePy(); return; }
     var rows = [], y, x;
     for (y = 0; y < MH; y++) { var row = []; for (x = 0; x < MW; x++) { var n = hexN(MX.px[y * MW + x]), r5 = (n >> 19) & 31, g6 = (n >> 10) & 63, b5 = (n >> 3) & 31, v = (r5 << 11) | (g6 << 5) | b5; row.push("0x" + ("0000" + v.toString(16)).slice(-4)); } rows.push("  " + row.join(",")); }
     ta.value = "// Oratio Lab – LED-Matrix 64x32 (RGB565)\n#include <ESP32-HUB75-MatrixPanel-I2S-DMA.h>\n\nMatrixPanel_I2S_DMA *dma_display = nullptr;\n\nconst uint16_t bild[32 * 64] PROGMEM = {\n" + rows.join(",\n") + "\n};\n\nvoid setup() {\n  HUB75_I2S_CFG cfg(64, 32, 1);\n  dma_display = new MatrixPanel_I2S_DMA(cfg);\n  dma_display->begin();\n  dma_display->setBrightness8(90);\n  for (int y = 0; y < 32; y++)\n    for (int x = 0; x < 64; x++)\n      dma_display->drawPixel(x, y, pgm_read_word(&bild[y * 64 + x]));\n}\n\nvoid loop() {}\n";
