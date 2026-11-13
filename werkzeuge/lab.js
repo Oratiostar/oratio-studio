@@ -713,6 +713,18 @@ function oBox(o){
   if (o.k === "line") return [Math.min(o.x, o.x2), Math.min(o.y, o.y2), Math.max(o.x, o.x2), Math.max(o.y, o.y2)];
   return [o.x, o.y, o.x + o.w - 1, o.y + o.h - 1];
 }
+function handlesOf(o){ var b = oBox(o); if (o.k === "line") return [{ id: "p1", x: o.x, y: o.y }, { id: "p2", x: o.x2, y: o.y2 }]; if (o.k === "text" || o.k === "icon") return [{ id: "br", x: b[2] + 1, y: b[3] + 1 }]; return [{ id: "tl", x: b[0], y: b[1] }, { id: "tr", x: b[2] + 1, y: b[1] }, { id: "bl", x: b[0], y: b[3] + 1 }, { id: "br", x: b[2] + 1, y: b[3] + 1 }]; }
+function oResize(o, id, p){
+  var b = oBox(o), x0 = b[0], y0 = b[1], x1 = b[2], y1 = b[3];
+  if (o.k === "line") { if (id === "p1") { o.x = p[0]; o.y = p[1]; } else { o.x2 = p[0]; o.y2 = p[1]; } return; }
+  if (o.k === "text") { o.s = Math.max(1, Math.min(8, Math.round((p[0] - o.x + 1) / (6 * Math.max(1, o.t.length))))); return; }
+  if (o.k === "icon") { o.s = Math.max(1, Math.min(8, Math.round((p[0] - o.x + 1) / 5))); return; }
+  var L1 = id.charAt(1) === "l", T1 = id.charAt(0) === "t";
+  if (o.k === "circle") { var fx = L1 ? x1 : x0, fy = T1 ? y1 : y0, dd = Math.max(3, Math.max(Math.abs(p[0] - fx), Math.abs(p[1] - fy)) + 1); o.d = dd; o.x = L1 ? fx - dd + 1 : fx; o.y = T1 ? fy - dd + 1 : fy; return; }
+  if (L1) x0 = Math.min(p[0], x1 - 1); else x1 = Math.max(p[0] - 1, x0 + 1);
+  if (T1) y0 = Math.min(p[1], y1 - 1); else y1 = Math.max(p[1] - 1, y0 + 1);
+  o.x = x0; o.y = y0; o.w = x1 - x0 + 1; o.h = y1 - y0 + 1;
+}
 function oMove(o, dx, dy){ o.x += dx; o.y += dy; if (o.k === "line") { o.x2 += dx; o.y2 += dy; } }
 function oRaster(B, o, v){
   if (o.k === "text") btext(B, o.x, o.y, o.t, o.s, v);
@@ -815,8 +827,8 @@ function guard(cv, host){
 }
 var ARMED = [];
 document.addEventListener("pointerdown", function(e){ if (e.pointerType === "mouse") return; var t = e.target; ARMED.slice().forEach(function(a){ if (a.cv.contains(t)) return; if (t.closest && t.closest("button,input,select,textarea,label,summary")) return; a.disarm(); }); }, true);
-function press(cv, h){
-  var s = null, armed = false;
+function press(cv, h, opt){
+  var s = null, armed = false; opt = opt || {};
   cv.style.touchAction = "pan-y"; cv.style.webkitTouchCallout = "none"; cv.style.webkitUserSelect = "none"; cv.style.userSelect = "none";
   var reg = { cv: cv, disarm: function(){ armed = false; cv.style.touchAction = "pan-y"; cv.style.outline = "none"; var i = ARMED.indexOf(reg); if (i >= 0) ARMED.splice(i, 1); } };
   function arm(){ if (armed) return; armed = true; cv.style.touchAction = "none"; cv.style.outline = "3px solid #12c2e9"; try { navigator.vibrate && navigator.vibrate(15); } catch (x) {} if (ARMED.indexOf(reg) < 0) ARMED.push(reg); }
@@ -828,7 +840,7 @@ function press(cv, h){
     s = { go: false, x: e.clientX, y: e.clientY, t: Date.now() };
   });
   cv.addEventListener("pointermove", function(e){ if (!s) return; if (s.go) { h.move(e); return; } if (Math.abs(e.clientX - s.x) + Math.abs(e.clientY - s.y) > 10) s = null; });
-  cv.addEventListener("pointerup", function(e){ if (!s) return; var a = s; s = null; if (a.go) { h.end(e); return; } if (Date.now() - a.t < 500) { arm(); if (h.armTap) h.armTap(e); } });
+  cv.addEventListener("pointerup", function(e){ if (!s) return; var a = s; s = null; if (a.go) { h.end(e); return; } if (Date.now() - a.t < 500) { if (opt.direct) { h.start(e); h.end(e); return; } arm(); if (h.armTap) h.armTap(e); } });
   cv.addEventListener("pointercancel", function(e){ if (!s) return; var a = s; s = null; if (a.go) h.end(e); });
 }
 function lcdCells(d, S){
@@ -860,6 +872,7 @@ function viewLCD(area, d, S, upd){
   cv.onpointercancel = function(){ tap0 = null; };
   cv.onpointerup = function(e){ if (!tap0) return; var m = Math.abs(e.clientX - tap0.x) + Math.abs(e.clientY - tap0.y), dt = Date.now() - tap0.t; tap0 = null; if (m > 10 || dt > 600) return;
     var r = cv.getBoundingClientRect(), sc = cv.width / r.width, x = ((e.clientX - r.left) * sc - LPAD) / LCW, y = ((e.clientY - r.top) * sc - LPAD) / LCH; var cc = Math.max(0, Math.min(d.cols - 1, Math.floor(x))), rr = Math.max(0, Math.min(d.rows - 1, Math.floor(y))); S.sel = { r: rr, c: cc }; S.active = true; hid.focus(); upd(); };
+  cv.onclick = function(){ if (S.active) hid.focus(); };
   hid.oninput = function(){ var v = hid.value; hid.value = ""; for (var i = 0; i < v.length; i++) { var ch = v.charAt(i), code = ch.charCodeAt(0); put(code < 32 || code > 126 ? "?" : ch); } };
   hid.onkeydown = function(e){ var s = S.sel, k = e.key;
     if (k === "Backspace") { if (S.cells[s.r][s.c] === " " || S.cells[s.r][s.c] === undefined) { if (s.c > 0) s.c--; else if (s.r > 0) { s.r--; s.c = d.cols - 1; } } S.cells[s.r][s.c] = " "; syncLines(S, d); upd(); e.preventDefault(); }
@@ -871,6 +884,7 @@ function viewLCD(area, d, S, upd){
     else if (k === "Enter") { s.c = 0; s.r = Math.min(d.rows - 1, s.r + 1); upd(); e.preventDefault(); } };
   var look = el("div", "lrow"); look.style.margin = "10px 0";
   [["blue", L("Blau / weiß", "Bleu / blanc")], ["green", L("Grün / schwarz", "Vert / noir")]].forEach(function(o){ var x = el("button", "lbtn" + (S.look === o[0] ? " on" : ""), o[1]); x.onclick = function(){ S.look = o[0]; look.querySelectorAll("button").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); upd(); }; look.appendChild(x); });
+  var kb = el("button", "lbtn pri", "⌨ " + L("Text tippen", "Écrire du texte")); kb.onclick = function(){ S.active = true; upd(); hid.focus(); }; look.insertBefore(kb, look.firstChild);
   var clr = el("button", "lbtn", "⌫ " + L("Zelle leeren", "Vider la cellule")); clr.onclick = function(){ pushUndo(); S.cells[S.sel.r][S.sel.c] = " "; syncLines(S, d); upd(); }; look.appendChild(clr);
   var cla = el("button", "lbtn bad", L("Alles leeren", "Tout effacer")); cla.onclick = function(){ pushUndo(); S.cells = cellsFromLines([], d); syncLines(S, d); S.sel = { r: 0, c: 0 }; upd(); }; look.appendChild(cla);
   card.appendChild(look);
@@ -888,7 +902,7 @@ function viewLCD(area, d, S, upd){
   var side = el("div"); side.style.cssText = "display:flex;flex-direction:column;gap:8px;flex:1;min-width:0"; eb.appendChild(ed); eb.appendChild(side);
   var cl = el("button", "lbtn", L("Dieses Zeichen leeren", "Vider ce caractère")); cl.onclick = function(){ pushUndo(); S.cc[S.slot] = [0, 0, 0, 0, 0, 0, 0, 0]; syncMark(); drawEd(); drawThumbs(); upd(); };
   side.appendChild(cl);
-  var okEd = guard(ed, side, null);
+  side.appendChild(el("p", "lmut", L("Tippe auf einen Punkt = an/aus. Wischen scrollt die Seite.", "Touche un point = on/off. Glisser fait défiler.")));
   function drawEd(){ sumTxt(); var c = ed.getContext("2d"), Lc = LCOL(S.look), n = 88, g = 6; c.fillStyle = Lc.bg; c.fillRect(0, 0, ed.width, ed.height); for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { c.fillStyle = (S.cc[S.slot][y] >> (4 - x)) & 1 ? Lc.on : Lc.off; c.fillRect(x * n, y * n, n - g, n - g); } }
   var paintTo = null;
   function edXY(e){ var r = ed.getBoundingClientRect(); return [Math.floor((e.clientX - r.left) / r.width * 5), Math.floor((e.clientY - r.top) / r.height * 8)]; }
@@ -896,15 +910,15 @@ function viewLCD(area, d, S, upd){
     start: function(e){ var q = edXY(e), x = q[0], y = q[1]; if (x < 0 || x > 4 || y < 0 || y > 7) return; pushUndo(); var cur = (S.cc[S.slot][y] >> (4 - x)) & 1; paintTo = cur ? 0 : 1; S.cc[S.slot][y] ^= 1 << (4 - x); syncMark(); drawEd(); drawThumbs(); upd(); },
     move: function(e){ if (paintTo === null) return; var q = edXY(e), x = q[0], y = q[1]; if (x < 0 || x > 4 || y < 0 || y > 7) return; var bit = 1 << (4 - x); if (paintTo) S.cc[S.slot][y] |= bit; else S.cc[S.slot][y] &= ~bit; syncMark(); drawEd(); drawThumbs(); upd(true); },
     end: function(){ paintTo = null; }
-  });
+  }, { direct: true });
   var h3 = el("div", "", L("Vorlagen – Tipp lädt sie in das gewählte Zeichen", "Modèles – touche pour charger dans le caractère choisi")); h3.style.cssText = "font-weight:700;margin:16px 0 8px"; card.appendChild(h3);
   var tp = el("div"); tp.style.cssText = "display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:8px"; card.appendChild(tp);
   var tplLook = null;
   function drawTpl(){ if (tplLook === S.look) return; tplLook = S.look; var Lc = LCOL(S.look); tp.innerHTML = "";
     ICONS.forEach(function(ic, i){ var b = el("button", "lbtn"); b.style.cssText = "padding:6px 0;min-height:0;line-height:0;display:flex;justify-content:center"; b.title = iconName(i); var c = icThumb(ic[2], 5, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "4px"; b.appendChild(c); b.onclick = function(){ pushUndo(); S.cc[S.slot] = ic[2].slice(); syncMark(); drawEd(); drawThumbs(); upd(); }; tp.appendChild(b); }); }
   drawEd(); drawThumbs(); drawTpl();
-  var bt = setInterval(function(){ if (!S.active) return; S.blink = !(S.blink !== false); paintLCD(cv, d, S); }, 450);
-  return { paint: function(){ S.blink = true; paintLCD(cv, d, S); drawEd(); drawThumbs(); drawTpl(); }, stop: function(){ clearInterval(bt); } };
+  var bt = null;
+  return { paint: function(){ S.blink = true; paintLCD(cv, d, S); drawEd(); drawThumbs(); drawTpl(); }, stop: function(){} };
 }
 
 /* ----- Pixel-Displays (schwarz-weiß + Farbe) ----- */
@@ -926,6 +940,7 @@ function paintGfx(cv, d, S, B){
       else if (lit) { c.fillStyle = on; c.fillRect(x * s, y * s, s, s); } }
   }
   var o = S.objs[S.sel];
+  if (o) { var hs = Math.max(8, 16 * cv.width / Math.max(1, cv.clientWidth || cv.width)); handlesOf(o).forEach(function(h){ c.fillStyle = "#12c2e9"; c.strokeStyle = "#fff"; c.lineWidth = 2; c.fillRect(h.x * s - hs / 2, h.y * s - hs / 2, hs, hs); c.strokeRect(h.x * s - hs / 2, h.y * s - hs / 2, hs, hs); }); }
   if (o) { var bx = oBox(o); c.strokeStyle = "#12c2e9"; c.lineWidth = 2; c.setLineDash([6, 4]); c.strokeRect(bx[0] * s - 2, bx[1] * s - 2, (bx[2] - bx[0] + 1) * s + 4, (bx[3] - bx[1] + 1) * s + 4); c.setLineDash([]); }
 }
 function importImg(d, S){
@@ -978,6 +993,7 @@ function viewGfx(area, d, S, upd){
   press(cv, {
     start: function(e){
       var p = pxAt(e);
+      if (S.tool === "select" && S.objs[S.sel]) { var so = S.objs[S.sel], tol = Math.max(1, Math.ceil(18 / (cv.getBoundingClientRect().width / d.w))), hh = handlesOf(so).filter(function(h){ return Math.abs(p[0] - h.x) <= tol && Math.abs(p[1] - h.y) <= tol; })[0]; if (hh) { pushUndo(); drag = { obj: so, handle: hh.id }; return; } }
       if (S.tool === "select") { var i = hit(p); S.sel = i; if (i >= 0) { pushUndo(); drag = { obj: S.objs[i], last: p }; } props(); upd(); return; }
       pushUndo();
       var val = S.tool === "erase" ? 0 : (color ? hexc(S.col) : 1);
@@ -986,6 +1002,7 @@ function viewGfx(area, d, S, upd){
     },
     move: function(e){
       if (!drag) return; var p = pxAt(e);
+      if (drag.handle) { oResize(drag.obj, drag.handle, p); props(true); upd(true); return; }
       if (drag.obj) { var dx = p[0] - drag.last[0], dy = p[1] - drag.last[1]; if (dx || dy) { oMove(drag.obj, dx, dy); drag.last = p; props(true); upd(true); } }
       else if (drag.pen) { bline(S.B, drag.last[0], drag.last[1], p[0], p[1], drag.val); drag.last = p; upd(true); }
     },
