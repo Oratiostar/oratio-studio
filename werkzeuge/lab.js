@@ -746,9 +746,14 @@ var DISPS = [
   { id: "oled32", grp: "mono", n: "OLED 0,91″ 128×32", w: 128, h: 32, ctrl: "SSD1306", look: "oled" },
   { id: "sh1106", grp: "mono", n: "OLED 1,3″ 128×64", w: 128, h: 64, ctrl: "SH1106", look: "oled" },
   { id: "nokia", grp: "mono", n: "Nokia 5110 84×48", w: 84, h: 48, ctrl: "PCD8544", look: "nokia" },
+  { id: "oled48", grp: "mono", n: "OLED 0,66″ 64×48 (D1-mini-Shield)", w: 64, h: 48, ctrl: "SSD1306", look: "oled" },
   { id: "st7735", grp: "color", n: "TFT 1,8″ 128×160", w: 128, h: 160, ctrl: "ST7735" },
   { id: "st7789", grp: "color", n: "TFT 1,3″ 240×240", w: 240, h: 240, ctrl: "ST7789" },
   { id: "ili9341", grp: "color", n: "TFT 2,8″ 240×320", w: 240, h: 320, ctrl: "ILI9341" },
+  { id: "st7789b", grp: "color", n: "TFT 1,14″ 135×240 (T-Display)", w: 135, h: 240, ctrl: "ST7789" },
+  { id: "ssd1351", grp: "color", n: "OLED-Farbe 1,5″ 128×128", w: 128, h: 128, ctrl: "SSD1351" },
+  { id: "gc9a01", grp: "color", n: "Rund-TFT 1,28″ 240×240", w: 240, h: 240, ctrl: "GC9A01", round: true },
+  { id: "amoled466", grp: "color", n: "Rund-AMOLED 1,75″ 466×466", w: 466, h: 466, ctrl: "CO5300", round: true },
   { id: "max8", grp: "mono", n: "LED-Matrix 8×8", w: 8, h: 8, ctrl: "MAX7219", look: "led", mods: 1 },
   { id: "max32", grp: "mono", n: "LED-Matrix 32×8 (4 Module)", w: 32, h: 8, ctrl: "MAX7219", look: "led", mods: 4 },
   { id: "tm1637", grp: "seg", n: "7-Segment 4-stellig", ctrl: "TM1637" }
@@ -891,9 +896,9 @@ function viewLCD(area, d, S, upd){
   card.appendChild(look);
   var h1 = el("h2", "", L("Eigene Zeichen", "Mes caractères")); h1.style.fontSize = "17px"; card.appendChild(h1);
   card.appendChild(el("p", "lmut", L("Tipp auf Zeichen 1–10 oder eine Vorlage lädt sie ins große Feld – deine gespeicherten Zeichen bleiben unverändert. Gespeichert wird nur, wenn du unten bei „Speichern in“ eine Nummer wählst. Ist ein Display-Feld markiert (gelb), landet alles dort.", "Un appui sur 1–10 ou un modèle le charge dans la grande zone – tes caractères enregistrés ne changent pas. Seul « Enregistrer dans » les modifie. Si une cellule est marquée (jaune), tout y arrive.")));
-  var ins = el("div", "lrow"); ins.style.gap = "6px"; card.appendChild(ins);
+  var ins = el("div"); ins.style.cssText = "display:grid;grid-template-columns:repeat(10,1fr);gap:4px"; card.appendChild(ins);
   var thumbs = [];
-  for (var k = 0; k < 10; k++) (function(k){ var b = el("button", "lbtn"); b.style.cssText = "padding:5px;min-height:0;display:flex;flex-direction:column;align-items:center;gap:1px"; b.onclick = function(){ S.slot = k; S.pick = { t: "slot", i: k }; if (S.active) put(k); else { S.work = S.cc[k].slice(); drawEd(); drawThumbs(); } }; b.appendChild(el("span")); b.appendChild(el("span", "lmut", "" + (k + 1))); ins.appendChild(b); thumbs.push(b); })(k);
+  for (var k = 0; k < 10; k++) (function(k){ var b = el("button", "lbtn"); b.style.cssText = "padding:5px 0;min-height:0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:1px"; b.onclick = function(){ S.slot = k; S.pick = { t: "slot", i: k }; if (S.active) put(k); else { S.work = S.cc[k].slice(); drawEd(); drawThumbs(); } }; b.appendChild(el("span")); b.appendChild(el("span", "lmut", "" + (k + 1))); ins.appendChild(b); thumbs.push(b); })(k);
   function drawThumbs(){ var Lc = LCOL(S.look); thumbs.forEach(function(b, k){ var c = icThumb(S.cc[k], 4, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "3px"; b.replaceChild(c, b.firstChild); b.classList.toggle("on", !!S.pick && S.pick.t === "slot" && S.pick.i === k); }); if (typeof tp !== "undefined") Array.prototype.forEach.call(tp.children, function(b, i){ b.classList.toggle("on", !!S.pick && S.pick.t === "tpl" && S.pick.i === i); }); }
   function curCell(){ return S.cells[S.sel.r][S.sel.c]; }
   function edRows(){ if (S.active) { var c = curCell(); return c && typeof c === "object" ? c.g : (c && c !== " " ? glyphRows(c) : [0, 0, 0, 0, 0, 0, 0, 0]); } return S.work; }
@@ -939,6 +944,7 @@ var OLEDC = { white: "#eaf2ff", blue: "#7cc8ff", yellow: "#ffd23a" };
 function paintGfx(cv, d, S, B){
   var s = gfxScale(d), c = cv.getContext("2d"); cv.width = d.w * s; cv.height = d.h * s;
   var look = d.look, x, y, v;
+  if (d.round) { c.save(); c.beginPath(); c.arc(cv.width / 2, cv.height / 2, cv.width / 2, 0, 7); c.clip(); }
   if (d.grp === "color") {
     var oc = document.createElement("canvas"); oc.width = d.w; oc.height = d.h; var ox = oc.getContext("2d"), im = ox.createImageData(d.w, d.h);
     for (var i = 0; i < B.d.length; i++) { v = B.d[i]; im.data[i * 4] = (v >> 16) & 255; im.data[i * 4 + 1] = (v >> 8) & 255; im.data[i * 4 + 2] = v & 255; im.data[i * 4 + 3] = 255; }
@@ -951,6 +957,7 @@ function paintGfx(cv, d, S, B){
       else if (s >= 4) { c.fillStyle = lit ? on : off; c.fillRect(x * s, y * s, s - 1, s - 1); }
       else if (lit) { c.fillStyle = on; c.fillRect(x * s, y * s, s, s); } }
   }
+  if (d.round) c.restore();
   var o = S.objs[S.sel];
   if (o) { var hs = Math.max(8, 16 * cv.width / Math.max(1, cv.clientWidth || cv.width)); handlesOf(o).forEach(function(h){ c.fillStyle = "#12c2e9"; c.strokeStyle = "#fff"; c.lineWidth = 2; c.fillRect(h.x * s - hs / 2, h.y * s - hs / 2, hs, hs); c.strokeRect(h.x * s - hs / 2, h.y * s - hs / 2, hs, hs); }); }
   if (o) { var bx = oBox(o); c.strokeStyle = "#12c2e9"; c.lineWidth = 2; c.setLineDash([6, 4]); c.strokeRect(bx[0] * s - 2, bx[1] * s - 2, (bx[2] - bx[0] + 1) * s + 4, (bx[3] - bx[1] + 1) * s + 4); c.setLineDash([]); }
@@ -999,7 +1006,7 @@ function viewGfx(area, d, S, upd){
   // Fläche
   var ch = el("h2", "", L("Display", "Écran")); ch.style.cssText = "font-size:17px;margin:14px 0 4px"; card.appendChild(ch);
   var host = el("div"); card.appendChild(host);
-  cv = el("canvas", "mcv"); cv.style.maxWidth = (d.w * gfxScale(d)) + "px"; cv.style.imageRendering = "pixelated"; host.appendChild(cv); ref.cv = cv;
+  cv = el("canvas", "mcv"); cv.style.maxWidth = (d.w * gfxScale(d)) + "px"; cv.style.imageRendering = "pixelated"; if (d.round) { cv.style.background = "none"; cv.style.border = "0"; } host.appendChild(cv); ref.cv = cv;
   var okEvt = guard(cv, host, null);
   host.insertBefore(host.lastChild, cv);
   function pxAt(e){ var r = cv.getBoundingClientRect(); return [Math.floor((e.clientX - r.left) / r.width * d.w), Math.floor((e.clientY - r.top) / r.height * d.h)]; }
@@ -1094,20 +1101,24 @@ function segPaths(ox, oy){
 function segHit(dgi){ return { ox: 14 + dgi * 124, oy: 8 }; }
 function paintSeg(cv, S){
   var data = S.man || segData(S.t); cv.width = 520; cv.height = 230; var c = cv.getContext("2d"), col = (SEGC[S.col] || SEGC.red)[0];
-  c.fillStyle = "#0d0f12"; c.fillRect(0, 0, 520, 230);
-  function dot(x, y, on){ c.globalAlpha = on ? 1 : 0.14; c.fillStyle = col; c.beginPath(); c.arc(x, y, 8, 0, 7); c.fill(); c.globalAlpha = 1; }
+  var lcd = S.style === "lcd"; if (lcd) col = "#1b2414";
+  c.fillStyle = lcd ? "#c4d0a8" : "#0d0f12"; c.fillRect(0, 0, 520, 230);
+  var offA = lcd ? 0.09 : 0.14;
+  function dot(x, y, on){ c.globalAlpha = on ? 1 : offA; c.fillStyle = col; c.beginPath(); c.arc(x, y, 8, 0, 7); c.fill(); c.globalAlpha = 1; }
   for (var dg = 0; dg < 4; dg++) { var o = segHit(dg), P = segPaths(o.ox, o.oy);
-    P.forEach(function(p, s){ c.globalAlpha = (data[dg] >> s) & 1 ? 1 : 0.14; c.fillStyle = col; c.fill(p); c.globalAlpha = 1; });
+    P.forEach(function(p, s){ c.globalAlpha = (data[dg] >> s) & 1 ? 1 : offA; c.fillStyle = col; c.fill(p); c.globalAlpha = 1; });
     if (dg === 1) { dot(o.ox + 120, o.oy + 70, data[1] & 0x80); dot(o.ox + 120, o.oy + 150, data[1] & 0x80); }
     else dot(o.ox + 118, o.oy + 194, data[dg] & 0x80); }
 }
 function viewSeg(area, d, S, upd){
   var card = el("div", "lcard"); area.appendChild(card);
   if (!S.col) S.col = "red";
-  var cr = el("div", "lrow"); cr.style.marginBottom = "10px"; card.appendChild(cr);
+  var stw = el("div", "lrow"); stw.style.marginBottom = "8px"; card.appendChild(stw);
+  [["led", L("LED-Anzeige (leuchtet)", "Afficheur LED")], ["lcd", L("Klassisch (LCD, grünlich)", "Classique (LCD verdâtre)")]].forEach(function(o){ var x = el("button", "lbtn st" + ((S.style || "led") === o[0] ? " on" : ""), o[1]); x.onclick = function(){ S.style = o[0]; stw.querySelectorAll(".st").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); cr.style.display = o[0] === "led" ? "" : "none"; upd(); }; stw.appendChild(x); });
+  var cr = el("div", "lrow"); cr.style.marginBottom = "10px"; cr.style.display = S.style === "lcd" ? "none" : ""; card.appendChild(cr);
   Object.keys(SEGC).forEach(function(k){ var x = el("button", "lbtn sc" + (S.col === k ? " on" : ""), SEGC[k][1]); x.style.borderLeft = "10px solid " + SEGC[k][0]; x.onclick = function(){ S.col = k; cr.querySelectorAll(".sc").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); upd(); }; cr.appendChild(x); });
   var cv = el("canvas", "mcv"); cv.style.maxWidth = "520px"; cv.style.touchAction = "pan-y"; cv.style.cursor = "pointer"; card.appendChild(cv);
-  var i = inp("display:block;margin:12px 0;width:200px;font:20px ui-monospace,Menlo,Consolas,monospace"); i.type = "text"; i.value = S.t; i.maxLength = 8; i.oninput = function(){ S.t = i.value; S.man = null; mb.hidden = true; upd(); };
+  var i = inp("display:block;margin:12px 0;width:220px;font:600 22px/1.2 inherit;font-family:inherit;letter-spacing:.12em;text-transform:uppercase"); i.type = "text"; i.value = S.t; i.maxLength = 8; i.oninput = function(){ S.t = i.value; S.man = null; mb.hidden = true; upd(); };
   card.appendChild(i);
   var mb = el("button", "lbtn", "↺ " + L("Zurück zur Texteingabe", "Retour à la saisie")); mb.hidden = !S.man; mb.onclick = function(){ S.man = null; mb.hidden = true; upd(); }; card.appendChild(mb);
   card.appendChild(el("p", "lmut", L("Tippe Zeichen, z. B. 12:34 (der Doppelpunkt schaltet die Mitte ein), -.5 oder HELP – oder tippe direkt auf einzelne Segmente im Bild, um sie an/aus zu schalten. Möglich: Ziffern, - _ und die Buchstaben A B C D E F H L N O P R S T U.", "Tape des caractères, ex. 12:34 (les deux-points allument le milieu), -.5 ou HELP – ou touche directement des segments pour les allumer/éteindre. Possible : chiffres, - _ et les lettres A B C D E F H L N O P R S T U.")));
@@ -1129,13 +1140,15 @@ function pinsFor(d, b){
   if (d.grp === "lcd") { o.t.push("I²C-Backpack (PCF8574): " + P.i2c, "VCC = 5 V, GND = GND, Adresse meist 0x27 (oder 0x3F)"); if (!v5) o.w.push(L("Das LCD braucht 5 V, aber der I²C-Bus von " + BNAME[b] + " ist 3,3 V. Pegelwandler nutzen oder die Pull-ups des Backpacks prüfen, sonst kann der Pin Schaden nehmen.", "Le LCD veut 5 V mais l’I²C de " + BNAME[b] + " est en 3,3 V. Utilise un convertisseur de niveau, sinon risque pour la broche.")); }
   else if (d.ctrl === "SSD1306" || d.ctrl === "SH1106") { o.t.push("I²C: " + P.i2c, "VCC = 3,3 V (oder 5 V je nach Modul), Adresse meist 0x3C"); if (P.fam === "avr" && d.h >= 64) o.w.push(L("128×64 braucht im Uno/Nano 1 KB RAM von nur 2 KB – knapp, aber machbar.", "128×64 utilise 1 Ko des 2 Ko de RAM de l’Uno/Nano – juste, mais possible.")); }
   else if (d.ctrl === "PCD8544") { o.t.push(P.fam === "pi" ? "SPI: " + P.spi + spiPins : "CLK, DIN, DC, CE, RST = " + P.nokia, "VCC = 3,3 V (Display), Hintergrundlicht über 330 Ω"); if (v5) o.w.push(L("Das Nokia-Display verträgt nur 3,3 V an den Datenpins. Am 5-V-Board: Spannungsteiler (z. B. 10 kΩ + 20 kΩ) oder Pegelwandler.", "L’écran Nokia ne supporte que 3,3 V sur les données. Sur une carte 5 V : diviseur de tension ou convertisseur de niveau.")); }
+  else if (d.ctrl === "CO5300") { o.t.push("QSPI: CS = GPIO 12, CLK = GPIO 38, D0–D3 = GPIO 4 / 5 / 6 / 7, RESET = GPIO 39", "I²C (Touch): SDA = GPIO 15, SCL = GPIO 14"); o.w.push(L("Das AMOLED gibt es als fertiges Waveshare-Board (ESP32-S3-Touch-AMOLED-1.75). Pins und Treiber (CO5300) stammen aus der Waveshare-/ESPHome-Doku, ich konnte den Code nicht an echter Hardware testen. Falls das Bild verschoben ist, die vier Offset-Zahlen im Code (6, 0, 0, 0) laut Waveshare-Beispiel anpassen.", "Carte Waveshare ESP32-S3-Touch-AMOLED-1.75. Broches et pilote (CO5300) selon la doc Waveshare/ESPHome ; code non testé sur le matériel. Si l’image est décalée, adapte les 4 offsets (6, 0, 0, 0).")); if (b !== "esp32") o.w.push(L("Dieses Display läuft nur auf dem ESP32-S3 (Waveshare-Board) – wähle oben „ESP32“.", "Cet écran ne fonctionne qu’avec l’ESP32-S3 (carte Waveshare) – choisis « ESP32 ».")); }
   else if (d.grp === "color") { o.t.push("CS = " + P.cs + ", DC = " + P.dc + ", RST = " + P.rst + ", " + P.spi, "VCC = 3,3 V, LED/BL = 3,3 V"); if (v5) o.w.push(L("TFTs sind 3,3-V-Geräte. Am 5-V-Board brauchst du Pegelwandler oder Vorwiderstände an den Datenleitungen.", "Les TFT sont en 3,3 V. Sur une carte 5 V il faut un convertisseur ou des résistances sur les lignes de données.")); }
   else if (d.ctrl === "MAX7219") o.t.push(P.fam === "pi" ? "SPI: " + P.spi : "DIN, CLK, CS = " + P.max, "VCC = 5 V, GND = GND");
   else if (d.ctrl === "TM1637") o.t.push("CLK = " + P.tm[0] + ", DIO = " + P.tm[1], "VCC = 5 V (3,3 V geht oft auch)");
   return o;
 }
-var LIBS = { lcd: "LiquidCrystal_I2C", ssd1306: "Adafruit SSD1306 + Adafruit GFX", sh1106: "U8g2", pcd8544: "Adafruit PCD8544 + Adafruit GFX", st7735: "Adafruit ST7735 + Adafruit GFX", st7789: "Adafruit ST7789 + Adafruit GFX", ili9341: "Adafruit ILI9341 + Adafruit GFX", max7219: "LedControl", tm1637: "TM1637 (avishorp)" };
-var PYLIBS = { lcd: "RPLCD smbus2", ssd1306: "luma.oled", sh1106: "luma.oled", pcd8544: "luma.lcd", st7735: "luma.lcd", st7789: "luma.lcd", ili9341: "luma.lcd", max7219: "luma.led_matrix", tm1637: "raspberrypi-tm1637" };
+var LIBN = { lcd: ["LiquidCrystal I2C (Frank de Brabander)"], ssd1306: ["Adafruit SSD1306", "Adafruit GFX Library"], sh1106: ["U8g2 (olikraus)"], pcd8544: ["Adafruit PCD8544 Nokia 5110 LCD library", "Adafruit GFX Library"], st7735: ["Adafruit ST7735 and ST7789 Library", "Adafruit GFX Library"], st7789: ["Adafruit ST7735 and ST7789 Library", "Adafruit GFX Library"], ili9341: ["Adafruit ILI9341", "Adafruit GFX Library"], ssd1351: ["Adafruit SSD1351 library", "Adafruit GFX Library"], gc9a01: ["Adafruit GC9A01A", "Adafruit GFX Library"], co5300: ["GFX Library for Arduino (moononournation)"], max7219: ["LedControl (Eberhard Fahle)"], tm1637: ["TM1637 (Avishay Orpaz)"] };
+var LIBS = { lcd: "LiquidCrystal_I2C", ssd1306: "Adafruit SSD1306 + Adafruit GFX", sh1106: "U8g2", pcd8544: "Adafruit PCD8544 + Adafruit GFX", st7735: "Adafruit ST7735 + Adafruit GFX", st7789: "Adafruit ST7789 + Adafruit GFX", ili9341: "Adafruit ILI9341 + Adafruit GFX", max7219: "LedControl", tm1637: "TM1637 (avishorp)", ssd1351: "Adafruit SSD1351 + Adafruit GFX", gc9a01: "Adafruit GC9A01A + Adafruit GFX", co5300: "GFX Library for Arduino" };
+var PYLIBS = { lcd: "RPLCD smbus2", ssd1306: "luma.oled", sh1106: "luma.oled", pcd8544: "luma.lcd", st7735: "luma.lcd", st7789: "luma.lcd", ili9341: "luma.lcd", max7219: "luma.led_matrix", tm1637: "raspberrypi-tm1637", ssd1351: "luma.oled", ili9488: "luma.lcd" };
 function libOf(d){ return d.grp === "lcd" ? "lcd" : d.grp === "seg" ? "tm1637" : d.ctrl.toLowerCase(); }
 function sizeBytes(d, S){ if (d.grp === "color") return d.w * d.h * 2; if (d.grp === "mono") return Math.ceil(d.w / 8) * d.h; return 0; }
 function coreNote(b){ return b === "esp32" ? "// Board in der Arduino IDE: ESP32 (Boardverwalter „esp32“ von Espressif)\n" : b === "esp8266" ? "// Board in der Arduino IDE: NodeMCU / LOLIN D1 mini (Boardverwalter „esp8266“)\n" : b === "pico" ? "// Board in der Arduino IDE: Raspberry Pi Pico (Boardverwalter „Raspberry Pi Pico/RP2040“ von Earle Philhower)\n" : b === "mega" ? "// Board in der Arduino IDE: Arduino Mega 2560\n" : b === "nano" ? "// Board in der Arduino IDE: Arduino Nano\n" : ""; }
@@ -1172,7 +1185,8 @@ function genCode(d, S, b){
   var W = d.w, H = d.h, ctrl = d.ctrl, col = d.grp === "color", objs = S.objs, bu = baseUsed(S), comp = composite(d, S);
   function pyc(o){ if (!col) return "\"white\""; var n = hexc(o.c); return "(" + ((n >> 16) & 255) + ", " + ((n >> 8) & 255) + ", " + (n & 255) + ")"; }
   if (py) {
-    var dev = { SSD1306: "from luma.core.interface.serial import i2c\nfrom luma.oled.device import ssd1306\nserial = i2c(port=1, address=0x3C)\ndevice = ssd1306(serial, width=" + W + ", height=" + H + ")", SH1106: "from luma.core.interface.serial import i2c\nfrom luma.oled.device import sh1106\nserial = i2c(port=1, address=0x3C)\ndevice = sh1106(serial)", PCD8544: "from luma.core.interface.serial import spi\nfrom luma.lcd.device import pcd8544\nserial = spi(port=0, device=0, gpio_DC=25, gpio_RST=27)\ndevice = pcd8544(serial)", ST7735: "from luma.core.interface.serial import spi\nfrom luma.lcd.device import st7735\nserial = spi(port=0, device=0, gpio_DC=25, gpio_RST=27)\ndevice = st7735(serial, width=128, height=160)", ST7789: "from luma.core.interface.serial import spi\nfrom luma.lcd.device import st7789\nserial = spi(port=0, device=0, gpio_DC=25, gpio_RST=27)\ndevice = st7789(serial, width=240, height=240)", ILI9341: "from luma.core.interface.serial import spi\nfrom luma.lcd.device import ili9341\nserial = spi(port=0, device=0, gpio_DC=25, gpio_RST=27)\ndevice = ili9341(serial, width=240, height=320)", MAX7219: "from luma.core.interface.serial import spi, noop\nfrom luma.led_matrix.device import max7219\nserial = spi(port=0, device=0, gpio=noop())\ndevice = max7219(serial, cascaded=" + (d.mods || 1) + ", block_orientation=0)   # bei gedrehter Anzeige: 90 / -90" }[ctrl];
+    var dev = { SSD1306: "from luma.core.interface.serial import i2c\nfrom luma.oled.device import ssd1306\nserial = i2c(port=1, address=0x3C)\ndevice = ssd1306(serial, width=" + W + ", height=" + H + ")", SH1106: "from luma.core.interface.serial import i2c\nfrom luma.oled.device import sh1106\nserial = i2c(port=1, address=0x3C)\ndevice = sh1106(serial)", PCD8544: "from luma.core.interface.serial import spi\nfrom luma.lcd.device import pcd8544\nserial = spi(port=0, device=0, gpio_DC=25, gpio_RST=27)\ndevice = pcd8544(serial)", ST7735: "from luma.core.interface.serial import spi\nfrom luma.lcd.device import st7735\nserial = spi(port=0, device=0, gpio_DC=25, gpio_RST=27)\ndevice = st7735(serial, width=128, height=160)", ST7789: "from luma.core.interface.serial import spi\nfrom luma.lcd.device import st7789\nserial = spi(port=0, device=0, gpio_DC=25, gpio_RST=27)\ndevice = st7789(serial, width=" + W + ", height=" + H + (W === 135 ? ", h_offset=52, v_offset=40" : "") + ")   # 135×240: Offsets je nach Modul ändern", SSD1351: "from luma.core.interface.serial import spi\nfrom luma.oled.device import ssd1351\nserial = spi(port=0, device=0, gpio_DC=25, gpio_RST=27)\ndevice = ssd1351(serial)", ILI9341: "from luma.core.interface.serial import spi\nfrom luma.lcd.device import ili9341\nserial = spi(port=0, device=0, gpio_DC=25, gpio_RST=27)\ndevice = ili9341(serial, width=240, height=320)", MAX7219: "from luma.core.interface.serial import spi, noop\nfrom luma.led_matrix.device import max7219\nserial = spi(port=0, device=0, gpio=noop())\ndevice = max7219(serial, cascaded=" + (d.mods || 1) + ", block_orientation=0)   # bei gedrehter Anzeige: 90 / -90" }[ctrl];
+    if (!dev) return { txt: head + "# Für dieses Display gibt es keine passende Python-Bibliothek für den Raspberry Pi.\n# Nimm ein Arduino-Board (z. B. ESP32) – wähle oben ein anderes Board.\n", ext: ext };
     t = head + "# Installieren: pip install " + PYLIBS[libOf(d)] + "\nimport time\nfrom PIL import Image, ImageDraw, ImageFont\n" + dev + "\n\n";
     function rowsOf(B){ var rs = []; for (var y = 0; y < B.h; y++) { var s2 = ""; for (var x = 0; x < B.w; x++) s2 += B.d[y * B.w + x] ? "#" : "."; rs.push('    "' + s2 + '"'); } return rs.join(",\n"); }
     if (ctrl === "MAX7219") {
@@ -1202,9 +1216,10 @@ function genCode(d, S, b){
     return { txt: t, ext: ext };
   }
   var tftpins = "#define TFT_CS  " + P.cs + "\n#define TFT_DC  " + P.dc + "\n#define TFT_RST " + P.rst + "\n";
-  var inc = { SSD1306: "#include <SPI.h>\n#include <Wire.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_SSD1306.h>\n\nAdafruit_SSD1306 display(" + W + ", " + H + ", &Wire, -1);\n", SH1106: "#include <U8g2lib.h>\n\nU8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);\n", PCD8544: "#include <SPI.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_PCD8544.h>\n\n// CLK, DIN, DC, CE, RST\nAdafruit_PCD8544 display = Adafruit_PCD8544(" + P.nokia + ");\n", ST7735: "#include <SPI.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_ST7735.h>\n\n" + tftpins + "Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);\n", ST7789: "#include <SPI.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_ST7789.h>\n\n" + tftpins + "Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);\n", ILI9341: "#include <SPI.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_ILI9341.h>\n\n" + tftpins + "Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);\n" }[ctrl];
-  var libn = { SSD1306: "Adafruit SSD1306 und Adafruit GFX", SH1106: "U8g2", PCD8544: "Adafruit PCD8544 und Adafruit GFX", ST7735: "Adafruit ST7735 und Adafruit GFX", ST7789: "Adafruit ST7789 und Adafruit GFX", ILI9341: "Adafruit ILI9341 und Adafruit GFX" }[ctrl];
-  var u8 = ctrl === "SH1106", g = u8 ? "u8g2" : col ? "tft" : "display", white = ctrl === "PCD8544" ? "BLACK" : "SSD1306_WHITE";
+  var inc = { SSD1351: "#include <SPI.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_SSD1351.h>\n\n" + tftpins + "Adafruit_SSD1351 tft = Adafruit_SSD1351(128, 128, &SPI, TFT_CS, TFT_DC, TFT_RST);\n", GC9A01: "#include <SPI.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_GC9A01A.h>\n\n" + tftpins + "Adafruit_GC9A01A tft(TFT_CS, TFT_DC, TFT_RST);\n", CO5300: "#include <Arduino_GFX_Library.h>\n\n// QSPI-Anschluss laut Waveshare ESP32-S3-Touch-AMOLED-1.75\nArduino_DataBus *bus = new Arduino_ESP32QSPI(12 /* CS */, 38 /* SCK */, 4 /* D0 */, 5 /* D1 */, 6 /* D2 */, 7 /* D3 */);\n// Treiber CO5300, 466 x 466 Pixel; die vier letzten Zahlen sind Bild-Offsets (laut Waveshare-Beispiel)\nArduino_GFX *gfx = new Arduino_CO5300(bus, 39 /* RESET */, 0 /* Drehung */, 466, 466, 6, 0, 0, 0);\n", SSD1306: "#include <SPI.h>\n#include <Wire.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_SSD1306.h>\n\nAdafruit_SSD1306 display(" + W + ", " + H + ", &Wire, -1);\n", SH1106: "#include <U8g2lib.h>\n\nU8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);\n", PCD8544: "#include <SPI.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_PCD8544.h>\n\n// CLK, DIN, DC, CE, RST\nAdafruit_PCD8544 display = Adafruit_PCD8544(" + P.nokia + ");\n", ST7735: "#include <SPI.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_ST7735.h>\n\n" + tftpins + "Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);\n", ST7789: "#include <SPI.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_ST7789.h>\n\n" + tftpins + "Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);\n", ILI9341: "#include <SPI.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_ILI9341.h>\n\n" + tftpins + "Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);\n" }[ctrl];
+  var libn = { SSD1351: "Adafruit SSD1351 library und Adafruit GFX Library", GC9A01: "Adafruit GC9A01A und Adafruit GFX Library", CO5300: "GFX Library for Arduino", SSD1306: "Adafruit SSD1306 und Adafruit GFX", SH1106: "U8g2", PCD8544: "Adafruit PCD8544 und Adafruit GFX", ST7735: "Adafruit ST7735 und Adafruit GFX", ST7789: "Adafruit ST7789 und Adafruit GFX", ILI9341: "Adafruit ILI9341 und Adafruit GFX" }[ctrl];
+  libn = (LIBN[ctrl.toLowerCase()] || []).join(" + ") || libn;
+  var u8 = ctrl === "SH1106", g = u8 ? "u8g2" : ctrl === "CO5300" ? "gfx" : col ? "tft" : "display", dot = ctrl === "CO5300" ? "->" : ".", white = ctrl === "PCD8544" ? "BLACK" : "SSD1306_WHITE";
   function C(o){ return col ? hx(rgb565(hexc(o.c)), 4) : white; }
   t = head + "// Bibliotheken (Bibliotheksverwalter): " + libn + "\n" + inc + "\n";
   // Bitmaps
@@ -1216,25 +1231,127 @@ function genCode(d, S, b){
   else if (u8) init = "  u8g2.begin();\n  u8g2.clearBuffer();\n";
   else if (ctrl === "ST7735") init = "  tft.initR(INITR_BLACKTAB);   // je nach Display: INITR_GREENTAB / INITR_REDTAB\n  tft.fillScreen(" + hx(rgb565(hexc(S.bgc || "#000000")), 4) + ");\n";
   else if (ctrl === "ST7789") init = "  tft.init(" + W + ", " + H + ");\n  tft.fillScreen(" + hx(rgb565(hexc(S.bgc || "#000000")), 4) + ");\n";
+  else if (ctrl === "CO5300") init = "  gfx->begin();\n  gfx->fillScreen(" + hx(rgb565(hexc(S.bgc || "#000000")), 4) + ");\n";
   else init = "  tft.begin();\n  tft.fillScreen(" + hx(rgb565(hexc(S.bgc || "#000000")), 4) + ");\n";
   var body = "";
-  if (bu) body += u8 ? "  u8g2.drawXBM(0, 0, " + W + ", " + H + ", bild);\n" : col ? "  tft.drawRGBBitmap(0, 0, bild, " + W + ", " + H + ");\n" : "  display.drawBitmap(0, 0, bild, " + W + ", " + H + ", " + white + ");\n";
+  if (bu) body += u8 ? "  u8g2.drawXBM(0, 0, " + W + ", " + H + ", bild);\n" : col ? "  " + g + dot + (ctrl === "CO5300" ? "draw16bitRGBBitmap" : "drawRGBBitmap") + "(0, 0, bild, " + W + ", " + H + ");\n" : "  display.drawBitmap(0, 0, bild, " + W + ", " + H + ", " + white + ");\n";
   objs.forEach(function(o, i){
     var cc = C(o);
     if (o.k === "text") {
       if (u8) { var fnt = o.s <= 1 ? "u8g2_font_6x10_tr" : o.s === 2 ? "u8g2_font_10x20_tr" : "u8g2_font_logisoso24_tr", asc = o.s <= 1 ? 8 : o.s === 2 ? 16 : 24; body += "  u8g2.setFont(" + fnt + ");\n  u8g2.drawStr(" + o.x + ", " + (o.y + asc) + ", \"" + cstr(o.t) + "\");\n"; }
-      else body += "  " + g + ".setTextSize(" + o.s + ");\n  " + g + ".setTextColor(" + cc + ");\n  " + g + ".setCursor(" + o.x + ", " + o.y + ");\n  " + g + ".print(\"" + cstr(o.t) + "\");\n";
-    } else if (o.k === "icon") body += u8 ? "  u8g2.drawXBM(" + o.x + ", " + o.y + ", " + (5 * o.s) + ", " + (8 * o.s) + ", symbol" + i + ");   // " + ICONS[o.n][0] + "\n" : "  " + g + ".drawBitmap(" + o.x + ", " + o.y + ", symbol" + i + ", " + (5 * o.s) + ", " + (8 * o.s) + ", " + cc + ");   // " + ICONS[o.n][0] + "\n";
-    else if (o.k === "rect") body += u8 ? "  u8g2." + (o.fill ? "drawBox" : "drawFrame") + "(" + o.x + ", " + o.y + ", " + o.w + ", " + o.h + ");\n" : "  " + g + "." + (o.fill ? "fillRect" : "drawRect") + "(" + o.x + ", " + o.y + ", " + o.w + ", " + o.h + ", " + cc + ");\n";
-    else if (o.k === "circle") { var rr = Math.floor(o.d / 2); body += u8 ? "  u8g2." + (o.fill ? "drawDisc" : "drawCircle") + "(" + (o.x + rr) + ", " + (o.y + rr) + ", " + rr + ");\n" : "  " + g + "." + (o.fill ? "fillCircle" : "drawCircle") + "(" + (o.x + rr) + ", " + (o.y + rr) + ", " + rr + ", " + cc + ");\n"; }
+      else body += "  " + g + dot + "setTextSize(" + o.s + ");\n  " + g + dot + "setTextColor(" + cc + ");\n  " + g + dot + "setCursor(" + o.x + ", " + o.y + ");\n  " + g + dot + "print(\"" + cstr(o.t) + "\");\n";
+    } else if (o.k === "icon") body += u8 ? "  u8g2.drawXBM(" + o.x + ", " + o.y + ", " + (5 * o.s) + ", " + (8 * o.s) + ", symbol" + i + ");   // " + ICONS[o.n][0] + "\n" : "  " + g + dot + "drawBitmap(" + o.x + ", " + o.y + ", symbol" + i + ", " + (5 * o.s) + ", " + (8 * o.s) + ", " + cc + ");   // " + ICONS[o.n][0] + "\n";
+    else if (o.k === "rect") body += u8 ? "  u8g2." + (o.fill ? "drawBox" : "drawFrame") + "(" + o.x + ", " + o.y + ", " + o.w + ", " + o.h + ");\n" : "  " + g + dot + "" + (o.fill ? "fillRect" : "drawRect") + "(" + o.x + ", " + o.y + ", " + o.w + ", " + o.h + ", " + cc + ");\n";
+    else if (o.k === "circle") { var rr = Math.floor(o.d / 2); body += u8 ? "  u8g2." + (o.fill ? "drawDisc" : "drawCircle") + "(" + (o.x + rr) + ", " + (o.y + rr) + ", " + rr + ");\n" : "  " + g + dot + "" + (o.fill ? "fillCircle" : "drawCircle") + "(" + (o.x + rr) + ", " + (o.y + rr) + ", " + rr + ", " + cc + ");\n"; }
     else if (o.k === "tri") { var p = triPts(o), a = p[0][0] + ", " + p[0][1] + ", " + p[1][0] + ", " + p[1][1] + ", " + p[2][0] + ", " + p[2][1];
       if (u8) body += o.fill ? "  u8g2.drawTriangle(" + a + ");\n" : "  u8g2.drawLine(" + p[0][0] + ", " + p[0][1] + ", " + p[1][0] + ", " + p[1][1] + ");\n  u8g2.drawLine(" + p[1][0] + ", " + p[1][1] + ", " + p[2][0] + ", " + p[2][1] + ");\n  u8g2.drawLine(" + p[2][0] + ", " + p[2][1] + ", " + p[0][0] + ", " + p[0][1] + ");\n";
-      else body += "  " + g + "." + (o.fill ? "fillTriangle" : "drawTriangle") + "(" + a + ", " + cc + ");\n"; }
-    else if (o.k === "line") body += u8 ? "  u8g2.drawLine(" + o.x + ", " + o.y + ", " + o.x2 + ", " + o.y2 + ");\n" : "  " + g + ".drawLine(" + o.x + ", " + o.y + ", " + o.x2 + ", " + o.y2 + ", " + cc + ");\n";
+      else body += "  " + g + dot + "" + (o.fill ? "fillTriangle" : "drawTriangle") + "(" + a + ", " + cc + ");\n"; }
+    else if (o.k === "line") body += u8 ? "  u8g2.drawLine(" + o.x + ", " + o.y + ", " + o.x2 + ", " + o.y2 + ");\n" : "  " + g + dot + "drawLine(" + o.x + ", " + o.y + ", " + o.x2 + ", " + o.y2 + ", " + cc + ");\n";
   });
   var send = u8 ? "  u8g2.sendBuffer();\n" : (!col ? "  display.display();\n" : "");
   t += "void setup() {\n" + (ctrl === "SSD1306" ? "  Serial.begin(115200);\n" : "") + (ctrl === "SSD1306" || u8 ? P.begin : "") + init + body + send + "}\n\nvoid loop() {\n}\n";
   return { txt: t, ext: ext };
+}
+
+
+/* ----- Erklärung zum Code (Zeile für Zeile) ----- */
+var XR_CPP = [
+  [/^#include <Wire\.h>/, "Bibliothek für I²C – die Zwei-Draht-Verbindung (SDA/SCL) zum Display.", "Bibliothèque I²C – liaison à deux fils (SDA/SCL) avec l’écran."],
+  [/^#include <SPI\.h>/, "Bibliothek für SPI – die schnelle Verbindung (Takt, Daten, Chip-Select).", "Bibliothèque SPI – liaison rapide (horloge, données, chip-select)."],
+  [/^#include <Adafruit_GFX\.h>/, "Adafruit GFX: die Zeichen-Grundlagen – Linien, Kreise, Text, Bitmaps.", "Adafruit GFX : les bases du dessin – lignes, cercles, texte, bitmaps."],
+  [/^#include </, "Treiber-Bibliothek für dein Display (vorher im Bibliotheksverwalter installieren).", "Bibliothèque pilote de ton écran (à installer avant dans le gestionnaire de bibliothèques)."],
+  [/^#define\s+\w+\s+\d+/, "Pin-Nummer festlegen – hier muss deine Verkabelung stehen.", "Définit un numéro de broche – doit correspondre à ton câblage."],
+  [/^LiquidCrystal_I2C lcd/, "Legt das LCD-Objekt an: I²C-Adresse, Spalten, Zeilen.", "Crée l’objet LCD : adresse I²C, colonnes, lignes."],
+  [/^(Adafruit_\w+ \w+\s*[(=]|U8G2_|LedControl |TM1637Display |Arduino_DataBus|Arduino_GFX \*)/, "Legt das Display-Objekt an (Größe, Pins, Bus) – damit steuerst du es später.", "Crée l’objet écran (taille, broches, bus) – tu le pilotes ensuite avec lui."],
+  [/^byte zeichen\d+/, "Eigenes Zeichen: 8 Zeilen à 5 Punkte, 1 = Punkt an, 0 = aus.", "Caractère perso : 8 lignes de 5 points, 1 = allumé, 0 = éteint."],
+  [/^const\s+(unsigned char|uint16_t|uint8_t|byte)\s+\w+/, "Daten im Programmspeicher: die Zahlen sind Punktmuster oder Farben (Symbole, Bild, Segmente).", "Données en mémoire programme : les nombres sont des motifs de points ou des couleurs."],
+  [/^void setup\(\)/, "setup() läuft genau einmal beim Einschalten.", "setup() s’exécute une seule fois au démarrage."],
+  [/^void loop\(\)/, "loop() läuft danach endlos. Hier leer – das Bild bleibt einfach stehen (statisch). Für Animationen kommt der Code hierhin.", "loop() tourne ensuite sans fin. Vide ici – l’image reste fixe. Pour animer, le code irait ici."],
+  [/Serial\.begin/, "Serielle Schnittstelle für Meldungen am PC.", "Port série pour les messages sur le PC."],
+  [/Serial\.println/, "Meldung im Seriellen Monitor.", "Message dans le moniteur série."],
+  [/Wire\.(begin|setSDA|setSCL)/, "I²C-Pins festlegen und den Bus starten.", "Définit les broches I²C et démarre le bus."],
+  [/lcd\.init\(\)/, "LCD starten.", "Démarre le LCD."],
+  [/lcd\.backlight/, "Hintergrundbeleuchtung einschalten.", "Allume le rétroéclairage."],
+  [/lcd\.createChar/, "Legt das eigene Zeichen im LCD-Speicher ab (Platz 0–7).", "Enregistre le caractère perso dans la mémoire du LCD (emplacement 0–7)."],
+  [/lcd\.setCursor/, "Schreibposition: Spalte, Zeile (0 = erste).", "Position d’écriture : colonne, ligne (0 = première)."],
+  [/lcd\.write\(byte/, "Zeigt das eigene Zeichen mit dieser Nummer an.", "Affiche le caractère perso portant ce numéro."],
+  [/lcd\.print/, "Schreibt den Text ab der Schreibposition.", "Écrit le texte à partir de la position."],
+  [/display\.begin\(SSD1306|display\.begin\(\)|\.initR\(|\.init\(|(tft|gfx)(\.|->)begin\(|u8g2\.begin/, "Display starten – ab hier ist es bereit.", "Démarre l’écran – il est prêt à partir d’ici."],
+  [/setContrast/, "Kontrast einstellen (je nach Modul 40–60 ausprobieren).", "Règle le contraste (essaie 40–60 selon le module)."],
+  [/clearDisplay|clearBuffer|fillScreen/, "Bild löschen bzw. Hintergrund füllen.", "Efface l’image ou remplit le fond."],
+  [/setTextSize/, "Schriftgröße (1 = klein, 2 = doppelt …).", "Taille du texte (1 = petit, 2 = double …)."],
+  [/setTextColor/, "Schriftfarbe.", "Couleur du texte."],
+  [/\.setCursor/, "Position, an der der Text beginnt (x, y in Pixeln).", "Position où le texte commence (x, y en pixels)."],
+  [/\.print\(/, "Schreibt den Text.", "Écrit le texte."],
+  [/setFont/, "Schriftart für den folgenden Text.", "Police pour le texte suivant."],
+  [/drawStr/, "Schreibt Text (y = Grundlinie der Buchstaben).", "Écrit du texte (y = ligne de base)."],
+  [/drawXBM|drawBitmap|drawRGBBitmap|draw16bitRGBBitmap/, "Zeichnet ein Bitmap (Symbol/Bild) aus den Daten oben an diese Position.", "Dessine un bitmap (symbole/image) des données ci-dessus à cette position."],
+  [/drawBox|fillRect|drawFrame|drawRect/, "Rechteck: x, y, Breite, Höhe.", "Rectangle : x, y, largeur, hauteur."],
+  [/drawDisc|fillCircle|drawCircle/, "Kreis: Mittelpunkt x, y und Radius.", "Cercle : centre x, y et rayon."],
+  [/drawTriangle|fillTriangle|drawLine/, "Dreieck bzw. Linie zwischen den angegebenen Punkten.", "Triangle ou ligne entre les points donnés."],
+  [/display\.display\(\)|sendBuffer/, "Schickt das gemalte Bild an den Bildschirm – erst jetzt wird es sichtbar.", "Envoie l’image dessinée à l’écran – elle n’apparaît qu’ici."],
+  [/lc\.shutdown/, "Chip aus dem Schlafmodus holen.", "Sort la puce du mode veille."],
+  [/lc\.setIntensity/, "Helligkeit 0–15.", "Luminosité 0–15."],
+  [/lc\.clearDisplay/, "Modul löschen.", "Efface le module."],
+  [/lc\.setRow/, "Schreibt eine ganze Zeile (ein Byte = 8 Punkte).", "Écrit une ligne entière (un octet = 8 points)."],
+  [/display\.setBrightness/, "Helligkeit 0–7.", "Luminosité 0–7."],
+  [/display\.setSegments/, "Schaltet die vier Ziffern laut Tabelle oben.", "Allume les quatre chiffres selon le tableau ci-dessus."],
+  [/^\s*for \(/, "Schleife: wiederholt den Block für jede Zeile/Modul.", "Boucle : répète le bloc pour chaque ligne/module."]
+];
+var XR_PY = [
+  [/^import time/, "Zeit-Funktionen (für die Warteschleife am Ende).", "Fonctions de temps (pour la boucle d’attente finale)."],
+  [/^from PIL import/, "Pillow: damit malst du das Bild im Speicher.", "Pillow : pour dessiner l’image en mémoire."],
+  [/^from (luma|RPLCD)/, "Treiber-Bibliothek für dein Display (vorher per pip installieren).", "Bibliothèque pilote de ton écran (à installer avant avec pip)."],
+  [/^import tm1637/, "Treiber für die 4-stellige Anzeige.", "Pilote de l’afficheur à 4 chiffres."],
+  [/^serial = /, "Verbindung zum Display (I²C bzw. SPI inkl. Steuer-Pins).", "Liaison avec l’écran (I²C ou SPI avec broches de commande)."],
+  [/^device = /, "Das Display-Objekt – damit sendest du Bilder.", "L’objet écran – tu lui envoies les images."],
+  [/^lcd = CharLCD/, "Legt das LCD an: Chip, I²C-Adresse, Spalten, Zeilen.", "Crée le LCD : puce, adresse I²C, colonnes, lignes."],
+  [/^lcd\.create_char/, "Speichert das eigene Zeichen (Platz 0–7).", "Enregistre le caractère perso (emplacement 0–7)."],
+  [/^lcd\.cursor_pos/, "Schreibposition: (Zeile, Spalte).", "Position d’écriture : (ligne, colonne)."],
+  [/^lcd\.write_string/, "Schreibt den Text; \\x00 … \\x07 sind die eigenen Zeichen.", "Écrit le texte ; \\x00 … \\x07 sont les caractères perso."],
+  [/^tm = tm1637/, "Legt die Anzeige an (CLK- und DIO-Pin).", "Crée l’afficheur (broches CLK et DIO)."],
+  [/^tm\.brightness/, "Helligkeit 0–7.", "Luminosité 0–7."],
+  [/^daten = \[/, "Die vier Ziffern als Segment-Bytes.", "Les quatre chiffres en octets de segments."],
+  [/^tm\.write/, "Schaltet die Segmente.", "Allume les segments."],
+  [/^BILD = \[/, "Das Bild als Textraster: # = Pixel an, . = aus.", "L’image en grille de texte : # = allumé, . = éteint."],
+  [/^for y, zeile/, "Übertrage das Textraster Pixel für Pixel ins Bild.", "Copie la grille de texte pixel par pixel dans l’image."],
+  [/^img = Image\.(new|open)/, "Das Bild, in das gemalt wird.", "L’image dans laquelle on dessine."],
+  [/^draw = ImageDraw/, "Zeichenwerkzeug für dieses Bild.", "Outil de dessin pour cette image."],
+  [/^def symbol/, "Hilfsfunktion: malt ein Symbol aus einem Punktmuster.", "Fonction d’aide : dessine un symbole à partir d’un motif."],
+  [/^symbol\(/, "Malt das Symbol an diese Position (x, y, Muster, Größe, Farbe).", "Dessine le symbole à cette position (x, y, motif, taille, couleur)."],
+  [/^draw\.text/, "Text an Position (x, y).", "Texte à la position (x, y)."],
+  [/^draw\.rectangle/, "Rechteck von links-oben bis rechts-unten.", "Rectangle de haut-gauche à bas-droite."],
+  [/^draw\.ellipse/, "Kreis/Ellipse im angegebenen Rahmen.", "Cercle/ellipse dans le cadre indiqué."],
+  [/^draw\.polygon/, "Dreieck aus drei Eckpunkten.", "Triangle à partir de trois sommets."],
+  [/^draw\.line/, "Linie von Punkt zu Punkt.", "Ligne d’un point à l’autre."],
+  [/^device\.display\(img\)/, "Schickt das fertige Bild auf das Display.", "Envoie l’image terminée à l’écran."],
+  [/^try:/, "Programm läuft, bis du Strg+C drückst (Bild bleibt solange stehen).", "Le programme tourne jusqu’à Ctrl+C (l’image reste affichée)."]
+];
+function addExplain(txt, py){
+  var rules = py ? XR_PY : XR_CPP, cm = py ? "# " : "// ", out = [];
+  txt.split("\n").forEach(function(line){
+    var t = line.trim();
+    if (!t || (!py && t.indexOf("//") === 0) || (py && t.charAt(0) === "#") || /^(0x|\{ 0x|"[.#]+"|\}|\);|\];|\};)/.test(t)) { out.push(line); return; }
+    for (var i = 0; i < rules.length; i++) if (rules[i][0].test(t)) { out.push(line.match(/^\s*/)[0] + cm + "▸ " + L(rules[i][1], rules[i][2])); break; }
+    out.push(line);
+  });
+  return out.join("\n");
+}
+function startSteps(d, b){
+  var fam2 = fam(b), pi = b === "pi", P = pinsFor(d, b), k = libOf(d), st = [];
+  if (!pi) {
+    var board = { uno: ["", ""], nano: ["", ""], mega: ["", ""], esp32: [L("Werkzeuge → Board → Boardverwalter: „esp32“ (Espressif) installieren, dann Board ", "Outils → Type de carte → Gestionnaire : installer « esp32 » (Espressif), puis choisir "), d.ctrl === "CO5300" ? "„ESP32S3 Dev Module“" : "„ESP32 Dev Module“"], esp8266: [L("Boardverwalter: „esp8266“ installieren, dann Board ", "Gestionnaire de cartes : installer « esp8266 », puis choisir "), "„LOLIN(WEMOS) D1 mini“"], pico: [L("Datei → Voreinstellungen → „Zusätzliche Boardverwalter-URLs“: https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json eintragen; dann Boardverwalter: „Raspberry Pi Pico/RP2040“ installieren und Board ", "Fichier → Préférences → « URL de gestionnaire de cartes » : ajouter https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json ; puis installer « Raspberry Pi Pico/RP2040 » et choisir "), "„Raspberry Pi Pico“"] }[b];
+    st.push(L("Arduino IDE öffnen. ", "Ouvre l’IDE Arduino. ") + (board && board[0] ? board[0] + board[1] + L(" wählen.", ".") : L("Das Board „", "La carte « ") + BNAME[b] + L("“ ist schon dabei – unter Werkzeuge → Board auswählen.", " » est déjà incluse – choisis-la dans Outils → Type de carte.")));
+    st.push(L("Bibliotheken: Werkzeuge → Bibliotheken verwalten → suchen und installieren: ", "Bibliothèques : Outils → Gérer les bibliothèques → chercher et installer : ") + "<b>" + (LIBN[k] || []).join("</b>, <b>") + "</b>.");
+  } else {
+    st.push(L("Auf dem Raspberry Pi im Terminal: ", "Sur le Raspberry Pi, dans le terminal : ") + "<code>sudo raspi-config</code> → Interface Options → " + (d.grp === "lcd" || d.ctrl === "SSD1306" || d.ctrl === "SH1106" ? "I2C" : d.ctrl === "TM1637" ? "—" : "SPI") + L(" einschalten, danach neu starten.", " activer, puis redémarrer."));
+    st.push(L("Pakete installieren: ", "Installer les paquets : ") + "<code>pip install " + (PYLIBS[k] || "") + " pillow</code> " + L("(bei der Meldung „externally managed“ zusätzlich <code>--break-system-packages</code> anhängen).", "(en cas de « externally managed », ajouter <code>--break-system-packages</code>)."));
+  }
+  st.push(L("Verkabeln: ", "Câbler : ") + P.t.join(" · "));
+  st.push(pi ? L("Code als Datei speichern (Knopf unten) und starten: <code>python3 oratio_" + d.id + ".py</code>. Strg+C beendet.", "Enregistre le code (bouton en bas) et lance : <code>python3 oratio_" + d.id + ".py</code>. Ctrl+C arrête.") : L("Code kopieren, in eine neue Skizze einfügen, oben Board und Port wählen, dann auf den Pfeil (Hochladen) tippen.", "Copie le code, colle-le dans un nouveau croquis, choisis carte et port, puis clique sur la flèche (Téléverser)."));
+  if (pi && d.grp === "color" && baseUsed(dinit(d))) st.push(L("Für Bild/Freihand: oben „Als PNG speichern (1:1)“, die Datei als bild.png neben das Skript legen.", "Pour image/dessin : « Enregistrer en PNG (1:1) » en haut, place bild.png à côté du script."));
+  if (d.grp === "lcd" || d.ctrl === "SSD1306" || d.ctrl === "SH1106") st.push(L("Bleibt das Display leer? " + (d.grp === "lcd" ? "Kontrast-Poti hinten am Backpack drehen und " : "") + (pi ? "Adresse prüfen: <code>i2cdetect -y 1</code>." : "Adresse mit dem Beispiel „Datei → Beispiele → Wire → i2c_scanner“ prüfen (0x27, 0x3F oder 0x3C)."), "Écran vide ? " + (d.grp === "lcd" ? "Tourne le potentiomètre de contraste et " : "") + (pi ? "vérifie l’adresse : <code>i2cdetect -y 1</code>." : "vérifie l’adresse avec l’exemple « Wire → i2c_scanner » (0x27, 0x3F ou 0x3C).")));
+  return st;
 }
 
 /* ----- Oberfläche ----- */
@@ -1272,6 +1389,8 @@ MODS.disp = { show: function(b){
     else if (sz && d.grp === "color") info.appendChild(el("p", "lmut", "💾 " + L("Nur Formen und Text brauchen fast keinen Speicher. Ein ganzes Bild (Freihand/Upload) würde ", "Formes et texte n’utilisent presque pas de mémoire. Une image complète (main levée/import) utiliserait ") + (sz / 1024).toFixed(1) + " KB."));
     if (d.grp === "lcd" && lcdBank(S).bank.length > 8) info.appendChild(el("p", "swarn", "⚠️ " + L("Du nutzt mehr als 8 verschiedene eigene Zeichen – das LCD kann nur 8 gleichzeitig. Die überzähligen werden im Code durch das 8. ersetzt.", "Plus de 8 caractères différents – le LCD n’en gère que 8. Les surplus sont remplacés par le 8e dans le code.")));
     p.w.forEach(function(w){ info.appendChild(el("p", "swarn", "⚠️ " + w)); });
+    var sh = el("h3", "", "🚀 " + L("So kommst du ans Ziel", "Pour y arriver")); sh.style.cssText = "margin:14px 0 6px;font-size:16px"; info.appendChild(sh);
+    var ol = el("ol"); ol.style.cssText = "margin:0;padding-left:20px;display:grid;gap:6px;font-size:14px"; startSteps(d, DD.board).forEach(function(x){ ol.appendChild(el("li", "", x)); }); info.appendChild(ol);
   }
   function render(){
     if (view && view.stop) view.stop();
@@ -1285,10 +1404,12 @@ MODS.disp = { show: function(b){
   var r2 = el("div", "lrow"); r2.style.marginTop = "10px"; cc.appendChild(r2);
   var cb = el("button", "lbtn pri", L("Code kopieren", "Copier le code")); r2.appendChild(cb);
   var sb = el("button", "lbtn"); r2.appendChild(sb);
+  var xb = el("button", "lbtn", "📖 " + L("Erklärung einblenden", "Afficher l’explication")); r2.appendChild(xb); var xOn = false;
+  xb.onclick = function(){ xOn = !xOn; xb.textContent = xOn ? "📖 " + L("Erklärung ausblenden", "Masquer l’explication") : "📖 " + L("Erklärung einblenden", "Afficher l’explication"); xb.classList.toggle("on", xOn); updCode(); };
   var timer = null, lastExt = "ino";
   function updCode(light){
     var d = dget(DD.sel), S = dinit(d);
-    var run = function(){ var o = genCode(d, S, DD.board); ta.value = o.txt; lastExt = o.ext; sb.textContent = L("Als .", "Enregistrer .") + o.ext + L(" speichern", ""); dsave(); infoPanel(); };
+    var run = function(){ var o = genCode(d, S, DD.board); ta.value = xOn ? addExplain(o.txt, o.ext === "py") : o.txt; lastExt = o.ext; sb.textContent = L("Als .", "Enregistrer .") + o.ext + L(" speichern", ""); dsave(); infoPanel(); };
     if (light) { clearTimeout(timer); timer = setTimeout(run, 250); } else run();
   }
   cb.onclick = function(){ copy(ta.value, ta, function(){ cb.textContent = L("Kopiert ✓", "Copié ✓"); setTimeout(function(){ cb.textContent = L("Code kopieren", "Copier le code"); }, 1500); }); };
