@@ -171,7 +171,7 @@ function ledTool(host){
 /* ====================================================================== 4. Spannungsteiler */
 function teilerTool(host){
   let m = "ua";
-  host.innerHTML = SAFE() + '<div class="tabs t2" id="tTab"></div><div class="cols2"><div id="tIn"></div><div><svg viewBox="0 0 120 190" style="max-width:170px;width:100%;display:block;margin:0 auto" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.4"><path d="M60 8V28"/><rect x="48" y="28" width="24" height="48" rx="3"/><path d="M60 76V112"/><rect x="48" y="112" width="24" height="48" rx="3"/><path d="M60 160V176M44 176h32M50 182h20"/><path d="M60 94H108" stroke-dasharray="4 3"/></g><g fill="currentColor" font-size="12" font-weight="700"><text x="64" y="14">Uin</text><text x="78" y="56">R1</text><text x="78" y="140">R2</text><text x="82" y="88">Uout</text></g></svg><div id="tOut"></div></div></div>';
+  host.innerHTML = SAFE() + '<div class="tabs t2" id="tTab"></div><div class="cols2"><div id="tIn"></div><div><div id="tSvg"></div><div id="tOut"></div></div></div>';
   function maske(){
     $("#tTab", host).innerHTML = [["ua", T("Ausgang berechnen", "Calculer la sortie")], ["rb", T("Widerstände finden", "Trouver les résistances")]].map(t => '<button class="btn' + (t[0] === m ? " on" : "") + '" data-m="' + t[0] + '">' + t[1] + '</button>').join("");
     $$("#tTab button", host).forEach(b => b.onclick = () => { m = b.dataset.m; maske(); });
@@ -180,18 +180,31 @@ function teilerTool(host){
       : eingabe(host, "tU", "Uin (V)", "", "5") + eingabe(host, "tUo", T("Gewünschtes Uout (V)", "Uout souhaitée (V)"), "", "3,3") + eingabe(host, "tR2", T("R2 fest wählen (Ω)", "R2 fixée (Ω)"), "", "10k") + '<label class="l">' + T("Normreihe", "Série normalisée") + '</label>' + serSel("tS", "E24");
     auf(host, ["tU", "tR1", "tR2", "tRL", "tUo", "tS"], rech); rech();
   }
+  function bildT(U, R1, R2, Uo, I, RL){
+    const sc = r => 26 + 52 * Math.min(1, Math.max(0.12, Math.log10(r + 1) / 7)), h1 = sc(R1), h2 = sc(R2), y1 = 40, y2 = y1 + h1 + 36, yE = y2 + h2 + 20;
+    const col = (Math.abs(I) > 0 ? "#ff7a00" : "currentColor");
+    host.querySelector("#tSvg").innerHTML = '<svg viewBox="0 0 300 ' + (yE + 40) + '" style="max-width:300px;width:100%;display:block;margin:0 auto;color:var(--fg,#223)" role="img" aria-label="' + T("Spannungsteiler", "Pont diviseur") + '"><style>.tp{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}.tt{font:700 12px system-ui,sans-serif;fill:currentColor}.tv{font:800 12.5px system-ui,sans-serif}</style>' +
+      '<g class="tp"><path d="M70 14V' + y1 + '"/><rect x="58" y="' + y1 + '" width="24" height="' + h1 + '" rx="3" fill="rgba(46,134,255,.12)"/><path d="M70 ' + (y1 + h1) + 'V' + (y2) + '"/><rect x="58" y="' + y2 + '" width="24" height="' + h2 + '" rx="3" fill="rgba(255,122,0,.14)"/><path d="M70 ' + (y2 + h2) + 'V' + yE + 'M54 ' + yE + 'H86M60 ' + (yE + 6) + 'H80M66 ' + (yE + 12) + 'H74"/><path d="M70 ' + (y1 + h1 + 18) + 'H150" stroke-dasharray="5 4"/><circle cx="154" cy="' + (y1 + h1 + 18) + '" r="3.5"/>' + (isFinite(RL) ? '<path d="M154 ' + (y1 + h1 + 18) + 'H240V' + (y2 + 6) + '"/><rect x="233" y="' + (y2 + 6) + '" width="14" height="26" rx="2"/><path d="M240 ' + (y2 + 32) + 'V' + yE + 'H70"/>' : '') + '</g>' +
+      '<circle cx="70" cy="14" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/><text class="tt" x="82" y="18">Uin</text><text class="tv" x="104" y="18" fill="#2e86ff">' + esc(fmtSI(U, "V")) + '</text>' +
+      '<text class="tt" x="92" y="' + (y1 + h1 / 2 + 4) + '">R1</text><text class="tv" x="116" y="' + (y1 + h1 / 2 + 4) + '" fill="#2e86ff">' + esc(fmtSI(R1, "Ω")) + '</text><text class="tv" x="92" y="' + (y1 + h1 / 2 + 19) + '" fill="#ff7a00">' + esc(fmtSI(U - Uo, "V")) + ' ↓</text>' +
+      '<text class="tt" x="92" y="' + (y2 + h2 / 2 + 4) + '">R2</text><text class="tv" x="116" y="' + (y2 + h2 / 2 + 4) + '" fill="#ff7a00">' + esc(fmtSI(R2, "Ω")) + '</text><text class="tv" x="92" y="' + (y2 + h2 / 2 + 19) + '" fill="#ff7a00">' + esc(fmtSI(Uo, "V")) + ' ↓</text>' +
+      '<text class="tt" x="164" y="' + (y1 + h1 + 14) + '">Uout</text><text class="tv" x="164" y="' + (y1 + h1 + 36) + '" fill="#ff7a00">' + esc(fmtSI(Uo, "V")) + '</text>' + (isFinite(RL) ? '<text class="tt" x="254" y="' + (y2 + 22) + '">RL</text><text class="tv" x="254" y="' + (y2 + 36) + '" fill="#2e86ff">' + esc(fmtSI(RL, "Ω")) + '</text>' : '') +
+      '<text class="tt" x="70" y="' + (yE + 32) + '" text-anchor="middle">I = ' + esc(fmtSI(I, "A")) + '</text></svg>';
+  }
   function rech(){
     const o = $("#tOut", host), U = num($("#tU", host).value), R2 = num($("#tR2", host).value);
     if (m === "ua") {
       const R1 = num($("#tR1", host).value), RLs = $("#tRL", host).value.trim(), RL = RLs ? num(RLs) : Infinity;
       if (![U, R1, R2].every(x => isFinite(x) && x > 0) || (RLs && !(RL > 0))) { o.innerHTML = ""; return; }
       const R2e = isFinite(RL) ? R2 * RL / (R2 + RL) : R2, Uo = U * R2e / (R1 + R2e), Uo0 = U * R2 / (R1 + R2), Q = U / (R1 + R2);
+      bildT(U, R1, R2, Uo, (U - Uo) / R1, RL);
       o.innerHTML = '<div class="stats"><div><b>' + esc(fmtSI(Uo, "V")) + '</b><small>Uout' + (isFinite(RL) ? " " + T("mit Last", "en charge") : "") + '</small></div>' + (isFinite(RL) ? '<div><b>' + esc(fmtSI(Uo0, "V")) + '</b><small>' + T("ohne Last", "à vide") + '</small></div>' : '') + '<div><b>' + esc(fmtSI(Q, "A")) + '</b><small>' + T("Querstrom", "courant de pont") + '</small></div><div><b>' + esc(fmtSI(U * Q, "W")) + '</b><small>' + T("Leistung gesamt", "puissance totale") + '</small></div></div>' + (isFinite(RL) && Uo < Uo0 * 0.95 ? '<p class="warn">' + T("Die Last zieht den Ausgang um mehr als 5 % herunter. R1/R2 kleiner wählen (RL sollte mindestens 10× größer als R2 sein).", "La charge fait chuter la sortie de plus de 5 %. Choisis R1/R2 plus petites (RL devrait valoir au moins 10× R2).") + '</p>' : '');
     } else {
       const Uo = num($("#tUo", host).value), ser = $("#tS", host).value;
       if (![U, Uo, R2].every(x => isFinite(x) && x > 0)) { o.innerHTML = ""; return; }
       if (Uo >= U) { o.innerHTML = '<p class="warn">' + T("Uout muss kleiner als Uin sein.", "Uout doit être inférieure à Uin.") + '</p>'; return; }
       const R1 = R2 * (U - Uo) / Uo, R1n = nearestE(R1, ser, "near"), Ua = U * R2 / (R1n + R2), f = Math.abs(Ua - Uo) / Uo * 100;
+      bildT(U, R1n, R2, Ua, (U - Ua) / R1n, Infinity);
       o.innerHTML = '<div class="stats"><div><b>' + esc(fmtSI(R1, "Ω")) + '</b><small>R1 ' + T("ideal", "idéale") + '</small></div><div><b>' + esc(fmtSI(R1n, "Ω")) + '</b><small>R1 ' + ser + '</small></div><div><b>' + esc(fmtSI(Ua, "V")) + '</b><small>' + T("echtes Uout", "Uout réelle") + '</small></div><div><b>' + f.toLocaleString(loc(), { maximumFractionDigits: 2 }) + ' %</b><small>' + T("Abweichung", "écart") + '</small></div></div><p class="hint">' + T("Tipp: Für Pegelwandler 5 V → 3,3 V passen z. B. R1 = 1 kΩ und R2 = 2 kΩ.", "Astuce : pour passer de 5 V à 3,3 V, p. ex. R1 = 1 kΩ et R2 = 2 kΩ.") + '</p>';
     }
   }
@@ -396,12 +409,187 @@ function pinTool(host){
   zeichne();
 }
 
+/* ====================================================================== Operationsverstärker (live) */
+function opampTool(host){
+  /* ---- Zeichen-Bausteine ---- */
+  const P_ = d => '<path d="' + d + '"/>';
+  const Rh = (x, y, w, lab, key) => { const a = x + (w - 34) / 2; return P_("M" + x + " " + y + "H" + a) + '<rect x="' + a + '" y="' + (y - 7) + '" width="34" height="14" rx="2"/>' + P_("M" + (a + 34) + " " + y + "H" + (x + w)) + '<text class="lb" x="' + (x + w / 2) + '" y="' + (y - 12) + '" text-anchor="middle">' + lab + '</text>' + (key ? '<text class="iv" data-k="' + key + '" x="' + (x + w / 2) + '" y="' + (y + 25) + '" text-anchor="middle"></text>' : ""); };
+  const Rv = (x, y, h, lab, key) => { const a = y + (h - 34) / 2; return P_("M" + x + " " + y + "V" + a) + '<rect x="' + (x - 7) + '" y="' + a + '" width="14" height="34" rx="2"/>' + P_("M" + x + " " + (a + 34) + "V" + (y + h)) + '<text class="lb" x="' + (x + 12) + '" y="' + (y + h / 2 - 2) + '">' + lab + '</text>' + (key ? '<text class="iv" data-k="' + key + '" x="' + (x + 12) + '" y="' + (y + h / 2 + 12) + '"></text>' : ""); };
+  const Ch = (x, y, w, lab, key) => { const m = x + w / 2; return P_("M" + x + " " + y + "H" + (m - 4) + "M" + (m + 4) + " " + y + "H" + (x + w)) + P_("M" + (m - 4) + " " + (y - 13) + "V" + (y + 13) + "M" + (m + 4) + " " + (y - 13) + "V" + (y + 13)) + '<text class="lb" x="' + m + '" y="' + (y - 18) + '" text-anchor="middle">' + lab + '</text>' + (key ? '<text class="iv" data-k="' + key + '" x="' + m + '" y="' + (y + 29) + '" text-anchor="middle"></text>' : ""); };
+  const GND = (x, y) => P_("M" + x + " " + y + "V" + (y + 8) + "M" + (x - 10) + " " + (y + 8) + "H" + (x + 10) + "M" + (x - 6) + " " + (y + 13) + "H" + (x + 6) + "M" + (x - 2) + " " + (y + 18) + "H" + (x + 2));
+  const dot = (x, y) => '<circle class="dt" cx="' + x + '" cy="' + y + '" r="3.2"/>';
+  const OA = (x, y) => '<path d="M' + x + ' ' + (y - 40) + 'V' + (y + 40) + 'L' + (x + 70) + ' ' + y + 'Z" class="oa"/><text class="pm" x="' + (x + 7) + '" y="' + (y - 16) + '">−</text><text class="pm" x="' + (x + 7) + '" y="' + (y + 25) + '">+</text>';
+  const OAf = (x, y) => '<path d="M' + x + ' ' + (y - 40) + 'V' + (y + 40) + 'L' + (x + 70) + ' ' + y + 'Z" class="oa"/><text class="pm" x="' + (x + 7) + '" y="' + (y - 16) + '">+</text><text class="pm" x="' + (x + 7) + '" y="' + (y + 25) + '">−</text>';
+  const term = (x, y, name, key, left) => '<circle class="tm" cx="' + x + '" cy="' + y + '" r="4"/><text class="nm" x="' + x + '" y="' + (y - 14) + '" text-anchor="middle">' + name + '</text><text class="nv" data-k="' + key + '" x="' + x + '" y="' + (y + 22) + '" text-anchor="middle"></text>';
+  const SRC = (x, y, name, key) => '<circle class="oa" cx="' + x + '" cy="' + y + '" r="13"/><path d="M' + (x - 6) + ' ' + y + 'h12M' + x + ' ' + (y - 6) + 'v12" stroke-width="1.4"/><text class="nm" x="' + x + '" y="' + (y - 32) + '" text-anchor="middle">' + name + '</text><text class="nv" data-k="' + key + '" x="' + x + '" y="' + (y - 19) + '" text-anchor="middle"></text>';
+  const rails = '';
+  /* gemeinsam: Opamp bei (190,110), Ausgang (260,110) → Klemme (340,110) */
+  const OUT = (y, dx) => P_("M260 " + y + "H" + (338 + (dx || 0))) + term(344 + (dx || 0), y, "Uout", "uout");
+  const fmtV = v => fmtSI(v, "V", 3), fmtI = v => fmtSI(v, "A", 3);
+
+  const TYPES = [
+    { id: "inv", ic: "−", name: T("Invertierend", "Inverseur"), sig: ["V", "Uin"],
+      info: T("Das Signal wird um das Verhältnis Rf/Rin verstärkt und gedreht (Phase 180°). Der −Eingang liegt durch die Gegenkopplung auf 0 V („virtuelle Masse“); der Eingangswiderstand ist Rin.", "Le signal est amplifié du rapport Rf/Rin et inversé (180°). L’entrée − est à 0 V (masse virtuelle) ; l’impédance d’entrée vaut Rin."),
+      formel: "Uout = −Rf/Rin · Uin",
+      p: [["Rin", "10k", "Rin (Ω)"], ["Rf", "47k", "Rf (Ω)"]],
+      draw: () => term(58, 90, "Uin", "uin") + Rh(70, 90, 70, "Rin", "iRin") + P_("M140 90H190") + dot(160, 90) + P_("M160 90V40") + Rh(160, 40, 100, "Rf", "iRf") + P_("M260 40V110") + dot(260, 110) + OA(190, 110) + P_("M190 130H170V160") + GND(170, 160) + '<text class="vm" x="166" y="83">≈ 0 V</text>' + OUT(110) + rails,
+      sim: (q, u) => ({ y: -q.Rf / q.Rin * u }), cur: (q, u) => ({ iRin: u / q.Rin, iRf: u / q.Rin }),
+      stats: q => ({ G: -q.Rf / q.Rin, zin: q.Rin, note: T("Phase um 180° gedreht", "phase inversée de 180°") }) },
+    { id: "nin", ic: "+", name: T("Nicht-invertierend", "Non-inverseur"), sig: ["V", "Uin"],
+      info: T("Das Signal wird verstärkt und bleibt in Phase. Die Verstärkung ist immer mindestens 1. Der Eingangswiderstand ist sehr hoch (Eingang des Opamps).", "Le signal est amplifié sans inversion. Le gain est toujours ≥ 1. L’impédance d’entrée est très élevée."),
+      formel: "Uout = (1 + Rf/R1) · Uin",
+      p: [["R1", "10k", "R1 gegen Masse (Ω)"], ["Rf", "47k", "Rf (Ω)"]],
+      draw: () => term(58, 90, "Uin", "uin") + P_("M58 90H190") + OAf(190, 110) + P_("M190 130H160V170") + dot(160, 130) + Rh(160, 170, 100, "Rf", "iRf") + P_("M260 170V110") + dot(260, 110) + P_("M160 130H112") + Rh(60, 130, 52, "R1", "iR1").replace(/<text class="iv"[^>]*><\/text>/, "") + GND(60, 130) + OUT(110) + rails,
+      sim: (q, u) => ({ y: (1 + q.Rf / q.R1) * u }), cur: (q, u, y) => ({ iR1: u / q.R1, iRf: u / q.R1 }),
+      stats: q => ({ G: 1 + q.Rf / q.R1, zin: Infinity, note: T("gleiche Phase", "même phase") }) },
+    { id: "fol", ic: "1", name: T("Spannungsfolger", "Suiveur"), sig: ["V", "Uin"],
+      info: T("Verstärkung genau 1, aber sehr hoher Eingangs- und kleiner Ausgangswiderstand: ein Impedanzwandler, der eine schwache Quelle ohne Belastung puffert.", "Gain exactement 1, impédance d’entrée très élevée et sortie faible : un adaptateur d’impédance."),
+      formel: "Uout = Uin",
+      p: [],
+      draw: () => term(58, 130, "Uin", "uin") + P_("M58 130H190") + OA(190, 110) + P_("M190 90H160V50H300V110") + dot(260, 110) + dot(300, 110) + P_("M260 110H338") + term(344, 110, "Uout", "uout") + rails,
+      sim: (q, u) => ({ y: u }), cur: () => ({}), stats: () => ({ G: 1, zin: Infinity, note: T("Impedanzwandler", "adaptateur d’impédance") }) },
+    { id: "sum", ic: "Σ", name: T("Addierer", "Sommateur"), sig: ["V", "U1"],
+      info: T("Jede Eingangsspannung wird einzeln mit Rf/Rn verstärkt und gedreht, am −Eingang addieren sich die Ströme. Der Mischer in der Audiotechnik.", "Chaque entrée est amplifiée par Rf/Rn et inversée ; les courants s’additionnent. Le mélangeur de l’audio."),
+      formel: "Uout = −Rf · (U1/R1 + U2/R2 + U3/R3)",
+      p: [["R1", "10k", "R1 (Ω)"], ["R2", "10k", "R2 (Ω)"], ["R3", "10k", "R3 (Ω)"], ["Rf", "10k", "Rf (Ω)"], ["U2", "0,5", "U2 (V, fest)"], ["U3", "-0,2", "U3 (V, fest)"]],
+      vb: "0 -8 400 255",
+      draw: () => term(36, 60, "U1", "uin") + Rh(64, 60, 86, "R1", "iR1") + term(36, 110, "U2", "u2") + Rh(64, 110, 86, "R2", "iR2") + term(36, 160, "U3", "u3") + Rh(64, 160, 86, "R3", "iR3") + P_("M150 60V160H190") + dot(150, 110) + dot(150, 60) + dot(150, 160) + P_("M150 60V20H165") + Rh(165, 20, 90, "Rf", "iRf") + P_("M255 20H260V180") + OA(190, 180) + P_("M190 200H170V218") + GND(170, 218) + P_("M260 180H338") + dot(260, 180) + term(344, 180, "Uout", "uout"),
+      sim: (q, u) => ({ y: -q.Rf * (u / q.R1 + q.U2 / q.R2 + q.U3 / q.R3) }), cur: (q, u) => ({ iR1: u / q.R1, iR2: q.U2 / q.R2, iR3: q.U3 / q.R3 }),
+      stats: q => ({ G: -q.Rf / q.R1, zin: q.R1, note: T("Verstärkung gilt für U1; U2/U3 haben −Rf/R2 bzw. −Rf/R3", "le gain vaut pour U1 ; U2/U3 : −Rf/R2 et −Rf/R3") }), rfKey: 1 },
+    { id: "sub", ic: "Δ", name: T("Subtrahierer", "Soustracteur"), sig: ["V", "U1"],
+      info: T("Der Differenzverstärker bildet die Differenz zweier Spannungen und unterdrückt, was beide gemeinsam haben (Gleichtakt). Mit R1 = R3 und R2 = Rf ist Uout = Rf/R1 · (U2 − U1).", "L’amplificateur différentiel forme la différence de deux tensions et rejette le mode commun."),
+      formel: "Uout = Rf/R1 · (U2 − U1)",
+      p: [["R1", "10k", "R1 (Ω, beide Eingänge)"], ["Rf", "10k", "Rf = R2 (Ω, Rückkopplung und gegen Masse)"], ["U2", "1", "U2 (V, fest)"]],
+      draw: () => term(36, 70, "U1", "uin") + Rh(64, 70, 86, "R1", "iR1") + P_("M150 70H160V20H165") + dot(160, 70) + P_("M160 70V90H190") + Rh(165, 20, 95, "Rf", "iRf") + P_("M260 20V110") + dot(260, 110) + term(36, 150, "U2", "u2") + Rh(64, 150, 86, "R1", "iR2") + P_("M150 150H160V130H190") + dot(160, 150) + Rv(160, 150, 40, "Rf", "") + GND(160, 190) + OA(190, 110) + OUT(110) + rails,
+      sim: (q, u) => ({ y: q.Rf / q.R1 * (q.U2 - u) }), cur: (q, u) => ({ iR1: u / q.R1 }),
+      stats: q => ({ G: q.Rf / q.R1, zin: q.R1, note: T("Verstärkung der Differenz (U2 − U1)", "gain de la différence (U2 − U1)") }) },
+    { id: "int", ic: "∫", name: T("Integrierer", "Intégrateur"), sig: ["V", "Uin"],
+      info: T("Der Kondensator in der Rückkopplung summiert den Eingangsstrom auf: Die Ausgangsspannung ist das Zeitintegral der Eingangsspannung. Ein Rechteck wird zum Dreieck, eine Gleichspannung zur Rampe, bis der Ausgang an die Versorgung stößt.", "Le condensateur en contre-réaction intègre le courant : une sortie en rampe pour une tension continue, un triangle pour un signal carré."),
+      formel: "Uout(t) = −1/(R·C) · ∫ Uin dt",
+      p: [["R", "10k", "R (Ω)"], ["C", "10n", "C (F)"]],
+      draw: () => term(58, 90, "Uin", "uin") + Rh(70, 90, 70, "R", "iR") + P_("M140 90H190") + dot(160, 90) + P_("M160 90V40") + Ch(160, 40, 100, "C", "") + P_("M260 40V110") + dot(260, 110) + OA(190, 110) + P_("M190 130H170V160") + GND(170, 160) + OUT(110) + rails,
+      dyn: true, sim: (q, u, st, dt) => { st.v = (st.v || 0) - u / (q.R * q.C) * dt; return { y: st.v, clipState: true }; }, cur: (q, u) => ({ iR: u / q.R }),
+      stats: q => ({ G: null, zin: q.R, note: T("Steigung = −Uin/(R·C)", "pente = −Uin/(R·C)"), tau: q.R * q.C }) },
+    { id: "dif", ic: "d/dt", name: T("Differenzierer", "Dérivateur"), sig: ["V", "Uin"],
+      info: T("Der Kondensator am Eingang lässt nur Änderungen durch: Der Ausgang zeigt die Steilheit des Eingangssignals. Ein Dreieck wird zum Rechteck, ein Rechteck zu Nadelimpulsen. Rauschempfindlich, in der Praxis mit kleinem Serienwiderstand.", "Le condensateur d’entrée ne laisse passer que les variations : la sortie reflète la pente du signal."),
+      formel: "Uout(t) = −R·C · dUin/dt",
+      p: [["R", "10k", "R (Ω)"], ["C", "10n", "C (F)"]],
+      draw: () => term(58, 90, "Uin", "uin") + Ch(70, 90, 70, "C", "iC") + P_("M140 90H190") + dot(160, 90) + P_("M160 90V40") + Rh(160, 40, 100, "R", "iR") + P_("M260 40V110") + dot(260, 110) + OA(190, 110) + P_("M190 130H170V160") + GND(170, 160) + OUT(110) + rails,
+      dyn: true, sim: (q, u, st, dt) => { const d = st.u0 === undefined ? 0 : (u - st.u0) / dt; st.u0 = u; return { y: -q.R * q.C * d }; }, cur: (q, u, y) => ({ iC: -y / q.R, iR: -y / q.R }),
+      stats: q => ({ G: null, zin: null, note: T("Verstärkung steigt mit der Frequenz: |G| = 2π·f·R·C", "gain croissant avec la fréquence : |G| = 2π·f·R·C"), tau: q.R * q.C }) },
+    { id: "lp", ic: "〰", name: T("Aktiver Tiefpass", "Passe-bas actif"), sig: ["V", "Uin"],
+      info: T("Ein invertierender Verstärker mit Kondensator parallel zu Rf: Tiefe Frequenzen werden mit Rf/Rin verstärkt, hohe fallen oberhalb der Grenzfrequenz mit 20 dB je Dekade ab.", "Un inverseur avec un condensateur en parallèle de Rf : filtre passe-bas actif du 1er ordre."),
+      formel: "G = −Rf/Rin ; fg = 1/(2π·Rf·Cf)",
+      p: [["Rin", "10k", "Rin (Ω)"], ["Rf", "47k", "Rf (Ω)"], ["Cf", "1n", "Cf (F)"]],
+      vb: "0 -14 400 220",
+      draw: () => term(58, 90, "Uin", "uin") + Rh(70, 90, 70, "Rin", "iRin") + P_("M140 90H190") + dot(160, 90) + P_("M160 90V14H185M235 14H260V110M160 56H185M235 56H260") + Ch(185, 14, 50, "Cf", "") + Rh(185, 56, 50, "Rf", "") + dot(160, 56) + dot(260, 56) + dot(260, 110) + OA(190, 110) + P_("M190 130H170V160") + GND(170, 160) + OUT(110) + rails,
+      dyn: true, sim: (q, u, st, dt) => { const tau = q.Rf * q.Cf, n = Math.max(1, Math.ceil(dt / (tau / 20))), h = dt / n; let y = st.y || 0; for (let k = 0; k < n; k++) y += (-q.Rf / q.Rin * u - y) / tau * h; st.y = y; return { y, clipState: true }; }, cur: (q, u) => ({ iRin: u / q.Rin }),
+      stats: q => ({ G: -q.Rf / q.Rin, zin: q.Rin, note: T("Grenzfrequenz fg = ", "fréquence de coupure fg = ") + fmtSI(1 / (2 * Math.PI * q.Rf * q.Cf), "Hz"), tau: q.Rf * q.Cf }) },
+    { id: "cmp", ic: "⏚", name: T("Komparator", "Comparateur"), sig: ["V", "Uin"],
+      info: T("Ohne Rückkopplung vergleicht der Opamp nur: Ist Uin größer als Uref, springt der Ausgang an die positive Versorgung, sonst an die negative. Kein Verstärker, sondern ein Schalter.", "Sans contre-réaction l’ampli compare seulement : la sortie bascule vers l’alimentation positive ou négative."),
+      formel: "Uout = +Usat wenn Uin > Uref, sonst −Usat",
+      p: [["Uref", "0", "Uref (V)"]],
+      draw: () => term(58, 130, "Uin", "uin") + P_("M58 130H190") + SRC(130, 66, "Uref", "uref") + P_("M143 66H165V90H190") + P_("M130 79V92") + GND(130, 92) + OA(190, 110) + OUT(110) + rails,
+      sim: (q, u, st, dt, S) => ({ y: u > q.Uref ? S.lim : -S.lim }), cur: () => ({}), stats: () => ({ G: null, zin: Infinity, note: T("Ausgang springt an die Versorgungsgrenzen", "la sortie bascule aux limites d’alimentation") }) },
+    { id: "sch", ic: "⎍", name: T("Schmitt-Trigger", "Trigger de Schmitt"), sig: ["V", "Uin"],
+      info: T("Mitkopplung über R2 erzeugt zwei Schaltschwellen (Hysterese): Das Signal muss erst über die obere Schwelle steigen und dann unter die untere fallen, bevor der Ausgang kippt. Rauschen und Prellen stören nicht mehr.", "La réaction positive crée deux seuils (hystérésis) : le bruit ne fait plus basculer la sortie."),
+      formel: "U_H/U_L = Uref·(1 + R1/R2) ± Usat · R1/R2",
+      p: [["R1", "10k", "R1 (Ω)"], ["R2", "47k", "R2 (Ω)"], ["Uref", "0", "Uref (V)"]],
+      draw: () => term(58, 130, "Uin", "uin") + Rh(70, 130, 80, "R1", "iR1") + P_("M150 130H190") + dot(165, 130) + Rv(165, 130, 60, "R2", "iR2") + P_("M165 190H300V110") + SRC(110, 52, "Uref", "uref") + P_("M123 52H165V90H190") + P_("M110 65V77") + GND(110, 77) + OA(190, 110) + P_("M260 110H338") + dot(260, 110) + dot(300, 110) + term(344, 110, "Uout", "uout") + rails,
+      sim: (q, u, st, dt, S) => { const k = q.R1 / q.R2, hi = q.Uref * (1 + k) + S.lim * k, lo = q.Uref * (1 + k) - S.lim * k; if (st.s === undefined) st.s = -1; if (u > hi) st.s = 1; else if (u < lo) st.s = -1; return { y: st.s * S.lim }; }, cur: () => ({}),
+      stats: (q, S) => { const k = q.R1 / q.R2; return { G: null, zin: q.R1 + q.R2, note: T("Schwellen: ", "seuils : ") + fmtSI(q.Uref * (1 + k) - S.lim * k, "V") + " / " + fmtSI(q.Uref * (1 + k) + S.lim * k, "V") + " (" + T("Hysterese ", "hystérésis ") + fmtSI(2 * S.lim * k, "V") + ")" }; } },
+    { id: "tia", ic: "I→U", name: T("Transimpedanz", "Transimpédance"), sig: ["µA", "Iin"],
+      info: T("Wandelt einen kleinen Strom (z. B. Fotodiode) in eine Spannung. Die Quelle sieht eine virtuelle Masse, Uout = −Iin · Rf. Für schnelle Fotodioden kommt ein kleiner Kondensator parallel zu Rf.", "Convertit un courant (photodiode) en tension : Uout = −Iin · Rf."),
+      formel: "Uout = −Iin · Rf",
+      p: [["Rf", "100k", "Rf (Ω)"]],
+      draw: () => '<circle class="oa" cx="80" cy="90" r="16"/><path d="M80 98V82M75 87l5-6 5 6" stroke-width="1.4"/><text class="nm" x="80" y="63" text-anchor="middle">Iin</text><text class="nv" data-k="uin" x="80" y="124" text-anchor="middle"></text>' + P_("M96 90H190") + dot(160, 90) + P_("M160 90V40") + Rh(160, 40, 100, "Rf", "iRf") + P_("M260 40V110") + dot(260, 110) + P_("M80 106V150") + GND(80, 150) + OA(190, 110) + P_("M190 130H170V160") + GND(170, 160) + OUT(110) + rails,
+      sim: (q, u) => ({ y: -q.Rf * u * 1e-6 }), cur: (q, u) => ({ iRf: u * 1e-6 }), stats: q => ({ G: null, zin: 0, note: T("Transimpedanz = −Rf = ", "transimpédance = −Rf = ") + fmtSI(q.Rf, "V/A") }), uscale: 1e-6 }
+  ];
+  const lc = (k, f) => '<option value="' + k + '"' + '>' + f + '</option>';
+  let typ = "inv", sg = { k: "sin", A: "0,5", f: "1k", off: "0" }, vs = "12", sel = null, tAnim = 0, raf = 0, play = true, SIM = null;
+  const tdef = () => TYPES.find(x => x.id === typ);
+  let vals = {}; // je Typ gemerkte Parameter
+  host.innerHTML = SAFE() + '<div class="opw"><div class="opl"><div class="tabs" id="opTab"></div><div id="opIn"></div></div><div class="opr"><div id="opSvg"></div><div id="opStats"></div></div></div><div id="opPlot"></div><p class="hint" id="opInfo"></p>' +
+    '<style>.opw{display:grid;grid-template-columns:minmax(240px,300px) 1fr;gap:16px;align-items:start}@media(max-width:760px){.opw{grid-template-columns:1fr}}#opTab{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}#opTab .btn{padding:8px 6px;font-size:13px;display:flex;gap:6px;align-items:center;justify-content:flex-start;text-align:left}#opTab .btn i{font-style:normal;font-weight:800;min-width:1.7em;text-align:center;border-radius:8px;background:rgba(0,0,0,.08);padding:1px 4px;font-size:12px}.opsvg{width:100%;height:auto;display:block;background:var(--card,#fff);border:2px solid var(--line,#ccd);border-radius:14px;color:var(--fg,#223)}.opsvg path,.opsvg rect,.opsvg circle.oa{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.opsvg path.oa{fill:rgba(46,134,255,.10)}.opsvg .dt{fill:currentColor;stroke:none}.opsvg .tm{fill:var(--card,#fff);stroke:currentColor;stroke-width:2}.opsvg text{font:600 11.5px system-ui,sans-serif;fill:currentColor}.opsvg .pm{font-size:15px;font-weight:800}.opsvg .iv{fill:#e8590c;font-size:11px;font-weight:700}.opsvg .nv{fill:#2e86ff;font-size:12px;font-weight:800}.opsvg .nm{font-size:12px;font-weight:800}.opsvg .vm{font-size:10.5px;fill:#2b8a3e;font-style:italic}.opsvg .sp{font-size:10px;opacity:.6}.opplot{width:100%;height:auto;display:block;margin-top:10px;background:var(--card,#fff);border:2px solid var(--line,#ccd);border-radius:14px;color:var(--fg,#223)}.opplot text{font:600 11px system-ui,sans-serif;fill:currentColor}.opplot .g{stroke:currentColor;opacity:.15;fill:none}.opplot .ax{stroke:currentColor;opacity:.5;fill:none}</style>';
+  function readP(){ const q = {}; (tdef().p || []).forEach(p => { q[p[0]] = num($("#op_" + p[0], host).value); }); return q; }
+  function maske(){
+    $("#opTab", host).innerHTML = TYPES.map(t => '<button class="btn' + (t.id === typ ? " on" : "") + '" data-t="' + t.id + '"><i>' + esc(t.ic) + '</i>' + esc(t.name) + '</button>').join("");
+    $$("#opTab button", host).forEach(b => b.onclick = () => { vals[typ] = readSave(); typ = b.dataset.t; maske(); });
+    const t = tdef(), sv = vals[typ] || {};
+    const unit = t.sig[0], nm = t.sig[1];
+    $("#opIn", host).innerHTML = '<h3 style="margin:12px 0 4px">' + T("Bauteile", "Composants") + '</h3>' + (t.p.length ? t.p.map(p => eingabe(host, "op_" + p[0], p[2], "", sv[p[0]] !== undefined ? sv[p[0]] : p[1])).join("") : '<p class="hint">' + T("Keine Bauteile – nur der Opamp.", "Aucun composant – seulement l’ampli.") + '</p>') +
+      '<h3 style="margin:14px 0 4px">' + T("Eingangssignal ", "Signal d’entrée ") + esc(nm) + '</h3><label class="l" for="op_k">' + T("Signalform", "Forme") + '</label><select class="in" id="op_k"><option value="sin">' + T("Sinus", "Sinus") + '</option><option value="rect">' + T("Rechteck", "Carré") + '</option><option value="dc">' + T("Gleichspannung", "Continu") + '</option></select>' +
+      eingabe(host, "op_A", (unit === "V" ? T("Amplitude (V)", "Amplitude (V)") : T("Amplitude (µA)", "Amplitude (µA)")), "", sg.A) + eingabe(host, "op_f", T("Frequenz (Hz)", "Fréquence (Hz)"), "", sg.f) + eingabe(host, "op_off", T("Offset (V)", "Offset (V)"), "", sg.off) +
+      '<h3 style="margin:14px 0 4px">' + T("Versorgung", "Alimentation") + '</h3>' + eingabe(host, "op_vs", "± Vs (V)", "", vs) + '<button class="btn" id="opPlay" style="margin-top:10px;width:100%">' + (play ? "⏸ " + T("Anhalten", "Pause") : "▶ " + T("Abspielen", "Lecture")) + '</button>';
+    $("#op_k", host).value = sg.k;
+    auf(host, t.p.map(p => "op_" + p[0]).concat(["op_k", "op_A", "op_f", "op_off", "op_vs"]), neu);
+    $("#opPlay", host).onclick = () => { play = !play; $("#opPlay", host).textContent = (play ? "⏸ " + T("Anhalten", "Pause") : "▶ " + T("Abspielen", "Lecture")); };
+    $("#opInfo", host).innerHTML = '<b>' + esc(t.name) + ':</b> ' + esc(t.info) + '<br><code style="font-size:15px">' + esc(t.formel) + '</code>';
+    $("#opSvg", host).innerHTML = '<svg class="opsvg" viewBox="' + (t.vb || "0 -8 400 212") + '" role="img" aria-label="' + esc(t.name) + '">' + t.draw() + '</svg>';
+    neu();
+  }
+  function readSave(){ const o = {}; tdef().p.forEach(p => { const e = $("#op_" + p[0], host); if (e) o[p[0]] = e.value; }); const k = $("#op_k", host); if (k) { sg = { k: k.value, A: $("#op_A", host).value, f: $("#op_f", host).value, off: $("#op_off", host).value }; vs = $("#op_vs", host).value; } return o; }
+  function neu(){
+    const t = tdef(), q = readP(); readSave();
+    const A = num(sg.A), f = Math.max(num(sg.f), 1e-3), off = num(sg.off) || 0, Vs = num(vs);
+    const bad = t.p.some(p => !(q[p[0]] > 0) && !(p[0].charAt(0) === "U" && isFinite(q[p[0]]))) || !isFinite(A) || !isFinite(Vs) || Vs <= 0;
+    if (bad) { $("#opStats", host).innerHTML = '<p class="warn">' + T("Bitte gültige Werte eingeben (Widerstände > 0).", "Saisis des valeurs valides (résistances > 0).") + '</p>'; SIM = null; return; }
+    const lim = Math.max(0.5, Vs - 1.5), S = { lim }, N = 480, st = {};
+    const tau = (t.stats(q, S).tau) || 0;
+    const win = sg.k === "dc" ? (t.dyn ? Math.max(5 * tau, 1e-6) : 1) : 3 / f;
+    const dt = win / N, U = new Array(N), Y = new Array(N), C = new Array(N), Ysat = new Array(N);
+    for (let i = 0; i < N; i++) {
+      const tt = i * dt, ph = (tt * f) % 1;
+      let u = sg.k === "dc" ? A : sg.k === "sin" ? A * Math.sin(2 * Math.PI * tt * f) : (ph < 0.5 ? A : -A);
+      u += off; U[i] = u;
+      const r = t.sim(q, u * (t.uscale ? 1 : 1), st, dt, S); let y = r.y;
+      if (y > lim) y = lim; if (y < -lim) y = -lim;
+      if (r.clipState) { st.v = y; st.y = y; }
+      Y[i] = y; C[i] = t.cur(q, u, y, S);
+    }
+    SIM = { U, Y, C, N, win, lim, t, q, unit: t.sig[0], tdt: dt };
+    // Kennwerte
+    const st2 = t.stats(q, S), ymax = Math.max.apply(null, Y.map(Math.abs)), clipped = Y.some(y => Math.abs(y) >= lim - 1e-9) && t.id !== "cmp" && t.id !== "sch";
+    const row = (b, s) => '<div><b>' + b + '</b><small>' + s + '</small></div>';
+    $("#opStats", host).innerHTML = '<div class="stats">' + (st2.G != null ? row(esc(st2.G.toLocaleString(loc(), { maximumSignificantDigits: 4 })) + "×", T("Verstärkung", "Gain")) + row(esc((20 * Math.log10(Math.abs(st2.G))).toLocaleString(loc(), { maximumSignificantDigits: 3 })) + " dB", "20·log |G|") : "") + (st2.zin != null ? row(st2.zin === Infinity ? "≈ ∞" : esc(fmtSI(st2.zin, "Ω")), T("Eingangswiderstand", "Impédance d’entrée")) : "") + row(esc(fmtSI(ymax, "V")), T("Ausgang max.", "Sortie max.")) + (tau ? row(esc(fmtSI(tau, "s")), "τ") : "") + '</div><p class="hint" style="margin:6px 0 0">' + esc(st2.note || "") + '</p>' + (clipped ? '<p class="warn">⚠ ' + T("Der Ausgang stößt an die Versorgung (±" + fmtSI(lim, "V") + ") und wird abgeschnitten – Verstärkung oder Eingang verkleinern, oder höhere Versorgung wählen.", "La sortie atteint l’alimentation (±" + fmtSI(lim, "V") + ") et est écrêtée.") + '</p>' : '');
+    plot(); bild(0);
+  }
+  function plot(){
+    const s = SIM; if (!s) { $("#opPlot", host).innerHTML = ""; return; }
+    const W = 760, H = 230, x0 = 52, x1 = W - 12, y0 = 14, y1 = H - 34, N = s.N;
+    const um0 = Math.max.apply(null, s.U.map(Math.abs)), ym = Math.max.apply(null, s.Y.map(Math.abs)), fk = s.unit === "V" ? 1 : Math.max(ym, 0.1) / Math.max(um0, 1e-9), um = um0 * fk;
+    let m = Math.max(um, Math.min(ym, s.lim * 1.05), 0.2) * 1.15; if (!isFinite(m) || m <= 0) m = 1;
+    const X = i => x0 + (x1 - x0) * i / (N - 1), Yp = v => (y0 + y1) / 2 - (v / m) * (y1 - y0) / 2;
+    const pl = (A, cl) => '<polyline fill="none" stroke="' + cl + '" stroke-width="2.2" stroke-linejoin="round" points="' + A.map((v, i) => X(i).toFixed(1) + "," + Yp(Math.max(-m, Math.min(m, v))).toFixed(1)).join(" ") + '"/>';
+    let g = ""; for (let k = -2; k <= 2; k++) g += '<line class="g" x1="' + x0 + '" x2="' + x1 + '" y1="' + Yp(k * m / 2.3).toFixed(1) + '" y2="' + Yp(k * m / 2.3).toFixed(1) + '"/><text x="' + (x0 - 6) + '" y="' + (Yp(k * m / 2.3) + 4).toFixed(1) + '" text-anchor="end">' + fmtSI(k * m / 2.3, "").trim() + '</text>';
+    for (let k = 0; k <= 3; k++) g += '<line class="g" y1="' + y0 + '" y2="' + y1 + '" x1="' + (x0 + (x1 - x0) * k / 3) + '" x2="' + (x0 + (x1 - x0) * k / 3) + '"/><text x="' + (x0 + (x1 - x0) * k / 3) + '" y="' + (H - 16) + '" text-anchor="middle">' + fmtSI(s.win * k / 3, "s") + '</text>';
+    const rl = (v) => Math.abs(v) < m ? '<line stroke="#c92a2a" stroke-dasharray="5 4" opacity=".6" x1="' + x0 + '" x2="' + x1 + '" y1="' + Yp(v) + '" y2="' + Yp(v) + '"/>' : "";
+    $("#opPlot", host).innerHTML = '<svg class="opplot" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + T("Eingang und Ausgang über der Zeit", "Entrée et sortie dans le temps") + '"><line class="ax" x1="' + x0 + '" x2="' + x0 + '" y1="' + y0 + '" y2="' + y1 + '"/><line class="ax" x1="' + x0 + '" x2="' + x1 + '" y1="' + Yp(0) + '" y2="' + Yp(0) + '"/>' + g + rl(s.lim) + rl(-s.lim) + pl(s.U.map(v => v * fk), "#2e86ff") + pl(s.Y, "#ff7a00") + '<line id="opCur" stroke="currentColor" stroke-width="1.5" opacity=".7" y1="' + y0 + '" y2="' + y1 + '" x1="' + x0 + '" x2="' + x0 + '"/><text x="' + (x0 + 6) + '" y="' + (y0 + 12) + '" fill="#2e86ff" style="fill:#2e86ff">— ' + (s.unit === "V" ? "Uin" : "Iin (" + T("skaliert", "à l’échelle") + ")") + '</text><text x="' + (x0 + 70) + '" y="' + (y0 + 12) + '" style="fill:#ff7a00">— Uout</text><text x="' + (x1 - 4) + '" y="' + (y0 + 12) + '" text-anchor="end" style="fill:#c92a2a">- - ±' + fmtSI(s.lim, "V") + '</text></svg>';
+  }
+  function bild(i){
+    const s = SIM; if (!s) return;
+    const set = (k, v) => { $$('[data-k="' + k + '"]', host).forEach(e => { e.textContent = v; }); };
+    const u = s.U[i], y = s.Y[i], c = s.C[i] || {}, q = s.q;
+    set("uin", s.unit === "V" ? fmtV(u) : fmtSI(u * 1e-6, "A", 3)); set("uout", fmtV(y));
+    set("u2", fmtV(q.U2)); set("u3", fmtV(q.U3)); set("uref", fmtV(q.Uref));
+    Object.keys(c).forEach(k => set(k, fmtI(c[k])));
+    const cur = $("#opCur", host); if (cur) { const W = 760, x0 = 52, x1 = W - 12, X = x0 + (x1 - x0) * i / (s.N - 1); cur.setAttribute("x1", X); cur.setAttribute("x2", X); }
+  }
+  function loop(ts){
+    if (!document.body.contains(host)) return;
+    if (SIM && play) { const T0 = 7000, i = Math.floor((ts % T0) / T0 * SIM.N); if (i !== tAnim) { tAnim = i; bild(i); } }
+    raf = requestAnimationFrame(loop);
+  }
+  maske(); raf = requestAnimationFrame(loop);
+}
+
 /* ====================================================================== Rahmen */
 const TOOLS = [
   ["farbcode", "🌈", "#e0527a", T("Widerstands-Farbcode", "Code couleur des résistances"), T("Ringe antippen oder Wert eingeben – 4, 5 und 6 Ringe, mit Toleranz.", "Touche les anneaux ou saisis une valeur – 4, 5 et 6 anneaux, avec tolérance."), resTool],
   ["ohm", "⚡", "#ff8c1a", T("Ohm & Leistung", "Ohm et puissance"), T("Zwei Werte eingeben, U, I, R und P werden berechnet.", "Saisis deux valeurs : U, I, R et P sont calculés."), ohmTool],
   ["led", "💡", "#f2b100", T("LED-Vorwiderstand", "Résistance pour LED"), T("Welchen Widerstand braucht deine LED? Mit Normwert und Watt-Angabe.", "Quelle résistance pour ta LED ? Avec valeur normalisée et puissance."), ledTool],
   ["teiler", "➗", "#2e86ff", T("Spannungsteiler", "Pont diviseur"), T("Ausgang berechnen oder passende Widerstände finden (auch mit Last).", "Calculer la sortie ou trouver les résistances (avec charge)."), teilerTool],
+  ["opamp", "🔺", "#1c7ed6", T("Operationsverstärker", "Amplificateur opérationnel"), T("Invertierend, nicht-invertierend, Addierer, Subtrahierer, Integrierer, Komparator, Schmitt-Trigger … mit lebendiger Schaltung und Oszilloskop-Bild.", "Inverseur, non-inverseur, sommateur, soustracteur, intégrateur, comparateur, trigger de Schmitt … avec schéma vivant et oscilloscope."), opampTool],
   ["normwerte", "🧩", "#12b8a6", T("Reihe, Parallel & Normwerte", "Série, parallèle et valeurs"), T("Widerstände kombinieren oder einen Wunschwert aus E12/E24 bauen.", "Combiner des résistances ou fabriquer une valeur avec E12/E24."), kombiTool],
   ["filter", "〰️", "#8a4dff", T("Filter & Schwingkreis", "Filtres et circuit LC"), T("RC-Filter mit Bode-Diagramm, Kondensator laden, LC-Resonanz.", "Filtre RC avec diagramme de Bode, charge de condensateur, résonance LC."), filterTool],
   ["timer555", "⏲️", "#c4452c", T("555-Timer", "Timer 555"), T("Blinker (astabil) und Impuls (monostabil) berechnen, mit Pinbelegung.", "Calculer clignotant (astable) et impulsion (monostable), avec brochage."), timerTool],
