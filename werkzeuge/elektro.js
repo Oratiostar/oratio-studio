@@ -1,4 +1,4 @@
-// Elektronik-Labor: Farbcode, Ohm, LED, Teiler, Normwerte, Filter, 555, Logik, Pi-Pinout.
+// Elektronik-Rechner: Farbcode, Ohm, LED, Teiler, Normwerte, Filter, 555, Logik, Pi-Pinout.
 // Alles läuft im Browser. Es wird nichts hochgeladen, gesendet oder gespeichert.
 (function(){
 "use strict";
@@ -411,7 +411,7 @@ const TOOLS = [
 window.Elektro = { start: function(){
   const grid = $("#toolgrid"), hostEl = $("#toolhost");
   grid.innerHTML = TOOLS.map(t => '<a class="tcard" style="--wc:' + t[2] + '" href="#' + t[0] + '" data-id="' + t[0] + '"><span class="ts" style="background:' + t[2] + '">' + t[1] + '</span><span><b>' + esc(t[3]) + '</b><small>' + esc(t[4]) + '</small></span></a>').join("");
-  const crumb = document.querySelector("main .crumb"), crumb0 = crumb ? crumb.innerHTML : "", sub = document.querySelector("main > .sub"), titel0 = T("Elektronik-Labor", "Labo d’électronique");
+  const crumb = document.querySelector("main .crumb"), crumb0 = crumb ? crumb.innerHTML : "", sub = document.querySelector("main > .sub"), titel0 = T("Elektronik-Rechner", "Calculateurs d’électronique");
   function zeigen(){
     const id = (location.hash || "").slice(1), t = TOOLS.find(x => x[0] === id);
     if (!t){

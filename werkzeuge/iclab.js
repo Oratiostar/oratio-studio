@@ -1,4 +1,4 @@
-/* Oratio IC-Labor – ICs nachschlagen, Schaltungen ausprobieren, Oszilloskop lesen */
+/* Oratio Schaltungen – ICs nachschlagen, Schaltungen ausprobieren, Oszilloskop lesen */
 var ICLAB = (function(){
 "use strict";
 var fr = !!(window.WZ && WZ.lang === "fr");
@@ -446,7 +446,7 @@ function renderProject(host, pid){
   host.appendChild(el("h2", "ic-pt", esc(T(pr.t[0], pr.t[1]))));
   host.appendChild(el("p", "ic-pd", esc(T(pr.d[0], pr.d[1]))));
   var fl = el("div", "ic-flow"); pr.flow.forEach(function(x, i){ if (i) fl.appendChild(el("span", "ic-ar", "→")); fl.appendChild(el("span", "ic-fb", esc(x))); }); host.appendChild(fl);
-  if (pr.ics){ var lk = el("div", "ic-chips"); lk.appendChild(el("span", "ic-lb", T("Beteiligte ICs:", "CI concernés :"))); pr.ics.forEach(function(i){ var a = el("a", "ic-ch", esc(icById(i).name)); a.href = "#" + i; lk.appendChild(a); }); host.appendChild(lk); }
+  if (pr.ics){ var lk = el("div", "ic-chips"); lk.appendChild(el("span", "ic-lb", T("Daten zu den ICs:", "Données des CI :"))); pr.ics.forEach(function(i){ var a = el("a", "ic-ch", esc(icById(i).name)); a.href = "index.html#/s/" + LINK[i]; lk.appendChild(a); }); host.appendChild(lk); }
   var ctl = el("div", "ic-ctl"); host.appendChild(ctl);
   var cust = null, area = el("div"), scBox = el("div", "ic-scopebox"), cnv = el("canvas"), liveBox = el("div", "ic-live"), warnBox = el("div"), infoBox = el("div", "ic-info");
   function save(){ st("p_" + pid, P); }
@@ -490,55 +490,50 @@ function renderProject(host, pid){
   if (window.ResizeObserver){ var ro = new ResizeObserver(function(){ if (tok === LIVE.tok && ctx.res && ctx.res.ch){ var w0 = cnv.parentNode.clientWidth; if (w0 && Math.abs(w0 - (parseFloat(cnv.style.width) || 0)) > 2) scope(cnv, ctx.res.ch, ctx.res.span, ctx.res.cur, ctx.res.tl); } }); ro.observe(scBox); }
 }
 
-/* ---------- Seiten ---------- */
+/* ---------- Seiten: eine Sammlung aller Schaltungen ---------- */
 var root, FILTER = "alle", QUERY = "";
-function cardIC(ic){
-  var a = el("a", "ic-card", ""); a.href = "#" + ic.id; a.dataset.cat = ic.cat; var cc = CATS.filter(function(c){ return c[0] === ic.cat; })[0];
-  a.style.setProperty("--c", cc[2]);
-  a.innerHTML = '<span class="ic-pkg">' + ic.pkg + '</span><b>' + esc(ic.name) + "</b><p>" + esc(T(ic.k[0], ic.k[1])) + '</p><i>' + ic.proj.length + " " + T(ic.proj.length > 1 ? "Schaltungen" : "Schaltung", "circuit" + (ic.proj.length > 1 ? "s" : "")) + "</i>";
-  a.dataset.s = (ic.name + " " + ic.k[0] + " " + ic.k[1]).toLowerCase(); return a;
+var GRP = [["takt", T("Takt & Zeit", "Horloge & temps"), "#ffb000", ["ne555a", "ne555m", "hc14", "cd4060", "k_uhr", "k_sirene"]], ["zaehl", T("Zählen & Lauflicht", "Compter & chenillard"), "#6dffb0", ["hc74", "cd4017", "hc160", "k_lauf", "k_zaehl"]], ["logik", T("Logik & Daten", "Logique & données"), "#3de6ff", ["hc00", "hc595", "hc138", "cd4511", "k_prell"]], ["analog", T("Verstärken, Messen & Versorgen", "Amplifier, mesurer & alimenter"), "#ff3d9a", ["lm358", "lm393", "lm317", "k_daemm"]]];
+function icsOf(pid){ var pr = PROJ[pid]; if (pr.ics) return pr.ics.slice(); var ic = icOfProj(pid); return ic ? [ic.id] : []; }
+function shortT(pid){ var t = T(PROJ[pid].t[0], PROJ[pid].t[1]); return t.split(/ – |: /)[0]; }
+function subT(pid){ var t = T(PROJ[pid].t[0], PROJ[pid].t[1]), m = t.split(/ – |: /); return m.slice(1).join(" – "); }
+function cardP(pid, col){
+  var a = el("a", "ic-card" + (icsOf(pid).length > 1 ? " kb" : ""), ""), ics = icsOf(pid).map(function(i){ return icById(i).name.split(" / ")[0]; });
+  a.href = "#p/" + pid; a.style.setProperty("--c", col);
+  a.innerHTML = '<span class="ic-pkg">' + ics.map(esc).join(" + ") + '</span><b>' + (KICON[pid] ? KICON[pid] + " " : "") + esc(shortT(pid)) + "</b><p>" + esc(subT(pid) || T(PROJ[pid].d[0], PROJ[pid].d[1]).slice(0, 90) + "…") + "</p><i>" + (ics.length > 1 ? ics.length + " ICs" : T("1 IC", "1 CI")) + "</i>";
+  a.dataset.s = (PROJ[pid].t[0] + " " + PROJ[pid].t[1] + " " + PROJ[pid].d[0] + " " + ics.join(" ")).toLowerCase(); return a;
 }
 function listPage(){
-  stopLive(); document.title = "IC-Labor – Oratio Tech Studio"; root.innerHTML = "";
-  root.appendChild(el("div", "crumb", '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › IC-Labor'));
-  var hero = el("div", "ic-hero", '<div class="ic-k">IC-LABOR</div><h1>' + T("IC nachschlagen. Schaltung ausprobieren.", "Consulter un CI. Essayer un circuit.") + "</h1><p>" + T("Zu jedem Baustein: Pinbelegung, die wichtigsten Daten und eine lebendige Schaltung mit Oszilloskop – drehe an R und C und sieh, was der IC macht. Unten findest du Projekte mit mehreren ICs.", "Pour chaque composant : brochage, données clés et un circuit vivant avec oscilloscope.") + '</p><p style="margin-top:10px;font-size:14px">' + T("Eigene Schaltungen frei verdrahten: <a href=\"lab.html#sim\" style=\"color:#6dffb0\">Schaltungs-Simulator im Oratio Lab</a> · Bauteil-Daten: <a href=\"index.html#/w/bt_ic\" style=\"color:#6dffb0\">IC-Nachschlagewerk</a>", "Câbler librement : <a href=\"lab.html#sim\" style=\"color:#6dffb0\">simulateur d’Oratio Lab</a> · Données : <a href=\"index.html#/w/bt_ic\" style=\"color:#6dffb0\">référence des CI</a>") + "</p>"); root.appendChild(hero);
-  var tools = el("div", "ic-chips"); root.appendChild(tools);
-  var s = el("input", "ic-search"); s.type = "search"; s.placeholder = T("IC suchen, z. B. 555, 4017, Zähler …", "Chercher un CI, p. ex. 555, 4017 …"); s.value = QUERY; tools.appendChild(s);
+  stopLive(); document.title = "Schaltungen – Oratio Tech Studio"; root.innerHTML = "";
+  root.appendChild(el("div", "crumb", '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › ' + T("Schaltungen", "Circuits")));
+  root.appendChild(el("div", "ic-hero", '<div class="ic-k">' + T("SCHALTUNGEN", "CIRCUITS") + "</div><h1>" + T("Alle Schaltungen zum Ausprobieren", "Tous les circuits à essayer") + "</h1><p>" + T("Wähle eine Schaltung, drehe an R und C und sieh am Oszilloskop, was passiert – mit Verdrahtung Pin für Pin. Einzelne ICs und Projekte mit mehreren ICs stehen hier zusammen. Die Daten zu jedem IC findest du im Tech Studio.", "Choisis un circuit, change R et C et regarde l’oscilloscope. Les données de chaque CI sont dans le Studio.") + '</p><p style="margin-top:10px;font-size:14px">' + T('Eigene Schaltung frei verdrahten: <a href="lab.html#sim" style="color:#6dffb0">Schaltungs-Simulator im Oratio Lab</a> · IC nachschlagen: <a href="index.html#/w/bt_ic" style="color:#6dffb0">ICs: Logik &amp; Speicher</a>, <a href="index.html#/w/bt_analog" style="color:#6dffb0">Analog-ICs</a>', 'Câbler librement : <a href="lab.html#sim" style="color:#6dffb0">simulateur d’Oratio Lab</a>') + "</p>"));
+  var s = el("input", "ic-search"); s.type = "search"; s.placeholder = T("Schaltung oder IC suchen, z. B. 555, Lauflicht, 4017 …", "Chercher un circuit ou un CI …"); s.value = QUERY; var tools = el("div", "ic-chips"); tools.appendChild(s); root.appendChild(tools);
   var cr = el("div", "ic-chips"); root.appendChild(cr);
-  [["alle", T("Alle", "Tous")]].concat(CATS.map(function(c){ return [c[0], c[1]]; })).concat([["kombi", T("🧩 Kombi-Projekte", "🧩 Projets combinés")]]).forEach(function(c){ var b = el("button", "ic-ch" + (FILTER === c[0] ? " on" : ""), esc(c[1])); b.type = "button"; b.onclick = function(){ FILTER = c[0]; cr.querySelectorAll("button").forEach(function(y){ y.classList.remove("on"); }); b.classList.add("on"); filt(); }; cr.appendChild(b); });
-  var g1 = el("div", "ic-grid"); ICS.forEach(function(ic){ g1.appendChild(cardIC(ic)); }); root.appendChild(g1);
-  var h2 = el("h2", "ic-h2", "🧩 " + T("Kombi-Projekte – mehrere ICs zusammen", "Projets combinés – plusieurs CI ensemble")); root.appendChild(h2);
-  var g2 = el("div", "ic-grid"); KOMBI.forEach(function(k){ var pr = PROJ[k], a = el("a", "ic-card kb", '<span class="ic-pkg">' + pr.flow.length + " " + T("Stufen", "étages") + '</span><b>' + KICON[k] + " " + esc(T(pr.t[0], pr.t[1]).split(":")[0]) + "</b><p>" + esc(pr.flow.join(" → ")) + "</p><i>" + esc(T(pr.t[0], pr.t[1]).split(":")[1] || "") + "</i>"); a.href = "#k/" + k; a.dataset.s = (pr.t[0] + " " + pr.t[1] + " " + pr.d[0]).toLowerCase(); g2.appendChild(a); }); root.appendChild(g2);
-  var emp = el("p", "ic-lb", T("Nichts gefunden – versuche eine Nummer, z. B. 4017.", "Rien trouvé.")); emp.hidden = true; root.appendChild(emp);
-  function filt(){ var q = s.value.trim().toLowerCase(); QUERY = s.value; var n1 = 0, n2 = 0;
-    g1.childNodes.forEach(function(a){ var ok = (FILTER === "alle" || FILTER === a.dataset.cat) && (!q || a.dataset.s.indexOf(q) >= 0); a.hidden = !ok; if (ok) n1++; });
-    g2.childNodes.forEach(function(a){ var ok = (FILTER === "alle" || FILTER === "kombi") && (!q || a.dataset.s.indexOf(q) >= 0); a.hidden = !ok; if (ok) n2++; });
-    g1.hidden = !n1; h2.hidden = g2.hidden = !n2; emp.hidden = !!(n1 + n2); }
+  [["alle", T("Alle", "Tous")]].concat(GRP.map(function(g){ return [g[0], g[1]]; })).forEach(function(c){ var b = el("button", "ic-ch" + (FILTER === c[0] ? " on" : ""), esc(c[1])); b.type = "button"; b.onclick = function(){ FILTER = c[0]; cr.querySelectorAll("button").forEach(function(y){ y.classList.remove("on"); }); b.classList.add("on"); filt(); }; cr.appendChild(b); });
+  var secs = [];
+  GRP.forEach(function(g){ var h = el("h2", "ic-h2", esc(g[1]) + ' <small style="font-weight:500;color:var(--muted)">' + g[3].length + "</small>"), gr = el("div", "ic-grid"); g[3].forEach(function(p){ gr.appendChild(cardP(p, g[2])); }); root.appendChild(h); root.appendChild(gr); secs.push([g[0], h, gr]); });
+  var emp = el("p", "ic-lb", T("Nichts gefunden – versuche z. B. 555 oder Zähler.", "Rien trouvé.")); emp.hidden = true; root.appendChild(emp);
+  function filt(){ var q = s.value.trim().toLowerCase(), tot = 0; QUERY = s.value;
+    secs.forEach(function(x){ var n = 0; x[2].childNodes.forEach(function(a){ var ok = (FILTER === "alle" || FILTER === x[0]) && (!q || a.dataset.s.indexOf(q) >= 0); a.hidden = !ok; if (ok) n++; }); x[1].hidden = x[2].hidden = !n; tot += n; });
+    emp.hidden = !!tot; }
   s.oninput = filt; filt();
 }
-function detailPage(id, pid){
-  var ic = icById(id); if (!ic) return listPage(); pid = pid && ic.proj.indexOf(pid) >= 0 ? pid : ic.proj[0];
-  document.title = ic.name + " – IC-Labor"; root.innerHTML = "";
-  root.appendChild(el("div", "crumb", '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › <a href="#">IC-Labor</a> › ' + esc(ic.name)));
+function circuitPage(pid){
+  var pr = PROJ[pid]; if (!pr) return listPage(); var ics = icsOf(pid).map(icById).filter(Boolean);
+  document.title = shortT(pid) + " – Schaltungen"; root.innerHTML = "";
+  root.appendChild(el("div", "crumb", '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › <a href="#">' + T("Schaltungen", "Circuits") + "</a> › " + esc(shortT(pid))));
   var wrap = el("div", "ic-two"); root.appendChild(wrap);
   var side = el("aside", "ic-side"); wrap.appendChild(side); var main = el("section", "ic-main"); wrap.appendChild(main);
-  side.appendChild(el("h1", "ic-h1", esc(ic.name))); side.appendChild(el("p", "ic-lb", esc(T(ic.k[0], ic.k[1]))));
-  var pn = el("div", "ic-pin"); pn.innerHTML = dip(ic); side.appendChild(pn);
-  var lg = el("div", "ic-leg", '<span style="--c:#ff6b6b">+V</span><span style="--c:#8aa0b8">GND</span><span style="--c:#ffb000">' + T("Eingang", "Entrée") + '</span><span style="--c:#3de6ff">' + T("Ausgang", "Sortie") + "</span>"); side.appendChild(lg);
-  side.appendChild(el("p", "ic-lb", T("Ansicht von oben, Kerbe nach oben: Pin 1 links oben, dann gegen den Uhrzeigersinn.", "Vue de dessus, encoche en haut : broche 1 en haut à gauche.")));
-  var ft = el("table", "ic-facts"); ft.innerHTML = ic.facts.map(function(f){ return "<tr><th>" + esc(T(f[0], f[1])) + "</th><td>" + esc(T(f[2], f[2])) + "</td></tr>"; }).join(""); side.appendChild(ft);
-  var dl = el("a", "ic-act2", "📖 " + T("Datenblatt-Seite im Studio", "Fiche dans le Studio")); dl.href = "index.html#/s/" + LINK[ic.id]; side.appendChild(dl);
-  if (ic.proj.length > 1){ var tabs = el("div", "ic-chips"); ic.proj.forEach(function(p){ var a = el("a", "ic-ch" + (p === pid ? " on" : ""), esc(T(PROJ[p].t[0], PROJ[p].t[1]).split(" – ")[0])); a.href = "#" + ic.id + "/" + p; tabs.appendChild(a); }); main.appendChild(tabs); }
+  side.appendChild(el("h1", "ic-h1", T("Verdrahtung", "Câblage")));
+  ics.forEach(function(ic){ side.appendChild(el("p", "ic-lb", "<b>" + esc(ic.name) + "</b> – " + esc(T(ic.k[0], ic.k[1])))); var pn = el("div", "ic-pin"); pn.innerHTML = dip(ic); side.appendChild(pn); var dl = el("a", "ic-act2", "📖 " + T("Alle Daten zu ", "Toutes les données : ") + esc(ic.name.split(" / ")[0])); dl.href = "index.html#/s/" + LINK[ic.id]; side.appendChild(dl); });
+  side.appendChild(el("div", "ic-leg", '<span style="--c:#ff6b6b">+V</span><span style="--c:#8aa0b8">GND</span><span style="--c:#ffb000">' + T("Eingang", "Entrée") + '</span><span style="--c:#3de6ff">' + T("Ausgang", "Sortie") + "</span>"));
+  side.appendChild(el("p", "ic-lb", T("Ansicht von oben, Kerbe oben: Pin 1 links oben, dann gegen den Uhrzeigersinn.", "Vue de dessus, encoche en haut : broche 1 en haut à gauche.")));
   var host = el("div"); main.appendChild(host); renderProject(host, pid);
-}
-function kombiPage(pid){
-  var pr = PROJ[pid]; if (!pr) return listPage(); document.title = T(pr.t[0], pr.t[1]) + " – IC-Labor"; root.innerHTML = "";
-  root.appendChild(el("div", "crumb", '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › <a href="#">IC-Labor</a> › ' + T("Kombi-Projekt", "Projet combiné")));
-  var host = el("div", "ic-main solo"); root.appendChild(host); renderProject(host, pid);
+  var ids = {}; ics.forEach(function(i){ ids[i.id] = 1; }); var more = []; Object.keys(PROJ).forEach(function(p){ if (p !== pid && icsOf(p).some(function(i){ return ids[i]; })) more.push(p); });
+  if (more.length){ main.appendChild(el("h3", "ic-h3", "➕ " + T("Weitere Schaltungen mit diesen ICs", "Autres circuits avec ces CI"))); var mc = el("div", "ic-chips"); more.forEach(function(p){ var a = el("a", "ic-ch", esc(shortT(p))); a.href = "#p/" + p; mc.appendChild(a); }); main.appendChild(mc); }
 }
 function route(){
   var h = decodeURIComponent(location.hash.replace(/^#/, "")), p = h.split("/");
-  if (!h) listPage(); else if (p[0] === "k") kombiPage(p[1]); else detailPage(p[0], p[1]);
+  if (!h) listPage(); else if (p[0] === "p" || p[0] === "k") circuitPage(p[1]); else if (icById(p[0])) circuitPage(p[1] && PROJ[p[1]] ? p[1] : icById(p[0]).proj[0]); else listPage();
   window.scrollTo(0, 0);
 }
 function start(){ root = $("#iclab"); window.addEventListener("hashchange", route); route(); }

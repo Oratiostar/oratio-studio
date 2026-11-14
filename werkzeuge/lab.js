@@ -88,7 +88,7 @@ MODS.start = (function(){
       '<div class="lxscope"><canvas></canvas><span class="lxch">' + L("Wähle einen Kanal – das Signal passt sich an.", "Choisis un canal – le signal s’adapte.") + '</span></div>' +
       '<div class="lxlist"></div>' +
       '<div class="lxst"><span class="lxok">● SYS OK</span><span class="lxmsg"></span></div>' +
-      '<p class="lxfoot">' + L("Alles läuft komplett in deinem Browser – nichts wird hochgeladen.", "Tout tourne entièrement dans ton navigateur – rien n’est envoyé.") + ' · <a href="ic-lab.html" style="color:#6dffb0">IC-Labor</a> · <a href="index.html#/studio" style="color:#6dffb0">Tech Studio</a> · <a href="kurs.html" style="color:#6dffb0">Kursland</a></p>';
+      '<p class="lxfoot">' + L("Alles läuft komplett in deinem Browser – nichts wird hochgeladen.", "Tout tourne entièrement dans ton navigateur – rien n’est envoyé.") + ' · <a href="ic-lab.html" style="color:#6dffb0">Schaltungen</a> · <a href="index.html#/studio" style="color:#6dffb0">Tech Studio</a> · <a href="kurs.html" style="color:#6dffb0">Kursland</a></p>';
     b.appendChild(wrap);
     var list = $(".lxlist", wrap), strips = [], icos = [];
     CH.forEach(function(c, i){
