@@ -183,7 +183,7 @@ body.sl .kat.on{background:linear-gradient(#ff9a3c,#ff6a00);color:#fff}
 body.sl .bh em{color:#f2ffe6;text-shadow:0 1px 2px rgba(0,40,0,.55)}
 .bh em{font-style:normal;font-weight:500;font-size:14px;color:var(--muted);margin-left:6px}
 .bsec{margin:0 0 30px}.bsec[hidden]{display:none}
-.bh{display:flex;align-items:center;gap:10px;font-size:clamp(22px,4vw,30px);margin:8px 0 6px;padding-bottom:8px;border-bottom:3px solid #27a3df}
+.bh{display:flex;align-items:center;flex-wrap:wrap;gap:10px;font-size:clamp(22px,4vw,30px);margin:34px 0 10px;padding:12px 16px;border-radius:16px;background:var(--bc,#27a3df);color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.3);box-shadow:0 4px 0 rgba(0,0,0,.18)}.bh .bn{display:inline-grid;place-items:center;width:1.5em;height:1.5em;border-radius:50%;background:#fff;color:var(--bc);font-style:normal;font-weight:800;text-shadow:none}.bh em{color:#fff!important;opacity:.92}.ssec h3{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px}.ssec h3 em{flex-basis:100%}.gn{font-style:normal;font-weight:800;font-size:.8em;color:#fff;background:var(--bc,#27a3df);padding:1px 9px;border-radius:99px}
 body.sl .ssec h3 em{color:#f2ffe6;text-shadow:0 1px 2px rgba(0,40,0,.55)}
 .ssec{margin:18px 0 6px}.ssec h3{margin:0 0 6px;font-size:17px}.ssec h3 em{display:block;font-style:normal;font-weight:500;font-size:13.5px;color:var(--muted);margin-top:2px}
 .scgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px 16px;margin-top:10px}
@@ -776,23 +776,23 @@ function startseite(){
     pc: () => karte("pc-check.html", "", "#ff5a3c", '<span class="emo">🖥️</span>', "PC-Check", Tx("Passt alles zusammen? CPU, GPU, Mainboard, RAM, Netzteil, Kühler – in Prozent","Compatibilité en pourcentage : CPU, GPU, carte mère, RAM, alimentation, ventirad"), Tx("Konfigurator · Matrix · Datenbank","Configurateur · matrice · base"))
   };
   const BER = [
-    { id: "elektro", ic: "⚡", n: Tx("Elektronik","Électronique"), t: Tx("Lernen & Nachschlagen: von Ohm bis zum IC","Apprendre & consulter : de la loi d’Ohm au CI"), sec: [
-      { n: Tx("Strom & Spannung verstehen","Comprendre courant & tension"), t: Tx("Ohm, Leistung, Wechselstrom, Filter – von Null","Ohm, puissance, alternatif, filtres – depuis zéro"), w: ["grund"] },
-      { n: Tx("Rechnen & Lesen","Calculer & lire"), t: Tx("Mathe, Schaltzeichen – und der Rechner für Farbcode, Spannungsteiler, Filter, LED, 555","Maths, symboles – et le calculateur : code couleur, diviseur, filtres, LED, 555"), w: ["mathe","schalt"], ex: ["elab"] },
-      { n: Tx("Bauteile kennen & finden","Connaître & trouver les composants"), t: Tx("Passiv, Halbleiter, Energie – und der große Katalog mit allem nach Kategorien","Passifs, semi-conducteurs, énergie – et le grand catalogue par catégories"), w: ["passiv","halbleiter","energie","bauteile"] },
+    { id: "elektro", ic: "⚡", c: "#ff8a00", n: Tx("Elektronik","Électronique"), t: Tx("Lernen & Nachschlagen: von Ohm bis zum IC","Apprendre & consulter : de la loi d’Ohm au CI"), sec: [
+      { n: Tx("Strom & Spannung verstehen","Comprendre courant & tension"), t: Tx("Ohm, Leistung, Wechselstrom, Filter und alle Rechner dazu – von Null","Ohm, puissance, alternatif, filtres et calculs – depuis zéro"), w: ["grund"] },
+      { n: Tx("Rechnen & Lesen","Calculer & lire"), t: Tx("Mathe, Schaltzeichen – und der Elektronik-Rechner (Farbcode, Spannungsteiler, Filter, LED, 555)","Maths, symboles – et le calculateur (code couleur, diviseur, filtres, LED, 555)"), w: ["mathe","schalt"], ex: ["elab"] },
+      { n: Tx("Bauteile kennenlernen","Découvrir les composants"), t: Tx("Passiv, Halbleiter, Energie – Aufbau, Werte und Einsatz","Passifs, semi-conducteurs, énergie – structure, valeurs, usage"), w: ["passiv","halbleiter","energie"] },
       { n: Tx("ICs nachschlagen","Consulter les CI"), t: Tx("Digitaltechnik, Logik-ICs, Analog-ICs – auf jeder IC-Seite führt ein Knopf zur Schaltung","Numérique, CI logiques, CI analogiques – un bouton mène au circuit"), w: ["digital","bt_ic","bt_analog"] },
+      { n: Tx("Alles auf einen Blick","Tout en un coup d’œil"), t: Tx("Jedes Bauteil und jeder IC, nach Kategorien sortiert","Chaque composant et chaque CI, par catégories"), w: ["bauteile"] },
       { n: Tx("Live mit Oszilloskop","En direct avec oscilloscope"), t: Tx("Alle Schaltungen zum Ausprobieren: Verdrahtung, Werte drehen, Signale sehen","Tous les circuits : câblage, réglages, signaux"), w: [], ex: ["iclab"] } ] },
-    { id: "exp", ic: "🧪", n: Tx("Messen & Prüfen","Mesurer & tester"), t: Tx("Messgeräte, Messplatz, Fehlersuche","Appareils, banc de mesure, dépannage"), sec: [
-      { n: Tx("Messen & Fehlersuche","Mesure & dépannage"), t: Tx("Multimeter, Oszi, Löten, Messplatz live, Fehler eingrenzen","Multimètre, oscillo, soudure, banc de mesure, dépannage"), w: ["messen","labor","fehler"] },
-      { n: Tx("Frei ausprobieren","Essayer librement"), t: Tx("Eigene Schaltungen bauen, Displays gestalten, Terminal","Construire ses circuits, concevoir des écrans, terminal"), w: [], ex: ["lab"] } ] },
-    { id: "pi", ic: "🔧", n: Tx("Pi & Mikrocontroller","Pi & microcontrôleurs"), t: Tx("Bauen: Boards, Sensoren, Busse, Displays","Construire : cartes, capteurs, bus, écrans"), sec: [
+    { id: "exp", ic: "📏", c: "#27a3df", n: Tx("Messen & Prüfen","Mesurer & tester"), t: Tx("Messgeräte, Messplatz, Fehlersuche","Appareils, banc de mesure, dépannage"), sec: [
+      { n: Tx("Messen & Fehlersuche","Mesure & dépannage"), t: Tx("Multimeter, Oszi, Löten, Messplatz live, Fehler eingrenzen","Multimètre, oscillo, soudure, banc de mesure, dépannage"), w: ["messen","labor","fehler"] } ] },
+    { id: "pi", ic: "🔧", c: "#d63b8a", n: Tx("Pi & Mikrocontroller","Pi & microcontrôleurs"), t: Tx("Bauen: Boards, Sensoren, Busse","Construire : cartes, capteurs, bus"), sec: [
       { n: Tx("Boards & Grundlagen","Cartes & bases"), t: Tx("GPIO, PWM, ADC – Boards, Zubehör und der Vergleich","GPIO, PWM, ADC – cartes, accessoires, comparatifs"), w: ["mikro","mcu","zubehoer"] },
-      { n: Tx("Anschließen","Raccorder"), t: Tx("I²C, SPI, UART, Sensoren, Motoren, Module","I²C, SPI, UART, capteurs, moteurs, modules"), w: ["schnittstellen","sensoren","bt_module"], ex: ["disp"] } ] },
-    { id: "it", ic: "💻", n: Tx("Informatik & IT","Informatique & IT"), t: Tx("Zahlen, Speicher, Netzwerk, Linux, Code","Nombres, mémoire, réseau, Linux, code"), sec: [
+      { n: Tx("Anschließen","Raccorder"), t: Tx("I²C, SPI, UART, Sensoren, Motoren, Module","I²C, SPI, UART, capteurs, moteurs, modules"), w: ["schnittstellen","sensoren","bt_module"] } ] },
+    { id: "it", ic: "💻", c: "#7a4dff", n: Tx("Informatik & IT","Informatique & IT"), t: Tx("Zahlen, Speicher, Netzwerk, Linux, Code","Nombres, mémoire, réseau, Linux, code"), sec: [
       { n: Tx("Zahlen, Codes & Begriffe","Nombres, codes & termes"), t: Tx("Binär, Hex, Zeichencodes – und das Glossar für alles","Binaire, hexa, codes – et le glossaire pour tout"), w: ["zahlen","glossar"] },
       { n: Tx("Hardware & Netzwerk","Matériel & réseau"), t: Tx("Speicher, Bandbreiten, Netzwerk und Funk","Mémoire, débits, réseau et radio"), w: ["speicher","netzwerk"] },
       { n: Tx("Software","Logiciel"), t: Tx("Linux, Terminal, Git, Programmieren","Linux, terminal, Git, programmation"), w: ["linux","prog"] } ] },
-    { id: "vergl", ic: "🆚", n: Tx("Vergleichen & Entscheiden","Comparer & décider"), t: Tx("Was passt? Was kaufe ich?","Qu’est-ce qui convient ? Quoi acheter ?"), sec: [
+    { id: "vergl", ic: "🆚", c: "#16a085", n: Tx("Vergleichen & Entscheiden","Comparer & décider"), t: Tx("Was passt? Was kaufe ich?","Qu’est-ce qui convient ? Quoi acheter ?"), sec: [
       { n: Tx("Geräte & Kompatibilität","Appareils & compatibilité"), t: Tx("PC-Check, Konsolen, Handys, Kameras","PC-Check, consoles, téléphones, caméras"), w: ["konsolen","handys","kameras"], ex: ["pc"] } ] }
   ];
   const used = new Set(["bt_katalog","bt_wissen"]); BER.forEach(b => b.sec.forEach(s => s.w.forEach(x => used.add(x))));
@@ -806,7 +806,7 @@ function startseite(){
     '<a href="elektro.html">🧮 '+esc(Tx("etwas ausrechnen","calculer"))+'</a>'+
     '<a href="#/w/glossar">📖 '+esc(Tx("einen Begriff klären","clarifier un terme"))+'</a>'+
     '<a href="pc-check.html">🖥️ '+esc(Tx("einen PC prüfen","vérifier un PC"))+'</a></div>';
-  const secs = BER.map(b => '<section class="bsec" data-d="'+b.id+'"><h2 class="bh"><span>'+b.ic+'</span> '+esc(b.n)+(b.t?'<em>'+esc(b.t)+'</em>':'')+'</h2>'+b.sec.map(s => '<div class="ssec"><h3>'+esc(s.n)+(s.t?'<em>'+esc(s.t)+'</em>':'')+'</h3><div class="scgrid">'+(s.ex||[]).map(k => EX[k]()).join("")+s.w.map(weltK).join("")+'</div></div>').join("")+'</section>').join("");
+  const secs = BER.map((b, bi) => '<section class="bsec" data-d="'+b.id+'" style="--bc:'+(b.c||"#27a3df")+'"><h2 class="bh"><i class="bn">'+(bi+1)+'</i><span>'+b.ic+'</span> '+esc(b.n)+(b.t?'<em>'+esc(b.t)+'</em>':'')+'</h2>'+b.sec.map((s, si) => '<div class="ssec"><h3><i class="gn">'+(bi+1)+'.'+(si+1)+'</i>'+esc(s.n)+(s.t?'<em>'+esc(s.t)+'</em>':'')+'</h3><div class="scgrid">'+(s.ex||[]).map(k => EX[k]()).join("")+s.w.map(weltK).join("")+'</div></div>').join("")+'</section>').join("");
   app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("studio"))+'</div><div class="ribwrap"><div class="ribbon">'+esc(U("fachW"))+'</div></div>'+chips+quick+secs;
   const filtere = () => {
     document.querySelectorAll(".kat").forEach(b => b.classList.toggle("on", b.dataset.k === KATWAHL));
@@ -843,7 +843,8 @@ async function seitenansicht(wid, sid){
   const nav = w.seiten.map(p => '<a href="#/s/'+w.id+'/'+encodeURIComponent(p.id)+'"'+(p.id===sid?' class="act"':'')+'>'+esc(T(p.titel))+'</a>').join("");
   let h = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › <a href="#/studio">'+esc(U("studio"))+'</a> › <a href="#/w/'+w.id+'">'+esc(T(w.name))+'</a> › '+esc(T(s.titel))+'</div><div class="slw"><nav class="slnav" aria-label="'+esc(T(w.name))+'">'+nav+'</nav><section class="slmain">'+pageHead(w, s.titel, s.kurz, s.symbol);
   const SCH = {"digital/555":"ne555a","digital/flipflop":"hc74","bt_analog/analog_ne555":"ne555a","bt_analog/schaltungen_t555a":"ne555a","bt_analog/schaltungen_t555m":"ne555m","bt_ic/logik_74hc14":"hc14","bt_ic/speicher_4060":"cd4060","bt_ic/logik_7400":"hc00","bt_ic/logik_7402":"hc00","bt_ic/logik_7404":"hc00","bt_ic/logik_7408":"hc00","bt_ic/logik_7432":"hc00","bt_ic/logik_7486":"hc00","bt_ic/speicher_7474":"hc74","bt_ic/speicher_4017":"cd4017","bt_ic/speicher_74160":"hc160","bt_ic/speicher_74595":"hc595","bt_ic/decoder_74138":"hc138","bt_ic/decoder_4511":"cd4511","bt_analog/analog_lm358":"lm358","bt_analog/analog_lm393":"lm393","bt_analog/schaltungen_lm317_sch":"lm317"};
-  if (SCH[wid+"/"+sid]) h += '<a class="schbtn" href="ic-lab.html#p/'+SCH[wid+"/"+sid]+'">🧩 <b>'+esc(LANG==="fr"?"Essayer le circuit":"Schaltung ausprobieren")+'</b><span>'+esc(LANG==="fr"?"avec oscilloscope, broche par broche":"mit Oszilloskop, Pin für Pin verdrahtet")+'</span></a>';
+  const SCHK = SCH[wid+"/"+sid] || (wid === "bauteile" ? (SCH["bt_ic/"+sid] || SCH["bt_analog/"+sid]) : null);
+  if (SCHK) h += '<a class="schbtn" href="ic-lab.html#p/'+SCHK+'">🧩 <b>'+esc(LANG==="fr"?"Essayer le circuit":"Schaltung ausprobieren")+'</b><span>'+esc(LANG==="fr"?"avec oscilloscope, broche par broche":"mit Oszilloskop, Pin für Pin verdrahtet")+'</span></a>';
   if (s.tags && s.tags.length) h += '<div class="tags">'+s.tags.filter(t=>t.length>2&&!/[\/()]/.test(t)).slice(0,10).map(t=>'<span class="tag">'+esc(t)+'</span>').join("")+'</div>';
   for (const b of s.bloecke){ const f = BAUSTEIN[b.t]; try { h += f ? f(b, w.farbe) : ""; } catch(e){ h += '<div class="platz">'+esc(b.t)+': '+esc(e.message)+'</div>'; } }
   if (s.siehe && s.siehe.length){
@@ -1043,7 +1044,7 @@ async function frLaden(){ if (LANG === "fr" && FR === null) { try { FR = await h
 
 (async function start(){
   setTheme(theme());
-  try { INDEX = await holen("daten/index.json"); await frLaden(); if (LANG !== "fr") { const NN = {bauteile:"Bauteile-Katalog", bt_katalog:"Transistoren, Dioden & Passive", bt_analog:"Analog-ICs & Grundschaltungen", labor:"Messplatz live"}; (INDEX.welten||[]).forEach(w => { if (NN[w.id]) w.name = NN[w.id]; }); } beschrifte(); window.addEventListener("hashchange", route); route(); }
+  try { INDEX = await holen("daten/index.json"); await frLaden(); if (LANG !== "fr") { const NN = {bauteile:"Bauteile-Katalog", bt_katalog:"Halbleiter-Datenblätter", bt_analog:"Analog-ICs & Grundschaltungen", labor:"Messplatz live"}; (INDEX.welten||[]).forEach(w => { if (NN[w.id]) w.name = NN[w.id]; }); } beschrifte(); window.addEventListener("hashchange", route); route(); }
   catch(e){ app.innerHTML = '<p>Daten konnten nicht geladen werden. Bitte die Seite über einen Webserver öffnen (nicht direkt als Datei).</p>'; }
 })();
 </script>
