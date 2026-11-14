@@ -49,7 +49,7 @@ function route(){
   if (MODS[cur] && MODS[cur].stop) MODS[cur].stop();
   cur = h; body.innerHTML = "";
   var hd = HERO[h];
-  heroEl.style.background = hd[3]; heroEl.className = "lhero" + (h === "start" ? "" : " small");
+  heroEl.style.display = h === "start" ? "none" : ""; heroEl.style.background = hd[3]; heroEl.className = "lhero" + (h === "start" ? "" : " small");
   heroEl.innerHTML = '<div class="lic">' + hd[0] + '</div><div><h1>' + hd[1] + '</h1><p>' + hd[2] + '</p></div>';
   crumbEl.innerHTML = '<a href="index.html">Oratio Place</a> › ' + (h === "start" ? "Oratio Lab" : '<a href="#start">Oratio Lab</a> › ' + hd[1]);
   backEl.hidden = h === "start";
@@ -58,21 +58,169 @@ function route(){
   window.scrollTo(0, 0);
 }
 
-/* ---------- START ---------- */
-MODS.start = { show: function(b){
-  var T = [
-    ["sim", "⚡", L("Schaltungs-Simulator", "Simulateur de circuits"), "linear-gradient(135deg,#ff8a00,#ff4f9a)", L("Batterie, Widerstand, LED, Schalter, Messgeräte, Kondensator und Transistor per Drag & Drop. Überlast? Dann brennt etwas durch.", "Pile, résistance, LED, interrupteur, instruments, condensateur et transistor par glisser-déposer. Surcharge ? Quelque chose grille."), L("Stufe 1–3 live", "Niveaux 1–3 en direct")],
-    ["disp", "📺", L("Display-Werkstatt", "Atelier d’écrans"), "linear-gradient(135deg,#2f7bff,#12c2e9)", L("12 Displays wählen (LCD 16×2, OLED, Nokia, TFT, 7-Segment …), darauf schreiben, zeichnen oder ein Bild laden – fertiger Code für Arduino Uno, ESP32 und Raspberry Pi.", "12 écrans au choix (LCD 16×2, OLED, Nokia, TFT, 7 segments …) : écris, dessine ou charge une image – code prêt pour Arduino Uno, ESP32 et Raspberry Pi."), L("Neu", "Nouveau")],
-    ["watch", "⌚", "Oratio Watch", "linear-gradient(135deg,#12c2e9,#2f7bff)", L("Das Zifferblatt live im Browser – Farben, Zeiger und Stil frei wählbar. Gleiche Formen wie auf der echten Uhr.", "Le cadran en direct – couleurs, aiguilles et style au choix. Mêmes formes que sur la vraie montre."), L("Live", "En direct")],
-    ["matrix", "🟦", L("LED-Matrix-Maler", "Éditeur de matrice LED"), "linear-gradient(135deg,#7a3cff,#ff4f9a)", L("64×32 Pixel malen und als fertigen ESP32-Code exportieren.", "Dessine 64×32 pixels et exporte le code ESP32 prêt à l’emploi."), L("Export ESP32", "Export ESP32")],
-    ["term", "💻", L("Terminal-Trainer", "Entraîneur de terminal"), "linear-gradient(135deg,#1c2230,#2fe38a)", L("Ein Übungs-Terminal mit 10 kleinen Missionen. Nichts kann kaputtgehen.", "Un terminal d’entraînement avec 10 petites missions. Rien ne peut casser."), L("10 Missionen", "10 missions")],
-    ["game", "🎮", L("Mini-Spiele", "Mini-jeux"), "linear-gradient(135deg,#2fe38a,#ffd400)", L("LED-Memory, Ohm-Quiz, Farbcode-Trainer und Reaktionstest – alle mit Highscore.", "Mémoire LED, quiz d’Ohm, code couleur et test de réaction – avec records."), "Highscore"]
+/* ---------- START (Oszilloskop-Hub) ---------- */
+MODS.start = (function(){
+  var raf = 0, tmr = 0, alive = false;
+  var CH = [
+    ["sim", "#ffb000", L("Schaltungs-Simulator", "Simulateur de circuits"), L("Batterie, Widerstand, LED, Schalter, Messgeräte, Transistor. Zu viel Strom? Dann brennt etwas durch.", "Pile, résistance, LED, interrupteur, instruments, transistor. Trop de courant ? Quelque chose grille."), L("Überlast = Rauch", "Surcharge = fumée")],
+    ["disp", "#3de6ff", L("Display-Werkstatt", "Atelier d’écrans"), L("17 Displays, 7 Boards: schreiben, zeichnen – der fertige Code entsteht mit Erklärung zu jeder Zeile.", "17 écrans, 7 cartes : écris, dessine – le code est généré, chaque ligne expliquée."), L("17 Displays", "17 écrans")],
+    ["watch", "#6dffb0", "Oratio Watch", L("Das Zifferblatt live gestalten: Farben, Zeiger, Stil. Dieselben Formen wie auf der echten Uhr.", "Crée le cadran en direct : couleurs, aiguilles, style. Les mêmes formes que sur la vraie montre."), "Live"],
+    ["matrix", "#ff3d9a", L("LED-Matrix-Maler", "Éditeur de matrice LED"), L("64×32 Pixel malen und als fertigen ESP32- oder Pi-Code mitnehmen.", "Dessine 64×32 pixels et emporte le code ESP32 ou Pi."), "ESP32 · Pi"],
+    ["term", "#b6ff3d", L("Terminal-Trainer", "Entraîneur de terminal"), L("Ein Übungs-Terminal mit 10 Missionen. Hier kann nichts kaputtgehen.", "Un terminal d’entraînement avec 10 missions. Rien ne peut casser."), L("10 Missionen", "10 missions")],
+    ["game", "#b58cff", L("Mini-Spiele", "Mini-jeux"), L("LED-Memory, Ohm-Quiz, Farbcode und Reaktionstest – mit Highscore.", "Mémoire LED, quiz d’Ohm, code couleur et test de réaction – avec records."), "Highscore"]
   ];
-  var g = el("div", "lgrid");
-  T.forEach(function(t){ var a = el("button", "ltile", '<div class="th" style="background:' + t[3] + '">' + t[1] + ' <b>' + t[2] + '</b></div><div class="tb">' + t[4] + '<br><span class="tag">' + t[5] + '</span></div>'); a.onclick = function(){ location.hash = t[0]; }; g.appendChild(a); });
-  b.appendChild(g);
-  b.appendChild(el("p", "lmut", L("Alle Werkstätten laufen komplett in deinem Browser – nichts wird hochgeladen.", "Tous les ateliers tournent entièrement dans ton navigateur – rien n’est envoyé.")));
-} };
+  var JOKES = [
+    L("Ich hab doch gesagt: nicht drücken.", "Je t’avais dit : ne pas appuyer."),
+    L("Okay. Du magst Chaos.", "D’accord. Tu aimes le chaos."),
+    L("Das Lab verzeiht. Immer wieder.", "Le labo pardonne. Toujours."),
+    L("Funken sind gratis. Noch.", "Les étincelles sont gratuites. Pour l’instant."),
+    L("Ab hier passiert nichts Neues. Wirklich.", "À partir d’ici rien de neuf. Vraiment.")
+  ];
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function show(b){
+    var wrap = el("div", "lx");
+    wrap.innerHTML =
+      '<div class="lxh"><div><div class="lxk">' + L("OSZILLOSKOP · 6 KANÄLE", "OSCILLOSCOPE · 6 CANAUX") + '</div>' +
+      '<h1 class="lxt" data-t="ORATIO LAB">ORATIO LAB</h1>' +
+      '<p class="lxs0">' + L("Probieren, bauen, kaputtmachen – ohne Risiko. Alles läuft live in deinem Browser.", "Essayer, construire, casser – sans risque. Tout tourne en direct dans ton navigateur.") + '</p></div>' +
+      '<button class="lxbad" type="button">⚠ ' + L("NICHT DRÜCKEN", "NE PAS APPUYER") + '</button></div>' +
+      '<div class="lxscope"><canvas></canvas><span class="lxch">' + L("Wähle einen Kanal – das Signal passt sich an.", "Choisis un canal – le signal s’adapte.") + '</span></div>' +
+      '<div class="lxlist"></div>' +
+      '<div class="lxst"><span class="lxok">● SYS OK</span><span class="lxmsg"></span></div>' +
+      '<p class="lxfoot">' + L("Alles läuft komplett in deinem Browser – nichts wird hochgeladen.", "Tout tourne entièrement dans ton navigateur – rien n’est envoyé.") + '</p>';
+    b.appendChild(wrap);
+    var list = $(".lxlist", wrap), strips = [], icos = [];
+    CH.forEach(function(c, i){
+      var a = el("a", "lxs", '<span class="n">CH' + (i + 1) + '</span><span class="ico"><canvas></canvas></span><span class="tx"><b>' + c[2] + '</b><i>' + c[3] + '</i></span><span class="tag">' + c[4] + '</span><span class="go">▶</span><span class="burn"></span>');
+      a.href = "#" + c[0]; a.style.setProperty("--c", c[1]); a.style.setProperty("--o", (i % 2 ? 26 : 0) + "px");
+      list.appendChild(a); strips.push(a);
+      var cv = $(".ico canvas", a); icos.push(cv);
+    });
+    var msg = $(".lxmsg", wrap), ok = $(".lxok", wrap), bad = $(".lxbad", wrap), title = $(".lxt", wrap);
+    var sc = $(".lxscope canvas", wrap), sx = sc.getContext("2d"), hint = $(".lxch", wrap);
+    var dpr = Math.min(2, window.devicePixelRatio || 1), W = 0, H = 0;
+    function size(){
+      W = sc.clientWidth || 600; H = sc.clientHeight || 150;
+      sc.width = W * dpr; sc.height = H * dpr; sx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      icos.forEach(function(c){ c.width = 96 * dpr; c.height = 56 * dpr; c.getContext("2d").setTransform(dpr, 0, 0, dpr, 0, 0); });
+    }
+    size(); window.addEventListener("resize", size);
+
+    var focus = 0, prev = 0, mix = 1, shock = 0, sparks = [], jk = 0, clicks = 0;
+    function say(t, bad_){ msg.textContent = t; ok.textContent = bad_ ? "● FEHLER" : "● SYS OK"; ok.className = "lxok" + (bad_ ? " e" : ""); }
+    say(L("Netz 50 Hz · 0 Byte hochgeladen", "Réseau 50 Hz · 0 octet envoyé"));
+    function setFocus(i){ if (i === focus) return; prev = focus; focus = i; mix = 0; hint.style.color = CH[i][1]; hint.textContent = "CH" + (i + 1) + " · " + CH[i][2]; }
+    strips.forEach(function(a, i){
+      a.addEventListener("pointerenter", function(){ setFocus(i); });
+      a.addEventListener("focus", function(){ setFocus(i); });
+      a.addEventListener("pointerdown", function(){ setFocus(i); });
+    });
+    function wave(k, x, t){
+      switch (k){
+        case 0: return Math.sin(x * .045 + t * 3);
+        case 1: return Math.sin(x * .03 + t * 2) > 0 ? .8 : -.8;
+        case 2: return ((x * .016 + t * .8) % 1) * 2 - 1;
+        case 3: return (Math.floor(x / 20 + t * 3) % 5) / 2 - 1;
+        case 4: return Math.sin(x * .6) * (Math.sin(x * .021 + t) > .55 ? 1 : .08);
+        default: return (Math.sin(x * .05 + t * 2) * Math.sin(x * .013 - t) > 0 ? 1 : -1) * .7;
+      }
+    }
+    function burn(i, quiet){
+      var a = strips[i]; if (!a) return;
+      a.classList.add("burnt"); shock = Math.max(shock, quiet ? .7 : 1);
+      var yy = H / 2, n = 18;
+      for (var k = 0; k < n; k++) sparks.push({ x: W * (.15 + Math.random() * .7), y: yy, vx: (Math.random() - .5) * 5, vy: -Math.random() * 4 - 1, l: 1, c: CH[i][1] });
+      if (!quiet) say("CH" + (i + 1) + " " + L("durchgebrannt …", "grillé …"), true);
+      setTimeout(function(){ a.classList.remove("burnt"); if (alive) say(L("CH", "CH") + (i + 1) + " " + L("repariert ✓", "réparé ✓")); }, quiet ? 900 : 2200);
+    }
+    function surprise(){
+      if (!alive) return;
+      var r = Math.random();
+      if (r < .5) burn(Math.floor(Math.random() * CH.length));
+      else if (r < .75) { title.classList.add("gl"); setTimeout(function(){ title.classList.remove("gl"); }, 700); say(L("Signal gestört – Kosmische Strahlung?", "Signal perturbé – rayon cosmique ?"), true); setTimeout(function(){ if (alive) say(L("Alles wieder ruhig.", "Tout est redevenu calme.")); }, 1800); }
+      else { shock = 1.4; say(L("Netzspitze! Das Lab hält durch.", "Pic de tension ! Le labo tient.")); }
+      tmr = setTimeout(surprise, 7000 + Math.random() * 8000);
+    }
+    bad.onclick = function(){
+      say(JOKES[jk++ % JOKES.length], true); clicks++;
+      wrap.classList.add("quake"); title.classList.add("gl");
+      setTimeout(function(){ wrap.classList.remove("quake"); title.classList.remove("gl"); }, 1100);
+      CH.forEach(function(c, i){ setTimeout(function(){ burn(i, true); }, i * 110); });
+      shock = 2; if (navigator.vibrate) try { navigator.vibrate([40, 30, 60]); } catch(e){}
+      bad.textContent = clicks > 2 ? "⚠ " + L("OKAY, NOCHMAL", "ALLEZ, ENCORE") : "⚠ " + L("NICHT NOCHMAL", "PAS ENCORE");
+    };
+    title.onclick = function(){ setFocus((focus + 1) % CH.length); };
+
+    function icon(type, cv, t){
+      var c = cv.getContext("2d"), w = 96, h = 56, col = CH[type][1];
+      c.clearRect(0, 0, w, h); c.strokeStyle = col; c.fillStyle = col; c.lineWidth = 2; c.shadowColor = col; c.shadowBlur = 7; c.lineCap = "round";
+      var d = new Date();
+      if (type === 0){
+        c.beginPath(); for (var x = 4; x <= 92; x += 2){ var y = h / 2 + Math.sin(x * .13 - t * 5) * 15; x === 4 ? c.moveTo(x, y) : c.lineTo(x, y); } c.stroke();
+        var dx = 4 + ((t * 40) % 88); c.beginPath(); c.arc(dx, h / 2 + Math.sin(dx * .13 - t * 5) * 15, 3.5, 0, 7); c.fill();
+      } else if (type === 1){
+        c.font = "bold 28px ui-monospace,Menlo,Consolas,monospace"; c.textAlign = "center"; c.textBaseline = "middle";
+        var hh = ("0" + d.getHours()).slice(-2), mm = ("0" + d.getMinutes()).slice(-2);
+        c.fillText(hh + (Math.floor(t * 2) % 2 ? " " : ":") + mm, w / 2, h / 2 + 1);
+      } else if (type === 2){
+        var cx = w / 2, cy = h / 2, r = 24;
+        c.beginPath(); c.arc(cx, cy, r, 0, 7); c.stroke();
+        function hand(a, l, lw){ c.lineWidth = lw; c.beginPath(); c.moveTo(cx, cy); c.lineTo(cx + Math.sin(a) * l, cy - Math.cos(a) * l); c.stroke(); }
+        hand((d.getHours() % 12 + d.getMinutes() / 60) / 12 * 6.2832, 11, 3); hand(d.getMinutes() / 60 * 6.2832, 17, 2);
+        c.strokeStyle = "#ff4f4f"; c.shadowColor = "#ff4f4f"; hand((d.getSeconds() + d.getMilliseconds() / 1000) / 60 * 6.2832, 20, 1);
+      } else if (type === 3){
+        var f = Math.floor(t * 8);
+        for (var i = 0; i < 12; i++) for (var j = 0; j < 6; j++){
+          var on = ((i + f) % 12 === j * 2 || (i * 7 + j * 3 + f) % 11 === 0);
+          c.globalAlpha = on ? 1 : .16; c.fillRect(6 + i * 7.4, 4 + j * 8.4, 5, 5);
+        } c.globalAlpha = 1;
+      } else if (type === 4){
+        c.font = "bold 15px ui-monospace,Menlo,Consolas,monospace"; c.textAlign = "left"; c.textBaseline = "middle";
+        var s = "ls -la", k = Math.floor(t * 4) % 14, tx = "$ " + s.slice(0, Math.min(s.length, k));
+        c.fillText(tx + (Math.floor(t * 3) % 2 ? "█" : ""), 6, h / 2);
+      } else {
+        var lit = Math.floor(t * 2.2) % 4, hs = [0, 120, 200, 300];
+        for (var q = 0; q < 4; q++){
+          c.fillStyle = "hsl(" + (hs[q] + 260) % 360 + ",90%,65%)"; c.shadowColor = c.fillStyle; c.globalAlpha = q === lit ? 1 : .2;
+          c.fillRect(22 + (q % 2) * 28, 4 + Math.floor(q / 2) * 26, 22, 22);
+        } c.globalAlpha = 1;
+      }
+    }
+    var t0 = performance.now(), fcount = 0;
+    function frame(now){
+      if (!alive) return;
+      var t = (now - t0) / 1000; fcount++;
+      if (W < 10) size();
+      if (mix < 1) mix = Math.min(1, mix + .04);
+      sx.globalAlpha = 1; sx.fillStyle = "rgba(5,10,10,.3)"; sx.fillRect(0, 0, W, H);
+      sx.strokeStyle = "rgba(109,255,176,.07)"; sx.lineWidth = 1; sx.beginPath();
+      for (var gx = 0; gx <= W; gx += 40){ sx.moveTo(gx + .5, 0); sx.lineTo(gx + .5, H); }
+      for (var gy = 0; gy <= H; gy += 30){ sx.moveTo(0, gy + .5); sx.lineTo(W, gy + .5); }
+      sx.stroke();
+      var col = CH[focus][1], mid = H / 2, amp = H * .32 * (1 + shock * .5);
+      sx.lineWidth = 2.2; sx.strokeStyle = col; sx.shadowColor = col; sx.shadowBlur = 10; sx.beginPath();
+      for (var x = 0; x <= W; x += 2){
+        var v = wave(prev, x, t) * (1 - mix) + wave(focus, x, t) * mix;
+        if (shock > .05) v += (Math.random() - .5) * shock * 1.3 * (Math.random() < .08 ? 3 : 1);
+        v = Math.max(-1.4, Math.min(1.4, v));
+        var y = mid - v * amp; x === 0 ? sx.moveTo(x, y) : sx.lineTo(x, y);
+      } sx.stroke();
+      sx.shadowBlur = 0; sx.globalAlpha = .28; sx.lineWidth = 1.2; sx.strokeStyle = "#ffffff"; sx.beginPath();
+      for (var x2 = 0; x2 <= W; x2 += 3){ var y2 = mid - Math.sin(x2 * .02 + t) * 8; x2 === 0 ? sx.moveTo(x2, y2) : sx.lineTo(x2, y2); } sx.stroke(); sx.globalAlpha = 1;
+      shock *= .965;
+      for (var s = sparks.length - 1; s >= 0; s--){ var p = sparks[s]; p.x += p.vx; p.y += p.vy; p.vy += .22; p.l -= .018; if (p.l <= 0){ sparks.splice(s, 1); continue; } sx.fillStyle = p.c; sx.globalAlpha = p.l; sx.fillRect(p.x, p.y, 2.5, 2.5); } sx.globalAlpha = 1;
+      if (fcount % 2 === 0) for (var i = 0; i < icos.length; i++) icon(i, icos[i], t);
+      raf = requestAnimationFrame(frame);
+    }
+    alive = true;
+    if (reduce){ for (var i = 0; i < 6; i++) icon(i, icos[i], 1); frame(performance.now()); alive = false; }
+    else { raf = requestAnimationFrame(frame); tmr = setTimeout(surprise, 4500); }
+    MODS.start._off = function(){ window.removeEventListener("resize", size); };
+  }
+  function stop(){ alive = false; cancelAnimationFrame(raf); clearTimeout(tmr); if (MODS.start._off) MODS.start._off(); }
+  return { show: show, stop: stop };
+})();
 
 /* ---------- SIMULATOR ---------- */
 var RVALS = [10, 22, 47, 100, 150, 220, 330, 470, 680, 1000, 2200, 4700, 10000, 47000, 100000];
@@ -1089,7 +1237,7 @@ function viewGfx(area, d, S, upd){
 /* ----- 7-Segment ----- */
 var SEG = { "0": 0x3F, "1": 0x06, "2": 0x5B, "3": 0x4F, "4": 0x66, "5": 0x6D, "6": 0x7D, "7": 0x07, "8": 0x7F, "9": 0x6F, "-": 0x40, " ": 0, "_": 0x08, A: 0x77, B: 0x7C, C: 0x39, D: 0x5E, E: 0x79, F: 0x71, H: 0x76, L: 0x38, N: 0x54, O: 0x5C, P: 0x73, R: 0x50, S: 0x6D, T: 0x78, U: 0x3E };
 function segData(t){ var out = [0, 0, 0, 0], k = 0, colon = false; for (var i = 0; i < t.length && k < 4; i++) { var ch = t.charAt(i).toUpperCase(); if (ch === ":" || ch === ".") { if (ch === ":") colon = true; else if (k > 0) out[k - 1] |= 0x80; continue; } out[k++] = SEG[ch] || 0; } if (colon) out[1] |= 0x80; return out; }
-var SEGC = { red: ["#ff3a2a", L("Rot", "Rouge")], green: ["#34e06b", L("Grün", "Vert")], amber: ["#ffb21e", L("Gelb", "Jaune")], blue: ["#46a8ff", L("Blau", "Bleu")], white: ["#f3f6ff", L("Weiß", "Blanc")] };
+var SEGC = { red: ["#ff3a2a", L("Rot", "Rouge")], green: ["#34e06b", L("Grün", "Vert")], amber: ["#ffb21e", L("Gelb", "Jaune")], blue: ["#46a8ff", L("Blau", "Bleu")], white: ["#f3f6ff", L("Weiß", "Blanc")], classic: ["#c4d0a8", L("Klassisch", "Classique")] };
 function segPaths(ox, oy){
   var xl = 28, xr = 92, yt = 26, ym = 110, yb = 194, h = 9, g = 5, P = [];
   function H(y){ var a = xl + g, b = xr - g; return [[a, y], [a + h, y - h], [b - h, y - h], [b, y], [b - h, y + h], [a + h, y + h]]; }
@@ -1101,7 +1249,7 @@ function segPaths(ox, oy){
 function segHit(dgi){ return { ox: 14 + dgi * 124, oy: 8 }; }
 function paintSeg(cv, S){
   var data = S.man || segData(S.t); cv.width = 520; cv.height = 230; var c = cv.getContext("2d"), col = (SEGC[S.col] || SEGC.red)[0];
-  var lcd = S.style === "lcd"; if (lcd) col = "#1b2414";
+  var lcd = S.col === "classic" || S.style === "lcd"; if (lcd) col = "#1b2414";
   c.fillStyle = lcd ? "#c4d0a8" : "#0d0f12"; c.fillRect(0, 0, 520, 230);
   var offA = lcd ? 0.09 : 0.14;
   function dot(x, y, on){ c.globalAlpha = on ? 1 : offA; c.fillStyle = col; c.beginPath(); c.arc(x, y, 8, 0, 7); c.fill(); c.globalAlpha = 1; }
@@ -1113,10 +1261,9 @@ function paintSeg(cv, S){
 function viewSeg(area, d, S, upd){
   var card = el("div", "lcard"); area.appendChild(card);
   if (!S.col) S.col = "red";
-  var stw = el("div", "lrow"); stw.style.marginBottom = "8px"; card.appendChild(stw);
-  [["led", L("LED-Anzeige (leuchtet)", "Afficheur LED")], ["lcd", L("Klassisch (LCD, grünlich)", "Classique (LCD verdâtre)")]].forEach(function(o){ var x = el("button", "lbtn st" + ((S.style || "led") === o[0] ? " on" : ""), o[1]); x.onclick = function(){ S.style = o[0]; stw.querySelectorAll(".st").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); cr.style.display = o[0] === "led" ? "" : "none"; upd(); }; stw.appendChild(x); });
-  var cr = el("div", "lrow"); cr.style.marginBottom = "10px"; cr.style.display = S.style === "lcd" ? "none" : ""; card.appendChild(cr);
-  Object.keys(SEGC).forEach(function(k){ var x = el("button", "lbtn sc" + (S.col === k ? " on" : ""), SEGC[k][1]); x.style.borderLeft = "10px solid " + SEGC[k][0]; x.onclick = function(){ S.col = k; cr.querySelectorAll(".sc").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); upd(); }; cr.appendChild(x); });
+  if (S.style === "lcd") { S.col = "classic"; S.style = null; }
+  var cr = el("div", "lrow"); cr.style.marginBottom = "10px"; card.appendChild(cr);
+  Object.keys(SEGC).forEach(function(k){ var x = el("button", "lbtn sc" + (S.col === k ? " on" : ""), SEGC[k][1]); x.style.borderLeft = "10px solid " + SEGC[k][0]; if (k === "classic") { x.style.background = "#c4d0a8"; x.style.color = "#1b2414"; x.style.borderLeft = "10px solid #1b2414"; x.style.fontWeight = "700"; } x.onclick = function(){ S.col = k; cr.querySelectorAll(".sc").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); upd(); }; cr.appendChild(x); });
   var cv = el("canvas", "mcv"); cv.style.maxWidth = "520px"; cv.style.touchAction = "pan-y"; cv.style.cursor = "pointer"; card.appendChild(cv);
   var i = inp("display:block;margin:12px 0;width:220px;font:600 22px/1.2 inherit;font-family:inherit;letter-spacing:.12em;text-transform:uppercase"); i.type = "text"; i.value = S.t; i.maxLength = 8; i.oninput = function(){ S.t = i.value; S.man = null; mb.hidden = true; upd(); };
   card.appendChild(i);

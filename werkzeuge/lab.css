@@ -75,3 +75,49 @@
 .lhero.small{padding:14px 18px}.lhero.small .lic{font-size:34px}.lhero.small h1{font-size:clamp(22px,4.5vw,30px)}.lhero.small p{font-size:14px;margin-top:2px}
 .lback{display:inline-block;margin:14px 0 16px;padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--fg);text-decoration:none;font-weight:700;font-size:14px;box-shadow:var(--shadow)}
 .lback[hidden]{display:none}
+
+/* ===== Oratio Lab – Oszilloskop-Hub (eigenes Design, immer dunkel) ===== */
+.lx{--ph:#6dffb0;position:relative;border-radius:26px;padding:22px 18px 18px;color:#d8fbe9;background:radial-gradient(120% 80% at 10% 0%,#0d2420 0%,#060b0c 55%,#050808 100%);box-shadow:0 0 0 1px #1a3a33,0 18px 50px rgba(0,0,0,.45);font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;overflow:hidden}
+.lx::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 3px);mix-blend-mode:screen}
+.lxh{display:flex;gap:16px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;position:relative}
+.lxk{font-size:11px;letter-spacing:.22em;color:var(--ph);opacity:.8}
+.lxt{margin:6px 0 4px;font-size:clamp(34px,9vw,72px);line-height:.95;letter-spacing:.02em;font-weight:900;color:#eafff4;position:relative;cursor:pointer;text-shadow:0 0 22px rgba(109,255,176,.45);user-select:none}
+.lxt.gl{animation:lxgl .12s steps(2) 6;text-shadow:3px 0 #ff3d9a,-3px 0 #3de6ff}
+@keyframes lxgl{0%{transform:translate(0,0)}25%{transform:translate(-4px,2px) skewX(6deg)}50%{transform:translate(5px,-2px)}75%{transform:translate(-2px,-3px) skewX(-8deg)}100%{transform:translate(0,0)}}
+.lxs0{margin:0;max-width:520px;font-size:14px;line-height:1.5;color:#9fcdb9}
+.lxbad{font:inherit;font-weight:800;font-size:12px;letter-spacing:.12em;color:#ffe3e3;background:repeating-linear-gradient(135deg,#7a0d17 0 10px,#a3111e 10px 20px);border:2px solid #ff4f4f;border-radius:10px;padding:12px 14px;cursor:pointer;box-shadow:0 0 18px rgba(255,60,60,.35);animation:lxpul 2.2s ease-in-out infinite}
+.lxbad:active{transform:scale(.96)}
+@keyframes lxpul{50%{box-shadow:0 0 30px rgba(255,60,60,.7)}}
+.lxscope{position:relative;margin:16px 0 14px;border:1px solid #1d4a3f;border-radius:14px;overflow:hidden;background:#050a0a;box-shadow:inset 0 0 40px rgba(109,255,176,.08)}
+.lxscope canvas{display:block;width:100%;height:150px}
+.lxch{position:absolute;left:12px;top:8px;font-size:11px;letter-spacing:.08em;color:var(--ph);opacity:.9;pointer-events:none}
+.lxlist{display:flex;flex-direction:column;gap:12px;position:relative}
+.lxs{--c:#6dffb0;--o:0px;position:relative;display:grid;grid-template-columns:auto 96px 1fr auto;gap:6px 14px;align-items:center;padding:12px 18px 12px 14px;margin-left:var(--o);width:calc(100% - var(--o));box-sizing:border-box;color:#e8fff3;text-decoration:none;background:linear-gradient(90deg,color-mix(in srgb,var(--c) 18%,#0a1214),#0a1214 60%);border-left:6px solid var(--c);clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,20px 100%,0 calc(100% - 20px));transition:transform .15s,filter .15s}
+@media (hover:hover){.lxs:hover{transform:translateX(8px);filter:brightness(1.25)}}
+.lxs:focus-visible{outline:2px solid var(--c);outline-offset:2px}
+.lxs .n{font-weight:900;font-size:13px;color:var(--c);letter-spacing:.1em;writing-mode:vertical-rl;transform:rotate(180deg)}
+.lxs .ico canvas{width:96px;height:56px;display:block;background:#050a0a;border:1px solid color-mix(in srgb,var(--c) 40%,transparent);border-radius:8px}
+.lxs .tx b{display:block;font-size:17px;letter-spacing:.01em;color:#fff}
+.lxs .tx i{display:block;font-style:normal;font-size:12.5px;line-height:1.45;color:#a9cdbd;margin-top:3px}
+.lxs .tag{font-size:11px;font-weight:800;letter-spacing:.06em;color:#061010;background:var(--c);padding:3px 9px;border-radius:4px;white-space:nowrap;align-self:start}
+.lxs .go{position:absolute;right:26px;bottom:8px;font-size:11px;color:var(--c);opacity:.8}
+.lxs .burn{position:absolute;inset:0;pointer-events:none;opacity:0}
+.lxs.burnt{animation:lxb .12s steps(2) 8;filter:saturate(2)}
+.lxs.burnt .burn{opacity:1;background:radial-gradient(60% 120% at 50% 100%,rgba(255,90,40,.55),rgba(30,0,0,.7) 70%),repeating-linear-gradient(45deg,transparent 0 6px,rgba(0,0,0,.4) 6px 8px)}
+.lxs.burnt .burn::after{content:"💥 DURCHGEBRANNT";position:absolute;right:30px;top:8px;font-size:11px;font-weight:900;letter-spacing:.1em;color:#ffb199}
+@keyframes lxb{0%{transform:translateX(-3px)}100%{transform:translateX(4px) skewX(2deg)}}
+.lxst{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;font-size:12px;letter-spacing:.06em;color:#8fbba9;position:relative}
+.lxok{color:var(--ph);font-weight:800}.lxok.e{color:#ff6b6b}
+.lxfoot{margin:10px 0 0;font-size:12px;color:#6f9a89;position:relative}
+.lx.quake{animation:lxq .09s linear 12}
+@keyframes lxq{0%{transform:translate(0,0) rotate(0)}25%{transform:translate(-5px,3px) rotate(-.4deg)}50%{transform:translate(4px,-4px) rotate(.4deg)}75%{transform:translate(-3px,-2px)}100%{transform:translate(0,0)}}
+@media (max-width:560px){
+  .lx{padding:16px 12px 14px;border-radius:20px}
+  .lxs{grid-template-columns:auto 1fr;padding:12px 16px 12px 12px;margin-left:0;width:auto}
+  .lxs .ico{grid-row:1;grid-column:2;justify-self:start}
+  .lxs .n{grid-row:1/4;writing-mode:vertical-rl}
+  .lxs .tx{grid-column:2}.lxs .tag{grid-column:2;justify-self:start}
+  .lxs .go{display:none}
+  .lxs:nth-child(even){margin-left:14px;width:calc(100% - 14px)}
+}
+@media (prefers-reduced-motion:reduce){.lxbad,.lx.quake,.lxs.burnt,.lxt.gl{animation:none}}
