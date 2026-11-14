@@ -677,7 +677,8 @@ function glyph(ch){ var c = ch.charCodeAt(0); if (c < 32 || c > 126) c = 63; var
 function glyphRows(ch){ var g = glyph(ch), rows = []; for (var r = 0; r < 8; r++) { var v = 0; for (var c = 0; c < 5; c++) if ((g[c] >> r) & 1) v |= 1 << (4 - c); rows.push(v); } return rows; }
 function newB(w, h){ return { w: w, h: h, d: new Uint32Array(w * h) }; }
 function bset(B, x, y, v){ if (x >= 0 && y >= 0 && x < B.w && y < B.h) B.d[y * B.w + x] = v; }
-function bline(B, x0, y0, x1, y1, v){ var dx = Math.abs(x1 - x0), dy = -Math.abs(y1 - y0), sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1, e = dx + dy, n = 0; while (n++ < 5000) { bset(B, x0, y0, v); if (x0 === x1 && y0 === y1) break; var e2 = 2 * e; if (e2 >= dy) { e += dy; x0 += sx; } if (e2 <= dx) { e += dx; y0 += sy; } } }
+function bdot(B, x, y, v, n){ var o = Math.floor((n - 1) / 2); for (var a = 0; a < n; a++) for (var b = 0; b < n; b++) bset(B, x - o + a, y - o + b, v); }
+function bline(B, x0, y0, x1, y1, v, bn){ var dx = Math.abs(x1 - x0), dy = -Math.abs(y1 - y0), sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1, e = dx + dy, n = 0; while (n++ < 5000) { (bn > 1 ? bdot(B, x0, y0, v, bn) : bset(B, x0, y0, v)); if (x0 === x1 && y0 === y1) break; var e2 = 2 * e; if (e2 >= dy) { e += dy; x0 += sx; } if (e2 <= dx) { e += dx; y0 += sy; } } }
 function bflood(B, x, y, v){ if (x < 0 || y < 0 || x >= B.w || y >= B.h) return; var t = B.d[y * B.w + x]; if (t === v) return; var q = [[x, y]]; while (q.length) { var p = q.pop(); if (p[0] < 0 || p[1] < 0 || p[0] >= B.w || p[1] >= B.h || B.d[p[1] * B.w + p[0]] !== t) continue; B.d[p[1] * B.w + p[0]] = v; q.push([p[0] + 1, p[1]], [p[0] - 1, p[1]], [p[0], p[1] + 1], [p[0], p[1] - 1]); } }
 function btext(B, x, y, t, s, v){ for (var i = 0; i < t.length; i++) { var g = glyph(t.charAt(i)); for (var c = 0; c < 5; c++) for (var r = 0; r < 8; r++) if ((g[c] >> r) & 1) for (var a = 0; a < s; a++) for (var b2 = 0; b2 < s; b2++) bset(B, x + (i * 6 + c) * s + a, y + r * s + b2, v); } }
 function bcopy(B){ var n = newB(B.w, B.h); n.d.set(B.d); return n; }
@@ -735,7 +736,7 @@ function oRaster(B, o, v){
   else if (o.k === "line") bline(B, o.x, o.y, o.x2, o.y2, v);
 }
 function oName(o){ return o.k === "text" ? "„" + (o.t.length > 10 ? o.t.slice(0, 10) + "…" : o.t) + "“" : o.k === "icon" ? iconName(o.n) : { rect: L("Rechteck", "Rectangle"), circle: L("Kreis", "Cercle"), tri: L("Dreieck", "Triangle"), line: L("Linie", "Ligne") }[o.k]; }
-function composite(d, S){ var C = bcopy(S.B), color = d.grp === "color"; S.objs.forEach(function(o){ oRaster(C, o, color ? hexc(o.c) : 1); }); return C; }
+function composite(d, S){ var C = bcopy(S.B), color = d.grp === "color"; if (color) { var bgv = hexc(S.bgc || "#000000"); for (var i = 0; i < C.d.length; i++) if (!C.d[i]) C.d[i] = bgv; } S.objs.forEach(function(o){ oRaster(C, o, color ? hexc(o.c) : 1); }); return C; }
 function baseUsed(S){ for (var i = 0; i < S.B.d.length; i++) if (S.B.d[i]) return true; return false; }
 
 var DISPS = [
@@ -784,7 +785,7 @@ function syncLines(S, d){ S.lines = S.cells.map(function(row){ return row.map(fu
 function dinit(d){
   if (DD.S[d.id]) return DD.S[d.id];
   var S, i;
-  if (d.grp === "lcd") { var cc = []; for (i = 0; i < 8; i++) cc.push([0, 0, 0, 0, 0, 0, 0, 0]); cc[0] = ICONS[0][2].slice(); cc[1] = ICONS[1][2].slice();
+  if (d.grp === "lcd") { var cc = []; for (i = 0; i < 10; i++) cc.push([0, 0, 0, 0, 0, 0, 0, 0]); cc[0] = ICONS[0][2].slice(); cc[1] = ICONS[1][2].slice();
     S = { look: "blue", cc: cc, slot: 0, sel: { r: 0, c: 0 } }; S.cells = cellsFromLines(d.rows === 2 ? ["Hallo Oratio!", "{0} Oratio Lab {1}"] : ["Hallo Oratio!", "{0} Oratio Lab {1}", "Zeile 3", "Zeile 4"], d); S.cells = cellMap(S.cells, S.cc); syncLines(S, d); }
   else if (d.grp === "seg") S = { t: "12:34" };
   else { var objs = [];
@@ -798,7 +799,7 @@ function dsave(){
   var o = { sel: DD.sel, board: DD.board, S: {} };
   DISPS.forEach(function(d){ var S = DD.S[d.id]; if (!S) return;
     if (d.grp === "mono") o.S[d.id] = { objs: S.objs, oledc: S.oledc, px: Array.prototype.join.call(S.B.d, "") };
-    else if (d.grp === "color") o.S[d.id] = { objs: S.objs, col: S.col };
+    else if (d.grp === "color") o.S[d.id] = { objs: S.objs, col: S.col, bgc: S.bgc };
     else if (d.grp === "lcd") o.S[d.id] = { look: S.look, cc: S.cc, cells: S.cells };
     else o.S[d.id] = S; });
   st("disp", o);
@@ -808,8 +809,8 @@ function dload(){
   DD.sel = o.sel || DD.sel; DD.board = BNAME[o.board] ? o.board : DD.board;
   DISPS.forEach(function(d){ var p = o.S && o.S[d.id]; if (!p) return; var S = dinit(d);
     if (d.grp === "mono") { if (p.objs) S.objs = p.objs; S.oledc = p.oledc || "white"; if (p.px && p.px.length === d.w * d.h) for (var i = 0; i < p.px.length; i++) S.B.d[i] = p.px.charAt(i) === "1" ? 1 : 0; }
-    else if (d.grp === "color") { if (p.objs) S.objs = p.objs; S.col = p.col || S.col; }
-    else if (d.grp === "lcd") { S.look = p.look || "blue"; if (p.cc) S.cc = p.cc; if (p.cells) { S.cells = p.cells; syncLines(S, d); } else if (p.lines) { S.cells = cellMap(cellsFromLines(p.lines, d), S.cc); syncLines(S, d); } }
+    else if (d.grp === "color") { if (p.objs) S.objs = p.objs; S.col = p.col || S.col; S.bgc = p.bgc || "#000000"; }
+    else if (d.grp === "lcd") { S.look = p.look || "blue"; if (p.cc) { S.cc = p.cc; while (S.cc.length < 10) S.cc.push([0, 0, 0, 0, 0, 0, 0, 0]); } if (p.cells) { S.cells = p.cells; syncLines(S, d); } else if (p.lines) { S.cells = cellMap(cellsFromLines(p.lines, d), S.cc); syncLines(S, d); } }
     else if (d.grp === "seg") S.t = p.t || S.t; });
 }
 function hexc(h){ return parseInt(h.slice(1), 16); }
@@ -871,7 +872,7 @@ function viewLCD(area, d, S, upd){
   cv.onpointerdown = function(e){ tap0 = { x: e.clientX, y: e.clientY, t: Date.now() }; };
   cv.onpointercancel = function(){ tap0 = null; };
   cv.onpointerup = function(e){ if (!tap0) return; var m = Math.abs(e.clientX - tap0.x) + Math.abs(e.clientY - tap0.y), dt = Date.now() - tap0.t; tap0 = null; if (m > 10 || dt > 600) return;
-    var r = cv.getBoundingClientRect(), sc = cv.width / r.width, x = ((e.clientX - r.left) * sc - LPAD) / LCW, y = ((e.clientY - r.top) * sc - LPAD) / LCH; var cc = Math.max(0, Math.min(d.cols - 1, Math.floor(x))), rr = Math.max(0, Math.min(d.rows - 1, Math.floor(y))); S.sel = { r: rr, c: cc }; S.active = true; hid.focus(); upd(); };
+    var r = cv.getBoundingClientRect(), sc = cv.width / r.width, x = ((e.clientX - r.left) * sc - LPAD) / LCW, y = ((e.clientY - r.top) * sc - LPAD) / LCH; var cc = Math.max(0, Math.min(d.cols - 1, Math.floor(x))), rr = Math.max(0, Math.min(d.rows - 1, Math.floor(y))); S.sel = { r: rr, c: cc }; S.active = true; S.pick = null; hid.focus(); upd(); };
   cv.onclick = function(){ if (S.active) hid.focus(); };
   hid.oninput = function(){ var v = hid.value; hid.value = ""; for (var i = 0; i < v.length; i++) { var ch = v.charAt(i), code = ch.charCodeAt(0); put(code < 32 || code > 126 ? "?" : ch); } };
   hid.onkeydown = function(e){ var s = S.sel, k = e.key;
@@ -889,11 +890,11 @@ function viewLCD(area, d, S, upd){
   var cla = el("button", "lbtn bad", L("Alles leeren", "Tout effacer")); cla.onclick = function(){ pushUndo(); S.cells = cellsFromLines([], d); syncLines(S, d); S.sel = { r: 0, c: 0 }; upd(); }; look.appendChild(cla);
   card.appendChild(look);
   var h1 = el("h2", "", L("Eigene Zeichen", "Mes caractères")); h1.style.fontSize = "17px"; card.appendChild(h1);
-  card.appendChild(el("p", "lmut", L("Tipp auf Zeichen 1–8 oder eine Vorlage lädt sie ins große Feld – deine gespeicherten Zeichen bleiben unverändert. Gespeichert wird nur, wenn du unten bei „Speichern in“ eine Nummer wählst. Ist ein Display-Feld markiert (gelb), landet alles dort.", "Un appui sur 1–8 ou un modèle le charge dans la grande zone – tes caractères enregistrés ne changent pas. Seul « Enregistrer dans » les modifie. Si une cellule est marquée (jaune), tout y arrive.")));
+  card.appendChild(el("p", "lmut", L("Tipp auf Zeichen 1–10 oder eine Vorlage lädt sie ins große Feld – deine gespeicherten Zeichen bleiben unverändert. Gespeichert wird nur, wenn du unten bei „Speichern in“ eine Nummer wählst. Ist ein Display-Feld markiert (gelb), landet alles dort.", "Un appui sur 1–10 ou un modèle le charge dans la grande zone – tes caractères enregistrés ne changent pas. Seul « Enregistrer dans » les modifie. Si une cellule est marquée (jaune), tout y arrive.")));
   var ins = el("div", "lrow"); ins.style.gap = "6px"; card.appendChild(ins);
   var thumbs = [];
-  for (var k = 0; k < 8; k++) (function(k){ var b = el("button", "lbtn"); b.style.cssText = "padding:5px;min-height:0;display:flex;flex-direction:column;align-items:center;gap:1px"; b.onclick = function(){ S.slot = k; S.pick = { t: "slot", i: k }; if (S.active) put(k); else { S.work = S.cc[k].slice(); drawEd(); drawThumbs(); } }; b.appendChild(el("span")); b.appendChild(el("span", "lmut", "" + (k + 1))); ins.appendChild(b); thumbs.push(b); })(k);
-  function drawThumbs(){ var Lc = LCOL(S.look); thumbs.forEach(function(b, k){ var c = icThumb(S.cc[k], 4, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "3px"; b.replaceChild(c, b.firstChild); b.classList.toggle("on", !!S.pick ? (S.pick.t === "slot" && S.pick.i === k) : k === S.slot); }); if (typeof tp !== "undefined") Array.prototype.forEach.call(tp.children, function(b, i){ b.classList.toggle("on", !!S.pick && S.pick.t === "tpl" && S.pick.i === i); }); }
+  for (var k = 0; k < 10; k++) (function(k){ var b = el("button", "lbtn"); b.style.cssText = "padding:5px;min-height:0;display:flex;flex-direction:column;align-items:center;gap:1px"; b.onclick = function(){ S.slot = k; S.pick = { t: "slot", i: k }; if (S.active) put(k); else { S.work = S.cc[k].slice(); drawEd(); drawThumbs(); } }; b.appendChild(el("span")); b.appendChild(el("span", "lmut", "" + (k + 1))); ins.appendChild(b); thumbs.push(b); })(k);
+  function drawThumbs(){ var Lc = LCOL(S.look); thumbs.forEach(function(b, k){ var c = icThumb(S.cc[k], 4, Lc.on, Lc.off, Lc.bg); c.style.borderRadius = "3px"; b.replaceChild(c, b.firstChild); b.classList.toggle("on", !!S.pick && S.pick.t === "slot" && S.pick.i === k); }); if (typeof tp !== "undefined") Array.prototype.forEach.call(tp.children, function(b, i){ b.classList.toggle("on", !!S.pick && S.pick.t === "tpl" && S.pick.i === i); }); }
   function curCell(){ return S.cells[S.sel.r][S.sel.c]; }
   function edRows(){ if (S.active) { var c = curCell(); return c && typeof c === "object" ? c.g : (c && c !== " " ? glyphRows(c) : [0, 0, 0, 0, 0, 0, 0, 0]); } return S.work; }
   function edSet(rows){ if (S.active) { S.cells[S.sel.r][S.sel.c] = { s: -1, g: rows.slice() }; syncLines(S, d); } else S.work = rows.slice(); }
@@ -908,7 +909,7 @@ function viewLCD(area, d, S, upd){
   side.appendChild(cl);
   var svl = el("div", "lmut", ""); svl.style.fontWeight = "600"; side.appendChild(svl);
   var svr = el("div", "lrow"); svr.style.gap = "5px"; side.appendChild(svr);
-  for (var q = 0; q < 8; q++) (function(q){ var b = el("button", "lbtn", "" + (q + 1)); b.style.cssText = "min-width:34px;min-height:34px;padding:4px 0"; b.onclick = function(){ pushUndo(); S.cc[q] = edRows().slice(); S.slot = q; S.pick = { t: "slot", i: q }; drawThumbs(); upd(); }; svr.appendChild(b); })(q);
+  for (var q = 0; q < 10; q++) (function(q){ var b = el("button", "lbtn", "" + (q + 1)); b.style.cssText = "min-width:34px;min-height:34px;padding:4px 0"; b.onclick = function(){ pushUndo(); S.cc[q] = edRows().slice(); S.slot = q; S.pick = { t: "slot", i: q }; drawThumbs(); upd(); }; svr.appendChild(b); })(q);
   side.appendChild(el("p", "lmut", L("Tippe auf einen Punkt = an/aus. Wischen scrollt die Seite.", "Touche un point = on/off. Glisser fait défiler.")));
   function drawEd(){ sumTxt(); svl.textContent = "💾 " + L("Als eigenes Zeichen speichern in:", "Enregistrer comme caractère dans :"); var rows = edRows(), c = ed.getContext("2d"), Lc = LCOL(S.look), n = 88, g = 6; c.fillStyle = Lc.bg; c.fillRect(0, 0, ed.width, ed.height); for (var y = 0; y < 8; y++) for (var x = 0; x < 5; x++) { c.fillStyle = (rows[y] >> (4 - x)) & 1 ? Lc.on : Lc.off; c.fillRect(x * n, y * n, n - g, n - g); } }
   var paintTo = null;
@@ -978,6 +979,9 @@ function viewGfx(area, d, S, upd){
   var TOOLS = [["select", "👆", L("Auswählen / Bewegen", "Sélectionner / déplacer")], ["pen", "✏️", L("Stift (freihand)", "Crayon (main levée)")], ["erase", "🧽", L("Radierer (nur Freihand)", "Gomme (main levée)")], ["fill", "🪣", L("Füllen", "Remplir")]];
   function syncTools(){ tb.querySelectorAll(".tl").forEach(function(x){ x.classList.toggle("on", x.dataset.t === S.tool); }); }
   TOOLS.forEach(function(t){ var x = el("button", "lbtn tl", t[1] + " " + t[2]); x.dataset.t = t[0]; x.onclick = function(){ S.tool = t[0]; syncTools(); }; tb.appendChild(x); });
+  var bw = el("span", "lmut", L("Strich:", "Trait :")); bw.style.cssText = "display:inline-flex;gap:4px;align-items:center"; tb.appendChild(bw);
+  [1, 2, 3, 5].forEach(function(n){ var x = el("button", "lbtn br" + ((S.brush || 1) === n ? " on" : ""), "" + n); x.style.cssText = "min-width:36px;padding:8px 6px"; x.onclick = function(){ S.brush = n; tb.querySelectorAll(".br").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); }; bw.appendChild(x); });
+  if (color) { var bgi = inp("width:46px;height:40px;padding:2px;background:none"); bgi.type = "color"; bgi.value = S.bgc || "#000000"; bgi.title = L("Hintergrundfarbe", "Couleur de fond"); bgi.oninput = function(){ S.bgc = bgi.value; upd(); }; var bgl = el("span", "lmut", L("Hintergrund", "Fond")); tb.appendChild(bgl); tb.appendChild(bgi); }
   if (color) { var ci = inp("width:46px;height:40px;padding:2px;background:none"); ci.type = "color"; ci.value = S.col; ci.title = L("Farbe", "Couleur"); ci.oninput = function(){ S.col = ci.value; var o = S.objs[S.sel]; if (o) { o.c = S.col; upd(); props(); } }; tb.appendChild(ci); }
   if (d.look === "oled") [["white", L("weiß", "blanc")], ["blue", L("blau", "bleu")], ["yellow", L("gelb", "jaune")]].forEach(function(o){ var x = el("button", "lbtn oc" + (S.oledc === o[0] ? " on" : ""), o[1]); x.onclick = function(){ S.oledc = o[0]; tb.querySelectorAll(".oc").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); upd(); }; tb.appendChild(x); });
   // Einfügen
@@ -1009,13 +1013,13 @@ function viewGfx(area, d, S, upd){
       pushUndo();
       var val = S.tool === "erase" ? 0 : (color ? hexc(S.col) : 1);
       if (S.tool === "fill") { bflood(S.B, p[0], p[1], val || (color ? hexc(S.col) : 1)); upd(); return; }
-      drag = { pen: true, last: p, val: val }; bset(S.B, p[0], p[1], val); upd();
+      drag = { pen: true, last: p, val: val }; bdot(S.B, p[0], p[1], val, S.brush || 1); upd();
     },
     move: function(e){
       if (!drag) return; var p = pxAt(e);
       if (drag.handle) { oResize(drag.obj, drag.handle, p); props(true); upd(true); return; }
       if (drag.obj) { var dx = p[0] - drag.last[0], dy = p[1] - drag.last[1]; if (dx || dy) { oMove(drag.obj, dx, dy); drag.last = p; props(true); upd(true); } }
-      else if (drag.pen) { bline(S.B, drag.last[0], drag.last[1], p[0], p[1], drag.val); drag.last = p; upd(true); }
+      else if (drag.pen) { bline(S.B, drag.last[0], drag.last[1], p[0], p[1], drag.val, S.brush || 1); drag.last = p; upd(true); }
     },
     end: function(){ if (drag) upd(); drag = null; },
     armTap: function(e){ if (S.tool === "select") { var i = hit(pxAt(e)); S.sel = i; props(); upd(); } }
@@ -1044,6 +1048,8 @@ function viewGfx(area, d, S, upd){
     if (color) { var cc = inp("width:46px;height:38px;padding:2px;background:none"); cc.type = "color"; cc.value = o.c; cc.oninput = function(){ o.c = cc.value; upd(true); }; f.appendChild(cc); }
     var ab = el("div", "lrow"); ab.style.marginTop = "10px"; propEl.appendChild(ab);
     var du = el("button", "lbtn", "⧉ " + L("Duplizieren", "Dupliquer")); du.onclick = function(){ var n = JSON.parse(JSON.stringify(o)); oMove(n, 3, 3); S.objs.push(n); S.sel = S.objs.length - 1; props(); upd(); }; ab.appendChild(du);
+    var cx = el("button", "lbtn", "↔ " + L("Mittig", "Centrer")); cx.onclick = function(){ pushUndo(); var b = oBox(o); oMove(o, Math.round((d.w - (b[2] - b[0] + 1)) / 2) - b[0], 0); props(); upd(); }; ab.appendChild(cx);
+    var cy = el("button", "lbtn", "↕ " + L("Mittig", "Centrer")); cy.onclick = function(){ pushUndo(); var b = oBox(o); oMove(o, 0, Math.round((d.h - (b[3] - b[1] + 1)) / 2) - b[1]); props(); upd(); }; ab.appendChild(cy);
     var fr = el("button", "lbtn", "⬆ " + L("Nach vorn", "Au premier plan")); fr.onclick = function(){ S.objs.splice(S.sel, 1); S.objs.push(o); S.sel = S.objs.length - 1; props(); upd(); }; ab.appendChild(fr);
     var dl = el("button", "lbtn bad", "🗑 " + L("Löschen", "Supprimer")); dl.onclick = function(){ pushUndo(); S.objs.splice(S.sel, 1); S.sel = -1; props(); upd(); }; ab.appendChild(dl);
   }
@@ -1076,21 +1082,44 @@ function viewGfx(area, d, S, upd){
 /* ----- 7-Segment ----- */
 var SEG = { "0": 0x3F, "1": 0x06, "2": 0x5B, "3": 0x4F, "4": 0x66, "5": 0x6D, "6": 0x7D, "7": 0x07, "8": 0x7F, "9": 0x6F, "-": 0x40, " ": 0, "_": 0x08, A: 0x77, B: 0x7C, C: 0x39, D: 0x5E, E: 0x79, F: 0x71, H: 0x76, L: 0x38, N: 0x54, O: 0x5C, P: 0x73, R: 0x50, S: 0x6D, T: 0x78, U: 0x3E };
 function segData(t){ var out = [0, 0, 0, 0], k = 0, colon = false; for (var i = 0; i < t.length && k < 4; i++) { var ch = t.charAt(i).toUpperCase(); if (ch === ":" || ch === ".") { if (ch === ":") colon = true; else if (k > 0) out[k - 1] |= 0x80; continue; } out[k++] = SEG[ch] || 0; } if (colon) out[1] |= 0x80; return out; }
+var SEGC = { red: ["#ff3a2a", L("Rot", "Rouge")], green: ["#34e06b", L("Grün", "Vert")], amber: ["#ffb21e", L("Gelb", "Jaune")], blue: ["#46a8ff", L("Blau", "Bleu")], white: ["#f3f6ff", L("Weiß", "Blanc")] };
+function segPaths(ox, oy){
+  var xl = 28, xr = 92, yt = 26, ym = 110, yb = 194, h = 9, g = 5, P = [];
+  function H(y){ var a = xl + g, b = xr - g; return [[a, y], [a + h, y - h], [b - h, y - h], [b, y], [b - h, y + h], [a + h, y + h]]; }
+  function V(x, y0, y1){ var a = y0 + g, b = y1 - g; return [[x, a], [x + h, a + h], [x + h, b - h], [x, b], [x - h, b - h], [x - h, a + h]]; }
+  var polys = [H(yt), V(xr, yt, ym), V(xr, ym, yb), H(yb), V(xl, ym, yb), V(xl, yt, ym), H(ym)];
+  polys.forEach(function(pl){ var p = new Path2D(); pl.forEach(function(q, i){ i ? p.lineTo(ox + q[0], oy + q[1]) : p.moveTo(ox + q[0], oy + q[1]); }); p.closePath(); P.push(p); });
+  return P;
+}
+function segHit(dgi){ return { ox: 14 + dgi * 124, oy: 8 }; }
 function paintSeg(cv, S){
-  var data = segData(S.t); cv.width = 520; cv.height = 220; var c = cv.getContext("2d");
-  c.fillStyle = "#120808"; c.fillRect(0, 0, 520, 220);
-  var polys = [[[16, 12], [88, 12], [76, 26], [28, 26]], [[92, 16], [92, 90], [78, 78], [78, 28]], [[92, 100], [92, 174], [78, 162], [78, 112]], [[88, 178], [16, 178], [28, 164], [76, 164]], [[12, 174], [12, 100], [26, 112], [26, 162]], [[12, 90], [12, 16], [26, 28], [26, 78]], [[18, 95], [86, 95], [76, 107], [28, 107]]];
-  for (var dg = 0; dg < 4; dg++) { var ox = 20 + dg * 118, oy = 16;
-    polys.forEach(function(p, s){ c.fillStyle = (data[dg] >> s) & 1 ? "#ff3a2a" : "#3a1512"; c.beginPath(); p.forEach(function(q, i){ i ? c.lineTo(ox + q[0], oy + q[1]) : c.moveTo(ox + q[0], oy + q[1]); }); c.closePath(); c.fill(); });
-    if (dg === 1) { c.fillStyle = data[1] & 0x80 ? "#ff3a2a" : "#3a1512"; c.beginPath(); c.arc(ox + 112, oy + 60, 7, 0, 7); c.fill(); c.beginPath(); c.arc(ox + 112, oy + 130, 7, 0, 7); c.fill(); }
-    else { c.fillStyle = (data[dg] & 0x80) ? "#ff3a2a" : "#3a1512"; c.beginPath(); c.arc(ox + 104, oy + 172, 6, 0, 7); c.fill(); } }
+  var data = S.man || segData(S.t); cv.width = 520; cv.height = 230; var c = cv.getContext("2d"), col = (SEGC[S.col] || SEGC.red)[0];
+  c.fillStyle = "#0d0f12"; c.fillRect(0, 0, 520, 230);
+  function dot(x, y, on){ c.globalAlpha = on ? 1 : 0.14; c.fillStyle = col; c.beginPath(); c.arc(x, y, 8, 0, 7); c.fill(); c.globalAlpha = 1; }
+  for (var dg = 0; dg < 4; dg++) { var o = segHit(dg), P = segPaths(o.ox, o.oy);
+    P.forEach(function(p, s){ c.globalAlpha = (data[dg] >> s) & 1 ? 1 : 0.14; c.fillStyle = col; c.fill(p); c.globalAlpha = 1; });
+    if (dg === 1) { dot(o.ox + 120, o.oy + 70, data[1] & 0x80); dot(o.ox + 120, o.oy + 150, data[1] & 0x80); }
+    else dot(o.ox + 118, o.oy + 194, data[dg] & 0x80); }
 }
 function viewSeg(area, d, S, upd){
   var card = el("div", "lcard"); area.appendChild(card);
-  var cv = el("canvas", "mcv"); cv.style.maxWidth = "520px"; card.appendChild(cv);
-  var i = inp("display:block;margin:12px 0;width:200px;font:20px ui-monospace,Menlo,Consolas,monospace"); i.type = "text"; i.value = S.t; i.maxLength = 8; i.oninput = function(){ S.t = i.value; upd(); };
+  if (!S.col) S.col = "red";
+  var cr = el("div", "lrow"); cr.style.marginBottom = "10px"; card.appendChild(cr);
+  Object.keys(SEGC).forEach(function(k){ var x = el("button", "lbtn sc" + (S.col === k ? " on" : ""), SEGC[k][1]); x.style.borderLeft = "10px solid " + SEGC[k][0]; x.onclick = function(){ S.col = k; cr.querySelectorAll(".sc").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); upd(); }; cr.appendChild(x); });
+  var cv = el("canvas", "mcv"); cv.style.maxWidth = "520px"; cv.style.touchAction = "pan-y"; cv.style.cursor = "pointer"; card.appendChild(cv);
+  var i = inp("display:block;margin:12px 0;width:200px;font:20px ui-monospace,Menlo,Consolas,monospace"); i.type = "text"; i.value = S.t; i.maxLength = 8; i.oninput = function(){ S.t = i.value; S.man = null; mb.hidden = true; upd(); };
   card.appendChild(i);
-  card.appendChild(el("p", "lmut", L("Tippe 4 Zeichen, z. B. 12:34 (der Doppelpunkt schaltet die Mitte ein), -.5 oder HELP. Möglich: Ziffern, - _ und die Buchstaben A B C D E F H L N O P R S T U.", "Tape 4 caractères, ex. 12:34 (les deux-points allument le milieu), -.5 ou HELP. Possible : chiffres, - _ et les lettres A B C D E F H L N O P R S T U.")));
+  var mb = el("button", "lbtn", "↺ " + L("Zurück zur Texteingabe", "Retour à la saisie")); mb.hidden = !S.man; mb.onclick = function(){ S.man = null; mb.hidden = true; upd(); }; card.appendChild(mb);
+  card.appendChild(el("p", "lmut", L("Tippe Zeichen, z. B. 12:34 (der Doppelpunkt schaltet die Mitte ein), -.5 oder HELP – oder tippe direkt auf einzelne Segmente im Bild, um sie an/aus zu schalten. Möglich: Ziffern, - _ und die Buchstaben A B C D E F H L N O P R S T U.", "Tape des caractères, ex. 12:34 (les deux-points allument le milieu), -.5 ou HELP – ou touche directement des segments pour les allumer/éteindre. Possible : chiffres, - _ et les lettres A B C D E F H L N O P R S T U.")));
+  var t0 = null;
+  cv.onpointerdown = function(e){ t0 = { x: e.clientX, y: e.clientY, t: Date.now() }; };
+  cv.onpointercancel = function(){ t0 = null; };
+  cv.onpointerup = function(e){ if (!t0) return; var m = Math.abs(e.clientX - t0.x) + Math.abs(e.clientY - t0.y), dt = Date.now() - t0.t; t0 = null; if (m > 10 || dt > 600) return;
+    var r = cv.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * cv.width, y = (e.clientY - r.top) / r.height * cv.height, c = cv.getContext("2d");
+    for (var dg = 0; dg < 4; dg++) { var o = segHit(dg), P = segPaths(o.ox, o.oy), bit = -1;
+      for (var s = 0; s < 7; s++) if (c.isPointInPath(P[s], x, y)) { bit = s; break; }
+      if (bit < 0) { var dx = dg === 1 ? o.ox + 120 : o.ox + 118; if ((dg === 1 && (Math.hypot(x - dx, y - (o.oy + 70)) < 16 || Math.hypot(x - dx, y - (o.oy + 150)) < 16)) || (dg !== 1 && Math.hypot(x - dx, y - (o.oy + 194)) < 16)) bit = 7; }
+      if (bit >= 0) { S.man = (S.man || segData(S.t)).slice(); S.man[dg] ^= 1 << bit; mb.hidden = false; upd(); return; } } };
   return { paint: function(){ paintSeg(cv, S); } };
 }
 
@@ -1135,7 +1164,7 @@ function genCode(d, S, b){
     return { txt: t, ext: ext };
   }
   if (d.grp === "seg") {
-    var dt = segData(S.t), arr = dt.map(function(v){ return hx(v, 2); }).join(", ");
+    var dt = (S.man || segData(S.t)), arr = dt.map(function(v){ return hx(v, 2); }).join(", ");
     if (!py) t = head + "// Bibliothek: TM1637 von Avishay Orpaz (Bibliotheksverwalter)\n#include <TM1637Display.h>\n\n#define CLK " + P.tm[0] + "\n#define DIO " + P.tm[1] + "\nTM1637Display display(CLK, DIO);\n\n// Segmente: Bit0 = a (oben) ... Bit6 = g (Mitte), Bit7 = Punkt/Doppelpunkt\nconst uint8_t daten[] = { " + arr + " };\n\nvoid setup() {\n  display.setBrightness(7);   // 0 bis 7\n  display.setSegments(daten);\n}\n\nvoid loop() {\n}\n";
     else t = head + "# Installieren: pip install raspberrypi-tm1637\nimport tm1637\n\ntm = tm1637.TM1637(clk=" + P.tm[0] + ", dio=" + P.tm[1] + ")\ntm.brightness(7)   # 0 bis 7\n# Segmente: Bit0 = a (oben) ... Bit6 = g (Mitte), Bit7 = Punkt/Doppelpunkt\ndaten = [" + arr + "]\ntm.write(daten)\n";
     return { txt: t, ext: ext };
@@ -1149,7 +1178,7 @@ function genCode(d, S, b){
     if (ctrl === "MAX7219") {
       t += "# '#' = Pixel an, '.' = Pixel aus\nBILD = [\n" + rowsOf(comp) + "\n]\n\nimg = Image.new(\"1\", (" + W + ", " + H + "))\nfor y, zeile in enumerate(BILD):\n    for x, c in enumerate(zeile):\n        if c == \"#\":\n            img.putpixel((x, y), 1)\n";
     } else {
-      if (col) t += (bu ? cm + "Speichere dein Bild mit \"Als PNG speichern (1:1)\" unter bild.png neben dieses Skript.\nimg = Image.open(\"bild.png\").convert(\"RGB\")\n" : "img = Image.new(\"RGB\", (" + W + ", " + H + "), \"black\")\n");
+      if (col) t += (bu ? cm + "Speichere dein Bild mit \"Als PNG speichern (1:1)\" unter bild.png neben dieses Skript.\nimg = Image.open(\"bild.png\").convert(\"RGB\")\n" : "img = Image.new(\"RGB\", (" + W + ", " + H + "), (" + ((hexc(S.bgc || "#000000") >> 16) & 255) + ", " + ((hexc(S.bgc || "#000000") >> 8) & 255) + ", " + (hexc(S.bgc || "#000000") & 255) + "))\n");
       else if (bu) t += "# '#' = Pixel an, '.' = Pixel aus (Freihand-Ebene / Bild)\nBILD = [\n" + rowsOf(S.B) + "\n]\n\nimg = Image.new(\"1\", (" + W + ", " + H + "))\nfor y, zeile in enumerate(BILD):\n    for x, c in enumerate(zeile):\n        if c == \"#\":\n            img.putpixel((x, y), 1)\n";
       else t += "img = Image.new(\"1\", (" + W + ", " + H + "))\n";
       t += "draw = ImageDraw.Draw(img)\n";
@@ -1179,15 +1208,15 @@ function genCode(d, S, b){
   function C(o){ return col ? hx(rgb565(hexc(o.c)), 4) : white; }
   t = head + "// Bibliotheken (Bibliotheksverwalter): " + libn + "\n" + inc + "\n";
   // Bitmaps
-  if (bu) { if (col) { var vals = []; for (var q = 0; q < S.B.d.length; q++) vals.push(rgb565(S.B.d[q])); t += "const uint16_t bild[" + (W * H) + "] PROGMEM = {   // Freihand-Ebene / Bild\n" + carr(vals, 16, 4) + "\n};\n\n"; } else { var pk2 = packMono(S.B, u8); t += "const unsigned char bild[] PROGMEM = {   // Freihand-Ebene / Bild, " + pk2.bytes.length + " Bytes\n" + carr(pk2.bytes, 16, 2) + "\n};\n\n"; } }
+  if (bu) { if (col) { var vals = []; for (var q = 0; q < S.B.d.length; q++) vals.push(rgb565(S.B.d[q] || hexc(S.bgc || "#000000"))); t += "const uint16_t bild[" + (W * H) + "] PROGMEM = {   // Freihand-Ebene / Bild\n" + carr(vals, 16, 4) + "\n};\n\n"; } else { var pk2 = packMono(S.B, u8); t += "const unsigned char bild[] PROGMEM = {   // Freihand-Ebene / Bild, " + pk2.bytes.length + " Bytes\n" + carr(pk2.bytes, 16, 2) + "\n};\n\n"; } }
   objs.forEach(function(o, i){ if (o.k === "icon") { var ib = iconBitmap(o), pk3 = packMono(ib, u8); t += "const unsigned char symbol" + i + "[] PROGMEM = {   // " + ICONS[o.n][0] + ", " + ib.w + " × " + ib.h + "\n" + carr(pk3.bytes, 16, 2) + "\n};\n\n"; } });
   var init = "";
   if (ctrl === "SSD1306") init = "  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {\n    Serial.println(F(\"SSD1306 nicht gefunden\"));\n    for (;;);\n  }\n  display.clearDisplay();\n";
   else if (ctrl === "PCD8544") init = "  display.begin();\n  display.setContrast(50);   // 40 bis 60 ausprobieren\n  display.clearDisplay();\n";
   else if (u8) init = "  u8g2.begin();\n  u8g2.clearBuffer();\n";
-  else if (ctrl === "ST7735") init = "  tft.initR(INITR_BLACKTAB);   // je nach Display: INITR_GREENTAB / INITR_REDTAB\n  tft.fillScreen(0x0000);\n";
-  else if (ctrl === "ST7789") init = "  tft.init(" + W + ", " + H + ");\n  tft.fillScreen(0x0000);\n";
-  else init = "  tft.begin();\n  tft.fillScreen(0x0000);\n";
+  else if (ctrl === "ST7735") init = "  tft.initR(INITR_BLACKTAB);   // je nach Display: INITR_GREENTAB / INITR_REDTAB\n  tft.fillScreen(" + hx(rgb565(hexc(S.bgc || "#000000")), 4) + ");\n";
+  else if (ctrl === "ST7789") init = "  tft.init(" + W + ", " + H + ");\n  tft.fillScreen(" + hx(rgb565(hexc(S.bgc || "#000000")), 4) + ");\n";
+  else init = "  tft.begin();\n  tft.fillScreen(" + hx(rgb565(hexc(S.bgc || "#000000")), 4) + ");\n";
   var body = "";
   if (bu) body += u8 ? "  u8g2.drawXBM(0, 0, " + W + ", " + H + ", bild);\n" : col ? "  tft.drawRGBBitmap(0, 0, bild, " + W + ", " + H + ");\n" : "  display.drawBitmap(0, 0, bild, " + W + ", " + H + ", " + white + ");\n";
   objs.forEach(function(o, i){
