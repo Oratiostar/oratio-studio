@@ -291,19 +291,55 @@ function timerTool(host){
   $("#tmPins", host).innerHTML = '<svg viewBox="0 0 300 150" style="max-width:340px;width:100%" aria-hidden="true"><rect x="90" y="10" width="120" height="130" rx="10" fill="var(--soft)" stroke="currentColor" stroke-width="2"/><path d="M135 10a15 15 0 0 0 30 0" fill="none" stroke="currentColor" stroke-width="2"/>' +
     P.map((p, i) => { const L = i < 4, y = 30 + (L ? i : 7 - i) * 28; return '<line x1="' + (L ? 60 : 210) + '" y1="' + y + '" x2="' + (L ? 90 : 240) + '" y2="' + y + '" stroke="currentColor" stroke-width="3"/><text x="' + (L ? 100 : 200) + '" y="' + (y + 4) + '" font-size="11" fill="currentColor" text-anchor="' + (L ? "start" : "end") + '">' + p[0] + '</text><text x="' + (L ? 54 : 246) + '" y="' + (y + 4) + '" font-size="12" font-weight="700" fill="currentColor" text-anchor="' + (L ? "end" : "start") + '">' + p[1] + '</text>'; }).join("") + '</svg>';
   function maske(){
-    $("#tmTab", host).innerHTML = [["ast", T("Astabil (Blinker)", "Astable (clignotant)")], ["mono", T("Monostabil (Impuls)", "Monostable (impulsion)")]].map(t => '<button class="btn' + (t[0] === m ? " on" : "") + '" data-m="' + t[0] + '">' + t[1] + '</button>').join("");
+    $("#tmTab", host).innerHTML = [["ast", T("Astabil (Blinker)", "Astable (clignotant)")], ["mono", T("Monostabil (Impuls)", "Monostable (impulsion)")], ["cd", "CD4060"]].map(t => '<button class="btn' + (t[0] === m ? " on" : "") + '" data-m="' + t[0] + '">' + t[1] + '</button>').join("");
     $$("#tmTab button", host).forEach(b => b.onclick = () => { m = b.dataset.m; maske(); });
-    $("#tmIn", host).innerHTML = m === "ast" ? eingabe(host, "tR1", "R1 (Ω)", "", "1k") + eingabe(host, "tR2", "R2 (Ω)", "", "47k") + eingabe(host, "tC", "C (F)", "", "10u") : eingabe(host, "tR", "R (Ω)", "", "100k") + eingabe(host, "tC", "C (F)", "", "10u");
+    $("#tmIn", host).innerHTML = m === "cd" ? eingabe(host, "tR", "R (Ω)", "", "100k") + eingabe(host, "tC", "C (F)", "", "1n") : m === "ast" ? eingabe(host, "tR1", "R1 (Ω)", "", "1k") + eingabe(host, "tR2", "R2 (Ω)", "", "47k") + eingabe(host, "tC", "C (F)", "", "10u") : eingabe(host, "tR", "R (Ω)", "", "100k") + eingabe(host, "tC", "C (F)", "", "10u");
     auf(host, ["tR1", "tR2", "tR", "tC"], rech); rech();
   }
   function rech(){
     const o = $("#tmOut", host), C = num($("#tC", host).value);
+    if (m === "cd") { const R = num($("#tR", host).value); if (!(R > 0 && C > 0)) { o.innerHTML = ""; return; } const f = 1 / (2.2 * R * C); o.innerHTML = '<div class="stats"><div><b>' + esc(fmtSI(f, "Hz")) + '</b><small>' + T("Oszillator (Pin 9–11)", "oscillateur (broches 9–11)") + '</small></div>' + [4, 5, 6, 7, 8, 9, 10, 12, 13, 14].map(n => '<div><b>' + esc(fmtSI(f / Math.pow(2, n), "Hz")) + '</b><small>Q' + n + ' (÷' + Math.pow(2, n) + ')</small></div>').join("") + '</div><p class="sub">' + T("f ≈ 1 / (2,2 · R · C) mit R = Rt, C = Ct am CD4060 (R2 ≈ 2–10 · R). Mit Quarz 32,768 kHz liefert Q14 genau 2 Hz (÷16384).", "f ≈ 1 / (2,2 · R · C) avec R = Rt, C = Ct sur le CD4060 (R2 ≈ 2–10 · R). Avec quartz 32,768 kHz : Q14 donne exactement 2 Hz.") + '</p>'; return; }
     if (m === "mono") { const R = num($("#tR", host).value); if (!(R > 0 && C > 0)) { o.innerHTML = ""; return; } o.innerHTML = '<div class="stats"><div><b>' + esc(fmtSI(1.1 * R * C, "s")) + '</b><small>' + T("Impulsdauer", "durée d’impulsion") + '</small></div></div><p class="hint">t = 1,1 · R · C ' + T("(ein kurzer Low-Impuls an TRIG startet ihn)", "(une brève impulsion basse sur TRIG le déclenche)") + '</p>'; return; }
     const R1 = num($("#tR1", host).value), R2 = num($("#tR2", host).value);
     if (!(R1 > 0 && R2 > 0 && C > 0)) { o.innerHTML = ""; return; }
     const th = 0.693 * (R1 + R2) * C, tl = 0.693 * R2 * C, f = 1 / (th + tl), d = th / (th + tl) * 100;
     o.innerHTML = '<div class="stats"><div><b>' + esc(fmtSI(f, "Hz")) + '</b><small>' + T("Frequenz", "fréquence") + '</small></div><div><b>' + esc(fmtSI(th + tl, "s")) + '</b><small>' + T("Periode", "période") + '</small></div><div><b>' + d.toLocaleString(loc(), { maximumFractionDigits: 1 }) + ' %</b><small>' + T("Tastgrad", "rapport cyclique") + '</small></div><div><b>' + esc(fmtSI(th, "s")) + ' / ' + esc(fmtSI(tl, "s")) + '</b><small>High / Low</small></div></div><canvas id="tmCv"></canvas><p class="hint">f = 1,44 / ((R1 + 2·R2) · C) ' + T("· der Tastgrad liegt immer über 50 %. Für Blinker mit LED: R1 klein, R2 groß.", "· le rapport cyclique reste toujours au-dessus de 50 %.") + '</p>';
     plot($("#tmCv", host), 420, 110, (c, W, H, k) => { const T3 = 3 * (th + tl), X = t => 10 + t / T3 * (W - 20); c.strokeStyle = k.ac; c.lineWidth = 2.4; c.beginPath(); let t = 0, hi = true; c.moveTo(X(0), 20); for (let i = 0; i < 6; i++) { const dt = hi ? th : tl; c.lineTo(X(t), hi ? 20 : 90); c.lineTo(X(t + dt), hi ? 20 : 90); t += dt; hi = !hi; c.lineTo(X(t), hi ? 20 : 90); } c.stroke(); });
+  }
+  maske();
+}
+
+/* ====================================================================== Regler (LM317, Linearregler) */
+function reglerTool(host){
+  let m = "lm";
+  const fm = (v, d) => v.toLocaleString(loc(), { maximumFractionDigits: d === undefined ? 2 : d });
+  host.innerHTML = SAFE() + '<div class="tabs t2" id="rgTab"></div><div class="cols2"><div id="rgIn"></div><div id="rgOut"></div></div><p class="sub" id="rgInfo"></p>';
+  function maske(){
+    $("#rgTab", host).innerHTML = [["lm", "LM317"], ["pv", T("Verlust & Wärme", "Pertes et chaleur")]].map(t => '<button class="btn' + (t[0] === m ? " on" : "") + '" data-m="' + t[0] + '">' + t[1] + '</button>').join("");
+    $$("#rgTab button", host).forEach(b => b.onclick = () => { m = b.dataset.m; maske(); });
+    $("#rgIn", host).innerHTML = m === "lm"
+      ? eingabe(host, "gR1", "R1 (Ω)", "", "240") + eingabe(host, "gR2", T("R2 (Ω) – leer lassen = berechnen", "R2 (Ω) – vide = calculer"), "", "720") + eingabe(host, "gUo", T("Wunsch-Uout (V)", "Uout voulue (V)"), "", "") + eingabe(host, "gI", T("Laststrom (A)", "Courant de charge (A)"), "", "0,5")
+      : eingabe(host, "gUi", "Uin (V)", "", "12") + eingabe(host, "gUa", "Uout (V)", "", "5") + eingabe(host, "gI", T("Strom (A)", "Courant (A)"), "", "0,5") + eingabe(host, "gRth", T("Wärmewiderstand Rth (K/W)", "Résistance thermique (K/W)"), "", "50");
+    auf(host, ["gR1", "gR2", "gUo", "gI", "gUi", "gUa", "gRth"], rech); rech();
+  }
+  function rech(){
+    const o = $("#rgOut", host), inf = $("#rgInfo", host), I = num($("#gI", host).value) || 0;
+    if (m === "lm"){
+      const R1 = num($("#gR1", host).value), R2t = num($("#gR2", host).value), Uw = num($("#gUo", host).value);
+      if (!(R1 > 0)) { o.innerHTML = ""; return; }
+      let R2 = R2t, extra = "";
+      if (Uw > 1.25) { R2 = (Uw / 1.25 - 1) * R1; const Rn = nearestE(R2, "E24", "near"); const Un = 1.25 * (1 + Rn / R1) + 50e-6 * Rn; extra = '<div><b>' + esc(fmtSI(R2, "Ω")) + '</b><small>' + T("R2 ideal", "R2 idéale") + '</small></div><div><b>' + esc(fmtSI(Rn, "Ω")) + '</b><small>R2 E24</small></div><div><b>' + fm(Un) + ' V</b><small>' + T("Uout mit E24", "Uout avec E24") + '</small></div>'; R2 = Rn; }
+      if (!(R2 >= 0)) { o.innerHTML = ""; return; }
+      const U = 1.25 * (1 + R2 / R1) + 50e-6 * R2, Umin = U + 2, P = (Umin - U) * I;
+      o.innerHTML = '<div class="stats"><div><b>' + fm(U) + ' V</b><small>Uout</small></div>' + extra + '<div><b>' + fm(Umin, 1) + ' V</b><small>' + T("Uin mindestens (Dropout ≈ 2 V)", "Uin minimale (dropout ≈ 2 V)") + '</small></div><div><b>' + fm(P) + ' W</b><small>' + T("Verlust bei Uin min", "pertes à Uin min") + '</small></div></div>';
+      inf.textContent = T("Uout = 1,25 V · (1 + R2/R1) + 50 µA · R2. R1 liegt zwischen OUT und ADJ (typisch 240 Ω), R2 zwischen ADJ und GND. Maximal 1,5 A, ab etwa 0,5 A Kühlkörper.", "Uout = 1,25 V · (1 + R2/R1) + 50 µA · R2. R1 entre OUT et ADJ (typ. 240 Ω), R2 entre ADJ et GND. 1,5 A max., dissipateur dès 0,5 A environ.");
+    } else {
+      const Ui = num($("#gUi", host).value), Ua = num($("#gUa", host).value), R = num($("#gRth", host).value) || 50;
+      if (!(Ui > 0 && Ua >= 0)) { o.innerHTML = ""; return; }
+      const P = (Ui - Ua) * I, eta = Ua / Ui * 100;
+      o.innerHTML = '<div class="stats"><div><b>' + fm(P) + ' W</b><small>' + T("Verlustleistung", "puissance perdue") + '</small></div><div><b>' + fm(eta, 0) + ' %</b><small>' + T("Wirkungsgrad", "rendement") + '</small></div><div><b>+' + fm(P * R, 0) + ' K</b><small>' + T("Erwärmung (P · Rth)", "échauffement (P · Rth)") + '</small></div></div>';
+      inf.textContent = T("P = (Uin − Uout) · I. Ein TO-220 ohne Kühlkörper hat etwa 50 K/W; mit Kühlkörper 5–15 K/W. Mehr als etwa 1 W: Kühlkörper oder Schaltregler nehmen.", "P = (Uin − Uout) · I. Un TO-220 sans dissipateur ≈ 50 K/W ; avec dissipateur 5–15 K/W. Au-delà de 1 W environ : dissipateur ou convertisseur à découpage.");
+    }
   }
   maske();
 }
@@ -561,6 +597,7 @@ const TOOLS = [
   ["normwerte", "🧩", "#12b8a6", T("Reihe, Parallel & Normwerte", "Série, parallèle et valeurs"), T("Widerstände kombinieren oder einen Wunschwert aus E12/E24 bauen.", "Combiner des résistances ou fabriquer une valeur avec E12/E24."), kombiTool],
   ["filter", "〰️", "#8a4dff", T("Filter & Schwingkreis", "Filtres et circuit LC"), T("RC-Filter mit Bode-Diagramm, Kondensator laden, LC-Resonanz.", "Filtre RC avec diagramme de Bode, charge de condensateur, résonance LC."), filterTool],
   ["timer555", "⏲️", "#c4452c", T("555-Timer", "Timer 555"), T("Blinker (astabil) und Impuls (monostabil) berechnen, mit Pinbelegung.", "Calculer clignotant (astable) et impulsion (monostable), avec brochage."), timerTool],
+  ["regler", "🔋", "#2f9e44", T("Spannungsregler", "Régulateurs de tension"), T("LM317 einstellen (R1/R2, E24) und Verlustleistung eines Linearreglers samt Erwärmung.", "Régler le LM317 (R1/R2, E24) et calculer pertes et échauffement d’un régulateur linéaire."), reglerTool],
   ["logik", "🔢", "#6a4fd8", T("Logik & Zahlensysteme", "Logique et numération"), T("Wahrheitstabelle für jeden Ausdruck, 74xx-Gatter, Binär/Hex/Dezimal.", "Table de vérité pour toute expression, portes 74xx, binaire/hexa/décimal."), logikTool],
 ];
 window.Elektro = { start: function(){
