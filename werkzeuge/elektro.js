@@ -377,6 +377,7 @@ function logikTool(host){
 }
 
 /* ====================================================================== Operationsverstärker (live) */
+const WIKI = { inv: "bt_analog/schaltungen_inv", nin: "bt_analog/schaltungen_noninv", fol: "bt_analog/schaltungen_folger", sum: "bt_analog/schaltungen_add", sub: "bt_analog/schaltungen_diff", int: "bt_analog/schaltungen_integr", dif: "bt_analog/schaltungen_diffz", cmp: "bt_analog/schaltungen_komp", sch: "digital/wissen_schmitt", tia: "bt_analog/schaltungen_tia", lp: "bt_analog/schaltungen_sallen" };
 function opampTool(host){
   /* ---- Zeichen-Bausteine ---- */
   const P_ = d => '<path d="' + d + '"/>';
@@ -491,7 +492,7 @@ function opampTool(host){
     $("#op_k", host).value = sg.k;
     auf(host, t.p.map(p => "op_" + p[0]).concat(["op_k", "op_A", "op_f", "op_off", "op_vs"]), neu);
     $("#opPlay", host).onclick = () => { play = !play; $("#opPlay", host).textContent = (play ? "⏸ " + T("Anhalten", "Pause") : "▶ " + T("Abspielen", "Lecture")); };
-    $("#opInfo", host).innerHTML = '<b>' + esc(t.name) + ':</b> ' + esc(t.info) + '<br><code style="font-size:15px">' + esc(t.formel) + '</code>';
+    $("#opInfo", host).innerHTML = '<b>' + esc(t.name) + ':</b> ' + esc(t.info) + '<br><code style="font-size:15px">' + esc(t.formel) + '</code>' + (WIKI[t.id] ? '<br><a href="index.html#/s/' + WIKI[t.id] + '">📖 ' + T("Hintergrund, Anwendungen und Hinweise", "Contexte, applications et conseils") + '</a>' : '');
     $("#opSvg", host).innerHTML = '<svg class="opsvg" viewBox="' + (t.vb || "0 -8 400 212") + '" role="img" aria-label="' + esc(t.name) + '">' + t.draw() + '</svg>';
     neu();
   }
