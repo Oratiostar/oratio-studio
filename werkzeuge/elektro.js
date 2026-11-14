@@ -413,7 +413,7 @@ function logikTool(host){
 }
 
 /* ====================================================================== Operationsverstärker (live) */
-const WIKI = { inv: "bt_analog/schaltungen_inv", nin: "bt_analog/schaltungen_noninv", fol: "bt_analog/schaltungen_folger", sum: "bt_analog/schaltungen_add", sub: "bt_analog/schaltungen_diff", int: "bt_analog/schaltungen_integr", dif: "bt_analog/schaltungen_diffz", cmp: "bt_analog/schaltungen_komp", sch: "digital/wissen_schmitt", tia: "bt_analog/schaltungen_tia", lp: "bt_analog/schaltungen_sallen" };
+const WIKI = { inv: "schaltungen/schaltungen_inv", nin: "schaltungen/schaltungen_noninv", fol: "schaltungen/schaltungen_folger", sum: "schaltungen/schaltungen_add", sub: "schaltungen/schaltungen_diff", int: "schaltungen/schaltungen_integr", dif: "schaltungen/schaltungen_diffz", cmp: "schaltungen/schaltungen_komp", sch: "digital/wissen_schmitt", tia: "schaltungen/schaltungen_tia", lp: "schaltungen/schaltungen_sallen" };
 function opampTool(host){
   /* ---- Zeichen-Bausteine ---- */
   const P_ = d => '<path d="' + d + '"/>';
