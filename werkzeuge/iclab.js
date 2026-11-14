@@ -1,0 +1,546 @@
+/* Oratio IC-Labor – ICs nachschlagen, Schaltungen ausprobieren, Oszilloskop lesen */
+var ICLAB = (function(){
+"use strict";
+var fr = !!(window.WZ && WZ.lang === "fr");
+function T(d, f){ return fr && f ? f : d; }
+function $(s, r){ return (r || document).querySelector(s); }
+function el(t, c, h){ var e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; }
+function esc(s){ return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+function sv(k){ try { return JSON.parse(localStorage.getItem("iclab_" + k)); } catch(e){ return null; } }
+function st(k, v){ try { localStorage.setItem("iclab_" + k, JSON.stringify(v)); } catch(e){} }
+var E12 = [1, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 3.9, 4.7, 5.6, 6.8, 8.2, 10];
+function e12(v){ if (!(v > 0)) return v; var d = Math.floor(Math.log10(v)), m = v / Math.pow(10, d), b = 10, bd = 1e9; E12.forEach(function(x){ var q = Math.abs(Math.log(m / x)); if (q < bd){ bd = q; b = x; } }); return b * Math.pow(10, d); }
+function fmt(v, u, dig){
+  if (!isFinite(v)) return "–"; if (v === 0) return "0 " + (u || "");
+  var Ls = [[1e9, "G"], [1e6, "M"], [1e3, "k"], [1, ""], [1e-3, "m"], [1e-6, "µ"], [1e-9, "n"], [1e-12, "p"]], a = Math.abs(v), s = Ls[Ls.length - 1];
+  for (var i = 0; i < Ls.length; i++) if (a >= Ls[i][0] * 0.9995){ s = Ls[i]; break; }
+  return String(parseFloat((v / s[0]).toPrecision(dig || 3))).replace(".", fr ? "," : ".") + " " + s[1] + (u || "");
+}
+var C = { amber: "#ffb000", cyan: "#3de6ff", green: "#6dffb0", pink: "#ff3d9a", lime: "#b6ff3d", violet: "#b58cff", red: "#ff6b6b", white: "#e8fff3" };
+var LINK = { ne555: "bt_analog/analog_ne555", hc14: "bt_ic/logik_74hc14", cd4060: "bt_ic/speicher_4060", hc00: "bt_ic/logik_7400", hc74: "bt_ic/speicher_7474", cd4017: "bt_ic/speicher_4017", hc160: "bt_ic/speicher_74160", hc595: "bt_ic/speicher_74595", hc138: "bt_ic/decoder_74138", cd4511: "bt_ic/decoder_4511", lm358: "bt_analog/analog_lm358", lm393: "bt_analog/analog_lm393", lm317: "bt_analog/schaltungen_lm317_sch" };
+
+/* ---------- Zeit-Helfer (alles geschlossen berechnet) ---------- */
+function cnt(t, f, ph){ return t < ph ? 0 : Math.floor((t - ph) * f) + 1; }       // steigende Flanken bis t
+function sq(t, f, ph, duty){ if (t < ph) return 0; var x = ((t - ph) * f) % 1; return x < (duty || .5) ? 1 : 0; }
+function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
+function sineAt(t, f, a){ return a * Math.sin(2 * Math.PI * f * t); }
+function hash(n){ var x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+
+/* ---------- Oszilloskop ---------- */
+function scope(cv, chs, span, cur, tl){
+  var dpr = Math.min(2, window.devicePixelRatio || 1), W = cv.parentNode.clientWidth || 600, LH = 62, H = chs.length * LH + 26;
+  cv.style.width = W + "px"; cv.style.height = H + "px"; cv.width = W * dpr; cv.height = H * dpr;
+  var c = cv.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0);
+  c.fillStyle = "#050a0a"; c.fillRect(0, 0, W, H);
+  c.strokeStyle = "rgba(109,255,176,.10)"; c.lineWidth = 1; c.beginPath();
+  for (var i = 0; i <= 10; i++){ var x = Math.round(i * W / 10) + .5; c.moveTo(x, 0); c.lineTo(x, H - 22); }
+  for (var j = 0; j <= chs.length; j++){ var y = j * LH + .5; c.moveTo(0, y); c.lineTo(W, y); }
+  c.stroke();
+  var N = Math.min(2400, Math.round(W * 2.5));
+  chs.forEach(function(ch, k){
+    var top = k * LH + 8, h = LH - 16, lo = ch.lo, hi = ch.hi;
+    c.strokeStyle = "rgba(109,255,176,.07)"; c.beginPath(); c.moveTo(0, top + h / 2 + .5); c.lineTo(W, top + h / 2 + .5); c.stroke();
+    c.save(); c.strokeStyle = ch.c; c.shadowColor = ch.c; c.shadowBlur = 6; c.lineWidth = 2; c.lineJoin = "round"; c.beginPath();
+    for (var s = 0; s <= N; s++){
+      var v = ch.a ? ch.a[Math.min(ch.a.length - 1, Math.round(s / N * (ch.a.length - 1)))] : ch.v(s / N * span);
+      var yy = top + h - clamp((v - lo) / (hi - lo), -.05, 1.05) * h, xx = s / N * W;
+      s ? c.lineTo(xx, yy) : c.moveTo(xx, yy);
+    } c.stroke(); c.restore();
+    c.font = "bold 11px ui-monospace,Menlo,Consolas,monospace"; c.fillStyle = ch.c; c.textAlign = "left"; c.fillText(ch.n, 6, top + 9);
+    c.fillStyle = "rgba(200,255,225,.45)"; c.textAlign = "right"; c.fillText(fmt(hi, ch.u != null ? ch.u : "V", 2), W - 5, top + 9); c.fillText(fmt(lo, ch.u != null ? ch.u : "V", 2), W - 5, top + h + 4);
+  });
+  if (cur != null){ c.strokeStyle = "rgba(255,255,255,.75)"; c.setLineDash([4, 3]); c.beginPath(); c.moveTo(cur * W + .5, 0); c.lineTo(cur * W + .5, H - 22); c.stroke(); c.setLineDash([]); }
+  c.fillStyle = "rgba(200,255,225,.7)"; c.textAlign = "right"; c.font = "11px ui-monospace,Menlo,Consolas,monospace";
+  c.fillText(tl ? tl(span / 10) : fmt(span / 10, "s", 2) + " / DIV", W - 6, H - 8); c.textAlign = "left"; c.fillText("0", 6, H - 8);
+}
+
+/* ---------- Gehäuse-Zeichnung ---------- */
+function pinColor(t){ return t === "v" ? "#ff6b6b" : t === "g" ? "#8aa0b8" : t === "o" ? "#3de6ff" : "#ffb000"; }
+function dip(ic){
+  var P = ic.pins, n = P.length;
+  if (ic.pkg === "TO-220"){
+    var s = '<svg viewBox="0 0 220 150" class="dipsvg"><rect x="50" y="8" width="120" height="70" rx="6" fill="#262c36" stroke="#59657a"/><circle cx="110" cy="30" r="9" fill="#0e1218"/>';
+    P.forEach(function(p, i){ var x = 70 + i * 40, nm = p.split(":")[0], t = p.split(":")[1]; s += '<rect x="' + (x - 4) + '" y="78" width="8" height="38" fill="' + pinColor(t) + '"/><text x="' + x + '" y="134" text-anchor="middle" font-size="12" fill="currentColor">' + (i + 1) + "</text><text x=\"" + x + '" y="148" text-anchor="middle" font-size="11" fill="currentColor" font-weight="700">' + esc(nm) + "</text>"; });
+    return s + '<text x="110" y="62" text-anchor="middle" font-size="13" font-weight="800" fill="#e8fff3">' + esc(ic.name) + "</text></svg>";
+  }
+  var half = n / 2, rowH = 22, H = half * rowH + 20, W = 260, s2 = '<svg viewBox="0 0 ' + W + " " + H + '" class="dipsvg"><rect x="86" y="6" width="88" height="' + (H - 12) + '" rx="8" fill="#262c36" stroke="#59657a"/><path d="M118 6 a12 12 0 0 0 24 0" fill="#0e1218"/>';
+  for (var i = 0; i < n; i++){
+    var left = i < half, row = left ? i : n - 1 - i, y = 18 + row * rowH, nm = P[i].split(":")[0], t = P[i].split(":")[1];
+    s2 += '<rect x="' + (left ? 70 : 174) + '" y="' + (y - 4) + '" width="16" height="8" rx="2" fill="' + pinColor(t) + '"/>';
+    s2 += '<text x="' + (left ? 64 : 192) + '" y="' + (y + 4) + '" text-anchor="' + (left ? "end" : "start") + '" font-size="12" font-weight="700" fill="currentColor">' + esc(nm) + "</text>";
+    s2 += '<text x="' + (left ? 100 : 160) + '" y="' + (y + 4) + '" text-anchor="' + (left ? "start" : "end") + '" font-size="10" fill="#a9cdbd">' + (i + 1) + "</text>";
+  }
+  return s2 + '<text x="130" y="' + (H / 2 + 4) + '" text-anchor="middle" font-size="12" font-weight="800" fill="#e8fff3" transform="rotate(-90 130 ' + (H / 2) + ')">' + esc(ic.name) + "</text></svg>";
+}
+
+/* ---------- LED-Reihe & 7-Segment ---------- */
+function ledRow(host, n, names, col){
+  var row = el("div", "iclr"), L = [];
+  for (var i = 0; i < n; i++){ var w = el("div", "ic-led"), d = el("i"); d.style.setProperty("--c", col || C.red); w.appendChild(d); w.appendChild(el("span", "", names && names[i] != null ? names[i] : "")); row.appendChild(w); L.push(d); }
+  host.appendChild(row);
+  return { set: function(a){ for (var i = 0; i < L.length; i++) L[i].classList.toggle("on", !!a[i]); } };
+}
+var DIG = [0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F];   // Bits a..g = 0..6
+function seg7(host){
+  var P = ["M14 6 L20 2 L56 2 L62 6 L56 10 L20 10Z", "M64 8 L68 14 L68 44 L64 50 L58 44 L58 14Z", "M64 56 L68 62 L68 92 L64 98 L58 92 L58 62Z", "M14 100 L20 96 L56 96 L62 100 L56 104 L20 104Z", "M10 56 L16 62 L16 92 L10 98 L4 92 L4 62Z", "M10 8 L16 14 L16 44 L10 50 L4 44 L4 14Z", "M14 53 L20 49 L56 49 L62 53 L56 57 L20 57Z"];
+  var s = el("div", "ic-seg"); s.innerHTML = '<svg viewBox="0 0 72 106">' + P.map(function(d){ return '<path d="' + d + '"/>'; }).join("") + "</svg>"; host.appendChild(s);
+  var ps = s.querySelectorAll("path");
+  return { setBits: function(b){ for (var i = 0; i < 7; i++) ps[i].classList.toggle("on", !!((b >> i) & 1)); }, set: function(d){ this.setBits(d >= 0 && d <= 9 ? DIG[d] : 0); } };
+}
+function toggleBtn(host, label, init, cb){
+  var b = el("button", "ic-tg" + (init ? " on" : ""), label); b.type = "button"; b.onclick = function(){ b.classList.toggle("on"); cb && cb(b.classList.contains("on")); }; host.appendChild(b); return b;
+}
+
+/* ---------- 555-Rechenkern ---------- */
+function c555(R1, R2, Cc, V){
+  var tH = .693 * (R1 + R2) * Cc, tL = .693 * R2 * Cc, Tt = tH + tL;
+  return { tH: tH, tL: tL, T: Tt, f: 1 / Tt, duty: tH / Tt,
+    vc: function(t, ph){ if (t < ph) return V / 3; var x = (t - ph) % Tt; return x < tH ? V - (V - V / 3) * Math.exp(-x / ((R1 + R2) * Cc)) : 2 * V / 3 * Math.exp(-(x - tH) / (R2 * Cc)); },
+    out: function(t, ph){ return t >= ph && ((t - ph) % Tt) < tH ? 1 : 0; },
+    n: function(t, ph){ return t < ph ? 0 : Math.floor((t - ph) / Tt) + 1; } };
+}
+var PR1 = { k: "R1", l: ["R1", "R1"], min: 1e3, max: 1e6, def: 1e3, log: 1, u: "Ω", e12: 1 };
+var PR2 = { k: "R2", l: ["R2", "R2"], min: 1e3, max: 2e6, def: 47e3, log: 1, u: "Ω", e12: 1 };
+var PC1 = { k: "C", l: ["C", "C"], min: 1e-9, max: 1e-3, def: 10e-6, log: 1, u: "F", e12: 1 };
+var PV = function(d){ return { k: "V", l: ["Betriebsspannung", "Tension d’alim."], min: 5, max: 15, def: d || 9, u: "V", int: 1 }; };
+var PF = function(d, lo, hi){ return { k: "f", l: ["Takt-Frequenz", "Fréquence d’horloge"], min: lo || .5, max: hi || 5000, def: d || 2, log: 1, u: "Hz" }; };
+function led1(on){ return { leds: [on], names: ["LED"] }; }
+function digitLive(n){ return n; }
+
+/* ---------- Kombi- und Einzelprojekte ---------- */
+var PROJ = {};
+
+PROJ.ne555a = { t: ["555 astabil – Blinker / Rechteck-Oszillator", "555 astable – clignotant / oscillateur"], flow: ["NE555", "LED"],
+  d: ["Der Klassiker: Ein Kondensator lädt sich zwischen 1/3 und 2/3 der Betriebsspannung hin und her – der Ausgang kippt im Takt. Ändere R1, R2 und C und sieh am Oszilloskop, was passiert.", "Le classique : le condensateur oscille entre 1/3 et 2/3 de la tension – la sortie bascule en rythme. Change R1, R2 et C et regarde l’oscilloscope."],
+  params: [PR1, PR2, PC1, PV(9)],
+  build: function(P){ var k = c555(P.R1, P.R2, P.C, P.V), ph = k.T * .25, V = P.V, w = [];
+    if (P.R1 < 1e3) w.push(T("R1 sollte mindestens 1 kΩ sein (Entladestrom).", "R1 devrait valoir au moins 1 kΩ."));
+    if (k.f > 500e3) w.push(T("Über ca. 500 kHz schafft der NE555 das nicht mehr.", "Au-delà de 500 kHz le NE555 ne suit plus."));
+    return { span: ph + 3.1 * k.T, fmain: k.f, warn: w,
+      ch: [{ n: "OUT (Pin 3)", c: C.green, lo: 0, hi: V, v: function(t){ return k.out(t, ph) * (V - 1.5); } }, { n: "C (Pin 2/6)", c: C.amber, lo: 0, hi: V, v: function(t){ return k.vc(t, ph); } }],
+      info: [[T("Frequenz", "Fréquence"), fmt(k.f, "Hz")], [T("Periodendauer", "Période"), fmt(k.T, "s")], [T("HIGH-Zeit tH = 0,693·(R1+R2)·C", "Temps haut tH"), fmt(k.tH, "s")], [T("LOW-Zeit tL = 0,693·R2·C", "Temps bas tL"), fmt(k.tL, "s")], [T("Tastverhältnis", "Rapport cyclique"), (k.duty * 100).toFixed(1).replace(".", fr ? "," : ".") + " %"], [T("Schwellen", "Seuils"), fmt(V / 3, "V") + " / " + fmt(2 * V / 3, "V")]],
+      live: function(ts){ return { leds: [k.out(ts, 0)], names: ["OUT"] }; } }; },
+  wire: [["Pin 1 → GND, Pin 8 → +V", "Broche 1 → GND, broche 8 → +V"], ["Pin 4 (RESET) → +V (sonst bleibt der Ausgang aus)", "Broche 4 (RESET) → +V"], ["R1 von +V an Pin 7 (DISCH)", "R1 de +V vers broche 7"], ["R2 von Pin 7 an Pin 6/2 (die beiden zusammen)", "R2 de la broche 7 aux broches 6/2 (reliées)"], ["C von Pin 6/2 nach GND", "C de la broche 6/2 vers GND"], ["Pin 5 (CTRL) über 10 nF nach GND (ruhigere Schwellen)", "Broche 5 via 10 nF vers GND"], ["Pin 3 (OUT) → 330 Ω … 1 kΩ → LED → GND", "Broche 3 → 330 Ω…1 kΩ → LED → GND"]],
+  notes: [["Das Tastverhältnis ist immer über 50 % (R1 lädt mit). Für genau 50 %: Diode parallel zu R2 (Anode zum Kondensator) und R1 sehr klein.", "Le rapport cyclique dépasse toujours 50 %."], ["Der bipolare NE555 gibt HIGH nur ca. 1,5 V unter +V aus (CMOS-Typ TLC555/LMC555: fast voll).", "Le NE555 bipolaire sort ≈ +V − 1,5 V."]] };
+
+PROJ.ne555m = { t: ["555 monostabil – Zeitrelais / Impuls", "555 monostable – impulsion"], flow: ["Taster", "NE555", "LED"],
+  d: ["Ein kurzer Tastendruck an Pin 2 startet genau einen Impuls der Länge T = 1,1·R·C. Danach fällt der Ausgang von selbst zurück. Drücke den Knopf und sieh die LED.", "Une brève impulsion sur la broche 2 déclenche une impulsion de durée T = 1,1·R·C."],
+  params: [{ k: "R", l: ["R", "R"], min: 1e3, max: 2e6, def: 100e3, log: 1, u: "Ω", e12: 1 }, PC1, PV(9)],
+  action: { l: ["▶ Taster drücken (Trigger)", "▶ Appuyer (déclencheur)"] },
+  build: function(P){ var Tt = 1.1 * P.R * P.C, V = P.V, span = Tt / .7, t0 = span * .12, w = span * .03;
+    return { span: span, speed: Tt / clamp(Tt, .8, 6), warn: [],
+      ch: [{ n: "TRIG (Pin 2)", c: C.pink, lo: 0, hi: V, v: function(t){ return t >= t0 && t < t0 + w ? 0 : V; } }, { n: "C (Pin 6/7)", c: C.amber, lo: 0, hi: V, v: function(t){ return t < t0 ? 0 : t < t0 + Tt ? V * (1 - Math.exp(-(t - t0) / (P.R * P.C))) : 0; } }, { n: "OUT (Pin 3)", c: C.green, lo: 0, hi: V, v: function(t){ return t >= t0 && t < t0 + Tt ? V - 1.5 : 0; } }],
+      info: [[T("Impulsdauer T = 1,1·R·C", "Durée T = 1,1·R·C"), fmt(Tt, "s")], [T("Schwelle (2/3 V)", "Seuil (2/3 V)"), fmt(2 * V / 3, "V")]],
+      live: function(ts, ctx){ return { leds: [ctx.fire != null && ts - ctx.fire < Tt && ts >= ctx.fire], names: ["OUT"] }; } }; },
+  wire: [["Pin 1 → GND, Pin 8 und Pin 4 → +V", "Broche 1 → GND, 8 et 4 → +V"], ["Pin 2 (TRIG) über 10 kΩ an +V (Ruhe: HIGH), Taster von Pin 2 nach GND", "Broche 2 via 10 kΩ à +V, bouton de la broche 2 à GND"], ["R von +V an Pin 7 und Pin 6 (zusammen)", "R de +V aux broches 7 et 6 (reliées)"], ["C von Pin 6/7 nach GND", "C de la broche 6/7 à GND"], ["Pin 3 → Vorwiderstand → LED → GND", "Broche 3 → résistance → LED → GND"]],
+  notes: [["Der Trigger-Impuls muss kürzer sein als T, sonst bleibt der Ausgang so lange an, wie du drückst.", "L’impulsion de déclenchement doit être plus courte que T."], ["Während der Impuls läuft, wird ein neuer Trigger ignoriert (nicht nachtriggerbar).", "Pendant l’impulsion, un nouveau déclenchement est ignoré."]] };
+
+PROJ.hc14 = { t: ["Schmitt-Trigger-Oszillator (74HC14)", "Oscillateur à trigger de Schmitt (74HC14)"], flow: ["74HC14", "R + C", "LED"],
+  d: ["Ein einziges Gatter, ein Widerstand, ein Kondensator – fertig ist ein Taktgeber. Der Kondensator wird über den Ausgang geladen und entladen, der Schmitt-Trigger kippt an zwei verschiedenen Schwellen.", "Une porte, une résistance, un condensateur : un oscillateur."],
+  params: [{ k: "R", l: ["R", "R"], min: 1e3, max: 1e6, def: 100e3, log: 1, u: "Ω", e12: 1 }, PC1, { k: "V", l: ["Betriebsspannung", "Tension"], min: 3, max: 6, def: 5, u: "V" }],
+  build: function(P){ var V = P.V, Vp = .55 * V, Vm = .33 * V, RC = P.R * P.C, th = RC * Math.log((V - Vm) / (V - Vp)), tl = RC * Math.log(Vp / Vm), Tt = th + tl, ph = Tt * .2;
+    function vc(t){ if (t < ph) return Vm; var x = (t - ph) % Tt; return x < th ? V - (V - Vm) * Math.exp(-x / RC) : Vp * Math.exp(-(x - th) / RC); }
+    function out(t){ return t >= ph && ((t - ph) % Tt) < th ? 1 : 0; }
+    return { span: ph + 3.2 * Tt, fmain: 1 / Tt, warn: [],
+      ch: [{ n: "Ausgang (Pin 2)", c: C.green, lo: 0, hi: V, v: function(t){ return out(t) * V; } }, { n: "Kondensator / Eingang (Pin 1)", c: C.amber, lo: 0, hi: V, v: vc }],
+      info: [[T("Frequenz ≈ 1 / (0,9·R·C)", "Fréquence"), fmt(1 / Tt, "Hz")], [T("Schwellen VT+ / VT− (typisch)", "Seuils VT+ / VT−"), fmt(Vp, "V") + " / " + fmt(Vm, "V")], [T("HIGH / LOW", "Haut / bas"), fmt(th, "s") + " / " + fmt(tl, "s")]],
+      live: function(ts){ return { leds: [out(ts)], names: ["OUT"] }; } }; },
+  wire: [["Pin 14 → +V, Pin 7 → GND, 100 nF dicht am Chip", "Broche 14 → +V, 7 → GND, 100 nF près de la puce"], ["Pin 2 (Ausgang) → R → Pin 1 (Eingang)", "Broche 2 → R → broche 1"], ["Pin 1 → C → GND", "Broche 1 → C → GND"], ["Pin 2 → Vorwiderstand → LED → GND", "Broche 2 → résistance → LED → GND"], ["Nicht benutzte Gatter: Eingänge an GND legen", "Entrées inutilisées → GND"]],
+  notes: [["Die Schwellen streuen von Chip zu Chip stark – die Frequenz ist nur ±20 % genau. Für Blinker egal, für Zeitbasen nicht.", "Les seuils varient beaucoup d’une puce à l’autre."], ["Das Prinzip funktioniert genauso mit 40106 oder 4093.", "Même principe avec 40106 ou 4093."]] };
+
+PROJ.hc00 = { t: ["Gatter-Werkstatt (74HC00 / 02 / 04 / 08 / 32 / 86)", "Atelier des portes logiques"], flow: ["Eingänge A, B", "Gatter", "Ausgang Y"], custom: "gates",
+  d: ["Schalte die Eingänge und sieh den Ausgang. Dazu: Wie man mit NAND-Gattern alle anderen Gatter baut – deshalb heißt das NAND „Universal-Gatter“.", "Bascule les entrées et vois la sortie. Et comment construire toutes les portes avec des NAND."],
+  wire: [["Pin 14 → +V, Pin 7 → GND, 100 nF dazwischen", "Broche 14 → +V, 7 → GND, 100 nF"], ["Gatter 1: A = Pin 1, B = Pin 2, Y = Pin 3 (bei 7400, 7408, 7432, 7486)", "Porte 1 : A = 1, B = 2, Y = 3"], ["Unbenutzte Eingänge fest an GND oder +V", "Entrées libres → GND ou +V"], ["Achtung: 7402 (NOR) hat eine andere Pinbelegung – Ausgang zuerst!", "Attention : le 7402 (NOR) a un brochage différent."]],
+  notes: [["Eingänge dürfen bei HC nie offen bleiben – sie schwingen sonst und ziehen Strom.", "Les entrées HC ne doivent jamais rester en l’air."]] };
+
+PROJ.hc74 = { t: ["Frequenzteiler mit D-Flip-Flops (74HC74)", "Diviseur de fréquence (74HC74)"], flow: ["Takt", "74HC74 ÷2", "÷4", "÷8", "÷16"],
+  d: ["Verbindest du /Q mit D, kippt das Flip-Flop bei jeder steigenden Flanke: der Takt wird halbiert. Mehrere hintereinander geben ÷4, ÷8, ÷16 – die Grundidee jedes Zählers.", "En reliant /Q à D, la bascule change d’état à chaque front montant : la fréquence est divisée par 2."],
+  params: [PF(4, .5, 2000)], opts: [{ k: "n", l: ["Stufen", "Étages"], o: [[1, "1 (÷2)"], [2, "2 (÷4)"], [3, "3 (÷8)"], [4, "4 (÷16)"]], def: 3 }],
+  build: function(P){ var f = P.f, n = +P.n, ph = .25 / f, N = Math.pow(2, n), chs = [{ n: "CLK", c: C.amber, lo: 0, hi: 5, v: function(t){ return sq(t, f, ph, .5) * 5; } }];
+    for (var i = 1; i <= n; i++) (function(i){ chs.push({ n: "Q" + i + "  (÷" + Math.pow(2, i) + ")", c: [C.green, C.cyan, C.pink, C.lime][i - 1], lo: 0, hi: 5, v: function(t){ return (Math.floor(cnt(t, f, ph) / Math.pow(2, i - 1)) % 2) * 5; } }); })(i);
+    return { span: ph + (2.2 * N) / f, fmain: f, warn: [], ch: chs, info: [[T("Eingangstakt", "Horloge"), fmt(f, "Hz")], [T("Ausgang letzte Stufe", "Dernier étage"), fmt(f / N, "Hz")]],
+      live: function(ts){ var c = cnt(ts, f, ph), a = []; for (var i = 1; i <= n; i++) a.push(Math.floor(c / Math.pow(2, i - 1)) % 2); return { leds: a, names: a.map(function(x, i){ return "Q" + (i + 1); }) }; } }; },
+  wire: [["Pin 14 → +V, Pin 7 → GND", "Broche 14 → +V, 7 → GND"], ["Flip-Flop 1: /Q (Pin 6) → D (Pin 2), Takt an CLK (Pin 3)", "Bascule 1 : /Q (6) → D (2), horloge sur CLK (3)"], ["/PR (Pin 4) und /CLR (Pin 1) → +V (nicht aktiv)", "/PR (4) et /CLR (1) → +V"], ["Q (Pin 5) = Ausgang; für die 2. Stufe: Q (Pin 5) → CLK des 2. Flip-Flops (Pin 11), /Q (Pin 8) → D (Pin 12)", "Étage 2 : Q (5) → CLK (11), /Q (8) → D (12)"]],
+  notes: [["Das 74HC74 hat nur 2 Flip-Flops im Gehäuse – für 4 Stufen brauchst du 2 ICs.", "Le 74HC74 ne contient que 2 bascules."], ["Asynchron: Jede Stufe hängt am Ausgang der vorherigen – bei vielen Stufen summieren sich die Laufzeiten.", "Asynchrone : les retards s’additionnent."]] };
+
+PROJ.cd4017 = { t: ["Lauflicht mit CD4017", "Chenillard avec CD4017"], flow: ["Takt", "CD4017", "10 × LED"],
+  d: ["Mit jeder steigenden Taktflanke wandert das HIGH zum nächsten Ausgang Q0…Q9. Verbindest du Qn mit RESET, läuft das Licht nur n Schritte lang.", "À chaque front montant, le niveau haut passe à la sortie suivante."],
+  params: [PF(3, .5, 3000), { k: "n", l: ["Schritte (Qn → RESET)", "Pas (Qn → RESET)"], min: 2, max: 10, def: 10, int: 1, u: "" }],
+  build: function(P){ var f = P.f, n = Math.round(P.n), ph = .25 / f, chs = [{ n: "CLK (Pin 14)", c: C.amber, lo: 0, hi: 5, v: function(t){ return sq(t, f, ph, .5) * 5; } }];
+    for (var i = 0; i < 4; i++) (function(i){ chs.push({ n: "Q" + i, c: [C.green, C.cyan, C.pink, C.lime][i], lo: 0, hi: 5, v: function(t){ return (cnt(t, f, ph) % n === i ? 5 : 0); } }); })(i);
+    return { span: ph + (Math.min(n, 8) + 1.6) / f, fmain: f, warn: n < 10 ? [] : [], ch: chs, info: [[T("Takt", "Horloge"), fmt(f, "Hz")], [T("Ein Umlauf dauert", "Un tour dure"), fmt(n / f, "s")], [T("RESET-Verbindung", "Liaison RESET"), n === 10 ? T("keine (volle 10 Schritte)", "aucune") : "Q" + n + " → RESET (Pin 15)"]],
+      live: function(ts){ var s = cnt(ts, f, ph) % n, a = []; for (var i = 0; i < 10; i++) a.push(i === s ? 1 : 0); return { leds: a, names: a.map(function(x, i){ return "Q" + i; }) }; } }; },
+  wire: [["Pin 16 → +V, Pin 8 → GND", "Broche 16 → +V, 8 → GND"], ["Pin 13 (CE) und Pin 15 (RESET) → GND", "Broches 13 et 15 → GND"], ["Takt an Pin 14 (CLK)", "Horloge sur la broche 14"], ["Q0…Q9 jeweils → 1 kΩ → LED → GND", "Q0…Q9 → 1 kΩ → LED → GND"], ["Q(n) → Pin 15 (RESET) für n Schritte, z. B. Q6 → RESET = 6 Schritte", "Q(n) → RESET pour n pas"], ["Q-Anschlüsse sind NICHT der Reihe nach angeordnet: Q0=Pin 3, Q1=2, Q2=4, Q3=7, Q4=10, Q5=1, Q6=5, Q7=6, Q8=9, Q9=11", "Les sorties ne sont pas dans l’ordre !"]],
+  notes: [["Ausgänge sind schwach (ca. 1–5 mA bei 5 V): LEDs mit ≥ 1 kΩ oder über Transistor/ULN2003.", "Sorties faibles : LED avec ≥ 1 kΩ."], ["Kaskadieren: Pin 12 (CO) des ersten → CLK des zweiten.", "Cascade : CO → CLK du suivant."]] };
+
+PROJ.cd4060 = { t: ["Teilerkette & Quarzuhr-Baustein (CD4060)", "Chaîne de division (CD4060)"], flow: ["Oszillator", "÷ 2⁴ … 2¹⁴", "Ausgänge"],
+  d: ["14 Teilerstufen und ein Oszillator in einem Gehäuse. Mit einem 32,768-kHz-Uhrenquarz kommt an Q14 genau 2 Hz heraus – die Basis jeder Quarzuhr.", "14 étages diviseurs + oscillateur. Avec un quartz 32,768 kHz : Q14 = 2 Hz."],
+  opts: [{ k: "o", l: ["Oszillator", "Oscillateur"], o: [["q32", "Quarz 32,768 kHz"], ["q1m", "Quarz 1 MHz"], ["q4", "Quarz 4,194304 MHz"], ["rc", "RC-Oszillator"]], def: "q32" }, { k: "q", l: ["LED an Ausgang", "LED sur sortie"], o: [[4, "Q4"], [6, "Q6"], [8, "Q8"], [10, "Q10"], [12, "Q12"], [13, "Q13"], [14, "Q14"]], def: 14 }],
+  params: [{ k: "Rt", l: ["Rt (nur RC)", "Rt (RC)"], min: 1e3, max: 1e6, def: 47e3, log: 1, u: "Ω", e12: 1 }, { k: "Ct", l: ["Ct (nur RC)", "Ct (RC)"], min: 100e-12, max: 1e-6, def: 10e-9, log: 1, u: "F", e12: 1 }],
+  build: function(P){ var f = P.o === "q32" ? 32768 : P.o === "q1m" ? 1e6 : P.o === "q4" ? 4194304 : 1 / (2.3 * P.Rt * P.Ct), ph = .25 / f, q = +P.q,
+      chs = [{ n: "Oszillator (Pin 10)", c: C.amber, lo: 0, hi: 5, v: function(t){ return sq(t, f, ph, .5) * 5; } }];
+    [4, 5, 6, 7].forEach(function(n, i){ chs.push({ n: "Q" + n + "  (÷" + Math.pow(2, n) + ")", c: [C.green, C.cyan, C.pink, C.lime][i], lo: 0, hi: 5, v: function(t){ return (Math.floor(cnt(t, f, ph) / Math.pow(2, n - 1)) % 2) * 5; } }); });
+    var inf = [[T("Oszillator", "Oscillateur"), fmt(f, "Hz")]]; [4, 5, 6, 7, 8, 9, 10, 12, 13, 14].forEach(function(n){ inf.push(["Q" + n + " (÷" + Math.pow(2, n) + ")", fmt(f / Math.pow(2, n), "Hz") + "  ·  " + fmt(Math.pow(2, n) / f, "s")]); });
+    return { span: ph + 135 / f, fmain: f / Math.pow(2, q), warn: [], ch: chs, info: inf,
+      live: function(ts){ return { leds: [Math.floor(cnt(ts, f, ph) / Math.pow(2, q - 1)) % 2], names: ["Q" + q] }; } }; },
+  wire: [["Pin 16 → +V, Pin 8 → GND, Pin 12 (RESET) → GND", "Broche 16 → +V, 8 → GND, 12 → GND"], ["Quarz: zwischen Pin 11 und Pin 10; je 22 pF von Pin 11 und Pin 10 nach GND; 10 MΩ zwischen Pin 11 und Pin 9", "Quartz entre 11 et 10 ; 22 pF vers GND ; 10 MΩ entre 11 et 9"], ["RC statt Quarz: Rt von Pin 10 an Pin 11, Ct von Pin 11 nach GND, R2 ≈ 2·Rt von Pin 11 an Pin 9", "Version RC : Rt (10→11), Ct (11→GND), R2 ≈ 2·Rt (11→9)"], ["Ausgang z. B. Q14 (Pin 3) → Vorwiderstand → LED → GND", "Sortie Q14 (3) → résistance → LED"]],
+  notes: [["Q1, Q2, Q3 und Q11 sind nicht herausgeführt. Q4 ist die erste Stufe, die du abgreifen kannst.", "Q1–Q3 et Q11 ne sont pas accessibles."], ["Quarz 32,768 kHz = 2¹⁵ Hz: 15 Teilungen ergeben 1 Hz – Q14 plus ein Flip-Flop (siehe Kombi-Projekt Quarzuhr).", "32,768 kHz = 2¹⁵ Hz."]] };
+
+PROJ.hc160 = { t: ["Dekadenzähler 0…9 (74HC160)", "Compteur décimal 0…9 (74HC160)"], flow: ["Takt", "74HC160", "BCD 0…9"],
+  d: ["Zählt bei jeder steigenden Flanke weiter: 0, 1, 2 … 9, dann wieder 0. Die vier Ausgänge Q0…Q3 sind der BCD-Wert, TC meldet die 9.", "Compte 0…9 puis recommence. Q0…Q3 = valeur BCD, TC signale le 9."],
+  params: [PF(2, .5, 2000)],
+  build: function(P){ var f = P.f, ph = .25 / f, chs = [{ n: "CLK (Pin 2)", c: C.amber, lo: 0, hi: 5, v: function(t){ return sq(t, f, ph, .5) * 5; } }];
+    for (var i = 0; i < 4; i++) (function(i){ chs.push({ n: "Q" + i + "  (Wert " + Math.pow(2, i) + ")", c: [C.green, C.cyan, C.pink, C.lime][i], lo: 0, hi: 5, v: function(t){ return ((cnt(t, f, ph) % 10) >> i & 1) * 5; } }); })(i);
+    chs.push({ n: "TC (Pin 15) = 9", c: C.red, lo: 0, hi: 5, v: function(t){ return cnt(t, f, ph) % 10 === 9 ? 5 : 0; } });
+    return { span: ph + 12.3 / f, fmain: f, warn: [], ch: chs, info: [[T("Takt", "Horloge"), fmt(f, "Hz")], [T("Ein Umlauf (10 Takte)", "Un cycle (10 coups)"), fmt(10 / f, "s")]],
+      live: function(ts){ var s = cnt(ts, f, ph) % 10; return { leds: [s & 1, s >> 1 & 1, s >> 2 & 1, s >> 3 & 1], names: ["Q0", "Q1", "Q2", "Q3"], seg: s }; } }; },
+  wire: [["Pin 16 → +V, Pin 8 → GND", "Broche 16 → +V, 8 → GND"], ["/MR (Pin 1), /PE (Pin 9), CEP (Pin 7), CET (Pin 10) → +V", "/MR, /PE, CEP, CET → +V"], ["Takt an CLK (Pin 2)", "Horloge sur CLK (2)"], ["Q0 = Pin 14, Q1 = 13, Q2 = 12, Q3 = 11; TC = Pin 15", "Q0 = 14, Q1 = 13, Q2 = 12, Q3 = 11 ; TC = 15"], ["P0…P3 (Pin 3…6) → GND, wenn du nicht laden willst", "P0…P3 → GND"]],
+  notes: [["Das 74HC160 zählt dezimal (0–9), das 74HC161 binär (0–15) – gleiche Pinbelegung.", "Le 160 compte en décimal, le 161 en binaire."], ["Synchron: alle Ausgänge ändern sich gleichzeitig mit der Taktflanke.", "Synchrone : toutes les sorties changent ensemble."]] };
+
+PROJ.hc595 = { t: ["Schieberegister (74HC595): 3 Pins → 8 Ausgänge", "Registre à décalage (74HC595)"], flow: ["µC: 3 Pins", "74HC595", "8 Ausgänge"], custom: "shift",
+  d: ["Bits werden einzeln eingetaktet (SER + SRCLK) und erst mit RCLK an die Ausgänge übernommen. Stelle ein Byte ein und gehe Takt für Takt durch.", "Les bits sont décalés un par un puis recopiés en sortie par RCLK."],
+  wire: [["Pin 16 → +V, Pin 8 → GND", "Broche 16 → +V, 8 → GND"], ["Pin 10 (/SRCLR) → +V, Pin 13 (/OE) → GND", "Broche 10 → +V, 13 → GND"], ["Pin 14 (SER) = Daten, Pin 11 (SRCLK) = Schiebetakt, Pin 12 (RCLK) = Übernahme", "14 = données, 11 = horloge de décalage, 12 = verrou"], ["Ausgänge QA…QH = Pin 15, 1, 2, 3, 4, 5, 6, 7 → je 330 Ω → LED → GND", "QA…QH = 15, 1, 2, 3, 4, 5, 6, 7"], ["Mehrere kaskadieren: QH' (Pin 9) → SER des nächsten", "Cascade : QH’ (9) → SER suivant"]],
+  notes: [["Arduino: shiftOut(dataPin, clockPin, MSBFIRST, wert); davor latch LOW, danach latch HIGH.", "Arduino : shiftOut(...)."], ["Pro Ausgang nur ca. 6 mA: für Relais/Motoren einen ULN2003 dahinter.", "≈ 6 mA par sortie."]] };
+
+PROJ.hc138 = { t: ["3-zu-8-Dekoder (74HC138)", "Décodeur 3 vers 8 (74HC138)"], flow: ["A0 A1 A2", "74HC138", "Y0 … Y7"], custom: "dec138",
+  d: ["Drei Adress-Eingänge wählen genau einen von acht Ausgängen – der gewählte geht auf LOW. Typisch für Adress-Dekodierung und Chip-Select.", "Trois entrées d’adresse choisissent une des huit sorties (active à l’état bas)."],
+  wire: [["Pin 16 → +V, Pin 8 → GND", "Broche 16 → +V, 8 → GND"], ["A0 = Pin 1, A1 = Pin 2, A2 = Pin 3", "A0 = 1, A1 = 2, A2 = 3"], ["Pin 4 (/E1), Pin 5 (/E2) → GND; Pin 6 (E3) → +V (Chip aktiv)", "4 et 5 → GND, 6 → +V"], ["Y0 = Pin 15, Y1 = 14, … Y6 = 9; Y7 = Pin 7", "Y0 = 15 … Y6 = 9 ; Y7 = 7"], ["LED von +V über Vorwiderstand an Yn: leuchtet bei LOW", "LED de +V via résistance à Yn"]],
+  notes: [["Die Ausgänge sind active-low: der gewählte Ausgang ist 0, alle anderen 1.", "Sorties actives à l’état bas."]] };
+
+PROJ.cd4511 = { t: ["BCD-zu-7-Segment-Dekoder (CD4511)", "Décodeur BCD → 7 segments (CD4511)"], flow: ["BCD A B C D", "CD4511", "7-Segment"], custom: "bcd7",
+  d: ["Vier Bit rein, sieben Segmente raus: der 4511 macht aus dem Zählerstand eine lesbare Ziffer. Werte über 9 bleiben dunkel.", "Quatre bits en entrée, sept segments en sortie."],
+  wire: [["Pin 16 → +V, Pin 8 → GND", "Broche 16 → +V, 8 → GND"], ["Eingänge: A = Pin 7, B = Pin 1, C = Pin 2, D = Pin 6", "A = 7, B = 1, C = 2, D = 6"], ["Pin 3 (/LT) und Pin 4 (/BI) → +V, Pin 5 (LE) → GND", "3 et 4 → +V, 5 → GND"], ["Ausgänge a…g = Pin 13, 12, 11, 10, 9, 15, 14 → je 330 Ω → Segmente einer Anzeige mit gemeinsamer KATHODE (→ GND)", "a…g = 13, 12, 11, 10, 9, 15, 14 → 330 Ω → afficheur à cathode commune"]],
+  notes: [["Der CD4511 ist für Anzeigen mit gemeinsamer Kathode; für gemeinsame Anode nimm den 7447.", "Le CD4511 est pour cathode commune ; anode commune : 7447."], ["LE (Latch Enable) HIGH friert die angezeigte Ziffer ein.", "LE à l’état haut gèle l’affichage."]] };
+
+PROJ.lm358 = { t: ["Operationsverstärker: invertierend / nicht-invertierend (LM358)", "Amplificateur opérationnel (LM358)"], flow: ["Eingang", "LM358 + R1/R2", "Ausgang"],
+  d: ["Die Verstärkung legen allein R1 und R2 fest. Übersteuere ihn absichtlich und sieh, wo der LM358 an die Versorgungsgrenze stößt (nur bis ca. +V − 1,5 V).", "Le gain est fixé par R1 et R2."],
+  opts: [{ k: "m", l: ["Schaltung", "Montage"], o: [["inv", "invertierend  (−R2/R1)"], ["non", "nicht-invertierend (1+R2/R1)"]], def: "non" }, { k: "s", l: ["Versorgung", "Alimentation"], o: [["d12", "±12 V"], ["s5", "+5 V (Bias 2,5 V)"], ["s12", "+12 V (Bias 6 V)"]], def: "d12" }],
+  params: [{ k: "R1", l: ["R1", "R1"], min: 1e3, max: 1e5, def: 10e3, log: 1, u: "Ω", e12: 1 }, { k: "R2", l: ["R2", "R2"], min: 1e3, max: 1e6, def: 47e3, log: 1, u: "Ω", e12: 1 }, { k: "A", l: ["Eingangsamplitude", "Amplitude d’entrée"], min: .01, max: 5, def: .5, log: 1, u: "V" }, { k: "f", l: ["Frequenz", "Fréquence"], min: 10, max: 200e3, def: 1000, log: 1, u: "Hz" }],
+  build: function(P){ var g = P.m === "inv" ? -P.R2 / P.R1 : 1 + P.R2 / P.R1, fc = 1e6 / Math.abs(g), ge = g / Math.sqrt(1 + Math.pow(P.f / fc, 2)),
+      dual = P.s === "d12", Vs = P.s === "s5" ? 5 : P.s === "s12" ? 12 : 12, bias = dual ? 0 : Vs / 2, lo = dual ? -12 : 0, hi = dual ? 12 : Vs, vmax = dual ? 10.5 : Vs - 1.5, vmin = dual ? -11.9 : .05, w = [], span = 3 / P.f;
+    function vin(t){ return bias + sineAt(t, P.f, P.A); } function vout(t){ return clamp(bias + ge * sineAt(t, P.f, P.A), vmin, vmax); }
+    var pk = Math.abs(ge) * P.A; if (bias + pk > vmax || bias - pk < vmin) w.push(T("Ausgang übersteuert – das Signal wird oben/unten abgeschnitten (Clipping).", "Sortie saturée – le signal est écrêté."));
+    if (2 * Math.PI * P.f * Math.min(pk, vmax - vmin) / 2 > .3e6) w.push(T("Slew-Rate-Grenze des LM358 (0,3 V/µs): bei dieser Frequenz/Amplitude wird die Sinuskurve zum Dreieck.", "Limite de slew-rate du LM358."));
+    return { span: span, speed: 1, warn: w, ch: [{ n: "Eingang", c: C.amber, lo: lo, hi: hi, v: vin }, { n: "Ausgang", c: C.green, lo: lo, hi: hi, v: vout }],
+      info: [[T("Verstärkung", "Gain"), g.toFixed(1).replace(".", fr ? "," : ".") + "×  (" + (20 * Math.log10(Math.abs(g))).toFixed(1) + " dB)"], [T("Grenzfrequenz ≈ 1 MHz / |Gain|", "Fréquence de coupure"), fmt(fc, "Hz")], [T("Wirksame Verstärkung bei f", "Gain effectif"), ge.toFixed(1).replace(".", fr ? "," : ".") + "×"], [T("Maximale Ausgangsspannung", "Sortie max."), fmt(vmax, "V")]] }; },
+  wire: [["Pin 8 → +V, Pin 4 → GND (oder −V bei ±-Versorgung)", "Broche 8 → +V, 4 → GND"], ["Nicht-invertierend: Signal an Pin 3 (IN+); R2 von Pin 1 (Ausgang) an Pin 2 (IN−); R1 von Pin 2 nach GND", "Non inverseur : signal sur 3 ; R2 de 1 vers 2 ; R1 de 2 vers GND"], ["Invertierend: Signal über R1 an Pin 2; R2 von Pin 1 an Pin 2; Pin 3 → GND (bzw. Bias)", "Inverseur : signal via R1 sur 2 ; R2 de 1 vers 2 ; broche 3 → GND"], ["Bei einfacher Versorgung: Bias Vcc/2 mit zwei gleichen Widerständen, Koppelkondensatoren am Ein- und Ausgang", "Alim. simple : polarisation Vcc/2 + condensateurs de liaison"]],
+  notes: [["Der LM358 ist ein Single-Supply-Typ: der Eingang darf bis GND, der Ausgang kommt fast bis GND, aber nur bis ca. +V − 1,5 V.", "Le LM358 fonctionne en alimentation simple."], ["Für Audio oder schnelle Signale: TL072 oder NE5532 (mehr Bandbreite, weniger Rauschen).", "Pour l’audio : TL072 ou NE5532."]] };
+
+PROJ.lm393 = { t: ["Komparator mit Hysterese (LM393)", "Comparateur avec hystérésis (LM393)"], flow: ["Signal + Referenz", "LM393", "Ausgang"],
+  d: ["Der Komparator vergleicht zwei Spannungen. Ist das Signal verrauscht, zittert der Ausgang an der Schwelle – mit Hysterese (Mitkopplung) nicht mehr. Schalte sie ein und aus.", "Le comparateur compare deux tensions. Avec du bruit la sortie vibre ; l’hystérésis l’évite."],
+  params: [{ k: "ref", l: ["Referenz Vref", "Référence Vref"], min: 0.5, max: 4.5, def: 2.5, u: "V" }, { k: "A", l: ["Signal-Amplitude", "Amplitude du signal"], min: .2, max: 2.4, def: 1.2, u: "V" }, { k: "noise", l: ["Rauschen", "Bruit"], min: 0, max: 1, def: .25, u: "V" }, { k: "h", l: ["Hysterese Δ", "Hystérésis Δ"], min: 0, max: 1.5, def: .5, u: "V" }],
+  build: function(P){ var N = 1200, span = 1, vin = [], out = [], sw = 0, o = 0, swNo = 0, o2 = 0, V = 5;
+    for (var i = 0; i < N; i++){ var t = i / N, v = 2.5 + P.A * Math.sin(2 * Math.PI * 2 * t) + (hash(i) - .5) * 2 * P.noise; vin.push(v);
+      var hi = P.ref + P.h / 2, lo = P.ref - P.h / 2; var n = o; if (v > hi) n = 1; else if (v < lo) n = 0; if (n !== o) sw++; o = n; out.push(o * V);
+      var n2 = v > P.ref ? 1 : 0; if (n2 !== o2) swNo++; o2 = n2; }
+    return { span: span, speed: 1, warn: [], ch: [{ n: "Eingang IN+ (verrauscht)", c: C.amber, lo: 0, hi: 5, a: vin }, { n: "Vref ± Δ/2", c: C.cyan, lo: 0, hi: 5, v: function(t){ return P.ref; } }, { n: "Ausgang", c: C.green, lo: 0, hi: 5, a: out }],
+      info: [[T("Schaltflanken mit Hysterese", "Commutations avec hystérésis"), String(sw)], [T("Schaltflanken ohne Hysterese", "Sans hystérésis"), String(swNo)], [T("Obere / untere Schwelle", "Seuils haut / bas"), fmt(P.ref + P.h / 2, "V") + " / " + fmt(P.ref - P.h / 2, "V")]] }; },
+  wire: [["Pin 8 → +V, Pin 4 → GND", "Broche 8 → +V, 4 → GND"], ["Signal an Pin 3 (IN+), Referenz (Poti oder Teiler) an Pin 2 (IN−)", "Signal sur 3, référence sur 2"], ["Ausgang Pin 1 ist ‚open collector‘: Pull-up (z. B. 10 kΩ) von Pin 1 nach +V", "Sortie 1 à collecteur ouvert : pull-up vers +V"], ["Hysterese: Rückkopplungswiderstand (z. B. 1 MΩ) von Pin 1 an Pin 3; Eingang über 10 kΩ", "Hystérésis : résistance de 1 vers 3"]],
+  notes: [["Ein Komparator hat keinen Frequenzgang-Ausgleich – nicht als Verstärker mit Rückkopplung betreiben (dafür den LM358).", "Ne pas l’utiliser comme amplificateur."], ["Offener Kollektor: der Ausgang kann nur nach GND ziehen; das HIGH kommt vom Pull-up – so lassen sich auch andere Spannungen als +V schalten.", "Collecteur ouvert."]] };
+
+PROJ.lm317 = { t: ["Einstellbares Netzteil (LM317)", "Alimentation réglable (LM317)"], flow: ["Vin", "LM317 + R1/R2", "Vout"], custom: "reg317",
+  d: ["Zwischen OUT und ADJ hält der LM317 immer 1,25 V. Mit R1 und R2 stellst du die Ausgangsspannung ein: Vout = 1,25 · (1 + R2/R1). Sieh auch, wie viel Wärme der Regler dabei verbrät.", "Entre OUT et ADJ le LM317 maintient 1,25 V. Vout = 1,25 · (1 + R2/R1)."],
+  wire: [["Pin 3 (IN) ← Vin; 330 nF nach GND dicht am Chip", "Broche 3 (IN) ← Vin ; 330 nF vers GND"], ["Pin 2 (OUT) → Ausgang; 1 µF nach GND", "Broche 2 (OUT) → sortie ; 1 µF vers GND"], ["R1 (240 Ω) zwischen OUT und ADJ (Pin 1)", "R1 (240 Ω) entre OUT et ADJ"], ["R2 von ADJ (Pin 1) nach GND (Poti = einstellbar)", "R2 de ADJ vers GND"], ["Diode 1N4007 von OUT nach IN (Schutz bei Kurzschluss am Eingang)", "Diode 1N4007 de OUT vers IN"]],
+  notes: [["Der LM317 braucht ca. 2–3 V Reserve (Dropout): Vin ≥ Vout + 3 V.", "Il faut ≈ 3 V de marge."], ["Die Verlustleistung (Vin − Vout)·I wird zu Wärme – ab ca. 1–2 W ein Kühlkörper.", "La puissance dissipée chauffe : radiateur."], ["Kleine Lasten: mindestens 10 mA Mindestlast (R1 liefert 5 mA selbst).", "Charge minimale ≈ 10 mA."]] };
+
+/* ---- Kombi-Projekte ---- */
+PROJ.k_lauf = { t: ["Lauflicht: 555 → CD4017 → 10 LEDs", "Chenillard : 555 → CD4017 → 10 LED"], flow: ["NE555", "CD4017", "10 × LED"], ics: ["ne555", "cd4017"],
+  d: ["Der 555 liefert den Takt, der 4017 verteilt ihn auf zehn Ausgänge. Mit R2 stellst du die Geschwindigkeit ein, mit „Schritte“ die Länge der Kette.", "Le 555 donne l’horloge, le 4017 la distribue sur dix sorties."],
+  params: [PR1, { k: "R2", l: ["R2 (Tempo)", "R2 (vitesse)"], min: 1e3, max: 2e6, def: 100e3, log: 1, u: "Ω", e12: 1 }, { k: "C", l: ["C", "C"], min: 1e-9, max: 1e-3, def: 1e-6, log: 1, u: "F", e12: 1 }, { k: "n", l: ["Schritte (Qn → RESET)", "Pas"], min: 2, max: 10, def: 10, int: 1, u: "" }],
+  build: function(P){ var k = c555(P.R1, P.R2, P.C, 5), n = Math.round(P.n), ph = k.T * .25, chs = [{ n: "555 OUT = CLK", c: C.amber, lo: 0, hi: 5, v: function(t){ return k.out(t, ph) * 5; } }];
+    for (var i = 0; i < 4; i++) (function(i){ chs.push({ n: "Q" + i, c: [C.green, C.cyan, C.pink, C.lime][i], lo: 0, hi: 5, v: function(t){ return k.n(t, ph) % n === i ? 5 : 0; } }); })(i);
+    return { span: ph + (Math.min(n, 7) + 1.4) * k.T, fmain: k.f, warn: [], ch: chs, info: [[T("Takt (555)", "Horloge"), fmt(k.f, "Hz")], [T("Ein Umlauf", "Un tour"), fmt(n * k.T, "s")]],
+      live: function(ts){ var s = k.n(ts, ph) % n, a = []; for (var i = 0; i < 10; i++) a.push(i === s ? 1 : 0); return { leds: a, names: a.map(function(x, i){ return "Q" + i; }) }; } }; },
+  wire: [["NE555 wie im Blinker-Projekt aufbauen (R1, R2, C, Pin 5 → 10 nF)", "NE555 comme dans le clignotant"], ["555 Pin 3 (OUT) → CD4017 Pin 14 (CLK)", "555 broche 3 → 4017 broche 14"], ["CD4017: Pin 16 → +V, Pin 8 → GND, Pin 13 (CE) → GND, Pin 15 (RESET) → GND", "4017 : 16 → +V, 8 → GND, 13 → GND, 15 → GND"], ["Q0…Q9 → 1 kΩ → LED → GND (beide ICs an derselben Versorgung, 5…12 V)", "Q0…Q9 → 1 kΩ → LED → GND"]],
+  notes: [["Das Tastverhältnis des 555 stört nicht: der 4017 reagiert nur auf die steigende Flanke.", "Le rapport cyclique n’a pas d’importance."]] };
+
+PROJ.k_uhr = { t: ["Quarzuhr-Baustein: 32,768 kHz → CD4060 → 74HC74 → 1 Hz", "Base de temps à quartz : 32,768 kHz → 1 Hz"], flow: ["Quarz 32,768 kHz", "CD4060 ÷16384", "74HC74 ÷2", "1 Hz"], ics: ["cd4060", "hc74"],
+  d: ["So tickt fast jede Digitaluhr: Der Uhrenquarz schwingt mit 32 768 Hz = 2¹⁵. Der CD4060 teilt durch 2¹⁴ = 2 Hz, ein Flip-Flop halbiert noch einmal – genau 1 Hz. Wie genau, entscheidet die Quarz-Abweichung.", "Presque toutes les horloges numériques : 32 768 Hz = 2¹⁵."],
+  params: [{ k: "ppm", l: ["Quarz-Abweichung", "Écart du quartz"], min: -100, max: 100, def: 20, u: "ppm", int: 1 }],
+  build: function(P){ var f0 = 32768 * (1 + P.ppm * 1e-6), f2 = f0 / 16384, f1 = f2 / 2, ph = .15 / f2, span = 4;
+    return { span: span, speed: 1, warn: [], ch: [{ n: "CD4060 Q14  (2 Hz)", c: C.amber, lo: 0, hi: 5, v: function(t){ return sq(t, 2, .06, .5) * 5; } }, { n: "74HC74 Q  (1 Hz)", c: C.green, lo: 0, hi: 5, v: function(t){ return (cnt(t, 2, .06) % 2) * 5; } }],
+      info: [[T("Quarz", "Quartz"), fmt(f0, "Hz", 6)], [T("÷ 2¹⁴ = Q14", "÷ 2¹⁴ = Q14"), fmt(f2, "Hz", 6)], [T("÷ 2 = Sekundentakt", "÷ 2 = seconde"), fmt(f1, "Hz", 6)], [T("Ganggenauigkeit", "Précision"), (P.ppm * .0864).toFixed(2).replace(".", fr ? "," : ".") + " s / " + T("Tag", "jour")], [T("pro Monat", "par mois"), (P.ppm * .0864 * 30).toFixed(1).replace(".", fr ? "," : ".") + " s"]],
+      live: function(ts){ return { leds: [cnt(ts, 2, .06) % 2], names: ["1 Hz"] }; } }; },
+  wire: [["CD4060: Pin 16 → +V, Pin 8 → GND, Pin 12 (RESET) → GND", "CD4060 : 16 → +V, 8 → GND, 12 → GND"], ["Quarz zwischen Pin 11 und Pin 10; 22 pF von Pin 11 und Pin 10 nach GND; 10 MΩ zwischen Pin 11 und Pin 9", "Quartz entre 11 et 10 ; 22 pF ; 10 MΩ entre 11 et 9"], ["Q14 (Pin 3) → CLK (Pin 3) des 74HC74", "Q14 (3) → CLK du 74HC74"], ["74HC74: /Q (Pin 6) → D (Pin 2); /PR (4) und /CLR (1) → +V; Q (Pin 5) = 1 Hz → LED", "74HC74 : /Q → D ; Q = 1 Hz"]],
+  notes: [["Ein 20-ppm-Quarz geht rund 1,7 s pro Tag falsch. Genauer: temperaturkompensierte Module (DS3231, ±2 ppm).", "Un quartz à 20 ppm dérive d’environ 1,7 s par jour."]] };
+
+PROJ.k_zaehl = { t: ["Digitaler Zähler: 555 → 74HC160 → CD4511 → 7-Segment", "Compteur numérique : 555 → 160 → 4511 → 7 seg."], flow: ["NE555", "74HC160", "CD4511", "7-Segment"], ics: ["ne555", "hc160", "cd4511"],
+  d: ["Drei ICs, eine Ziffer: der 555 gibt den Takt, der 160 zählt 0…9, der 4511 macht daraus die Segmente. Die Grundschaltung jeder Anzeige.", "Trois CI, un chiffre."],
+  params: [PR1, { k: "R2", l: ["R2", "R2"], min: 1e3, max: 2e6, def: 100e3, log: 1, u: "Ω", e12: 1 }, { k: "C", l: ["C", "C"], min: 1e-9, max: 1e-3, def: 4.7e-6, log: 1, u: "F", e12: 1 }],
+  build: function(P){ var k = c555(P.R1, P.R2, P.C, 5), ph = k.T * .25, chs = [{ n: "555 OUT = CLK", c: C.amber, lo: 0, hi: 5, v: function(t){ return k.out(t, ph) * 5; } }];
+    for (var i = 0; i < 4; i++) (function(i){ chs.push({ n: "BCD " + "ABCD"[i], c: [C.green, C.cyan, C.pink, C.lime][i], lo: 0, hi: 5, v: function(t){ return ((k.n(t, ph) % 10) >> i & 1) * 5; } }); })(i);
+    return { span: ph + 12.3 * k.T, fmain: k.f, warn: [], ch: chs, info: [[T("Takt", "Horloge"), fmt(k.f, "Hz")], [T("Ein Durchlauf 0…9", "Un cycle 0…9"), fmt(10 * k.T, "s")]],
+      live: function(ts){ var s = k.n(ts, ph) % 10; return { leds: [], seg: s }; } }; },
+  wire: [["555 als Taktgeber (siehe Blinker), Pin 3 → 74HC160 Pin 2 (CLK)", "555 en horloge → CLK du 160"], ["74HC160: Pin 16 → +V, 8 → GND; Pin 1, 7, 9, 10 → +V; P0…P3 → GND", "74HC160 : 16 → +V, 8 → GND ; 1, 7, 9, 10 → +V"], ["Q0 (14) → A (CD4511 Pin 7), Q1 (13) → B (Pin 1), Q2 (12) → C (Pin 2), Q3 (11) → D (Pin 6)", "Q0 → A (7), Q1 → B (1), Q2 → C (2), Q3 → D (6)"], ["CD4511: Pin 16 → +V, 8 → GND; Pin 3, 4 → +V; Pin 5 → GND", "CD4511 : 16 → +V, 8 → GND"], ["a…g (Pin 13, 12, 11, 10, 9, 15, 14) → 330 Ω → Anzeige (gemeinsame Kathode an GND)", "a…g → 330 Ω → afficheur (cathode commune)"]],
+  notes: [["Versorgung für alle drei ICs gemeinsam: 5 V (der 74HC160 verträgt max. 6 V, der CD4511 bis 15 V).", "Alimentation commune : 5 V."]] };
+
+PROJ.k_daemm = { t: ["Dämmerungsschalter: LDR → LM393 → Lampe", "Interrupteur crépusculaire : LDR → LM393"], flow: ["LDR + R", "LM393 (Hysterese)", "Transistor", "Lampe"], ics: ["lm393"], custom: "dusk",
+  d: ["Ein Tag in 24 Stunden: Der lichtempfindliche Widerstand (LDR) bildet mit einem Festwiderstand einen Spannungsteiler, der Komparator schaltet bei der eingestellten Schwelle die Lampe. Ohne Hysterese flackert sie bei Wolken – ziehe den Zeitregler!", "Un jour en 24 h : le LDR forme un diviseur, le comparateur allume la lampe."],
+  wire: [["LDR von +5 V an Knoten X; 10 kΩ von X nach GND", "LDR de +5 V au nœud X ; 10 kΩ vers GND"], ["Knoten X → LM393 Pin 2 (IN−); Referenz (Poti) → Pin 3 (IN+)", "X → broche 2 ; référence → broche 3"], ["Pull-up 10 kΩ von Pin 1 nach +5 V; Pin 1 → 1 kΩ → Basis NPN (BC337) → Kollektor an Lampe/Relais, Emitter GND", "Pull-up 10 kΩ ; broche 1 → 1 kΩ → base NPN"], ["Hysterese: 1 MΩ von Pin 1 an Pin 3", "Hystérésis : 1 MΩ de 1 à 3"], ["Bei Relais: Freilaufdiode (1N4148) parallel zur Spule", "Relais : diode de roue libre"]],
+  notes: [["Bei Dämmerung verändert sich das Licht langsam – ohne Hysterese schaltet der Komparator in dieser Zone hin und her.", "Sans hystérésis la lampe vacille."], ["Der LDR hat Reaktionszeit (ca. 20–100 ms) – das wirkt als natürlicher Filter.", "Le LDR réagit lentement."]] };
+
+PROJ.k_prell = { t: ["Taster entprellen: RC + 74HC14 → Zähler", "Anti-rebond : RC + 74HC14"], flow: ["Taster", "R + C", "74HC14", "Zähler"], ics: ["hc14", "hc160"], custom: "bounce",
+  d: ["Ein mechanischer Taster prellt: ein Druck ergibt mehrere Flanken innerhalb weniger Millisekunden. Ein Zähler zählt sie alle mit! RC-Glied plus Schmitt-Trigger macht daraus genau eine saubere Flanke. Wähle R und C – und drücke.", "Un bouton rebondit : plusieurs fronts en quelques ms."],
+  wire: [["Taster zwischen Eingangsknoten und GND, 10 kΩ Pull-up nach +V", "Bouton entre le nœud et GND, pull-up 10 kΩ"], ["Von dort R in Reihe zu Pin 1 (74HC14), C von Pin 1 nach GND", "R en série vers la broche 1, C de 1 vers GND"], ["Pin 2 (Ausgang, invertiert) → CLK des Zählers (74HC160 Pin 2)", "Broche 2 → CLK du compteur"], ["74HC14: Pin 14 → +V, Pin 7 → GND; unbenutzte Eingänge → GND", "74HC14 : 14 → +V, 7 → GND"]],
+  notes: [["Faustregel: RC-Zeit ≥ 5 ms (z. B. 10 kΩ · 1 µF = 10 ms) filtert fast jeden Taster.", "Règle : RC ≥ 5 ms."], ["In Software geht es auch (Wartezeit ~20 ms) – Hardware spart dem Mikrocontroller die Arbeit und funktioniert mit Interrupts.", "En logiciel aussi."]] };
+
+PROJ.k_sirene = { t: ["Sirene: zwei 555 (LFO moduliert VCO)", "Sirène : deux 555 (LFO module VCO)"], flow: ["555 #1 (langsam)", "Pin 5 (CTRL)", "555 #2 (Ton)", "Lautsprecher"], ics: ["ne555"], custom: "siren",
+  d: ["Der erste 555 schwingt langsam und verschiebt über Pin 5 die Schwellen des zweiten. So wandert die Tonhöhe auf und ab: eine Sirene. Drücke „Ton hören“ – die Frequenz folgt genau dieser Rechnung.", "Le premier 555 module via la broche 5 les seuils du second."],
+  wire: [["555 #1: als langsamer Blinker (z. B. R1 = 10 kΩ, R2 = 100 kΩ, C = 4,7 µF ≈ 1,4 Hz)", "555 n°1 : clignotant lent"], ["Spannung an C1 (Pin 6/2) über 10 kΩ an Pin 5 von 555 #2", "Tension de C1 via 10 kΩ à la broche 5 du n°2"], ["555 #2: R1 = 1 kΩ, R2 = 10 kΩ, C = 10 nF (ca. 5 kHz)", "555 n°2 : R1 = 1 kΩ, R2 = 10 kΩ, C = 10 nF"], ["Pin 3 von 555 #2 → 100 µF → 8-Ω-Lautsprecher → GND (oder Piezo)", "Broche 3 → 100 µF → haut-parleur 8 Ω"], ["Beide 555: Pin 1 → GND, Pin 4 und 8 → +V", "Les deux : 1 → GND, 4 et 8 → +V"]],
+  notes: [["Mit offenem Pin 5 sind die Schwellen 1/3 und 2/3. Legst du eine Spannung Vc an Pin 5, werden sie Vc/2 und Vc – die Frequenz ändert sich.", "Avec la broche 5 libre : 1/3 et 2/3."]] };
+
+/* ---- Projekte, die erst hier ihre Rechnung bekommen ---- */
+PROJ.k_daemm.params = [{ k: "t", l: ["Uhrzeit (zum Scrubben)", "Heure"], min: 0, max: 24, def: 19, u: "h" }, { k: "ref", l: ["Schwelle Vref (Poti)", "Seuil Vref"], min: .5, max: 4.5, def: 1.6, u: "V" }, { k: "h", l: ["Hysterese Δ", "Hystérésis Δ"], min: 0, max: 1.5, def: .5, u: "V" }, { k: "cl", l: ["Wolken", "Nuages"], min: 0, max: 1, def: .6, u: "" }];
+PROJ.k_daemm.build = function(P){
+  var N = 960, lux = [], vx = [], lamp = [], on = null, sw = 0, ll = [];
+  for (var i = 0; i < N; i++){ var h = i / (N - 1) * 24, day = Math.max(0, Math.sin(Math.PI * (h - 5.5) / 13)), cl = Math.abs(Math.sin(h * 2.1) * Math.sin(h * 5.3 + 1)) * (day > 0 && day < .5 ? 1.6 : 1);
+    var lx = .3 + 900 * Math.pow(day, 1.5) * (1 - P.cl * .9 * Math.min(1, cl)); lux.push(lx); ll.push(Math.log10(lx));
+    var R = 10e3 * Math.pow(10 / lx, .8), v = 5 * 10e3 / (10e3 + R); vx.push(v);
+    if (on === null) on = v < P.ref ? 1 : 0; var n = on; if (v < P.ref - P.h / 2) n = 1; else if (v > P.ref + P.h / 2) n = 0; if (n !== on) sw++; on = n; lamp.push(on * 5); }
+  var k = Math.round(P.t / 24 * (N - 1)), hh = Math.floor(P.t), mm = Math.round((P.t - hh) * 60);
+  return { span: 24, cur: P.t / 24, tl: function(d){ return d.toFixed(1).replace(".", fr ? "," : ".") + " h / DIV"; }, speed: 1, warn: [],
+    ch: [{ n: "Helligkeit (lg Lux)", c: C.amber, lo: -1, hi: 3, u: "", a: ll }, { n: "Knoten X (LDR-Teiler)", c: C.cyan, lo: 0, hi: 5, a: vx }, { n: "Vref = " + fmt(P.ref, "V") + "  ± Δ/2", c: C.violet, lo: 0, hi: 5, v: function(t){ return P.ref; } }, { n: "Lampe", c: C.green, lo: 0, hi: 5, a: lamp }],
+    info: [[T("Uhrzeit", "Heure"), (hh < 10 ? "0" : "") + hh + ":" + (mm < 10 ? "0" : "") + mm + (lux[k] > 100 ? "  ☀️" : lux[k] > 8 ? "  ⛅" : "  🌙")], [T("Helligkeit", "Luminosité"), (lux[k] < 10 ? lux[k].toFixed(1) : Math.round(lux[k])) + " lx"], [T("Spannung am Knoten X", "Tension nœud X"), fmt(vx[k], "V")], [T("Lampe", "Lampe"), lamp[k] > 0 ? "💡 AN" : "aus"], [T("Schaltvorgänge pro Tag", "Commutations par jour"), String(sw) + (sw > 4 ? T("  (zu viele – mehr Hysterese!)", "  (trop – plus d’hystérésis)") : "")]],
+    live: function(){ return { leds: [lamp[k] > 0], names: ["Lampe"] }; } }; };
+delete PROJ.k_daemm.custom;
+
+PROJ.k_prell.params = [{ k: "R", l: ["R", "R"], min: 100, max: 1e6, def: 10e3, log: 1, u: "Ω", e12: 1 }, { k: "C", l: ["C", "C"], min: 1e-9, max: 10e-6, def: 1e-6, log: 1, u: "F", e12: 1 }];
+PROJ.k_prell.action = { l: ["▶ Taster drücken (neues Prellen)", "▶ Appuyer (nouveau rebond)"] };
+PROJ.k_prell.onAction = function(ctx){ ctx.seed = (ctx.seed || 1) + 1; ctx.presses = (ctx.presses || 0) + 1; ctx.count = true; };
+PROJ.k_prell.build = function(P, ctx){
+  var seed = ctx.seed || 1, V = 5, Tt = 20e-3, dt = 4e-6, steps = Math.round(Tt / dt), t0 = 1e-3, segs = [], m = 2 + 2 * Math.floor(hash(seed) * 3), t = t0;
+  for (var j = 0; j < m; j++){ var d = 50e-6 + hash(seed * 7 + j) * 650e-6; segs.push([t, t + d, j % 2 === 0 ? 0 : 1]); t += d; }
+  function raw(x){ if (x < t0) return 1; for (var j = 0; j < segs.length; j++) if (x < segs[j][1]) return segs[j][2]; return 0; }
+  var RC = P.R * P.C, a = Math.exp(-dt / RC), v = V, o = 0, rw = [], cv = [], ou = [], rawFalls = 0, rises = 0, pr = 1, po = 0;
+  for (var i = 0; i < steps; i++){ var x = i * dt, r = raw(x); v = r * V + (v - r * V) * a; if (v > .55 * V) o = 0; else if (v < .33 * V) o = 1; if (pr === 1 && r === 0) rawFalls++; pr = r; if (po === 0 && o === 1) rises++; po = o;
+    if (i % 20 === 0){ rw.push(r * V); cv.push(v); ou.push(o * V); } }
+  if (ctx.count){ ctx.tot = ctx.tot || { raw: 0, clean: 0 }; ctx.tot.raw += rawFalls; ctx.tot.clean += rises; ctx.count = false; }
+  var tot = ctx.tot || { raw: 0, clean: 0 };
+  return { span: Tt, speed: 1, warn: rises > 1 ? [T("RC-Zeit zu kurz: der Schmitt-Trigger sieht noch mehrere Flanken – der Zähler zählt mehrfach.", "RC trop court : plusieurs fronts passent.")] : rises === 0 ? [T("RC-Zeit zu lang: der Kondensator erreicht die Schwelle in diesem Fenster nicht.", "RC trop long.")] : [],
+    ch: [{ n: "Taster (roh, prellt)", c: C.red, lo: 0, hi: 5, a: rw }, { n: "C-Spannung (Pin 1)", c: C.amber, lo: 0, hi: 5, a: cv }, { n: "74HC14 Ausgang → Zähler", c: C.green, lo: 0, hi: 5, a: ou }],
+    info: [[T("RC-Zeit", "Constante RC"), fmt(RC, "s")], [T("Flanken am Taster (dieser Druck)", "Fronts bouton"), String(rawFalls)], [T("Flanken am Zähler-Eingang", "Fronts vers le compteur"), String(rises)], [T("Drücke bisher", "Appuis"), String(ctx.presses || 0)], [T("Zählt ohne Entprellung", "Compte sans anti-rebond"), String(tot.raw)], [T("Zählt mit Entprellung", "Compte avec anti-rebond"), String(tot.clean)]] }; };
+delete PROJ.k_prell.custom;
+
+PROJ.k_sirene.params = [{ k: "lr1", l: ["LFO R1", "LFO R1"], min: 1e3, max: 1e6, def: 10e3, log: 1, u: "Ω", e12: 1 }, { k: "lr2", l: ["LFO R2", "LFO R2"], min: 1e3, max: 2e6, def: 100e3, log: 1, u: "Ω", e12: 1 }, { k: "lc", l: ["LFO C", "LFO C"], min: 1e-7, max: 1e-4, def: 4.7e-6, log: 1, u: "F", e12: 1 }, { k: "vr1", l: ["Ton R1", "Ton R1"], min: 1e3, max: 1e5, def: 1e3, log: 1, u: "Ω", e12: 1 }, { k: "vr2", l: ["Ton R2", "Ton R2"], min: 1e3, max: 1e6, def: 10e3, log: 1, u: "Ω", e12: 1 }, { k: "vc", l: ["Ton C", "Ton C"], min: 1e-9, max: 1e-6, def: 10e-9, log: 1, u: "F", e12: 1 }, { k: "dep", l: ["Hub (Tiefe)", "Profondeur"], min: 0, max: 1, def: .8, u: "" }];
+PROJ.k_sirene.action = { l: ["🔊 Ton hören / stoppen", "🔊 Écouter / arrêter"] };
+PROJ.k_sirene.build = function(P){
+  var V = 9, k = c555(P.lr1, P.lr2, P.lc, V), ph = k.T * .1, span = ph + 2.2 * k.T, N = 900, fa = [], vctl = [], mn = 1e12, mx = 0;
+  function ctl(t){ var nrm = (k.vc(t, ph) - V / 3) / (V / 3); return V * (.667 + P.dep * .25 * (nrm * 2 - 1)); }
+  function fv(t){ var Vc = ctl(t), tH = (P.vr1 + P.vr2) * P.vc * Math.log((V - Vc / 2) / (V - Vc)), tL = P.vr2 * P.vc * Math.LN2; return 1 / (tH + tL); }
+  for (var i = 0; i < N; i++){ var t = i / (N - 1) * span, f = fv(t); fa.push(f); vctl.push(ctl(t)); mn = Math.min(mn, f); mx = Math.max(mx, f); }
+  return { span: span, speed: 1, warn: mx > 15000 ? [T("Töne über ca. 15 kHz hörst du kaum noch.", "Au-dessus de 15 kHz on n’entend presque plus.")] : [],
+    ch: [{ n: "LFO: C-Spannung", c: C.amber, lo: 0, hi: V, v: function(t){ return k.vc(t, ph); } }, { n: "Pin 5 (Steuerspannung)", c: C.cyan, lo: 0, hi: V, a: vctl }, { n: "Tonfrequenz", c: C.green, lo: Math.max(0, mn * .9), hi: mx * 1.1 + 1, u: "Hz", a: fa }],
+    info: [[T("LFO-Frequenz", "Fréquence LFO"), fmt(k.f, "Hz")], [T("Tonhöhe tiefste", "Plus grave"), fmt(mn, "Hz")], [T("Tonhöhe höchste", "Plus aiguë"), fmt(mx, "Hz")], [T("Ein Sirenen-Umlauf", "Un cycle")], ].map(function(r, i){ return i === 3 ? [r[0], fmt(k.T, "s")] : r; }),
+    fAt: function(t){ return fv(ph + (t % k.T)); } }; };
+delete PROJ.k_sirene.custom;
+
+/* ---------- Bausteine der individuellen Projekte ---------- */
+var CUST = {};
+CUST.gates = function(box){
+  var G = [["NAND", "7400", function(a, b){ return !(a && b); }], ["NOR", "7402", function(a, b){ return !(a || b); }], ["AND", "7408", function(a, b){ return a && b; }], ["OR", "7432", function(a, b){ return a || b; }], ["XOR", "7486", function(a, b){ return a !== b; }], ["NOT", "7404", function(a){ return !a; }]];
+  var sel = 0, A = false, B = false, w = el("div", "ic-cust"); box.appendChild(w);
+  var cr = el("div", "ic-chips"); w.appendChild(cr); var ctl = el("div", "ic-chips"); w.appendChild(ctl);
+  var ta = toggleBtn(ctl, "A", false, function(v){ A = v; upd(); }), tb = toggleBtn(ctl, "B", false, function(v){ B = v; upd(); });
+  var out = el("div", "ic-out"); ctl.appendChild(out); var tab = el("div", "ic-tt"); w.appendChild(tab); var nd = el("div", "ic-nand"); w.appendChild(nd);
+  G.forEach(function(g, i){ var b = el("button", "ic-ch" + (i === sel ? " on" : ""), g[0] + " <small>" + g[1] + "</small>"); b.type = "button"; b.onclick = function(){ sel = i; cr.querySelectorAll("button").forEach(function(x, j){ x.classList.toggle("on", j === i); }); upd(); }; cr.appendChild(b); });
+  function b01(x){ return x ? 1 : 0; }
+  function nand(a, b){ return !(a && b); }
+  function upd(){ var g = G[sel], one = g[0] === "NOT"; tb.hidden = one; var y = g[2](A, B);
+    out.innerHTML = '<span class="ic-big ' + (y ? "hi" : "lo") + '">Y = ' + b01(y) + "</span>";
+    var rows = one ? [[0], [1]] : [[0, 0], [0, 1], [1, 0], [1, 1]], h = "<table><tr>" + (one ? "<th>A</th>" : "<th>A</th><th>B</th>") + "<th>Y</th></tr>";
+    rows.forEach(function(r){ var cur = one ? r[0] === b01(A) : r[0] === b01(A) && r[1] === b01(B); h += "<tr" + (cur ? ' class="cur"' : "") + "><td>" + r[0] + "</td>" + (one ? "" : "<td>" + r[1] + "</td>") + "<td>" + b01(g[2](!!r[0], !!r[1])) + "</td></tr>"; });
+    tab.innerHTML = h + "</table>";
+    var nt = nand(A, A), an = nand(nand(A, B), nand(A, B)), or = nand(nand(A, A), nand(B, B));
+    nd.innerHTML = "<h4>" + T("Alles aus NAND (das „Universal-Gatter“)", "Tout avec des NAND") + "</h4><ul><li>NOT = 1 × NAND <span>(A an beide Eingänge)</span> → <b>" + b01(nt) + "</b></li><li>AND = 2 × NAND <span>(NAND, dann als NOT)</span> → <b>" + b01(an) + "</b></li><li>OR = 3 × NAND <span>(erst A und B negieren, dann NAND)</span> → <b>" + b01(or) + "</b></li></ul>"; }
+  upd(); return {};
+};
+CUST.shift = function(box){
+  var byte = 0xB2, step = 0, w = el("div", "ic-cust"); box.appendChild(w);
+  var rb = el("div", "ic-chips"); w.appendChild(rb); rb.appendChild(el("span", "ic-lb", T("Byte (MSB zuerst gesendet):", "Octet (MSB d’abord) :")));
+  var tgs = []; for (var i = 7; i >= 0; i--) (function(i){ tgs.push(toggleBtn(rb, "D" + i, (byte >> i) & 1, function(v){ byte = v ? byte | (1 << i) : byte & ~(1 << i); upd(); })); })(i);
+  var val = el("div", "ic-lb"); w.appendChild(val);
+  var sr = el("div", "ic-chips"); w.appendChild(sr); var sl = el("input"); sl.type = "range"; sl.min = 0; sl.max = 9; sl.value = 0; sl.className = "ic-range"; sr.appendChild(el("span", "ic-lb", T("Takt:", "Coup :"))); sr.appendChild(sl); var sv2 = el("b", "ic-lb"); sr.appendChild(sv2);
+  w.appendChild(el("div", "ic-lb", T("Schieberegister (intern)", "Registre à décalage (interne)"))); var r1 = ledRow(w, 8, ["QA", "QB", "QC", "QD", "QE", "QF", "QG", "QH"], C.cyan);
+  w.appendChild(el("div", "ic-lb", T("Ausgänge nach RCLK-Impuls", "Sorties après RCLK"))); var r2 = ledRow(w, 8, ["QA", "QB", "QC", "QD", "QE", "QF", "QG", "QH"], C.red);
+  var cv = el("div", "ic-scopebox"), cnv = el("canvas"); cv.appendChild(cnv); w.appendChild(cv);
+  function upd(){ step = +sl.value; var bits = []; for (var k = 0; k < 8; k++) bits.push((byte >> (7 - k)) & 1);
+    var j = Math.min(step, 8), reg = []; for (var i = 0; i < 8; i++) reg.push(j - 1 - i >= 0 ? bits[j - 1 - i] : 0);
+    r1.set(reg); r2.set(step === 9 ? reg : [0, 0, 0, 0, 0, 0, 0, 0]);
+    val.textContent = T("Wert: ", "Valeur : ") + byte + "  =  0b" + ("00000000" + byte.toString(2)).slice(-8) + "  =  0x" + ("0" + byte.toString(16)).slice(-2).toUpperCase();
+    sv2.textContent = step === 0 ? T("Start", "Départ") : step < 9 ? T("Bit ", "Bit ") + step + "/8 " + T("eingetaktet", "décalé") : "RCLK ✓";
+    var U = 1e-6, span = 20 * U;
+    scope(cnv, [{ n: "SER (Pin 14)", c: C.amber, lo: 0, hi: 5, v: function(t){ var u = t / U, k = Math.floor(u / 2); return (k < 8 ? bits[k] : bits[7]) * 5; } }, { n: "SRCLK (Pin 11)", c: C.cyan, lo: 0, hi: 5, v: function(t){ var u = t / U; return u < 16 && (u % 2) >= 1 ? 5 : 0; } }, { n: "RCLK (Pin 12)", c: C.pink, lo: 0, hi: 5, v: function(t){ var u = t / U; return u >= 17 && u < 18 ? 5 : 0; } }, { n: "QH (erstes Bit)", c: C.green, lo: 0, hi: 5, v: function(t){ var u = t / U; return u >= 18 ? bits[0] * 5 : 0; } }, { n: "QA (letztes Bit)", c: C.lime, lo: 0, hi: 5, v: function(t){ var u = t / U; return u >= 18 ? bits[7] * 5 : 0; } }], span); }
+  sl.oninput = upd; upd(); return { after: upd };
+};
+CUST.dec138 = function(box){
+  var w = el("div", "ic-cust"); box.appendChild(w); var s = { a0: 0, a1: 0, a2: 0, e1: 0, e2: 0, e3: 1 }, tb = el("div", "ic-chips"); w.appendChild(tb);
+  [["A0", "a0"], ["A1", "a1"], ["A2", "a2"], ["/E1", "e1"], ["/E2", "e2"], ["E3", "e3"]].forEach(function(x){ toggleBtn(tb, x[0], s[x[1]], function(v){ s[x[1]] = v ? 1 : 0; upd(); }); });
+  var txt = el("div", "ic-lb"); w.appendChild(txt); var names = []; for (var i = 0; i < 8; i++) names.push("Y" + i); var lr = ledRow(w, 8, names, C.red); var lv = el("div", "ic-lb"); w.appendChild(lv);
+  function upd(){ var en = !s.e1 && !s.e2 && s.e3, idx = s.a2 * 4 + s.a1 * 2 + s.a0, a = [], p = []; for (var i = 0; i < 8; i++){ a.push(en && i === idx ? 1 : 0); p.push(en && i === idx ? 0 : 1); }
+    txt.textContent = T("Adresse = ", "Adresse = ") + idx + (en ? "  →  Y" + idx + " = LOW" : T("   (Chip gesperrt: alle Ausgänge HIGH)", "   (puce inactive : toutes les sorties à 1)")); lr.set(a); lv.textContent = T("Pegel Y0…Y7: ", "Niveaux Y0…Y7 : ") + p.join(" ") + T("   – LED leuchtet, wenn der Ausgang LOW ist (LED an +V).", "   – la LED s’allume à l’état bas."); }
+  upd(); return {};
+};
+CUST.bcd7 = function(box){
+  var w = el("div", "ic-cust"); box.appendChild(w); var s = { A: 1, B: 0, C: 1, D: 0, lt: 1, bi: 1 }, tb = el("div", "ic-chips"); w.appendChild(tb);
+  [["D", "D"], ["C", "C"], ["B", "B"], ["A", "A"], ["/LT", "lt"], ["/BI", "bi"]].forEach(function(x){ toggleBtn(tb, x[0], s[x[1]], function(v){ s[x[1]] = v ? 1 : 0; upd(); }); });
+  var row = el("div", "ic-row2"); w.appendChild(row); var sg = seg7(row), tx = el("div", "ic-lb"); row.appendChild(tx);
+  function upd(){ var d = s.D * 8 + s.C * 4 + s.B * 2 + s.A, bits = d <= 9 ? DIG[d] : 0; if (!s.bi) bits = 0; if (!s.lt) bits = 0x7F; sg.setBits(bits);
+    tx.innerHTML = T("Eingang", "Entrée") + " DCBA = <b>" + ("0000" + d.toString(2)).slice(-4) + "</b> (" + d + ")<br>" + T("Segmente a…g:", "Segments a…g :") + " <b>" + "abcdefg".split("").map(function(l, i){ return (bits >> i) & 1 ? l : "·"; }).join(" ") + "</b>" + (!s.lt ? "<br>" + T("Lampentest: /LT = 0 schaltet alle Segmente ein", "Test : /LT = 0 allume tout") : !s.bi ? "<br>" + T("Dunkeltastung: /BI = 0", "Extinction : /BI = 0") : d > 9 ? "<br>" + T("Werte 10…15 zeigt der CD4511 dunkel", "10…15 : afficheur éteint") : ""); }
+  upd(); return {};
+};
+CUST.reg317 = function(box, P, ctx, redraw){
+  var w = el("div", "ic-cust"); box.appendChild(w); w.appendChild(el("div", "ic-lb", T("Vorgaben für R2 (mit dem gewählten R1):", "Préréglages R2 :")));
+  var pr = el("div", "ic-chips"); w.appendChild(pr);
+  [3.3, 5, 9, 12, 15].forEach(function(v){ var b = el("button", "ic-ch", v + " V"); b.type = "button"; b.onclick = function(){ var r2 = (v / 1.25 - 1) * P.R1; if (P.Vin < v + 3.5) ctx.setP("Vin", Math.min(35, Math.ceil(v + 4))); ctx.setP("R2", clamp(r2, 10, 5000)); }; pr.appendChild(b); });
+  var g = el("div", "ic-gauge"); g.innerHTML = '<div class="ic-gv"></div><span></span>'; w.appendChild(g);
+  return { after: function(res){ var gv = g.firstChild; gv.style.width = Math.min(100, res.vout / res.vin * 100) + "%"; gv.className = "ic-gv" + (res.vin - res.vout < 3 ? " bad" : ""); g.lastChild.textContent = fmt(res.vout, "V") + " / " + fmt(res.vin, "V"); } };
+};
+PROJ.lm317.opts = [{ k: "R1", l: ["R1", "R1"], o: [[120, "120 Ω"], [240, "240 Ω"], [330, "330 Ω"]], def: 240 }];
+PROJ.lm317.params = [{ k: "Vin", l: ["Eingangsspannung", "Tension d’entrée"], min: 5, max: 35, def: 12, u: "V" }, { k: "R2", l: ["R2", "R2"], min: 10, max: 5000, def: 720, log: 1, u: "Ω" }, { k: "I", l: ["Laststrom", "Courant de charge"], min: .01, max: 1.5, def: .3, log: 1, u: "A" }];
+PROJ.lm317.build = function(P){ var vout = 1.25 * (1 + P.R2 / P.R1) + 50e-6 * P.R2, pd = Math.max(0, (P.Vin - vout) * P.I), dT = pd * 50, w = [];
+  if (P.Vin - vout < 3) w.push(T("Zu wenig Spannungsreserve: der LM317 braucht Vin ≥ Vout + ca. 3 V, sonst bricht die Ausgangsspannung ein.", "Marge insuffisante : il faut Vin ≥ Vout + 3 V."));
+  if (pd > 2) w.push(T("Verlustleistung über 2 W – ohne Kühlkörper wird der Regler zu heiß.", "Plus de 2 W : radiateur nécessaire."));
+  if (P.I < .01) w.push(T("Mindestlast ca. 10 mA beachten.", "Charge minimale ≈ 10 mA."));
+  return { vout: vout, vin: P.Vin, warn: w, info: [[T("Ausgangsspannung = 1,25·(1 + R2/R1)", "Tension de sortie"), fmt(vout, "V")], [T("Spannung über dem Regler", "Chute dans le régulateur"), fmt(P.Vin - vout, "V")], [T("Verlustleistung", "Puissance dissipée"), fmt(pd, "W")], [T("Erwärmung ohne Kühlkörper (≈ 50 K/W)", "Échauffement sans radiateur"), "≈ " + Math.round(dT) + " K"], [T("Ausgangsleistung", "Puissance utile"), fmt(vout * P.I, "W")]] }; };
+
+/* ---------- IC-Katalog ---------- */
+var CATS = [["timer", T("Timer & Oszillator", "Timer & oscillateur"), "#ffb000"], ["logic", T("Logik-Gatter", "Portes logiques"), "#3de6ff"], ["count", T("Zähler, Teiler & Register", "Compteurs & registres"), "#6dffb0"], ["dec", T("Dekoder & Anzeige", "Décodeurs & affichage"), "#b6ff3d"], ["analog", T("Analog & Spannung", "Analogique & tension"), "#ff3d9a"]];
+var ICS = [
+  { id: "ne555", name: "NE555", pkg: "DIP-8", cat: "timer", k: ["Der Timer-Klassiker: Blinker, Impulse, Zeitrelais, Sirenen", "Le timer classique"], pins: ["GND:g", "TRIG:i", "OUT:o", "RESET:i", "CTRL:i", "THR:i", "DISCH:o", "VCC:v"], facts: [["Versorgung", "Alimentation", "4,5…16 V (NE555), 2…15 V (CMOS-Typen)"], ["Ausgangsstrom", "Courant de sortie", "bis ca. 200 mA (ziehen und liefern)"], ["Innen", "Intérieur", "2 Komparatoren, Flip-Flop, Entladetransistor, Spannungsteiler 3 × 5 kΩ (daher der Name)"], ["Verwandt", "Voisins", "NE556 = 2 × 555, TLC555/LMC555 = CMOS"]], proj: ["ne555a", "ne555m"] },
+  { id: "hc14", name: "74HC14", pkg: "DIP-14", cat: "timer", k: ["6 × Inverter mit Schmitt-Trigger-Eingang", "6 inverseurs à trigger de Schmitt"], pins: ["1A:i", "1Y:o", "2A:i", "2Y:o", "3A:i", "3Y:o", "GND:g", "4Y:o", "4A:i", "5Y:o", "5A:i", "6Y:o", "6A:i", "VCC:v"], facts: [["Versorgung", "Alimentation", "2…6 V"], ["Besonderheit", "Particularité", "zwei Schwellen (Hysterese) – aus langsamen oder verrauschten Signalen werden saubere Flanken"], ["Typische Jobs", "Usages", "Taster entprellen, RC-Oszillator, Signale aufbereiten"]], proj: ["hc14"] },
+  { id: "cd4060", name: "CD4060", pkg: "DIP-16", cat: "count", k: ["14-stufiger Teiler mit Oszillator – Quarzuhr-Baustein", "Diviseur à 14 étages avec oscillateur"], pins: ["Q12:o", "Q13:o", "Q14:o", "Q6:o", "Q5:o", "Q7:o", "Q4:o", "VSS:g", "/Φ0:o", "Φ0:o", "Φ1:i", "RESET:i", "Q9:o", "Q8:o", "Q10:o", "VDD:v"], facts: [["Versorgung", "Alimentation", "3…15 V (CMOS)"], ["Teilerstufen", "Étages", "÷16 (Q4) bis ÷16384 (Q14)"], ["Quarzuhr", "Horloge à quartz", "32,768 kHz ÷ 2¹⁴ = 2 Hz"]], proj: ["cd4060"] },
+  { id: "hc00", name: "74HC00 / 02 / 04 / 08 / 32 / 86", pkg: "DIP-14", cat: "logic", k: ["Die Grund-Gatter: NAND, NOR, NOT, AND, OR, XOR", "Les portes de base"], pins: ["1A:i", "1B:i", "1Y:o", "2A:i", "2B:i", "2Y:o", "GND:g", "3Y:o", "3A:i", "3B:i", "4Y:o", "4A:i", "4B:i", "VCC:v"], facts: [["Familien", "Familles", "74LS (5 V, TTL), 74HC (2…6 V, CMOS), 74HCT (CMOS mit TTL-Pegeln)"], ["Pinbelegung", "Brochage", "7400, 7408, 7432, 7486 gleich (hier gezeigt); 7402 (NOR) und 7404 (NOT) weichen ab"], ["Regel", "Règle", "Unbenutzte Eingänge nie offen lassen"]], proj: ["hc00"] },
+  { id: "hc74", name: "74HC74", pkg: "DIP-14", cat: "count", k: ["2 × D-Flip-Flop mit Set und Reset", "2 bascules D"], pins: ["1/CLR:i", "1D:i", "1CLK:i", "1/PR:i", "1Q:o", "1/Q:o", "GND:g", "2/Q:o", "2Q:o", "2/PR:i", "2CLK:i", "2D:i", "2/CLR:i", "VCC:v"], facts: [["Versorgung", "Alimentation", "2…6 V"], ["Flanke", "Front", "übernimmt D bei der STEIGENDEN Taktflanke"], ["Typische Jobs", "Usages", "Frequenz halbieren (÷2), Speicher für 1 Bit, Toggle-Schalter"]], proj: ["hc74"] },
+  { id: "cd4017", name: "CD4017", pkg: "DIP-16", cat: "count", k: ["Dekadenzähler mit 10 Ausgängen – Lauflicht", "Compteur décimal à 10 sorties"], pins: ["Q5:o", "Q1:o", "Q0:o", "Q2:o", "Q6:o", "Q7:o", "Q3:o", "VSS:g", "Q8:o", "Q4:o", "Q9:o", "CO:o", "CE:i", "CLK:i", "RESET:i", "VDD:v"], facts: [["Versorgung", "Alimentation", "3…15 V"], ["Ausgänge", "Sorties", "immer genau EIN Ausgang HIGH (1-aus-10-Code)"], ["Kaskadieren", "Cascade", "CO (Pin 12) → CLK des nächsten"]], proj: ["cd4017"] },
+  { id: "hc160", name: "74HC160", pkg: "DIP-16", cat: "count", k: ["Synchroner Dekadenzähler (BCD) 0…9", "Compteur décimal synchrone"], pins: ["/MR:i", "CLK:i", "P0:i", "P1:i", "P2:i", "P3:i", "CEP:i", "GND:g", "/PE:i", "CET:i", "Q3:o", "Q2:o", "Q1:o", "Q0:o", "TC:o", "VCC:v"], facts: [["Versorgung", "Alimentation", "2…6 V"], ["Varianten", "Variantes", "160 = dezimal, 161 = binär (0…15), 162/163 synchron löschbar"], ["Laden", "Chargement", "/PE = LOW übernimmt P0…P3 beim nächsten Takt"]], proj: ["hc160"] },
+  { id: "hc595", name: "74HC595", pkg: "DIP-16", cat: "count", k: ["8-Bit-Schieberegister mit Ausgangsspeicher", "Registre à décalage 8 bits"], pins: ["QB:o", "QC:o", "QD:o", "QE:o", "QF:o", "QG:o", "QH:o", "GND:g", "QH':o", "/SRCLR:i", "SRCLK:i", "RCLK:i", "/OE:i", "SER:i", "QA:o", "VCC:v"], facts: [["Versorgung", "Alimentation", "2…6 V"], ["Idee", "Idée", "3 Mikrocontroller-Pins → beliebig viele Ausgänge (kaskadierbar)"], ["Strom", "Courant", "ca. 6 mA je Ausgang, max. 70 mA gesamt"]], proj: ["hc595"] },
+  { id: "hc138", name: "74HC138", pkg: "DIP-16", cat: "dec", k: ["3-zu-8-Dekoder / Demultiplexer", "Décodeur 3 vers 8"], pins: ["A0:i", "A1:i", "A2:i", "/E1:i", "/E2:i", "E3:i", "/Y7:o", "GND:g", "/Y6:o", "/Y5:o", "/Y4:o", "/Y3:o", "/Y2:o", "/Y1:o", "/Y0:o", "VCC:v"], facts: [["Versorgung", "Alimentation", "2…6 V"], ["Ausgänge", "Sorties", "active-low: der gewählte geht auf LOW"], ["Typische Jobs", "Usages", "Adressdekodierung, Chip-Select, Multiplexing"]], proj: ["hc138"] },
+  { id: "cd4511", name: "CD4511", pkg: "DIP-16", cat: "dec", k: ["BCD → 7-Segment-Dekoder (gemeinsame Kathode)", "Décodeur BCD → 7 segments"], pins: ["B:i", "C:i", "/LT:i", "/BI:i", "LE:i", "D:i", "A:i", "VSS:g", "e:o", "d:o", "c:o", "b:o", "a:o", "g:o", "f:o", "VDD:v"], facts: [["Versorgung", "Alimentation", "3…18 V"], ["Ausgangsstrom", "Courant", "bis ca. 25 mA je Segment (Vorwiderstand nötig)"], ["Gegenstück", "Équivalent", "7447 für Anzeigen mit gemeinsamer Anode"]], proj: ["cd4511"] },
+  { id: "lm358", name: "LM358", pkg: "DIP-8", cat: "analog", k: ["Doppel-Operationsverstärker für einfache Versorgung", "Double amplificateur opérationnel"], pins: ["OUT1:o", "IN1−:i", "IN1+:i", "V−/GND:g", "IN2+:i", "IN2−:i", "OUT2:o", "V+:v"], facts: [["Versorgung", "Alimentation", "3…32 V, einfach oder ±1,5…±16 V"], ["Bandbreite", "Bande passante", "ca. 1 MHz (GBW), Slew-Rate 0,3 V/µs"], ["Ausgang", "Sortie", "bis nahe GND, nach oben +V − 1,5 V"]], proj: ["lm358"] },
+  { id: "lm393", name: "LM393", pkg: "DIP-8", cat: "analog", k: ["Doppel-Komparator mit offenem Kollektor", "Double comparateur à collecteur ouvert"], pins: ["OUT1:o", "IN1−:i", "IN1+:i", "GND:g", "IN2+:i", "IN2−:i", "OUT2:o", "VCC:v"], facts: [["Versorgung", "Alimentation", "2…36 V"], ["Ausgang", "Sortie", "open collector – Pull-up nötig"], ["Typische Jobs", "Usages", "Schwellenschalter, Dämmerung, Nulldurchgang, Spannungswächter"]], proj: ["lm393"] },
+  { id: "lm317", name: "LM317", pkg: "TO-220", cat: "analog", k: ["Einstellbarer Spannungsregler 1,25…37 V, 1,5 A", "Régulateur réglable 1,25…37 V, 1,5 A"], pins: ["ADJ:i", "OUT:o", "IN:v"], facts: [["Referenz", "Référence", "1,25 V zwischen OUT und ADJ"], ["Reserve", "Marge", "Vin ≥ Vout + ca. 3 V"], ["Strom", "Courant", "bis 1,5 A, mit Kühlkörper"]], proj: ["lm317"] }
+];
+var KOMBI = ["k_lauf", "k_uhr", "k_zaehl", "k_daemm", "k_prell", "k_sirene"];
+var KICON = { k_lauf: "💡", k_uhr: "🕒", k_zaehl: "🔢", k_daemm: "🌗", k_prell: "🔘", k_sirene: "🚨" };
+function icById(id){ for (var i = 0; i < ICS.length; i++) if (ICS[i].id === id) return ICS[i]; return null; }
+function icOfProj(pid){ for (var i = 0; i < ICS.length; i++) if (ICS[i].proj.indexOf(pid) >= 0) return ICS[i]; return null; }
+
+/* ---------- Projekt anzeigen ---------- */
+var LIVE = { tok: 0, raf: 0 }, AUD = null;
+function stopAudio(){ if (AUD){ try { AUD.o.stop(); AUD.ac.close(); } catch(e){} AUD = null; } }
+function stopLive(){ LIVE.tok++; cancelAnimationFrame(LIVE.raf); stopAudio(); }
+function sliderRow(p, P, onchg){
+  var row = el("label", "ic-sl"), nm = el("span", "ic-sn", T(p.l[0], p.l[1])), inp = el("input"), out = el("output", "ic-so"); inp.type = "range"; inp.min = 0; inp.max = 1000; inp.step = 1;
+  function toX(v){ var t = p.log ? Math.log(v / p.min) / Math.log(p.max / p.min) : (v - p.min) / (p.max - p.min); return Math.round(clamp(t, 0, 1) * 1000); }
+  function toV(x){ var t = x / 1000, v = p.log ? p.min * Math.pow(p.max / p.min, t) : p.min + (p.max - p.min) * t; if (p.e12) v = e12(v); if (p.int) v = Math.round(v); return v; }
+  function show(){ out.textContent = p.u ? fmt(P[p.k], p.u) : (+P[p.k].toFixed(2)).toString().replace(".", fr ? "," : "."); }
+  inp.value = toX(P[p.k]); show(); inp.oninput = function(){ P[p.k] = toV(+inp.value); show(); onchg(); };
+  row.appendChild(nm); row.appendChild(inp); row.appendChild(out); row.setV = function(v){ P[p.k] = v; inp.value = toX(v); show(); onchg(); }; return row;
+}
+function renderProject(host, pid){
+  stopLive(); host.innerHTML = "";
+  var pr = PROJ[pid], P = {}, saved = sv("p_" + pid) || {}, ctx = { ts: 0, fire: null, res: null, pid: pid }, rows = {};
+  (pr.params || []).forEach(function(p){ P[p.k] = saved[p.k] != null ? clamp(saved[p.k], p.min, p.max) : p.def; });
+  (pr.opts || []).forEach(function(o){ var sv0 = saved[o.k]; P[o.k] = sv0 != null && o.o.some(function(x){ return x[0] === sv0; }) ? sv0 : o.def; });
+  ctx.setP = function(k, v){ if (rows[k]) rows[k].setV(v); };
+  host.appendChild(el("h2", "ic-pt", esc(T(pr.t[0], pr.t[1]))));
+  host.appendChild(el("p", "ic-pd", esc(T(pr.d[0], pr.d[1]))));
+  var fl = el("div", "ic-flow"); pr.flow.forEach(function(x, i){ if (i) fl.appendChild(el("span", "ic-ar", "→")); fl.appendChild(el("span", "ic-fb", esc(x))); }); host.appendChild(fl);
+  if (pr.ics){ var lk = el("div", "ic-chips"); lk.appendChild(el("span", "ic-lb", T("Beteiligte ICs:", "CI concernés :"))); pr.ics.forEach(function(i){ var a = el("a", "ic-ch", esc(icById(i).name)); a.href = "#" + i; lk.appendChild(a); }); host.appendChild(lk); }
+  var ctl = el("div", "ic-ctl"); host.appendChild(ctl);
+  var cust = null, area = el("div"), scBox = el("div", "ic-scopebox"), cnv = el("canvas"), liveBox = el("div", "ic-live"), warnBox = el("div"), infoBox = el("div", "ic-info");
+  function save(){ st("p_" + pid, P); }
+  function redraw(){ save();
+    var res = pr.build ? pr.build(P, ctx) : {}; ctx.res = res;
+    if (res.ch){ scBox.hidden = false; scope(cnv, res.ch, res.span, res.cur, res.tl); } else scBox.hidden = true;
+    warnBox.innerHTML = (res.warn || []).map(function(w){ return '<p class="ic-warn">⚠️ ' + esc(w) + "</p>"; }).join("");
+    infoBox.innerHTML = res.info ? "<table>" + res.info.map(function(r){ return "<tr><th>" + esc(r[0]) + "</th><td>" + esc(r[1] || "") + "</td></tr>"; }).join("") + "</table>" : "";
+    liveBox.innerHTML = ""; ctx.led = null; ctx.seg = null; ctx.sig = null; ctx.note = null;
+    if (res.live) liveBox.hidden = false; else liveBox.hidden = true;
+    if (cust && cust.after) cust.after(res);
+  }
+  (pr.params || []).forEach(function(p){ var r = sliderRow(p, P, redraw); rows[p.k] = r; ctl.appendChild(r); });
+  (pr.opts || []).forEach(function(o){ var w = el("div", "ic-chips"); w.appendChild(el("span", "ic-lb", esc(T(o.l[0], o.l[1])))); o.o.forEach(function(x){ var b = el("button", "ic-ch" + (P[o.k] === x[0] ? " on" : ""), esc(typeof x[1] === "string" ? x[1] : T(x[1][0], x[1][1]))); b.type = "button"; b.onclick = function(){ P[o.k] = x[0]; w.querySelectorAll("button").forEach(function(y){ y.classList.remove("on"); }); b.classList.add("on"); redraw(); }; w.appendChild(b); }); ctl.appendChild(w); });
+  if (pr.action){ var ab = el("button", "ic-act", esc(T(pr.action.l[0], pr.action.l[1]))); ab.type = "button";
+    ab.onclick = function(){ ctx.fire = ctx.ts; if (pr.onAction) pr.onAction(ctx);
+      if (pid === "k_sirene"){ if (AUD) stopAudio(); else { try { var ac = new (window.AudioContext || window.webkitAudioContext)(), o = ac.createOscillator(), g = ac.createGain(); o.type = "square"; g.gain.value = .05; o.connect(g); g.connect(ac.destination); o.start(); AUD = { ac: ac, o: o }; } catch(e){} } ab.classList.toggle("on", !!AUD); }
+      redraw(); }; host.appendChild(ab); }
+  host.appendChild(area);
+  if (pr.custom) cust = CUST[pr.custom](area, P, ctx, redraw);
+  host.appendChild(scBox); scBox.appendChild(cnv); host.appendChild(liveBox); host.appendChild(warnBox); host.appendChild(infoBox);
+  redraw();
+  if (pr.wire){ host.appendChild(el("h3", "ic-h3", "🔌 " + T("Verdrahtung", "Câblage"))); var ul = el("ol", "ic-wire"); pr.wire.forEach(function(w){ ul.appendChild(el("li", "", esc(T(w[0], w[1])))); }); host.appendChild(ul); }
+  if (pr.notes){ host.appendChild(el("h3", "ic-h3", "💡 " + T("Gut zu wissen", "Bon à savoir"))); var u2 = el("ul", "ic-wire"); pr.notes.forEach(function(w){ u2.appendChild(el("li", "", esc(T(w[0], w[1])))); }); host.appendChild(u2); }
+  // Live-Schleife
+  var tok = ++LIVE.tok, last = performance.now(), noteEl = null;
+  function frame(now){
+    if (tok !== LIVE.tok) return;
+    var dt = Math.min(.1, (now - last) / 1000); last = now; var res = ctx.res;
+    if (res && res.live){
+      var sp = res.speed != null ? res.speed : res.fmain > 3 ? 2 / res.fmain : res.fmain < .3 ? .5 / res.fmain : 1;
+      ctx.ts += dt * sp; var o = res.live(ctx.ts, ctx);
+      if (!ctx.sig || ctx.sig !== (o.leds.length + "|" + (o.seg != null))){ liveBox.innerHTML = ""; ctx.sig = o.leds.length + "|" + (o.seg != null); var rw = el("div", "ic-row2"); liveBox.appendChild(rw); ctx.seg = o.seg != null ? seg7(rw) : null; var lw = el("div"); rw.appendChild(lw); ctx.led = o.leds.length ? ledRow(lw, o.leds.length, o.names, C.red) : null; ctx.note = el("div", "ic-note"); liveBox.appendChild(ctx.note); }
+      if (ctx.led) ctx.led.set(o.leds); if (ctx.seg) ctx.seg.set(o.seg);
+      ctx.note.textContent = Math.abs(sp - 1) < .05 ? T("⏱ echte Zeit", "⏱ temps réel") : sp < 1 ? T("⏱ Zeitlupe ×", "⏱ ralenti ×") + (+sp.toPrecision(2)).toString() : T("⏱ Zeitraffer ×", "⏱ accéléré ×") + Math.round(sp);
+    }
+    if (AUD && res && res.fAt){ try { AUD.o.frequency.setTargetAtTime(clamp(res.fAt(ctx.ts), 60, 12000), AUD.ac.currentTime, .012); } catch(e){} }
+    LIVE.raf = requestAnimationFrame(frame);
+  }
+  LIVE.raf = requestAnimationFrame(frame);
+  if (window.ResizeObserver){ var ro = new ResizeObserver(function(){ if (tok === LIVE.tok && ctx.res && ctx.res.ch){ var w0 = cnv.parentNode.clientWidth; if (w0 && Math.abs(w0 - (parseFloat(cnv.style.width) || 0)) > 2) scope(cnv, ctx.res.ch, ctx.res.span, ctx.res.cur, ctx.res.tl); } }); ro.observe(scBox); }
+}
+
+/* ---------- Seiten ---------- */
+var root, FILTER = "alle", QUERY = "";
+function cardIC(ic){
+  var a = el("a", "ic-card", ""); a.href = "#" + ic.id; a.dataset.cat = ic.cat; var cc = CATS.filter(function(c){ return c[0] === ic.cat; })[0];
+  a.style.setProperty("--c", cc[2]);
+  a.innerHTML = '<span class="ic-pkg">' + ic.pkg + '</span><b>' + esc(ic.name) + "</b><p>" + esc(T(ic.k[0], ic.k[1])) + '</p><i>' + ic.proj.length + " " + T(ic.proj.length > 1 ? "Schaltungen" : "Schaltung", "circuit" + (ic.proj.length > 1 ? "s" : "")) + "</i>";
+  a.dataset.s = (ic.name + " " + ic.k[0] + " " + ic.k[1]).toLowerCase(); return a;
+}
+function listPage(){
+  stopLive(); document.title = "IC-Labor – Oratio Tech Studio"; root.innerHTML = "";
+  root.appendChild(el("div", "crumb", '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › IC-Labor'));
+  var hero = el("div", "ic-hero", '<div class="ic-k">IC-LABOR</div><h1>' + T("IC nachschlagen. Schaltung ausprobieren.", "Consulter un CI. Essayer un circuit.") + "</h1><p>" + T("Zu jedem Baustein: Pinbelegung, die wichtigsten Daten und eine lebendige Schaltung mit Oszilloskop – drehe an R und C und sieh, was der IC macht. Unten findest du Projekte mit mehreren ICs.", "Pour chaque composant : brochage, données clés et un circuit vivant avec oscilloscope.") + "</p>"); root.appendChild(hero);
+  var tools = el("div", "ic-chips"); root.appendChild(tools);
+  var s = el("input", "ic-search"); s.type = "search"; s.placeholder = T("IC suchen, z. B. 555, 4017, Zähler …", "Chercher un CI, p. ex. 555, 4017 …"); s.value = QUERY; tools.appendChild(s);
+  var cr = el("div", "ic-chips"); root.appendChild(cr);
+  [["alle", T("Alle", "Tous")]].concat(CATS.map(function(c){ return [c[0], c[1]]; })).concat([["kombi", T("🧩 Kombi-Projekte", "🧩 Projets combinés")]]).forEach(function(c){ var b = el("button", "ic-ch" + (FILTER === c[0] ? " on" : ""), esc(c[1])); b.type = "button"; b.onclick = function(){ FILTER = c[0]; cr.querySelectorAll("button").forEach(function(y){ y.classList.remove("on"); }); b.classList.add("on"); filt(); }; cr.appendChild(b); });
+  var g1 = el("div", "ic-grid"); ICS.forEach(function(ic){ g1.appendChild(cardIC(ic)); }); root.appendChild(g1);
+  var h2 = el("h2", "ic-h2", "🧩 " + T("Kombi-Projekte – mehrere ICs zusammen", "Projets combinés – plusieurs CI ensemble")); root.appendChild(h2);
+  var g2 = el("div", "ic-grid"); KOMBI.forEach(function(k){ var pr = PROJ[k], a = el("a", "ic-card kb", '<span class="ic-pkg">' + pr.flow.length + " " + T("Stufen", "étages") + '</span><b>' + KICON[k] + " " + esc(T(pr.t[0], pr.t[1]).split(":")[0]) + "</b><p>" + esc(pr.flow.join(" → ")) + "</p><i>" + esc(T(pr.t[0], pr.t[1]).split(":")[1] || "") + "</i>"); a.href = "#k/" + k; a.dataset.s = (pr.t[0] + " " + pr.t[1] + " " + pr.d[0]).toLowerCase(); g2.appendChild(a); }); root.appendChild(g2);
+  var emp = el("p", "ic-lb", T("Nichts gefunden – versuche eine Nummer, z. B. 4017.", "Rien trouvé.")); emp.hidden = true; root.appendChild(emp);
+  function filt(){ var q = s.value.trim().toLowerCase(); QUERY = s.value; var n1 = 0, n2 = 0;
+    g1.childNodes.forEach(function(a){ var ok = (FILTER === "alle" || FILTER === a.dataset.cat) && (!q || a.dataset.s.indexOf(q) >= 0); a.hidden = !ok; if (ok) n1++; });
+    g2.childNodes.forEach(function(a){ var ok = (FILTER === "alle" || FILTER === "kombi") && (!q || a.dataset.s.indexOf(q) >= 0); a.hidden = !ok; if (ok) n2++; });
+    g1.hidden = !n1; h2.hidden = g2.hidden = !n2; emp.hidden = !!(n1 + n2); }
+  s.oninput = filt; filt();
+}
+function detailPage(id, pid){
+  var ic = icById(id); if (!ic) return listPage(); pid = pid && ic.proj.indexOf(pid) >= 0 ? pid : ic.proj[0];
+  document.title = ic.name + " – IC-Labor"; root.innerHTML = "";
+  root.appendChild(el("div", "crumb", '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › <a href="#">IC-Labor</a> › ' + esc(ic.name)));
+  var wrap = el("div", "ic-two"); root.appendChild(wrap);
+  var side = el("aside", "ic-side"); wrap.appendChild(side); var main = el("section", "ic-main"); wrap.appendChild(main);
+  side.appendChild(el("h1", "ic-h1", esc(ic.name))); side.appendChild(el("p", "ic-lb", esc(T(ic.k[0], ic.k[1]))));
+  var pn = el("div", "ic-pin"); pn.innerHTML = dip(ic); side.appendChild(pn);
+  var lg = el("div", "ic-leg", '<span style="--c:#ff6b6b">+V</span><span style="--c:#8aa0b8">GND</span><span style="--c:#ffb000">' + T("Eingang", "Entrée") + '</span><span style="--c:#3de6ff">' + T("Ausgang", "Sortie") + "</span>"); side.appendChild(lg);
+  side.appendChild(el("p", "ic-lb", T("Ansicht von oben, Kerbe nach oben: Pin 1 links oben, dann gegen den Uhrzeigersinn.", "Vue de dessus, encoche en haut : broche 1 en haut à gauche.")));
+  var ft = el("table", "ic-facts"); ft.innerHTML = ic.facts.map(function(f){ return "<tr><th>" + esc(T(f[0], f[1])) + "</th><td>" + esc(T(f[2], f[2])) + "</td></tr>"; }).join(""); side.appendChild(ft);
+  var dl = el("a", "ic-act2", "📖 " + T("Datenblatt-Seite im Studio", "Fiche dans le Studio")); dl.href = "index.html#/s/" + LINK[ic.id]; side.appendChild(dl);
+  if (ic.proj.length > 1){ var tabs = el("div", "ic-chips"); ic.proj.forEach(function(p){ var a = el("a", "ic-ch" + (p === pid ? " on" : ""), esc(T(PROJ[p].t[0], PROJ[p].t[1]).split(" – ")[0])); a.href = "#" + ic.id + "/" + p; tabs.appendChild(a); }); main.appendChild(tabs); }
+  var host = el("div"); main.appendChild(host); renderProject(host, pid);
+}
+function kombiPage(pid){
+  var pr = PROJ[pid]; if (!pr) return listPage(); document.title = T(pr.t[0], pr.t[1]) + " – IC-Labor"; root.innerHTML = "";
+  root.appendChild(el("div", "crumb", '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › <a href="#">IC-Labor</a> › ' + T("Kombi-Projekt", "Projet combiné")));
+  var host = el("div", "ic-main solo"); root.appendChild(host); renderProject(host, pid);
+}
+function route(){
+  var h = decodeURIComponent(location.hash.replace(/^#/, "")), p = h.split("/");
+  if (!h) listPage(); else if (p[0] === "k") kombiPage(p[1]); else detailPage(p[0], p[1]);
+  window.scrollTo(0, 0);
+}
+function start(){ root = $("#iclab"); window.addEventListener("hashchange", route); route(); }
+return { start: start };
+})();

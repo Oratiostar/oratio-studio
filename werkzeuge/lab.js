@@ -45,6 +45,7 @@ function start(){
 }
 function route(){
   var h = location.hash.replace("#", "") || "start";
+  if (h === "matrix") { dload(); DD.sel = "hub75"; location.replace("#disp"); return; }
   if (!MODS[h]) h = "start";
   if (MODS[cur] && MODS[cur].stop) MODS[cur].stop();
   cur = h; body.innerHTML = "";
@@ -63,9 +64,8 @@ MODS.start = (function(){
   var raf = 0, tmr = 0, alive = false;
   var CH = [
     ["sim", "#ffb000", L("Schaltungs-Simulator", "Simulateur de circuits"), L("Batterie, Widerstand, LED, Schalter, Messgeräte, Transistor. Zu viel Strom? Dann brennt etwas durch.", "Pile, résistance, LED, interrupteur, instruments, transistor. Trop de courant ? Quelque chose grille."), L("Überlast = Rauch", "Surcharge = fumée")],
-    ["disp", "#3de6ff", L("Display-Werkstatt", "Atelier d’écrans"), L("17 Displays, 7 Boards: schreiben, zeichnen – der fertige Code entsteht mit Erklärung zu jeder Zeile.", "17 écrans, 7 cartes : écris, dessine – le code est généré, chaque ligne expliquée."), L("17 Displays", "17 écrans")],
+    ["disp", "#3de6ff", L("Display-Werkstatt", "Atelier d’écrans"), L("17 Displays + LED-Matrix, 7 Boards: schreiben, zeichnen – der fertige Code entsteht mit Erklärung zu jeder Zeile.", "17 écrans + matrice LED, 7 cartes : écris, dessine – le code est généré, chaque ligne expliquée."), L("18 Displays", "18 écrans")],
     ["watch", "#6dffb0", "Oratio Watch", L("Das Zifferblatt live gestalten: Farben, Zeiger, Stil. Dieselben Formen wie auf der echten Uhr.", "Crée le cadran en direct : couleurs, aiguilles, style. Les mêmes formes que sur la vraie montre."), "Live"],
-    ["matrix", "#ff3d9a", L("LED-Matrix-Maler", "Éditeur de matrice LED"), L("64×32 Pixel malen und als fertigen ESP32- oder Pi-Code mitnehmen.", "Dessine 64×32 pixels et emporte le code ESP32 ou Pi."), "ESP32 · Pi"],
     ["term", "#b6ff3d", L("Terminal-Trainer", "Entraîneur de terminal"), L("Ein Übungs-Terminal mit 10 Missionen. Hier kann nichts kaputtgehen.", "Un terminal d’entraînement avec 10 missions. Rien ne peut casser."), L("10 Missionen", "10 missions")],
     ["game", "#b58cff", L("Mini-Spiele", "Mini-jeux"), L("LED-Memory, Ohm-Quiz, Farbcode und Reaktionstest – mit Highscore.", "Mémoire LED, quiz d’Ohm, code couleur et test de réaction – avec records."), "Highscore"]
   ];
@@ -81,7 +81,7 @@ MODS.start = (function(){
   function show(b){
     var wrap = el("div", "lx");
     wrap.innerHTML =
-      '<div class="lxh"><div><div class="lxk">' + L("OSZILLOSKOP · 6 KANÄLE", "OSCILLOSCOPE · 6 CANAUX") + '</div>' +
+      '<div class="lxh"><div><div class="lxk">' + L("OSZILLOSKOP · 5 KANÄLE", "OSCILLOSCOPE · 5 CANAUX") + '</div>' +
       '<h1 class="lxt" data-t="ORATIO LAB">ORATIO LAB</h1>' +
       '<p class="lxs0">' + L("Probieren, bauen, kaputtmachen – ohne Risiko. Alles läuft live in deinem Browser.", "Essayer, construire, casser – sans risque. Tout tourne en direct dans ton navigateur.") + '</p></div>' +
       '<button class="lxbad" type="button">⚠ ' + L("NICHT DRÜCKEN", "NE PAS APPUYER") + '</button></div>' +
@@ -169,13 +169,13 @@ MODS.start = (function(){
         function hand(a, l, lw){ c.lineWidth = lw; c.beginPath(); c.moveTo(cx, cy); c.lineTo(cx + Math.sin(a) * l, cy - Math.cos(a) * l); c.stroke(); }
         hand((d.getHours() % 12 + d.getMinutes() / 60) / 12 * 6.2832, 11, 3); hand(d.getMinutes() / 60 * 6.2832, 17, 2);
         c.strokeStyle = "#ff4f4f"; c.shadowColor = "#ff4f4f"; hand((d.getSeconds() + d.getMilliseconds() / 1000) / 60 * 6.2832, 20, 1);
-      } else if (type === 3){
+      } else if (type === 9){
         var f = Math.floor(t * 8);
         for (var i = 0; i < 12; i++) for (var j = 0; j < 6; j++){
           var on = ((i + f) % 12 === j * 2 || (i * 7 + j * 3 + f) % 11 === 0);
           c.globalAlpha = on ? 1 : .16; c.fillRect(6 + i * 7.4, 4 + j * 8.4, 5, 5);
         } c.globalAlpha = 1;
-      } else if (type === 4){
+      } else if (type === 3){
         c.font = "bold 15px ui-monospace,Menlo,Consolas,monospace"; c.textAlign = "left"; c.textBaseline = "middle";
         var s = "ls -la", k = Math.floor(t * 4) % 14, tx = "$ " + s.slice(0, Math.min(s.length, k));
         c.fillText(tx + (Math.floor(t * 3) % 2 ? "█" : ""), 6, h / 2);
@@ -214,7 +214,7 @@ MODS.start = (function(){
       raf = requestAnimationFrame(frame);
     }
     alive = true;
-    if (reduce){ for (var i = 0; i < 6; i++) icon(i, icos[i], 1); frame(performance.now()); alive = false; }
+    if (reduce){ for (var i = 0; i < icos.length; i++) icon(i, icos[i], 1); frame(performance.now()); alive = false; }
     else { raf = requestAnimationFrame(frame); tmr = setTimeout(surprise, 4500); }
     MODS.start._off = function(){ window.removeEventListener("resize", size); };
   }
@@ -1521,6 +1521,8 @@ MODS.disp = { show: function(b){
   var view = null, ta = null;
   ["lcd", "mono", "color", "seg"].forEach(function(g){ var gl = el("div", "lmut", GRPN[g]); gl.style.margin = "8px 0 4px"; chips.appendChild(gl); var r = el("div", "lrow"); chips.appendChild(r);
     DISPS.filter(function(x){ return x.grp === g; }).forEach(function(d){ var x = el("button", "lbtn" + (DD.sel === d.id ? " on" : ""), d.n); x.dataset.id = d.id; x.onclick = function(){ DD.sel = d.id; chips.querySelectorAll("button").forEach(function(y){ y.classList.toggle("on", y.dataset.id === d.id); }); render(); }; r.appendChild(x); }); });
+  (function(){ var gl = el("div", "lmut", L("LED-Matrix (HUB75-Panel)", "Matrice LED (panneau HUB75)")); gl.style.margin = "8px 0 4px"; chips.appendChild(gl); var r = el("div", "lrow"); chips.appendChild(r);
+    var x = el("button", "lbtn" + (DD.sel === "hub75" ? " on" : ""), L("LED-Matrix 64×32 (bunt, HUB75)", "Matrice LED 64×32 (couleur, HUB75)")); x.dataset.id = "hub75"; x.onclick = function(){ DD.sel = "hub75"; chips.querySelectorAll("button").forEach(function(y){ y.classList.toggle("on", y.dataset.id === "hub75"); }); render(); }; r.appendChild(x); })();
   BOARDS.forEach(function(o){ var x = el("button", "lbtn" + (DD.board === o[0] ? " on" : ""), o[1]); x.dataset.b = o[0]; x.onclick = function(){ DD.board = o[0]; brow.querySelectorAll("button").forEach(function(y){ y.classList.toggle("on", y.dataset.b === o[0]); }); updCode(); dsave(); }; brow.appendChild(x); });
   function infoPanel(){
     var d = dget(DD.sel), S = dinit(d), p = pinsFor(d, DD.board), bd = BNAME[DD.board], lib = DD.board === "pi" ? "pip install " + PYLIBS[libOf(d)] : LIBS[libOf(d)];
@@ -1541,6 +1543,8 @@ MODS.disp = { show: function(b){
   }
   function render(){
     if (view && view.stop) view.stop();
+    var hub = DD.sel === "hub75"; brow.hidden = hub; brow.previousSibling.hidden = hub; rs.hidden = hub; info.hidden = hub; cc.hidden = hub;
+    if (hub) { area.innerHTML = ""; view = null; MODS.matrix.show(area); dsave(); return; }
     var d = dget(DD.sel), S = dinit(d); undoB.hidden = !(DD.undo[DD.sel] && DD.undo[DD.sel].length); area.innerHTML = ""; var up = function(light){ view.paint(); updCode(light); };
     view = d.grp === "lcd" ? viewLCD(area, d, S, up) : d.grp === "seg" ? viewSeg(area, d, S, up) : viewGfx(area, d, S, up);
     view.paint(); updCode(); dsave();
