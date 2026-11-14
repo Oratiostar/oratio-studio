@@ -173,6 +173,7 @@ window.WZ = {
     mo.observe(document.body, {childList:true, subtree:true, characterData:true, attributes:true, attributeFilter:["placeholder","title","aria-label","alt"]});
   },
   kopf: function(aktiv){
+    var pinT = aktiv === "pinout"; if (pinT) aktiv = "elektro";
     var h = document.createElement("header");
     h.innerHTML = '<div class="bar"><a class="logo" href="index.html"><span class="lg"><svg class="lgO" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14.5" fill="none" stroke="#ffc21a" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(11 20 20)"/><circle cx="20" cy="20" r="14.5" fill="none" stroke="#ff5fa8" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(96 20 20)"/><circle cx="20" cy="20" r="14.5" fill="none" stroke="#2e86ff" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(181 20 20)"/><circle cx="20" cy="20" r="14.5" fill="none" stroke="#ff4b3a" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(266 20 20)"/></svg><b>ratio</b><i>Place</i></span></a>' +
       '<span class="sp"></span><div class="seg" id="wzLang" role="group" aria-label="Sprache / Langue"></div> <div class="seg" id="wzTheme" role="group" aria-label="Hell / Dunkel"></div></div>';
@@ -193,6 +194,7 @@ window.WZ = {
       var rb = document.createElement("div"); rb.className = "wzrib"; rb.innerHTML = '<a class="ribbon s" href="index.html#/studio">Oratio Tech Studio</a>'; m.insertBefore(rb, m.firstChild);
       var ph = document.createElement("div"); ph.className = "ph"; ph.style.setProperty("--wc", fa); ph.innerHTML = '<div class="phbad"><span class="emo">' + em + '</span></div><h1>' + ti + '</h1>'; cr.insertAdjacentElement("afterend", ph);
       var h1 = m.querySelector(":scope > h1"); if (h1) h1.remove(); }
+    if (pinT && m) { var t2 = WZ.lang === "fr" ? "Brochages des cartes" : "Board-Pinouts", cc = m.querySelector(".crumb"), hh = m.querySelector(".ph h1"), ee = m.querySelector(".ph .emo"); if (cc) cc.innerHTML = cc.innerHTML.replace(/ › [^›]*$/, " › " + t2); if (hh) hh.textContent = t2; if (ee) ee.textContent = "📌"; document.title = t2 + " – Oratio"; }
     if (aktiv === "icon") {
       var p = document.querySelector(".panel"), fb = document.createElement("div"); fb.className = "farbbox";
       fb.innerHTML = '<span>Farbe</span><span class="farben">' + Object.keys(WZ_FARBEN).map(function(k){ return '<button type="button" data-f="' + k + '" style="background:' + (k === "schwarz" ? "#30343f" : WZ_FARBEN[k][0]) + '" title="' + k.charAt(0).toUpperCase() + k.slice(1) + '" aria-label="' + k + '" data-nt></button>'; }).join("") + '</span>';

@@ -1,4 +1,4 @@
-// Elektronik-Rechner: Farbcode, Ohm, LED, Teiler, Normwerte, Filter, 555, Logik, Pi-Pinout.
+// Elektronik-Rechner: Farbcode, Ohm, LED, Teiler, Opamp, Normwerte, Filter, 555, Logik.
 // Alles läuft im Browser. Es wird nichts hochgeladen, gesendet oder gespeichert.
 (function(){
 "use strict";
@@ -376,39 +376,6 @@ function logikTool(host){
   maske();
 }
 
-/* ====================================================================== 9. Raspberry-Pi-Pinout */
-function pinTool(host){
-  const PIN = {1:["3V3","3V3"],2:["5V","5V"],3:["GPIO2","I²C1 SDA"],4:["5V","5V"],5:["GPIO3","I²C1 SCL"],6:["GND","GND"],7:["GPIO4","GPCLK0"],8:["GPIO14","UART TXD"],9:["GND","GND"],10:["GPIO15","UART RXD"],11:["GPIO17",""],12:["GPIO18","PWM0 · PCM CLK · SPI1 CE0"],13:["GPIO27",""],14:["GND","GND"],15:["GPIO22",""],16:["GPIO23",""],17:["3V3","3V3"],18:["GPIO24",""],19:["GPIO10","SPI0 MOSI"],20:["GND","GND"],21:["GPIO9","SPI0 MISO"],22:["GPIO25",""],23:["GPIO11","SPI0 SCLK"],24:["GPIO8","SPI0 CE0"],25:["GND","GND"],26:["GPIO7","SPI0 CE1"],27:["GPIO0","ID_SD (I²C0)"],28:["GPIO1","ID_SC (I²C0)"],29:["GPIO5",""],30:["GND","GND"],31:["GPIO6",""],32:["GPIO12","PWM0"],33:["GPIO13","PWM1"],34:["GND","GND"],35:["GPIO19","PWM1 · PCM FS · SPI1 MISO"],36:["GPIO16","SPI1 CE2"],37:["GPIO26",""],38:["GPIO20","PCM DIN · SPI1 MOSI"],39:["GND","GND"],40:["GPIO21","PCM DOUT · SPI1 SCLK"]};
-  const FILT = [["alle", T("Alle", "Toutes")], ["strom", T("Strom", "Alim.")], ["gnd", "GND"], ["i2c", "I²C"], ["spi", "SPI"], ["uart", "UART"], ["pwm", "PWM"], ["pcm", "PCM/I²S"]];
-  const kind = p => { const n = PIN[p][0]; return n === "GND" ? "gnd" : n === "3V3" || n === "5V" ? "strom" : "gpio"; };
-  const tags = p => { const f = PIN[p][1].toLowerCase(); const t = []; if (/i²c/.test(f)) t.push("i2c"); if (/spi/.test(f)) t.push("spi"); if (/uart/.test(f)) t.push("uart"); if (/pwm/.test(f)) t.push("pwm"); if (/pcm/.test(f)) t.push("pcm"); const k = kind(p); if (k !== "gpio") t.push(k); return t; };
-  const col = p => { const n = PIN[p][0]; return n === "3V3" ? "#ff9f1a" : n === "5V" ? "#e63946" : n === "GND" ? "#4b5160" : PIN[p][1] ? "#2e86ff" : "#2a9d3f"; };
-  let sel = 3, fl = "alle";
-  host.innerHTML = SAFE() + '<div class="tabs" id="pF"></div><div class="cols2"><div><div id="pGrid" class="pgrid"></div><p class="hint">' + T("So hältst du den Pi: USB-Anschlüsse unten, Header oben rechts. Pin 1 ist oben links (Viereck-Pad).", "Position : ports USB en bas, connecteur en haut à droite. La broche 1 est en haut à gauche (pastille carrée).") + '</p></div><div id="pInfo"></div></div>';
-  const st = document.createElement("style"); st.textContent = ".pgrid{display:grid;grid-template-columns:1fr 34px 34px 1fr;gap:5px 6px;align-items:center;max-width:380px;margin:0 auto;padding:10px;border-radius:14px;background:#1c5a3a;color:#fff}.pgrid .pl{font:600 12.5px/1.2 ui-monospace,Menlo,monospace;padding:0 2px}.pgrid .pl.r{text-align:left}.pgrid .pl.l{text-align:right}.pg{width:30px;height:30px;border-radius:50%;border:2px solid #f5e4a4;color:#fff;font:700 11px system-ui;display:grid;place-items:center;cursor:pointer;padding:0;opacity:1}.pg.sq{border-radius:6px}.pg.dim{opacity:.18}.pg.on{outline:3px solid #fff;outline-offset:2px;transform:scale(1.12)}#pInfo .stats{grid-template-columns:repeat(2,1fr)}";
-  host.appendChild(st);
-  function zeichne(){
-    $("#pF", host).innerHTML = FILT.map(f => '<button class="btn sm' + (f[0] === fl ? " on" : "") + '" data-f="' + f[0] + '">' + f[1] + '</button>').join("");
-    $$("#pF button", host).forEach(b => b.onclick = () => { fl = b.dataset.f; zeichne(); });
-    let g = ""; for (let i = 0; i < 20; i++) { const a = 2 * i + 1, b = 2 * i + 2;
-      const cell = p => { const dim = fl !== "alle" && !tags(p).includes(fl); return '<button type="button" class="pg' + (p === 1 ? " sq" : "") + (dim ? " dim" : "") + (p === sel ? " on" : "") + '" data-p="' + p + '" style="background:' + col(p) + '" aria-label="Pin ' + p + ' ' + PIN[p][0] + '">' + p + '</button>'; };
-      g += '<div class="pl l">' + PIN[a][0] + (PIN[a][1] && !/^(3V3|5V|GND)$/.test(PIN[a][1]) ? '<br><span style="opacity:.7;font-weight:500">' + esc(PIN[a][1].split(" · ")[0]) + '</span>' : '') + '</div>' + cell(a) + cell(b) + '<div class="pl r">' + PIN[b][0] + (PIN[b][1] && !/^(3V3|5V|GND)$/.test(PIN[b][1]) ? '<br><span style="opacity:.7;font-weight:500">' + esc(PIN[b][1].split(" · ")[0]) + '</span>' : '') + '</div>'; }
-    $("#pGrid", host).innerHTML = g; $$(".pg", host).forEach(b => b.onclick = () => { sel = +b.dataset.p; zeichne(); });
-    info();
-  }
-  function info(){
-    const [n, f] = PIN[sel], k = kind(sel), gp = /^GPIO(\d+)$/.exec(n);
-    const L = { "3V3": T("3,3-V-Versorgung (max. ca. 0,5 A gesamt über alle 3V3-Pins).", "Alimentation 3,3 V (environ 0,5 A max. au total)."), "5V": T("5 V direkt vom Netzteil. Niemals an einen GPIO-Pin anschließen!", "5 V directement du bloc secteur. Ne jamais relier à une broche GPIO !"), "GND": T("Masse (0 V). Alle GND-Pins sind miteinander verbunden.", "Masse (0 V). Toutes les broches GND sont reliées entre elles.") };
-    let h = '<div class="card" style="margin:0"><h3 style="margin-top:0"><span class="ts" style="background:' + col(sel) + ';width:34px;height:34px;font-size:15px">' + sel + '</span> ' + esc(n) + (f && k === "gpio" ? ' · ' + esc(f.split(" · ")[0]) : "") + '</h3>';
-    if (k !== "gpio") h += '<p>' + L[n] + '</p>';
-    else { h += '<div class="stats"><div><b>BCM ' + gp[1] + '</b><small>' + T("GPIO-Nummer (Software)", "numéro GPIO (logiciel)") + '</small></div><div><b>Pin ' + sel + '</b><small>' + T("Platz am Header", "position sur le connecteur") + '</small></div></div>';
-      h += '<p>' + (f ? T("Zusatzfunktionen: ", "Fonctions alternatives : ") + '<b>' + esc(f) + '</b>' : T("Normaler Ein-/Ausgang ohne feste Zusatzfunktion.", "Entrée/sortie simple, sans fonction alternative fixe.")) + '</p>';
-      h += '<p class="hint">' + T("3,3-V-Pegel, höchstens ca. 16 mA pro Pin. Nicht 5-V-tolerant. Einfacher Test in Python: ", "Niveau 3,3 V, environ 16 mA max. par broche. Non tolérant 5 V. Test simple en Python : ") + '<code>from gpiozero import LED; LED(' + gp[1] + ').on()</code></p>'; }
-    $("#pInfo", host).innerHTML = h + '</div><p class="hint">' + T("Gilt für Raspberry Pi 2, 3, 4, 5, Zero und Pico-kompatible 40-Pin-Header.", "Valable pour les Raspberry Pi 2, 3, 4, 5 et Zero (connecteur à 40 broches).") + '</p>';
-  }
-  zeichne();
-}
-
 /* ====================================================================== Operationsverstärker (live) */
 function opampTool(host){
   /* ---- Zeichen-Bausteine ---- */
@@ -506,7 +473,7 @@ function opampTool(host){
       sim: (q, u) => ({ y: -q.Rf * u * 1e-6 }), cur: (q, u) => ({ iRf: u * 1e-6 }), stats: q => ({ G: null, zin: 0, note: T("Transimpedanz = −Rf = ", "transimpédance = −Rf = ") + fmtSI(q.Rf, "V/A") }), uscale: 1e-6 }
   ];
   const lc = (k, f) => '<option value="' + k + '"' + '>' + f + '</option>';
-  let typ = "inv", sg = { k: "sin", A: "0,5", f: "1k", off: "0" }, vs = "12", sel = null, tAnim = 0, raf = 0, play = true, SIM = null;
+  let typ = (/^#opamp\/(\w+)/.exec(location.hash) || [0, "inv"])[1], sg = { k: "sin", A: "0,5", f: "1k", off: "0" }, vs = "12", sel = null, tAnim = 0, raf = 0, play = true, SIM = null;
   const tdef = () => TYPES.find(x => x.id === typ);
   let vals = {}; // je Typ gemerkte Parameter
   host.innerHTML = SAFE() + '<div class="opw"><div class="opl"><div class="tabs" id="opTab"></div><div id="opIn"></div></div><div class="opr"><div id="opSvg"></div><div id="opStats"></div></div></div><div id="opPlot"></div><p class="hint" id="opInfo"></p>' +
@@ -594,14 +561,14 @@ const TOOLS = [
   ["filter", "〰️", "#8a4dff", T("Filter & Schwingkreis", "Filtres et circuit LC"), T("RC-Filter mit Bode-Diagramm, Kondensator laden, LC-Resonanz.", "Filtre RC avec diagramme de Bode, charge de condensateur, résonance LC."), filterTool],
   ["timer555", "⏲️", "#c4452c", T("555-Timer", "Timer 555"), T("Blinker (astabil) und Impuls (monostabil) berechnen, mit Pinbelegung.", "Calculer clignotant (astable) et impulsion (monostable), avec brochage."), timerTool],
   ["logik", "🔢", "#6a4fd8", T("Logik & Zahlensysteme", "Logique et numération"), T("Wahrheitstabelle für jeden Ausdruck, 74xx-Gatter, Binär/Hex/Dezimal.", "Table de vérité pour toute expression, portes 74xx, binaire/hexa/décimal."), logikTool],
-  ["pinout", "🍓", "#d6336c", T("Raspberry-Pi-Pinout", "Brochage Raspberry Pi"), T("Alle 40 Pins antippen: Funktion, Nummer, Hinweise. Mit Filter für I²C, SPI, UART, PWM.", "Touche les 40 broches : fonction, numéro, conseils. Filtre I²C, SPI, UART, PWM."), pinTool]
 ];
 window.Elektro = { start: function(){
   const grid = $("#toolgrid"), hostEl = $("#toolhost");
   grid.innerHTML = TOOLS.map(t => '<a class="tcard" style="--wc:' + t[2] + '" href="#' + t[0] + '" data-id="' + t[0] + '"><span class="ts" style="background:' + t[2] + '">' + t[1] + '</span><span><b>' + esc(t[3]) + '</b><small>' + esc(t[4]) + '</small></span></a>').join("");
   const crumb = document.querySelector("main .crumb"), crumb0 = crumb ? crumb.innerHTML : "", sub = document.querySelector("main > .sub"), titel0 = T("Elektronik-Rechner", "Calculateurs d’électronique");
   function zeigen(){
-    const id = (location.hash || "").slice(1), t = TOOLS.find(x => x[0] === id);
+    if ((location.hash || "") === "#pinout"){ location.replace("pinout.html"); return; }
+    const id = (location.hash || "").slice(1).split("/")[0], t = TOOLS.find(x => x[0] === id);
     if (!t){
       grid.style.display = ""; if (sub) sub.style.display = ""; hostEl.innerHTML = "";
       if (crumb) crumb.innerHTML = crumb0;

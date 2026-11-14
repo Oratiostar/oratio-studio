@@ -137,8 +137,9 @@ window.WZ_FR = {
 ,
 "Abbrechen":"Annuler","Übernehmen":"Appliquer","Schließen":"Fermer",
 "Elektronik-Rechner":"Calculateurs d’électronique",
-"Rechner und Nachschlagewerk für Bastler und Elektroniker: Farbcode, Ohm, LED, Teiler, Filter, 555, Logik und Pi-Pinout. Alles läuft in deinem Browser.":"Calculateurs et aide-mémoire pour bricoleurs et électroniciens : code couleur, Ohm, LED, diviseur, filtres, 555, logique et brochage du Pi. Tout se passe dans ton navigateur.",
+"Rechner und Nachschlagewerk für Bastler und Elektroniker: Farbcode, Ohm, LED, Teiler, Operationsverstärker, Filter, 555 und Logik. Alles läuft in deinem Browser.":"Calculateurs et aide-mémoire pour bricoleurs et électroniciens : code couleur, Ohm, LED, diviseur, ampli op, filtres, 555 et logique. Tout se passe dans ton navigateur.",
 "Dein persönlicher Schreibtisch im Browser: Widgets wählen, anordnen, Hintergrund ändern. Alles bleibt in ":"Ton bureau personnel dans le navigateur : choisis des widgets, organise-les, change le fond. Tout reste dans ",
 "deinem Browser":"ton navigateur",
-" gespeichert – nichts wird gesendet.":" – rien n’est envoyé."
+" gespeichert – nichts wird gesendet.":" – rien n’est envoyé.",
+"Alle Pins zum Antippen: Raspberry Pi, Pico, Arduino Uno und Nano, ESP32, D1 mini. Mit Funktion, Strom- und Spannungsgrenzen und einem Test-Beispiel. Alles läuft in deinem Browser.":"Toutes les broches à toucher : Raspberry Pi, Pico, Arduino Uno et Nano, ESP32, D1 mini. Avec fonction, limites de courant et de tension et un exemple de test. Tout se passe dans ton navigateur."
 };
