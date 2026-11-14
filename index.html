@@ -172,6 +172,14 @@ body.sl .kats{justify-content:center}
 body.sl .kat{background:linear-gradient(#ffd84a,#ffae1a);border:2px solid #2a1740;color:#3a2200;box-shadow:0 3px 0 #2a1740;font-weight:800}
 body.sl .kat.on{background:linear-gradient(#ff9a3c,#ff6a00);color:#fff}
 @media (hover:hover){body.sl .kat:hover{border-color:#2a1740;filter:brightness(1.06)}}
+.quick{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 18px;padding:12px 14px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+.quick b{font-size:14px;margin-right:4px}
+.quick a{padding:7px 13px;border-radius:99px;background:var(--soft,#eef4fb);border:1px solid var(--line);color:var(--fg);text-decoration:none;font-weight:700;font-size:14px}
+@media (hover:hover){.quick a:hover{border-color:#27a3df}}
+.bsec{margin:0 0 30px}.bsec[hidden]{display:none}
+.bh{display:flex;align-items:center;gap:10px;font-size:clamp(22px,4vw,30px);margin:8px 0 6px;padding-bottom:8px;border-bottom:3px solid #27a3df}
+body.sl .ssec h3 em{color:#f2ffe6;text-shadow:0 1px 2px rgba(0,40,0,.55)}
+.ssec{margin:18px 0 6px}.ssec h3{margin:0 0 6px;font-size:17px}.ssec h3 em{display:block;font-style:normal;font-weight:500;font-size:13.5px;color:var(--muted);margin-top:2px}
 .scgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px 16px;margin-top:10px}
 .sc{position:relative;display:block;height:150px;border-radius:16px;overflow:hidden;text-decoration:none;background:var(--sgl);border:3px solid #2a1740;box-shadow:0 5px 0 rgba(0,40,0,.35),0 12px 18px -8px rgba(0,0,0,.35);transition:transform .12s}
 @media (hover:hover){.sc:hover{transform:translateY(-4px)}}
@@ -749,19 +757,46 @@ function deutschseite(){
 }
 function startseite(){
   document.title = "Oratio Tech Studio"; brand("studio");
-  const chips = '<div class="kats" role="tablist">'+["alle"].concat(KATS).map(k =>
-    '<button class="kat'+(k===KATWAHL?" on":"")+'" data-k="'+k+'">'+esc(k==="alle" ? U("katAlle") : U("kat")[k])+'</button>').join("")+'</div>';
+  const fr = LANG === "fr", Tx = (d, f) => fr ? f : d;
   const dk = w => hexOf(w.farbe);
   const karte = (href, kat, col, sym, name, sub, n) => '<a class="sc'+(hell(col)?' lt':'')+'" data-k="'+kat+'" href="'+href+'" style="--wc:'+col+'"><div class="sh"><b'+(/\S{14,}/.test(name)?' style="font-size:12.5px;letter-spacing:0"':'')+'>'+esc(name)+'</b></div><div class="sbad">'+sym+'</div><p>'+esc(sub)+'</p><i class="sn">'+esc(n)+'</i></a>';
-  const elK = karte("elektro.html", "labor schaltungen bauteile grundlagen", "#00b3a4", '<span class="emo">🔌</span>', LANG==="fr"?"Labo d’électronique":"Elektronik-Labor", LANG==="fr"?"Code couleur, loi d’Ohm, LED, filtres, 555, logique, brochage Pi – avec calculs":"Farbcode, Ohm, LED, Filter, 555, Logik, Pi-Pinout – zum Rechnen", "9 "+(LANG==="fr"?"outils":"Werkzeuge"));
-  const pcK = karte("pc-check.html", "informatik geraete", "#ff5a3c", '<span class="emo">🖥️</span>', "PC-Check", LANG==="fr"?"Compatibilité en pourcentage : CPU, GPU, carte mère, RAM, alimentation, ventirad":"Passt alles zusammen? CPU, GPU, Mainboard, RAM, Netzteil, Kühler – in Prozent", LANG==="fr"?"Configurateur · matrice · base":"Konfigurator · Matrix · Datenbank");
-  const karten = elK + pcK + INDEX.welten.map(w => karte("#/w/"+w.id, weltKat(w.id).join(" "), dk(w), '<span class="emo">'+weltSym(w)+'</span>', T(w.name), T(w.untertitel), w.seiten.length+" "+U("seiten"))).join("");
-  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("studio"))+'</div><div class="ribwrap"><div class="ribbon">'+esc(U("fachW"))+'</div></div>'+chips+'<div class="scgrid">'+karten+'</div>';
+  const weltK = id => { const w = weltInfo(id); return w ? karte("#/w/"+w.id, "", dk(w), '<span class="emo">'+weltSym(w)+'</span>', T(w.name), T(w.untertitel), w.seiten.length+" "+U("seiten")) : ""; };
+  const EX = {
+    elab: () => karte("elektro.html", "", "#00b3a4", '<span class="emo">🔌</span>', Tx("Elektronik-Labor","Labo d’électronique"), Tx("Farbcode, Ohm, LED, Filter, 555, Logik, Pi-Pinout – zum Rechnen","Code couleur, loi d’Ohm, LED, filtres, 555, logique, brochage Pi – avec calculs"), "9 "+Tx("Werkzeuge","outils")),
+    iclab: () => karte("ic-lab.html", "", "#2fbf4a", '<span class="emo">🧩</span>', Tx("IC-Labor","Labo des CI"), Tx("IC nachschlagen und die Schaltung live mit Oszilloskop ausprobieren – auch mit mehreren ICs","Consulter un CI et essayer le circuit avec oscilloscope – aussi avec plusieurs CI"), "13 ICs · 6 "+Tx("Kombi-Projekte","projets")),
+    pc: () => karte("pc-check.html", "", "#ff5a3c", '<span class="emo">🖥️</span>', "PC-Check", Tx("Passt alles zusammen? CPU, GPU, Mainboard, RAM, Netzteil, Kühler – in Prozent","Compatibilité en pourcentage : CPU, GPU, carte mère, RAM, alimentation, ventirad"), Tx("Konfigurator · Matrix · Datenbank","Configurateur · matrice · base"))
+  };
+  const BER = [
+    { id: "elektro", ic: "⚡", n: Tx("Elektronik","Électronique"), sec: [
+      { n: Tx("Grundlagen","Bases"), t: Tx("Strom, Spannung, Schaltzeichen, Mathe","Courant, tension, symboles, maths"), w: ["grund","mathe","schalt","glossar","bt_wissen"] },
+      { n: Tx("Bauteile","Composants"), t: Tx("Passiv, Halbleiter, Sensoren, Kataloge","Passifs, semi-conducteurs, capteurs, catalogues"), w: ["passiv","halbleiter","sensoren","energie","bauteile","bt_katalog","bt_module"] },
+      { n: Tx("Schaltungen & ICs","Circuits & CI"), t: Tx("Digitaltechnik, Logik-ICs, Analog-ICs – und zum Ausprobieren das IC-Labor","Numérique, CI logiques, CI analogiques – et le labo des CI"), w: ["digital","bt_ic","bt_analog"], ex: ["iclab","elab"] },
+      { n: Tx("Messen & Fehlersuche","Mesure & dépannage"), t: Tx("Messgeräte, Werkstatt, Fehler finden","Instruments, atelier, trouver les pannes"), w: ["messen","labor","fehler"] } ] },
+    { id: "it", ic: "💻", n: Tx("Informatik & IT","Informatique & IT"), sec: [
+      { n: Tx("Zahlen, Codes & Begriffe","Nombres, codes & termes"), t: Tx("Binär, Hex, Zeichencodes, Glossar","Binaire, hexa, codes, glossaire"), w: ["zahlen","glossar"] },
+      { n: Tx("Computer & Mikrocontroller","Ordinateurs & MCU"), t: Tx("Pi, Speicher, Schnittstellen und PC-Zusammenstellung","Pi, mémoire, interfaces et configuration de PC"), w: ["mikro","speicher","schnittstellen"], ex: ["pc"] },
+      { n: Tx("Netzwerk, Linux & Programmieren","Réseau, Linux & programmation"), t: Tx("Funk, Terminal, Code","Radio, terminal, code"), w: ["netzwerk","linux","prog"] } ] },
+    { id: "geraete", ic: "📱", n: Tx("Geräte & Vergleiche","Appareils & comparatifs"), sec: [
+      { n: Tx("Boards, Konsolen, Handys, Kameras","Cartes, consoles, téléphones, caméras"), t: Tx("Datenbanken zum Vergleichen","Bases de données à comparer"), w: ["mcu","zubehoer","konsolen","handys","kameras"] } ] }
+  ];
+  const used = new Set(); BER.forEach(b => b.sec.forEach(s => s.w.forEach(x => used.add(x))));
+  const rest = (INDEX.welten || []).map(w => w.id).filter(id => !used.has(id));
+  if (rest.length) BER[2].sec.push({ n: Tx("Weitere","Autres"), t: "", w: rest });
+  const chips = '<div class="kats" role="tablist">'+['<button class="kat" data-k="alle">'+esc(U("katAlle"))+'</button>'].concat(BER.map(b => '<button class="kat" data-k="'+b.id+'">'+b.ic+' '+esc(b.n)+'</button>')).join("")+'</div>';
+  const quick = '<div class="quick"><b>'+esc(Tx("Ich will …","Je veux …"))+'</b>'+
+    '<a href="#/w/bauteile">🔎 '+esc(Tx("ein Bauteil nachschlagen","chercher un composant"))+'</a>'+
+    '<a href="ic-lab.html">🧩 '+esc(Tx("einen IC verstehen & ausprobieren","comprendre et tester un CI"))+'</a>'+
+    '<a href="elektro.html">🧮 '+esc(Tx("etwas ausrechnen","calculer"))+'</a>'+
+    '<a href="pc-check.html">🖥️ '+esc(Tx("einen PC prüfen","vérifier un PC"))+'</a>'+
+    '<a href="#/w/bt_ic">📟 '+esc(Tx("einen Logik-IC finden","trouver un CI logique"))+'</a></div>';
+  const secs = BER.map(b => '<section class="bsec" data-d="'+b.id+'"><h2 class="bh"><span>'+b.ic+'</span> '+esc(b.n)+'</h2>'+b.sec.map(s => '<div class="ssec"><h3>'+esc(s.n)+(s.t?'<em>'+esc(s.t)+'</em>':'')+'</h3><div class="scgrid">'+(s.ex||[]).map(k => EX[k]()).join("")+s.w.map(weltK).join("")+'</div></div>').join("")+'</section>').join("");
+  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("studio"))+'</div><div class="ribwrap"><div class="ribbon">'+esc(U("fachW"))+'</div></div>'+chips+quick+secs;
   const filtere = () => {
     document.querySelectorAll(".kat").forEach(b => b.classList.toggle("on", b.dataset.k === KATWAHL));
-    document.querySelectorAll(".scgrid .sc").forEach(a => { a.hidden = !(KATWAHL === "alle" || a.dataset.k.split(" ").includes(KATWAHL)); });
+    document.querySelectorAll(".bsec").forEach(a => { a.hidden = !(KATWAHL === "alle" || a.dataset.d === KATWAHL); });
   };
-  document.querySelectorAll(".kat").forEach(b => b.onclick = () => { KATWAHL = b.dataset.k; filtere(); });
+  document.querySelectorAll(".kat").forEach(b => b.onclick = () => { KATWAHL = b.dataset.k; try { localStorage.setItem("studioBereich", KATWAHL); } catch(e){} filtere(); });
+  try { const sv = localStorage.getItem("studioBereich"); if (sv && (sv === "alle" || BER.some(b => b.id === sv))) KATWAHL = sv; else KATWAHL = "alle"; } catch(e){ KATWAHL = "alle"; }
   filtere();
 }
 function pageHead(w, titel, kurz, sym, kopf){
