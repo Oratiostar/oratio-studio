@@ -544,7 +544,7 @@ function bTabelle(b, farbe){
 }
 function bSymbol(b){ return '<div class="card"><b>'+esc(b.key)+'</b> – '+md(b.text||"")+'</div>'; }
 const SPEZ = {gpio:["pinout.html","📌 Alle Boards als anklickbares Pinout öffnen"], gatter:["elektro.html#logik","🔢 Wahrheitstabelle im Rechner ausprobieren"], farbcode:["elektro.html#farbcode","🌈 Farbcode im Rechner ausprobieren"]};
-const RZ = "🧮 Im Rechner ausprobieren", LZ = "🧩 Als Schaltplan und Steckbrett ansehen";
+const RZ = "🧮 Im Rechner ausprobieren", LZ = "🧩 Als Schaltplan ansehen";
 const KREIS = {inv:["elektro.html#opamp/inv",RZ],noninv:["elektro.html#opamp/nin",RZ],folger:["elektro.html#opamp/fol",RZ],add:["elektro.html#opamp/sum",RZ],diff:["elektro.html#opamp/sub",RZ],integr:["elektro.html#opamp/int",RZ],diffz:["elektro.html#opamp/dif",RZ],komp:["elektro.html#opamp/cmp",RZ],schmitt_inv:["elektro.html#opamp/sch",RZ],schmitt_non:["elektro.html#opamp/sch",RZ],tia:["elektro.html#opamp/tia",RZ],sallen:["elektro.html#opamp/lp",RZ],rc_hp:["elektro.html#filter",RZ],rc_bp:["elektro.html#filter",RZ],rc_tp:["elektro.html#filter",RZ],teiler:["elektro.html#teiler",RZ],led_vor:["elektro.html#led",RZ],t555a:["ic-lab.html#p/ne555a",LZ],t555m:["ic-lab.html#p/ne555m",LZ],lm317:["ic-lab.html#p/lm317",LZ],entprell:["ic-lab.html#k/k_prell",LZ]};
 function bKnopf(b){ return '<p><a class="knopf" href="'+esc(b.href)+'">'+esc(T(b.text))+'</a></p>'; }
 function bPlatz(name){ return '<div class="platz">'+esc(U("nurStudio").replace("%s", name))+'</div>'; }
@@ -691,7 +691,7 @@ const KATS = ["grundlagen","bauteile","schaltungen","informatik","geraete","labo
 const WKAT = {
   grund:["grundlagen","schaltungen"], zahlen:["grundlagen","informatik"], bt:["bauteile"], schaltungen:["schaltungen","bauteile"], digital:["schaltungen","bauteile"], bt_module:["bauteile"],
   speicher:["informatik"], schnittstellen:["informatik","schaltungen"], linux:["informatik"],
-  messen:["labor"], labor:["labor"],
+  messen:["labor"],
   konsolen:["geraete"], handys:["geraete"], kameras:["geraete"], mcu:["geraete","schaltungen"]
 };
 const weltKat = id => WKAT[id] || ["elektronik"];
@@ -780,7 +780,7 @@ function startseite(){
     { id: "elektro", ic: "⚡", c: "#ff8a00", n: Tx("Elektronik","Électronique"), t: Tx("Lernen & Nachschlagen: von Ohm bis zum IC","Apprendre & consulter : de la loi d’Ohm au CI"), sec: [
       { n: "", w: ["grund","bt","digital","schaltungen"], ex: ["elab"] } ] },
     { id: "exp", ic: "📏", c: "#27a3df", n: Tx("Messen & Prüfen","Mesurer & tester"), t: Tx("Messgeräte, Messplatz, Fehlersuche","Appareils, banc de mesure, dépannage"), sec: [
-      { n: "", w: ["messen","labor"] } ] },
+      { n: "", w: ["messen"] } ] },
     { id: "pi", ic: "🔧", c: "#d63b8a", n: Tx("Pi & Mikrocontroller","Pi & microcontrôleurs"), t: Tx("Bauen: Boards, Sensoren, Busse","Construire : cartes, capteurs, bus"), sec: [
       { n: "", w: ["mcu","schnittstellen","bt_module"], ex: ["pin"] } ] },
     { id: "it", ic: "💻", c: "#7a4dff", n: Tx("Informatik & IT","Informatique & IT"), t: Tx("Zahlen, Speicher, Netzwerk, Linux, Code","Nombres, mémoire, réseau, Linux, code"), sec: [
@@ -836,7 +836,7 @@ async function seitenansicht(wid, sid){
   const wc = hexOf(w.farbe);
   const nav = w.seiten.map(p => '<a href="#/s/'+w.id+'/'+encodeURIComponent(p.id)+'"'+(p.id===sid?' class="act"':'')+'>'+esc(T(p.titel))+'</a>').join("");
   let h = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › <a href="#/studio">'+esc(U("studio"))+'</a> › <a href="#/w/'+w.id+'">'+esc(T(w.name))+'</a> › '+esc(T(s.titel))+'</div><div class="slw"><nav class="slnav" aria-label="'+esc(T(w.name))+'">'+nav+'</nav><section class="slmain">'+pageHead(w, s.titel, s.kurz, s.symbol);
-  const SCH = {"bt/analog_ne555":"ne555a","digital/flipflop":"hc74","digital/logik_74hc14":"hc14","digital/speicher_4060":"cd4060","digital/logik_7400":"hc00","digital/logik_7402":"hc00","digital/logik_7404":"hc00","digital/logik_7408":"hc00","digital/logik_7432":"hc00","digital/logik_7486":"hc00","digital/speicher_7474":"hc74","digital/speicher_4017":"cd4017","digital/speicher_74160":"hc160","digital/speicher_74595":"hc595","digital/decoder_74138":"hc138","digital/decoder_4511":"cd4511","bt/analog_lm358":"lm358","bt/analog_lm393":"lm393","bt/bauteile_lm317":"lm317"};
+  const SCH = {"bt/analog_ne555":"ne555a","digital/flipflop":"hc74","bt/logik_74hc14":"hc14","bt/speicher_4060":"cd4060","bt/logik_7400":"hc00","bt/logik_7402":"hc00","bt/logik_7404":"hc00","bt/logik_7408":"hc00","bt/logik_7432":"hc00","bt/logik_7486":"hc00","bt/speicher_7474":"hc74","bt/speicher_4017":"cd4017","bt/speicher_74160":"hc160","bt/speicher_74595":"hc595","bt/decoder_74138":"hc138","bt/decoder_4511":"cd4511","bt/analog_lm358":"lm358","bt/analog_lm393":"lm393","bt/bauteile_lm317":"lm317"};
   const SCHK = SCH[wid+"/"+sid] || null;
   if (SCHK) h += '<a class="schbtn" href="ic-lab.html#p/'+SCHK+'">🧩 <b>'+esc(LANG==="fr"?"Essayer le circuit":"Schaltung ausprobieren")+'</b><span>'+esc(LANG==="fr"?"avec oscilloscope, broche par broche":"mit Oszilloskop, Pin für Pin verdrahtet")+'</span></a>';
   if (s.tags && s.tags.length) h += '<div class="tags">'+s.tags.filter(t=>t.length>2&&!/[\/()]/.test(t)).slice(0,10).map(t=>'<span class="tag">'+esc(t)+'</span>').join("")+'</div>';
