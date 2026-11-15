@@ -17,7 +17,7 @@ function fmt(v, u, dig){
   return String(parseFloat((v / s[0]).toPrecision(dig || 3))).replace(".", fr ? "," : ".") + " " + s[1] + (u || "");
 }
 var C = { amber: "#ffb000", cyan: "#3de6ff", green: "#6dffb0", pink: "#ff3d9a", lime: "#b6ff3d", violet: "#b58cff", red: "#ff6b6b", white: "#e8fff3" };
-var LINK = { ne555: "bt_analog/analog_ne555", hc14: "bt_ic/logik_74hc14", cd4060: "bt_ic/speicher_4060", hc00: "bt_ic/logik_7400", hc74: "bt_ic/speicher_7474", cd4017: "bt_ic/speicher_4017", hc160: "bt_ic/speicher_74160", hc595: "bt_ic/speicher_74595", hc138: "bt_ic/decoder_74138", cd4511: "bt_ic/decoder_4511", lm358: "bt_analog/analog_lm358", lm393: "bt_analog/analog_lm393", lm317: "halbleiter/bauteile_lm317", cd4093: "bt_ic/logik_4093", cd4040: "bt_ic/speicher_4040", hc165: "bt_ic/speicher_74165", lm7805: "halbleiter/bauteile_lm7805", lm386: "bt_analog/analog_lm386", bc337: "halbleiter/bauteile_bc337", uln2003: "halbleiter/bauteile_uln2003", l293d: "halbleiter/bauteile_l293d", pc817: "halbleiter/bauteile_pc817" };
+var LINK = { ne555: "bt_analog/analog_ne555", hc14: "bt_ic/logik_74hc14", cd4060: "bt_ic/speicher_4060", hc00: "bt_ic/logik_7400", hc74: "bt_ic/speicher_7474", cd4017: "bt_ic/speicher_4017", hc160: "bt_ic/speicher_74160", hc595: "bt_ic/speicher_74595", hc138: "bt_ic/decoder_74138", cd4511: "bt_ic/decoder_4511", lm358: "bt_analog/analog_lm358", lm393: "bt_analog/analog_lm393", lm317: "halbleiter/bauteile_lm317", cd4093: "bt_ic/logik_4093", cd4040: "bt_ic/speicher_4040", hc165: "bt_ic/speicher_74165", lm7805: "halbleiter/bauteile_lm7805", lm386: "bt_analog/analog_lm386", bc337: "halbleiter/bauteile_bc337", uln2003: "halbleiter/bauteile_uln2003", l293d: "halbleiter/bauteile_l293d", pc817: "halbleiter/bauteile_pc817", lm324: "bt_analog/analog_lm324", cd4051: "bt_ic/decoder_4051", cd4066: "bt_ic/decoder_4066", hc193: "bt_ic/speicher_74193", cd4013: "bt_ic/speicher_4013", hc164: "bt_ic/speicher_74164", max232: "bt_ic/decoder_max232", mcp3008: "bt_ic/decoder_mcp3008", tl431: "halbleiter/bauteile_tl431", icl7660: "halbleiter/analog_icl7660", lm35: "bt_analog/analog_lm35", irlz44n: "halbleiter/bauteile_irlz44n", d1n4007: "halbleiter/bauteile_1n4007", zd: "halbleiter/bauteile_zener" };
 
 /* ---------- Zeit-Helfer (alles geschlossen berechnet) ---------- */
 function cnt(t, f, ph){ return t < ph ? 0 : Math.floor((t - ph) * f) + 1; }       // steigende Flanken bis t
@@ -471,6 +471,174 @@ PROJ.k_relais = { t: ["Lauflicht mit Last: 555 → CD4017 → ULN2003 → Lampen
   wire: [["NE555 wie im Blinker aufbauen, Pin 3 → CD4017 Pin 14 (CLK)", "NE555 comme le clignotant, broche 3 → 4017 broche 14"], ["CD4017: Pin 16 → +5 V, Pin 8 und 13 → GND; Q4 (Pin 10) → RESET (Pin 15)", "4017 : 16 → +5 V, 8 et 13 → GND ; Q4 (10) → RESET (15)"], ["Q0…Q3 (Pin 3, 2, 4, 7) → ULN2003 Eingänge Pin 1…4", "Q0…Q3 → entrées 1…4 de l’ULN2003"], ["ULN2003: Pin 8 → GND, Pin 9 → +12 V", "ULN2003 : 8 → GND, 9 → +12 V"], ["Lampen zwischen +12 V und den Ausgängen Pin 16…13", "Lampes entre +12 V et les sorties 16…13"]],
   notes: [["Logik (5 V) und Last (12 V) haben getrennte Versorgungen, aber eine gemeinsame Masse.", "Logique (5 V) et charge (12 V) : alimentations séparées, masse commune."]] };
 
+/* ---- Erweiterung 2: weitere ICs, Dioden, MOSFET und der Baukasten ---- */
+PROJ.lm324 = { t: ["Fensterkomparator (LM324)", "Comparateur à fenêtre (LM324)"], flow: ["Messspannung", "LM324 (2 von 4)", "Alarm-LED"],
+  d: ["Zwei der vier Verstärker im LM324 überwachen eine Spannung: Liegt sie unter der unteren oder über der oberen Grenze, leuchtet die LED. So meldet man zum Beispiel eine Akkuspannung außerhalb des erlaubten Bereichs.", "Deux des quatre amplis du LM324 surveillent une tension : hors de la fenêtre, la LED s’allume."],
+  params: [{ k: "Ul", l: ["Untere Grenze", "Seuil bas"], min: .5, max: 11, def: 4, u: "V" }, { k: "Uh", l: ["Obere Grenze", "Seuil haut"], min: .5, max: 11, def: 8, u: "V" }],
+  build: function(P){ var w = [], f = .5; function vin(t){ var x = (t * f) % 1; return 12 * (x < .5 ? 2 * x : 2 - 2 * x); } function al(t){ var v = vin(t); return v > P.Uh || v < P.Ul ? 1 : 0; }
+    if (P.Ul >= P.Uh) w.push(T("Die untere Grenze liegt über der oberen – es gibt kein Fenster mehr.", "Le seuil bas dépasse le seuil haut."));
+    return { span: 4, speed: 1, warn: w, ch: [{ n: "Messspannung", c: C.amber, lo: 0, hi: 12, v: vin }, { n: "Alarm", c: C.red, lo: 0, hi: 12, v: function(t){ return al(t) * 10; } }],
+      info: [[T("Fenster", "Fenêtre"), fmt(P.Ul, "V") + " … " + fmt(P.Uh, "V")], [T("Breite", "Largeur"), fmt(Math.max(0, P.Uh - P.Ul), "V")]],
+      live: function(ts){ return { leds: [al(ts)], names: ["Alarm"] }; } }; },
+  wire: [["Pin 4 → +12 V, Pin 11 → GND", "Broche 4 → +12 V, 11 → GND"], ["Messspannung an Pin 3 (IN1+) und Pin 6 (IN2−)", "Tension mesurée sur 3 et 6"], ["Obere Grenze an Pin 2 (IN1−), untere Grenze an Pin 5 (IN2+) – beide aus einem Spannungsteiler", "Seuil haut sur 2, seuil bas sur 5"], ["Pin 1 und Pin 7 je über eine Diode 1N4148 zusammenführen, 10 kΩ nach GND", "Broches 1 et 7 réunies par deux diodes 1N4148, 10 kΩ vers GND"], ["Von dort 1 kΩ → LED → GND", "Puis 1 kΩ → LED → GND"]],
+  notes: [["Ein Operationsverstärker als Komparator ist langsam. Für schnelle Signale nimmt man einen echten Komparator wie den LM339.", "Un ampli op en comparateur est lent ; pour des signaux rapides, prendre un LM339."]] };
+
+PROJ.cd4051 = { t: ["8 Sensoren an einem Eingang (CD4051)", "8 capteurs sur une entrée (CD4051)"], flow: ["8 Signale", "CD4051", "1 Ausgang"],
+  d: ["Der CD4051 ist ein Drehschalter aus Silizium: Die drei Adressleitungen A, B, C wählen, welcher der acht Kanäle mit dem Ausgang verbunden ist. Hier zählt die Adresse hoch – der Ausgang zeigt nacheinander alle Sensorspannungen.", "Le CD4051 est un commutateur rotatif : A, B, C choisissent lequel des huit canaux est relié à la sortie."],
+  params: [PF(2, .5, 500)],
+  build: function(P){ var f = P.f, ph = .25 / f; function a(t){ return cnt(t, f, ph) % 8; }
+    return { span: 9 / f, fmain: f, warn: [], ch: [{ n: "A", c: C.amber, lo: 0, hi: 5, v: function(t){ return (a(t) & 1) * 5; } }, { n: "B", c: C.cyan, lo: 0, hi: 5, v: function(t){ return ((a(t) >> 1) & 1) * 5; } }, { n: "C", c: C.pink, lo: 0, hi: 5, v: function(t){ return ((a(t) >> 2) & 1) * 5; } }, { n: "Ausgang COM", c: C.green, lo: 0, hi: 5, v: function(t){ return .4 + a(t) * .6; } }],
+      info: [[T("Kanäle", "Canaux"), "8"], [T("Zeit je Kanal", "Durée par canal"), fmt(1 / f, "s")], [T("Durchgangswiderstand", "Résistance passante"), "≈ 120 Ω (5 V)"]],
+      live: function(ts){ var s = a(ts), l = []; for (var i = 0; i < 8; i++) l.push(i === s ? 1 : 0); return { leds: l, names: l.map(function(x, i){ return "Y" + i; }) }; } }; },
+  wire: [["Pin 16 → +V, Pin 8 → GND, Pin 7 (VEE) → GND", "Broche 16 → +V, 8 et 7 → GND"], ["Pin 6 (INH) → GND, sonst sind alle Kanäle getrennt", "Broche 6 (INH) → GND"], ["Adresse: A = Pin 11, B = Pin 10, C = Pin 9", "Adresse : A = 11, B = 10, C = 9"], ["Sensoren an Y0…Y7 (Pin 13, 14, 15, 12, 1, 5, 2, 4)", "Capteurs sur Y0…Y7"], ["Pin 3 (COM) → analoger Eingang des Mikrocontrollers", "Broche 3 (COM) → entrée analogique"]],
+  notes: [["Der Schalter arbeitet in beide Richtungen – man kann auch ein Signal auf acht Ausgänge verteilen.", "Le commutateur est bidirectionnel."], ["Die Signale müssen zwischen GND und +V bleiben.", "Les signaux doivent rester entre GND et +V."]] };
+
+PROJ.cd4066 = { t: ["Signal elektronisch schalten (CD4066)", "Commuter un signal (CD4066)"], flow: ["Signal", "CD4066", "Ausgang"],
+  d: ["Vier Schalter ohne Mechanik: Ein HIGH am Steuereingang verbindet die beiden Anschlüsse, ein LOW trennt sie. Hier zerhackt das Steuersignal eine Sinusspannung.", "Quatre interrupteurs sans mécanique : un HIGH relie les deux bornes, un LOW les sépare."],
+  params: [{ k: "f", l: ["Signalfrequenz", "Fréquence du signal"], min: 20, max: 5000, def: 400, log: 1, u: "Hz" }, { k: "fc", l: ["Schaltfrequenz", "Fréquence de commutation"], min: 5, max: 1000, def: 50, log: 1, u: "Hz" }],
+  build: function(P){ function s(t){ return 2.5 + sineAt(t, P.f, 2); } function c(t){ return sq(t, P.fc, 0, .5); }
+    return { span: 2.2 / P.fc, speed: 1, warn: [], ch: [{ n: "Signal", c: C.amber, lo: 0, hi: 5, v: s }, { n: "Steuerung", c: C.pink, lo: 0, hi: 5, v: function(t){ return c(t) * 5; } }, { n: "Ausgang", c: C.green, lo: 0, hi: 5, v: function(t){ return c(t) ? s(t) : 0; } }],
+      info: [[T("Durchgangswiderstand", "Résistance passante"), "≈ 100…300 Ω"], [T("Schalter im IC", "Interrupteurs"), "4"]] }; },
+  wire: [["Pin 14 → +V, Pin 7 → GND", "Broche 14 → +V, 7 → GND"], ["Schalter 1: Signal an Pin 1, Ausgang an Pin 2, Steuerung an Pin 13", "Interrupteur 1 : signal sur 1, sortie sur 2, commande sur 13"], ["100 kΩ vom Ausgang nach GND, damit er getrennt nicht in der Luft hängt", "100 kΩ de la sortie vers GND"], ["Unbenutzte Steuereingänge (Pin 5, 6, 12) → GND", "Commandes libres (5, 6, 12) → GND"]],
+  notes: [["Das Signal muss zwischen GND und +V liegen. Für Audio legt man es deshalb auf halbe Versorgung.", "Le signal doit rester entre GND et +V."]] };
+
+PROJ.hc193 = { t: ["Vorwärts-/Rückwärtszähler (74HC193)", "Compteur-décompteur (74HC193)"], flow: ["Takt", "74HC193", "4 × LED"],
+  d: ["Dieser Zähler hat zwei Takteingänge: Einer zählt hoch, der andere herunter. So zählt man zum Beispiel Personen, die einen Raum betreten und verlassen.", "Ce compteur a deux entrées d’horloge : l’une compte, l’autre décompte."],
+  opts: [{ k: "dir", l: ["Richtung", "Sens"], o: [["u", "vorwärts (Takt an CPU)"], ["d", "rückwärts (Takt an CPD)"]], def: "u" }], params: [PF(3, .5, 2000)],
+  build: function(P){ var f = P.f, ph = .25 / f, up = P.dir === "u"; function v(t){ var c = cnt(t, f, ph) % 16; return up ? c : (16 - c) % 16; }
+    var chs = [{ n: up ? "CPU (hoch)" : "CPD (runter)", c: C.amber, lo: 0, hi: 5, v: function(t){ return sq(t, f, ph, .5) * 5; } }];
+    for (var i = 0; i < 3; i++) (function(i){ chs.push({ n: "Q" + i, c: [C.green, C.cyan, C.pink][i], lo: 0, hi: 5, v: function(t){ return ((v(t) >> i) & 1) * 5; } }); })(i);
+    return { span: 9 / f, fmain: f, warn: [], ch: chs, info: [[T("Zählbereich", "Plage"), "0…15"], [T("Takt", "Horloge"), fmt(f, "Hz")]],
+      live: function(ts){ var x = v(ts), a = []; for (var i = 0; i < 4; i++) a.push((x >> i) & 1); return { leds: a, names: ["Q0", "Q1", "Q2", "Q3"] }; } }; },
+  wire: [["Pin 16 → +V, Pin 8 → GND", "Broche 16 → +V, 8 → GND"], ["Pin 14 (MR) → GND, Pin 11 (/PL) → +V", "Broche 14 → GND, 11 → +V"], ["Vorwärts: Takt an Pin 5 (CPU), Pin 4 (CPD) → +V", "Comptage : horloge sur 5, broche 4 → +V"], ["Rückwärts: Takt an Pin 4 (CPD), Pin 5 (CPU) → +V", "Décomptage : horloge sur 4, broche 5 → +V"], ["Q0…Q3 (Pin 3, 2, 6, 7) → 330 Ω → LED → GND", "Q0…Q3 → 330 Ω → LED → GND"]],
+  notes: [["Der jeweils unbenutzte Takteingang muss auf HIGH liegen, sonst zählt der Baustein nicht.", "L’entrée d’horloge inutilisée doit rester à HIGH."]] };
+
+PROJ.cd4013 = { t: ["Taster als Ein/Aus-Schalter (CD4013)", "Bouton en interrupteur marche/arrêt (CD4013)"], flow: ["Taster", "CD4013", "LED"],
+  d: ["Ein Tastendruck schaltet ein, der nächste wieder aus. Das Flip-Flop merkt sich den Zustand, weil sein invertierter Ausgang auf den Dateneingang zurückgeführt ist.", "Un appui allume, le suivant éteint : la bascule mémorise l’état."],
+  params: [{ k: "f", l: ["Tastendrücke pro Sekunde", "Appuis par seconde"], min: .2, max: 5, def: 1, log: 1, u: "Hz" }],
+  build: function(P){ var f = P.f, ph = .3 / f;
+    return { span: 4.4 / f, speed: 1, warn: [], ch: [{ n: "Taster (CLK)", c: C.amber, lo: 0, hi: 5, v: function(t){ return sq(t, f, ph, .25) * 5; } }, { n: "Q (Pin 1)", c: C.green, lo: 0, hi: 5, v: function(t){ return (cnt(t, f, ph) % 2) * 5; } }],
+      info: [[T("Zustände", "États"), "2"], [T("Ein Wechsel alle", "Un changement toutes les"), fmt(1 / f, "s")]],
+      live: function(ts){ return { leds: [cnt(ts, f, ph) % 2], names: ["LED"] }; } }; },
+  wire: [["Pin 14 → +V, Pin 7 → GND", "Broche 14 → +V, 7 → GND"], ["/Q (Pin 2) → D (Pin 5)", "/Q (2) → D (5)"], ["Taster von +V an CLK (Pin 3); 10 kΩ und 100 nF von Pin 3 nach GND (entprellt)", "Bouton de +V vers CLK (3) ; 10 kΩ et 100 nF de 3 vers GND"], ["SET (Pin 6) und RESET (Pin 4) → GND", "SET (6) et RESET (4) → GND"], ["Q (Pin 1) → 330 Ω → LED → GND", "Q (1) → 330 Ω → LED → GND"]],
+  notes: [["Ohne Entprellen schaltet ein einziger Druck oft mehrmals um.", "Sans anti-rebond, un seul appui bascule souvent plusieurs fois."]] };
+
+PROJ.hc164 = { t: ["Lauflicht mit Schieberegister (74HC164)", "Chenillard à registre à décalage (74HC164)"], flow: ["Daten + Takt", "74HC164", "8 × LED"],
+  d: ["Mit jedem Takt wandert der Wert am Dateneingang einen Ausgang weiter. Schiebt man eine einzelne 1 hinein, läuft ein Lichtpunkt durch alle acht LEDs.", "À chaque coup d’horloge la donnée avance d’une sortie : un seul 1 fait courir un point lumineux."],
+  params: [PF(4, .5, 2000)],
+  build: function(P){ var f = P.f, ph = .25 / f; function pos(t){ return (cnt(t, f, ph) + 7) % 8; } function dat(t){ return Math.floor(t * f) % 8 === 0 ? 1 : 0; }
+    return { span: 9.2 / f, fmain: f, warn: [], ch: [{ n: "CLK", c: C.amber, lo: 0, hi: 5, v: function(t){ return sq(t, f, ph, .5) * 5; } }, { n: "Daten A", c: C.pink, lo: 0, hi: 5, v: function(t){ return dat(t) * 5; } }, { n: "QA", c: C.green, lo: 0, hi: 5, v: function(t){ return cnt(t, f, ph) > 0 && pos(t) === 0 ? 5 : 0; } }, { n: "QB", c: C.cyan, lo: 0, hi: 5, v: function(t){ return cnt(t, f, ph) > 1 && pos(t) === 1 ? 5 : 0; } }],
+      info: [[T("Takt", "Horloge"), fmt(f, "Hz")], [T("Ein Durchlauf", "Un passage"), fmt(8 / f, "s")]],
+      live: function(ts){ var p = pos(ts), a = []; for (var i = 0; i < 8; i++) a.push(cnt(ts, f, ph) > i && i === p ? 1 : 0); return { leds: a, names: ["QA", "QB", "QC", "QD", "QE", "QF", "QG", "QH"] }; } }; },
+  wire: [["Pin 14 → +V, Pin 7 → GND, Pin 9 (/CLR) → +V", "Broche 14 → +V, 7 → GND, 9 → +V"], ["Daten an Pin 1 (A), Pin 2 (B) → +V", "Données sur 1 (A), broche 2 (B) → +V"], ["Takt an Pin 8", "Horloge sur 8"], ["QA…QH (Pin 3, 4, 5, 6, 10, 11, 12, 13) → 330 Ω → LED → GND", "QA…QH → 330 Ω → LED → GND"]],
+  notes: [["Im Unterschied zum 74HC595 hat der 74HC164 keinen Ausgangsspeicher: Man sieht das Schieben an den LEDs.", "Contrairement au 74HC595, pas de mémoire de sortie : on voit le décalage."]] };
+
+PROJ.max232 = { t: ["Serielle Pegel wandeln (MAX232)", "Convertir les niveaux série (MAX232)"], flow: ["Mikrocontroller (0 / 5 V)", "MAX232", "RS-232 (±9 V)"],
+  d: ["Ein Mikrocontroller sendet mit 0 und 5 V, die alte RS-232-Schnittstelle erwartet etwa ±9 V – und umgekehrt gepolt. Der MAX232 erzeugt diese Spannungen selbst mit vier Kondensatoren. Wähle ein Byte und sieh beide Signale.", "Le microcontrôleur émet en 0/5 V, la RS-232 attend environ ±9 V, inversés ; le MAX232 fabrique ces tensions avec quatre condensateurs."],
+  params: [{ k: "b", l: ["Gesendetes Byte (0…255)", "Octet envoyé (0…255)"], min: 0, max: 255, def: 85, int: 1, u: "" }, { k: "bd", l: ["Baudrate", "Débit"], min: 300, max: 115200, def: 9600, log: 1, u: "Bd" }],
+  build: function(P){ var b = Math.round(P.b), tb = 1 / P.bd; function ttl(t){ var s = Math.floor(t / tb) - 2; if (s < 0 || s > 9) return 1; if (s === 0) return 0; if (s === 9) return 1; return (b >> (s - 1)) & 1; }
+    return { span: 14 * tb, speed: 1, warn: [], ch: [{ n: "TTL (Pin 11)", c: C.amber, lo: -12, hi: 12, v: function(t){ return ttl(t) * 5; } }, { n: "RS-232 (Pin 14)", c: C.green, lo: -12, hi: 12, v: function(t){ return ttl(t) ? -9 : 9; } }],
+      info: [[T("Byte", "Octet"), "0x" + ("0" + b.toString(16).toUpperCase()).slice(-2) + (b >= 32 && b < 127 ? "  „" + String.fromCharCode(b) + "“" : "")], [T("Dauer eines Bits", "Durée d’un bit"), fmt(tb, "s")], [T("Dauer des ganzen Zeichens (10 Bit)", "Durée du caractère (10 bits)"), fmt(10 * tb, "s")]] }; },
+  wire: [["Pin 16 → +5 V, Pin 15 → GND", "Broche 16 → +5 V, 15 → GND"], ["1 µF zwischen Pin 1 und 3, 1 µF zwischen Pin 4 und 5", "1 µF entre 1 et 3, 1 µF entre 4 et 5"], ["1 µF von Pin 2 nach GND, 1 µF von Pin 6 nach GND (Plus an GND)", "1 µF de 2 vers GND, 1 µF de 6 vers GND"], ["TX des Mikrocontrollers → Pin 11, Pin 14 → RS-232-Leitung", "TX du microcontrôleur → 11, broche 14 → ligne RS-232"], ["Empfang: RS-232-Leitung → Pin 13, Pin 12 → RX des Mikrocontrollers", "Réception : ligne → 13, broche 12 → RX"]],
+  notes: [["Zuerst kommt das Startbit, dann die acht Datenbits mit dem niedrigsten zuerst, zuletzt das Stoppbit.", "D’abord le bit de start, puis huit bits de données (poids faible en premier), enfin le stop."], ["Für 3,3-V-Systeme gibt es den MAX3232.", "Pour le 3,3 V : MAX3232."]] };
+
+PROJ.mcp3008 = { t: ["Analog messen über SPI (MCP3008)", "Mesure analogique par SPI (MCP3008)"], flow: ["Sensor-Spannung", "MCP3008", "SPI zum Raspberry Pi"],
+  d: ["Der Raspberry Pi hat keinen analogen Eingang. Der MCP3008 misst die Spannung und schickt das Ergebnis als 10-Bit-Zahl über SPI. Dreh an der Spannung und sieh, welche Bits auf der Datenleitung erscheinen.", "Le Raspberry Pi n’a pas d’entrée analogique : le MCP3008 mesure et envoie un nombre de 10 bits par SPI."],
+  params: [{ k: "U", l: ["Spannung am Kanal 0", "Tension sur le canal 0"], min: 0, max: 3.3, def: 1.65, u: "V" }],
+  build: function(P){ var code = Math.min(1023, Math.round(P.U / 3.3 * 1023)), f = 1000; function s(t){ return Math.floor(t * f) - 1; } function fr1(t){ return (t * f) % 1; }
+    return { span: 19.5 / f, speed: 1, warn: [], ch: [{ n: "CS", c: C.pink, lo: 0, hi: 3.3, v: function(t){ var x = s(t); return x >= 0 && x < 17 ? 0 : 3.3; } }, { n: "CLK", c: C.amber, lo: 0, hi: 3.3, v: function(t){ var x = s(t); return x >= 0 && x < 17 && fr1(t) > .5 ? 3.3 : 0; } }, { n: "DOUT (MISO)", c: C.green, lo: 0, hi: 3.3, v: function(t){ var x = s(t); return x >= 7 && x < 17 ? ((code >> (16 - x)) & 1) * 3.3 : 0; } }],
+      info: [[T("Messwert", "Valeur"), code + " / 1023"], [T("Binär", "Binaire"), ("0000000000" + code.toString(2)).slice(-10)], [T("Auflösung", "Résolution"), "3,2 mV"], [T("Zurückgerechnet", "Reconverti"), fmt(code * 3.3 / 1023, "V")]] }; },
+  wire: [["Pin 16 (VDD) und Pin 15 (VREF) → 3,3 V", "Broches 16 et 15 → 3,3 V"], ["Pin 14 (AGND) und Pin 9 (DGND) → GND", "Broches 14 et 9 → GND"], ["Pin 13 (CLK) → SCLK, Pin 12 (DOUT) → MISO, Pin 11 (DIN) → MOSI, Pin 10 (CS) → CE0", "13 → SCLK, 12 → MISO, 11 → MOSI, 10 → CE0"], ["Sensor an Pin 1 (CH0); bis zu acht Sensoren an Pin 1…8", "Capteur sur la broche 1 (CH0)"]],
+  notes: [["Die Messspannung darf nie über VREF liegen. Für 5-V-Sensoren einen Spannungsteiler davor setzen.", "La tension mesurée ne doit jamais dépasser VREF."]] };
+
+PROJ.tl431 = { t: ["Einstellbare Referenz (TL431)", "Référence réglable (TL431)"], flow: ["Eingang", "Vorwiderstand + TL431", "stabile Spannung"],
+  d: ["Der TL431 verhält sich wie eine einstellbare Z-Diode: Er leitet so viel Strom ab, dass an seinem Referenz-Pin genau 2,5 V liegen. Mit zwei Widerständen stellst du jede Spannung darüber ein.", "Le TL431 se comporte comme une diode Zener réglable : il maintient 2,5 V sur sa broche de référence."],
+  params: [PRx("R1", "R1 (oben)", 1e3, 100e3, 10e3), PRx("R2", "R2 (unten)", 1e3, 100e3, 10e3), { k: "Vin", l: ["Eingangsspannung", "Tension d’entrée"], min: 4, max: 30, def: 12, u: "V" }],
+  build: function(P){ var vs = 2.495 * (1 + P.R1 / P.R2), w = [], vo = Math.min(vs, P.Vin - .5);
+    if (P.Vin < vs + 1) w.push(T("Der Eingang ist zu niedrig: Die Spannung kann nicht mehr geregelt werden.", "Entrée trop basse : la régulation n’est plus possible."));
+    if (vs > 36) w.push(T("Über 36 V verträgt der TL431 nicht.", "Le TL431 ne supporte pas plus de 36 V."));
+    return { span: .04, warn: w, ch: [{ n: "Eingang", c: C.amber, lo: 0, hi: 32, v: function(t){ return P.Vin + sineAt(t, 100, .8); } }, { n: "Ausgang", c: C.green, lo: 0, hi: 32, v: function(t){ return Math.min(vs, P.Vin + sineAt(t, 100, .8) - .5); } }],
+      info: [[T("Ausgang = 2,495 V · (1 + R1/R2)", "Sortie = 2,495 V · (1 + R1/R2)"), fmt(vo, "V")], [T("Strom durch den Vorwiderstand (1 kΩ)", "Courant dans la résistance série (1 kΩ)"), fmt(Math.max(0, (P.Vin - vo) / 1000), "A")]],
+      live: function(){ return { leds: [P.Vin >= vs + 1 ? 1 : 0], names: [T("geregelt", "régulé")] }; } }; },
+  wire: [["Eingang → Vorwiderstand 1 kΩ → Kathode = Ausgang", "Entrée → 1 kΩ → cathode = sortie"], ["R1 von der Kathode zum Referenz-Pin", "R1 de la cathode à la broche de référence"], ["R2 vom Referenz-Pin nach GND", "R2 de la référence vers GND"], ["Anode → GND", "Anode → GND"]],
+  notes: [["Durch den TL431 muss mindestens 1 mA fließen, sonst regelt er nicht.", "Au moins 1 mA doit traverser le TL431."], ["Verbindest du Referenz und Kathode direkt, erhältst du genau 2,5 V.", "Référence reliée à la cathode : exactement 2,5 V."]] };
+
+PROJ.icl7660 = { t: ["Negative Spannung erzeugen (ICL7660)", "Créer une tension négative (ICL7660)"], flow: ["+5 V", "ICL7660 + 2 Kondensatoren", "−5 V"],
+  d: ["Aus plus wird minus: Der Baustein lädt einen Kondensator auf und klemmt ihn dann umgekehrt an den Ausgang. So bekommt ein Operationsverstärker seine negative Versorgung, ganz ohne Spule.", "Le composant charge un condensateur puis le retourne sur la sortie : une tension négative sans bobine."],
+  params: [{ k: "V", l: ["Eingangsspannung", "Tension d’entrée"], min: 3, max: 10, def: 5, u: "V" }, { k: "I", l: ["Laststrom", "Courant de charge"], min: .0005, max: .04, def: .005, log: 1, u: "A" }],
+  build: function(P){ var vo = -(P.V - P.I * 55), rp = P.I / (2 * 10e3 * 10e-6), w = [];
+    if (P.I > .02) w.push(T("Viel Last: Die Ausgangsspannung bricht deutlich ein. Der ICL7660 ist nur für wenige Milliampere gedacht.", "Charge élevée : la tension de sortie chute nettement."));
+    return { span: .0006, warn: w, ch: [{ n: "Eingang", c: C.amber, lo: -12, hi: 12, v: function(){ return P.V; } }, { n: "Ausgang", c: C.green, lo: -12, hi: 12, v: function(t){ return vo + rp * (((t * 10e3) % 1) - .5) * 20; } }],
+      info: [[T("Ausgangsspannung", "Tension de sortie"), fmt(vo, "V")], [T("Innenwiderstand", "Résistance interne"), "≈ 55 Ω"], [T("Taktfrequenz", "Fréquence interne"), "≈ 10 kHz"]] }; },
+  wire: [["Pin 8 → +V, Pin 3 → GND", "Broche 8 → +V, 3 → GND"], ["10 µF zwischen Pin 2 (Plus) und Pin 4", "10 µF entre 2 (+) et 4"], ["10 µF von GND (Plus) nach Pin 5 – dort liegt die negative Spannung", "10 µF de GND (+) vers 5 : tension négative"], ["Unter 3,5 V Eingang: Pin 6 (LV) → GND", "Sous 3,5 V : broche 6 → GND"]],
+  notes: [["Beim Ausgangskondensator liegt der Pluspol an Masse – der Ausgang ist ja negativer als Masse.", "Le + du condensateur de sortie va à la masse."]] };
+
+PROJ.lm35 = { t: ["Temperatur messen (LM35)", "Mesurer la température (LM35)"], flow: ["LM35", "10 mV pro °C", "Analog-Eingang"],
+  d: ["Der LM35 gibt genau 10 mV pro Grad Celsius aus: 25 °C sind 250 mV. Ein Analog-Eingang macht daraus eine Zahl. Je kleiner die Referenzspannung, desto feiner die Auflösung.", "Le LM35 délivre 10 mV par degré : 25 °C donnent 250 mV."],
+  opts: [{ k: "ref", l: ["Referenz des Analog-Eingangs", "Référence de l’entrée analogique"], o: [["5", "5 V (Arduino)"], ["3.3", "3,3 V"], ["1.1", "1,1 V (interne Referenz)"]], def: "5" }],
+  params: [{ k: "T", l: ["Temperatur", "Température"], min: 0, max: 100, def: 25, u: "°C" }],
+  build: function(P){ var u = P.T * .01, ref = +P.ref, code = Math.min(1023, Math.round(u / ref * 1023)), w = [];
+    if (u > ref) w.push(T("Die Spannung liegt über der Referenz – der Messwert bleibt bei 1023 stehen.", "La tension dépasse la référence."));
+    return { span: 2, speed: 1, warn: w, ch: [{ n: "Ausgang", c: C.green, lo: 0, hi: 1.1, v: function(t){ return u + .002 * Math.sin(t * 40); } }],
+      info: [[T("Spannung", "Tension"), fmt(u, "V")], [T("Wert am 10-Bit-Eingang", "Valeur sur 10 bits"), String(code)], [T("Auflösung", "Résolution"), (ref / 1023 / .01).toFixed(2).replace(".", fr ? "," : ".") + " °C"]] }; },
+  wire: [["Flache Seite zu dir: links +V (4…30 V), Mitte Ausgang, rechts GND", "Face plate vers toi : gauche +V, milieu sortie, droite GND"], ["Ausgang → Analog-Eingang", "Sortie → entrée analogique"], ["100 nF zwischen +V und GND dicht am Sensor", "100 nF entre +V et GND près du capteur"]],
+  notes: [["Der TMP36 arbeitet ähnlich, hat aber 500 mV Versatz und misst deshalb auch unter 0 °C.", "Le TMP36 est similaire avec 500 mV de décalage : il mesure aussi sous 0 °C."]] };
+
+PROJ.irlz44n = { t: ["Große Last dimmen mit MOSFET (IRLZ44N)", "Varier une forte charge par MOSFET (IRLZ44N)"], flow: ["PWM-Pin", "IRLZ44N", "LED-Streifen / Motor"],
+  d: ["Ein Logic-Level-MOSFET schaltet viele Ampere und braucht dafür fast keinen Steuerstrom. Entscheidend ist die Gate-Spannung: Mit 3,3 V leitet er schlechter und wird wärmer als mit 5 V.", "Un MOSFET logic-level commute de nombreux ampères presque sans courant de commande ; la tension de grille est décisive."],
+  opts: [{ k: "vg", l: ["Gate-Spannung", "Tension de grille"], o: [["3.3", "3,3 V"], ["5", "5 V"], ["10", "10 V"]], def: "5" }],
+  params: [{ k: "d", l: ["Tastgrad (PWM)", "Rapport cyclique (PWM)"], min: 0, max: 100, def: 50, int: 1, u: "%" }, { k: "I", l: ["Laststrom", "Courant de charge"], min: .1, max: 20, def: 3, log: 1, u: "A" }],
+  build: function(P){ var r = P.vg === "3.3" ? .06 : P.vg === "5" ? .028 : .022, d = P.d / 100, Pv = P.I * P.I * r * d, Tj = 25 + Pv * 62, w = [], f = 500;
+    if (P.vg === "3.3") w.push(T("Mit 3,3 V am Gate ist der IRLZ44N nicht voll durchgesteuert – für wenige Ampere reicht es, für mehr besser 5 V.", "Avec 3,3 V sur la grille le IRLZ44N n’est pas pleinement passant."));
+    if (Tj > 150) w.push(T("Ohne Kühlkörper zu heiß (über 150 °C).", "Trop chaud sans dissipateur (plus de 150 °C)."));
+    return { span: 3.2 / f, warn: w, ch: [{ n: "Gate (PWM)", c: C.amber, lo: 0, hi: 12, v: function(t){ return sq(t, f, .0002, d) * +P.vg; } }, { n: "Drain", c: C.green, lo: 0, hi: 12, v: function(t){ return sq(t, f, .0002, d) ? P.I * r : 12; } }],
+      info: [[T("Widerstand im eingeschalteten Zustand", "Résistance à l’état passant"), fmt(r, "Ω")], [T("Verlustleistung", "Puissance dissipée"), fmt(Pv, "W")], [T("Temperatur ohne Kühlkörper", "Température sans dissipateur"), Math.round(Tj) + " °C"], [T("Mittlere Leistung an der Last (12 V)", "Puissance moyenne sur la charge (12 V)"), fmt(12 * P.I * d, "W")]],
+      live: function(){ return { leds: [d > 0 ? 1 : 0], names: [T("Last", "Charge")] }; } }; },
+  wire: [["Source → GND (gemeinsame Masse mit dem Mikrocontroller)", "Source → GND (masse commune)"], ["PWM-Pin → 220 Ω → Gate", "Broche PWM → 220 Ω → grille"], ["10 kΩ vom Gate nach GND (hält den MOSFET beim Einschalten aus)", "10 kΩ de la grille vers GND"], ["Last zwischen +12 V und Drain", "Charge entre +12 V et drain"], ["Bei Motoren: Freilaufdiode parallel zur Last", "Moteurs : diode de roue libre en parallèle"]],
+  notes: [["Ein IRF540 ohne „L“ braucht 10 V am Gate und taugt nicht für 3,3- oder 5-V-Pins.", "Un IRF540 sans « L » exige 10 V sur la grille."]] };
+
+PROJ.gleich = { t: ["Brückengleichrichter mit Siebkondensator", "Pont redresseur avec condensateur de filtrage"], flow: ["Trafo (Wechselspannung)", "4 Dioden", "Elko", "Gleichspannung"],
+  d: ["Vier Dioden klappen die negative Halbwelle nach oben. Der Kondensator füllt die Lücken dazwischen. Je größer der Strom und je kleiner der Kondensator, desto stärker brummt die Gleichspannung.", "Quatre diodes replient l’alternance négative ; le condensateur comble les creux."],
+  params: [{ k: "U", l: ["Trafo-Spannung (effektiv)", "Tension du transfo (efficace)"], min: 6, max: 24, def: 12, u: "V" }, { k: "C", l: ["Siebkondensator", "Condensateur de filtrage"], min: 100e-6, max: 10000e-6, def: 1000e-6, log: 1, u: "F", e12: 1 }, { k: "I", l: ["Laststrom", "Courant de charge"], min: .01, max: 3, def: .5, log: 1, u: "A" }],
+  build: function(P){ var pk = P.U * Math.SQRT2, top = pk - 1.4, dU = Math.min(top, P.I / (100 * P.C));
+    function ac(t){ return sineAt(t, 50, pk); } function dc(t){ var x = ((t * 100 - .5) % 1 + 1) % 1; return Math.max(Math.abs(ac(t)) - 1.4, top - dU * x); }
+    return { span: .045, warn: dU > top * .3 ? [T("Starker Brumm: Der Kondensator ist für diesen Strom zu klein.", "Forte ondulation : condensateur trop petit pour ce courant.")] : [], ch: [{ n: "Wechselspannung", c: C.amber, lo: -36, hi: 36, v: ac }, { n: "Gleichspannung", c: C.green, lo: -36, hi: 36, v: dc }],
+      info: [[T("Spitzenspannung am Elko", "Tension crête"), fmt(top, "V")], [T("Brummspannung", "Ondulation"), fmt(dU, "V")], [T("Mittlere Gleichspannung", "Tension continue moyenne"), fmt(top - dU / 2, "V")], [T("Verlust in den Dioden", "Pertes dans les diodes"), fmt(1.4 * P.I, "W")]] }; },
+  wire: [["Die beiden Trafo-Anschlüsse an die zwei Wechselspannungs-Punkte der Brücke", "Les deux fils du transfo sur les deux points alternatifs du pont"], ["Plus: dort, wo zwei Kathoden (Ringe) zusammenkommen", "Plus : là où deux cathodes se rejoignent"], ["Minus: dort, wo zwei Anoden zusammenkommen", "Moins : là où deux anodes se rejoignent"], ["Elko zwischen Plus und Minus – Polung beachten", "Condensateur entre + et − : attention à la polarité"]],
+  notes: [["Faustregel: etwa 1000 µF je Ampere Laststrom.", "Règle : environ 1000 µF par ampère."], ["Die Leerlaufspannung liegt beim 1,41-Fachen der Trafo-Spannung – der Elko muss das aushalten.", "À vide la tension atteint 1,41 fois celle du transfo."]] };
+
+PROJ.zdiode = { t: ["Spannung stabilisieren mit Z-Diode", "Stabiliser une tension par diode Zener"], flow: ["Eingang", "Vorwiderstand", "Z-Diode", "Last"],
+  d: ["Die Z-Diode leitet ab ihrer Z-Spannung und hält sie fest. Der Vorwiderstand nimmt den Rest auf. Zieht die Last zu viel Strom, bleibt für die Diode nichts übrig und die Spannung bricht ein.", "La diode Zener conduit dès sa tension et la maintient ; si la charge tire trop, la tension s’effondre."],
+  opts: [{ k: "uz", l: ["Z-Spannung", "Tension Zener"], o: [["3.3", "3,3 V"], ["5.1", "5,1 V"], ["9.1", "9,1 V"], ["12", "12 V"]], def: "5.1" }],
+  params: [{ k: "Vin", l: ["Eingangsspannung", "Tension d’entrée"], min: 5, max: 24, def: 12, u: "V" }, PRx("R", "Vorwiderstand", 47, 10e3, 470), { k: "IL", l: ["Laststrom", "Courant de charge"], min: .0005, max: .05, def: .005, log: 1, u: "A" }],
+  build: function(P){ var uz = +P.uz, w = []; function vo(vi){ return Math.max(0, Math.min(uz, vi - P.R * P.IL)); }
+    var iz = (P.Vin - uz) / P.R - P.IL, pz = Math.max(0, iz) * uz;
+    if (iz < .001) w.push(T("Für die Z-Diode bleibt kein Strom übrig: Die Spannung bricht ein. Vorwiderstand kleiner wählen.", "Plus de courant pour la Zener : la tension s’effondre."));
+    if (pz > .5) w.push(T("Über 0,5 W an der Z-Diode – zu viel für eine kleine Bauform.", "Plus de 0,5 W dans la Zener."));
+    return { span: .04, warn: w, ch: [{ n: "Eingang", c: C.amber, lo: 0, hi: 26, v: function(t){ return P.Vin + sineAt(t, 100, 1); } }, { n: "Ausgang", c: C.green, lo: 0, hi: 26, v: function(t){ return vo(P.Vin + sineAt(t, 100, 1)); } }],
+      info: [[T("Ausgangsspannung", "Tension de sortie"), fmt(vo(P.Vin), "V")], [T("Strom durch die Z-Diode", "Courant dans la Zener"), fmt(Math.max(0, iz), "A")], [T("Verlust in der Z-Diode", "Pertes dans la Zener"), fmt(pz, "W")], [T("Verlust im Vorwiderstand", "Pertes dans la résistance"), fmt(Math.pow(P.Vin - vo(P.Vin), 2) / P.R, "W")]] }; },
+  wire: [["Eingang → Vorwiderstand → Ausgang", "Entrée → résistance → sortie"], ["Z-Diode vom Ausgang nach GND, Kathode (Ring) am Ausgang", "Zener de la sortie vers GND, cathode côté sortie"], ["Last parallel zur Z-Diode", "Charge en parallèle sur la Zener"]],
+  notes: [["Die Z-Diode wird in Sperrrichtung betrieben – deshalb zeigt der Ring nach Plus.", "La Zener travaille en inverse."], ["Für mehr als ein paar Milliampere ist ein Spannungsregler die bessere Wahl.", "Au-delà de quelques milliampères, préférer un régulateur."]] };
+
+PROJ.k_bau = { t: ["Baukasten: ICs selbst verbinden", "Atelier : relier des CI soi-même"], flow: ["Taktquelle", "Zähler / Teiler", "Anzeige / Last"], ics: ["ne555", "hc74", "cd4040", "cd4017", "hc160", "cd4511", "uln2003"],
+  d: ["Stell dir deine eigene Kette zusammen: Wähle, woher der Takt kommt, welcher Baustein ihn verarbeitet und was am Ende angesteuert wird. Schaltplan, Anschlüsse und Oszilloskop passen sich sofort an.", "Compose ta propre chaîne : source d’horloge, composant de traitement et sortie. Schéma et oscilloscope s’adaptent."],
+  opts: [{ k: "src", l: ["1. Taktquelle", "1. Source d’horloge"], o: [["g", "Taktgenerator"], ["555", "NE555"]], def: "555" },
+    { k: "mid", l: ["2. Baustein", "2. Composant"], o: [["none", "keiner (direkt)"], ["hc74", "74HC74 – halbiert"], ["4040", "CD4040 – zählt binär"], ["4017", "CD4017 – einer von zehn"], ["160", "74HC160 – zählt 0…9"]], def: "4017" },
+    { k: "out", l: ["3. Ausgabe", "3. Sortie"], o: [["led", "LEDs"], ["uln", "ULN2003 + Lampen"], ["seg", "CD4511 + 7-Segment"]], def: "led" }],
+  params: [PF(2, .5, 200)],
+  build: function(P){ var f = P.f, ph = .25 / f, m = P.mid, o = P.out, w = [], seg = o === "seg" && m === "160";
+    if (o === "seg" && m !== "160") w.push(T("Die 7-Segment-Anzeige braucht einen Zähler von 0 bis 9. Wähle den 74HC160 – solange zeige ich LEDs.", "L’afficheur 7 segments exige un compteur 0…9 : choisis le 74HC160."));
+    function bits(t){ var c = cnt(t, f, ph), a = [], i; if (m === "none") return [sq(t, f, ph, .5)]; if (m === "hc74") return [c % 2];
+      if (m === "4017"){ for (i = 0; i < 10; i++) a.push(c % 10 === i ? 1 : 0); return a; } var v = m === "160" ? c % 10 : c % 16; for (i = 0; i < 4; i++) a.push((v >> i) & 1); return a; }
+    var nm = m === "4017" ? "Q" : m === "none" ? "Takt" : "Q", n0 = bits(0).length, chs = [{ n: P.src === "555" ? "555 OUT = Takt" : "Takt", c: C.amber, lo: 0, hi: 5, v: function(t){ return sq(t, f, ph, .5) * 5; } }];
+    if (m !== "none") for (var i = 0; i < Math.min(3, n0); i++) (function(i){ chs.push({ n: nm + (m === "4017" ? i : i + (m === "hc74" ? "" : 0)), c: [C.green, C.cyan, C.pink][i], lo: 0, hi: 5, v: function(t){ return bits(t)[i] * 5; } }); })(i);
+    var lim = o === "uln" ? Math.min(4, n0) : n0;
+    return { span: (m === "none" ? 3.2 : m === "hc74" ? 4.4 : 11) / f, fmain: f, warn: w, ch: chs,
+      info: [[T("Takt", "Horloge"), fmt(f, "Hz")], [T("Bausteine in der Kette", "Composants dans la chaîne"), String((P.src === "555" ? 1 : 0) + (m === "none" ? 0 : 1) + (o === "led" || (o === "seg" && !seg) ? 0 : 1))]],
+      live: function(ts){ var b = bits(ts); if (seg) return { leds: [], seg: cnt(ts, f, ph) % 10 }; b = b.slice(0, lim); return { leds: b, names: b.map(function(x, i){ return (o === "uln" ? T("Lampe ", "Lampe ") : "LED ") + (i + 1); }) }; } }; },
+  wire: [["Alle ICs an dieselbe Versorgung (5 V) und dieselbe Masse", "Tous les CI sur la même alimentation (5 V) et la même masse"], ["Der Ausgang der Taktquelle geht an den Takteingang des Bausteins", "La sortie de la source va sur l’entrée d’horloge du composant"], ["Die Ausgänge des Bausteins gehen an LEDs, an den ULN2003 oder an den CD4511", "Les sorties vont vers des LED, l’ULN2003 ou le CD4511"], ["Die genaue Verdrahtung Pin für Pin steht im Reiter „Anschlüsse“", "Le câblage broche par broche se trouve dans l’onglet « Connexions »"]],
+  notes: [["Am ULN2003 hängen die Lampen an 12 V, die Logik bleibt bei 5 V – nur die Masse ist gemeinsam.", "Avec l’ULN2003 les lampes sont en 12 V, la logique en 5 V ; seule la masse est commune."]] };
+
 /* ---------- Bausteine der individuellen Projekte ---------- */
 var CUST = {};
 CUST.gates = function(box){
@@ -615,10 +783,57 @@ NL.k_motor = nmk({ U1: "ne555", U2: "l293d", R1: ["R", 1e3], Ra: ["R", "Poti-Hä
   { VCC: ["U1.8", "U1.4", "R1.1", "U2.16", "U2.2"], GND: ["U1.1", "C1.2", "C2.2", "U2.4", "U2.5", "U2.12", "U2.13", "U2.7"], ENTLADEN: ["R1.2", "U1.7", "D1.1", "D2.2"], LADEN: ["D1.2", "Ra.1"], ZURUECK: ["D2.1", "Rb.1"], KONDENSATOR: ["Ra.2", "Rb.2", "U1.6", "U1.2", "C1.1"], CTRL: ["U1.5", "C2.1"], PWM: ["U1.3", "U2.1"], VMOTOR: ["G1.1", "U2.8"], M1: ["U2.3", "LP1.1"], M2: ["U2.6", "LP1.2"] });
 NL.k_relais = nmk({ U1: "ne555", U2: "cd4017", U3: "uln2003", R1: ["R", "$R1"], R2: ["R", "$R2"], C1: ["C", "$C"], C2: ["C", 10e-9], G1: ["G", "+12 V"], LP1: ["LAMP", "Lampe 1"], LP2: ["LAMP", "Lampe 2"], LP3: ["LAMP", "Lampe 3"], LP4: ["LAMP", "Lampe 4"] },
   { VCC: ["U1.8", "U1.4", "R1.1", "U2.16"], GND: ["U1.1", "C1.2", "C2.2", "U2.8", "U2.13", "U3.8"], ENTLADEN: ["R1.2", "U1.7", "R2.1"], KONDENSATOR: ["R2.2", "U1.6", "U1.2", "C1.1"], CTRL: ["U1.5", "C2.1"], TAKT: ["U1.3", "U2.14"], Q0: ["U2.3", "U3.1"], Q1: ["U2.2", "U3.2"], Q2: ["U2.4", "U3.3"], Q3: ["U2.7", "U3.4"], RESET: ["U2.10", "U2.15"], LAST12V: ["G1.1", "U3.9", "LP1.1", "LP2.1", "LP3.1", "LP4.1"], L1: ["U3.16", "LP1.2"], L2: ["U3.15", "LP2.2"], L3: ["U3.14", "LP3.2"], L4: ["U3.13", "LP4.2"] });
+/* --- Netzlisten der Erweiterung 2 --- */
+PARTIC.tl431p = { id: "tl431p", name: "TL431", pkg: "TO-92", pins: ["REF:i", "A:g", "K:o"], sip: 1 };
+PARTIC.lm35p = { id: "lm35p", name: "LM35", pkg: "TO-92", pins: ["VS:v", "VOUT:o", "GND:g"], sip: 1 };
+PARTIC.irlz44p = { id: "irlz44p", name: "IRLZ44N", pkg: "TO-220", pins: ["G:i", "D:o", "S:g"], sip: 1 };
+NL.lm324 = nmk({ U1: "lm324", G1: ["G", "Messspannung"], G2: ["G", "obere Grenze"], G3: ["G", "untere Grenze"], D1: ["D", "1N4148"], D2: ["D", "1N4148"], R1: ["R", 10e3], R2: ["R", 1e3], D3: ["LED", "#ff4d4d"] },
+  { VCC: ["U1.4"], GND: ["U1.11", "R1.2", "D3.2"], MESS: ["G1.1", "U1.3", "U1.6"], OBEN: ["G2.1", "U1.2"], UNTEN: ["G3.1", "U1.5"], ZUHOCH: ["U1.1", "D1.1"], ZUTIEF: ["U1.7", "D2.1"], ALARM: ["D1.2", "D2.2", "R1.1", "R2.1"], LED: ["R2.2", "D3.1"] });
+NL.cd4051 = nmk({ U1: "cd4051", G1: ["G", "A"], G2: ["G", "B"], G3: ["G", "C"], G4: ["G", "Sensor 0"], P1: ["G", "zum ADC"] },
+  { VCC: ["U1.16"], GND: ["U1.8", "U1.7", "U1.6"], A: ["G1.1", "U1.11"], B: ["G2.1", "U1.10"], C: ["G3.1", "U1.9"], Y0: ["G4.1", "U1.13"], COM: ["U1.3", "P1.1"] });
+NL.cd4066 = nmk({ U1: "cd4066", G1: ["G", "Signal"], G2: ["G", "Steuerung"], R1: ["R", 100e3], P1: ["G", "Ausgang"] },
+  { VCC: ["U1.14"], GND: ["U1.7", "R1.2", "U1.5", "U1.6", "U1.12"], SIGNAL: ["G1.1", "U1.1"], STEUER: ["G2.1", "U1.13"], AUS: ["U1.2", "R1.1", "P1.1"] });
+(function(){ var n = nmk({ U1: "hc193", G1: ["G", "Takt"] }, { VCC: ["U1.16", "U1.11", "U1.4"], GND: ["U1.8", "U1.14"], TAKT: ["G1.1", "U1.5"] }); ledsOn(n, ["U1.3", "U1.2", "U1.6", "U1.7"], 330, "#6dffb0", "", 0); NL.hc193 = n; })();
+NL.cd4013 = nmk({ U1: "cd4013", SW1: ["SW", "Taster"], R1: ["R", 10e3], C1: ["C", 100e-9], R2: ["R", 330], D1: ["LED", "#6dffb0"] },
+  { VCC: ["U1.14", "SW1.1"], GND: ["U1.7", "U1.4", "U1.6", "R1.2", "C1.2", "D1.2", "U1.8", "U1.9", "U1.10", "U1.11"], TAKT: ["SW1.2", "R1.1", "C1.1", "U1.3"], RUECK: ["U1.2", "U1.5"], Q: ["U1.1", "R2.1"], LED: ["R2.2", "D1.1"] });
+(function(){ var n = nmk({ U1: "hc164", G1: ["G", "Daten"], G2: ["G", "Takt"] }, { VCC: ["U1.14", "U1.9", "U1.2"], GND: ["U1.7"], DATEN: ["G1.1", "U1.1"], TAKT: ["G2.1", "U1.8"] }); ledsOn(n, ["U1.3", "U1.4", "U1.5", "U1.6", "U1.10", "U1.11", "U1.12", "U1.13"], 330, "#ffb000", "", 0); NL.hc164 = n; })();
+NL.max232 = nmk({ U1: "max232", C1: ["C", 1e-6, "pol"], C2: ["C", 1e-6, "pol"], C3: ["C", 1e-6, "pol"], C4: ["C", 1e-6, "pol"], G1: ["G", "TX (µC)"], P1: ["G", "RS-232"] },
+  { VCC: ["U1.16"], GND: ["U1.15", "C3.2", "C4.1"], CP1: ["U1.1", "C1.1"], CM1: ["U1.3", "C1.2"], CP2: ["U1.4", "C2.1"], CM2: ["U1.5", "C2.2"], VPLUS: ["U1.2", "C3.1"], VMINUS: ["U1.6", "C4.2"], TTL: ["G1.1", "U1.11"], RS232: ["U1.14", "P1.1"] });
+NL.mcp3008 = nmk({ U1: "mcp3008", G1: ["G", "Sensor"], G2: ["G", "CS"], G3: ["G", "CLK"], G4: ["G", "MOSI"], P1: ["G", "MISO"] },
+  { VCC: ["U1.16", "U1.15"], GND: ["U1.9", "U1.14"], CH0: ["G1.1", "U1.1"], CS: ["G2.1", "U1.10"], MOSI: ["G4.1", "U1.11"], MISO: ["U1.12", "P1.1"], CLK: ["G3.1", "U1.13"] });
+NL.tl431 = nmk({ G1: ["G", "Eingang"], Rv: ["R", 1e3], U1: "tl431p", R1: ["R", "$R1"], R2: ["R", "$R2"], P1: ["G", "Ausgang"] },
+  { EIN: ["G1.1", "Rv.1"], AUS: ["Rv.2", "U1.K", "R1.1", "P1.1"], REF: ["R1.2", "R2.1", "U1.REF"], GND: ["U1.A", "R2.2"] });
+NL.icl7660 = nmk({ U1: "icl7660", C1: ["C", 10e-6, "pol"], C2: ["C", 10e-6, "pol"], P1: ["G", "−V"] },
+  { VCC: ["U1.8"], GND: ["U1.3", "C2.1"], CAPP: ["U1.2", "C1.1"], CAPM: ["U1.4", "C1.2"], NEG: ["U1.5", "C2.2", "P1.1"] });
+NL.lm35 = nmk({ U1: "lm35p", C1: ["C", 100e-9], P1: ["G", "zum ADC"] }, { VCC: ["U1.VS", "C1.1"], GND: ["U1.GND", "C1.2"], AUS: ["U1.VOUT", "P1.1"] });
+NL.irlz44n = nmk({ G1: ["G", "PWM"], R1: ["R", 220], R2: ["R", 10e3], Q1: "irlz44p", LP1: ["LAMP", "Last"] },
+  { VCC: ["LP1.1"], GND: ["Q1.S", "R2.2"], EIN: ["G1.1", "R1.1"], GATE: ["R1.2", "R2.1", "Q1.G"], DRAIN: ["LP1.2", "Q1.D"] });
+NL.gleich = nmk({ G1: ["G", "Trafo ~"], G2: ["G", "Trafo ~"], D1: ["D", "1N4007"], D2: ["D", "1N4007"], D3: ["D", "1N4007"], D4: ["D", "1N4007"], C1: ["C", "$C", "pol"], P1: ["G", "+"] },
+  { AC1: ["G1.1", "D1.1", "D3.2"], AC2: ["G2.1", "D2.1", "D4.2"], PLUS: ["D1.2", "D2.2", "C1.1", "P1.1"], GND: ["D3.1", "D4.1", "C1.2"] });
+NL.zdiode = nmk({ G1: ["G", "Eingang"], R1: ["R", "$R"], D1: ["D", "Z-Diode"], P1: ["G", "Ausgang"] },
+  { EIN: ["G1.1", "R1.1"], AUS: ["R1.2", "D1.2", "P1.1"], GND: ["D1.1"] });
+NL.k_bau = function(P){ var parts = {}, nets = { VCC: [], GND: [] }, clk, outs, m = P.mid, o = P.out;
+  if (P.src === "555"){ parts.U1 = "ne555"; parts.R1 = ["R", 1e3]; parts.R2 = ["R", "R2 (Tempo)"]; parts.C1 = ["C", "C"]; parts.C2 = ["C", 10e-9];
+    nets.VCC.push("U1.8", "U1.4", "R1.1"); nets.GND.push("U1.1", "C1.2", "C2.2"); nets.ENTLADEN = ["R1.2", "U1.7", "R2.1"]; nets.KONDENSATOR = ["R2.2", "U1.6", "U1.2", "C1.1"]; nets.CTRL = ["U1.5", "C2.1"]; clk = "U1.3"; }
+  else { parts.G1 = ["G", "Takt"]; clk = "G1.1"; }
+  if (m === "hc74"){ parts.U2 = "hc74"; nets.VCC.push("U2.14", "U2.4", "U2.1", "U2.10", "U2.13"); nets.GND.push("U2.7"); nets.RUECK = ["U2.6", "U2.2"]; nets.TAKT = [clk, "U2.3"]; outs = ["U2.5"]; }
+  else if (m === "4040"){ parts.U2 = "cd4040"; nets.VCC.push("U2.16"); nets.GND.push("U2.8", "U2.11"); nets.TAKT = [clk, "U2.10"]; outs = ["U2.9", "U2.7", "U2.6", "U2.5"]; }
+  else if (m === "4017"){ parts.U2 = "cd4017"; nets.VCC.push("U2.16"); nets.GND.push("U2.8", "U2.13", "U2.15"); nets.TAKT = [clk, "U2.14"]; outs = ["U2.3", "U2.2", "U2.4", "U2.7", "U2.10", "U2.1", "U2.5", "U2.6", "U2.9", "U2.11"]; }
+  else if (m === "160"){ parts.U2 = "hc160"; nets.VCC.push("U2.16", "U2.1", "U2.7", "U2.9", "U2.10"); nets.GND.push("U2.8", "U2.3", "U2.4", "U2.5", "U2.6"); nets.TAKT = [clk, "U2.2"]; outs = ["U2.14", "U2.13", "U2.12", "U2.11"]; }
+  else outs = [clk];
+  var n = { parts: parts, nets: nets };
+  if (o === "uln"){ parts.U3 = "uln2003"; parts.G9 = ["G", "+12 V"]; nets.GND.push("U3.8"); nets.LAST12V = ["G9.1", "U3.9"];
+    outs.slice(0, 4).forEach(function(p, i){ parts["LP" + (i + 1)] = ["LAMP", "Lampe " + (i + 1)]; nets["S" + (i + 1)] = [p, "U3." + (i + 1)]; nets["L" + (i + 1)] = ["U3." + (16 - i), "LP" + (i + 1) + ".2"]; nets.LAST12V.push("LP" + (i + 1) + ".1"); }); }
+  else if (o === "seg" && m === "160"){ parts.U3 = "cd4511"; parts.S1 = "seg7"; nets.VCC.push("U3.16", "U3.3", "U3.4"); nets.GND.push("U3.8", "U3.5", "S1.3", "S1.8");
+    nets.A = [outs[0], "U3.7"]; nets.B = [outs[1], "U3.1"]; nets.C = [outs[2], "U3.2"]; nets.D = [outs[3], "U3.6"];
+    [[13, 7], [12, 6], [11, 4], [10, 2], [9, 1], [15, 9], [14, 10]].forEach(function(x, i){ var r = "R" + (i + 3); parts[r] = ["R", 330]; nets["seg" + "abcdefg".charAt(i)] = ["U3." + x[0], r + ".1"]; nets["S" + "abcdefg".charAt(i)] = [r + ".2", "S1." + x[1]]; }); }
+  else ledsOn(n, outs, 330, "#6dffb0", "L", 0);
+  if (!nets.VCC.length) delete nets.VCC;
+  return n; };
 /* --- Netz-Auswertung --- */
 function icDef(spec){ return PARTIC[spec] || icById(spec); }
 function netAnalyse(pid, P){
-  var nl = NL[pid]; if (!nl) return null;
+  var nl = NL[pid]; if (!nl) return null; if (typeof nl === "function") nl = nl(P);
   var parts = {}, order = Object.keys(nl.parts);
   order.forEach(function(id){ var s = nl.parts[id], p = { id: id };
     if (typeof s === "string"){ p.kind = "ic"; p.def = icDef(s); p.n = p.def.pins.length; p.names = p.def.pins.map(function(x){ return x.split(":")[0]; }); }
@@ -729,10 +944,24 @@ var ICS = [
   { id: "bc337", name: "BC337", pkg: "TO-92", cat: "drive", k: ["NPN-Transistor als Schalter bis 800 mA", "Transistor NPN en commutation jusqu’à 800 mA"], pins: ["C:o", "B:i", "E:g"], facts: [["Grenzwerte", "Limites", "45 V, 800 mA, 625 mW"], ["Stromverstärkung", "Gain en courant", "100…600, als Schalter mit 10…20 rechnen"], ["Ähnlich", "Similaires", "BC547 (100 mA), 2N2222 (600 mA)"]], proj: ["npn"] },
   { id: "uln2003", name: "ULN2003A", pkg: "DIP-16", cat: "drive", k: ["7 × Darlington-Treiber mit Freilaufdioden", "7 drivers Darlington avec diodes"], pins: ["1B:i", "2B:i", "3B:i", "4B:i", "5B:i", "6B:i", "7B:i", "GND:g", "COM:v", "7C:o", "6C:o", "5C:o", "4C:o", "3C:o", "2C:o", "1C:o"], facts: [["Last", "Charge", "bis 50 V, 500 mA je Kanal"], ["Eingang", "Entrée", "direkt an 3,3-V- oder 5-V-Logik"], ["Typische Jobs", "Usages", "Relais, Lampen, Schrittmotor 28BYJ-48"]], proj: ["uln2003"] },
   { id: "l293d", name: "L293D", pkg: "DIP-16", cat: "drive", k: ["Doppelte H-Brücke für zwei Motoren", "Double pont en H pour deux moteurs"], pins: ["EN1,2:i", "1A:i", "1Y:o", "GND:g", "GND:g", "2Y:o", "2A:i", "VCC2:v", "EN3,4:i", "3A:i", "3Y:o", "GND:g", "GND:g", "4Y:o", "4A:i", "VCC1:v"], facts: [["Motor-Versorgung", "Alimentation moteur", "4,5…36 V an Pin 8"], ["Strom", "Courant", "600 mA je Kanal, Spitze 1,2 A"], ["Verlust", "Pertes", "etwa 2,6 V bleiben im IC"]], proj: ["l293d"] },
-  { id: "pc817", name: "PC817", pkg: "DIP-4", cat: "drive", k: ["Optokoppler: trennt zwei Stromkreise", "Optocoupleur : sépare deux circuits"], pins: ["Anode:i", "Kathode:g", "Emitter:g", "Kollektor:o"], facts: [["Isolation", "Isolation", "5000 V zwischen Ein- und Ausgang"], ["LED", "LED", "ca. 1,2 V, 5…20 mA"], ["CTR", "CTR", "50…600 % (Ausgangsstrom / LED-Strom)"]], proj: ["pc817"] }
+  { id: "pc817", name: "PC817", pkg: "DIP-4", cat: "drive", k: ["Optokoppler: trennt zwei Stromkreise", "Optocoupleur : sépare deux circuits"], pins: ["Anode:i", "Kathode:g", "Emitter:g", "Kollektor:o"], facts: [["Isolation", "Isolation", "5000 V zwischen Ein- und Ausgang"], ["LED", "LED", "ca. 1,2 V, 5…20 mA"], ["CTR", "CTR", "50…600 % (Ausgangsstrom / LED-Strom)"]], proj: ["pc817"] },
+  { id: "lm324", name: "LM324", pkg: "DIP-14", cat: "analog", k: ["4 × Operationsverstärker für einfache Versorgung", "4 amplis op à alimentation simple"], pins: ["OUT1:o", "IN1−:i", "IN1+:i", "V+:v", "IN2+:i", "IN2−:i", "OUT2:o", "OUT3:o", "IN3−:i", "IN3+:i", "GND:g", "IN4+:i", "IN4−:i", "OUT4:o"], facts: [["Versorgung", "Alimentation", "3…32 V"], ["Verwandt", "Parent", "LM358 = dieselben Verstärker, nur zwei davon"], ["Ausgang", "Sortie", "bis nahe GND, nach oben +V − 1,5 V"]], proj: ["lm324"] },
+  { id: "cd4051", name: "CD4051", pkg: "DIP-16", cat: "logic", k: ["Analog-Umschalter 1 aus 8", "Multiplexeur analogique 1 parmi 8"], pins: ["Y4:i", "Y6:i", "COM:o", "Y7:i", "Y5:i", "INH:i", "VEE:g", "VSS:g", "C:i", "B:i", "A:i", "Y3:i", "Y0:i", "Y1:i", "Y2:i", "VDD:v"], facts: [["Versorgung", "Alimentation", "3…15 V"], ["Richtung", "Sens", "arbeitet in beide Richtungen"], ["Verwandt", "Parents", "CD4052 (2 × 1 aus 4), CD4053 (3 × Umschalter)"]], proj: ["cd4051"] },
+  { id: "cd4066", name: "CD4066", pkg: "DIP-14", cat: "logic", k: ["4 × elektronischer Schalter", "4 interrupteurs électroniques"], pins: ["1A:i", "1B:o", "2B:o", "2A:i", "2C:i", "3C:i", "VSS:g", "3A:i", "3B:o", "4B:o", "4A:i", "4C:i", "1C:i", "VDD:v"], facts: [["Versorgung", "Alimentation", "3…15 V"], ["Widerstand", "Résistance", "eingeschaltet etwa 100…300 Ω"], ["Typische Jobs", "Usages", "Audio umschalten, Abtasten, Verstärkung umschalten"]], proj: ["cd4066"] },
+  { id: "hc193", name: "74HC193", pkg: "DIP-16", cat: "count", k: ["4-Bit-Zähler vorwärts und rückwärts", "Compteur-décompteur 4 bits"], pins: ["P1:i", "Q1:o", "Q0:o", "CPD:i", "CPU:i", "Q2:o", "Q3:o", "GND:g", "P3:i", "P2:i", "/PL:i", "/TCU:o", "/TCD:o", "MR:i", "P0:i", "VCC:v"], facts: [["Versorgung", "Alimentation", "2…6 V"], ["Zählbereich", "Plage", "0…15, ladbar über P0…P3"], ["Kaskadieren", "Cascade", "/TCU und /TCD an die Takte der nächsten Stufe"]], proj: ["hc193"] },
+  { id: "cd4013", name: "CD4013", pkg: "DIP-14", cat: "count", k: ["2 × D-Flip-Flop (CMOS)", "2 bascules D (CMOS)"], pins: ["Q1:o", "/Q1:o", "CLK1:i", "RESET1:i", "D1:i", "SET1:i", "VSS:g", "SET2:i", "D2:i", "RESET2:i", "CLK2:i", "/Q2:o", "Q2:o", "VDD:v"], facts: [["Versorgung", "Alimentation", "3…15 V"], ["Set/Reset", "Set/Reset", "aktiv HIGH (beim 74HC74 aktiv LOW)"], ["Typische Jobs", "Usages", "Taster-Umschalter, Teiler, 1-Bit-Speicher"]], proj: ["cd4013"] },
+  { id: "hc164", name: "74HC164", pkg: "DIP-14", cat: "count", k: ["8-Bit-Schieberegister: seriell rein, parallel raus", "Registre 8 bits : entrée série, sorties parallèles"], pins: ["A:i", "B:i", "QA:o", "QB:o", "QC:o", "QD:o", "GND:g", "CLK:i", "/CLR:i", "QE:o", "QF:o", "QG:o", "QH:o", "VCC:v"], facts: [["Versorgung", "Alimentation", "2…6 V"], ["Eingänge", "Entrées", "A und B sind UND-verknüpft"], ["Unterschied", "Différence", "kein Ausgangsspeicher wie beim 74HC595"]], proj: ["hc164"] },
+  { id: "max232", name: "MAX232", pkg: "DIP-16", cat: "logic", k: ["Pegelwandler TTL ↔ RS-232", "Convertisseur TTL ↔ RS-232"], pins: ["C1+:i", "V+:o", "C1−:i", "C2+:i", "C2−:i", "V−:o", "T2OUT:o", "R2IN:i", "R2OUT:o", "T2IN:i", "T1IN:i", "R1OUT:o", "R1IN:i", "T1OUT:o", "GND:g", "VCC:v"], facts: [["Versorgung", "Alimentation", "5 V"], ["Kanäle", "Canaux", "2 Sender, 2 Empfänger"], ["Pegel", "Niveaux", "etwa ±9 V aus 5 V, über Ladungspumpe"]], proj: ["max232"] },
+  { id: "mcp3008", name: "MCP3008", pkg: "DIP-16", cat: "analog", k: ["8-Kanal-AD-Wandler mit 10 Bit, SPI", "CAN 8 canaux 10 bits, SPI"], pins: ["CH0:i", "CH1:i", "CH2:i", "CH3:i", "CH4:i", "CH5:i", "CH6:i", "CH7:i", "DGND:g", "CS:i", "DIN:i", "DOUT:o", "CLK:i", "AGND:g", "VREF:v", "VDD:v"], facts: [["Versorgung", "Alimentation", "2,7…5,5 V"], ["Auflösung", "Résolution", "1024 Stufen"], ["Tempo", "Vitesse", "bis 200 000 Messungen pro Sekunde (5 V)"]], proj: ["mcp3008"] },
+  { id: "tl431", name: "TL431", pkg: "TO-92", cat: "analog", k: ["Einstellbare Referenz 2,5…36 V", "Référence réglable 2,5…36 V"], pins: ["REF:i", "A:g", "K:o"], facts: [["Referenz", "Référence", "2,495 V"], ["Strom", "Courant", "1…100 mA"], ["Typische Jobs", "Usages", "Referenz, Regelung in Schaltnetzteilen, Spannungswächter"]], proj: ["tl431"] },
+  { id: "icl7660", name: "ICL7660", pkg: "DIP-8", cat: "analog", k: ["Spannungsinverter: aus +5 V wird −5 V", "Inverseur de tension : +5 V devient −5 V"], pins: ["NC:i", "CAP+:i", "GND:g", "CAP−:i", "VOUT:o", "LV:i", "OSC:i", "V+:v"], facts: [["Eingang", "Entrée", "1,5…10 V"], ["Strom", "Courant", "etwa 20 mA"], ["Prinzip", "Principe", "Ladungspumpe – ohne Spule"]], proj: ["icl7660"] },
+  { id: "lm35", name: "LM35", pkg: "TO-92", cat: "analog", k: ["Temperatursensor, 10 mV pro °C", "Capteur de température, 10 mV par °C"], pins: ["+VS:v", "VOUT:o", "GND:g"], facts: [["Versorgung", "Alimentation", "4…30 V"], ["Bereich", "Plage", "2…150 °C (einfache Beschaltung)"], ["Genauigkeit", "Précision", "etwa ±0,5 °C bei 25 °C"]], proj: ["lm35"] },
+  { id: "irlz44n", name: "IRLZ44N", pkg: "TO-220", cat: "drive", k: ["Logic-Level-MOSFET bis 47 A", "MOSFET logic-level jusqu’à 47 A"], pins: ["G:i", "D:o", "S:g"], facts: [["Grenzwerte", "Limites", "55 V, 47 A"], ["Widerstand", "Résistance", "22 mΩ bei 10 V, 28 mΩ bei 5 V am Gate"], ["Ansteuerung", "Commande", "direkt mit 5 V, mit 3,3 V nur eingeschränkt"]], proj: ["irlz44n"] },
+  { id: "d1n4007", name: "1N4007", pkg: "DO-41", cat: "drive", k: ["Gleichrichterdiode 1000 V, 1 A", "Diode de redressement 1000 V, 1 A"], pins: ["A:i", "K:o"], facts: [["Durchlassspannung", "Tension directe", "etwa 0,7…1 V"], ["Kennzeichen", "Repère", "der Ring markiert die Kathode"], ["Typische Jobs", "Usages", "Gleichrichter, Freilaufdiode, Verpolschutz"]], proj: ["gleich"] },
+  { id: "zd", name: "Z-Diode", pkg: "DO-35", cat: "drive", k: ["Hält eine feste Spannung", "Maintient une tension fixe"], pins: ["A:g", "K:o"], facts: [["Betrieb", "Fonctionnement", "in Sperrrichtung"], ["Reihen", "Séries", "BZX55 (0,5 W), BZX85 (1,3 W)"], ["Werte", "Valeurs", "2,4…200 V"]], proj: ["zdiode"] }
 ];
-var KOMBI = ["k_lauf", "k_uhr", "k_zaehl", "k_daemm", "k_prell", "k_sirene", "k_motor", "k_relais"];
-var KICON = { k_lauf: "💡", k_uhr: "🕒", k_zaehl: "🔢", k_daemm: "🌗", k_prell: "🔘", k_sirene: "🚨", k_motor: "⚙️", k_relais: "🔌" };
+var KOMBI = ["k_lauf", "k_uhr", "k_zaehl", "k_daemm", "k_prell", "k_sirene", "k_motor", "k_relais", "k_bau"];
+var KICON = { k_lauf: "💡", k_uhr: "🕒", k_zaehl: "🔢", k_daemm: "🌗", k_prell: "🔘", k_sirene: "🚨", k_motor: "⚙️", k_relais: "🔌", k_bau: "🧱" };
 function icById(id){ for (var i = 0; i < ICS.length; i++) if (ICS[i].id === id) return ICS[i]; return null; }
 function icOfProj(pid){ for (var i = 0; i < ICS.length; i++) if (ICS[i].proj.indexOf(pid) >= 0) return ICS[i]; return null; }
 
@@ -809,7 +1038,7 @@ function renderProject(host, pid){
 
 /* ---------- Seiten: eine Sammlung aller Schaltungen ---------- */
 var root, FILTER = "alle", QUERY = "";
-var GRP = [["takt", T("Takt & Zeit", "Horloge & temps"), "#ffb000", ["ne555a", "ne555m", "hc14", "cd4093", "cd4060", "k_uhr", "k_sirene"]], ["zaehl", T("Zählen & Lauflicht", "Compter & chenillard"), "#6dffb0", ["hc74", "cd4017", "cd4040", "hc160", "k_lauf", "k_zaehl"]], ["logik", T("Logik & Daten", "Logique & données"), "#3de6ff", ["hc00", "hc595", "hc165", "hc138", "cd4511", "k_prell"]], ["analog", T("Verstärken, Messen & Versorgen", "Amplifier, mesurer & alimenter"), "#ff3d9a", ["lm358", "lm393", "lm386", "lm317", "lm7805", "k_daemm"]], ["treiber", T("Schalten, Treiben & Motor", "Commuter, piloter & moteur"), "#b58cff", ["npn", "uln2003", "l293d", "pc817", "k_motor", "k_relais"]]];
+var GRP = [["bau", T("Selbst verbinden", "Relier soi-même"), "#ffd43b", ["k_bau"]], ["takt", T("Takt & Zeit", "Horloge & temps"), "#ffb000", ["ne555a", "ne555m", "hc14", "cd4093", "cd4060", "k_uhr", "k_sirene"]], ["zaehl", T("Zählen & Lauflicht", "Compter & chenillard"), "#6dffb0", ["hc74", "cd4013", "cd4017", "cd4040", "hc160", "hc193", "hc164", "k_lauf", "k_zaehl"]], ["logik", T("Logik & Daten", "Logique & données"), "#3de6ff", ["hc00", "hc595", "hc165", "hc138", "cd4511", "cd4051", "cd4066", "max232", "mcp3008", "k_prell"]], ["analog", T("Verstärken, Messen & Versorgen", "Amplifier, mesurer & alimenter"), "#ff3d9a", ["lm358", "lm324", "lm393", "lm386", "lm35", "lm317", "lm7805", "tl431", "zdiode", "gleich", "icl7660", "k_daemm"]], ["treiber", T("Schalten, Treiben & Motor", "Commuter, piloter & moteur"), "#b58cff", ["npn", "irlz44n", "uln2003", "l293d", "pc817", "k_motor", "k_relais"]]];
 function icsOf(pid){ var pr = PROJ[pid]; if (pr.ics) return pr.ics.slice(); var ic = icOfProj(pid); return ic ? [ic.id] : []; }
 function shortT(pid){ var t = T(PROJ[pid].t[0], PROJ[pid].t[1]); return t.split(/ – |: /)[0]; }
 function subT(pid){ var t = T(PROJ[pid].t[0], PROJ[pid].t[1]), m = t.split(/ – |: /); return m.slice(1).join(" – "); }
