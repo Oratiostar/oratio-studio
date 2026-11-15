@@ -137,7 +137,7 @@
 .bau-bar .sel{flex:0 1 330px;min-width:0;margin:0}
 
 /* Labor-Ansicht: Schaltplan links, Oszilloskop rechts daneben (breite Bildschirme) */
-.ic-lab{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:start}
+.ic-lab{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px 48px;align-items:start}
 .ic-labL,.ic-labR{min-width:0}.ic-labR{position:sticky;top:10px}
 .ic-osz{margin:2px 0 6px!important}
 @media (max-width:1180px){.ic-lab{grid-template-columns:1fr}.ic-labR{position:static}}
@@ -147,3 +147,19 @@
 .bau-svg .hit{fill:transparent;stroke:none;pointer-events:all}.bau-svg.run .pt-TA .hit,.bau-svg.run .pt-SW .hit{cursor:pointer}
 .ic-lab.solo{grid-template-columns:1fr}.ic-lab.solo .ic-labR{position:static}
 .ic-lab.solo .ic-labL{max-width:1150px}
+.ic-sl[hidden]{display:none}
+.ic-more{margin:14px 0 0}.ic-more details{background:var(--card,#fff);border:1px solid var(--line,#ccd);border-radius:14px;padding:12px 16px}.ic-more summary{cursor:pointer;font-weight:800}.ic-more p{margin:.6em 0}.ic-more code{font-size:15px}.ic-more ul{margin:.4em 0 0;padding-left:1.2em}
+
+.ic-vt{align-items:center}.ic-zm{margin-left:auto;display:inline-flex;gap:6px}.ic-zb{min-width:40px;padding-inline:10px!important;font-weight:800!important;font-size:16px!important;line-height:1}
+.ic-sw{text-align:center}
+.ic-labR .ic-scopebox{border-radius:14px;box-shadow:0 6px 22px rgba(10,30,40,.18)}
+/* Werkstatt auf dem Handy: Bauteil-Leiste als Streifen über der Zeichenfläche statt langer Liste */
+@media (max-width:760px){
+  .bau-grid{grid-template-columns:1fr}
+  .bau-pal{position:static;max-height:none;display:flex;flex-wrap:nowrap;align-items:flex-start;gap:8px;overflow-x:auto;overflow-y:hidden;padding:8px;-webkit-overflow-scrolling:touch}
+  .bau-pal h3{flex:0 0 auto;margin:0;align-self:center;white-space:nowrap;padding:0 4px;border-left:3px solid #0fa968}
+  .bau-pal .ic-search{flex:0 0 150px;width:150px;margin:0;align-self:center}
+  .bau-ics{display:flex;gap:8px;flex:0 0 auto;align-items:flex-start}
+  .bau-it{flex:0 0 132px;width:132px;margin:0}.bau-it span{display:none}.bau-it b{white-space:normal}
+  .bau-cv{height:min(62vh,560px)}
+}

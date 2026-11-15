@@ -905,12 +905,101 @@ PROJ.k_netz = { t: ["Labornetzteil: Trafo → Gleichrichter → Elko → LM317",
       live: function(){ return { leds: [pk - dU >= vs + 2.5 ? 1 : 0], names: [T("geregelt", "régulé")] }; } }; },
   wire: [["Trafo-Sekundärseite an die beiden ~-Anschlüsse des Brückengleichrichters", "Secondaire du transfo sur les bornes ~ du pont"], ["Plus der Brücke → 2200 µF (Plus) → LM317 IN, Minus → GND", "+ du pont → 2200 µF → IN du LM317, − → GND"], ["LM317: 240 Ω zwischen OUT und ADJ, Poti 5 kΩ zwischen ADJ und GND", "LM317 : 240 Ω entre OUT et ADJ, potentiomètre 5 kΩ entre ADJ et GND"], ["100 nF am Eingang, 10 µF am Ausgang; Diode 1N4007 von OUT nach IN (Schutz)", "100 nF à l’entrée, 10 µF en sortie, 1N4007 de OUT vers IN"]],
   notes: [["Die Netzseite (230 V) gehört in ein geschlossenes Gehäuse mit Sicherung – oder du nimmst ein fertiges Steckernetzteil mit 15…18 V Gleichspannung und lässt Trafo und Gleichrichter weg.", "Côté secteur : boîtier fermé et fusible, ou bloc secteur 15…18 V tout prêt."]] };
-PROJ.opamp = { t: ["Operationsverstärker – alle Grundschaltungen", "Ampli op – tous les montages de base"], flow: ["Beschaltung wählen", "Werte eingeben", "Schaltplan und Oszilloskop"], ics: ["lm358"], custom: "opamp",
-  d: ["Ein Operationsverstärker wird erst durch seine Beschaltung zu einem Verstärker, Addierer, Integrator oder Komparator. Wähle die Beschaltung, gib die Bauteilwerte ein und sieh Spannungen, Ströme und den Verlauf am Oszilloskop. Das gilt für alle Opamps: LM358, LM324, TL071/072/074, NE5532, LM741, MCP6002.", "Un ampli op devient amplificateur, sommateur, intégrateur ou comparateur selon son montage. Choisis le montage, saisis les valeurs et observe."],
-  notes: [["Komparator-ICs wie LM393 und LM339 sind Opamps, die nur für den Vergleich gebaut sind: schneller beim Umschalten, mit offenem Kollektor am Ausgang. Für Verstärker-Beschaltungen taugen sie nicht.", "Les comparateurs LM393/LM339 sont des amplis op spécialisés dans la comparaison, à collecteur ouvert."]] };
+/* ---------- Operationsverstärker: alle Grundschaltungen im Labor-Stil (Schaltplan + Oszilloskop wie bei allen ICs) ---------- */
+var OPT = [
+  { id: "inv", ic: "−", n: ["Invertierend", "Inverseur"], f: "Uout = −R2/R1 · Uin",
+    d: ["Das Signal wird um R2/R1 verstärkt und gedreht (Phase 180°). Der −Eingang liegt durch die Gegenkopplung auf 0 V („virtuelle Masse“); der Eingangswiderstand ist R1.", "Le signal est amplifié de R2/R1 et inversé (180°). L’entrée − est à 0 V (masse virtuelle) ; l’impédance d’entrée vaut R1."],
+    p: { Ra: ["R1 (Eingang)", 10e3], Rb: ["R2 (Rückkopplung)", 47e3] },
+    sim: function(q, u){ return -q.Rb / q.Ra * u; }, G: function(q){ return -q.Rb / q.Ra; }, zin: function(q){ return q.Ra; }, note: ["Phase um 180° gedreht", "phase inversée de 180°"],
+    notes: [["Der Eingangswiderstand ist R1 – die Signalquelle wird also belastet.", "L’impédance d’entrée est R1 : la source est chargée."], ["Der Ausgang kann nur bis kurz vor die Versorgung gehen; bei zu großer Verstärkung wird das Signal abgeschnitten.", "La sortie ne peut aller que presque jusqu’à l’alimentation ; sinon le signal est écrêté."]] },
+  { id: "nin", ic: "+", n: ["Nicht-invertierend", "Non-inverseur"], f: "Uout = (1 + R2/R1) · Uin",
+    d: ["Das Signal liegt direkt am +Eingang und bleibt in Phase. Der Teiler R1/R2 vom Ausgang zum −Eingang legt die Verstärkung fest – sie ist immer mindestens 1. Der Eingangswiderstand ist sehr hoch.", "Le signal est sur l’entrée + et reste en phase. Le diviseur R1/R2 fixe le gain, toujours ≥ 1. Impédance d’entrée très élevée."],
+    p: { Ra: ["R1 (gegen Masse)", 10e3], Rb: ["R2 (Rückkopplung)", 47e3] },
+    sim: function(q, u){ return (1 + q.Rb / q.Ra) * u; }, G: function(q){ return 1 + q.Rb / q.Ra; }, zin: function(){ return Infinity; }, note: ["gleiche Phase", "même phase"],
+    notes: [["Für Verstärkung 1 genügt der Spannungsfolger (R2 = 0, R1 weglassen).", "Pour un gain de 1, le suiveur suffit."]] },
+  { id: "fol", ic: "1", n: ["Spannungsfolger", "Suiveur"], f: "Uout = Uin",
+    d: ["Der Ausgang ist direkt mit dem −Eingang verbunden: Verstärkung genau 1, aber sehr hoher Eingangs- und kleiner Ausgangswiderstand. Ein Impedanzwandler, der eine schwache Quelle puffert (Sensor, Poti, Filter).", "La sortie est reliée à l’entrée − : gain 1, impédance d’entrée très élevée, sortie faible. Un adaptateur d’impédance."],
+    p: {}, sim: function(q, u){ return u; }, G: function(){ return 1; }, zin: function(){ return Infinity; }, note: ["Impedanzwandler", "adaptateur d’impédance"],
+    notes: [["Typisch: Sensor mit hochohmigem Ausgang vor einen ADC schalten.", "Typique : capteur à sortie haute impédance devant un CAN."]] },
+  { id: "sum", ic: "Σ", n: ["Addierer", "Sommateur"], f: "Uout = −R4 · (U1/R1 + U2/R2 + U3/R3)",
+    d: ["Jede Eingangsspannung geht über einen eigenen Widerstand an den −Eingang; dort addieren sich die Ströme. Der Ausgang ist die negative, gewichtete Summe – die Grundlage von Mischpult und DA-Wandler.", "Chaque entrée passe par sa résistance vers l’entrée − : les courants s’additionnent. Base du mélangeur et du CNA."],
+    p: { Ra: ["R1", 10e3], Rb: ["R2", 10e3], Rc: ["R3", 10e3], Rd: ["R4 (Rückkopplung)", 10e3], Ua: ["U2 (fest)", .5], Ub: ["U3 (fest)", -.2] },
+    sim: function(q, u){ return -q.Rd * (u / q.Ra + q.Ua / q.Rb + q.Ub / q.Rc); }, G: function(q){ return -q.Rd / q.Ra; }, zin: function(q){ return q.Ra; }, note: ["Verstärkung gilt für U1; U2 und U3 haben −R4/R2 bzw. −R4/R3", "le gain vaut pour U1 ; U2, U3 : −R4/R2, −R4/R3"],
+    notes: [["Bei R1 = R2 = R3 = R4 ist Uout = −(U1 + U2 + U3).", "Avec R1 = R2 = R3 = R4 : Uout = −(U1 + U2 + U3)."]] },
+  { id: "sub", ic: "Δ", n: ["Subtrahierer", "Soustracteur"], f: "Uout = R2/R1 · (U2 − U1)",
+    d: ["Der Differenzverstärker bildet die Differenz zweier Spannungen und unterdrückt, was beiden gemeinsam ist (Gleichtakt). Dazu müssen die Widerstandspaare R1 = R3 und R2 = R4 genau passen.", "L’amplificateur différentiel forme la différence de deux tensions et rejette le mode commun. Il faut R1 = R3 et R2 = R4."],
+    p: { Ra: ["R1 = R3", 10e3], Rb: ["R2 = R4", 10e3], Ua: ["U2 (fest)", 1] },
+    sim: function(q, u){ return q.Rb / q.Ra * (q.Ua - u); }, G: function(q){ return q.Rb / q.Ra; }, zin: function(q){ return q.Ra; }, note: ["Verstärkung der Differenz (U2 − U1)", "gain de la différence (U2 − U1)"],
+    notes: [["Wichtig, um kleine Signale vor großem Gleichtaktrauschen zu messen. Die Widerstände sollten 0,1 % genau sein.", "Utile pour mesurer de petits signaux malgré un grand bruit commun ; résistances à 0,1 %."]] },
+  { id: "int", ic: "∫", n: ["Integrierer", "Intégrateur"], f: "Uout(t) = −1/(R1·C1) · ∫ Uin dt", dyn: 1, cs: 1,
+    d: ["Der Kondensator in der Rückkopplung summiert den Eingangsstrom auf: Die Ausgangsspannung ist das Zeitintegral der Eingangsspannung. Ein Rechteck wird zum Dreieck, eine Gleichspannung zur Rampe – bis der Ausgang an die Versorgung stößt.", "Le condensateur intègre le courant d’entrée : un carré devient un triangle, un continu une rampe."],
+    p: { Ra: ["R1", 10e3], Cx: ["C1", 10e-9] },
+    sim: function(q, u, st, dt){ st.v = (st.v || 0) - u / (q.Ra * q.Cx) * dt; return st.v; }, tau: function(q){ return q.Ra * q.Cx; }, zin: function(q){ return q.Ra; }, note: ["Steigung = −Uin/(R1·C1)", "pente = −Uin/(R1·C1)"],
+    notes: [["Ohne Gegenwiderstand parallel zu C1 driftet der Ausgang bei kleinen Offsets langsam an die Grenze.", "Sans résistance parallèle à C1, la sortie dérive vers la limite."]] },
+  { id: "dif", ic: "d/dt", n: ["Differenzierer", "Dérivateur"], f: "Uout(t) = −R1·C1 · dUin/dt", dyn: 1,
+    d: ["Der Kondensator am Eingang lässt nur Änderungen durch: Der Ausgang zeigt die Steilheit des Eingangssignals. Ein Dreieck wird zum Rechteck, ein Rechteck zu Nadelimpulsen.", "Le condensateur d’entrée ne laisse passer que les variations : la sortie reflète la pente."],
+    p: { Ra: ["R1", 10e3], Cx: ["C1", 10e-9] },
+    sim: function(q, u, st, dt){ var d = st.u0 === undefined ? 0 : (u - st.u0) / dt; st.u0 = u; return -q.Ra * q.Cx * d; }, tau: function(q){ return q.Ra * q.Cx; }, zin: function(){ return null; }, note: ["Verstärkung steigt mit der Frequenz: |G| = 2π·f·R1·C1", "gain croissant avec la fréquence"],
+    notes: [["Rauschempfindlich; in der Praxis kommt ein kleiner Widerstand in Reihe zu C1.", "Sensible au bruit ; en pratique une petite résistance en série avec C1."]] },
+  { id: "lp", ic: "〰", n: ["Aktiver Tiefpass", "Passe-bas actif"], f: "G = −R2/R1 ; fg = 1/(2π·R2·C1)", dyn: 1, cs: 1,
+    d: ["Ein invertierender Verstärker mit Kondensator parallel zu R2: Tiefe Frequenzen werden mit R2/R1 verstärkt, hohe fallen oberhalb der Grenzfrequenz mit 20 dB je Dekade ab.", "Un inverseur avec un condensateur en parallèle de R2 : passe-bas actif du 1er ordre."],
+    p: { Ra: ["R1", 10e3], Rb: ["R2", 47e3], Cx: ["C1", 1e-9] },
+    sim: function(q, u, st, dt){ var tau = q.Rb * q.Cx, n = Math.max(1, Math.ceil(dt / (tau / 20))), h = dt / n, y = st.y || 0; for (var k = 0; k < n; k++) y += (-q.Rb / q.Ra * u - y) / tau * h; st.y = y; return y; },
+    tau: function(q){ return q.Rb * q.Cx; }, G: function(q){ return -q.Rb / q.Ra; }, zin: function(q){ return q.Ra; }, note: function(q){ return [fmt(1 / (2 * Math.PI * q.Rb * q.Cx), "Hz") + " Grenzfrequenz", fmt(1 / (2 * Math.PI * q.Rb * q.Cx), "Hz") + " fréquence de coupure"]; },
+    notes: [["Erhöhe die Frequenz über fg: Die Amplitude am Ausgang sinkt und die Kurve verschleift.", "Monte la fréquence au-delà de fg : l’amplitude baisse."]] },
+  { id: "cmp", ic: "⏚", n: ["Komparator", "Comparateur"], f: "Uout = +Usat wenn Uin > Uref, sonst −Usat",
+    d: ["Ohne Rückkopplung vergleicht der Opamp nur: Ist Uin größer als Uref, springt der Ausgang an die positive Versorgung, sonst an die negative. Kein Verstärker, sondern ein Schalter.", "Sans contre-réaction l’ampli compare : la sortie bascule vers l’alimentation positive ou négative."],
+    p: { Ur: ["Uref", 0] },
+    sim: function(q, u, st, dt, lim){ return u > q.Ur ? lim : -lim; }, zin: function(){ return Infinity; }, note: ["Ausgang springt an die Versorgungsgrenzen", "la sortie bascule aux limites"],
+    notes: [["Rauschen am Eingang lässt den Ausgang flattern – dagegen hilft der Schmitt-Trigger.", "Le bruit fait vibrer la sortie – le trigger de Schmitt y remédie."]] },
+  { id: "sch", ic: "⎍", n: ["Schmitt-Trigger", "Trigger de Schmitt"], f: "U_H/U_L = Uref·(1 + R1/R2) ∓ Usat·R1/R2",
+    d: ["Mitkopplung über R2 erzeugt zwei Schaltschwellen (Hysterese): Das Signal muss erst über die obere Schwelle steigen und dann unter die untere fallen, bevor der Ausgang kippt. Rauschen und Prellen stören nicht mehr.", "La réaction positive crée deux seuils (hystérésis) : le bruit ne fait plus basculer la sortie."],
+    p: { Ra: ["R1", 10e3], Rb: ["R2", 47e3], Ur: ["Uref", 0] },
+    sim: function(q, u, st, dt, lim){ var k = q.Ra / q.Rb, hi = q.Ur * (1 + k) + lim * k, lo = q.Ur * (1 + k) - lim * k; if (st.s === undefined) st.s = -1; if (u > hi) st.s = 1; else if (u < lo) st.s = -1; return st.s * lim; },
+    zin: function(q){ return q.Ra + q.Rb; }, note: function(q, lim){ var k = q.Ra / q.Rb, a = fmt(q.Ur * (1 + k) - lim * k, "V"), b = fmt(q.Ur * (1 + k) + lim * k, "V"); return ["Schwellen " + a + " / " + b + " (Hysterese " + fmt(2 * lim * k, "V") + ")", "seuils " + a + " / " + b + " (hystérésis " + fmt(2 * lim * k, "V") + ")"]; },
+    notes: [["Größeres R1/R2 = breitere Hysterese = unempfindlicher gegen Rauschen, aber ungenauere Schaltschwelle.", "R1/R2 plus grand = hystérésis plus large."]] },
+  { id: "tia", ic: "I→U", n: ["Transimpedanz", "Transimpédance"], f: "Uout = −Iin · R1",
+    d: ["Wandelt einen kleinen Strom (z. B. einer Fotodiode) in eine Spannung. Die Quelle sieht eine virtuelle Masse, Uout = −Iin · R1. Für schnelle Fotodioden kommt ein kleiner Kondensator parallel zu R1.", "Convertit un courant (photodiode) en tension : Uout = −Iin · R1."],
+    p: { Rb: ["R1 (Rückkopplung)", 100e3] }, cur: 1,
+    sim: function(q, u){ return -q.Rb * u; }, zin: function(){ return 0; }, note: function(q){ return ["Transimpedanz = −R1 = " + fmt(q.Rb, "V/A"), "transimpédance = −R1 = " + fmt(q.Rb, "V/A")]; },
+    notes: [["Fotodioden liefern nur Mikroampere – darum der große Rückkopplungswiderstand.", "Une photodiode ne donne que des microampères."]] }
+];
+function opType(id){ for (var i = 0; i < OPT.length; i++) if (OPT[i].id === id) return OPT[i]; return OPT[0]; }
+function niceMax(x){ if (!(x > 0)) return 1; var e = Math.pow(10, Math.floor(Math.log(x) / Math.LN10)), m = x / e; return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 5 ? 5 : 10) * e; }
+PROJ.opamp = { t: ["Operationsverstärker – alle Grundschaltungen", "Ampli op – tous les montages de base"], flow: ["Beschaltung wählen", "Werte einstellen", "Schaltplan und Oszilloskop"], ics: ["lm358"],
+  d: ["Ein Operationsverstärker wird erst durch seine Beschaltung zu einem Verstärker, Addierer, Integrator oder Komparator. Wähle die Beschaltung, stelle die Bauteilwerte ein und sieh Schaltplan und Verlauf am Oszilloskop. Das gilt für alle Opamps: LM358, LM324, TL071/072/074, NE5532, LM741, MCP6002 – der Schaltplan zeigt den Chip, von dem du gekommen bist.", "Un ampli op devient amplificateur, sommateur, intégrateur ou comparateur selon son montage. Choisis le montage, règle les valeurs et observe."],
+  opts: [{ k: "m", l: ["Beschaltung", "Montage"], o: OPT.map(function(t){ return [t.id, [t.ic + "  " + t.n[0], t.ic + "  " + t.n[1]]]; }), def: "inv" }, { k: "w", l: ["Signal", "Signal"], o: [["sin", ["Sinus", "Sinus"]], ["rect", ["Rechteck", "Carré"]], ["dc", ["Gleichspannung", "Continu"]]], def: "sin" }],
+  params: [
+    { k: "Ra", l: ["R1", "R1"], min: 1e3, max: 1e6, def: 10e3, log: 1, u: "Ω", e12: 1 }, { k: "Rb", l: ["R2", "R2"], min: 1e3, max: 1e6, def: 47e3, log: 1, u: "Ω", e12: 1 },
+    { k: "Rc", l: ["R3", "R3"], min: 1e3, max: 1e6, def: 10e3, log: 1, u: "Ω", e12: 1 }, { k: "Rd", l: ["R4", "R4"], min: 1e3, max: 1e6, def: 10e3, log: 1, u: "Ω", e12: 1 },
+    { k: "Cx", l: ["C1", "C1"], min: 1e-10, max: 1e-6, def: 10e-9, log: 1, u: "F", e12: 1 },
+    { k: "Ua", l: ["U2", "U2"], min: -5, max: 5, def: .5, u: "V" }, { k: "Ub", l: ["U3", "U3"], min: -5, max: 5, def: -.2, u: "V" }, { k: "Ur", l: ["Uref", "Uref"], min: -5, max: 5, def: 0, u: "V" },
+    { k: "A", l: ["Eingangsamplitude", "Amplitude d’entrée"], min: .01, max: 10, def: .5, log: 1, u: "V" }, { k: "Ai", l: ["Eingangsstrom", "Courant d’entrée"], min: 1e-6, max: 1e-3, def: 20e-6, log: 1, u: "A" },
+    { k: "Uo", l: ["Offset", "Offset"], min: -5, max: 5, def: 0, u: "V" }, { k: "f", l: ["Frequenz", "Fréquence"], min: 10, max: 100e3, def: 1000, log: 1, u: "Hz" },
+    { k: "Vs", l: ["Versorgung ±Vs", "Alimentation ±Vs"], min: 5, max: 15, def: 12, u: "V" }],
+  dyn: ["Ra", "Rb", "Rc", "Rd", "Cx", "Ua", "Ub", "Ur", "A", "Ai", "Uo"],
+  init: function(P){ var h = (location.hash.split("/")[2] || ""); if (/^(inv|nin|fol|sum|sub|int|dif|lp|cmp|sch|tia)$/.test(h) && h !== P.m){ P.m = h; opDefaults(P); } if (!OPT.some(function(t){ return t.id === P.m; })) P.m = "inv"; },
+  onOpt: function(P, k){ if (k === "m") opDefaults(P); },
+  ui: function(P){ var t = opType(P.m), u = {}; Object.keys(t.p).forEach(function(k){ u[k] = t.p[k][0]; }); if (t.cur){ u.Ai = T("Eingangsstrom Iin", "Courant Iin"); } else { u.A = T("Eingangsamplitude", "Amplitude d’entrée"); u.Uo = T("Offset", "Offset"); } return u; },
+  notes: [["Komparator-ICs wie LM393 und LM339 sind Opamps, die nur für den Vergleich gebaut sind: schneller beim Umschalten, mit offenem Kollektor am Ausgang. Für Verstärker-Beschaltungen taugen sie nicht.", "Les comparateurs LM393/LM339 sont des amplis op spécialisés dans la comparaison, à collecteur ouvert."]],
+  build: function(P){ return opBuild(P); } };
+function opDefaults(P){ var t = opType(P.m); Object.keys(t.p).forEach(function(k){ P[k] = t.p[k][1]; }); }
+function opBuild(P){
+  var t = opType(P.m), q = P, tia = !!t.cur, Vs = P.Vs, lim = Math.max(.5, Vs - 1.5), N = 480, st = {}, tau = t.tau ? t.tau(q) : 0, f = P.f, amp = tia ? P.Ai : P.A, off = tia ? 0 : P.Uo;
+  var win = P.w === "dc" && t.dyn ? Math.max(5 * tau, 1e-6) : 3 / f, dt = win / N, U = [], Y = [], uMax = 0, yMax = 0, clip = false;
+  for (var i = 0; i < N; i++){ var tt = i * dt, ph = (tt * f) % 1, u = P.w === "dc" ? amp : P.w === "sin" ? amp * Math.sin(2 * Math.PI * tt * f) : (ph < .5 ? amp : -amp); u += off; U.push(u);
+    var y = t.sim(q, u, st, dt, lim); if (y > lim){ y = lim; clip = true; } if (y < -lim){ y = -lim; clip = true; } if (t.cs){ st.v = y; st.y = y; } Y.push(y); uMax = Math.max(uMax, Math.abs(u)); yMax = Math.max(yMax, Math.abs(y)); }
+  var m1 = niceMax(uMax * 1.15 || 1), m2 = niceMax(yMax * 1.15 || 1), nt = typeof t.note === "function" ? t.note(q, lim) : t.note, G = t.G ? t.G(q) : null, zin = t.zin ? t.zin(q) : null, info = [];
+  info.push([T("Beschaltung", "Montage"), T(t.n[0], t.n[1])]); info.push([T("Formel", "Formule"), t.f]);
+  if (G != null){ info.push([T("Verstärkung", "Gain"), (+G.toPrecision(4)).toString().replace(".", fr ? "," : ".") + " ×  (" + (+(20 * Math.log10(Math.abs(G))).toPrecision(3)).toString().replace(".", fr ? "," : ".") + " dB)"]); }
+  if (zin != null) info.push([T("Eingangswiderstand", "Impédance d’entrée"), zin === Infinity ? "≈ ∞" : fmt(zin, "Ω")]);
+  info.push([T("Ausgang max.", "Sortie max."), fmt(yMax, "V")]); if (tau) info.push(["τ", fmt(tau, "s")]); if (nt) info.push([T("Hinweis", "Remarque"), T(nt[0], nt[1])]);
+  var w = []; if (clip && t.id !== "cmp" && t.id !== "sch") w.push(T("Der Ausgang stößt an die Versorgungsgrenze (etwa ±" + (+lim.toPrecision(3)) + " V): das Signal wird abgeschnitten. Verstärkung verkleinern oder Versorgung erhöhen.", "La sortie atteint la limite d’alimentation : le signal est écrêté."));
+  return { span: win, speed: 1, warn: w, info: info, more: { d: t.d, f: t.f, notes: t.notes },
+    ch: [{ n: tia ? T("Eingang Iin", "Entrée Iin") : T("Eingang Uin", "Entrée Uin"), c: C.amber, lo: -m1, hi: m1, a: U, u: tia ? "A" : "V" }, { n: T("Ausgang Uout", "Sortie Uout"), c: C.green, lo: -m2, hi: m2, a: Y }] };
+}
 /* ---------- Bausteine der individuellen Projekte ---------- */
 var CUST = {};
-CUST.opamp = function(box){ var w = el("div", "ic-opw"); box.appendChild(w); var t0 = (location.hash.split("/")[2] || ""); if (!/^(inv|nin|fol|sum|sub|int|dif|lp|cmp|sch|tia)$/.test(t0)) t0 = ""; if (window.Elektro && Elektro.opamp) Elektro.opamp(w, t0 || "inv"); else w.textContent = "…"; return {}; };
 CUST.gates = function(box){
   function all(a){ return a.every(function(x){ return x; }); } function any(a){ return a.some(function(x){ return x; }); }
   var G = [["NAND", "7400 · 74HC00 · CD4011 · 74LVC1G00", function(a){ return !all(a); }, 2], ["NOR", "7402 · 74HC02 · CD4001", function(a){ return !any(a); }, 2], ["AND", "7408 · 74HC08 · CD4081 · 74LVC1G08", all, 2], ["OR", "7432 · 74HC32 · CD4071", any, 2], ["XOR", "7486 · 74HC86 · CD4070", function(a){ return a[0] !== a[1]; }, 2], ["XNOR", "74266 · CD4077", function(a){ return a[0] === a[1]; }, 2],
@@ -1450,6 +1539,44 @@ LAY.lm358 = function(P){ var d = P.s === "d12", inv = P.m === "inv", o = { U1: [
   if (inv){ o.R1 = ["U1.2", 2, "h", -40, 0]; o.G1 = ["R1.1", 1, "r"]; if (!d) o.GB = ["U1.3", 1, "r", -60, 0]; }
   else { o.R1 = ["U1.2", 1, "h-", -40, 0]; o.G1 = ["U1.3", 1, "r", -100, 0]; if (!d) o.GB = ["R1.2", 1, "r"]; }
   if (d) o.GN = ["U1.4", 1, "u"]; return o; };
+/* --- Operationsverstärker: Netzliste und Schaltplan je Beschaltung --- */
+var OPK = { analog_lm358: "lm358", analog_tl072: "tl072", analog_ne5532: "ne5532", analog_mcp6002: "mcp6002", analog_lm741: "lm741", analog_tl071: "tl071", analog_tl074: "tl074", analog_lm324: "lm324" };
+function opIC(){ var k = (location.hash.split("/")[2] || ""); return OPK[k] || "lm358"; }
+function opPins(id){ if (id === "lm741" || id === "tl071") return { o: 6, m: 2, p: 3, vp: 7, vn: 4 }; if (id === "lm324" || id === "tl074") return { o: 1, m: 2, p: 3, vp: 4, vn: 11 }; return { o: 1, m: 2, p: 3, vp: 8, vn: 4 }; }
+NL.opamp = function(P){
+  var id = opIC(), pn = opPins(id), U = function(n){ return "U1." + n; }, t = P.m, parts = { U1: id, P1: ["G", "Uout"], GN: ["G", "−" + fmt(P.Vs, "V")] }, nets = { VCC: [U(pn.vp)], VNEG: ["GN.1", U(pn.vn)] }, M = U(pn.m), Pl = U(pn.p), O = U(pn.o);
+  function R(i, v){ parts["R" + i] = ["R", v]; }
+  if (t === "inv"){ parts.G1 = ["G", "Uin"]; R(1, "$Ra"); R(2, "$Rb"); nets.EIN = ["G1.1", "R1.1"]; nets.MINUS = ["R1.2", M, "R2.2"]; nets.GND = [Pl]; nets.OUT = [O, "R2.1", "P1.1"]; }
+  else if (t === "nin"){ parts.G1 = ["G", "Uin"]; R(1, "$Ra"); R(2, "$Rb"); nets.EIN = ["G1.1", Pl]; nets.MINUS = [M, "R1.1", "R2.2"]; nets.GND = ["R1.2"]; nets.OUT = [O, "R2.1", "P1.1"]; }
+  else if (t === "fol"){ parts.G1 = ["G", "Uin"]; nets.EIN = ["G1.1", Pl]; nets.OUT = [O, M, "P1.1"]; }
+  else if (t === "sum"){ parts.G1 = ["G", "U1"]; parts.G2 = ["G", "U2 " + fmt(P.Ua, "V")]; parts.G3 = ["G", "U3 " + fmt(P.Ub, "V")]; R(1, "$Ra"); R(2, "$Rb"); R(3, "$Rc"); R(4, "$Rd");
+    nets.E1 = ["G1.1", "R1.1"]; nets.E2 = ["G2.1", "R2.1"]; nets.E3 = ["G3.1", "R3.1"]; nets.MINUS = ["R1.2", "R2.2", "R3.2", M, "R4.2"]; nets.GND = [Pl]; nets.OUT = [O, "R4.1", "P1.1"]; }
+  else if (t === "sub"){ parts.G1 = ["G", "U1"]; parts.G2 = ["G", "U2 " + fmt(P.Ua, "V")]; R(1, "$Ra"); R(2, "$Rb"); R(3, "$Ra"); R(4, "$Rb");
+    nets.E1 = ["G1.1", "R1.1"]; nets.E2 = ["G2.1", "R3.1"]; nets.MINUS = ["R1.2", M, "R2.2"]; nets.PLUS = ["R3.2", Pl, "R4.1"]; nets.GND = ["R4.2"]; nets.OUT = [O, "R2.1", "P1.1"]; }
+  else if (t === "int"){ parts.G1 = ["G", "Uin"]; R(1, "$Ra"); parts.C1 = ["C", "$Cx"]; nets.EIN = ["G1.1", "R1.1"]; nets.MINUS = ["R1.2", M, "C1.2"]; nets.GND = [Pl]; nets.OUT = [O, "C1.1", "P1.1"]; }
+  else if (t === "dif"){ parts.G1 = ["G", "Uin"]; R(1, "$Ra"); parts.C1 = ["C", "$Cx"]; nets.EIN = ["G1.1", "C1.1"]; nets.MINUS = ["C1.2", M, "R1.2"]; nets.GND = [Pl]; nets.OUT = [O, "R1.1", "P1.1"]; }
+  else if (t === "lp"){ parts.G1 = ["G", "Uin"]; R(1, "$Ra"); R(2, "$Rb"); parts.C1 = ["C", "$Cx"]; nets.EIN = ["G1.1", "R1.1"]; nets.MINUS = ["R1.2", M, "R2.2", "C1.2"]; nets.GND = [Pl]; nets.OUT = [O, "R2.1", "C1.1", "P1.1"]; }
+  else if (t === "cmp"){ parts.G1 = ["G", "Uin"]; parts.G2 = ["G", "Uref " + fmt(P.Ur, "V")]; nets.EIN = ["G1.1", Pl]; nets.REF = ["G2.1", M]; nets.OUT = [O, "P1.1"]; }
+  else if (t === "sch"){ parts.G1 = ["G", "Uin"]; parts.G2 = ["G", "Uref " + fmt(P.Ur, "V")]; R(1, "$Ra"); R(2, "$Rb"); nets.EIN = ["G1.1", "R1.1"]; nets.PLUS = ["R1.2", Pl, "R2.2"]; nets.REF = ["G2.1", M]; nets.OUT = [O, "R2.1", "P1.1"]; }
+  else if (t === "tia"){ parts.G1 = ["G", "Iin"]; R(1, "$Rb"); nets.MINUS = ["G1.1", M, "R1.2"]; nets.GND = [Pl]; nets.OUT = [O, "R1.1", "P1.1"]; }
+  return nmk(parts, nets);
+};
+LAY.opamp = function(P){
+  var pn = opPins(opIC()), U = function(n){ return "U1." + n; }, t = P.m, M = U(pn.m), Pl = U(pn.p), O = U(pn.o), sw = t === "sch" || t === "cmp",
+    o = { U1: [300, 160, { L: sw ? [pn.p, null, pn.m] : [pn.m, null, pn.p], R: [pn.o], T: [pn.vp], B: [pn.vn] }], P1: [O, 1, "l", 80, 0], GN: [U(pn.vn), 1, "u"] };
+  if (t === "inv"){ o.R2 = [360, 70, "h-"]; o.R1 = [M, 2, "h", -40, 0]; o.G1 = ["R1.1", 1, "r"]; }
+  else if (t === "nin"){ o.R2 = [360, 70, "h-"]; o.R1 = [M, 1, "h-", -40, 0]; o.G1 = [Pl, 1, "r", -100, 0]; }
+  else if (t === "fol"){ o.G1 = [Pl, 1, "r", -100, 0]; o.w = { OUT: [[[522, 232], [442, 232], [442, 96], [250, 96], [250, 192], [278, 192]]] }; }
+  else if (t === "sum"){ o.R4 = [360, 30, "h-"]; o.R3 = [M, 2, "h", -40, 0]; o.R2 = [M, 2, "h", -40, -50]; o.R1 = [M, 2, "h", -40, -100]; o.G1 = ["R1.1", 1, "r"]; o.G2 = ["R2.1", 1, "r"]; o.G3 = ["R3.1", 1, "r"]; }
+  else if (t === "sub"){ o.R2 = [360, 70, "h-"]; o.R1 = [M, 2, "h", -40, 0]; o.G1 = ["R1.1", 1, "r"]; o.R3 = [Pl, 2, "h", -40, 0]; o.G2 = ["R3.1", 1, "r"]; o.R4 = [Pl, 1, "v", -40, 0]; }
+  else if (t === "int" || t === "dif" || t === "lp"){ var fb = t === "int" ? "C1" : t === "dif" ? "R1" : "R2"; o[fb] = [360, t === "lp" ? 80 : 70, "h-"]; if (t === "lp") o.C1 = [360, 6, "h-"];
+    var inp = t === "dif" ? "C1" : "R1"; if (t === "dif") o.C1 = [M, 2, "h", -40, 0]; else o.R1 = [M, 2, "h", -40, 0]; o.G1 = [inp + ".1", 1, "r"]; }
+  else if (t === "cmp"){ o.G1 = [Pl, 1, "r", -100, 0]; o.G2 = [M, 1, "r", -100, 0]; }
+  else if (t === "sch"){ o.R2 = [360, 70, "h-"]; o.R1 = [Pl, 2, "h", -40, 0]; o.G1 = ["R1.1", 1, "r"]; o.G2 = [M, 1, "r", -100, 0]; }
+  else if (t === "tia"){ o.R1 = [360, 70, "h-"]; o.G1 = [M, 1, "r", -80, 0]; }
+  if (t === "inv" || t === "int" || t === "lp" || t === "dif" || t === "sum" || t === "tia" || t === "nin"){}
+  return o;
+};
 LAY.lm393 = { U1: [300, 140, { L: [2, null, 3], R: [1], T: [8], B: [4] }], R2: ["U1.2", 2, "v", -40, 0], R3: ["U1.2", 1, "h-", -40, 0], R1: ["U1.3", 2, "h", -40, 0], G1: ["R1.1", 1, "r"], Rh: [360, 370, "h"],
   Rp: ["U1.1", 2, "v<", 40, 0], D1: ["U1.1", 2, "v<", 110, 0], R4: ["D1.1", 2, "v"] };
 LAY.lm317 = { U1: [300, 120, { L: [3], R: [2], B: [1], h: 80 }], G1: ["U1.3", 1, "r", -120, 0], C1: ["U1.3", 1, "v", -60, 0], D1: [360, 70, "h-"], R1: ["U1.2", 1, "v", 60, 0], R2: ["R1.2", 1, "v"], C2: ["U1.2", 1, "v", 120, 0], P1: ["U1.2", 1, "l", 180, 0] };
@@ -1665,13 +1792,14 @@ function sliderRow(p, P, onchg){
   function toV(x){ var t = x / 1000, v = p.log ? p.min * Math.pow(p.max / p.min, t) : p.min + (p.max - p.min) * t; if (p.e12) v = e12(v); if (p.int) v = Math.round(v); return v; }
   function show(){ out.textContent = p.u ? fmt(P[p.k], p.u) : (+P[p.k].toFixed(2)).toString().replace(".", fr ? "," : "."); }
   inp.value = toX(P[p.k]); show(); inp.oninput = function(){ P[p.k] = toV(+inp.value); show(); onchg(); };
-  row.appendChild(nm); row.appendChild(inp); row.appendChild(out); row.setV = function(v){ P[p.k] = v; inp.value = toX(v); show(); onchg(); }; return row;
+  row.sync = function(){ inp.value = toX(P[p.k]); show(); }; row.setL = function(s){ nm.textContent = s; }; row.appendChild(nm); row.appendChild(inp); row.appendChild(out); row.setV = function(v){ P[p.k] = v; inp.value = toX(v); show(); onchg(); }; return row;
 }
 function renderProject(host, pid, icsO){
   stopLive(); host.innerHTML = "";
   var pr = PROJ[pid], P = {}, saved = sv("p_" + pid) || {}, ctx = { ts: 0, fire: null, res: null, pid: pid }, rows = {};
   (pr.params || []).forEach(function(p){ P[p.k] = saved[p.k] != null ? clamp(saved[p.k], p.min, p.max) : p.def; });
   (pr.opts || []).forEach(function(o){ var sv0 = saved[o.k]; P[o.k] = sv0 != null && o.o.some(function(x){ return x[0] === sv0; }) ? sv0 : o.def; });
+  if (pr.init) pr.init(P);
   ctx.setP = function(k, v){ if (rows[k]) rows[k].setV(v); };
   host.appendChild(el("h2", "ic-pt", esc(T(pr.t[0], pr.t[1]))));
   host.appendChild(el("p", "ic-pd", esc(T(pr.d[0], pr.d[1]))));
@@ -1683,12 +1811,28 @@ function renderProject(host, pid, icsO){
   var vwBox = null, vwMode = sv("vw") === "t" ? "t" : "s", vwTabs = null;
   if (NL[pid]){ vwTabs = el("div", "ic-chips ic-vt"); vwBox = el("div", "ic-vw");
     [["s", T("Schaltplan", "Schéma")], ["t", T("Anschlüsse", "Connexions")]].forEach(function(x){ var b = el("button", "ic-ch" + (vwMode === x[0] ? " on" : ""), esc(x[1])); b.type = "button"; b.onclick = function(){ vwMode = x[0]; st("vw", vwMode); vwTabs.querySelectorAll("button").forEach(function(y){ y.classList.remove("on"); }); b.classList.add("on"); drawView(); }; vwTabs.appendChild(b); });
+    var zg = el("span", "ic-zm"), zb = function(l, tt, fn){ var b = el("button", "ic-ch ic-zb", l); b.type = "button"; b.title = tt; b.setAttribute("aria-label", tt); b.onclick = fn; zg.appendChild(b); return b; };
+    zb("−", T("Verkleinern", "Réduire"), function(){ zoomStep(-1); }); zb("⤢", T("Ganzen Schaltplan anzeigen", "Tout le schéma"), function(){ st("zm", "fit"); applyZoom(); }); zb("+", T("Vergrößern", "Agrandir"), function(){ zoomStep(1); }); vwTabs.appendChild(zg);
     colL.appendChild(vwTabs); colL.appendChild(vwBox); }
+  var ZL = [.45, .6, .75, .9, 1, 1.25, 1.6, 2.1];
+  function zoomMode(){ var z = sv("zm"); return z === "fit" || typeof z === "number" ? z : (window.innerWidth <= 900 ? "fit" : 1); }
+  function applyZoom(){ if (!vwBox || vwMode !== "s") return; var s = vwBox.querySelector("svg.ic-sch"); if (!s) return; var W = s.viewBox.baseVal.width, z = zoomMode();
+    if (z === "fit"){ s.style.minWidth = "0"; s.style.width = "100%"; s.style.maxWidth = Math.round(W * 1.35) + "px"; }
+    else if (z === 1){ s.style.minWidth = Math.min(W, 760) + "px"; s.style.width = "100%"; s.style.maxWidth = W + "px"; }
+    else { s.style.minWidth = Math.round(W * z) + "px"; s.style.width = Math.round(W * z) + "px"; s.style.maxWidth = "none"; }
+    s.style.margin = "0 auto"; }
+  function zoomStep(d){ var s = vwBox && vwBox.querySelector("svg.ic-sch"); if (!s) return; var W = s.viewBox.baseVal.width, cur = s.getBoundingClientRect().width / W, n = cur, i;
+    if (d > 0){ for (i = 0; i < ZL.length; i++) if (ZL[i] > cur * 1.04){ n = ZL[i]; break; } if (n === cur) n = ZL[ZL.length - 1]; }
+    else { for (i = ZL.length - 1; i >= 0; i--) if (ZL[i] < cur * .96){ n = ZL[i]; break; } if (n === cur) n = ZL[0]; }
+    st("zm", n); applyZoom(); }
   colL.appendChild(ctl);
-  function drawView(){ if (!vwBox) return; var A; try { A = netAnalyse(pid, P); vwBox.innerHTML = vwMode === "s" ? '<div class="ic-sw">' + (LAY[pid] ? schem2(A, LAY[pid]) : renderSchem(A)) + "</div>" : netText(A); wireHL(vwBox); } catch(e){ vwBox.innerHTML = '<p class="ic-warn">' + esc(String(e && e.message || e)) + "</p>"; if (window.console) console.error(e); } }
-  var cust = null, area = el("div"), scBox = el("div", "ic-scopebox"), cnv = el("canvas"), liveBox = el("div", "ic-live"), warnBox = el("div"), infoBox = el("div", "ic-info");
+  function drawView(){ if (!vwBox) return; var A; try { A = netAnalyse(pid, P); vwBox.innerHTML = vwMode === "s" ? '<div class="ic-sw">' + (LAY[pid] ? schem2(A, LAY[pid]) : renderSchem(A)) + "</div>" : netText(A); wireHL(vwBox); applyZoom(); } catch(e){ vwBox.innerHTML = '<p class="ic-warn">' + esc(String(e && e.message || e)) + "</p>"; if (window.console) console.error(e); } }
+  var moreBox = el("div", "ic-more"), cust = null, area = el("div"), scBox = el("div", "ic-scopebox"), cnv = el("canvas"), liveBox = el("div", "ic-live"), warnBox = el("div"), infoBox = el("div", "ic-info");
   function save(){ st("p_" + pid, P); }
-  function redraw(){ save();
+  function redraw(){
+    if (pr.ui){ var uu = pr.ui(P); (pr.dyn || []).forEach(function(k){ var r = rows[k]; if (r){ r.hidden = uu[k] == null; if (uu[k] != null) r.setL(uu[k]); } }); }
+    Object.keys(rows).forEach(function(k){ if (rows[k].sync) rows[k].sync(); });
+    save();
     var res = pr.build ? pr.build(P, ctx) : {}; ctx.res = res;
     if (res.ch){ scBox.hidden = false; scope(cnv, res.ch, res.span, res.cur, res.tl); } else scBox.hidden = true;
     var solo = !res.ch && !res.live; lab.classList.toggle("solo", solo); if (pb) pb.hidden = solo; if (oszH) oszH.hidden = !res.ch;
@@ -1697,10 +1841,11 @@ function renderProject(host, pid, icsO){
     liveBox.innerHTML = ""; ctx.led = null; ctx.seg = null; ctx.sig = null; ctx.note = null;
     if (res.live) liveBox.hidden = false; else liveBox.hidden = true;
     if (cust && cust.after) cust.after(res);
+    moreBox.innerHTML = ""; if (res.more){ var mo = res.more, mh = "<details class=\"ic-mo\" open><summary>📖 " + esc(T("Erklärung, Formel und Hinweise", "Explication, formule et conseils")) + "</summary><p>" + esc(T(mo.d[0], mo.d[1])) + "</p><p><code>" + esc(mo.f) + "</code></p>" + (mo.notes && mo.notes.length ? "<ul>" + mo.notes.map(function(n){ return "<li>" + esc(T(n[0], n[1])) + "</li>"; }).join("") + "</ul>" : "") + "</details>"; moreBox.innerHTML = mh; }
     drawView();
   }
   (pr.params || []).forEach(function(p){ if (KOMBI.indexOf(pid) >= 0 && (p.u === "Ω" || p.u === "F")) return; var r = sliderRow(p, P, redraw); rows[p.k] = r; ctl.appendChild(r); });
-  (pr.opts || []).forEach(function(o){ var w = el("div", "ic-chips"); w.appendChild(el("span", "ic-lb", esc(T(o.l[0], o.l[1])))); o.o.forEach(function(x){ var b = el("button", "ic-ch" + (P[o.k] === x[0] ? " on" : ""), esc(typeof x[1] === "string" ? x[1] : T(x[1][0], x[1][1]))); b.type = "button"; b.onclick = function(){ P[o.k] = x[0]; w.querySelectorAll("button").forEach(function(y){ y.classList.remove("on"); }); b.classList.add("on"); redraw(); }; w.appendChild(b); }); ctl.appendChild(w); });
+  (pr.opts || []).forEach(function(o){ var w = el("div", "ic-chips"); w.appendChild(el("span", "ic-lb", esc(T(o.l[0], o.l[1])))); o.o.forEach(function(x){ var b = el("button", "ic-ch" + (P[o.k] === x[0] ? " on" : ""), esc(typeof x[1] === "string" ? x[1] : T(x[1][0], x[1][1]))); b.type = "button"; b.onclick = function(){ P[o.k] = x[0]; if (pr.onOpt) pr.onOpt(P, o.k); w.querySelectorAll("button").forEach(function(y){ y.classList.remove("on"); }); b.classList.add("on"); redraw(); }; w.appendChild(b); }); ctl.appendChild(w); });
   if (pr.action){ var ab = el("button", "ic-act", esc(T(pr.action.l[0], pr.action.l[1]))); ab.type = "button";
     ab.onclick = function(){ ctx.fire = ctx.ts; if (pr.onAction) pr.onAction(ctx);
       if (pid === "k_sirene"){ if (AUD) stopAudio(); else { try { var ac = new (window.AudioContext || window.webkitAudioContext)(), o = ac.createOscillator(), g = ac.createGain(); o.type = "square"; g.gain.value = .05; o.connect(g); g.connect(ac.destination); o.start(); AUD = { ac: ac, o: o }; } catch(e){} } ab.classList.toggle("on", !!AUD); }
@@ -1713,6 +1858,7 @@ function renderProject(host, pid, icsO){
   bPow.onclick = function(){ ctx.off = !ctx.off; bPow.innerHTML = "⏻ " + (ctx.off ? T("Aus", "Arrêt") : T("Ein", "Marche")); bPow.classList.toggle("on", !ctx.off); scBox.classList.toggle("off", !!ctx.off); liveBox.classList.toggle("off", !!ctx.off); if (ctx.off) stopAudio(); };
   bRst.onclick = function(){ ctx.ts = 0; ctx.fire = null; };
   var oszH = el("div", "ic-h3 ic-osz", "📈 " + T("Oszilloskop", "Oscilloscope")); colR.appendChild(oszH); colR.appendChild(scBox); scBox.appendChild(cnv); scBox.appendChild(el("div", "ic-offl", T("Versorgung aus", "Alimentation coupée"))); colR.appendChild(pb); colR.appendChild(liveBox); colR.appendChild(warnBox); colR.appendChild(infoBox);
+  host.appendChild(moreBox);
   redraw();
   if (pr.forms && pr.forms.length){ host.appendChild(el("h3", "ic-h3", "📐 " + T("Formeln", "Formules"))); var uf = el("ul", "ic-wire ic-forms"); pr.forms.forEach(function(f){ uf.appendChild(el("li", "", "<code>" + esc(f) + "</code>")); }); host.appendChild(uf); }
   if (pr.wire){ host.appendChild(el("h3", "ic-h3", "🔌 " + T("Verdrahtung", "Câblage"))); var ul = el("ol", "ic-wire"); pr.wire.forEach(function(w){ ul.appendChild(el("li", "", esc(T(w[0], w[1])))); }); host.appendChild(ul); }
@@ -1782,7 +1928,7 @@ function listPage(){
 }
 function circuitPage(pid){
   var pr = PROJ[pid]; if (!pr) return listPage(); var ics = icsOf(pid).map(icById).filter(Boolean);
-  var OPK = { analog_lm358: "lm358", analog_tl072: "tl072", analog_ne5532: "ne5532", analog_mcp6002: "mcp6002", analog_lm741: "lm741", analog_tl071: "tl071", analog_tl074: "tl074", analog_lm324: "lm324" }, okey = (location.hash.split("/")[2] || "");
+  var okey = (location.hash.split("/")[2] || "");
   if (pid === "opamp" && OPK[okey]) ics = [icById(OPK[okey])];
   document.title = shortT(pid) + " – Schaltungen"; root.innerHTML = "";
   root.appendChild(el("div", "crumb", '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › <a href="#">' + T("Schaltungen", "Circuits") + "</a> › " + esc(shortT(pid))));
@@ -1924,7 +2070,7 @@ var BAU = (function(){
     return []; }
 
   /* --- Seite --- */
-  var S = null, sel = null, wiring = null, sim = null, undo = [], svg, wrap, msgBox, propBox, scopeCv, simBtn, zoom = 1.25;
+  var S = null, sel = null, wiring = null, sim = null, undo = [], svg, wrap, msgBox, propBox, scopeCv, simBtn, zoom = window.innerWidth < 760 ? 0.7 : 1.25;
   function save(){ try { localStorage.setItem("iclab_bau", JSON.stringify(S)); } catch(e){} }
   function snap(v){ return Math.round(v / G) * G; }
   function nid(t){ var p = PFX[t] || t, n = 1; while (S.parts.some(function(q){ return q.id === p + n; })) n++; return p + n; }
@@ -2001,7 +2147,7 @@ var BAU = (function(){
       if (/^(R|LED|D|C|TA|SW|LP|SU)$/.test(p.t)) h += ' <button type="button" class="ic-ch" data-a="rot">⟳ ' + T("drehen", "pivoter") + "</button>";
       h += ' <button type="button" class="ic-ch" data-a="del">🗑 ' + T("löschen", "supprimer") + "</button>"; }
     else if (sel && sel.w != null) h = "<b>" + T("Draht", "Fil") + "</b> " + esc(S.wires[sel.w].a + " → " + S.wires[sel.w].b) + ' <button type="button" class="ic-ch" data-a="del">🗑 ' + T("löschen", "supprimer") + "</button>";
-    else h = wiring ? "🔌 " + T("Draht läuft: klicke auf den Ziel-Pin. Klick auf freie Fläche = Knick. Rechtsklick oder Esc = abbrechen.", "Fil en cours : clique sur la broche cible.") : T("Tipp: Bauteil links anklicken, auf der Fläche verschieben, dann Pin anklicken → Pin anklicken = Draht.", "Astuce : ajoute un composant, puis clique broche → broche pour un fil.");
+    else h = wiring ? "🔌 " + T("Draht läuft: klicke auf den Ziel-Pin. Klick auf freie Fläche = Knick. Rechtsklick oder Esc = abbrechen.", "Fil en cours : clique sur la broche cible.") : T("Tipp: Bauteil in der Liste anklicken, auf der Fläche verschieben, dann Pin anklicken → Pin anklicken = Draht.", "Astuce : ajoute un composant, puis clique broche → broche pour un fil.");
     propBox.innerHTML = h;
     propBox.querySelectorAll("select").forEach(function(se){ se.onchange = function(){ var p = part(sel.p); push(); var k = se.dataset.k, v = se.value; p[k] = k === "c" ? v : +v; save(); render(); }; });
     propBox.querySelectorAll('input[type="range"]').forEach(function(ri){ ri.oninput = function(){ var p = part(sel.p), k = ri.dataset.k; p[k] = +ri.value; save(); var txt = k === "u" ? fmt(p.u, "V") : Math.round(p.pos) + " %"; ri.nextElementSibling.textContent = txt; var lv = svg.querySelector('[data-p="' + p.id + '"] [data-lv]'); if (lv) lv.textContent = txt; }; });
@@ -2151,7 +2297,7 @@ var BAU = (function(){
     function btn(lbl, f){ var b = el("button", "ic-ch", lbl); b.type = "button"; b.onclick = f; bar.appendChild(b); return b; }
     btn("↶ " + T("Zurück", "Annuler"), function(){ if (!undo.length) return; S = JSON.parse(undo.pop()); sel = null; save(); render(); });
     btn("🗑 " + T("Auswahl löschen", "Supprimer"), del);
-    btn("➖", function(){ zoom = Math.max(0.5, zoom - 0.15); fit(); }); btn("➕", function(){ zoom = Math.min(2, zoom + 0.15); fit(); });
+    btn("➖", function(){ zoom = Math.max(0.25, zoom - 0.15); fit(); }); btn("⤢ " + T("Alles zeigen", "Tout voir"), function(){ var mx = 700, my = 420; S.parts.forEach(function(p){ mx = Math.max(mx, p.x + 120); my = Math.max(my, p.y + 120); }); zoom = Math.max(0.25, Math.min(1.6, Math.min(wrap.clientWidth / mx, wrap.clientHeight / my))); fit(); wrap.scrollLeft = 0; wrap.scrollTop = 0; }); btn("➕", function(){ zoom = Math.min(2, zoom + 0.15); fit(); });
     var exs = el("select", "bau-ex"); exs.innerHTML = '<option value="">📂 ' + T("Beispiel laden …", "Charger un exemple …") + "</option>" + EXS.map(function(e){ return '<option value="' + e[0] + '">' + esc(e[1]) + "</option>"; }).join(""); bar.appendChild(exs);
     exs.onchange = function(){ if (!exs.value) return; push(); stopSim(); S = /^(daemm|ff2|npn)$/.test(exs.value) ? ex2(exs.value) : ex(exs.value); exs.value = ""; sel = null; save(); render(); };
     btn("🧹 " + T("Neu (leer)", "Nouveau"), function(){ push(); stopSim(); S = { parts: [], wires: [] }; sel = null; save(); render(); });
