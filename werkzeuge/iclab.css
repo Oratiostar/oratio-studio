@@ -93,3 +93,6 @@
 .ic-bnr{margin:4px 0 10px;padding:10px 12px;border-radius:12px;background:#e7f5ff;color:#0b3b66;border:1px solid #a5d8ff;font-size:14px;line-height:1.45}.ic-bnr a{color:#0b5cad;font-weight:700}
 .ic-rk{margin:2px 0 10px}.ic-rch{background:#fff4e6;border-color:#ffc078;color:#7a3a00}
 .ic-forms code{font:700 14.5px ui-monospace,Menlo,Consolas,monospace;background:var(--soft);padding:2px 7px;border-radius:6px}
+.ic-sch .ar{fill:#22324a;stroke:#22324a}.ic-sch .sym .tt{font-size:13px}.ic-sch .sym .tn{font-size:12px}
+.ic-self{display:flex;align-items:center;gap:14px;margin:4px 0 14px;padding:16px 18px;border-radius:16px;background:linear-gradient(135deg,#ffe8cc,#fff4e6);border:2px solid #ffa94d;color:#5c2b00;text-decoration:none;box-shadow:0 4px 14px rgba(255,146,43,.25)}
+.ic-self b{display:block;font-size:20px;font-weight:900;margin-bottom:2px}.ic-self span{font-size:14.5px;line-height:1.4}.ic-self-i{font-size:34px}.ic-self i{margin-left:auto;font-style:normal;font-size:26px;font-weight:900}
