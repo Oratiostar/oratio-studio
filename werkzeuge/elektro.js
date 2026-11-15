@@ -421,7 +421,7 @@ function opampTool(host, t0){
   /* ---- Zeichen-Bausteine ---- */
   const P_ = d => '<path d="' + d + '"/>';
   const Rh = (x, y, w, lab, key) => { const a = x + (w - 34) / 2; return P_("M" + x + " " + y + "H" + a) + '<rect x="' + a + '" y="' + (y - 7) + '" width="34" height="14" rx="2"/>' + P_("M" + (a + 34) + " " + y + "H" + (x + w)) + '<text class="lb" x="' + (x + w / 2) + '" y="' + (y - 12) + '" text-anchor="middle">' + lab + '</text>' + (key ? '<text class="iv" data-k="' + key + '" x="' + (x + w / 2) + '" y="' + (y + 25) + '" text-anchor="middle"></text>' : ""); };
-  const Rv = (x, y, h, lab, key) => { const a = y + (h - 34) / 2; return P_("M" + x + " " + y + "V" + a) + '<rect x="' + (x - 7) + '" y="' + a + '" width="14" height="34" rx="2"/>' + P_("M" + x + " " + (a + 34) + "V" + (y + h)) + '<text class="lb" x="' + (x + 12) + '" y="' + (y + h / 2 - 2) + '">' + lab + '</text>' + (key ? '<text class="iv" data-k="' + key + '" x="' + (x + 12) + '" y="' + (y + h / 2 + 12) + '"></text>' : ""); };
+  const Rv = (x, y, h, lab, key, lf) => { const a = y + (h - 34) / 2, lx = lf ? x - 12 : x + 12, an = lf ? ' text-anchor="end"' : ""; return P_("M" + x + " " + y + "V" + a) + '<rect x="' + (x - 7) + '" y="' + a + '" width="14" height="34" rx="2"/>' + P_("M" + x + " " + (a + 34) + "V" + (y + h)) + '<text class="lb" x="' + lx + '" y="' + (y + h / 2 - 2) + '"' + an + '>' + lab + '</text>' + (key ? '<text class="iv" data-k="' + key + '" x="' + lx + '" y="' + (y + h / 2 + 12) + '"' + an + '></text>' : ""); };
   const Ch = (x, y, w, lab, key) => { const m = x + w / 2; return P_("M" + x + " " + y + "H" + (m - 4) + "M" + (m + 4) + " " + y + "H" + (x + w)) + P_("M" + (m - 4) + " " + (y - 13) + "V" + (y + 13) + "M" + (m + 4) + " " + (y - 13) + "V" + (y + 13)) + '<text class="lb" x="' + m + '" y="' + (y - 18) + '" text-anchor="middle">' + lab + '</text>' + (key ? '<text class="iv" data-k="' + key + '" x="' + m + '" y="' + (y + 29) + '" text-anchor="middle"></text>' : ""); };
   const GND = (x, y) => P_("M" + x + " " + y + "V" + (y + 8) + "M" + (x - 10) + " " + (y + 8) + "H" + (x + 10) + "M" + (x - 6) + " " + (y + 13) + "H" + (x + 6) + "M" + (x - 2) + " " + (y + 18) + "H" + (x + 2));
   const dot = (x, y) => '<circle class="dt" cx="' + x + '" cy="' + y + '" r="3.2"/>';
@@ -439,7 +439,7 @@ function opampTool(host, t0){
       info: T("Das Signal wird um das Verhältnis Rf/Rin verstärkt und gedreht (Phase 180°). Der −Eingang liegt durch die Gegenkopplung auf 0 V („virtuelle Masse“); der Eingangswiderstand ist Rin.", "Le signal est amplifié du rapport Rf/Rin et inversé (180°). L’entrée − est à 0 V (masse virtuelle) ; l’impédance d’entrée vaut Rin."),
       formel: "Uout = −Rf/Rin · Uin",
       p: [["Rin", "10k", "Rin (Ω)"], ["Rf", "47k", "Rf (Ω)"]],
-      draw: () => term(58, 90, "Uin", "uin") + P_("M58 90H70") + Rh(70, 90, 70, "Rin", "iRin") + P_("M140 90H190") + dot(160, 90) + P_("M160 90V40") + Rh(160, 40, 100, "Rf", "iRf") + P_("M260 40V110") + dot(260, 110) + OA(190, 110) + P_("M190 130H170V160") + GND(170, 160) + '<text class="vm" x="166" y="83">≈ 0 V</text>' + OUT(110) + rails,
+      draw: () => term(58, 90, "Uin", "uin") + P_("M58 90H70") + Rh(70, 90, 70, "Rin", "iRin") + P_("M140 90H190") + dot(160, 90) + P_("M160 90V40") + Rh(160, 40, 100, "Rf", "iRf") + P_("M260 40V110") + dot(260, 110) + OA(190, 110) + P_("M190 130H170V160") + GND(170, 160) + '<text class="vm" x="186" y="112" text-anchor="end">≈ 0 V</text>' + OUT(110) + rails,
       sim: (q, u) => ({ y: -q.Rf / q.Rin * u }), cur: (q, u) => ({ iRin: u / q.Rin, iRf: u / q.Rin }),
       stats: q => ({ G: -q.Rf / q.Rin, zin: q.Rin, note: T("Phase um 180° gedreht", "phase inversée de 180°") }) },
     { id: "nin", ic: "+", name: T("Nicht-invertierend", "Non-inverseur"), sig: ["V", "Uin"],
@@ -459,7 +459,7 @@ function opampTool(host, t0){
       info: T("Jede Eingangsspannung wird einzeln mit Rf/Rn verstärkt und gedreht, am −Eingang addieren sich die Ströme. Der Mischer in der Audiotechnik.", "Chaque entrée est amplifiée par Rf/Rn et inversée ; les courants s’additionnent. Le mélangeur de l’audio."),
       formel: "Uout = −Rf · (U1/R1 + U2/R2 + U3/R3)",
       p: [["R1", "10k", "R1 (Ω)"], ["R2", "10k", "R2 (Ω)"], ["R3", "10k", "R3 (Ω)"], ["Rf", "10k", "Rf (Ω)"], ["U2", "0,5", "U2 (V, fest)"], ["U3", "-0,2", "U3 (V, fest)"]],
-      vb: "0 -8 400 255",
+      vb: "-40 -8 440 255",
       draw: () => term(36, 60, "U1", "uin") + P_("M36 60 H64") + Rh(64, 60, 86, "R1", "iR1") + term(36, 110, "U2", "u2") + P_("M36 110 H64") + Rh(64, 110, 86, "R2", "iR2") + term(36, 160, "U3", "u3") + P_("M36 160 H64") + Rh(64, 160, 86, "R3", "iR3") + P_("M150 60V160H190") + dot(150, 110) + dot(150, 60) + dot(150, 160) + P_("M150 60V20H165") + Rh(165, 20, 90, "Rf", "iRf") + P_("M255 20H260V180") + OA(190, 180) + P_("M190 200H170V218") + GND(170, 218) + P_("M260 180H338") + dot(260, 180) + term(344, 180, "Uout", "uout"),
       sim: (q, u) => ({ y: -q.Rf * (u / q.R1 + q.U2 / q.R2 + q.U3 / q.R3) }), cur: (q, u) => ({ iR1: u / q.R1, iR2: q.U2 / q.R2, iR3: q.U3 / q.R3 }),
       stats: q => ({ G: -q.Rf / q.R1, zin: q.R1, note: T("Verstärkung gilt für U1; U2/U3 haben −Rf/R2 bzw. −Rf/R3", "le gain vaut pour U1 ; U2/U3 : −Rf/R2 et −Rf/R3") }), rfKey: 1 },
@@ -488,7 +488,7 @@ function opampTool(host, t0){
       info: T("Ein invertierender Verstärker mit Kondensator parallel zu Rf: Tiefe Frequenzen werden mit Rf/Rin verstärkt, hohe fallen oberhalb der Grenzfrequenz mit 20 dB je Dekade ab.", "Un inverseur avec un condensateur en parallèle de Rf : filtre passe-bas actif du 1er ordre."),
       formel: "G = −Rf/Rin ; fg = 1/(2π·Rf·Cf)",
       p: [["Rin", "10k", "Rin (Ω)"], ["Rf", "47k", "Rf (Ω)"], ["Cf", "1n", "Cf (F)"]],
-      vb: "0 -14 400 220",
+      vb: "-40 -14 440 220",
       draw: () => term(58, 90, "Uin", "uin") + P_("M58 90H70") + Rh(70, 90, 70, "Rin", "iRin") + P_("M140 90H190") + dot(160, 90) + P_("M160 90V14H185M235 14H260V110M160 56H185M235 56H260") + Ch(185, 14, 50, "Cf", "") + Rh(185, 56, 50, "Rf", "") + dot(160, 56) + dot(260, 56) + dot(260, 110) + OA(190, 110) + P_("M190 130H170V160") + GND(170, 160) + OUT(110) + rails,
       dyn: true, sim: (q, u, st, dt) => { const tau = q.Rf * q.Cf, n = Math.max(1, Math.ceil(dt / (tau / 20))), h = dt / n; let y = st.y || 0; for (let k = 0; k < n; k++) y += (-q.Rf / q.Rin * u - y) / tau * h; st.y = y; return { y, clipState: true }; }, cur: (q, u) => ({ iRin: u / q.Rin }),
       stats: q => ({ G: -q.Rf / q.Rin, zin: q.Rin, note: T("Grenzfrequenz fg = ", "fréquence de coupure fg = ") + fmtSI(1 / (2 * Math.PI * q.Rf * q.Cf), "Hz"), tau: q.Rf * q.Cf }) },
@@ -502,7 +502,7 @@ function opampTool(host, t0){
       info: T("Mitkopplung über R2 erzeugt zwei Schaltschwellen (Hysterese): Das Signal muss erst über die obere Schwelle steigen und dann unter die untere fallen, bevor der Ausgang kippt. Rauschen und Prellen stören nicht mehr.", "La réaction positive crée deux seuils (hystérésis) : le bruit ne fait plus basculer la sortie."),
       formel: "U_H/U_L = Uref·(1 + R1/R2) ± Usat · R1/R2",
       p: [["R1", "10k", "R1 (Ω)"], ["R2", "47k", "R2 (Ω)"], ["Uref", "0", "Uref (V)"]],
-      draw: () => term(58, 130, "Uin", "uin") + P_("M58 130H70") + Rh(70, 130, 80, "R1", "iR1") + P_("M150 130H190") + dot(165, 130) + Rv(165, 130, 60, "R2", "iR2") + P_("M165 190H300V110") + SRC(110, 52, "Uref", "uref") + P_("M123 52H165V90H190") + P_("M110 65V77") + GND(110, 77) + OA(190, 110) + P_("M260 110H338") + dot(260, 110) + dot(300, 110) + term(344, 110, "Uout", "uout") + rails,
+      draw: () => term(58, 130, "Uin", "uin") + P_("M58 130H70") + Rh(70, 130, 80, "R1", "iR1") + P_("M150 130H190") + dot(165, 130) + Rv(165, 130, 60, "R2", "iR2", 1) + P_("M165 190H300V110") + SRC(110, 52, "Uref", "uref") + P_("M123 52H165V90H190") + P_("M110 65V77") + GND(110, 77) + OA(190, 110) + P_("M260 110H338") + dot(260, 110) + dot(300, 110) + term(344, 110, "Uout", "uout") + rails,
       sim: (q, u, st, dt, S) => { const k = q.R1 / q.R2, hi = q.Uref * (1 + k) + S.lim * k, lo = q.Uref * (1 + k) - S.lim * k; if (st.s === undefined) st.s = -1; if (u > hi) st.s = 1; else if (u < lo) st.s = -1; return { y: st.s * S.lim }; }, cur: () => ({}),
       stats: (q, S) => { const k = q.R1 / q.R2; return { G: null, zin: q.R1 + q.R2, note: T("Schwellen: ", "seuils : ") + fmtSI(q.Uref * (1 + k) - S.lim * k, "V") + " / " + fmtSI(q.Uref * (1 + k) + S.lim * k, "V") + " (" + T("Hysterese ", "hystérésis ") + fmtSI(2 * S.lim * k, "V") + ")" }; } },
     { id: "tia", ic: "I→U", name: T("Transimpedanz", "Transimpédance"), sig: ["µA", "Iin"],
@@ -533,7 +533,7 @@ function opampTool(host, t0){
     $("#opPlay", host).onclick = () => { play = !play; $("#opPlay", host).textContent = (play ? "⏸ " + T("Anhalten", "Pause") : "▶ " + T("Abspielen", "Lecture")); };
     $("#opInfo", host).innerHTML = '<b>' + esc(t.name) + ':</b> ' + esc(t.info) + '<br><code style="font-size:15px">' + esc(t.formel) + '</code>' + (OPW[t.id] ? '<details class="opw2" open><summary>📖 ' + T("Erklärung, Formeln und Hinweise", "Explication, formules et conseils") + '</summary><p>' + esc(T(OPW[t.id].d[0], OPW[t.id].d[1])) + '</p>' + (OPW[t.id].forms.length ? '<ul>' + OPW[t.id].forms.map(f => '<li><code>' + esc(f) + '</code></li>').join("") + '</ul>' : '') + (OPW[t.id].notes.length ? '<ul>' + OPW[t.id].notes.map(n => '<li>' + esc(T(n[0], n[1])) + '</li>').join("") + '</ul>' : '') + '</details>' : '') + (WIKI[t.id] ? '<br><a href="index.html#/s/' + WIKI[t.id] + '">📖 ' + T("Hintergrund, Anwendungen und Hinweise", "Contexte, applications et conseils") + '</a>' : '') + '<br><a href="index.html#/s/bt_analog/opamp">🔧 ' + T("Grundwissen und Opamp-Typen (Bauteile)", "Bases et types d’ampli op (composants)") + '</a>';
     const dr = t.draw(), tms = dr.match(/<circle class="tm"[^>]*\/>/g) || [];
-    $("#opSvg", host).innerHTML = '<svg class="opsvg" viewBox="' + (t.vb || "0 -8 400 212") + '" role="img" aria-label="' + esc(t.name) + '">' + dr.replace(/<circle class="tm"[^>]*\/>/g, "") + tms.join("") + '</svg>';
+    $("#opSvg", host).innerHTML = '<svg class="opsvg" viewBox="' + (t.vb || "-40 -8 440 212") + '" role="img" aria-label="' + esc(t.name) + '">' + dr.replace(/<circle class="tm"[^>]*\/>/g, "") + tms.join("") + '</svg>';
     neu();
   }
   function readSave(){ const o = {}; tdef().p.forEach(p => { const e = $("#op_" + p[0], host); if (e) o[p[0]] = e.value; }); const k = $("#op_k", host); if (k) { sg = { k: k.value, A: $("#op_A", host).value, f: $("#op_f", host).value, off: $("#op_off", host).value }; vs = $("#op_vs", host).value; } return o; }
