@@ -17,7 +17,7 @@ function fmt(v, u, dig){
   return String(parseFloat((v / s[0]).toPrecision(dig || 3))).replace(".", fr ? "," : ".") + " " + s[1] + (u || "");
 }
 var C = { amber: "#ffb000", cyan: "#3de6ff", green: "#6dffb0", pink: "#ff3d9a", lime: "#b6ff3d", violet: "#b58cff", red: "#ff6b6b", white: "#e8fff3" };
-var LINK = { ne555: "bt/analog_ne555", hc14: "bt/logik_74hc14", cd4060: "bt/speicher_4060", hc00: "bt/logik_7400", hc74: "bt/speicher_7474", cd4017: "bt/speicher_4017", hc160: "bt/speicher_74160", hc595: "bt/speicher_74595", hc138: "bt/decoder_74138", cd4511: "bt/decoder_4511", lm358: "bt/analog_lm358", lm393: "bt/analog_lm393", lm317: "bt/bauteile_lm317" };
+var LINK = { ne555: "bt_analog/analog_ne555", hc14: "bt_ic/logik_74hc14", cd4060: "bt_ic/speicher_4060", hc00: "bt_ic/logik_7400", hc74: "bt_ic/speicher_7474", cd4017: "bt_ic/speicher_4017", hc160: "bt_ic/speicher_74160", hc595: "bt_ic/speicher_74595", hc138: "bt_ic/decoder_74138", cd4511: "bt_ic/decoder_4511", lm358: "bt_analog/analog_lm358", lm393: "bt_analog/analog_lm393", lm317: "halbleiter/bauteile_lm317" };
 
 /* ---------- Zeit-Helfer (alles geschlossen berechnet) ---------- */
 function cnt(t, f, ph){ return t < ph ? 0 : Math.floor((t - ph) * f) + 1; }       // steigende Flanken bis t
