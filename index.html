@@ -1041,7 +1041,16 @@ async function route(){
   $("#q").placeholder = U("suche");
   const dw = document.querySelector("#sbar .dsw"); if (dw) dw.hidden = p[0] !== "studio";
   if (imStudio) botZeigen();
+  scrollBack();
 }
+/* Scroll-Position merken: Zurück führt wieder an dieselbe Stelle */
+let SCR = {}, FRESH = false; try { SCR = JSON.parse(sessionStorage.getItem("scr") || "{}"); } catch(e){}
+const skey = () => location.pathname + (location.hash || "#/");
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+document.addEventListener("click", e => { if (e.target.closest && e.target.closest("a[href]")) FRESH = true; }, true);
+let scrT = 0; window.addEventListener("scroll", () => { SCR[skey()] = window.scrollY; clearTimeout(scrT); scrT = setTimeout(() => { try { sessionStorage.setItem("scr", JSON.stringify(SCR)); } catch(e){} }, 200); }, { passive: true });
+window.addEventListener("pagehide", () => { try { sessionStorage.setItem("scr", JSON.stringify(SCR)); } catch(e){} });
+function scrollBack(){ const y = FRESH ? 0 : (SCR[skey()] || 0); FRESH = false; window.scrollTo(0, y); if (y) setTimeout(() => window.scrollTo(0, y), 150); }
 
 /* ============================================================ Kopfleiste */
 function theme(){ let t = "auto"; try { t = localStorage.getItem("wz-theme") || localStorage.getItem("theme") || "auto"; } catch(e){} return t; }
