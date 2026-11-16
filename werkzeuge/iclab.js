@@ -2068,9 +2068,9 @@ function circuitPage(pid){
     else if (n8 === 8) txt = T("Doppel-Opamp (Standard-Belegung wie LM358): Verstärker 1 = OUT Pin 1, IN− Pin 2, IN+ Pin 3 · Verstärker 2 = IN+ Pin 5, IN− Pin 6, OUT Pin 7 · V+ = Pin 8, V− bzw. GND = Pin 4.", "Double ampli (brochage standard) : 1/2/3 et 7/6/5, V+ 8, V− 4.");
     else txt = T("Vierfach-Opamp (Standard-Belegung wie LM324): Verstärker 1 = Pin 1/2/3, 2 = 7/6/5, 3 = 8/9/10, 4 = 14/13/12 (OUT/IN−/IN+) · V+ = Pin 4, V− bzw. GND = Pin 11.", "Quadruple ampli : V+ 4, V− 11.");
     main.appendChild(el("div", "ic-bnr", "📌 <b>" + esc(oi.name) + "</b> – " + esc(txt) + " " + esc(T("Die Beschaltungen unten (Widerstände, Formeln) gelten für jeden Operationsverstärker.", "Les montages ci-dessous valent pour tout ampli op.")))); }
-  var host = el("div"); main.appendChild(host); renderProject(host, pid, ics.map(function(i){ return i.id; }));
   var ids = {}; ics.forEach(function(i){ ids[i.id] = 1; }); var more = []; Object.keys(PROJ).forEach(function(p){ if (p !== pid && icsOf(p).some(function(i){ return ids[i]; })) more.push(p); });
-  if (more.length){ main.appendChild(el("h3", "ic-h3", "➕ " + T("Weitere Schaltungen mit diesen ICs", "Autres circuits avec ces CI"))); var mc = el("div", "ic-chips"); more.forEach(function(p){ var a = el("a", "ic-ch", esc(shortT(p))); a.href = "#p/" + p; mc.appendChild(a); }); main.appendChild(mc); }
+  if (more.length){ var mb = el("div", "ic-more2"); mb.appendChild(el("h3", "ic-h3", "➕ " + T("Weitere Schaltungen mit ", "Autres circuits avec ") + esc(ics.map(function(i){ return i.name.split(" / ")[0]; }).join(" + ")) + " (" + more.length + ")")); var mc = el("div", "ic-chips"); more.forEach(function(p){ var a = el("a", "ic-ch", esc(shortT(p))); a.href = "#p/" + p; mc.appendChild(a); }); mb.appendChild(mc); main.appendChild(mb); }
+  var host = el("div"); main.appendChild(host); renderProject(host, pid, ics.map(function(i){ return i.id; }));
 }
 /* ================= Werkstatt: eigene Schaltung bauen (Editor + Logik-Simulation) ================= */
 var BAU = (function(){
