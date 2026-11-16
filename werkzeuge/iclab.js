@@ -78,7 +78,7 @@ function dip(ic){
 /* ---------- LED-Reihe & 7-Segment ---------- */
 function ledRow(host, n, names, col){
   var row = el("div", "iclr"), L = [];
-  for (var i = 0; i < n; i++){ var w = el("div", "ic-led"), d = el("i"), nm0 = names && names[i] != null ? String(names[i]) : "", cc = Array.isArray(col) ? col[i] : /^(rot|rouge|red)/i.test(nm0) ? C.red : /^(gelb|jaune|orange)/i.test(nm0) ? C.amber : /^(grün|vert|green)/i.test(nm0) ? C.green : /^(blau|bleu)/i.test(nm0) ? "#4dabf7" : col; if (cc === C.green) cc = "#4dff7c"; d.style.setProperty("--c", cc || C.red); w.appendChild(d); w.appendChild(el("span", "", names && names[i] != null ? names[i] : "")); row.appendChild(w); L.push(d); }
+  for (var i = 0; i < n; i++){ var w = el("div", "ic-led"), d = el("i"), nm0 = names && names[i] != null ? String(names[i]) : "", cc = Array.isArray(col) ? col[i] : /^(rot|rouge|red)/i.test(nm0) ? C.red : /^(gelb|jaune|orange)/i.test(nm0) ? C.amber : /^(grün|vert|green)/i.test(nm0) ? C.green : /^(blau|bleu)/i.test(nm0) ? "#4dabf7" : col; d.style.setProperty("--c", cc || C.red); w.appendChild(d); w.appendChild(el("span", "", names && names[i] != null ? names[i] : "")); row.appendChild(w); L.push(d); }
   host.appendChild(row);
   return { set: function(a){ for (var i = 0; i < L.length; i++) L[i].classList.toggle("on", !!a[i]); } };
 }
@@ -1282,6 +1282,14 @@ NL.k_alarm = nmk({ LDR1: ["LDR", "LDR"], R1: ["R", 10e3], R2: ["R", 10e3], R3: [
   { VCC: ["LDR1.1", "R2.1", "R4.1", "U1.8", "U2.8", "R5.1", "SW1.1"], GND: ["R1.2", "R3.2", "U1.4", "U2.1", "C1.2", "C2.2", "R6.2", "SP1.2", "D1.2"], X: ["LDR1.2", "R1.1", "U1.3"], REF: ["R2.2", "R3.1", "U1.2"], TRIG: ["U1.1", "R4.2", "U2.2"], ZEIT: ["R5.2", "U2.7", "U2.6", "C1.1"], CTRL: ["U2.5", "C2.1"], SCHARF: ["U2.4", "SW1.2", "R6.1"], OUT: ["U2.3", "SP1.1", "R7.1"], LED: ["R7.2", "D1.1"] });
 NL.k_wechsel = nmk({ R1: ["R", 470], D1: ["LED", "#ff4d4d"], R2: ["R", 47e3], R3: ["R", 47e3], R4: ["R", 470], D2: ["LED", "#6dffb0"], C1: ["C", 10e-6, "pol"], C2: ["C", 10e-6, "pol"], Q1: "bc547", Q2: "bc547" },
   { VCC: ["R1.1", "R2.1", "R3.1", "R4.1"], GND: ["Q1.E", "Q2.E"], A1: ["R1.2", "D1.1"], K1: ["D1.2", "Q1.C", "C1.1"], B2: ["C1.2", "R2.2", "Q2.B"], A2: ["R4.2", "D2.1"], K2: ["D2.2", "Q2.C", "C2.1"], B1: ["C2.2", "R3.2", "Q1.B"] });
+NL.k_verz = nmk({ R1: ["R", 1e6], C1: ["C", 10e-6, "pol"], R2: ["R", 470], D1: ["LED", "#6dffb0"], Q1: "bc547" },
+  { VCC: ["R1.1", "R2.1"], GND: ["C1.2", "Q1.E"], B1: ["R1.2", "C1.1", "Q1.B"], A1: ["R2.2", "D1.1"], K1: ["D1.2", "Q1.C"] });
+NL.k_touch = nmk({ SW1: ["SW", "Finger"], R1: ["R", 100e3], R2: ["R", 470], D1: ["LED", "#ffb000"], Q1: "bc547", Q2: "bc547" },
+  { VCC: ["SW1.1", "R2.1"], FINGER: ["SW1.2", "R1.1"], B1: ["R1.2", "Q1.B"], MITTE: ["Q1.E", "Q2.B"], GND: ["Q2.E"], A1: ["R2.2", "D1.1"], K1: ["D1.2", "Q1.C", "Q2.C"] });
+NL.k_strom = nmk({ R1: ["R", 1e3], Rs: ["R", 33], D1: ["LED", "#6dffb0"], Q1: "bc547", Q2: "bc547" },
+  { VCC: ["R1.1", "D1.1"], K1: ["D1.2", "Q1.C"], B1: ["R1.2", "Q1.B", "Q2.C"], S: ["Q1.E", "Q2.B", "Rs.1"], GND: ["Rs.2", "Q2.E"] });
+NL.k_zreg = nmk({ G1: ["G", "Uein 6…15 V"], R1: ["R", 220], D1: ["D", "Z-Diode 5,1 V"], R2: ["R", 1e3], P1: ["G", "Uaus"] },
+  { EIN: ["G1.1", "R1.1"], AUS: ["R1.2", "D1.2", "R2.1", "P1.1"], GND: ["D1.1", "R2.2"] });
 /* --- Netz-Auswertung --- */
 function icDef(spec){ return PARTIC[spec] || icById(spec); }
 function netAnalyse(pid, P){
@@ -1693,6 +1701,10 @@ LAY.k_wuerfel = function(P, A){ return chains(A, { U1: [300, 120, { L: [7, 6, 2]
 LAY.k_alarm = { U1: [300, 140, { L: [3, null, 2], R: [1], T: [8], B: [4] }], LDR1: ["U1.3", 2, "v", -40, 0], R1: ["U1.3", 1, "h-", -40, 0], R2: ["U1.2", 2, "h", -100, 0], R3: ["U1.2", 1, "v<", -40, 0], R4: ["U1.1", 2, "v<", 40, 0],
   U2: [600, 100, { L: [7, 6], B: [2, 1, 5], R: [3], T: [8, 4], w: 160 }], R5: ["U2.7", 2, "v<", -40, 0], C1: ["U2.6", 1, "v", -40, 0], C2: ["U2.5", 1, "v"], SW1: ["U2.4", 2, "v"], R6: ["U2.4", 1, "h", 60, 0], SP1: ["U2.3", 1, "v", 40, 0], R7: ["U2.3", 1, "h", 110, 0], D1: ["R7.2", 1, "v"] };
 LAY.k_wechsel = { Q1: [300, 320], Q2: [620, 320, "m"], D1: ["Q1.1", 2, "v<", 0, -30], R1: ["D1.1", 2, "v<"], D2: ["Q2.1", 2, "v", 0, -30], R4: ["D2.1", 2, "v"], R3: [400, 200, "v"], R2: [520, 200, "v"], C1: [460, 250, "h="], C2: [460, 290, "h-="] };
+LAY.k_verz = { Q1: [420, 300], D1: ["Q1.1", 2, "v<", 0, -30], R2: ["D1.1", 2, "v<"], R1: [250, 190, "v"], C1: [250, 330, "v"] };
+LAY.k_touch = { Q2: [520, 360], Q1: [340, 300], D1: ["Q2.1", 2, "v<", 0, -90], R2: ["D1.1", 2, "v<"], R1: [200, 280, "h"], SW1: [120, 180, "v"] };
+LAY.k_strom = { Q1: [440, 280], Q2: [300, 340, "m"], D1: ["Q1.1", 2, "v<", 0, -30], R1: [200, 200, "v"], Rs: [440, 420, "v"] };
+LAY.k_zreg = { G1: [100, 140, "r"], R1: [220, 140, "h"], D1: [360, 240, "v-<"], R2: [480, 240, "v"], P1: [560, 140, "l"] };
 /*END LAYOUTS*/
 function wireHL(root){ var svgs = root.querySelectorAll("svg"); function clr(){ root.querySelectorAll(".hl").forEach(function(e){ e.classList.remove("hl"); }); } root.addEventListener("mouseover", function(ev){ var t = ev.target.closest ? ev.target.closest("[data-net]") : null; clr(); if (t){ var id = t.getAttribute("data-net"); root.querySelectorAll('[data-net="' + id + '"]').forEach(function(e){ e.classList.add("hl"); }); } }); root.addEventListener("mouseleave", clr); }
 
@@ -1766,7 +1778,7 @@ var ICS = [
   { id: "a4988", name: "A4988-Modul", pkg: "Modul 16", cat: "drive", k: ["Schrittmotortreiber mit Mikroschritten", "Driver pas à pas avec micropas"], pins: ["EN:i", "MS1:i", "MS2:i", "MS3:i", "RST:i", "SLP:i", "STEP:i", "DIR:i", "GND:g", "VDD:v", "1B:o", "1A:o", "2A:o", "2B:o", "GND2:g", "VMOT:v"], facts: [["Motor", "Moteur", "8…35 V, bis 2 A je Spule (mit Kühlung)"], ["Mikroschritte", "Micropas", "bis 1/16"], ["Verwandt", "Parent", "DRV8825 (bis 1/32)"]], proj: ["a4988"] }
 ];
 var RECH = { ne555a: "timer555", ne555m: "timer555", ne556: "timer555", cd4060: "timer555", k_lauf: "timer555", k_relais: "timer555", k_ampel: "timer555", k_thermo: "opamp/cmp", k_netz: "regler", k_sirene: "timer555", k_motor: "timer555", lm358: "opamp/nin", lm324: "opamp/cmp", tl072: "opamp/nin", ad620: "opamp/sub", lm393: "opamp/cmp", lm339: "opamp/cmp", k_daemm: "opamp/cmp", op_inv: "opamp/inv", op_non: "opamp/nin", op_fol: "opamp/fol", op_add: "opamp/sum", op_sub: "opamp/sub", op_int: "opamp/int", op_dif: "opamp/dif", op_komp: "opamp/cmp", op_tia: "opamp/tia", op_sk: "opamp/lp", hc14: "opamp/sch", cd4093: "opamp/sch", lm317: "regler", lm337: "regler", lm7805: "regler", lm1117: "regler", led: "led", rc_hp: "filter", rc_bp: "filter", hc00: "logik", adder: "logik", hc283: "logik", tl431: "teiler", lm35: "teiler", lm339b: "teiler" };
-var KOMBI = ["k_lauf", "k_uhr", "k_zaehl", "k_daemm", "k_prell", "k_sirene", "k_motor", "k_relais", "k_ampel", "k_thermo", "k_netz", "k_wuerfel", "k_alarm", "k_wechsel"];
+var KOMBI = ["k_lauf", "k_uhr", "k_zaehl", "k_daemm", "k_prell", "k_sirene", "k_motor", "k_relais", "k_ampel", "k_thermo", "k_netz", "k_wuerfel", "k_alarm", "k_wechsel", "k_verz", "k_touch", "k_strom", "k_zreg"];
 
 /* ---- Weitere Projekte ---- */
 PROJ.k_wuerfel = { t: ["Elektronischer Würfel: 555 → CD4017 (÷6) → 6 LEDs", "Dé électronique : 555 → CD4017 (÷6) → 6 LED"], flow: ["Taster", "NE555 (schnell)", "CD4017 zählt 0…5", "LED 1…6"], ics: ["ne555", "cd4017"],
@@ -1802,7 +1814,53 @@ PROJ.k_wechsel = { t: ["Wechselblinker: zwei Transistoren (astabile Kippstufe)",
       live: function(ts){ var a = ph(ts) < th; return { leds: [a ? 1 : 0, a ? 0 : 1], names: [T("Rot: D1", "Rouge : D1"), T("Grün: D2", "Vert : D2")] }; } }; },
   wire: [["Q1 und Q2: BC337/BC547, Emitter an GND", "Q1, Q2 : émetteur à GND"], ["+V → 470 Ω → LED → Kollektor (je Transistor)", "+V → 470 Ω → LED → collecteur"], ["+V → 47 kΩ → Basis (je Transistor)", "+V → 47 kΩ → base"], ["Kollektor Q1 → 10 µF (+) → Basis Q2 und Kollektor Q2 → 10 µF (+) → Basis Q1", "Condensateurs croisés"]],
   notes: [["Ungleiche Kondensatoren ergeben ungleiche Leuchtzeiten – so baut man einen Blitz (kurz an, lange aus).", "Condensateurs différents = durées différentes."], ["Die negative Basisspannung (bis −4,4 V) ist der Grund, warum die Schaltung über ca. 6 V nicht mehr sicher läuft: Die Basis-Emitter-Strecke bricht dann durch.", "La tension de base négative limite la tension d’alimentation."]] };
-var KICON = { k_lauf: "💡", k_uhr: "🕒", k_zaehl: "🔢", k_daemm: "🌗", k_prell: "🔘", k_sirene: "🚨", k_motor: "⚙️", k_relais: "🔌", k_bau: "🧱", k_ampel: "🚦", k_thermo: "🌡️", k_netz: "🔋", k_wuerfel: "🎲", k_alarm: "🔦", k_wechsel: "🔁" };
+PROJ.k_verz = { t: ["Einschaltverzögerung: RC-Glied + Transistor", "Temporisation à la mise sous tension : RC + transistor"], flow: ["Spannung an", "Kondensator lädt über 1 MΩ", "Basis erreicht 0,65 V", "Transistor schaltet LED ein"], ics: ["bc337"],
+  d: ["Beim Einschalten ist der Kondensator leer, die Basis liegt bei 0 V und der Transistor sperrt – die LED bleibt dunkel. Über den 1-MΩ-Widerstand lädt sich der 10-µF-Kondensator langsam auf. Sobald seine Spannung etwa 0,65 V erreicht, beginnt der Transistor zu leiten und die LED geht an. Die Verzögerung ist t ≈ R · C · ln(U / (U − 0,65 V)).", "À la mise sous tension le condensateur est vide, le transistor est bloqué. Il se charge via 1 MΩ ; à 0,65 V environ le transistor conduit et la LED s’allume. t ≈ R·C·ln(U/(U−0,65 V))."],
+  build: function(){ var R = 1e6, Cc = 10e-6, U = 5, tau = R * Cc, td = -tau * Math.log(1 - .65 / U);
+    return { span: 6, speed: 1, warn: [], ch: [{ n: T("Spannung an C1 = Basis Q1", "Tension sur C1 = base Q1"), c: C.amber, lo: 0, hi: 1, v: function(t){ return Math.min(.7, U * (1 - Math.exp(-t / tau))); } },
+      { n: T("LED-Strom", "Courant LED"), c: C.green, lo: 0, hi: 10, u: "mA", v: function(t){ return t < td ? 0 : Math.min(8.7, (t - td) * 30); } }],
+      info: [[T("Verzögerung t ≈ R·C·ln(U/(U−0,65 V))", "Délai"), fmt(td, "s") + "  (1 MΩ · 10 µF, 5 V)"], [T("Zeitkonstante τ = R·C", "Constante τ = R·C"), fmt(tau, "s")]],
+      live: function(ts){ var x = ts % 8; return { leds: [x > td && x < 7 ? 1 : 0], names: [T("LED (nach der Verzögerung)", "LED (après le délai)")] }; } }; },
+  wire: [["+V → 1 MΩ → Basis von Q1 (BC547); 10 µF (+ zur Basis) von der Basis nach GND", "+V → 1 MΩ → base ; 10 µF base → GND"], ["Emitter an GND", "Émetteur à GND"], ["+V → 470 Ω → LED → Kollektor", "+V → 470 Ω → LED → collecteur"]],
+  notes: [["Größere Werte = längere Verzögerung: 2,2 MΩ und 100 µF ergeben schon über 30 Sekunden. Für wirklich lange Zeiten nimmt man ein Darlington-Paar (zwei Transistoren), weil dann der Basisstrom viel kleiner sein darf.", "Valeurs plus grandes = délai plus long ; un Darlington permet des délais très longs."], ["Der Elko hat Toleranzen von bis zu ±20 % – die Zeit ist also nur ungefähr. Für genaue Zeiten braucht man einen 555 (siehe Monoflop).", "Le condensateur a ±20 % de tolérance : pour un délai précis, utiliser un 555."]] };
+PROJ.k_touch = { t: ["Touch-Schalter: Darlington-Paar schaltet LED beim Berühren", "Capteur tactile : paire Darlington"], flow: ["Finger berührt Kontakte", "Hautstrom (µA)", "Darlington verstärkt ×40 000", "LED leuchtet"], ics: ["bc337"],
+  action: { l: ["☝️ Kontakte berühren", "☝️ Toucher les contacts"] },
+  d: ["Deine Haut leitet ein winziges bisschen: Zwischen den beiden Kontakten (+V und Basis) fließen nur wenige Mikroampere. Zwei Transistoren hintereinander (Darlington) verstärken diesen Strom ca. 200 · 200 = 40 000-fach – genug, um die LED zu betreiben. Der 100-kΩ-Widerstand schützt die Basis, falls die Kontakte direkt verbunden werden.", "La peau conduit un peu : quelques µA entre les deux contacts. Deux transistors (Darlington) amplifient ce courant ≈ 40 000 fois et allument la LED."],
+  build: function(P, ctx){ var fire = ctx && ctx.fire != null ? ctx.fire : null, t0 = .8, t1 = 3.2, Rs = 500e3, Ib = (5 - 1.3) / (100e3 + Rs);
+    return { span: 5, speed: 1, warn: [], ch: [{ n: T("Finger berührt (1 = ja)", "Doigt (1 = oui)"), c: C.amber, lo: 0, hi: 1, u: "", v: function(t){ return t >= t0 && t < t1 ? 1 : 0; } },
+      { n: T("Basisstrom Q1", "Courant de base"), c: C.cyan, lo: 0, hi: 10, u: "µA", v: function(t){ return t >= t0 && t < t1 ? Ib * 1e6 : 0; } },
+      { n: T("LED-Strom", "Courant LED"), c: C.green, lo: 0, hi: 10, u: "mA", v: function(t){ return t >= t0 && t < t1 ? 8.5 : 0; } }],
+      info: [[T("Hautwiderstand (typ.)", "Résistance de la peau"), "≈ 500 kΩ"], [T("Basisstrom", "Courant de base"), "≈ " + (Ib * 1e6).toFixed(1) + " µA"], [T("Gesamtverstärkung", "Gain total"), "≈ 40 000 ×"]],
+      live: function(ts){ var on = fire != null && ts - fire < 2.5; return { leds: [on ? 1 : 0], names: [T("LED (leuchtet beim Berühren)", "LED (touchée)")] }; } }; },
+  wire: [["Zwei blanke Drahtenden als Kontakte: eins an +V, das andere über 100 kΩ an die Basis von Q1", "Deux fils nus : un à +V, l’autre via 100 kΩ à la base de Q1"], ["Emitter Q1 → Basis Q2; Emitter Q2 → GND", "Émetteur Q1 → base Q2 ; émetteur Q2 → GND"], ["Kollektoren von Q1 und Q2 zusammen → LED → 470 Ω → +V", "Collecteurs ensemble → LED → 470 Ω → +V"]],
+  notes: [["Mit Wasser zwischen den Kontakten funktioniert es auch: so wird daraus ein Wasserstandsmelder oder Regenmelder.", "Avec de l’eau entre les contacts : détecteur de niveau ou de pluie."], ["Ein einzelner Transistor würde nicht reichen – der Strom durch die Haut ist zu klein. Darum der Darlington.", "Un seul transistor ne suffirait pas."]] };
+PROJ.k_strom = { t: ["Konstantstromquelle: zwei Transistoren halten den LED-Strom fest", "Source de courant constant : deux transistors"], flow: ["Versorgung schwankt", "R1 gibt Basisstrom an Q1", "Rs misst den Strom", "Q2 regelt gegen"], ics: ["bc337"],
+  opts: [{ k: "u", l: ["Versorgungsspannung", "Tension d’alimentation"], o: [["5", "5 V"], ["9", "9 V"], ["12", "12 V"]], def: "9" }],
+  d: ["Dieser Strombegrenzer ist ein kleiner Regelkreis. Fließt durch Rs mehr als etwa 20 mA, fällt an Rs mehr als 0,65 V ab – Q2 beginnt zu leiten und zieht Basisstrom von Q1 ab. So bleibt der Strom bei I = 0,65 V / Rs ≈ 20 mA, egal ob die Versorgung 5 V oder 12 V hat. Ein einfacher Vorwiderstand würde bei 12 V die LED mit viel zu viel Strom braten.", "Si le courant dépasse ≈ 20 mA, 0,65 V apparaît sur Rs : Q2 conduit et prive Q1 de courant de base. I = 0,65 V / Rs, quelle que soit la tension."],
+  build: function(P){ var U = parseFloat(P.u) || 9, Rs = 33, I0 = .65 / Rs * 1000, Vf = 2.1;
+    function ic(V){ return V < Vf + .85 ? Math.max(0, (V - Vf) / (Rs + 60) * 1000) : I0; }
+    function rv(V){ return Math.max(0, (V - Vf) / 330 * 1000); }
+    return { span: 10, speed: 1, warn: U === 5 ? [T("Bei 5 V bleibt wenig Spannung für die Regelung – der Strom ist nur ungefähr konstant.", "À 5 V la régulation est limitée.")] : [],
+      ch: [{ n: T("Versorgung (läuft von 3 V bis " + U + " V)", "Alimentation"), c: C.amber, lo: 0, hi: 14, v: function(t){ return 3 + (U - 3) * Math.min(1, t / 8); } },
+        { n: T("LED-Strom mit Stromquelle", "Courant LED (source)"), c: C.green, lo: 0, hi: 40, u: "mA", v: function(t){ return ic(3 + (U - 3) * Math.min(1, t / 8)); } },
+        { n: T("LED-Strom nur mit 330-Ω-Widerstand", "Courant LED (330 Ω seul)"), c: C.red, lo: 0, hi: 40, u: "mA", v: function(t){ return rv(3 + (U - 3) * Math.min(1, t / 8)); } }],
+      info: [[T("Strom I = 0,65 V / Rs", "Courant I = 0,65 V / Rs"), fmt(I0 / 1000, "A") + "  (Rs = 33 Ω)"], [T("Mit nur 330 Ω bei " + U + " V", "Avec 330 Ω seul"), fmt(rv(U) / 1000, "A")], [T("Verlust in Q1", "Perte dans Q1"), fmt(Math.max(0, U - Vf - .65) * I0 / 1000, "W")]],
+      live: function(){ return { leds: [1], names: [T("LED (immer gleich hell)", "LED (toujours pareil)")] }; } }; },
+  wire: [["LED von +V an den Kollektor von Q1", "LED de +V au collecteur de Q1"], ["Emitter Q1 → Rs 33 Ω → GND", "Émetteur Q1 → 33 Ω → GND"], ["Basis Q1 über 1 kΩ an +V und an den Kollektor von Q2", "Base Q1 via 1 kΩ à +V et au collecteur de Q2"], ["Basis Q2 an den Emitter Q1 (oben an Rs); Emitter Q2 an GND", "Base Q2 sur le haut de Rs ; émetteur Q2 à GND"]],
+  notes: [["Rs bestimmt den Strom: 0,65 V / 22 Ω ≈ 30 mA, 0,65 V / 68 Ω ≈ 10 mA.", "Rs fixe le courant."], ["Dieselbe Idee steckt in jedem Labornetzteil als Strombegrenzung.", "Même principe pour la limitation de courant d’une alimentation."]] };
+PROJ.k_zreg = { t: ["Spannungsregler mit Z-Diode (5,1 V)", "Régulateur à diode Zener (5,1 V)"], flow: ["Eingang 6…15 V", "Vorwiderstand 220 Ω", "Z-Diode klemmt bei 5,1 V", "Last bekommt feste Spannung"], ics: ["tl431"],
+  opts: [{ k: "rl", l: ["Last", "Charge"], o: [["1000", "1 kΩ (5 mA)"], ["470", "470 Ω (11 mA)"], ["10000", "10 kΩ (0,5 mA)"]], def: "1000" }],
+  d: ["Die Z-Diode sperrt in Gegenrichtung, bricht aber bei 5,1 V durch und hält dort die Spannung fest. Der Vorwiderstand 220 Ω nimmt den Rest: Steigt die Eingangsspannung, fließt mehr Strom durch die Z-Diode, die Ausgangsspannung bleibt fast gleich. Unter etwa 6 V reicht der Strom nicht mehr – dann folgt der Ausgang dem Eingang.", "La diode Zener claque à 5,1 V et fixe la tension. La résistance série absorbe le reste. En dessous de ≈ 6 V la régulation cesse."],
+  build: function(P){ var RL = parseFloat(P.rl) || 1000, Rv = 220, Vz = 5.1;
+    function vin(t){ return 6 + 9 * (.5 - .5 * Math.cos(t / 10 * 2 * Math.PI)); }
+    function vo(t){ var u = vin(t), vo0 = u * RL / (Rv + RL); return vo0 < Vz ? vo0 : Vz + (u - 6.5) * 0.01; }
+    function iz(t){ var u = vin(t); return Math.max(0, (u - vo(t)) / Rv - vo(t) / RL) * 1000; }
+    return { span: 10, speed: 1, warn: [], ch: [{ n: T("Eingang (schwankt 6…15 V)", "Entrée (6…15 V)"), c: C.amber, lo: 0, hi: 16, v: vin }, { n: T("Ausgang", "Sortie"), c: C.green, lo: 0, hi: 16, v: vo }, { n: T("Strom durch die Z-Diode", "Courant Zener"), c: C.violet, lo: 0, hi: 50, u: "mA", v: iz }],
+      info: [[T("Ausgangsspannung", "Tension de sortie"), "≈ 5,1 V"], [T("Z-Strom bei 15 V", "Courant Zener à 15 V"), fmt(iz(5) / 1000, "A")], [T("Verlustleistung R1 bei 15 V", "Puissance dans R1"), fmt(Math.pow(15 - Vz, 2) / Rv, "W")]],
+      live: function(){ return { leds: [1], names: [T("Ausgang stabil", "Sortie stable")] }; } }; },
+  wire: [["Eingang → 220 Ω → Ausgangsknoten", "Entrée → 220 Ω → nœud de sortie"], ["Z-Diode vom Ausgangsknoten nach GND – Kathode (Strich) zeigt zum Ausgang", "Zener : cathode (trait) vers la sortie"], ["Last (1 kΩ) parallel zur Z-Diode", "Charge en parallèle de la Zener"]],
+  notes: [["Die Z-Diode braucht immer etwas Mindeststrom (ca. 5 mA) – sonst bricht sie nicht sauber durch.", "La Zener doit toujours avoir un courant minimal."], ["Für stärkere Lasten setzt man einen Transistor als Emitterfolger dahinter oder nimmt gleich einen LM7805.", "Pour plus de courant : transistor suiveur ou LM7805."], ["Bei 15 V wird der 220-Ω-Widerstand mit ca. 0,45 W belastet – nimm dafür einen 1-W-Typ, sonst wird er heiß.", "À 15 V la résistance dissipe ≈ 0,45 W : prendre 1 W."]] };
+var KICON = { k_lauf: "💡", k_uhr: "🕒", k_zaehl: "🔢", k_daemm: "🌗", k_prell: "🔘", k_sirene: "🚨", k_motor: "⚙️", k_relais: "🔌", k_bau: "🧱", k_ampel: "🚦", k_thermo: "🌡️", k_netz: "🔋", k_wuerfel: "🎲", k_alarm: "🔦", k_wechsel: "🔁", k_verz: "⏳", k_touch: "☝️", k_strom: "🎚️", k_zreg: "🔰" };
 function icById(id){ for (var i = 0; i < ICS.length; i++) if (ICS[i].id === id) return ICS[i]; return null; }
 function icOfProj(pid){ for (var i = 0; i < ICS.length; i++) if (ICS[i].proj.indexOf(pid) >= 0) return ICS[i]; return null; }
 
