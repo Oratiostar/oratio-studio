@@ -1238,12 +1238,13 @@ function viewGfx(area, d, S, upd){
 var SEG = { "0": 0x3F, "1": 0x06, "2": 0x5B, "3": 0x4F, "4": 0x66, "5": 0x6D, "6": 0x7D, "7": 0x07, "8": 0x7F, "9": 0x6F, "-": 0x40, " ": 0, "_": 0x08, A: 0x77, B: 0x7C, C: 0x39, D: 0x5E, E: 0x79, F: 0x71, H: 0x76, L: 0x38, N: 0x54, O: 0x5C, P: 0x73, R: 0x50, S: 0x6D, T: 0x78, U: 0x3E };
 function segData(t){ var out = [0, 0, 0, 0], k = 0, colon = false; for (var i = 0; i < t.length && k < 4; i++) { var ch = t.charAt(i).toUpperCase(); if (ch === ":" || ch === ".") { if (ch === ":") colon = true; else if (k > 0) out[k - 1] |= 0x80; continue; } out[k++] = SEG[ch] || 0; } if (colon) out[1] |= 0x80; return out; }
 var SEGC = { red: ["#ff3a2a", L("Rot", "Rouge")], green: ["#34e06b", L("Grün", "Vert")], amber: ["#ffb21e", L("Gelb", "Jaune")], blue: ["#46a8ff", L("Blau", "Bleu")], white: ["#f3f6ff", L("Weiß", "Blanc")], classic: ["#c4d0a8", L("Klassisch 1 · Rechner", "Classique 1 · calculatrice")], classic2: ["#b5b9ae", L("Klassisch 2 · Armbanduhr", "Classique 2 · montre")], classic3: ["#bfcf9a", L("Klassisch 3 · schlank", "Classique 3 · fin")], classic4: ["#8fc6e0", L("Klassisch 4 · blaues Licht", "Classique 4 · rétroéclairé bleu")], classic5: ["#d9d7bf", L("Klassisch 5 · abgerundet", "Classique 5 · arrondi")] };
-var SEGV = { classic: { bg: "#c4d0a8", fg: "#1b2414", h: 9, g: 2.5, sk: 0, off: .09, dot: "r" }, classic2: { bg: "#b5b9ae", fg: "#252c30", h: 6.5, g: 1.6, sk: .11, off: .06, dot: "s" }, classic3: { bg: "#bfcf9a", fg: "#222b14", h: 5.5, g: 3.2, sk: 0, off: .1, dot: "s" }, classic4: { bg: "#8fc6e0", fg: "#0a2233", h: 8, g: 2, sk: .07, off: .08, dot: "r" }, classic5: { bg: "#d9d7bf", fg: "#3b2a1a", h: 9.5, g: 3, sk: 0, off: .08, dot: "r", rnd: 1 } };
+var SEGV = { classic: { bg: "#c4d0a8", fg: "#1b2414", h: 9, g: 2.5, sk: 0, off: .09, dot: "r" }, classic2: { bg: "#b5b9ae", fg: "#252c30", h: 7.2, g: 2.6, sk: .12, off: .06, dot: "s", adj: { a: { l: 3, r: -2, t: 1 }, d: { l: 13, r: -4, t: 1.12 }, g: { l: -2, r: -2, t: .85 }, e: { t: 1.05 }, c: { t: 1.05 } } }, classic3: { bg: "#bfcf9a", fg: "#222b14", h: 5.5, g: 3.2, sk: 0, off: .1, dot: "s" }, classic4: { bg: "#8fc6e0", fg: "#0a2233", h: 8, g: 2, sk: .07, off: .08, dot: "r" }, classic5: { bg: "#d9d7bf", fg: "#3b2a1a", h: 9.5, g: 3, sk: 0, off: .08, dot: "r", rnd: 1 } };
+function esc0(t){ return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
 function segPaths(ox, oy, cfg){
-  var xl = 28, xr = 92, yt = 26, ym = 110, yb = 194, h = cfg ? cfg.h : 9, g = cfg ? cfg.g : 5, sk = cfg ? cfg.sk : 0, P = [];
-  function H(y){ var a = xl + g, b = xr - g; return [[a, y], [a + h, y - h], [b - h, y - h], [b, y], [b - h, y + h], [a + h, y + h]]; }
-  function V(x, y0, y1){ var a = y0 + g, b = y1 - g; return [[x, a], [x + h, a + h], [x + h, b - h], [x, b], [x - h, b - h], [x - h, a + h]]; }
-  var polys = [H(yt), V(xr, yt, ym), V(xr, ym, yb), H(yb), V(xl, ym, yb), V(xl, yt, ym), H(ym)];
+  var xl = 28, xr = 92, yt = 26, ym = 110, yb = 194, h = cfg ? cfg.h : 9, g = cfg ? cfg.g : 5, sk = cfg ? cfg.sk : 0, P = [], A = (cfg && cfg.adj) || {};
+  function H(y, k){ var a0 = A[k] || {}, t = h * (a0.t || 1), a = xl + g - (a0.l || 0), b = xr - g + (a0.r || 0); return [[a, y], [a + t, y - t], [b - t, y - t], [b, y], [b - t, y + t], [a + t, y + t]]; }
+  function V(x, y0, y1, k){ var a0 = A[k] || {}, t = h * (a0.t || 1), a = y0 + g + (a0.u || 0), b = y1 - g + (a0.d || 0); return [[x, a], [x + t, a + t], [x + t, b - t], [x, b], [x - t, b - t], [x - t, a + t]]; }
+  var polys = [H(yt, "a"), V(xr, yt, ym, "b"), V(xr, ym, yb, "c"), H(yb, "d"), V(xl, ym, yb, "e"), V(xl, yt, ym, "f"), H(ym, "g")];
   polys.forEach(function(pl){ var p = new Path2D(); pl.forEach(function(q, i){ var qx = ox + q[0] + (ym - q[1]) * sk; i ? p.lineTo(qx, oy + q[1]) : p.moveTo(qx, oy + q[1]); }); p.closePath(); P.push(p); });
   return P;
 }
@@ -1263,8 +1264,10 @@ function viewSeg(area, d, S, upd){
   var card = el("div", "lcard"); area.appendChild(card);
   if (!S.col) S.col = "red";
   if (S.style === "lcd") { S.col = "classic"; S.style = null; }
-  var cr = el("div", "lrow"); cr.style.marginBottom = "10px"; card.appendChild(cr);
-  Object.keys(SEGC).forEach(function(k){ var x = el("button", "lbtn sc" + (S.col === k ? " on" : ""), SEGC[k][1]); x.style.borderLeft = "10px solid " + SEGC[k][0]; if (SEGV[k]) { x.style.background = SEGV[k].bg; x.style.color = SEGV[k].fg; x.style.borderLeft = "10px solid " + SEGV[k].fg; x.style.fontWeight = "700"; } x.onclick = function(){ S.col = k; cr.querySelectorAll(".sc").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); upd(); }; cr.appendChild(x); });
+  var grid5 = "display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:8px", cr = el("div"), cr2 = el("div"), cap = el("p", "lmut"); cr.style.cssText = grid5; cr2.style.cssText = grid5; cap.style.margin = "0 0 10px"; card.appendChild(cr); card.appendChild(cr2); card.appendChild(cap);
+  function capUpd(){ cap.textContent = SEGV[S.col] ? SEGC[S.col][1] : ""; cap.hidden = !SEGV[S.col]; }
+  Object.keys(SEGC).forEach(function(k){ var cls = !!SEGV[k], full = SEGC[k][1], lab = cls ? full.split(" · ")[0] : full, x = el("button", "lbtn sc" + (S.col === k ? " on" : ""), esc0(lab)); x.title = full; x.style.padding = "9px 3px"; x.style.textAlign = "center"; x.style.fontSize = "11.5px"; x.style.lineHeight = "1.15"; x.style.overflow = "hidden"; x.style.minWidth = "0"; x.style.borderLeft = "8px solid " + SEGC[k][0]; if (cls) { x.style.background = SEGV[k].bg; x.style.color = SEGV[k].fg; x.style.borderLeft = "8px solid " + SEGV[k].fg; x.style.fontWeight = "700"; } x.onclick = function(){ S.col = k; card.querySelectorAll(".sc").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); capUpd(); upd(); }; (cls ? cr2 : cr).appendChild(x); });
+  capUpd();
   var cv = el("canvas", "mcv"); cv.style.maxWidth = "520px"; cv.style.touchAction = "pan-y"; cv.style.cursor = "pointer"; card.appendChild(cv);
   var i = inp("display:block;margin:12px 0;width:220px;font:600 22px/1.2 inherit;font-family:inherit;letter-spacing:.12em;text-transform:uppercase"); i.type = "text"; i.value = S.t; i.maxLength = 8; i.oninput = function(){ S.t = i.value; S.man = null; mb.hidden = true; upd(); };
   card.appendChild(i);
