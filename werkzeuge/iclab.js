@@ -72,13 +72,13 @@ function dip(ic){
     s2 += '<text x="' + (left ? 64 : 192) + '" y="' + (y + 4) + '" text-anchor="' + (left ? "end" : "start") + '" font-size="12" font-weight="700" fill="currentColor">' + esc(nm) + "</text>";
     s2 += '<text x="' + (left ? 100 : 160) + '" y="' + (y + 4) + '" text-anchor="' + (left ? "start" : "end") + '" font-size="10" fill="#a9cdbd">' + (i + 1) + "</text>";
   }
-  return s2 + '<text x="130" y="' + (H / 2 + 4) + '" text-anchor="middle" font-size="12" font-weight="800" fill="#e8fff3" transform="rotate(-90 130 ' + (H / 2) + ')">' + esc(ic.name) + "</text></svg>";
+  return s2 + '<text x="130" y="' + (H / 2 + 4) + '" text-anchor="middle" font-size="12" font-weight="800" fill="#e8fff3" transform="rotate(-90 130 ' + (H / 2) + ')">' + esc(shn(ic.name)) + "</text></svg>";
 }
 
 /* ---------- LED-Reihe & 7-Segment ---------- */
 function ledRow(host, n, names, col){
   var row = el("div", "iclr"), L = [];
-  for (var i = 0; i < n; i++){ var w = el("div", "ic-led"), d = el("i"), nm0 = names && names[i] != null ? String(names[i]) : "", cc = Array.isArray(col) ? col[i] : /^(rot|rouge|red)/i.test(nm0) ? C.red : /^(gelb|jaune|orange)/i.test(nm0) ? C.amber : /^(grün|vert|green)/i.test(nm0) ? C.green : /^(blau|bleu)/i.test(nm0) ? "#4dabf7" : col; d.style.setProperty("--c", cc || C.red); w.appendChild(d); w.appendChild(el("span", "", names && names[i] != null ? names[i] : "")); row.appendChild(w); L.push(d); }
+  for (var i = 0; i < n; i++){ var w = el("div", "ic-led"), d = el("i"), nm0 = names && names[i] != null ? String(names[i]) : "", cc = Array.isArray(col) ? col[i] : /^(rot|rouge|red)/i.test(nm0) ? C.red : /^(gelb|jaune|orange)/i.test(nm0) ? C.amber : /^(grün|vert|green)/i.test(nm0) ? C.green : /^(blau|bleu)/i.test(nm0) ? "#4dabf7" : col; if (cc === C.green) cc = "#4dff7c"; d.style.setProperty("--c", cc || C.red); w.appendChild(d); w.appendChild(el("span", "", names && names[i] != null ? names[i] : "")); row.appendChild(w); L.push(d); }
   host.appendChild(row);
   return { set: function(a){ for (var i = 0; i < L.length; i++) L[i].classList.toggle("on", !!a[i]); } };
 }
@@ -964,6 +964,25 @@ var OPT = [
     sim: function(q, u){ return -q.Rb * u; }, zin: function(){ return 0; }, note: function(q){ return ["Transimpedanz = −R1 = " + fmt(q.Rb, "V/A"), "transimpédance = −R1 = " + fmt(q.Rb, "V/A")]; },
     notes: [["Fotodioden liefern nur Mikroampere – darum der große Rückkopplungswiderstand.", "Une photodiode ne donne que des microampères."]] }
 ];
+var OPD = { lm358: [1e6, .3, "LM358"], lm324: [1e6, .5, "LM324"], tl072: [3e6, 13, "TL072"], tl071: [3e6, 13, "TL071"], tl074: [3e6, 13, "TL074"], ne5532: [10e6, 9, "NE5532"], mcp6002: [1e6, .6, "MCP6002"], lm741: [1e6, .5, "LM741"] };
+function bodeAn(cv, B){
+  var dpr = Math.min(2, window.devicePixelRatio || 1), W = cv.parentNode.clientWidth || 600, H = 300; cv.style.width = W + "px"; cv.style.height = H + "px"; cv.width = W * dpr; cv.height = H * dpr;
+  var c = cv.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.fillStyle = "#050a0a"; c.fillRect(0, 0, W, H);
+  var L = 46, R = 10, t1 = 22, b1 = 150, t2 = 172, b2 = H - 22, lo = Math.log10(10), hi = Math.log10(10e6), N = 140, g = [], ph = [], i, f;
+  for (i = 0; i <= N; i++){ f = Math.pow(10, lo + (hi - lo) * i / N); var h = B.h(f); g.push(h[0]); ph.push(h[1]); }
+  var gmax = Math.max.apply(null, g), gmin = Math.min.apply(null, g), top = Math.ceil((gmax + 3) / 20) * 20, bot = Math.min(top - 40, Math.floor((Math.max(gmin, top - 100)) / 20) * 20);
+  function X(f){ return L + (Math.log10(f) - lo) / (hi - lo) * (W - L - R); } function Yg(v){ return t1 + (top - v) / (top - bot) * (b1 - t1); } function Yp(v){ return t2 + (180 - v) / 360 * (b2 - t2); }
+  c.font = "10px Inter,system-ui,sans-serif"; c.textBaseline = "alphabetic";
+  for (var d = 1; d <= 7; d++){ for (var m = 1; m < 10; m++){ f = m * Math.pow(10, d); if (f < 10 || f > 10e6) continue; c.strokeStyle = m === 1 ? "rgba(109,255,176,.28)" : "rgba(109,255,176,.08)"; c.beginPath(); c.moveTo(X(f), t1); c.lineTo(X(f), b2); c.stroke(); if (m === 1){ c.fillStyle = "rgba(160,255,200,.75)"; c.textAlign = f >= 1e7 ? "right" : "center"; c.fillText(fmt(f, "Hz", 2), X(f), H - 7); } } }
+  c.textAlign = "right"; c.fillStyle = "rgba(160,255,200,.75)"; for (var v = bot; v <= top; v += 20){ c.strokeStyle = "rgba(109,255,176,.14)"; c.beginPath(); c.moveTo(L, Yg(v)); c.lineTo(W - R, Yg(v)); c.stroke(); c.fillText(v + " dB", L - 4, Yg(v) + 3); }
+  [-180, -90, 0, 90, 180].forEach(function(pp){ c.strokeStyle = "rgba(109,255,176,.14)"; c.beginPath(); c.moveTo(L, Yp(pp)); c.lineTo(W - R, Yp(pp)); c.stroke(); c.fillText(pp + "°", L - 4, Yp(pp) + 3); });
+  function line(a, Y, col){ c.strokeStyle = col; c.lineWidth = 2; c.beginPath(); a.forEach(function(v, j){ var x = X(Math.pow(10, lo + (hi - lo) * j / N)), y = Math.max(t1 - 2, Math.min(b2 + 2, Y(v))); j ? c.lineTo(x, y) : c.moveTo(x, y); }); c.stroke(); c.lineWidth = 1; }
+  line(g, Yg, "#ffb000"); line(ph, Yp, "#3de6ff");
+  c.textAlign = "left"; c.font = "bold 11px Inter,system-ui,sans-serif"; c.fillStyle = "#ffb000"; c.fillText(T("Verstärkung", "Gain"), L + 4, t1 - 8); c.fillStyle = "#3de6ff"; c.fillText("Phase", L + 4, t2 - 6);
+  function mark(f0, col, txt, y){ if (!(f0 >= 10 && f0 <= 10e6)) return; c.strokeStyle = col; c.setLineDash([4, 3]); c.beginPath(); c.moveTo(X(f0), t1); c.lineTo(X(f0), b2); c.stroke(); c.setLineDash([]); c.fillStyle = col; c.textAlign = X(f0) > W - 90 ? "right" : "left"; c.fillText(txt, X(f0) + (c.textAlign === "left" ? 4 : -4), y); }
+  mark(B.f, "#ffb000", T("Signal ", "Signal ") + fmt(B.f, "Hz", 2), b1 - 4); mark(B.fb, "#3de6ff", "−3 dB " + fmt(B.fb, "Hz", 3), t1 + 12);
+}
+function shn(n){ n = String(n || ""); var a = n.split(" / "); if (a.length > 1 && /^\d{2}$/.test(a[1].trim()) && /\d{2}$/.test(a[0])) return a[0].replace(/\d{2}$/, "xx"); return a[0].split(" (")[0]; }
 function opType(id){ for (var i = 0; i < OPT.length; i++) if (OPT[i].id === id) return OPT[i]; return OPT[0]; }
 function niceMax(x){ if (!(x > 0)) return 1; var e = Math.pow(10, Math.floor(Math.log(x) / Math.LN10)), m = x / e; return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 5 ? 5 : 10) * e; }
 PROJ.opamp = { t: ["Operationsverstärker – alle Grundschaltungen", "Ampli op – tous les montages de base"], flow: ["Beschaltung wählen", "Werte einstellen", "Schaltplan und Oszilloskop"], ics: ["lm358"],
@@ -986,16 +1005,21 @@ PROJ.opamp = { t: ["Operationsverstärker – alle Grundschaltungen", "Ampli op 
 function opDefaults(P){ var t = opType(P.m); Object.keys(t.p).forEach(function(k){ P[k] = t.p[k][1]; }); }
 function opBuild(P){
   var t = opType(P.m), q = P, tia = !!t.cur, Vs = P.Vs, lim = Math.max(.5, Vs - 1.5), N = 480, st = {}, tau = t.tau ? t.tau(q) : 0, f = P.f, amp = tia ? P.Ai : P.A, off = tia ? 0 : P.Uo;
+  var D = OPD[opIC()] || OPD.lm358, GBW = D[0], SR = D[1] * 1e6, G0 = t.G ? t.G(q) : null, real = G0 != null && t.id !== "cmp" && t.id !== "sch" && !t.tau, NG = real ? (t.id === "fol" ? 1 : t.id === "nin" ? Math.abs(G0) : Math.abs(G0) + 1) : 1, fb = GBW / NG, tauB = 1 / (2 * Math.PI * fb), yl = 0, yp = 0, slewHit = false;
   var win = P.w === "dc" && t.dyn ? Math.max(5 * tau, 1e-6) : 3 / f, dt = win / N, U = [], Y = [], uMax = 0, yMax = 0, clip = false;
   for (var i = 0; i < N; i++){ var tt = i * dt, ph = (tt * f) % 1, u = P.w === "dc" ? amp : P.w === "sin" ? amp * Math.sin(2 * Math.PI * tt * f) : (ph < .5 ? amp : -amp); u += off; U.push(u);
-    var y = t.sim(q, u, st, dt, lim); if (y > lim){ y = lim; clip = true; } if (y < -lim){ y = -lim; clip = true; } if (t.cs){ st.v = y; st.y = y; } Y.push(y); uMax = Math.max(uMax, Math.abs(u)); yMax = Math.max(yMax, Math.abs(y)); }
+    var y = t.sim(q, u, st, dt, lim); if (y > lim){ y = lim; clip = true; } if (y < -lim){ y = -lim; clip = true; }
+    if (real){ if (!i){ yl = y; } else { yl += (y - yl) * dt / (tauB + dt); var mx = SR * dt, dy = yl - yp; if (Math.abs(dy) > mx){ yl = yp + (dy > 0 ? mx : -mx); slewHit = true; } } y = yl; yp = y; }
+    if (t.cs){ st.v = y; st.y = y; } Y.push(y); uMax = Math.max(uMax, Math.abs(u)); yMax = Math.max(yMax, Math.abs(y)); }
   var m1 = niceMax(uMax * 1.15 || 1), m2 = niceMax(yMax * 1.15 || 1), nt = typeof t.note === "function" ? t.note(q, lim) : t.note, G = t.G ? t.G(q) : null, zin = t.zin ? t.zin(q) : null, info = [];
   info.push([T("Beschaltung", "Montage"), T(t.n[0], t.n[1])]); info.push([T("Formel", "Formule"), t.f]);
   if (G != null){ info.push([T("Verstärkung", "Gain"), (+G.toPrecision(4)).toString().replace(".", fr ? "," : ".") + " ×  (" + (+(20 * Math.log10(Math.abs(G))).toPrecision(3)).toString().replace(".", fr ? "," : ".") + " dB)"]); }
   if (zin != null) info.push([T("Eingangswiderstand", "Impédance d’entrée"), zin === Infinity ? "≈ ∞" : fmt(zin, "Ω")]);
   info.push([T("Ausgang max.", "Sortie max."), fmt(yMax, "V")]); if (tau) info.push(["τ", fmt(tau, "s")]); if (nt) info.push([T("Hinweis", "Remarque"), T(nt[0], nt[1])]);
-  var w = []; if (clip && t.id !== "cmp" && t.id !== "sch") w.push(T("Der Ausgang stößt an die Versorgungsgrenze (etwa ±" + (+lim.toPrecision(3)) + " V): das Signal wird abgeschnitten. Verstärkung verkleinern oder Versorgung erhöhen.", "La sortie atteint la limite d’alimentation : le signal est écrêté."));
-  return { span: win, speed: 1, warn: w, info: info, more: { d: t.d, f: t.f, notes: t.notes },
+  if (real){ info.push([T("Bandbreite (−3 dB)", "Bande passante (−3 dB)"), fmt(fb, "Hz", 3) + " · " + D[2]]); info.push([T("Slew-Rate", "Slew rate"), +(D[1]).toPrecision(2) + " V/µs"]); }
+  var w = []; if (real && slewHit) w.push(T("Slew-Rate-Grenze: Der Ausgang kann nicht schnell genug folgen – das Signal wird zum Dreieck verzerrt. Frequenz oder Amplitude verkleinern.", "Limite de slew rate : la sortie ne peut pas suivre assez vite.")); if (clip && t.id !== "cmp" && t.id !== "sch") w.push(T("Der Ausgang stößt an die Versorgungsgrenze (etwa ±" + (+lim.toPrecision(3)) + " V): das Signal wird abgeschnitten. Verstärkung verkleinern oder Versorgung erhöhen.", "La sortie atteint la limite d’alimentation : le signal est écrêté."));
+  var bode = real ? { f: f, fb: fb, h: function(ff){ var x = ff / fb, re = 1, im = -x, dn = re * re + im * im, gm = Math.abs(G0) / Math.sqrt(dn), pp = Math.atan2(im, re) * 180 / Math.PI + (G0 < 0 ? 180 : 0); while (pp > 180) pp -= 360; return [20 * Math.log10(Math.max(gm, 1e-6)), pp]; } } : null;
+  return { span: win, speed: 1, warn: w, info: info, bode: bode, more: { d: t.d, f: t.f, notes: t.notes },
     ch: [{ n: tia ? T("Eingang Iin", "Entrée Iin") : T("Eingang Uin", "Entrée Uin"), c: C.amber, lo: -m1, hi: m1, a: U, u: tia ? "A" : "V" }, { n: T("Ausgang Uout", "Sortie Uout"), c: C.green, lo: -m2, hi: m2, a: Y }] };
 }
 /* ---------- Bausteine der individuellen Projekte ---------- */
@@ -1337,11 +1361,11 @@ function renderSchem(A){
       else if (s === "nmos" || s === "pmos"){ g = '<circle cx="' + cx + '" cy="' + cy + '" r="27"/><path d="M' + sx0 + ' ' + cy + 'H' + (cx - 14) + 'V' + (cy - 14) + 'M' + (cx - 8) + ' ' + (cy - 16) + 'V' + (cy - 7) + 'M' + (cx - 8) + ' ' + (cy - 4) + 'V' + (cy + 4) + 'M' + (cx - 8) + ' ' + (cy + 7) + 'V' + (cy + 16) + 'M' + (cx - 8) + ' ' + (cy - 12) + 'H' + (cx + 12) + 'V' + tp + 'H' + (sx0 + it.bw) + 'M' + (cx - 8) + ' ' + (cy + 12) + 'H' + (cx + 12) + 'V' + bt2 + 'H' + (sx0 + it.bw) + 'M' + (cx - 8) + ' ' + cy + 'H' + (cx + 12) + 'V' + (cy + 12) + '"/>';
         g += s === "nmos" ? '<path class="ar" d="M' + (cx - 7) + ' ' + cy + 'l8 -4v8z"/>' : '<path class="ar" d="M' + (cx + 3) + ' ' + cy + 'l-8 -4v8z"/>'; }
       else { g = '<path d="M' + (cx + 4) + ' ' + tp + 'H' + (sx0 + it.bw) + 'M' + (cx + 4) + ' ' + tp + 'V' + (cy - 12) + 'M' + (cx + 4) + ' ' + bt2 + 'H' + (sx0 + it.bw) + 'M' + (cx + 4) + ' ' + bt2 + 'V' + (cy + 12) + 'M' + (cx - 14) + ' ' + (cy - 12) + 'H' + (cx + 22) + 'M' + (cx - 14) + ' ' + (cy + 12) + 'H' + (cx + 22) + '"/><path class="ar" d="M' + (cx - 12) + ' ' + (cy - 12) + 'l8 24l8 -24z"/><path class="ar" d="M' + (cx + 4) + ' ' + (cy + 12) + 'l8 -24l8 24z"/><path d="M' + sx0 + ' ' + bt2 + 'H' + (cx - 14) + 'L' + (cx - 4) + ' ' + (cy + 12) + '"/>'; }
-      svg += '<g class="ic sym" data-part="' + it.id + '"><text class="tt" x="' + (cx + 34) + '" y="' + (cy - 2) + '">' + esc2(it.id) + '</text><text class="tn" x="' + (cx + 34) + '" y="' + (cy + 13) + '">' + esc2(p.def.name) + '</text>' + g;
+      svg += '<g class="ic sym" data-part="' + it.id + '"><text class="tt" x="' + (cx + 34) + '" y="' + (cy - 2) + '">' + esc2(it.id) + '</text><text class="tn" x="' + (cx + 34) + '" y="' + (cy + 13) + '">' + esc2(shn(p.def.name)) + '</text>' + g;
       it.L.concat(it.R).forEach(function(z){ var left = it.L.indexOf(z) >= 0, y = s === "triac" && !left ? (z.idx === 0 ? tp : bt2) : s === "triac" ? bt2 : z.idx === 0 ? tp : z.idx === 2 ? bt2 : cy, x0 = left ? sx0 : sx0 + it.bw, dx = left ? -1 : 1, net = A.by[it.id + "." + z.i];
         svg += '<g transform="translate(' + x0 + ',' + y + ')" data-net="' + net.id + '" class="pn"><path d="M0 0H' + (dx * 14) + '"/><g transform="translate(' + (dx * 14) + ',0)">' + z.c.svg + '</g><text class="pi" x="' + (dx * 7) + '" y="-5" text-anchor="middle">' + esc2(p.names[z.i - 1]) + '</text></g>'; });
       svg += "</g>"; curX += tot + 20; return; }
-    svg += '<g class="ic" data-part="' + it.id + '"><rect class="box" x="' + bx + '" y="' + by + '" width="' + it.bw + '" height="' + it.bh + '" rx="6"/><text class="tt" x="' + (bx + it.bw / 2) + '" y="' + (by + 18) + '" text-anchor="middle">' + esc2(it.id) + '</text><text class="tn" x="' + (bx + it.bw / 2) + '" y="' + (by - 7) + '" text-anchor="middle">' + esc2(p.def.name.split(" / ")[0].split(" (")[0]) + "</text>";
+    svg += '<g class="ic" data-part="' + it.id + '"><rect class="box" x="' + bx + '" y="' + by + '" width="' + it.bw + '" height="' + it.bh + '" rx="6"/><text class="tt" x="' + (bx + it.bw / 2) + '" y="' + (by + 18) + '" text-anchor="middle">' + esc2(it.id) + '</text><text class="tn" x="' + (bx + it.bw / 2) + '" y="' + (by - 7) + '" text-anchor="middle">' + esc2(shn(p.def.name)) + "</text>";
     it.L.concat(it.R).forEach(function(z){ var left = it.L.indexOf(z) >= 0, y = by + 32 + z.idx * S, x0 = left ? bx : bx + it.bw, nm = p.names[z.i - 1], dx = left ? -1 : 1, net = A.by[it.id + "." + z.i];
       svg += '<g transform="translate(' + x0 + ',' + y + ')" data-net="' + net.id + '" class="pn"><path d="M0 0H' + (dx * 14) + '"/><g transform="translate(' + (dx * 14) + ',0)">' + z.c.svg + '</g><text class="pi" x="' + (dx * 7) + '" y="-5" text-anchor="middle">' + z.i + '</text></g><text class="pnm" x="' + (left ? bx + 6 : bx + it.bw - 6) + '" y="' + (y + 4) + '" text-anchor="' + (left ? "start" : "end") + '">' + esc2(nm) + "</text>"; });
     svg += "</g>"; curX += tot + 20;
@@ -1422,7 +1446,7 @@ function schem2(A, L0){
     nm.forEach(function(n, i){ var t = T[n]; if (t) term(p.id + "." + (i + 1), x + f * t[0], y + t[1], f * t[2], t[3]); });
     box(x - 14 * f, y - 26, x + 26 * f, y + 26);
     var lx = x + f * 32, an = f < 0 ? "end" : "start";
-    s += tx(lx, y - 2, p.id, "tt", an) + tx(lx, y + 13, p.def.name, "tn", an);
+    s += tx(lx, y - 2, p.id, "tt", an) + tx(lx, y + 13, shn(p.def.name), "tn", an);
     return s + "</g>";
   }
   /* --- IC-Kasten --- */
@@ -1441,7 +1465,7 @@ function schem2(A, L0){
         else { px = x + c; py = y + h + 22; dy = 1; ln = "M" + px + " " + (y + h) + "V" + py; s += tx(px, y + h - 7, nm, "pnm", "middle") + tx(px + 4, y + h + 15, pin, "pi", "start"); }
         s += '<path d="' + ln + '"/>'; term(p.id + "." + pin, px, py, dx, dy); }); }
     side(LL, "L"); side(RR, "R"); side(TT, "T"); side(BB, "B");
-    var cx = x + w / 2, cy = y + h / 2, nmx = (p.def.name || "").split(" / ")[0].split(" (")[0];
+    var cx = x + w / 2, cy = y + h / 2, nmx = shn(p.def.name);
     var ty = sd.ty != null ? y + sd.ty : cy;
     s += tx(cx, ty - 3, p.id, "tt", "middle") + tx(cx, ty + 13, nmx, "tn", "middle");
     return s + "</g>";
@@ -1828,13 +1852,16 @@ function renderProject(host, pid, icsO){
   colL.appendChild(ctl);
   function drawView(){ if (!vwBox) return; var A; try { A = netAnalyse(pid, P); vwBox.innerHTML = vwMode === "s" ? '<div class="ic-sw">' + (LAY[pid] ? schem2(A, LAY[pid]) : renderSchem(A)) + "</div>" : netText(A); wireHL(vwBox); applyZoom(); } catch(e){ vwBox.innerHTML = '<p class="ic-warn">' + esc(String(e && e.message || e)) + "</p>"; if (window.console) console.error(e); } }
   var moreBox = el("div", "ic-more"), cust = null, area = el("div"), scBox = el("div", "ic-scopebox"), cnv = el("canvas"), liveBox = el("div", "ic-live"), warnBox = el("div"), infoBox = el("div", "ic-info");
+  var view = "t", bcv = el("canvas"), vbar = el("div", "ic-chips"), vbs = [el("button", "ic-ch on", "⏱ " + T("Zeit", "Temps")), el("button", "ic-ch", "📉 " + T("Frequenzgang", "Réponse en fréquence"))];
+  vbs.forEach(function(b, i){ b.type = "button"; b.onclick = function(){ view = i ? "f" : "t"; redraw(); }; vbar.appendChild(b); }); vbar.hidden = true;
   function save(){ st("p_" + pid, P); }
   function redraw(){
     if (pr.ui){ var uu = pr.ui(P); (pr.dyn || []).forEach(function(k){ var r = rows[k]; if (r){ r.hidden = uu[k] == null; if (uu[k] != null) r.setL(uu[k]); } }); }
     Object.keys(rows).forEach(function(k){ if (rows[k].sync) rows[k].sync(); });
     save();
     var res = pr.build ? pr.build(P, ctx) : {}; ctx.res = res;
-    if (res.ch){ scBox.hidden = false; scope(cnv, res.ch, res.span, res.cur, res.tl); } else scBox.hidden = true;
+    vbar.hidden = !res.bode; if (!res.bode) view = "t"; var fv = view === "f" && res.bode; cnv.hidden = !!fv; bcv.hidden = !fv; vbs[0].classList.toggle("on", !fv); vbs[1].classList.toggle("on", !!fv);
+    if (res.ch){ scBox.hidden = false; if (fv) bodeAn(bcv, res.bode); else scope(cnv, res.ch, res.span, res.cur, res.tl); } else scBox.hidden = true;
     var solo = !res.ch && !res.live; lab.classList.toggle("solo", solo); if (pb) pb.hidden = solo; if (oszH) oszH.hidden = !res.ch;
     warnBox.innerHTML = (res.warn || []).map(function(w){ return '<p class="ic-warn">⚠️ ' + esc(w) + "</p>"; }).join("");
     infoBox.innerHTML = res.info ? "<table>" + res.info.map(function(r){ return "<tr><th>" + esc(r[0]) + "</th><td>" + esc(r[1] || "") + "</td></tr>"; }).join("") + "</table>" : "";
@@ -1857,7 +1884,7 @@ function renderProject(host, pid, icsO){
   bPause.onclick = function(){ ctx.pause = !ctx.pause; bPause.innerHTML = ctx.pause ? "▶ " + T("Weiter", "Reprendre") : "⏸ " + T("Pause", "Pause"); bPause.classList.toggle("on", !!ctx.pause); };
   bPow.onclick = function(){ ctx.off = !ctx.off; bPow.innerHTML = "⏻ " + (ctx.off ? T("Aus", "Arrêt") : T("Ein", "Marche")); bPow.classList.toggle("on", !ctx.off); scBox.classList.toggle("off", !!ctx.off); liveBox.classList.toggle("off", !!ctx.off); if (ctx.off) stopAudio(); };
   bRst.onclick = function(){ ctx.ts = 0; ctx.fire = null; };
-  var oszH = el("div", "ic-h3 ic-osz", "📈 " + T("Oszilloskop", "Oscilloscope")); colR.appendChild(oszH); colR.appendChild(scBox); scBox.appendChild(cnv); scBox.appendChild(el("div", "ic-offl", T("Versorgung aus", "Alimentation coupée"))); colR.appendChild(pb); colR.appendChild(liveBox); colR.appendChild(warnBox); colR.appendChild(infoBox);
+  var oszH = el("div", "ic-h3 ic-osz", "📈 " + T("Oszilloskop", "Oscilloscope")); colR.appendChild(oszH); colR.appendChild(vbar); colR.appendChild(scBox); scBox.appendChild(cnv); scBox.appendChild(bcv); bcv.hidden = true; scBox.appendChild(el("div", "ic-offl", T("Versorgung aus", "Alimentation coupée"))); colR.appendChild(pb); colR.appendChild(liveBox); colR.appendChild(warnBox); colR.appendChild(infoBox);
   host.appendChild(moreBox);
   redraw();
   if (pr.forms && pr.forms.length){ host.appendChild(el("h3", "ic-h3", "📐 " + T("Formeln", "Formules"))); var uf = el("ul", "ic-wire ic-forms"); pr.forms.forEach(function(f){ uf.appendChild(el("li", "", "<code>" + esc(f) + "</code>")); }); host.appendChild(uf); }
@@ -1879,7 +1906,7 @@ function renderProject(host, pid, icsO){
     LIVE.raf = requestAnimationFrame(frame);
   }
   LIVE.raf = requestAnimationFrame(frame);
-  if (window.ResizeObserver){ var ro = new ResizeObserver(function(){ if (tok === LIVE.tok && ctx.res && ctx.res.ch){ var w0 = cnv.parentNode.clientWidth; if (w0 && Math.abs(w0 - (parseFloat(cnv.style.width) || 0)) > 2) scope(cnv, ctx.res.ch, ctx.res.span, ctx.res.cur, ctx.res.tl); } }); ro.observe(scBox); }
+  if (window.ResizeObserver){ var ro = new ResizeObserver(function(){ if (tok === LIVE.tok && ctx.res && ctx.res.ch && !bcv.hidden){ bodeAn(bcv, ctx.res.bode); } else if (tok === LIVE.tok && ctx.res && ctx.res.ch){ var w0 = cnv.parentNode.clientWidth; if (w0 && Math.abs(w0 - (parseFloat(cnv.style.width) || 0)) > 2) scope(cnv, ctx.res.ch, ctx.res.span, ctx.res.cur, ctx.res.tl); } }); ro.observe(scBox); }
 }
 
 /* ---------- Seiten: eine Sammlung aller Schaltungen ---------- */
@@ -2030,8 +2057,9 @@ var BAU = (function(){
     ["LP", "Lampe / Motor", "Lampe / moteur", "an Transistor oder ULN2003"], ["Q", "Transistor NPN (BC337)", "Transistor NPN", "Basis HIGH = C–E leitet"], ["QP", "Transistor PNP (BC557)", "Transistor PNP", "Basis LOW = E–C leitet"],
     ["M", "MOSFET (IRLZ44N)", "MOSFET", "Gate HIGH = D–S leitet"], ["AZ", "7-Segment-Anzeige", "Afficheur 7 segments", "gemeinsame Kathode"], ["K", "Knoten", "Nœud", "Verzweigung für mehrere Drähte"],
     ["VS", "Spannungsquelle 0–5 V", "Source de tension", "Spannung mit Regler einstellen – z. B. als Sensor"], ["PT", "Poti (Spannungsteiler)", "Potentiomètre", "Schleifer mit Regler verstellen"],
-    ["SU", "Summer (Piezo)", "Buzzer", "piept, wenn Strom fließt"], ["TK", "Tastkopf (Oszilloskop)", "Sonde", "zeigt die Leitung im Oszilloskop"]];
-  var PFX = { VS: "VS", PT: "P", SU: "BZ", V: "V", GND: "GND", TG: "TG", TA: "S", SW: "S", R: "R", LED: "D", D: "D", C: "C", LP: "M", Q: "Q", QP: "Q", M: "Q", AZ: "AZ", K: "K", TK: "TK", ic: "U" };
+    ["SU", "Summer (Piezo)", "Buzzer", "piept, wenn Strom fließt"], ["TK", "Tastkopf (Oszilloskop)", "Sonde", "zeigt die Leitung im Oszilloskop"],
+    ["SIN", "Funktionsgenerator", "Générateur de fonctions", "Sinus / Rechteck / Dreieck – für Analog-Schaltungen"], ["VN", "−5 V", "−5 V", "negative Versorgung, z. B. für Opamps"], ["OP", "Operationsverstärker", "Ampli op", "Dreieck mit −/+-Eingang, Ausgang und Versorgung"], ["PD", "Fotodiode", "Photodiode", "Licht erzeugt Sperrstrom – Lichtsensor"], ["RL", "Relais", "Relais", "Spule + Schließer, schaltet ab ca. 3,5 V"]];
+  var PFX = { VS: "VS", PT: "P", SU: "BZ", V: "V", GND: "GND", TG: "TG", TA: "S", SW: "S", R: "R", LED: "D", D: "D", C: "C", LP: "M", Q: "Q", QP: "Q", M: "Q", AZ: "AZ", K: "K", TK: "TK", SIN: "G", VN: "VN", OP: "U", PD: "D", RL: "RL", ic: "U" };
   var RV = [100, 220, 330, 470, 1e3, 4.7e3, 10e3, 22e3, 47e3, 100e3, 1e6], CV = [10e-9, 100e-9, 1e-6, 4.7e-6, 10e-6, 47e-6, 100e-6], LC = [["#ff4d4d", T("rot", "rouge")], ["#6dffb0", T("grün", "vert")], ["#ffd43b", T("gelb", "jaune")], ["#4dabf7", T("blau", "bleu")]];
   var FQ = [0.5, 1, 2, 4], CH = [["#e8590c", "CH1"], ["#1c7ed6", "CH2"], ["#2f9e44", "CH3"], ["#ae3ec9", "CH4"]];
   var SEGP = [["a", 7], ["b", 6], ["c", 4], ["d", 2], ["e", 1], ["f", 9], ["g", 10], ["DP", 5]];
@@ -2057,13 +2085,17 @@ var BAU = (function(){
   function terms(p){
     if (p.t === "ic") return icGeo(p).t;
     var x = p.x, y = p.y, v = p.r === 1;
-    if (/^(R|LED|D|C|TA|SW|LP|SU)$/.test(p.t)){ var rr = (p.r || 0) % 4, ux = [-1, 0, 1, 0][rr], uy = [0, -1, 0, 1][rr]; return [{ k: p.id + ".1", n: p.t === "LED" || p.t === "D" ? "A" : "1", x: x + 30 * ux, y: y + 30 * uy, dx: ux, dy: uy }, { k: p.id + ".2", n: p.t === "LED" || p.t === "D" ? "K" : "2", x: x - 30 * ux, y: y - 30 * uy, dx: -ux, dy: -uy }]; }
+    if (p.t === "RL") return [{ k: p.id + ".1", n: "A1", x: x - 40, y: y - 20, dx: -1, dy: 0 }, { k: p.id + ".2", n: "A2", x: x - 40, y: y + 20, dx: -1, dy: 0 }, { k: p.id + ".3", n: "COM", x: x + 40, y: y - 20, dx: 1, dy: 0 }, { k: p.id + ".4", n: "NO", x: x + 40, y: y + 20, dx: 1, dy: 0 }];
+    if (/^(R|LED|D|PD|C|TA|SW|LP|SU)$/.test(p.t)){ var rr = (p.r || 0) % 4, ux = [-1, 0, 1, 0][rr], uy = [0, -1, 0, 1][rr]; return [{ k: p.id + ".1", n: p.t === "LED" || p.t === "D" || p.t === "PD" ? "A" : "1", x: x + 30 * ux, y: y + 30 * uy, dx: ux, dy: uy }, { k: p.id + ".2", n: p.t === "LED" || p.t === "D" || p.t === "PD" ? "K" : "2", x: x - 30 * ux, y: y - 30 * uy, dx: -ux, dy: -uy }]; }
     if (p.t === "V") return [{ k: p.id + ".1", n: "+5 V", x: x, y: y + 20, dx: 0, dy: 1 }];
     if (p.t === "GND") return [{ k: p.id + ".1", n: "GND", x: x, y: y - 20, dx: 0, dy: -1 }];
     if (p.t === "TG") return [{ k: p.id + ".1", n: "OUT", x: x + 40, y: y, dx: 1, dy: 0 }];
     if (p.t === "VS") return [{ k: p.id + ".1", n: "+", x: x + 40, y: y, dx: 1, dy: 0 }];
     if (p.t === "PT") return [{ k: p.id + ".1", n: "1", x: x - 30, y: y, dx: -1, dy: 0 }, { k: p.id + ".2", n: "2", x: x + 30, y: y, dx: 1, dy: 0 }, { k: p.id + ".S", n: T("Schleifer", "curseur"), x: x, y: y + 30, dx: 0, dy: 1 }];
     if (p.t === "TK") return [{ k: p.id + ".1", n: "IN", x: x - 30, y: y, dx: -1, dy: 0 }];
+    if (p.t === "SIN") return [{ k: p.id + ".1", n: "OUT", x: x + 40, y: y, dx: 1, dy: 0 }];
+    if (p.t === "VN") return [{ k: p.id + ".1", n: "−5 V", x: x, y: y - 20, dx: 0, dy: -1 }];
+    if (p.t === "OP") return [{ k: p.id + ".N", n: "−", ty: "i", x: x - 50, y: y - 20, dx: -1, dy: 0 }, { k: p.id + ".P", n: "+", ty: "i", x: x - 50, y: y + 20, dx: -1, dy: 0 }, { k: p.id + ".O", n: "OUT", ty: "o", x: x + 60, y: y, dx: 1, dy: 0 }, { k: p.id + ".VP", n: "V+", ty: "v", x: x - 10, y: y - 50, dx: 0, dy: -1 }, { k: p.id + ".VN", n: "V−", ty: "g", x: x - 10, y: y + 50, dx: 0, dy: 1 }];
     if (p.t === "K") return [{ k: p.id + ".1", n: "", x: x, y: y }];
     if (p.t === "Q" || p.t === "QP" || p.t === "M"){ var nm = p.t === "M" ? ["G", "D", "S"] : p.t === "Q" ? ["B", "C", "E"] : ["B", "E", "C"]; return [{ k: p.id + "." + nm[0], n: nm[0], x: x - 40, y: y, dx: -1, dy: 0 }, { k: p.id + "." + nm[1], n: nm[1], x: x + 10, y: y - 40, dx: 0, dy: -1 }, { k: p.id + "." + nm[2], n: nm[2], x: x + 10, y: y + 40, dx: 0, dy: 1 }]; }
     if (p.t === "AZ") return SEGP.map(function(s, i){ return { k: p.id + "." + s[1], n: s[0], x: x - 20, y: y + 20 + i * 20, dx: -1, dy: 0 }; }).concat([{ k: p.id + ".3", n: "K", x: x + 40, y: y + 190, dx: 0, dy: 1 }]);
@@ -2078,7 +2110,7 @@ var BAU = (function(){
   function part(id){ for (var i = 0; i < S.parts.length; i++) if (S.parts[i].id === id) return S.parts[i]; return null; }
   function allTerms(){ var m = {}; S.parts.forEach(function(p){ terms(p).forEach(function(t){ m[t.k] = t; }); }); return m; }
   function addPart(t, ic, x, y){ push(); var p = { id: nid(t === "ic" ? "ic" : t), t: t, x: snap(x), y: snap(y), r: 0 };
-    if (ic) p.ic = ic; if (t === "R") p.v = 330; if (t === "C") p.v = 10e-6; if (t === "LED") p.c = "#ff4d4d"; if (t === "TG") p.f = 1; if (t === "VS") p.u = 2.5; if (t === "PT"){ p.v = 10e3; p.pos = 50; } if (t === "TK") p.ch = Math.min(3, S.parts.filter(function(q){ return q.t === "TK"; }).length);
+    if (ic) p.ic = ic; if (t === "R") p.v = 330; if (t === "C") p.v = 10e-6; if (t === "LED") p.c = "#ff4d4d"; if (t === "TG") p.f = 1; if (t === "VS") p.u = 2.5; if (t === "PT"){ p.v = 10e3; p.pos = 50; } if (t === "SIN"){ p.w = "sin"; p.a = 1; p.f = 1000; p.o = 0; } if (t === "OP") p.typ = "lm358"; if (t === "PD") p.l = .5; if (t === "TK") p.ch = Math.min(3, S.parts.filter(function(q){ return q.t === "TK"; }).length);
     S.parts.push(p); sel = { p: p.id }; save(); render(); return p; }
 
   function body(p){
@@ -2090,25 +2122,30 @@ var BAU = (function(){
         var nx = t.dy ? t.x : t.dx < 0 ? x + 5 : x + g.W - 5, ny = t.dy ? (t.dy < 0 ? y + 11 : y + g.H - 5) : t.y + 3.5; s += '<text class="pn" x="' + nx + '" y="' + ny + '" text-anchor="' + (t.dy ? "middle" : t.dx < 0 ? "start" : "end") + '">' + esc(t.n) + "</text>";
         s += '<text class="pi" x="' + (t.dx ? t.x + t.dx * -10 : t.x + 7) + '" y="' + (t.dx ? t.y - 4 : t.dy < 0 ? t.y + 9 : t.y - 4) + '" text-anchor="' + (t.dx ? "middle" : "start") + '">' + t.k.split(".")[1] + "</text>"; });
       var cx = x + g.W / 2, cy = g.sip ? y + 24 : y + g.H / 2; s += '<text class="id" x="' + cx + '" y="' + (cy - 3) + '" text-anchor="middle">' + p.id + '</text><text class="nm" x="' + cx + '" y="' + (cy + 12) + '" text-anchor="middle">' + esc(d.name.split(" / ")[0]) + "</text>";
-      if (!MOD[d.id]) s += '<text class="ns" x="' + cx + '" y="' + (cy + 25) + '" text-anchor="middle">' + T("ohne Simulation", "sans simulation") + "</text>";
+      if (!MOD[d.id] && !AOP[d.id]) s += '<text class="ns" x="' + cx + '" y="' + (cy + 25) + '" text-anchor="middle">' + T("ohne Simulation", "sans simulation") + "</text>";
       return s; }
     if (p.t === "R") s = L(15) + '<rect class="bd" x="-15" y="-6" width="30" height="12"/>';
     else if (p.t === "C") s = L(4) + '<path d="M-4 -11V11M4 -11V11" stroke-width="2.6"/>';
-    else if (p.t === "LED" || p.t === "D") s = L(9) + '<path class="bd lf" d="M-9 -9V9L9 0Z"/><path d="M9 -9V9"/>' + (p.t === "LED" ? '<path d="M-1 -13l6 -7M5 -11l6 -7" stroke-width="1.3"/>' : "");
+    else if (p.t === "PD") s = L(9) + '<path class="bd lf" d="M-9 -9V9L9 0Z"/><path d="M9 -9V9"/><path d="M-12 -22l6 6M-4 -24l6 6" stroke-width="1.3"/><path d="M-6 -16l-3 0.5M-6 -16l0.5 -3M2 -18l-3 0.5M2 -18l0.5 -3" stroke-width="1.1"/>';
+    else if (p.t === "LED" || p.t === "D") s = L(9) + '<path class="bd lf" d="M-9 -9V9L9 0Z"/><path d="' + (p.t === "D" && p.z ? "M5 -9H9V9H13" : "M9 -9V9") + '"/>' + (p.t === "LED" ? '<path d="M-1 -13l6 -7M5 -11l6 -7" stroke-width="1.3"/>' : "");
     else if (p.t === "TA") s = L(14) + '<circle class="bd" cx="-14" cy="0" r="2.6"/><circle class="bd" cx="14" cy="0" r="2.6"/><path class="kn" d="M-16 -9H16M0 -9V-17M-7 -17H7"/>';
     else if (p.t === "SW") s = L(14) + '<circle class="bd" cx="-14" cy="0" r="2.6"/><circle class="bd" cx="14" cy="0" r="2.6"/><path class="kn" d="M-14 0L12 -12"/>';
     else if (p.t === "SU") s = L(10) + '<rect class="bd lf" x="-10" y="-8" width="20" height="16" rx="3"/><path d="M-4 -3v6M0 -5v10M4 -3v6" stroke-width="1.3"/>';
     else if (p.t === "LP") s = L(12) + '<circle class="bd lf" cx="0" cy="0" r="12"/><path d="M-8.5 -8.5L8.5 8.5M-8.5 8.5L8.5 -8.5"/>';
     if (s) s = '<rect class="hit" x="-26" y="-22" width="52" height="36"/>' + s;
     if (s && p.lb === 0) return '<g transform="' + tr + '">' + s + "</g>";
-    if (s){ var top = p.t === "TA" || p.t === "SW" || p.t === "LED" ? 29 : p.t === "LP" || p.t === "C" ? 19 : 15, lft = v && p.t === "LED" && p.r === 1, lx = v ? (lft ? x - 18 : x + (p.t === "LP" ? 20 : 16)) : x, ly = v ? y + 4 : y - top, an = v ? (lft ? "end" : "start") : "middle", val = p.t === "R" ? fmt(p.v, "Ω") : p.t === "C" ? fmt(p.v, "F") : "";
+    if (s){ var top = p.t === "TA" || p.t === "SW" || p.t === "LED" ? 29 : p.t === "LP" || p.t === "C" ? 19 : 15, lft = v && p.t === "LED" && p.r === 1, lx = v ? (lft ? x - 18 : x + (p.t === "LP" ? 20 : 16)) : x, ly = v ? y + 4 : y - top, an = v ? (lft ? "end" : "start") : "middle", val = p.t === "R" ? fmt(p.v, "Ω") : p.t === "C" ? fmt(p.v, "F") : p.t === "D" && p.z ? "Z " + p.z + " V" : "";
       return '<g transform="' + tr + '">' + s + '</g><text class="id" x="' + lx + '" y="' + (v ? y - 3 : ly) + '" text-anchor="' + an + '">' + p.id + "</text>" + (val ? '<text class="vl" x="' + lx + '" y="' + (v ? y + 11 : y + (p.t === "C" || p.t === "LP" ? 28 : 24)) + '" text-anchor="' + an + '">' + val + "</text>" : ""); }
+    if (p.t === "RL"){ var ry = p, cl = sim && sim.ana && sim.ana.E ? (sim.ana.E.filter(function(q){ return q.ry === ry; })[0] || {}).cl : 0; return '<rect class="hit" x="' + (x - 40) + '" y="' + (y - 36) + '" width="80" height="72"/><path d="M' + (x - 40) + " " + (y - 20) + "H" + (x - 14) + "V" + (y - 14) + "M" + (x - 40) + " " + (y + 20) + "H" + (x - 14) + "V" + (y + 14) + "M" + (x + 40) + " " + (y - 20) + "H" + (x + 14) + "M" + (x + 40) + " " + (y + 20) + "H" + (x + 14) + '"/><rect class="bd lf" x="' + (x - 22) + '" y="' + (y - 14) + '" width="16" height="28"/><path class="ry-o" d="M' + (x + 14) + " " + (y - 20) + "L" + (x + 6) + " " + (y + 12) + '" stroke-width="1.8"/><path class="ry-c" d="M' + (x + 14) + " " + (y - 20) + "L" + (x + 14) + " " + (y + 18) + '" stroke-width="1.8"/><circle class="bd" cx="' + (x + 14) + '" cy="' + (y - 20) + '" r="2.4"/><circle class="bd" cx="' + (x + 14) + '" cy="' + (y + 20) + '" r="2.4"/><path d="M' + (x - 6) + " " + y + "H" + (x + 4) + '" stroke-dasharray="3 2" stroke-width="1.1"/><text class="id" x="' + x + '" y="' + (y - 40) + '" text-anchor="middle">' + p.id + '</text>'; }
     if (p.t === "VS") return '<rect class="hit" x="' + (x - 20) + '" y="' + (y - 20) + '" width="40" height="40"/><path d="M' + (x + 18) + " " + y + "H" + (x + 40) + '"/><circle class="bd" cx="' + x + '" cy="' + y + '" r="18"/><path d="M' + (x - 6) + " " + (y - 5) + "h12M" + x + " " + (y - 11) + "v12M" + (x - 6) + " " + (y + 9) + 'h12" stroke-width="1.6"/><text class="id" x="' + x + '" y="' + (y - 23) + '" text-anchor="middle">' + p.id + '</text><text class="vl" x="' + x + '" y="' + (y + 32) + '" text-anchor="middle" data-lv="1">' + fmt(p.u, "V") + "</text>";
     if (p.t === "PT") return '<rect class="hit" x="' + (x - 26) + '" y="' + (y - 14) + '" width="52" height="40"/><path d="M' + (x - 30) + " " + y + "H" + (x - 15) + "M" + (x + 15) + " " + y + "H" + (x + 30) + "M" + x + " " + (y + 30) + "V" + (y + 10) + '"/><rect class="bd" x="' + (x - 15) + '" y="' + (y - 6) + '" width="30" height="12"/><path class="ar" d="M' + x + " " + (y + 7) + "l-4 7h8z" + '"/><text class="id" x="' + x + '" y="' + (y - 13) + '" text-anchor="middle">' + p.id + " · " + fmt(p.v, "Ω") + ' · <tspan class="vl" data-lv="1">' + Math.round(p.pos) + " %</tspan></text>";
     if (p.t === "V") return '<rect class="hit" x="' + (x - 14) + '" y="' + (y - 16) + '" width="28" height="34"/><path d="M' + x + " " + (y + 20) + "V" + y + "M" + (x - 10) + " " + y + "H" + (x + 10) + '"/><text class="id" x="' + x + '" y="' + (y - 5) + '" text-anchor="middle">+5 V</text>';
     if (p.t === "GND") return '<rect class="hit" x="' + (x - 14) + '" y="' + (y - 16) + '" width="28" height="30"/><path d="M' + x + " " + (y - 20) + "V" + y + "M" + (x - 11) + " " + y + "H" + (x + 11) + "M" + (x - 7) + " " + (y + 5) + "H" + (x + 7) + "M" + (x - 3) + " " + (y + 10) + "H" + (x + 3) + '"/>';
     if (p.t === "TG") return '<path d="M' + (x + 18) + " " + y + "H" + (x + 40) + '"/><circle class="bd" cx="' + x + '" cy="' + y + '" r="18"/><path d="M' + (x - 10) + " " + (y + 5) + "h5v-10h10v10h5" + '" stroke-width="1.6"/><text class="id" x="' + x + '" y="' + (y - 23) + '" text-anchor="middle">' + p.id + " · " + fhz(p.f) + "</text>";
     if (p.t === "TK"){ var c = CH[p.ch || 0]; return '<path d="M' + (x - 30) + " " + y + "H" + (x - 12) + '"/><path class="bd" d="M' + (x - 12) + " " + (y - 8) + "H" + (x + 14) + "L" + (x + 22) + " " + y + "L" + (x + 14) + " " + (y + 8) + "H" + (x - 12) + 'Z" style="stroke:' + c[0] + '"/><text class="id" x="' + (x + 4) + '" y="' + (y + 3.5) + '" text-anchor="middle" style="fill:' + c[0] + ';font-size:9px">' + c[1] + "</text>"; }
+    if (p.t === "SIN") return '<rect class="hit" x="' + (x - 20) + '" y="' + (y - 20) + '" width="60" height="40"/><path d="M' + (x + 18) + " " + y + "H" + (x + 40) + '"/><circle class="bd" cx="' + x + '" cy="' + y + '" r="18"/><path d="' + (p.w === "rect" ? "M" + (x - 10) + " " + (y + 5) + "v-10h10v10h10v-10" : p.w === "tri" ? "M" + (x - 11) + " " + (y + 6) + "L" + (x - 4) + " " + (y - 6) + "L" + (x + 4) + " " + (y + 6) + "L" + (x + 11) + " " + (y - 6) : p.w === "dc" ? "M" + (x - 10) + " " + y + "h20" : "M" + (x - 11) + " " + y + "q5.5 -13 11 0t11 0") + '" stroke-width="1.6"/><text class="id" x="' + x + '" y="' + (y - 32) + '" text-anchor="middle">' + p.id + '</text><text class="vl" x="' + x + '" y="' + (y - 21) + '" text-anchor="middle">' + (p.w === "dc" ? fmt(p.o || 0, "V") : fmt(p.f, "Hz") + " · " + fmt(p.a, "V")) + "</text>";
+    if (p.t === "VN") return '<rect class="hit" x="' + (x - 14) + '" y="' + (y - 20) + '" width="28" height="38"/><path d="M' + x + " " + (y - 20) + "V" + y + "M" + (x - 10) + " " + y + "H" + (x + 10) + '"/><text class="id" x="' + x + '" y="' + (y + 14) + '" text-anchor="middle">−5 V</text>';
+    if (p.t === "OP"){ var pr0 = (OPTY.filter(function(o){ return o[0] === (p.typ || "lm358"); })[0] || OPTY[0])[1]; return '<rect class="hit" x="' + (x - 40) + '" y="' + (y - 44) + '" width="96" height="88"/><path class="bd" d="M' + (x - 30) + " " + (y - 40) + "V" + (y + 40) + "L" + (x + 40) + " " + y + 'Z"/><path d="M' + (x - 50) + " " + (y - 20) + "H" + (x - 30) + "M" + (x - 50) + " " + (y + 20) + "H" + (x - 30) + "M" + (x + 40) + " " + y + "H" + (x + 60) + "M" + (x - 10) + " " + (y - 50) + "V" + (y - 29) + "M" + (x - 10) + " " + (y + 50) + "V" + (y + 29) + '"/><text class="nm" x="' + (x - 25) + '" y="' + (y - 16) + '" style="font-size:14px">−</text><text class="nm" x="' + (x - 26) + '" y="' + (y + 25) + '" style="font-size:14px">+</text><text class="id" x="' + (x - 14) + '" y="' + (y - 2) + '" text-anchor="middle">' + p.id + '</text><text class="vl" x="' + (x - 14) + '" y="' + (y + 12) + '" text-anchor="middle">' + pr0 + "</text>"; }
     if (p.t === "K") return '<circle class="dot" cx="' + x + '" cy="' + y + '" r="4"/>';
     if (p.t === "Q" || p.t === "QP" || p.t === "M"){ var g2 = p.t === "M" ? '<path d="M-40 0H-15M-15 -13V13M-9 -15V-7M-9 -4V4M-9 7V15M-9 -11H10V-40M-9 11H10V40M-9 0H10V11"/><path class="ar" d="M-8 0l8 -4v8z"/>' :
         '<path d="M-40 0H-10M-10 -14V14M-10 -7L10 -18V-40M-10 7L10 18V40"/>' + (p.t === "Q" ? '<path class="ar" d="M10 18l-9.5 -1 4 -6.5z"/>' : '<path class="ar" d="M-10 -7l9.5 -1 -4 6.5z"/>');
@@ -2126,6 +2163,7 @@ var BAU = (function(){
       return d0 + "L" + b.x + " " + b.y; } var pts = [[a.x, a.y]].concat(w.pts || []); if (extra) pts.push(extra); else if (b) pts.push([b.x, b.y]); else return "";
     var d = "M" + pts[0][0] + " " + pts[0][1]; for (var i = 1; i < pts.length; i++){ var p0 = pts[i - 1], p1 = pts[i]; if (p0[0] !== p1[0] && p0[1] !== p1[1]) d += "H" + p1[0]; d += (p0[0] !== p1[0] || p0[1] !== p1[1]) ? "V" + p1[1] + "H" + p1[0] : ""; } return d; }
   function render(){
+    if (anaBtn) anaBtn.classList.toggle("on", forceAna || hasAna());
     if (!svg) return; var T2 = allTerms(), s = '<defs><pattern id="bgr" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="0" cy="0" r="1" fill="#d6d0bd"/></pattern></defs><rect x="-2000" y="-2000" width="6000" height="6000" fill="url(#bgr)" class="bgr"/>';
     S.wires.forEach(function(w, i){ var d = wpath(w, T2); if (d) s += '<path class="wr' + (sel && sel.w === i ? " sel" : "") + '" data-w="' + i + '" d="' + d + '"/><path class="wh" data-w="' + i + '" d="' + d + '"/>'; });
     S.parts.forEach(function(p){ s += '<g class="pt pt-' + p.t + (sel && sel.p === p.id ? " sel" : "") + '" data-p="' + p.id + '">' + body(p) + "</g>"; });
@@ -2137,19 +2175,21 @@ var BAU = (function(){
   /* --- Eigenschaften der Auswahl --- */
   function props(){ if (!propBox) return; var h = "";
     if (sel && sel.p){ var p = part(sel.p); if (!p){ propBox.innerHTML = ""; return; } h = "<b>" + esc(p.id) + "</b> ";
-      if (p.t === "ic"){ var d = icById(p.ic); h += esc(d.name) + " – " + esc(T(d.k[0], d.k[1])) + (MOD[p.ic] ? (MOD[p.ic].note ? " <i>(" + esc(T(MOD[p.ic].note[0], MOD[p.ic].note[1])) + ")</i>" : "") : " <i>(" + T("wird nicht simuliert – zum Aufbauen und Üben", "non simulé") + ")</i>") + ' <a class="ic-ch" href="index.html#/s/' + (LINK[p.ic] || "") + '">📖 ' + T("Datenblatt-Seite", "Fiche") + "</a>"; }
+      if (p.t === "ic"){ var d = icById(p.ic); h += esc(d.name) + " – " + esc(T(d.k[0], d.k[1])) + (MOD[p.ic] ? (MOD[p.ic].note ? " <i>(" + esc(T(MOD[p.ic].note[0], MOD[p.ic].note[1])) + ")</i>" : "") : AOP[p.ic] ? " <i>(" + T("Analog-Modell: Verstärkung, Bandbreite, Slew-Rate, Versorgungsgrenzen", "modèle analogique") + ")</i>" : " <i>(" + T("wird nicht simuliert – zum Aufbauen und Üben", "non simulé") + ")</i>") + ' <a class="ic-ch" href="index.html#/s/' + (LINK[p.ic] || "") + '">📖 ' + T("Datenblatt-Seite", "Fiche") + "</a>"; }
       function selc(k, list, cur, f){ var o = '<select data-k="' + k + '">'; list.forEach(function(v){ var val = Array.isArray(v) ? v[0] : v; o += '<option value="' + val + '"' + (String(val) === String(cur) ? " selected" : "") + ">" + esc(Array.isArray(v) ? v[1] : f(v)) + "</option>"; }); return o + "</select>"; }
       if (p.t === "R") h += selc("v", RV, p.v, function(v){ return fmt(v, "Ω"); }); if (p.t === "C") h += selc("v", CV, p.v, function(v){ return fmt(v, "F"); });
-      if (p.t === "LED") h += selc("c", LC, p.c); if (p.t === "TG") h += selc("f", FQ, p.f, fhz); if (p.t === "TK") h += selc("ch", CH.map(function(c, i){ return [i, c[1]]; }), p.ch || 0);
+      if (p.t === "LED") h += selc("c", LC, p.c); if (p.t === "PD") h += selc("l", [[0, T("dunkel", "obscurité")], [.1, T("schwaches Licht", "faible")], [.5, T("Raumlicht", "ambiante")], [1, T("helles Licht", "forte")]], p.l == null ? .5 : p.l); if (p.t === "D") h += selc("z", [[0, T("Diode (1N4148)", "Diode (1N4148)")], [2.7, T("Z-Diode 2,7 V", "Zener 2,7 V")], [3.3, T("Z-Diode 3,3 V", "Zener 3,3 V")], [4.7, T("Z-Diode 4,7 V", "Zener 4,7 V")], [5.1, T("Z-Diode 5,1 V", "Zener 5,1 V")], [6.2, T("Z-Diode 6,2 V", "Zener 6,2 V")], [9.1, T("Z-Diode 9,1 V", "Zener 9,1 V")], [12, T("Z-Diode 12 V", "Zener 12 V")]], p.z || 0); if (p.t === "TG") h += selc("f", FQ, p.f, fhz); if (p.t === "TK") h += selc("ch", CH.map(function(c, i){ return [i, c[1]]; }), p.ch || 0);
       if (p.t === "ic" && !icGeo({ x: 0, y: 0, id: "x", ic: p.ic }).sip) h += ' <button type="button" class="ic-ch" data-a="dip">' + (p.dip ? T("🔀 Pins wie im Schaltplan", "🔀 broches comme le schéma") : T("🔀 Pins wie am Chip (DIP)", "🔀 broches comme la puce")) + "</button>";
+      if (p.t === "SIN") h += selc("w", [["sin", T("Sinus", "Sinus")], ["rect", T("Rechteck", "Carré")], ["tri", T("Dreieck", "Triangle")], ["dc", T("Gleichspannung", "Continu")]], p.w) + " " + selc("a", [.05, .1, .2, .5, 1, 2, 3, 5], p.a, function(v){ return "± " + fmt(v, "V"); }) + " " + selc("f", [10, 50, 100, 200, 500, 1e3, 2e3, 5e3, 1e4, 2e4, 5e4, 1e5, 2e5, 5e5], p.f, function(v){ return fmt(v, "Hz"); }) + " " + selc("o", [-2.5, -1, -.5, 0, .5, 1, 2.5], p.o || 0, function(v){ return T("Offset ", "Offset ") + fmt(v, "V"); });
+      if (p.t === "OP") h += selc("typ", OPTY, p.typ || "lm358");
       if (p.t === "VS") h += ' <input type="range" min="0" max="5" step="0.05" value="' + p.u + '" data-k="u"> <output>' + fmt(p.u, "V") + "</output>";
       if (p.t === "PT") h += ' <input type="range" min="0" max="100" step="1" value="' + p.pos + '" data-k="pos"> <output>' + Math.round(p.pos) + " %</output> " + selc("v", [1e3, 10e3, 100e3], p.v, function(v){ return fmt(v, "Ω"); });
-      if (/^(R|LED|D|C|TA|SW|LP|SU)$/.test(p.t)) h += ' <button type="button" class="ic-ch" data-a="rot">⟳ ' + T("drehen", "pivoter") + "</button>";
+      if (/^(R|LED|D|PD|C|TA|SW|LP|SU|OP|SIN)$/.test(p.t) && p.t !== "SIN" && p.t !== "OP") h += ' <button type="button" class="ic-ch" data-a="rot">⟳ ' + T("drehen", "pivoter") + "</button>";
       h += ' <button type="button" class="ic-ch" data-a="del">🗑 ' + T("löschen", "supprimer") + "</button>"; }
     else if (sel && sel.w != null) h = "<b>" + T("Draht", "Fil") + "</b> " + esc(S.wires[sel.w].a + " → " + S.wires[sel.w].b) + ' <button type="button" class="ic-ch" data-a="del">🗑 ' + T("löschen", "supprimer") + "</button>";
     else h = wiring ? "🔌 " + T("Draht läuft: klicke auf den Ziel-Pin. Klick auf freie Fläche = Knick. Rechtsklick oder Esc = abbrechen.", "Fil en cours : clique sur la broche cible.") : T("Tipp: Bauteil in der Liste anklicken, auf der Fläche verschieben, dann Pin anklicken → Pin anklicken = Draht.", "Astuce : ajoute un composant, puis clique broche → broche pour un fil.");
     propBox.innerHTML = h;
-    propBox.querySelectorAll("select").forEach(function(se){ se.onchange = function(){ var p = part(sel.p); push(); var k = se.dataset.k, v = se.value; p[k] = k === "c" ? v : +v; save(); render(); }; });
+    propBox.querySelectorAll("select").forEach(function(se){ se.onchange = function(){ var p = part(sel.p); push(); var k = se.dataset.k, v = se.value; p[k] = (k === "c" || k === "w" || k === "typ") ? v : +v; save(); render(); }; });
     propBox.querySelectorAll('input[type="range"]').forEach(function(ri){ ri.oninput = function(){ var p = part(sel.p), k = ri.dataset.k; p[k] = +ri.value; save(); var txt = k === "u" ? fmt(p.u, "V") : Math.round(p.pos) + " %"; ri.nextElementSibling.textContent = txt; var lv = svg.querySelector('[data-p="' + p.id + '"] [data-lv]'); if (lv) lv.textContent = txt; }; });
     propBox.querySelectorAll("button").forEach(function(b){ b.onclick = function(){ if (b.dataset.a === "del") del(); else { var p = part(sel.p); push(); if (b.dataset.a === "dip") p.dip = !p.dip; else p.r = ((p.r || 0) + 1) % 4; save(); render(); } }; }); }
   function del(){ if (!sel) return; push(); if (sel.p){ var id = sel.p; S.parts = S.parts.filter(function(q){ return q.id !== id; }); S.wires = S.wires.filter(function(w){ return w.a.split(".")[0] !== id && w.b.split(".")[0] !== id; }); }
@@ -2201,14 +2241,14 @@ var BAU = (function(){
       var same = JSON.stringify(nout) === JSON.stringify(sim.out) && JSON.stringify(nj) === JSON.stringify(joins); sim.out = nout; joins = sim.joins = nj; res = { N: N, net: net, val: val, U: U };
       if (same) break; }
     return res; }
-  function tick(){ if (!sim) return; var now = performance.now(), dt = Math.min(0.1, (now - sim.t) / 1000); sim.t = now; sim.time += dt;
+  function tick(){ if (!sim) return; var now = performance.now(), dt = Math.min(0.1, (now - sim.t) / 1000); sim.t = now; sim.time += dt; if (sim.ana){ anaTick(dt); paintSim(); drawScope(); return; }
     S.parts.forEach(function(p){ if (p.t === "TG") sim.clk[p.id] = ((sim.time * p.f) % 1) < 0.5 ? 1 : 0; });
     sim.upd = true; sim.uw = []; sim.info = {}; var r = solve(dt); sim.r = r; var T2 = allTerms(); sim.prev = {}; Object.keys(T2).forEach(function(k){ sim.prev[k] = r.val(k); });
     S.parts.forEach(function(p){ if (p.t === "TK"){ var v = r.val(p.id + ".1"); (sim.tr[p.ch || 0] = sim.tr[p.ch || 0] || []).push([sim.time, v]); } });
     sim.tr.forEach(function(a){ while (a && a.length && a[0][0] < sim.time - 8) a.shift(); });
     paintSim(); drawScope(); }
   function paintSim(){
-    if (!svg) return; var on = !!(sim && sim.r); svg.classList.toggle("run", on); if (!on){ msgs(); return; }
+    if (!svg) return; var on = !!(sim && (sim.r || sim.ana)); svg.classList.toggle("run", on); if (!on){ msgs(); return; } if (sim.ana){ paintAna(); return; }
     var r = sim.r, warn = (sim.uw || []).concat(sim.warn), seen = {}, buzz = false;
     svg.querySelectorAll("path.wr").forEach(function(e){ var w = S.wires[+e.dataset.w]; if (!w) return; var n = r.net(w.a); e.setAttribute("data-v", n.v === "S" ? "s" : n.v == null ? "x" : n.v); if (n.v === "S" && !seen[n.id]){ seen[n.id] = 1; warn.push(T("Kurzschluss: HIGH und LOW direkt verbunden (bei ", "Court-circuit (") + w.a + ")."); } });
     function led(a, k, id){ var A = r.net(a), K = r.net(k); if (A.v === 1 && K.v === 0){ if (A.st === "s" && K.st === "s"){ warn.push(id + ": " + T("kein Vorwiderstand – die LED würde durchbrennen!", "pas de résistance – la LED grillerait !")); return "b"; } return "1"; } return "0"; }
@@ -2219,6 +2259,7 @@ var BAU = (function(){
       if (p.t === "TA") g.setAttribute("data-on", sim.press[p.id] ? "1" : "0"); if (p.t === "SW") g.setAttribute("data-on", p.on ? "1" : "0");
       if (p.t === "Q" || p.t === "QP" || p.t === "M"){ var bn = r.net(p.id + "." + (p.t === "M" ? "G" : "B")); if (p.t !== "M" && bn.st === "s" && bn.v != null) warn.push(p.id + ": " + T("Basis hängt direkt am Signal – Basiswiderstand (z. B. 1 kΩ) fehlt.", "il manque la résistance de base.")); }
       if (p.t === "AZ"){ var any = 0; SEGP.forEach(function(sg){ var st = led(p.id + "." + sg[1], p.id + ".3", p.id + " " + sg[0]), e = g.querySelector('[data-s="' + sg[0] + '"]'); if (e) e.setAttribute("data-on", st); }); } });
+    if (sim.meas){ var mt = allTerms()[sim.meas]; if (mt){ var mv = r.val(sim.meas), mtx = mv === 1 ? "HIGH ≈ 5 V" : mv === 0 ? "LOW ≈ 0 V" : mv === "S" ? "Kurzschluss" : T("offen / unbestimmt", "indéfini"); svg.insertAdjacentHTML("beforeend", '<g class="mb"><circle cx="' + mt.x + '" cy="' + mt.y + '" r="8" fill="none" stroke="#e8590c" stroke-width="2"/><rect x="' + (mt.x + 10) + '" y="' + (mt.y - 24) + '" width="' + (mtx.length * 6.6 + 14) + '" height="20" rx="5" fill="#fff8e6" stroke="#e8590c"/><text x="' + (mt.x + 17) + '" y="' + (mt.y - 10) + '" style="fill:#c2410c;font-weight:800;font-size:12px">' + esc(mtx) + "</text></g>"); } }
     S.parts.forEach(function(p){ if (p.t === "TG"){ var g2 = svg.querySelector('[data-p="' + p.id + '"]'); if (g2) g2.setAttribute("data-on", sim.clk[p.id] ? "1" : "0"); } });
     beep(buzz); msgs(warn); }
   var AU = null; function beep(on){ try { if (on && !AU){ var ac = new (window.AudioContext || window.webkitAudioContext)(), o = ac.createOscillator(), g = ac.createGain(); o.type = "square"; o.frequency.value = 2300; g.gain.value = .03; o.connect(g); g.connect(ac.destination); o.start(); AU = { ac: ac }; } else if (!on && AU){ AU.ac.close(); AU = null; } } catch(e){ AU = null; } }
@@ -2226,19 +2267,261 @@ var BAU = (function(){
     var u = []; (warn || []).forEach(function(w){ if (u.indexOf(w) < 0) u.push(w); }); var h = "";
     if (!S.parts.length) h = "<p>" + T("Noch leer – füge links Bauteile hinzu.", "Vide – ajoute des composants.") + "</p>";
     else if (u.length) h = '<ul class="bw">' + u.slice(0, 12).map(function(w){ return "<li>⚠️ " + esc(w) + "</li>"; }).join("") + "</ul>";
-    else h = '<p class="bok">✅ ' + T("Alles richtig verdrahtet – die Schaltung läuft.", "Câblage correct – le circuit fonctionne.") + "</p>";
+    else h = '<p class="bok">✅ ' + (sim.ana ? T("Die Schaltung läuft. Klicke auf einen Pin, um die Spannung dort zu messen.", "Le circuit fonctionne. Clique une broche pour mesurer.") : T("Alles richtig verdrahtet – die Schaltung läuft.", "Câblage correct – le circuit fonctionne.")) + "</p>";
     Object.keys(sim.info || {}).forEach(function(k){ h += '<p class="ic-lb">⏱ ' + esc(k + ": " + sim.info[k]) + "</p>"; });
-    S.parts.forEach(function(p){ if (p.t === "ic" && !MOD[p.ic]) h += '<p class="ic-lb">ℹ️ ' + esc(p.id + " (" + icById(p.ic).name.split(" / ")[0] + ") ") + T("wird nicht simuliert (analog) – Aufbau und Pins kannst du trotzdem üben.", "n’est pas simulé (analogique).") + "</p>"; });
+    S.parts.forEach(function(p){ if (p.t === "ic" && !MOD[p.ic] && !AOP[p.ic]) h += '<p class="ic-lb">ℹ️ ' + esc(p.id + " (" + icById(p.ic).name.split(" / ")[0] + ") ") + T("wird nicht simuliert (analog) – Aufbau und Pins kannst du trotzdem üben.", "n’est pas simulé (analogique).") + "</p>"; });
     msgBox.innerHTML = h; }
-  function drawScope(){ if (!scopeCv) return; var c = scopeCv, x = c.getContext("2d"), W = c.width = c.clientWidth * (window.devicePixelRatio || 1), H = c.height = 150 * (window.devicePixelRatio || 1), k = W / c.clientWidth;
+  function drawScope(){ if (!scopeCv) return; scopeCv.style.height = ""; if (sim && sim.ana && !sim.ana.err){ drawAna(); return; } var c = scopeCv, x = c.getContext("2d"), W = c.width = c.clientWidth * (window.devicePixelRatio || 1), H = c.height = 150 * (window.devicePixelRatio || 1), k = W / c.clientWidth;
     x.fillStyle = "#06120f"; x.fillRect(0, 0, W, H); x.strokeStyle = "rgba(109,255,176,.12)"; x.lineWidth = 1; for (var i = 1; i < 8; i++){ x.beginPath(); x.moveTo(i * W / 8, 0); x.lineTo(i * W / 8, H); x.stroke(); }
     var used = []; S.parts.forEach(function(p){ if (p.t === "TK" && used.indexOf(p.ch || 0) < 0) used.push(p.ch || 0); }); used.sort();
     if (!used.length){ x.fillStyle = "#8fe3b9"; x.font = 12 * k + "px Inter,system-ui,sans-serif"; var msg = T("Setze einen Tastkopf (links in der Liste) an eine Leitung – dann erscheint hier ihr Verlauf.", "Place une sonde sur un fil pour voir son signal.").split(" "), line = "", ly = 24 * k; msg.forEach(function(wd){ var tl = line ? line + " " + wd : wd; if (x.measureText(tl).width > W - 24 * k && line){ x.fillText(line, 12 * k, ly); ly += 17 * k; line = wd; } else line = tl; }); x.fillText(line, 12 * k, ly); return; }
     var lh = H / used.length; used.forEach(function(ch, i){ var a = (sim && sim.tr[ch]) || [], y0 = i * lh, hi = y0 + lh * 0.25, lo = y0 + lh * 0.78; x.fillStyle = CH[ch][0]; x.font = "bold " + 11 * k + "px Inter,system-ui,sans-serif"; x.fillText(CH[ch][1], 6 * k, y0 + 14 * k);
       x.strokeStyle = CH[ch][0]; x.lineWidth = 2 * k; x.beginPath(); var t1 = sim ? sim.time : 0, first = true, py = null;
       a.forEach(function(s){ var px = 40 * k + (W - 46 * k) * (1 - (t1 - s[0]) / 8), yy = s[1] === 1 ? hi : s[1] === 0 ? lo : (hi + lo) / 2; if (first){ x.moveTo(px, yy); first = false; } else { if (py !== yy) x.lineTo(px, py); x.lineTo(px, yy); } py = yy; }); x.stroke(); }); }
-  function startSim(){ sim = { t: performance.now(), time: 0, clk: {}, press: {}, out: {}, st: {}, prev: {}, warn: [], info: {}, tr: [], joins: [] }; sim.iv = setInterval(tick, 30); simBtn.textContent = "■ " + T("Simulation stoppen", "Arrêter"); simBtn.classList.add("on"); wiring = null; tick(); }
+  function startSim(){ sim = { t: performance.now(), time: 0, clk: {}, press: {}, out: {}, st: {}, prev: {}, warn: [], info: {}, tr: [], joins: [] }; sim.iv = setInterval(tick, 30); simBtn.textContent = "■ " + T("Simulation stoppen", "Arrêter"); simBtn.classList.add("on"); wiring = null; if (forceAna || hasAna()) startAna(); tick(); }
   function stopSim(){ if (sim && sim.iv) clearInterval(sim.iv); sim = null; beep(false); if (simBtn){ simBtn.textContent = "▶ " + T("Simulation starten", "Lancer la simulation"); simBtn.classList.remove("on"); } render(); drawScope(); }
+  /* ====================================================================
+     Analog-Engine: echte Spannungen und Ströme (Knotenanalyse, Newton, Zeitschritte)
+     Bauteile: R, Poti, C, Quellen, Diode/LED, BJT, MOSFET, Opamp (mit Bandbreite, Slew-Rate, Versorgungsgrenzen)
+     ==================================================================== */
+  var AOP = { lm358: { g: 1e6, sr: .3, ht: 1.5, hb: .05 }, lm324: { g: 1e6, sr: .5, ht: 1.5, hb: .05 }, tl072: { g: 3e6, sr: 13, ht: 1.5, hb: 1.5 }, tl071: { g: 3e6, sr: 13, ht: 1.5, hb: 1.5 }, tl074: { g: 3e6, sr: 13, ht: 1.5, hb: 1.5 },
+    ne5532: { g: 10e6, sr: 9, ht: 1.5, hb: 1.5 }, mcp6002: { g: 1e6, sr: .6, ht: .05, hb: .05 }, lm741: { g: 1e6, sr: .5, ht: 2, hb: 2 } };
+  var OPTY = [["lm358", "LM358"], ["tl072", "TL072"], ["ne5532", "NE5532"], ["mcp6002", "MCP6002"], ["lm741", "LM741"]];
+  function opAmps(p){
+    if (p.t === "OP"){ var q = function(s){ return p.id + "." + s; }; return [{ n: q("N"), p: q("P"), o: q("O"), vp: q("VP"), vn: q("VN"), pre: p.typ || "lm358" }]; }
+    var id = p.ic, q2 = function(a){ return p.id + "." + a; };
+    if (id === "lm741" || id === "tl071") return [{ n: q2(2), p: q2(3), o: q2(6), vp: q2(7), vn: q2(4), pre: id }];
+    if (id === "lm324" || id === "tl074") return [[1, 2, 3], [7, 6, 5], [8, 9, 10], [14, 13, 12]].map(function(a){ return { o: q2(a[0]), n: q2(a[1]), p: q2(a[2]), vp: q2(4), vn: q2(11), pre: id }; });
+    return [[1, 2, 3], [7, 6, 5]].map(function(a){ return { o: q2(a[0]), n: q2(a[1]), p: q2(a[2]), vp: q2(8), vn: q2(4), pre: id }; });
+  }
+  function isAnaPart(p){ return p.t === "PD" || p.t === "RL" || (p.t === "D" && p.z > 0) || p.t === "SIN" || p.t === "VN" || p.t === "OP" || (p.t === "ic" && AOP[p.ic]); }
+  function hasAna(){ return S.parts.some(isAnaPart); }
+  var LEDI = { "#ff4d4d": [1e-18, 2], "#6dffb0": [1e-20, 2], "#ffd43b": [1e-19, 2], "#4dabf7": [1e-30, 2] };
+  function wave(p, t, fo){ var f = fo || p.f || 1000, a = p.a == null ? 1 : p.a, o = p.o || 0, ph = 2 * Math.PI * f * t, w = p.w || "sin";
+    return w === "dc" ? o : w === "rect" ? o + (Math.sin(ph) >= 0 ? a : -a) : w === "tri" ? o + a * 2 / Math.PI * Math.asin(Math.sin(ph)) : o + a * Math.sin(ph); }
+  function pnj(vn, vo, vt, vc){ if (vn > vc && Math.abs(vn - vo) > 2 * vt){ if (vo > 0){ var arg = (vn - vo) / vt; vn = arg > 2 ? vo + vt * (2 + Math.log(arg - 2)) : vn; } else vn = vt * Math.log(vn / vt); } return vn; }
+  function expl(x){ return Math.exp(Math.min(x, 60)); }
+  function gauss(A, b, n){ // A: Array von Float64Array (n×n), b: Float64Array -> Lösung
+    for (var c = 0; c < n; c++){ var pv = c, mx = Math.abs(A[c][c]); for (var r = c + 1; r < n; r++){ var q = Math.abs(A[r][c]); if (q > mx){ mx = q; pv = r; } }
+      if (mx < 1e-30) { A[c][c] = 1e-12; mx = 1e-12; } if (pv !== c){ var t = A[c]; A[c] = A[pv]; A[pv] = t; var tb = b[c]; b[c] = b[pv]; b[pv] = tb; }
+      var d = A[c][c]; for (var r2 = c + 1; r2 < n; r2++){ var f = A[r2][c] / d; if (f){ var Ar = A[r2], Ac = A[c]; for (var k = c; k < n; k++) Ar[k] -= f * Ac[k]; b[r2] -= f * b[c]; } } }
+    var x = new Float64Array(n); for (var i = n - 1; i >= 0; i--){ var s = b[i]; for (var j = i + 1; j < n; j++) s -= A[i][j] * x[j]; x[i] = s / A[i][i]; } return x; }
+  function softc(u, lo, hi){ var k = Math.min(.4, (hi - lo) / 4), a = hi - k, b = lo + k, th; if (u > a){ th = Math.tanh((u - a) / k); return [a + k * th, 1 - th * th]; } if (u < b){ th = Math.tanh((b - u) / k); return [b - k * th, 1 - th * th]; } return [u, 1]; }
+  /* Modell aus der Zeichnung aufbauen */
+  function anaBuild(){
+    var T2 = allTerms(), U = uf(), M = { E: [], warn: [], keys: T2, fo: null }; Object.keys(T2).forEach(function(k){ U.f(k); }); S.wires.forEach(function(w){ if (T2[w.a] && T2[w.b]) U.u(w.a, w.b); });
+    var g0 = null; S.parts.forEach(function(p){ if (p.t === "GND"){ if (g0 === null) g0 = p.id + ".1"; else U.u(g0, p.id + ".1"); } });
+    if (g0 === null){ M.err = T("Kein GND-Symbol – ohne Masse gibt es keine Spannungen. Ein GND links aus der Liste setzen und anschließen.", "Pas de GND : place une masse."); return M; }
+    var gr = U.f(g0), idx = {}, n = 0, cnt = {}; Object.keys(T2).forEach(function(k){ var r = U.f(k); cnt[r] = (cnt[r] || 0) + 1; });
+    function nd(k){ var r = U.f(k); if (r === gr) return -1; if (idx[r] == null) idx[r] = n++; return idx[r]; }
+    M.nd = nd; M.cnt = function(k){ return cnt[U.f(k)] || 0; };
+    function R(a, b, r, part){ M.E.push({ t: "R", a: nd(a), b: nd(b), g: 1 / Math.max(r, 1e-6), part: part }); }
+    S.parts.forEach(function(p){ var k = function(s){ return p.id + "." + s; };
+      if (p.t === "R") R(k(1), k(2), p.v, p); else if (p.t === "PT"){ var q = Math.max(.005, Math.min(.995, p.pos / 100)); R(k(1), k("S"), p.v * q, p); R(k("S"), k(2), p.v * (1 - q), p); }
+      else if (p.t === "LP") R(k(1), k(2), 50, p); else if (p.t === "SU") R(k(1), k(2), 100, p);
+      else if (p.t === "TA" || p.t === "SW") M.E.push({ t: "R", a: nd(k(1)), b: nd(k(2)), g: 0, sw: p, part: p });
+      else if (p.t === "C") M.E.push({ t: "C", a: nd(k(1)), b: nd(k(2)), c: p.v, vp: 0, part: p });
+      else if (p.t === "V") M.E.push({ t: "S", a: nd(k(1)), f: function(){ return 5; }, part: p });
+      else if (p.t === "VN") M.E.push({ t: "S", a: nd(k(1)), f: function(){ return -5; }, part: p });
+      else if (p.t === "VS") M.E.push({ t: "S", a: nd(k(1)), f: function(){ return p.u; }, part: p });
+      else if (p.t === "TG") M.E.push({ t: "S", a: nd(k(1)), f: function(t){ return ((t * p.f) % 1) < .5 ? 5 : 0; }, part: p });
+      else if (p.t === "SIN") M.E.push({ t: "S", a: nd(k(1)), f: function(t){ return wave(p, t, M.fo); }, part: p, gen: 1 });
+      else if (p.t === "RL"){ M.E.push({ t: "R", a: nd(k(1)), b: nd(k(2)), g: 1 / 70, part: p }); M.E.push({ t: "R", a: nd(k(3)), b: nd(k(4)), g: 0, ry: p, cl: 0, ca: nd(k(1)), cb: nd(k(2)), part: null }); }
+      else if (p.t === "LED" || p.t === "D" || p.t === "PD"){ var pr = p.t === "LED" ? (LEDI[p.c] || LEDI["#ff4d4d"]) : [1e-14, 1], nv = pr[1] * .02585; M.E.push({ t: "D", a: nd(k(1)), b: nd(k(2)), is: pr[0], nvt: nv, vc: nv * Math.log(nv / (Math.SQRT2 * pr[0])), jv: 0, part: p }); if (p.t === "PD") M.E.push({ t: "IS", a: nd(k(1)), b: nd(k(2)), i: (p.l == null ? .5 : p.l) * 200e-6 }); if (p.t === "D" && p.z > 0){ var zv = .03; M.E.push({ t: "DZ", a: nd(k(1)), b: nd(k(2)), vz: p.z, isz: 5e-3, nvt: zv, vc: zv * Math.log(zv / (Math.SQRT2 * 5e-3)), jv: -1, par: M.E[M.E.length - 1] }); } }
+      else if (p.t === "Q" || p.t === "QP"){ var nm = p.t === "Q" ? ["B", "C", "E"] : ["B", "E", "C"]; M.E.push({ t: "Q", s: p.t === "Q" ? 1 : -1, b: nd(k(nm[0])), c: nd(k(p.t === "Q" ? "C" : "C")), e: nd(k("E")), is: 1e-14, bf: 200, br: 5, vt: .02585, vc: .02585 * Math.log(.02585 / (Math.SQRT2 * 1e-14)), jbe: 0, jbc: 0, part: p }); }
+      else if (p.t === "M") M.E.push({ t: "M", g: nd(k("G")), d: nd(k("D")), s: nd(k("S")), vth: 1.7, kp: 12, part: p });
+      else if (p.t === "OP" || (p.t === "ic" && AOP[p.ic])){ opAmps(p).forEach(function(o, i){ var pr = AOP[o.pre] || AOP.lm358; M.E.push({ t: "O", n: nd(o.n), p: nd(o.p), o: nd(o.o), vp: nd(o.vp), vn: nd(o.vn), A: 1e5, gbw: pr.g, sr: pr.sr * 1e6, ht: pr.ht, hb: pr.hb, x: 0, out: 0, part: p, keys: o, on: true }); }); }
+      else if (p.t === "ic" && !isAnaPart(p)) M.warn.push(p.id + " (" + icById(p.ic).name.split(" / ")[0] + ") " + T("ist ein Digital-IC und wird im Analog-Modus nicht berechnet.", "est numérique : non calculé en mode analogique."));
+      else if (p.t === "AZ") M.warn.push(p.id + ": " + T("7-Segment wird im Analog-Modus nicht berechnet.", "7 segments non calculé."));
+    });
+    M.n = n; M.v = new Float64Array(n); M.t = 0; return M; }
+  function vof(M, i){ return i < 0 ? 0 : M.v[i]; }
+  /* eine Newton-Lösung: dt = 0 → Gleichstrom */
+  function anaSolve(M, dt, t, scale, Ascale){
+    var n = M.n; if (!n) return true; var ok = false;
+    for (var it = 0; it < 80; it++){
+      var A = []; for (var i = 0; i < n; i++) A.push(new Float64Array(n)); var b = new Float64Array(n), lim = false;
+      for (i = 0; i < n; i++){ A[i][i] += 1e-10; }
+      var add = function(r, c, g){ if (r >= 0 && c >= 0) A[r][c] += g; }, rhs = function(r, x){ if (r >= 0) b[r] += x; };
+      var cond = function(a, c, g){ add(a, a, g); add(c, c, g); add(a, c, -g); add(c, a, -g); };
+      M.E.forEach(function(e){
+        if (e.t === "R") cond(e.a, e.b, e.sw ? ((e.sw.t === "TA" ? !!(sim && sim.press && sim.press[e.sw.id]) : !!e.sw.on) ? 100 : 0) : e.ry ? (e.cl ? 100 : 0) : e.g);
+        else if (e.t === "C"){ if (dt > 0){ var g = e.c / dt; cond(e.a, e.b, g); rhs(e.a, g * e.vp); rhs(e.b, -g * e.vp); } else cond(e.a, e.b, 1e-12); }
+        else if (e.t === "S"){ var gs = 100; add(e.a, e.a, gs); rhs(e.a, gs * e.f(t) * scale); }
+        else if (e.t === "D"){ var vd = vof(M, e.a) - vof(M, e.b), vl = pnj(vd, e.jv, e.nvt, e.vc); if (Math.abs(vl - vd) > 1e-9) lim = true; e.jv = vl;
+          var ex = expl(vl / e.nvt), id = e.is * (ex - 1) + 1e-12 * vl, gd = e.is / e.nvt * ex + 1e-12; e.i = id; cond(e.a, e.b, gd); var ieq = id - gd * vl; rhs(e.a, -ieq); rhs(e.b, ieq); }
+        else if (e.t === "IS"){ rhs(e.a, e.i); rhs(e.b, -e.i); }
+        else if (e.t === "DZ"){ var vb = -(vof(M, e.a) - vof(M, e.b)) - e.vz, zl = pnj(vb, e.jv, e.nvt, e.vc); if (Math.abs(zl - vb) > 1e-9) lim = true; e.jv = zl;
+          var zx = expl(zl / e.nvt), zi = e.isz * (zx - 1), zg = e.isz / e.nvt * zx, vd0 = -(zl + e.vz), iab = -zi, ieq2 = iab - zg * vd0; cond(e.a, e.b, zg); rhs(e.a, -ieq2); rhs(e.b, ieq2); e.i = iab; if (e.par) e.par.i = (e.par.i || 0) + iab; }
+        else if (e.t === "Q"){ var s = e.s, vbe = s * (vof(M, e.b) - vof(M, e.e)), vbc = s * (vof(M, e.b) - vof(M, e.c)), lbe = pnj(vbe, e.jbe, e.vt, e.vc), lbc = pnj(vbc, e.jbc, e.vt, e.vc); if (Math.abs(lbe - vbe) > 1e-9 || Math.abs(lbc - vbc) > 1e-9) lim = true; e.jbe = lbe; e.jbc = lbc;
+          var eb = expl(lbe / e.vt), ec = expl(lbc / e.vt), If = e.is * (eb - 1), Ir = e.is * (ec - 1), gf = e.is / e.vt * eb, gr = e.is / e.vt * ec,
+            Ic = If - Ir * (1 + 1 / e.br), Ib = If / e.bf + Ir / e.br, dIc_be = gf, dIc_bc = -gr * (1 + 1 / e.br), dIb_be = gf / e.bf, dIb_bc = gr / e.br; e.ic = s * Ic; e.ib = s * Ib;
+          var cb = [dIb_be, dIb_bc, s * Ib - s * (dIb_be * lbe + dIb_bc * lbc)], cc = [dIc_be, dIc_bc, s * Ic - s * (dIc_be * lbe + dIc_bc * lbc)];
+          // Ströme in b und c (hinein), e = -(b+c)
+          var rowB = e.b, rowC = e.c, rowE = e.e;
+          [[rowB, cb], [rowC, cc]].forEach(function(q){ var r = q[0], c3 = q[1]; add(r, e.b, c3[0] + c3[1]); add(r, e.e, -c3[0]); add(r, e.c, -c3[1]); rhs(r, -c3[2]); add(rowE, e.b, -(c3[0] + c3[1])); add(rowE, e.e, c3[0]); add(rowE, e.c, c3[1]); rhs(rowE, c3[2]); }); cond(e.b, e.c, 1e-12); cond(e.b, e.e, 1e-12); }
+        else if (e.t === "M"){ var D = e.d, Sx = e.s, vd0 = vof(M, D), vs0 = vof(M, Sx), sw = vd0 < vs0; if (sw){ D = e.s; Sx = e.d; var tmp = vd0; vd0 = vs0; vs0 = tmp; }
+          var vgs = vof(M, e.g) - vs0, vds = vd0 - vs0, vov = vgs - e.vth, Id = 0, gm = 0, gds = 0; if (vov > 0){ if (vds < vov){ Id = e.kp * (vov * vds - vds * vds / 2); gm = e.kp * vds; gds = e.kp * (vov - vds); } else { Id = e.kp / 2 * vov * vov * (1 + .02 * vds); gm = e.kp * vov * (1 + .02 * vds); gds = e.kp / 2 * vov * vov * .02; } } gds += 1e-9; e.id = sw ? -Id : Id;
+          // Strom von D nach S: Id + gm*(vgs-vgs0) + gds*(vds-vds0)
+          var ie = Id - gm * vgs - gds * vds; add(D, e.g, gm); add(D, Sx, -gm - gds); add(D, D, gds); rhs(D, -ie); add(Sx, e.g, -gm); add(Sx, Sx, gm + gds); add(Sx, D, -gds); rhs(Sx, ie); }
+        else if (e.t === "O"){ var Vd = vof(M, e.p) - vof(M, e.n), vP = vof(M, e.vp), vN = vof(M, e.vn), sup = vP - vN; e.on = sup > 2; if (!e.on){ add(e.o, e.o, 1e-9); return; }
+          var hi = vP - e.ht, lo = vN + e.hb, A0 = e.A * (Ascale || 1), al = 1, be = 0; if (dt > 0){ var tau = e.A / (2 * Math.PI * e.gbw), r = dt / tau; al = r / (1 + r); be = 1 / (1 + r); }
+          var u = al * A0 * Vd + be * e.x, sc = softc(u, lo, hi), Vt = sc[0], Dd = sc[1];
+          if (dt > 0){ var sm = e.sr * dt, up = e.out + sm, dn = e.out - sm; e.slew = false; if (Vt > up){ Vt = up; Dd = 0; e.slew = true; } else if (Vt < dn){ Vt = dn; Dd = 0; e.slew = true; } }
+          var Kk = Dd * al * A0, Go = 1 / 75; e.vt = Vt; e.u = u; add(e.o, e.o, Go); add(e.o, e.p, -Go * Kk); add(e.o, e.n, Go * Kk); rhs(e.o, Go * (Vt - Kk * Vd)); add(e.p, e.p, 1e-12); add(e.n, e.n, 1e-12); }
+      });
+      var x = gauss(A, b, n), mx = 0, conv = true; for (i = 0; i < n; i++){ var dv = x[i] - M.v[i]; if (dv > 3) dv = 3; if (dv < -3) dv = -3; if (Math.abs(dv) > 1e-6 + 1e-5 * Math.abs(x[i])) conv = false; M.v[i] += dv; }
+      if (conv && !lim){ ok = true; break; } }
+    return ok; }
+  function ryUpd(M){ var ch = false; M.E.forEach(function(e){ if (e.ry){ var vc = vof(M, e.ca) - vof(M, e.cb), n = vc > 3.5 ? 1 : vc < 1.5 ? 0 : e.cl; if (n !== e.cl){ e.cl = n; ch = true; } } }); return ch; }
+  function anaCommit(M, dt){ ryUpd(M); M.E.forEach(function(e){ if (e.t === "C") e.vp = vof(M, e.a) - vof(M, e.b); else if (e.t === "O" && e.on){ var vP = vof(M, e.vp), vN = vof(M, e.vn); e.x = e.slew ? e.vt : Math.max(vN - 3, Math.min(vP + 3, e.u)); e.out = vof(M, e.o); } }); }
+  /* Gleichstrom-Arbeitspunkt: Quellen hochfahren, Opamp-Verstärkung schrittweise */
+  function anaDC(M, t){ for (var i = 0; i < M.n; i++) M.v[i] = 0; var ok = true;
+    [.2, .5, 1].forEach(function(sc){ ok = anaSolve(M, 0, t, sc, .001) && ok; }); [.01, .1, 1].forEach(function(as){ ok = anaSolve(M, 0, t, 1, as) && ok; });
+    M.E.forEach(function(e){ if (e.t === "C") e.vp = vof(M, e.a) - vof(M, e.b); if (e.t === "O"){ e.x = e.u || 0; e.out = vof(M, e.o); } }); M.t = t; for (var ri = 0; ri < 3 && ryUpd(M); ri++) ok = anaSolve(M, 0, t, 1, 1) && ok; return ok; }
+  function anaStep(M, dt){ M.t += dt; var ok = anaSolve(M, dt, M.t, 1, 1); anaCommit(M, dt); return ok; }
+
+  /* ---- Ablauf: Zeitschritte, Messung, Anzeige ---- */
+  var TBS = [["auto", "Auto"], [2e-5, "20 µs"], [5e-5, "50 µs"], [1e-4, "0,1 ms"], [2e-4, "0,2 ms"], [5e-4, "0,5 ms"], [1e-3, "1 ms"], [2e-3, "2 ms"], [5e-3, "5 ms"], [1e-2, "10 ms"], [2e-2, "20 ms"], [5e-2, "50 ms"], [.1, "0,1 s"], [.2, "0,2 s"], [.5, "0,5 s"], [1, "1 s"]];
+  var tbSel = "auto", forceAna = false, anaBtn = null, tbBox = null, bodeCv = null, bodeInfo = null;
+  function anaAuto(){ var f = 0; S.parts.forEach(function(p){ if (p.t === "SIN" && p.w !== "dc" && (!f || p.f < f)) f = p.f; }); return f ? 3 / (8 * f) : 5e-3; }
+  function anaTb(){ return tbSel === "auto" ? anaAuto() : +tbSel; }
+  function startAna(){ var M = anaBuild(); sim.ana = M; sim.atr = [[], [], [], []]; sim.mark = null;
+    if (M.err){ sim.aerr = M.err; return; }
+    M.dt = 1; var ok = anaDC(M, 0); sim.aok = ok; sim.sig = anaSig(); }
+  function anaSig(){ return S.parts.map(function(p){ return [p.id, p.t, p.v, p.c, p.f, p.u, p.pos, p.a, p.w, p.o, p.typ, p.ic].join("|"); }).join(";") + "#" + S.wires.map(function(w){ return w.a + "~" + w.b; }).join(";"); }
+  function anaTick(dtReal){ var M = sim.ana; if (!M) return; var sg = anaSig(); if (sg !== sim.sig){ var tOld = M.t || 0; sim.sig = sg; M = sim.ana = anaBuild(); if (M.err) return; M.dt = 1; anaDC(M, tOld); } if (M.err) return; var win = anaTb() * 8, dt = win / 600, adv = Math.min(win * dtReal, win * .2), nst = Math.max(1, Math.min(600, Math.round(adv / dt))), ok = true;
+    for (var i = 0; i < nst; i++){ ok = anaStep(M, dt) && ok;
+      S.parts.forEach(function(p){ if (p.t === "TK"){ var a = sim.atr[p.ch || 0]; a.push([M.t, vof(M, M.nd(p.id + ".1"))]); } }); }
+    sim.aok = ok; sim.atr.forEach(function(a){ while (a.length && a[0][0] < M.t - win * 1.05) a.shift(); }); sim.time = M.t; }
+  function nice(x){ if (!(x > 0)) return 1; var e = Math.pow(10, Math.floor(Math.log(x) / Math.LN10)), m = x / e; return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 5 ? 5 : 10) * e; }
+  function drawAna(){ var c = scopeCv, x = c.getContext("2d"), dpr = window.devicePixelRatio || 1, W = c.width = c.clientWidth * dpr, H = c.height = 210 * dpr, k = dpr, M = sim.ana, win = anaTb() * 8; c.style.height = "210px";
+    x.fillStyle = "#06120f"; x.fillRect(0, 0, W, H); x.strokeStyle = "rgba(109,255,176,.12)"; x.lineWidth = 1; var L = 42 * k, Rr = 52 * k;
+    for (var i = 0; i <= 8; i++){ x.beginPath(); x.moveTo(L + i * (W - L - Rr) / 8, 0); x.lineTo(L + i * (W - L - Rr) / 8, H - 16 * k); x.stroke(); }
+    var used = []; S.parts.forEach(function(p){ if (p.t === "TK" && used.indexOf(p.ch || 0) < 0) used.push(p.ch || 0); }); used.sort();
+    x.font = 11 * k + "px Inter,system-ui,sans-serif"; x.fillStyle = "rgba(200,255,225,.75)"; x.textAlign = "right"; x.fillText(fmt(anaTb(), "s", 2) + " / DIV", W - 4 * k, H - 4 * k); x.textAlign = "left";
+    if (!used.length){ x.fillStyle = "#8fe3b9"; x.fillText(T("Setze einen Tastkopf an eine Leitung – dann erscheint hier die Spannung.", "Place une sonde sur un fil."), 10 * k, 30 * k); return; }
+    var lh = (H - 16 * k) / used.length, t1 = M ? M.t : 0;
+    used.forEach(function(ch, ci){ var a = sim.atr[ch] || [], y0 = ci * lh, vmin = 0, vmax = 0; a.forEach(function(s){ if (s[1] < vmin) vmin = s[1]; if (s[1] > vmax) vmax = s[1]; });
+      var span = Math.max(vmax - vmin, .2), step = nice(span / 2.2), hi = Math.ceil(vmax / step - 1e-9) * step, lo = Math.floor(vmin / step + 1e-9) * step; if (hi === lo) hi = lo + step; var top = y0 + 18 * k, bot = y0 + lh - 6 * k, Y = function(v){ return bot - (v - lo) / (hi - lo) * (bot - top); };
+      x.strokeStyle = "rgba(109,255,176,.28)"; x.setLineDash([3 * k, 3 * k]); x.beginPath(); x.moveTo(L, Y(0)); x.lineTo(W - Rr, Y(0)); x.stroke(); x.setLineDash([]);
+      x.fillStyle = CH[ch][0]; x.font = "bold " + 11 * k + "px Inter,system-ui,sans-serif"; x.fillText(CH[ch][1], 6 * k, y0 + 14 * k);
+      x.strokeStyle = CH[ch][0]; x.lineWidth = 2 * k; x.lineJoin = "round"; x.beginPath(); var first = true;
+      a.forEach(function(s){ var px = L + (W - L - Rr) * (1 - (t1 - s[0]) / win); if (px < L - 1) return; var py = Y(Math.max(lo, Math.min(hi, s[1]))); if (first){ x.moveTo(px, py); first = false; } else x.lineTo(px, py); }); x.stroke(); x.lineWidth = 1;
+      x.fillStyle = "rgba(200,255,225,.7)"; x.font = 10.5 * k + "px Inter,system-ui,sans-serif"; x.textAlign = "left"; x.fillText(fmt(hi, "V", 2), W - Rr + 6 * k, top + 8 * k); x.fillText(fmt(lo, "V", 2), W - Rr + 6 * k, bot); if (lo < 0 && hi > 0) x.fillText("0", W - Rr + 6 * k, Y(0) + 4 * k);
+      var last = a.length ? a[a.length - 1][1] : 0; x.fillStyle = CH[ch][0]; x.fillText(fmt(last, "V", 3), 40 * k, y0 + 14 * k); }); }
+  function vcol(v){ var t = Math.max(-1, Math.min(1, v / 5)); if (t >= 0){ var a = Math.round(40 + 190 * t); return "rgb(" + (60 + Math.round(170 * t)) + "," + (90 - Math.round(40 * t)) + "," + (170 - Math.round(130 * t)) + ")"; } return "rgb(" + (60 + Math.round(40 * -t)) + "," + (90 + Math.round(10 * -t)) + "," + (170 + Math.round(60 * -t)) + ")"; }
+  function paintAna(){ var M = sim.ana, warn = []; if (!M) return; if (M.err){ msgs([M.err]); return; }
+    var vk = function(k){ return vof(M, M.nd(k)); };
+    svg.querySelectorAll("path.wr").forEach(function(e){ var w = S.wires[+e.dataset.w]; if (!w) return; e.setAttribute("data-v", "a"); e.style.stroke = vcol(vk(w.a)); });
+    svg.querySelectorAll(".mb").forEach(function(e){ e.remove(); });
+    S.parts.forEach(function(p){ var g = svg.querySelector('[data-p="' + p.id + '"]'), id = null;
+      if (p.t === "LED" || p.t === "D"){ var e = M.E.find(function(q){ return q.part === p; }); id = e && e.i != null ? e.i : 0; var on = id > .0005 ? "1" : "0"; if (p.t === "LED"){ if (id > .03){ on = "b"; warn.push(p.id + ": " + T("LED bekommt " + fmt(id, "A") + " – viel zu viel, sie brennt durch! Vorwiderstand einbauen.", "LED : " + fmt(id, "A") + " – trop de courant !")); } if (g){ g.setAttribute("data-on", on); g.style.setProperty("--lc", p.c); g.style.opacity = on === "1" ? Math.max(.45, Math.min(1, .4 + id / .012)) : 1; } } sim.cur = sim.cur || {}; sim.cur[p.id] = id; }
+      if (p.t === "R" || p.t === "PT"){ var ee = M.E.find(function(q){ return q.part === p && q.t === "R"; }); if (ee){ var vv = (vof(M, ee.a) - vof(M, ee.b)), ii = vv * ee.g; if (p.t === "R" && vv * ii > .25) warn.push(p.id + ": " + T("wird mit " + fmt(vv * ii, "W") + " belastet – ein 0,25-W-Widerstand würde heiß/durchbrennen.", "dissipe " + fmt(vv * ii, "W") + " – trop chaud.")); } }
+      if (p.t === "RL" && g){ var e4 = M.E.find(function(q){ return q.ry === p; }); g.setAttribute("data-on", e4 && e4.cl ? "1" : "0"); }
+      if (p.t === "SW" && g) g.setAttribute("data-on", p.on ? "1" : "0");
+      if (p.t === "LP" && g){ var e3 = M.E.find(function(q){ return q.part === p; }); var cur = e3 ? Math.abs(vof(M, e3.a) - vof(M, e3.b)) * e3.g : 0; g.setAttribute("data-on", cur > .02 ? "1" : "0"); } });
+    M.E.forEach(function(e){ if (e.t === "O" && !e.on) warn.push(e.part.id + ": " + T("keine Versorgung am Opamp – V+ und V− brauchen mindestens 2 V Differenz (z. B. +5 V und −5 V oder +5 V und GND).", "ampli sans alimentation.")); });
+    S.parts.forEach(function(p){ if (p.t === "OP" || (p.t === "ic" && AOP[p.ic])) opAmps(p).forEach(function(o, i){ if (M.cnt(o.n) < 2 || M.cnt(o.p) < 2) warn.push(p.id + (i ? " (" + (i + 1) + ")" : "") + ": " + T("ein Eingang hängt offen – der Opamp kippt zufällig an eine Versorgungsgrenze.", "une entrée est en l’air.")); }); });
+    if (sim.meas){ var t = M.keys[sim.meas]; if (t){ var vm = vk(sim.meas), tx = ""; tx = '<g class="mb"><circle cx="' + t.x + '" cy="' + t.y + '" r="8" fill="none" stroke="#e8590c" stroke-width="2"/><rect x="' + (t.x + 10) + '" y="' + (t.y - 24) + '" width="' + (fmt(vm, "V", 3).length * 7.2 + 14) + '" height="20" rx="5" fill="#fff8e6" stroke="#e8590c"/><text x="' + (t.x + 17) + '" y="' + (t.y - 10) + '" style="fill:#c2410c;font-weight:800;font-size:12px">' + esc(fmt(vm, "V", 3)) + "</text></g>"; svg.insertAdjacentHTML("beforeend", tx); } }
+    if (!sim.aok) warn.push(T("Die Rechnung konvergiert nicht sauber – die Schaltung ist vermutlich falsch beschaltet (z. B. Rückkopplung an der falschen Stelle).", "Le calcul ne converge pas."));
+    (M.warn || []).forEach(function(w){ warn.push(w); }); msgs(warn); }
+
+  /* ---- Frequenzgang (Bode) per Zeitsimulation ---- */
+  function bodeRun(){
+    if (!bodeInfo) return; var sinP = S.parts.filter(function(p){ return p.t === "SIN"; })[0], tks = S.parts.filter(function(p){ return p.t === "TK"; });
+    if (!sinP){ bodeInfo.textContent = T("Für den Frequenzgang braucht die Schaltung einen Funktionsgenerator (Eingang) und einen Tastkopf am Ausgang.", "Il faut un générateur et une sonde de sortie."); return; }
+    var M = anaBuild(); if (M.err){ bodeInfo.textContent = M.err; return; } var nin = M.nd(sinP.id + ".1"), outs = tks.filter(function(p){ return M.nd(p.id + ".1") !== nin; }); if (!outs.length){ bodeInfo.textContent = T("Setze einen Tastkopf an den Ausgang (nicht an den Generator).", "Place une sonde à la sortie."); return; }
+    var nout = M.nd(outs[0].id + ".1"), pts = [], F = [], i; for (i = 0; i <= 60; i++) F.push(10 * Math.pow(1e5, i / 60)); var idx = 0, NS = 120, WARM = 8, MEAS = 3; bodeInfo.textContent = T("Messe Frequenzgang … ", "Mesure … ") + "0 %";
+    function one(){ var f = F[idx]; M.fo = f; anaDC(M, 0); var dt = 1 / (f * NS), si = 0, sc = 0, so = 0, co = 0, N = (WARM + MEAS) * NS;
+      for (var s = 0; s < N; s++){ anaStep(M, dt); if (s >= WARM * NS){ var ph = 2 * Math.PI * f * M.t, vi = vof(M, nin), vo = vof(M, nout), cs = Math.cos(ph), sn = Math.sin(ph); sc += vi * cs; si += vi * sn; co += vo * cs; so += vo * sn; } }
+      var mi = Math.hypot(sc, si), mo = Math.hypot(co, so), g = mi > 1e-12 ? mo / mi : 0, pd = (Math.atan2(si, sc) - Math.atan2(so, co)) * 180 / Math.PI; while (pd > 180) pd -= 360; while (pd < -180) pd += 360; pts.push([f, 20 * Math.log10(Math.max(g, 1e-6)), pd]); }
+    function loop(){ var t0 = performance.now(); while (idx < F.length && performance.now() - t0 < 25){ one(); idx++; } bodeInfo.textContent = T("Messe Frequenzgang … ", "Mesure … ") + Math.round(idx / F.length * 100) + " %"; if (idx < F.length){ setTimeout(loop, 0); return; } drawBode(pts); }
+    setTimeout(loop, 0); }
+  function drawBode(pts){ var c = bodeCv; c.hidden = false; var dpr = window.devicePixelRatio || 1, W = c.width = c.clientWidth * dpr, H = c.height = 300 * dpr, x = c.getContext("2d"), k = dpr; c.style.height = "300px";
+    x.fillStyle = "#06120f"; x.fillRect(0, 0, W, H); var L = 46 * k, R = 12 * k, X = function(f){ return L + (W - L - R) * Math.log(f / 10) / Math.log(1e5); };
+    var gm = pts.map(function(p){ return p[1]; }), gmax = Math.max.apply(null, gm), gmin = Math.min.apply(null, gm), step = nice(Math.max(gmax - gmin, 6) / 4), ghi = Math.ceil(gmax / step) * step + step, glo = Math.min(Math.floor(gmin / step) * step, ghi - 4 * step); if (glo < ghi - 8 * step) glo = ghi - 8 * step;
+    var top1 = 22 * k, bot1 = 150 * k, top2 = 172 * k, bot2 = 272 * k, Yg = function(v){ return bot1 - (v - glo) / (ghi - glo) * (bot1 - top1); }, Yp = function(v){ return bot2 - (v + 180) / 360 * (bot2 - top2); };
+    x.strokeStyle = "rgba(109,255,176,.14)"; x.fillStyle = "rgba(200,255,225,.75)"; x.font = 10.5 * k + "px Inter,system-ui,sans-serif"; x.textAlign = "center";
+    for (var d = 1; d <= 6; d++){ for (var m = 1; m < 10; m++){ var f = m * Math.pow(10, d); if (f < 10 || f > 1e6) continue; x.strokeStyle = m === 1 ? "rgba(109,255,176,.28)" : "rgba(109,255,176,.08)"; x.beginPath(); x.moveTo(X(f), top1); x.lineTo(X(f), bot2); x.stroke(); if (m === 1){ x.textAlign = f >= 1e6 ? "right" : "center"; x.fillText(fmt(f, "Hz", 2), X(f), H - 4 * k); } } }
+    x.textAlign = "right"; for (var g = Math.ceil(glo / step) * step; g <= ghi; g += step){ x.strokeStyle = "rgba(109,255,176,.14)"; x.beginPath(); x.moveTo(L, Yg(g)); x.lineTo(W - R, Yg(g)); x.stroke(); x.fillText(+g.toFixed(1) + " dB", L - 4 * k, Yg(g) + 4 * k); }
+    [-180, -90, 0, 90, 180].forEach(function(pp){ x.strokeStyle = "rgba(109,255,176,.14)"; x.beginPath(); x.moveTo(L, Yp(pp)); x.lineTo(W - R, Yp(pp)); x.stroke(); x.fillText(pp + "°", L - 4 * k, Yp(pp) + 4 * k); });
+    x.textAlign = "left"; x.fillStyle = "#ffb000"; x.font = "bold " + 11 * k + "px Inter,system-ui,sans-serif"; x.fillText(T("Verstärkung", "Gain"), L + 4 * k, 14 * k); x.fillStyle = "#3de6ff"; x.fillText(T("Phase", "Phase"), L + 4 * k, top2 - 4 * k);
+    function line(col, fy, idx2){ x.strokeStyle = col; x.lineWidth = 2 * k; x.lineJoin = "round"; x.beginPath(); pts.forEach(function(p, i){ var px = X(p[0]), py = fy(p[idx2]); i ? x.lineTo(px, py) : x.moveTo(px, py); }); x.stroke(); x.lineWidth = 1; }
+    line("#ffb000", Yg, 1); line("#3de6ff", Yp, 2);
+    var ref = pts[0][1], fc = null, ref2 = Math.max.apply(null, gm); for (var i = 1; i < pts.length; i++){ var a = pts[i - 1], b = pts[i]; if ((a[1] - ref >= -3 && b[1] - ref < -3) || (a[1] - ref2 < -3 && b[1] - ref2 >= -3)){ var tt = (-3 - (a[1] - (a[1] - ref >= -3 ? ref : ref2))) / (b[1] - a[1]); fc = a[0] * Math.pow(b[0] / a[0], Math.max(0, Math.min(1, tt))); break; } }
+    var gmx = Math.max.apply(null, gm); bodeInfo.innerHTML = T("Gemessen mit dem Generator ", "Mesuré avec le générateur ") + "<b>" + esc((Math.abs(gmx) < 0.05 ? "0" : gmx.toFixed(1)) + " dB") + "</b> " + T("maximal", "maximum") + (fc ? " · " + T("Grenzfrequenz (−3 dB): ", "fréquence de coupure (−3 dB) : ") + "<b>" + esc(fmt(fc, "Hz", 3)) + "</b>" : "") + ". " + T("Kleine Signale benutzen, sonst clippt der Ausgang.", "Utilise un petit signal."); }
+  /* ---- Fehlersuche ---- */
+  var tolBox = null, shBox = null;
+  function tolRun(){ if (tolBox.hidden === false){ tolBox.hidden = true; return; } tolBox.hidden = false; tolBox.innerHTML = "";
+    var tks = S.parts.filter(function(p){ return p.t === "TK"; }), rs = S.parts.filter(function(p){ return p.t === "R" && p.v; });
+    if (!tks.length || !rs.length){ tolBox.textContent = T("Für die Toleranzrechnung brauchst du Widerstände und mindestens einen Tastkopf.", "Il faut des résistances et une sonde."); return; }
+    var sl = el("select"); [1, 2, 5, 10, 20].forEach(function(t){ var o = el("option", "", "± " + t + " %"); o.value = t; if (t === 5) o.selected = true; sl.appendChild(o); });
+    var out = el("div"), N = 60;
+    function go(){ var tol = +sl.value / 100, orig = rs.map(function(r){ return r.v; }), res = tks.map(function(){ return []; }), bad = 0, i;
+      for (i = 0; i < N; i++){ rs.forEach(function(r, j){ r.v = orig[j] * (1 + tol * (2 * Math.random() - 1)); }); var M = anaBuild(); if (M.err){ bad = N; break; } if (!anaDC(M, 0)){ bad++; continue; } tks.forEach(function(k, j){ res[j].push(vof(M, M.nd(k.id + ".1"))); }); }
+      rs.forEach(function(r, j){ r.v = orig[j]; }); var M0 = anaBuild(), nom = null; if (!M0.err){ anaDC(M0, 0); nom = tks.map(function(k){ return vof(M0, M0.nd(k.id + ".1")); }); }
+      var h = "<table class=\"bau-bt\"><tr><th>" + esc(T("Messpunkt", "Point")) + "</th><th>" + esc(T("Nennwert", "Nominal")) + "</th><th>" + esc(T("Streuung", "Plage")) + "</th><th>" + esc(T("Abweichung", "Écart")) + "</th></tr>";
+      tks.forEach(function(k, j){ var a = res[j]; if (!a.length || !nom) return; var mn = Math.min.apply(null, a), mx = Math.max.apply(null, a), nv = nom[j], dv = Math.max(Math.abs(mn - nv), Math.abs(mx - nv));
+        h += "<tr><td>" + esc(CH[k.ch || 0][1] + " (" + k.id + ")") + "</td><td>" + esc(fmt(nv, "V", 3)) + "</td><td>" + esc(fmt(mn, "V", 3) + " … " + fmt(mx, "V", 3)) + "</td><td>" + (Math.abs(nv) > 1e-6 ? "± " + (dv / Math.abs(nv) * 100).toFixed(1) + " %" : "–") + "</td></tr>"; });
+      out.innerHTML = h + "</table><p class=\"ic-lb\">" + esc(T(N + " zufällige Läufe, Gleichspannungs-Arbeitspunkt, nur Widerstände streuen." + (bad ? " (" + bad + " nicht konvergiert)" : ""), N + " tirages aléatoires, point de repos, seules les résistances varient.")) + "</p>"; }
+    var hd = el("div"); hd.innerHTML = "<b>🎲 " + esc(T("Toleranz-Test", "Test de tolérance")) + "</b> "; hd.appendChild(sl); var bg = el("button", "ic-ch", T("Neu würfeln", "Relancer")); bg.type = "button"; bg.onclick = go; sl.onchange = go; hd.appendChild(bg);
+    var bx = el("button", "ic-ch", "✖"); bx.type = "button"; bx.onclick = function(){ tolBox.hidden = true; }; hd.appendChild(bx); tolBox.appendChild(hd); tolBox.appendChild(out); go(); }
+  function shareShow(){ if (shBox.hidden === false){ shBox.hidden = true; return; } shBox.hidden = false; shBox.innerHTML = "";
+    var ta = el("textarea"); ta.rows = 5; ta.value = JSON.stringify(S); ta.style.cssText = "width:100%;font:12px monospace;box-sizing:border-box";
+    var hd = el("div"); hd.innerHTML = "<b>🔗 " + esc(T("Schaltung teilen / laden", "Partager / charger")) + "</b><p class=\"ic-lb\">" + esc(T("Den Text kopieren und weitergeben – oder einen erhaltenen Text hier einfügen und auf „Laden“ drücken.", "Copie le texte ou colle un texte reçu puis « Charger ».")) + "</p>"; shBox.appendChild(hd); shBox.appendChild(ta);
+    var b1 = el("button", "ic-ch", "⧉ " + T("Kopieren", "Copier")); b1.type = "button"; b1.onclick = function(){ ta.select(); try { navigator.clipboard.writeText(ta.value).then(function(){ b1.textContent = "✔ " + T("Kopiert", "Copié"); }, function(){ document.execCommand && document.execCommand("copy"); }); } catch (e) { try { document.execCommand("copy"); } catch (e2) {} } };
+    var b2 = el("button", "ic-ch", "📥 " + T("Laden", "Charger")); b2.type = "button"; b2.onclick = function(){ try { var n = JSON.parse(ta.value); if (!n || !Array.isArray(n.parts) || !Array.isArray(n.wires)) throw 0; push(); stopSim(); S = n; forceAna = false; sel = null; save(); render(); shBox.hidden = true; } catch (e) { b2.textContent = "⚠ " + T("Kein gültiger Schaltungstext", "Texte invalide"); } };
+    var b3 = el("button", "ic-ch", "✖"); b3.type = "button"; b3.onclick = function(){ shBox.hidden = true; }; [b1, b2, b3].forEach(function(b){ shBox.appendChild(b); }); }
+  var bomBox = null;
+  function bomRows(){ var NM = { Q: "Transistor NPN", QP: "Transistor PNP", M: "MOSFET", PT: "Potentiometer", TA: "Taster", SW: "Schalter", LP: "Lampe / Motor", SU: "Summer", SIN: "Funktionsgenerator", TG: "Taktgeber", VS: "Spannungsquelle", AZ: "Anzeige", PD: "Fotodiode", RL: "Relais (Spule 70 Ω)" }, m = {}, order = [];
+    S.parts.forEach(function(p){ if (/^(GND|V|VN|TK)$/.test(p.t)) return; var n, v = "";
+      if (p.t === "R"){ n = "Widerstand"; v = fmt(p.v, "Ω"); } else if (p.t === "C"){ n = "Kondensator"; v = fmt(p.v, "F"); } else if (p.t === "LED"){ n = "LED"; v = ""; } else if (p.t === "D"){ n = p.z ? "Z-Diode" : "Diode"; v = p.z ? p.z + " V" : "1N4148"; }
+      else if (p.t === "ic"){ n = "IC"; v = String(p.ic || "").toUpperCase(); } else if (p.t === "OP"){ n = "Operationsverstärker"; v = String(p.typ || "lm358").toUpperCase(); } else { n = NM[p.t] || p.t; }
+      var key = n + "|" + v; if (!m[key]){ m[key] = { n: n, v: v, ids: [] }; order.push(key); } m[key].ids.push(p.id); });
+    return order.map(function(k){ return m[k]; }); }
+  function bomShow(){ var rows = bomRows(); if (bomBox.hidden === false){ bomBox.hidden = true; return; } bomBox.hidden = false; bomBox.innerHTML = "";
+    if (!rows.length){ bomBox.textContent = T("Noch keine Bauteile auf der Fläche.", "Aucun composant."); return; }
+    var h = "<b>📋 " + esc(T("Stückliste", "Nomenclature")) + "</b><table class=\"bau-bt\"><tr><th>" + esc(T("Anz.", "Qté")) + "</th><th>" + esc(T("Bauteil", "Composant")) + "</th><th>" + esc(T("Wert / Typ", "Valeur / type")) + "</th><th>" + esc(T("Bezeichner", "Repères")) + "</th></tr>";
+    rows.forEach(function(r){ h += "<tr><td>" + r.ids.length + "</td><td>" + esc(r.n) + "</td><td>" + esc(r.v) + "</td><td>" + esc(r.ids.join(", ")) + "</td></tr>"; });
+    var d = el("div"); d.innerHTML = h + "</table>"; bomBox.appendChild(d);
+    var csv = "Anzahl;Bauteil;Wert;Bezeichner\n" + rows.map(function(r){ return [r.ids.length, r.n, r.v, r.ids.join(" ")].join(";"); }).join("\n");
+    var b1 = el("button", "ic-ch", "⧉ " + T("Kopieren", "Copier")); b1.type = "button"; b1.onclick = function(){ try { navigator.clipboard.writeText(csv).then(function(){ b1.textContent = "✔ " + T("Kopiert", "Copié"); }, function(){ b1.textContent = T("Nicht möglich", "Impossible"); }); } catch (e) { b1.textContent = T("Nicht möglich", "Impossible"); } };
+    var b2 = el("button", "ic-ch", "⬇ CSV"); b2.type = "button"; b2.onclick = function(){ try { var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob(["\ufeff" + csv], { type: "text/csv" })); a.download = "stueckliste.csv"; a.click(); } catch (e) {} };
+    var b3 = el("button", "ic-ch", "✖"); b3.type = "button"; b3.onclick = function(){ bomBox.hidden = true; };
+    bomBox.appendChild(b1); bomBox.appendChild(b2); bomBox.appendChild(b3); }
+  var fault = null, faultBox = null;
+  function fsig(X){ var P = X.parts.map(function(p){ return [p.id, p.t, p.v, p.c, p.f, p.u, p.pos, p.a, p.w, p.o, p.typ, p.ic, p.on, p.r].join("|"); }).sort().join(";"), W = X.wires.map(function(w){ return [w.a, w.b].sort().join("~"); }).sort().join(";"); return P + "#" + W; }
+  function faultShow(msg, extra){ if (!faultBox) return; if (!fault){ faultBox.hidden = true; return; } faultBox.hidden = false;
+    faultBox.innerHTML = "<b>🔧 " + T("Fehlersuche", "Dépannage") + "</b> – " + (msg || T("In dieser Schaltung steckt genau ein Fehler. Starte die Simulation, miss mit den Pins (anklicken) und repariere ihn.", "Il y a une panne dans ce circuit : mesure et répare.")) + " "; 
+    [["✔ " + T("Prüfen", "Vérifier"), function(){ if (fsig(S) === fsig(fault.orig)){ var d = fault.desc; fault = null; faultShow("✅ " + T("Repariert – die Schaltung ist wieder wie sie sein soll!", "Réparé !")); setTimeout(function(){ if (!fault && faultBox) faultBox.hidden = true; }, 6000); } else faultShow(T("Noch nicht – der Fehler steckt noch drin.", "Pas encore.")); }], ["👁 " + T("Lösung zeigen", "Solution"), function(){ faultShow("💡 " + fault.desc); if (fault.pid){ sel = { p: fault.pid }; render(); } }], ["✖ " + T("Beenden", "Terminer"), function(){ fault = null; faultShow(); }]].forEach(function(b){ var x = el("button", "ic-ch", b[0]); x.type = "button"; x.onclick = b[1]; faultBox.appendChild(x); }); }
+  function injectFault(){ if (!S.parts.length){ if (faultBox){ faultBox.hidden = false; faultBox.textContent = T("Erst eine Schaltung bauen oder ein Beispiel laden.", "Construis d’abord un circuit."); } return; }
+    if (fault && fsig(S) !== fsig(fault.orig)) { S = JSON.parse(JSON.stringify(fault.orig)); } var orig = JSON.parse(JSON.stringify(S)), c = [], i;
+    S.parts.forEach(function(p){ if (p.t === "R" && p.v) c.push({ k: "R", p: p }); if ((p.t === "LED" || p.t === "D")) c.push({ k: "L", p: p }); if (p.t === "C") c.push({ k: "C", p: p }); });
+    S.wires.forEach(function(w, i2){ var a = w.a.split(".")[0], b = w.b.split(".")[0], pa = part(a), pb = part(b); if ((pa && pa.t === "GND") || (pb && pb.t === "GND") || (pa && pa.t === "V") || (pb && pb.t === "V") || (pa && pa.t === "TK") || (pb && pb.t === "TK")) return; c.push({ k: "W", i: i2, w: w }); });
+    if (!c.length) return; var f = c[Math.floor(Math.random() * c.length)], desc = "";
+    if (f.k === "R"){ var old = f.p.v, nv2 = old >= 1e4 ? old / 10 : old * 10; f.p.v = nv2; desc = T(f.p.id + " hat einen falschen Wert: " + fmt(nv2, "Ω") + " statt " + fmt(old, "Ω") + ".", f.p.id + " a une mauvaise valeur : " + fmt(nv2, "Ω") + " au lieu de " + fmt(old, "Ω") + "."); fault = { orig: orig, desc: desc, pid: f.p.id }; }
+    else if (f.k === "C"){ var oc = f.p.v; f.p.v = oc >= 1e-6 ? oc / 100 : oc * 100; desc = T(f.p.id + " hat einen falschen Wert: " + fmt(f.p.v, "F") + " statt " + fmt(oc, "F") + ".", f.p.id + " a une mauvaise valeur."); fault = { orig: orig, desc: desc, pid: f.p.id }; }
+    else if (f.k === "L"){ f.p.r = ((f.p.r || 0) + 2) % 4; desc = T(f.p.id + " ist verkehrt herum eingebaut (Polung).", f.p.id + " est montée à l’envers."); fault = { orig: orig, desc: desc, pid: f.p.id }; }
+    else { S.wires.splice(f.i, 1); desc = T("Die Leitung zwischen " + f.w.a + " und " + f.w.b + " ist unterbrochen.", "Le fil entre " + f.w.a + " et " + f.w.b + " est coupé."); fault = { orig: orig, desc: desc, pid: null }; }
+    sel = null; save(); render(); faultShow(); }
+  /* ---- Beispiele für Analog ---- */
+  function ex3(name){ var P = [], W2 = [], c = {}; function a(t, x, y, o){ var pf = PFX[t === "ic" ? "ic" : t]; c[pf] = (c[pf] || 0) + 1; var p = { id: pf + c[pf], t: t, x: x, y: y, r: 0 }; for (var k in o) p[k] = o[k]; P.push(p); return p.id; } function w(x, y, pts){ W2.push({ a: x, b: y, pts: pts || [] }); }
+    if (name === "opinv"){ var g = a("SIN", 120, 180, { w: "sin", a: .5, f: 1000, o: 0 }), r1 = a("R", 250, 180, { v: 10e3 }), r2 = a("R", 400, 50, { v: 47e3 }), op = a("OP", 400, 200, { typ: "lm358" }), gp = a("GND", 340, 270), vp = a("V", 390, 100), vn = a("VN", 390, 330), t1 = a("TK", 200, 110, { ch: 0 }), t2 = a("TK", 560, 200, { ch: 1 });
+      w(g + ".1", r1 + ".1"); w(r1 + ".2", op + ".N"); w(op + ".N", r2 + ".1"); w(r2 + ".2", op + ".O"); w(op + ".P", gp + ".1"); w(vp + ".1", op + ".VP"); w(vn + ".1", op + ".VN"); w(t1 + ".1", g + ".1"); w(t2 + ".1", op + ".O"); }
+    if (name === "rc"){ var g2 = a("SIN", 120, 200, { w: "sin", a: .5, f: 1000, o: 0 }), r = a("R", 260, 200, { v: 10e3 }), cc = a("C", 360, 250, { r: 1, v: 10e-9 }), gr = a("GND", 360, 330), k1 = a("TK", 190, 120, { ch: 0 }), k2 = a("TK", 440, 150, { ch: 1 });
+      w(g2 + ".1", r + ".1"); w(r + ".2", cc + ".1"); w(cc + ".2", gr + ".1"); w(k1 + ".1", g2 + ".1"); w(k2 + ".1", cc + ".1"); }
+    if (name === "foto"){ var vf = a("V", 200, 90), pdd = a("PD", 200, 180, { r: 1, l: .5 }), rf = a("R", 200, 270, { r: 1, v: 10e3 }), gf = a("GND", 200, 340), tf = a("TK", 330, 225, { ch: 0 });
+      w(vf + ".1", pdd + ".2"); w(pdd + ".1", rf + ".1"); w(rf + ".2", gf + ".1"); w(tf + ".1", pdd + ".1"); }
+    if (name === "relais"){ var v1 = a("V", 100, 80), sw1 = a("SW", 100, 180, { r: 1 }), rl = a("RL", 260, 250), g1 = a("GND", 160, 340), v2 = a("V", 420, 80), r1 = a("R", 420, 180, { r: 1, v: 330 }), d1 = a("LED", 420, 270, { r: 1, c: "#6dffb0" }), g2 = a("GND", 420, 350);
+      w(v1 + ".1", sw1 + ".1"); w(sw1 + ".2", rl + ".1"); w(rl + ".2", g1 + ".1"); w(v2 + ".1", rl + ".3"); w(rl + ".4", r1 + ".1"); w(r1 + ".2", d1 + ".1"); w(d1 + ".2", g2 + ".1"); }
+    if (name === "zener"){ var vz = a("V", 200, 90), rz = a("R", 200, 170, { r: 1, v: 470 }), dz = a("D", 200, 260, { r: 1, z: 5.1 }), gz = a("GND", 200, 330), tz = a("TK", 330, 215, { ch: 0 });
+      w(vz + ".1", rz + ".1"); w(rz + ".2", dz + ".2"); w(dz + ".1", gz + ".1"); w(tz + ".1", rz + ".2"); }
+    if (name === "teiler"){ var v = a("V", 200, 90), ra = a("R", 200, 170, { r: 1, v: 4.7e3 }), rb = a("R", 200, 260, { r: 1, v: 10e3 }), gn = a("GND", 200, 330), tk = a("TK", 330, 215, { ch: 0 });
+      w(v + ".1", ra + ".1"); w(ra + ".2", rb + ".1"); w(rb + ".2", gn + ".1"); w(tk + ".1", ra + ".2"); }
+    if (name === "emitter"){ var gs = a("SIN", 60, 240, { w: "sin", a: .5, f: 1000, o: 0 }), ci = a("C", 150, 240, { v: 10e-6 }), v1 = a("V", 230, 60), r1b = a("R", 230, 140, { r: 1, v: 22e3 }), r2b = a("R", 230, 260, { r: 1, v: 10e3 }), g1 = a("GND", 230, 330), v2 = a("V", 400, 60), rc = a("R", 400, 140, { r: 1, v: 1e3 }), q = a("Q", 400, 240), re = a("R", 410, 330, { r: 1, v: 470 }), g2b = a("GND", 410, 400), k1b = a("TK", 130, 160, { ch: 0 }), k2b = a("TK", 520, 200, { ch: 1 });
+      w(gs + ".1", ci + ".1"); w(ci + ".2", r2b + ".1"); w(r1b + ".2", r2b + ".1"); w(q + ".B", r2b + ".1"); w(v1 + ".1", r1b + ".1"); w(r2b + ".2", g1 + ".1"); w(v2 + ".1", rc + ".1"); w(rc + ".2", q + ".C"); w(q + ".E", re + ".1"); w(re + ".2", g2b + ".1"); w(k1b + ".1", gs + ".1"); w(k2b + ".1", q + ".C"); }
+    return { parts: P, wires: W2 }; }
 
   /* --- Beispiele --- */
   function ex(name){ var P = [], W2 = [], c = {}; function a(t, x, y, o){ var pf = PFX[t === "ic" ? "ic" : t]; c[pf] = (c[pf] || 0) + 1; var p = { id: pf + c[pf], t: t, x: x, y: y, r: 0 }; for (var k in o) p[k] = o[k]; P.push(p); return p.id; }
@@ -2284,14 +2567,15 @@ var BAU = (function(){
     if (name === "npn"){ var tg2 = a("TG", 240, 200, { f: 1 }), rb = a("R", 320, 200, { v: 1e3 }), q = a("Q", 400, 200), lp = a("LP", 410, 110, { r: 1 }), vq = a("V", 410, 40), gq = a("GND", 410, 290), bz = a("SU", 490, 110, { r: 1 }), vb = a("V", 490, 40);
       w(tg2 + ".1", rb + ".1"); w(rb + ".2", q + ".B"); w(vq + ".1", lp + ".1"); w(lp + ".2", q + ".C"); w(q + ".E", gq + ".1"); w(vb + ".1", bz + ".1"); w(bz + ".2", q + ".C", [[490, 150], [410, 150]]); }
     return { parts: P, wires: W2 }; }
-  var EXS = [["led", T("LED mit Taster und Vorwiderstand", "LED avec bouton")], ["nand", T("NAND-Gatter 74HC00 mit zwei Schaltern", "Porte NON-ET 74HC00")], ["blink", T("Blinker mit NE555", "Clignotant NE555")], ["lauf", T("Lauflicht: Taktgeber + CD4017", "Chenillard CD4017")], ["zaehl", T("Zähler mit Anzeige: 74HC193 + CD4511", "Compteur avec afficheur")], ["daemm", T("Dämmerungsschalter: Spannungsquelle + Poti + LM393", "Interrupteur crépusculaire : LM393")], ["ff2", T("Flip-Flop teilt durch 2 (74HC74)", "Bascule ÷2 (74HC74)")], ["npn", T("Transistor schaltet Lampe und Summer", "Transistor : lampe et buzzer")]];
+  var EXS = [["led", T("LED mit Taster und Vorwiderstand", "LED avec bouton")], ["nand", T("NAND-Gatter 74HC00 mit zwei Schaltern", "Porte NON-ET 74HC00")], ["blink", T("Blinker mit NE555", "Clignotant NE555")], ["lauf", T("Lauflicht: Taktgeber + CD4017", "Chenillard CD4017")], ["zaehl", T("Zähler mit Anzeige: 74HC193 + CD4511", "Compteur avec afficheur")], ["daemm", T("Dämmerungsschalter: Spannungsquelle + Poti + LM393", "Interrupteur crépusculaire : LM393")], ["ff2", T("Flip-Flop teilt durch 2 (74HC74)", "Bascule ÷2 (74HC74)")], ["npn", T("Transistor schaltet Lampe und Summer", "Transistor : lampe et buzzer")],
+    ["opinv", T("⚡ Opamp: invertierender Verstärker (LM358, ±5 V)", "⚡ Ampli op inverseur")], ["rc", T("⚡ RC-Tiefpass – Frequenzgang messen", "⚡ Passe-bas RC – réponse en fréquence")], ["foto", T("⚡ Fotodiode: Licht wird Spannung", "⚡ Photodiode : lumière en tension")], ["relais", T("⚡ Relais schaltet LED (Schalter anklicken)", "⚡ Relais commande une LED")], ["zener", T("⚡ Z-Diode stabilisiert 5,1 V", "⚡ Diode Zener : stabilisation 5,1 V")], ["teiler", T("⚡ Spannungsteiler mit Messpunkt", "⚡ Diviseur de tension")], ["emitter", T("⚡ Transistor-Verstärker (Emitterschaltung)", "⚡ Amplificateur à émetteur commun")]];
 
   /* --- Seite aufbauen --- */
   function page(root){
     root.innerHTML = ""; document.title = T("Werkstatt – eigene Schaltung bauen", "Atelier – construire son circuit") + " – Oratio Tech Studio";
     root.appendChild(el("div", "crumb", '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › <a href="#">' + T("Schaltungen", "Circuits") + "</a> › " + T("Werkstatt", "Atelier")));
     root.appendChild(el("div", "ic-hero", '<div class="ic-k">' + T("WERKSTATT", "ATELIER") + "</div><h1>" + T("Eigene Schaltung bauen und simulieren", "Construis et simule ton circuit") + "</h1><p>" + T("Wie in LTspice, nur einfacher: ICs und Bauteile aus der Liste holen, frei verschieben, Pins mit Drähten verbinden. Die Simulation läuft nur, wenn alles richtig verdrahtet ist – sonst sagt sie dir, was fehlt.", "Comme LTspice, en plus simple : place, relie, simule. La simulation indique ce qui manque.") + "</p>"));
-    try { S = JSON.parse(localStorage.getItem("iclab_bau")); } catch(e){ S = null; } if (!S || !S.parts) S = ex("led");
+    try { S = JSON.parse(localStorage.getItem("iclab_bau")); } catch(e){ S = null; } if (!S || !S.parts) S = ex("led"); var hx = (decodeURIComponent(location.hash.replace(/^#/, "")).split("/")[1] || ""); if (/^(opinv|rc|zener|foto|relais|teiler|emitter)$/.test(hx)){ S = ex3(hx); forceAna = true; save(); }
     var bar = el("div", "bau-bar"); root.appendChild(bar);
     simBtn = el("button", "ic-ch bau-run"); simBtn.type = "button"; simBtn.onclick = function(){ if (sim) stopSim(); else startSim(); }; bar.appendChild(simBtn);
     function btn(lbl, f){ var b = el("button", "ic-ch", lbl); b.type = "button"; b.onclick = f; bar.appendChild(b); return b; }
@@ -2299,23 +2583,34 @@ var BAU = (function(){
     btn("🗑 " + T("Auswahl löschen", "Supprimer"), del);
     btn("➖", function(){ zoom = Math.max(0.25, zoom - 0.15); fit(); }); btn("⤢ " + T("Alles zeigen", "Tout voir"), function(){ var mx = 700, my = 420; S.parts.forEach(function(p){ mx = Math.max(mx, p.x + 120); my = Math.max(my, p.y + 120); }); zoom = Math.max(0.25, Math.min(1.6, Math.min(wrap.clientWidth / mx, wrap.clientHeight / my))); fit(); wrap.scrollLeft = 0; wrap.scrollTop = 0; }); btn("➕", function(){ zoom = Math.min(2, zoom + 0.15); fit(); });
     var exs = el("select", "bau-ex"); exs.innerHTML = '<option value="">📂 ' + T("Beispiel laden …", "Charger un exemple …") + "</option>" + EXS.map(function(e){ return '<option value="' + e[0] + '">' + esc(e[1]) + "</option>"; }).join(""); bar.appendChild(exs);
-    exs.onchange = function(){ if (!exs.value) return; push(); stopSim(); S = /^(daemm|ff2|npn)$/.test(exs.value) ? ex2(exs.value) : ex(exs.value); exs.value = ""; sel = null; save(); render(); };
-    btn("🧹 " + T("Neu (leer)", "Nouveau"), function(){ push(); stopSim(); S = { parts: [], wires: [] }; sel = null; save(); render(); });
+    exs.onchange = function(){ if (!exs.value) return; push(); stopSim(); S = /^(opinv|rc|zener|foto|relais|teiler|emitter)$/.test(exs.value) ? ex3(exs.value) : /^(daemm|ff2|npn)$/.test(exs.value) ? ex2(exs.value) : ex(exs.value); forceAna = /^(teiler|zener|foto|relais)$/.test(exs.value); exs.value = ""; sel = null; save(); render(); };
+    btn("🧹 " + T("Neu (leer)", "Nouveau"), function(){ push(); stopSim(); S = { parts: [], wires: [] }; forceAna = false; sel = null; save(); render(); });
+    anaBtn = btn("⚡ " + T("Analog-Modus", "Mode analogique"), function(){ forceAna = !forceAna; anaBtn.classList.toggle("on", forceAna || hasAna()); if (sim){ stopSim(); startSim(); } });
+    btn("🔧 " + T("Fehler einbauen", "Insérer une panne"), injectFault);
+    btn("📋 " + T("Stückliste", "Nomenclature"), bomShow);
+    btn("🎲 " + T("Toleranz-Test", "Tolérances"), tolRun); btn("🔗 " + T("Teilen", "Partager"), shareShow);
+    tolBox = el("div", "bau-fault bau-bom"); tolBox.hidden = true; root.appendChild(tolBox); shBox = el("div", "bau-fault bau-bom"); shBox.hidden = true; root.appendChild(shBox);
+    bomBox = el("div", "bau-fault bau-bom"); bomBox.hidden = true; root.appendChild(bomBox);
+    faultBox = el("div", "bau-fault"); faultBox.hidden = true; root.appendChild(faultBox);
     var grid = el("div", "bau-grid"); root.appendChild(grid);
     var pal = el("aside", "bau-pal"); grid.appendChild(pal);
     pal.appendChild(el("h3", "", T("Bauteile", "Composants")));
     BASIC.forEach(function(b){ var x = el("button", "bau-it", "<b>" + esc(T(b[1], b[2])) + "</b><span>" + esc(b[3]) + "</span>"); x.type = "button"; x.onclick = function(){ place(b[0]); }; pal.appendChild(x); });
     pal.appendChild(el("h3", "", "ICs"));
     var q = el("input", "ic-search"); q.type = "search"; q.placeholder = T("IC suchen …", "Chercher un CI …"); pal.appendChild(q); var il = el("div", "bau-ics"); pal.appendChild(il);
-    ICS.filter(function(d){ return /DIP|Modul/.test(d.pkg); }).sort(function(a, b){ return (MOD[b.id] ? 1 : 0) - (MOD[a.id] ? 1 : 0); }).forEach(function(d){ var x = el("button", "bau-it", "<b>" + esc(d.name.split(" / ")[0]) + (MOD[d.id] ? ' <em class="sim">' + T("simuliert", "simulé") + "</em>" : "") + "</b><span>" + esc(T(d.k[0], d.k[1])) + "</span>"); x.type = "button"; x.dataset.s = (d.name + " " + d.k[0]).toLowerCase(); x.onclick = function(){ place("ic", d.id); }; il.appendChild(x); });
+    ICS.filter(function(d){ return /DIP|Modul/.test(d.pkg); }).sort(function(a, b){ return (MOD[b.id] || AOP[b.id] ? 1 : 0) - (MOD[a.id] || AOP[a.id] ? 1 : 0); }).forEach(function(d){ var x = el("button", "bau-it", "<b>" + esc(d.name.split(" / ")[0]) + (MOD[d.id] || AOP[d.id] ? ' <em class="sim">' + T("simuliert", "simulé") + "</em>" : "") + "</b><span>" + esc(T(d.k[0], d.k[1])) + "</span>"); x.type = "button"; x.dataset.s = (d.name + " " + d.k[0]).toLowerCase(); x.onclick = function(){ place("ic", d.id); }; il.appendChild(x); });
     q.oninput = function(){ var v = q.value.toLowerCase(); il.childNodes.forEach(function(x){ x.hidden = v && x.dataset.s.indexOf(v) < 0; }); };
     var mid = el("section", "bau-mid"); grid.appendChild(mid);
     propBox = el("div", "bau-prop"); mid.appendChild(propBox);
     wrap = el("div", "bau-cv"); mid.appendChild(wrap); wrap.innerHTML = '<svg class="bau-svg" xmlns="http://www.w3.org/2000/svg"></svg>'; svg = wrap.firstChild;
     var rc = el("aside", "bau-right"); grid.appendChild(rc);
-    rc.appendChild(el("h3", "ic-h3", "📈 " + T("Oszilloskop (Logik)", "Oscilloscope (logique)"))); scopeCv = el("canvas", "bau-scope"); rc.appendChild(scopeCv);
+    rc.appendChild(el("h3", "ic-h3", "📈 " + T("Oszilloskop", "Oscilloscope"))); scopeCv = el("canvas", "bau-scope"); rc.appendChild(scopeCv);
+    var tr = el("div", "bau-tb"); rc.appendChild(tr); tr.appendChild(el("span", "ic-lb", T("Zeit pro Kästchen:", "Temps par division :")));
+    tbBox = el("select", "bau-ex"); tbBox.innerHTML = TBS.map(function(o){ return '<option value="' + o[0] + '">' + o[1] + "</option>"; }).join(""); tbBox.value = tbSel; tbBox.onchange = function(){ tbSel = tbBox.value; if (sim && sim.ana){ sim.atr = [[], [], [], []]; } }; tr.appendChild(tbBox);
+    var bb = el("button", "ic-ch", "📉 " + T("Frequenzgang messen", "Réponse en fréquence")); bb.type = "button"; bb.onclick = bodeRun; tr.appendChild(bb);
+    bodeCv = el("canvas", "bau-scope"); bodeCv.hidden = true; bodeCv.style.height = "300px"; rc.appendChild(bodeCv); bodeInfo = el("p", "ic-lb"); rc.appendChild(bodeInfo);
     rc.appendChild(el("h3", "ic-h3", T("Meldungen", "Messages"))); msgBox = el("div", "bau-msg"); rc.appendChild(msgBox);
-    rc.appendChild(el("p", "ic-lb", T("Farben der Drähte während der Simulation: rot = HIGH, blau = LOW, grau = offen/unbestimmt, orange blinkend = Kurzschluss. Pin-Punkte: rot = Versorgung, grau = GND, orange = Eingang, türkis = Ausgang.", "Couleurs : rouge = HAUT, bleu = BAS, gris = indéfini, orange = court-circuit.")));
+    rc.appendChild(el("p", "ic-lb", T("Farben der Drähte während der Simulation: rot = HIGH, blau = LOW, grau = offen/unbestimmt, orange blinkend = Kurzschluss. Pin-Punkte: rot = Versorgung, grau = GND, orange = Eingang, türkis = Ausgang.", "Couleurs : rouge = HAUT, bleu = BAS, gris = indéfini, orange = court-circuit.") + " " + T("Im Analog-Modus zeigt die Farbe der Drähte die Spannung: rot = positiv, blau = null oder negativ – und ein Klick auf einen Pin zeigt den genauen Wert.", "En mode analogique la couleur indique la tension : un clic sur une broche donne la valeur.")));
     fit(); stopSim(); events(); }
   function fit(){ var w = 1400 / zoom * zoom; svg.setAttribute("viewBox", "0 0 1200 760"); svg.style.width = Math.round(1200 * zoom) + "px"; svg.style.height = Math.round(760 * zoom) + "px"; }
   function place(t, ic){ var x = (wrap.scrollLeft + wrap.clientWidth / 2) / zoom - 40 + (S.parts.length % 5) * 20, y = (wrap.scrollTop + wrap.clientHeight / 2) / zoom - 60 + (S.parts.length % 5) * 20; addPart(t, ic, Math.max(60, x), Math.max(60, y)); }
@@ -2323,6 +2618,7 @@ var BAU = (function(){
   function events(){
     var drag = null;
     svg.addEventListener("pointerdown", function(ev){ if (ev.button === 2) return; var t = ev.target, tm = t.closest("[data-t]"), pg = t.closest("[data-p]"), wr = t.closest("[data-w]"), xy = pt(ev);
+      if (sim && tm){ sim.meas = tm.dataset.t; svg.querySelectorAll(".mb").forEach(function(e){ e.remove(); }); paintSim(); ev.preventDefault(); return; }
       if (sim){ if (!pg && tm){ pg = svg.querySelector('[data-p="' + tm.dataset.t.split(".")[0] + '"]'); } if (pg){ var p = part(pg.dataset.p); if (p.t === "TA"){ sim.press[p.id] = 1; svg.setPointerCapture(ev.pointerId); drag = { press: p.id }; } else if (p.t === "SW"){ p.on = !p.on; save(); } else { sel = { p: p.id }; props(); } } return; }
       if (tm){ var k = tm.dataset.t; if (wiring){ if (k !== wiring.a){ push(); S.wires.push({ a: wiring.a, b: k, pts: wiring.pts }); save(); } wiring = null; render(); } else { wiring = { a: k, pts: [] }; sel = null; render(); } ev.preventDefault(); return; }
       if (wiring){ var last = wiring.pts.length ? wiring.pts[wiring.pts.length - 1] : null; wiring.pts.push([snap(xy[0]), snap(xy[1])]); render(); return; }
@@ -2338,7 +2634,7 @@ var BAU = (function(){
   function KEY(ev){ if (!svg || !document.body.contains(svg)){ document.removeEventListener("keydown", KEY); return; } if (/INPUT|SELECT|TEXTAREA/.test((ev.target || {}).tagName || "")) return;
     if (ev.key === "Escape"){ wiring = null; render(); } if ((ev.key === "Delete" || ev.key === "Backspace") && sel){ ev.preventDefault(); del(); } if (ev.key === "r" && sel && sel.p){ var p = part(sel.p); if (/^(R|LED|D|C|TA|SW|LP|SU)$/.test(p.t)){ push(); p.r = ((p.r || 0) + 1) % 4; save(); render(); } } }
   window.addEventListener("resize", function(){ if (svg && document.body.contains(svg)) drawScope(); });
-  return { page: page, stop: function(){ if (sim) stopSim(); svg = null; }, sims: function(){ return Object.keys(MOD).length; } };
+  return { page: page, stop: function(){ if (sim) stopSim(); svg = null; }, sims: function(){ return Object.keys(MOD).length; }, _s: function(){ return { sim: sim, S: S }; }, _a: function(){ return { anaBuild: anaBuild, anaDC: anaDC, anaStep: anaStep, vof: vof }; } };
 })();
 
 /* Scroll-Position merken: zurück = wieder dort, wo man war */
@@ -2351,10 +2647,10 @@ window.addEventListener("pagehide", function(){ try { sessionStorage.setItem("sc
 function scrollBack(){ var y = FRESH ? 0 : (SCR[skey()] || 0); FRESH = false; window.scrollTo(0, y); if (y) setTimeout(function(){ window.scrollTo(0, y); }, 120); }
 function route(){
   var h = decodeURIComponent(location.hash.replace(/^#/, "")), p = h.split("/");
-  BAU.stop(); if (h === "bau"){ stopLive(); BAU.page(root); scrollBack(); return; }
+  BAU.stop(); if (p[0] === "bau"){ stopLive(); BAU.page(root); scrollBack(); return; }
   if (!h) listPage(); else if (p[0] === "p" || p[0] === "k") circuitPage(p[1]); else if (icById(p[0])) circuitPage(p[1] && PROJ[p[1]] ? p[1] : icById(p[0]).proj[0]); else listPage();
   scrollBack();
 }
 function start(){ root = $("#iclab"); window.addEventListener("hashchange", route); route(); }
-return { start: start, _d: function(){ return { LAY: LAY, schem2: schem2, NL: NL, PROJ: PROJ, A: netAnalyse, KOMBI: KOMBI, icDef: icDef }; } };
+return { start: start, bau: BAU, _d: function(){ return { LAY: LAY, schem2: schem2, NL: NL, PROJ: PROJ, A: netAnalyse, KOMBI: KOMBI, icDef: icDef }; } };
 })();
