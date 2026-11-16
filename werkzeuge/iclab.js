@@ -1290,6 +1290,10 @@ NL.k_strom = nmk({ R1: ["R", 1e3], Rs: ["R", 33], D1: ["LED", "#6dffb0"], Q1: "b
   { VCC: ["R1.1", "D1.1"], K1: ["D1.2", "Q1.C"], B1: ["R1.2", "Q1.B", "Q2.C"], S: ["Q1.E", "Q2.B", "Rs.1"], GND: ["Rs.2", "Q2.E"] });
 NL.k_zreg = nmk({ G1: ["G", "Uein 6…15 V"], R1: ["R", 220], D1: ["D", "Z-Diode 5,1 V"], R2: ["R", 1e3], P1: ["G", "Uaus"] },
   { EIN: ["G1.1", "R1.1"], AUS: ["R1.2", "D1.2", "R2.1", "P1.1"], GND: ["D1.1", "R2.2"] });
+NL.k_bistabil = nmk({ U1: "ne555", R1: ["R", 10e3], R2: ["R", 10e3], SW1: ["SW", "Set"], SW2: ["SW", "Reset"], C2: ["C", 10e-9], R3: ["R", 330], D1: ["LED", "#6dffb0"] },
+  { VCC: ["U1.8", "R1.1", "R2.1"], GND: ["U1.1", "U1.6", "SW1.2", "SW2.2", "C2.2", "D1.2"], SETN: ["R1.2", "U1.2", "SW1.1"], RESN: ["R2.2", "U1.4", "SW2.1"], CTRL: ["U1.5", "C2.1"], OUT: ["U1.3", "R3.1"], LED: ["R3.2", "D1.1"] });
+NL.k_schmitt = nmk({ U1: "ne555", G1: ["G", "Uin (langsam)"], C2: ["C", 10e-9], R3: ["R", 330], D1: ["LED", "#ff4d4d"] },
+  { VCC: ["U1.8", "U1.4"], GND: ["U1.1", "C2.2", "D1.2"], EIN: ["G1.1", "U1.2", "U1.6"], CTRL: ["U1.5", "C2.1"], OUT: ["U1.3", "R3.1"], LED: ["R3.2", "D1.1"] });
 /* --- Netz-Auswertung --- */
 function icDef(spec){ return PARTIC[spec] || icById(spec); }
 function netAnalyse(pid, P){
@@ -1425,16 +1429,16 @@ function schem2(A, L0){
     var showV = k === "LED" ? "" : k === "R" || k === "C" ? pv(p) : (val == null ? "" : String(val)), id = p.id;
     if (k === "LAMP" || k === "SPK" || k === "SW" || k === "XTAL" || k === "LDR"){ if (val) { showV = String(val); } }
     if (k === "LDR" && /^LDR$/i.test(String(val))) showV = "";
-    var nol = o.indexOf("!") >= 0, eq = o.indexOf("=") >= 0, hi = o.indexOf("^") >= 0;
+    var nol = o.indexOf("!") >= 0, eq = o.indexOf("=") >= 0, hi = o.indexOf("^") >= 0, up = (k === "C" && p.extra === "pol") ? 9 : 0;
     if (nol){}
-    else if (eq){ var lx = v ? x + (side < 0 ? -14 : 14) : x, ly = v ? y + 4 : y - (k === "LED" ? 22 : k === "LAMP" || k === "C" || k === "SPK" ? 17 : 12), an2 = v ? (side < 0 ? "end" : "start") : "middle", str = id + (showV ? "  " + showV : "");
+    else if (eq){ var lx = v ? x + (side < 0 ? -14 : 14) : x, ly = v ? y + 4 : y - up - (k === "LED" ? 22 : k === "LAMP" || k === "C" || k === "SPK" ? 17 : 12), an2 = v ? (side < 0 ? "end" : "start") : "middle", str = id + (showV ? "  " + showV : "");
       s += tx(lx, ly, str, "sl", an2).replace(/>([^<]*)<\/text>$/, function(m0){ return ">" + e(id) + (showV ? '  <tspan class="sv">' + e(showV) + "</tspan>" : "") + "</text>"; }); }
     else if (!v){
       if (k === "LED") s += tx(x, y + 24, id, "sl", "middle");
-      else if (hi){ s += tx(x, y - 30, id, "sl", "middle") + tx(x, y - 16, showV, "sv", "middle"); }
+      else if (hi){ s += tx(x, y - 30 - up, id, "sl", "middle") + tx(x, y - 16 - up, showV, "sv", "middle"); }
       else if (o.indexOf(">") >= 0){ s += tx(x + 36, y - 3, id, "sl", "start") + tx(x + 36, y + 11, showV, "sv", "start"); }
-      else { s += tx(x, y - (k === "SW" ? 24 : k === "C" || k === "LAMP" || k === "SPK" ? 17 : 13), id, "sl", "middle"); s += tx(x, y + (k === "C" || k === "LAMP" || k === "SPK" ? 26 : k === "SW" ? 18 : 22), showV, "sv", "middle"); } }
-    else { var lr = side ? side : (k === "LED" ? -1 : 1), xx = x + lr * ((k === "SW" || k === "LDR" || k === "LED") && lr > 0 ? 25 : k === "C" || k === "LAMP" ? 17 : 14), an = lr < 0 ? "end" : "start";
+      else { s += tx(x, y - up - (k === "SW" ? 24 : k === "C" || k === "LAMP" || k === "SPK" ? 17 : 13), id, "sl", "middle"); s += tx(x, y + (k === "C" || k === "LAMP" || k === "SPK" ? 26 : k === "SW" ? 18 : 22), showV, "sv", "middle"); } }
+    else { var lr = side ? side : 1, xx = x + lr * (k === "SPK" ? 25 : (k === "SW" || k === "LDR" || k === "LED") && lr > 0 ? 28 : k === "C" || k === "LAMP" ? 21 : 17), an = lr < 0 ? "end" : "start";
       s += tx(xx, showV ? y - 2 : y + 4, id, "sl", an); if (showV) s += tx(xx, y + 12, showV, "sv", an); }
     return s + "</g>";
   }
@@ -1462,7 +1466,7 @@ function schem2(A, L0){
     var S = (o && o.s) || 40, sd = o || {}, n = p.n;
     if (!sd.L && !sd.R && !sd.T && !sd.B){ sd = { L: [], R: [] }; if (p.def.sip) for (var i = 1; i <= n; i++) sd.L.push(i); else { for (var j = 1; j <= n / 2; j++) sd.L.push(j); for (var k2 = n; k2 > n / 2; k2--) sd.R.push(k2); } for (var q in o) if (o.hasOwnProperty(q)) sd[q] = o[q]; }
     var LL = sd.L || [], RR = sd.R || [], TT = sd.T || [], BB = sd.B || [];
-    var h = sd.h || Math.max(LL.length, RR.length, 1) * S + 24, w = sd.w || Math.max(Math.max(TT.length, BB.length) * S + 24, 120);
+    var h = sd.h || Math.max(LL.length, RR.length, 1) * S + 24, needH = 38 + (TT.length ? 22 : 0) + (BB.length ? 22 : 0); if (h < needH) h = needH; var w = sd.w || Math.max(Math.max(TT.length, BB.length) * S + 24, 120);
     var s = '<g class="ic" data-part="' + p.id + '"><rect class="box" x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="5"/>';
     box(x, y, x + w, y + h);
     function side(list, kind){ var cnt = list.length, len = (kind === "L" || kind === "R") ? h : w, off = (len - cnt * S) / 2;
@@ -1475,7 +1479,7 @@ function schem2(A, L0){
     side(LL, "L"); side(RR, "R"); side(TT, "T"); side(BB, "B");
     var cx = x + w / 2, cy = y + h / 2, nmx = shn(p.def.name);
     var ty = sd.ty != null ? y + sd.ty : cy;
-    s += tx(cx, ty - 3, p.id, "tt", "middle") + tx(cx, ty + 13, nmx, "tn", "middle");
+    s += tx(cx, ty - 6, p.id, "tt", "middle") + tx(cx, ty + 9, nmx, "tn", "middle");
     return s + "</g>";
   }
   function src(p, x, y, o){ // Anschlussklemme (offener Kreis) mit Beschriftung
@@ -1519,7 +1523,11 @@ function schem2(A, L0){
     var mem = net.members.filter(function(r){ return TP[r]; });
     if (!net.anon && net.members.length !== mem.length) net.members.forEach(function(r){ if (!TP[r] && L[r.split(".")[0]]) miss.push(r); });
     if (manual[net.name]){ manual[net.name].forEach(function(pl){ for (var i = 1; i < pl.length; i++) addSeg(pl[i - 1][0], pl[i - 1][1], pl[i][0], pl[i][1], net.id); }); return; }
-    if (net.rail){ var rs = ""; mem.forEach(function(r){ rs += rail(TP[r], net.rail); }); if (rs) (wiresByNet[net.id] = wiresByNet[net.id] || []).rs = rs, railSvg += '<g class="pn" data-net="' + net.id + '">' + rs + "</g>"; return; }
+    var railW = false;
+    if (net.rail && mem.length === 2 && !L.nowire){ var ta = TP[mem[0]], tb = TP[mem[1]], bc = 1e9;
+      [[ta.x, tb.y], [tb.x, ta.y]].forEach(function(k){ var c0 = segCost(tb.x, tb.y, k[0], k[1], net.id) + segCost(k[0], k[1], ta.x, ta.y, net.id) + dirPen(tb, k[0] === tb.x && k[1] === tb.y ? ta.x : k[0], k[0] === tb.x && k[1] === tb.y ? ta.y : k[1]) + dirPen(ta, k[0] === ta.x && k[1] === ta.y ? tb.x : k[0], k[0] === ta.x && k[1] === ta.y ? tb.y : k[1]); if (c0 < bc) bc = c0; });
+      railW = bc < 520 && Math.abs(ta.x - tb.x) + Math.abs(ta.y - tb.y) < 330; }
+    if (net.rail && !railW){ var rs = ""; mem.forEach(function(r){ rs += rail(TP[r], net.rail); }); if (rs) (wiresByNet[net.id] = wiresByNet[net.id] || []).rs = rs, railSvg += '<g class="pn" data-net="' + net.id + '">' + rs + "</g>"; return; }
     if (mem.length < 2) return;
     var tree = [mem[0]], pts = [TP[mem[0]]], rest = mem.slice(1), mySeg = [];
     while (rest.length){
@@ -1532,6 +1540,9 @@ function schem2(A, L0){
       var t2 = TP[best.r]; [[t2.x, t2.y, best.k[0], best.k[1]], [best.k[0], best.k[1], best.c.x, best.c.y]].forEach(function(sg){ if (sg[0] !== sg[2] || sg[1] !== sg[3]){ addSeg(sg[0], sg[1], sg[2], sg[3], net.id); mySeg.push(sg); } });
       pts.push(t2); rest.splice(rest.indexOf(best.r), 1);
     }
+    if (railW && mySeg.length){ var lg = mySeg.slice().sort(function(a, b){ return (Math.abs(b[0] - b[2]) + Math.abs(b[1] - b[3])) - (Math.abs(a[0] - a[2]) + Math.abs(a[1] - a[3])); })[0], hz = lg[1] === lg[3], rx = hz ? Math.round((lg[0] + lg[2]) / 2 / 10) * 10 : lg[0], ry = hz ? lg[1] : Math.round((lg[1] + lg[3]) / 2 / 10) * 10;
+      var rp = rail(hz ? { x: rx, y: ry, dx: 0, dy: net.rail === "gnd" ? 1 : -1 } : { x: rx, y: ry, dx: 1, dy: 0 }, net.rail);
+      railSvg += '<g class="pn rw" data-net="' + net.id + '">' + rp + '<circle class="dot" cx="' + rx + '" cy="' + ry + '" r="3.2"/></g>'; }
   });
   rsym.forEach(function(r){ railSvg += rail({ x: r[1], y: r[2], dx: r[3] || 0, dy: r[4] == null ? (r[0] === "gnd" ? 1 : -1) : r[4] }, r[0]); });
   /* Verbindungspunkte */
@@ -1611,12 +1622,12 @@ LAY.opamp = function(P){
 };
 LAY.lm393 = { U1: [300, 140, { L: [2, null, 3], R: [1], T: [8], B: [4] }], R2: ["U1.2", 2, "v", -40, 0], R3: ["U1.2", 1, "h-", -40, 0], R1: ["U1.3", 2, "h", -40, 0], G1: ["R1.1", 1, "r"], Rh: [360, 370, "h"],
   Rp: ["U1.1", 2, "v<", 40, 0], D1: ["U1.1", 2, "v<", 110, 0], R4: ["D1.1", 2, "v"] };
-LAY.lm317 = { U1: [300, 120, { L: [3], R: [2], B: [1], h: 80 }], G1: ["U1.3", 1, "r", -120, 0], C1: ["U1.3", 1, "v", -60, 0], D1: [360, 70, "h-"], R1: ["U1.2", 1, "v", 60, 0], R2: ["R1.2", 1, "v"], C2: ["U1.2", 1, "v", 120, 0], P1: ["U1.2", 1, "l", 180, 0] };
+LAY.lm317 = { U1: [300, 120, { L: [3], R: [2], B: [1], h: 80 }], G1: ["U1.3", 1, "r", -120, 0], C1: ["U1.3", 1, "v", -60, 0], D1: [360, 70, "h-"], R1: ["U1.2", 1, "v", 60, 0], R2: ["R1.2", 1, "v"], C2: ["U1.2", 1, "v", 150, 0], P1: ["U1.2", 1, "l", 215, 0] };
 LAY.cd4093 = { U1: [300, 140, { L: [1], R: [3], T: [2, null, null, 14], B: [7, 5, 6, 8, 9, 12, 13] }], R1: [480, 60, "h-"], C1: ["U1.2", 1, "h-", 0, -20], SW1: ["U1.1", 2, "h", -100, 0], Rp: ["U1.1", 1, "v", -40, 0], R2: ["U1.3", 1, "h", 40, 0], D1: ["R2.2", 1, "v"] };
 LAY.hc165 = { U1: [300, 120, { L: [1, 2, 11], R: [9], T: [16], B: [8, 15, 10] }], G1: ["U1.1", 1, "r"], G2: ["U1.2", 1, "r"], SW1: ["U1.11", 2, "h", -58, 0], R1: ["U1.11", 1, "v", -58, 0], P1: ["U1.9", 1, "l"] };
 LAY.lm7805 = { U1: [300, 120, { L: [1], R: [3], B: [2], h: 80 }], G1: ["U1.1", 1, "r", -110, 0], C1: ["U1.1", 1, "v", -50, 0], C2: ["U1.3", 1, "v", 50, 0], P1: ["U1.3", 1, "l", 110, 0] };
 LAY.lm1117 = { U1: [300, 120, { L: [3], R: [2], B: [1], h: 80, w: 160 }], G1: ["U1.3", 1, "r", -110, 0], C1: ["U1.3", 1, "v", -50, 0], C2: ["U1.2", 1, "v", 50, 0], P1: ["U1.2", 1, "l", 110, 0] };
-LAY.lm337 = { U1: [300, 120, { L: [2], R: [3], B: [1], h: 80 }], G1: ["U1.2", 1, "r", -120, 0], C1: ["U1.2", 2, "v-", -60, 0], R1: ["U1.3", 1, "v", 60, 0], R2: ["R1.2", 1, "v"], C2: ["U1.3", 2, "v-", 120, 0], P1: ["U1.3", 1, "l", 180, 0] };
+LAY.lm337 = { U1: [300, 120, { L: [2], R: [3], B: [1], h: 80 }], G1: ["U1.2", 1, "r", -120, 0], C1: ["U1.2", 2, "v-", -60, 0], R1: ["U1.3", 1, "v", 60, 0], R2: ["R1.2", 1, "v"], C2: ["U1.3", 2, "v-", 150, 0], P1: ["U1.3", 1, "l", 215, 0] };
 LAY.lm386 = { U1: [300, 140, { L: [3, 2], R: [5], T: [6], B: [4] }], G1: ["U1.3", 1, "r", -70, 0], C2: ["U1.5", 1, "v", 40, 0], R1: ["C2.2", 1, "v"], C1: ["U1.5", 1, "h^", 90, 0], SP1: ["C1.2", 1, "v"] };
 LAY.npn = { Q1: [320, 200], Rb: ["Q1.2", 2, "h", -30, 0], G1: ["Rb.1", 1, "r"], LP1: ["Q1.1", 2, "v<", 0, -20], D1: ["Q1.1", 1, "v-", 60, -20] };
 LAY.pnp = { Q1: [330, 200], Rp: ["Q1.2", 2, "v", -50, 0], Rb: ["Rp.2", 2, "h"], G1: ["Rb.1", 1, "r"], LP1: ["Q1.1", 1, "v", 0, 20] };
@@ -1695,16 +1706,18 @@ LAY.k_ampel = { U1: [300, 120, L555], R1: [220, 122, "v"], R2: [220, 182, "v"], 
 LAY.k_thermo = { U2: [300, 140, { L: [2, null, 3], R: [1], T: [8], B: [4] }], U1: [120, 84, { T: [1], B: [3], R: [2], h: 96 }], Ra: ["U2.3", 2, "h", -100, 0], Rp: ["U2.3", 1, "v<", -40, 0], Rh: [360, 370, "h"],
   Ru: ["U2.1", 2, "v", 40, 0], Rb: ["U2.1", 1, "h", 100, 0], Q1: [642, 212], K1: ["Q1.1", 2, "v<", 0, -20], D1: ["Q1.1", 1, "v-", 60, -20] };
 LAY.k_netz = { D1: [200, 170, "v-"], D3: [200, 230, "v-"], D2: [300, 170, "v-"], D4: [300, 230, "v-"], G1: [140, 200, "r"], G2: [360, 200, "l"], C1: [440, 170, "v"],
-  U1: [520, 102, { L: [3], R: [2], B: [1], h: 76 }], R1: ["U1.2", 1, "v", 60, 0], R2: ["R1.2", 1, "v"], C2: ["U1.2", 1, "v", 120, 0], P1: ["U1.2", 1, "l", 180, 0] };
+  U1: [520, 102, { L: [3], R: [2], B: [1], h: 76 }], R1: ["U1.2", 1, "v", 60, 0], R2: ["R1.2", 1, "v"], C2: ["U1.2", 1, "v", 150, 0], P1: ["U1.2", 1, "l", 215, 0] };
 LAY.k_wuerfel = function(P, A){ return chains(A, { U1: [300, 120, { L: [7, 6, 2], R: [3], T: [8, 4], B: [1, 5], w: 140 }], R1: [220, 122, "v"], R2: [220, 182, "v"], C1: [220, 282, "v"], C2: [390, 316, "v"], SW1: ["U1.4", 2, "v"], R3: ["U1.4", 1, "h", 60, 0],
   U2: [560, 40, { L: [14, 13, 15, 8], R: [3, 2, 4, 7, 10, 1, 5], T: [16] }], w: { RESET: [[[702, 312], [722, 312], [722, 380], [510, 380], [510, 212], [538, 212]]] } }, "U2", [3, 2, 4, 7, 10, 1], "r", "="); };
 LAY.k_alarm = { U1: [300, 140, { L: [3, null, 2], R: [1], T: [8], B: [4] }], LDR1: ["U1.3", 2, "v", -40, 0], R1: ["U1.3", 1, "h-", -40, 0], R2: ["U1.2", 2, "h", -100, 0], R3: ["U1.2", 1, "v<", -40, 0], R4: ["U1.1", 2, "v<", 40, 0],
   U2: [600, 100, { L: [7, 6], B: [2, 1, 5], R: [3], T: [8, 4], w: 160 }], R5: ["U2.7", 2, "v<", -40, 0], C1: ["U2.6", 1, "v", -40, 0], C2: ["U2.5", 1, "v"], SW1: ["U2.4", 2, "v"], R6: ["U2.4", 1, "h", 60, 0], SP1: ["U2.3", 1, "v", 40, 0], R7: ["U2.3", 1, "h", 110, 0], D1: ["R7.2", 1, "v"] };
-LAY.k_wechsel = { Q1: [300, 320], Q2: [620, 320, "m"], D1: ["Q1.1", 2, "v<", 0, -30], R1: ["D1.1", 2, "v<"], D2: ["Q2.1", 2, "v", 0, -30], R4: ["D2.1", 2, "v"], R3: [400, 200, "v"], R2: [520, 200, "v"], C1: [460, 250, "h="], C2: [460, 290, "h-="] };
+LAY.k_wechsel = { Q1: [300, 320], Q2: [620, 320, "m"], D1: ["Q1.1", 2, "v<", 0, -30], R1: ["D1.1", 2, "v<"], D2: ["Q2.1", 2, "v", 0, -30], R4: ["D2.1", 2, "v"], R3: [400, 170, "v"], R2: [520, 170, "v"], C1: [460, 244, "h="], C2: [460, 316, "h-="] };
 LAY.k_verz = { Q1: [420, 300], D1: ["Q1.1", 2, "v<", 0, -30], R2: ["D1.1", 2, "v<"], R1: [250, 190, "v"], C1: [250, 330, "v"] };
 LAY.k_touch = { Q2: [520, 360], Q1: [340, 300], D1: ["Q2.1", 2, "v<", 0, -90], R2: ["D1.1", 2, "v<"], R1: [200, 280, "h"], SW1: [120, 180, "v"] };
 LAY.k_strom = { Q1: [440, 280], Q2: [300, 340, "m"], D1: ["Q1.1", 2, "v<", 0, -30], R1: [200, 200, "v"], Rs: [440, 420, "v"] };
 LAY.k_zreg = { G1: [100, 140, "r"], R1: [220, 140, "h"], D1: [360, 240, "v-<"], R2: [480, 240, "v"], P1: [560, 140, "l"] };
+LAY.k_bistabil = { U1: [360, 140, { L: [6, 7, 2], R: [3], T: [8, 4], B: [1, 5], w: 140 }], R1: ["U1.2", 2, "v", -60, 0], SW1: ["U1.2", 1, "v", -60, 0], R2: ["U1.4", 2, "v", 0, 0], SW2: ["U1.4", 1, "h", 50, 0], C2: ["U1.5", 1, "v", 0, 0], R3: ["U1.3", 1, "h", 40, 0], D1: ["R3.2", 1, "h", 0, 0] };
+LAY.k_schmitt = { U1: [360, 140, { L: [2, 7, 6], R: [3], T: [8, 4], B: [1, 5], w: 140 }], G1: [120, 212, "r"], C2: ["U1.5", 1, "v", 0, 0], R3: ["U1.3", 1, "h", 40, 0], D1: ["R3.2", 1, "h", 0, 0] };
 /*END LAYOUTS*/
 function wireHL(root){ var svgs = root.querySelectorAll("svg"); function clr(){ root.querySelectorAll(".hl").forEach(function(e){ e.classList.remove("hl"); }); } root.addEventListener("mouseover", function(ev){ var t = ev.target.closest ? ev.target.closest("[data-net]") : null; clr(); if (t){ var id = t.getAttribute("data-net"); root.querySelectorAll('[data-net="' + id + '"]').forEach(function(e){ e.classList.add("hl"); }); } }); root.addEventListener("mouseleave", clr); }
 
@@ -1778,7 +1791,7 @@ var ICS = [
   { id: "a4988", name: "A4988-Modul", pkg: "Modul 16", cat: "drive", k: ["Schrittmotortreiber mit Mikroschritten", "Driver pas à pas avec micropas"], pins: ["EN:i", "MS1:i", "MS2:i", "MS3:i", "RST:i", "SLP:i", "STEP:i", "DIR:i", "GND:g", "VDD:v", "1B:o", "1A:o", "2A:o", "2B:o", "GND2:g", "VMOT:v"], facts: [["Motor", "Moteur", "8…35 V, bis 2 A je Spule (mit Kühlung)"], ["Mikroschritte", "Micropas", "bis 1/16"], ["Verwandt", "Parent", "DRV8825 (bis 1/32)"]], proj: ["a4988"] }
 ];
 var RECH = { ne555a: "timer555", ne555m: "timer555", ne556: "timer555", cd4060: "timer555", k_lauf: "timer555", k_relais: "timer555", k_ampel: "timer555", k_thermo: "opamp/cmp", k_netz: "regler", k_sirene: "timer555", k_motor: "timer555", lm358: "opamp/nin", lm324: "opamp/cmp", tl072: "opamp/nin", ad620: "opamp/sub", lm393: "opamp/cmp", lm339: "opamp/cmp", k_daemm: "opamp/cmp", op_inv: "opamp/inv", op_non: "opamp/nin", op_fol: "opamp/fol", op_add: "opamp/sum", op_sub: "opamp/sub", op_int: "opamp/int", op_dif: "opamp/dif", op_komp: "opamp/cmp", op_tia: "opamp/tia", op_sk: "opamp/lp", hc14: "opamp/sch", cd4093: "opamp/sch", lm317: "regler", lm337: "regler", lm7805: "regler", lm1117: "regler", led: "led", rc_hp: "filter", rc_bp: "filter", hc00: "logik", adder: "logik", hc283: "logik", tl431: "teiler", lm35: "teiler", lm339b: "teiler" };
-var KOMBI = ["k_lauf", "k_uhr", "k_zaehl", "k_daemm", "k_prell", "k_sirene", "k_motor", "k_relais", "k_ampel", "k_thermo", "k_netz", "k_wuerfel", "k_alarm", "k_wechsel", "k_verz", "k_touch", "k_strom", "k_zreg"];
+var KOMBI = ["k_lauf", "k_uhr", "k_zaehl", "k_daemm", "k_prell", "k_sirene", "k_motor", "k_relais", "k_ampel", "k_thermo", "k_netz", "k_wuerfel", "k_alarm", "k_wechsel", "k_verz", "k_touch", "k_strom", "k_zreg", "k_bistabil", "k_schmitt"];
 
 /* ---- Weitere Projekte ---- */
 PROJ.k_wuerfel = { t: ["Elektronischer Würfel: 555 → CD4017 (÷6) → 6 LEDs", "Dé électronique : 555 → CD4017 (÷6) → 6 LED"], flow: ["Taster", "NE555 (schnell)", "CD4017 zählt 0…5", "LED 1…6"], ics: ["ne555", "cd4017"],
@@ -1860,7 +1873,28 @@ PROJ.k_zreg = { t: ["Spannungsregler mit Z-Diode (5,1 V)", "Régulateur à diode
       live: function(){ return { leds: [1], names: [T("Ausgang stabil", "Sortie stable")] }; } }; },
   wire: [["Eingang → 220 Ω → Ausgangsknoten", "Entrée → 220 Ω → nœud de sortie"], ["Z-Diode vom Ausgangsknoten nach GND – Kathode (Strich) zeigt zum Ausgang", "Zener : cathode (trait) vers la sortie"], ["Last (1 kΩ) parallel zur Z-Diode", "Charge en parallèle de la Zener"]],
   notes: [["Die Z-Diode braucht immer etwas Mindeststrom (ca. 5 mA) – sonst bricht sie nicht sauber durch.", "La Zener doit toujours avoir un courant minimal."], ["Für stärkere Lasten setzt man einen Transistor als Emitterfolger dahinter oder nimmt gleich einen LM7805.", "Pour plus de courant : transistor suiveur ou LM7805."], ["Bei 15 V wird der 220-Ω-Widerstand mit ca. 0,45 W belastet – nimm dafür einen 1-W-Typ, sonst wird er heiß.", "À 15 V la résistance dissipe ≈ 0,45 W : prendre 1 W."]] };
-var KICON = { k_lauf: "💡", k_uhr: "🕒", k_zaehl: "🔢", k_daemm: "🌗", k_prell: "🔘", k_sirene: "🚨", k_motor: "⚙️", k_relais: "🔌", k_bau: "🧱", k_ampel: "🚦", k_thermo: "🌡️", k_netz: "🔋", k_wuerfel: "🎲", k_alarm: "🔦", k_wechsel: "🔁", k_verz: "⏳", k_touch: "☝️", k_strom: "🎚️", k_zreg: "🔰" };
+PROJ.k_bistabil = { t: ["Bistabiler Speicher: 555 als Flip-Flop (Set / Reset)", "Bascule : 555 en flip-flop (Set / Reset)"], flow: ["Taster Set", "555 merkt sich: Ausgang HIGH", "Taster Reset", "Ausgang LOW"], ics: ["ne555"],
+  d: ["Der 555 kann auch als Ein-Bit-Speicher arbeiten: Pin 6 liegt fest auf GND, Pin 2 (Trigger) und Pin 4 (Reset) hängen über 10 kΩ an +V. Ein kurzer Druck auf „Set“ zieht Pin 2 nach unten – der Ausgang geht auf HIGH und BLEIBT dort, auch wenn du loslässt. Erst „Reset“ (Pin 4 nach GND) setzt ihn zurück. So baut man eine Tipp-Schaltung mit Selbsthaltung ganz ohne weiteres IC.", "Le 555 peut mémoriser un bit : Set (broche 2 à GND) met la sortie à HAUT, Reset (broche 4 à GND) la remet à BAS."],
+  build: function(){ var ev = [[1, 1.4, "s"], [3, 3.4, "r"], [5, 5.4, "s"], [6.6, 7, "r"]]; function out(t){ var o = 0; ev.forEach(function(e){ if (t >= e[0]) o = e[2] === "s" ? 1 : 0; }); return o; }
+    function pr(kind){ return function(t){ for (var i = 0; i < ev.length; i++) if (ev[i][2] === kind && t >= ev[i][0] && t < ev[i][1]) return 0; return 5; }; }
+    return { span: 8, speed: 1, warn: [], ch: [{ n: T("Pin 2 (TRIG) – Taster Set", "Broche 2 – Set"), c: C.amber, lo: 0, hi: 5, v: pr("s") }, { n: T("Pin 4 (RESET) – Taster Reset", "Broche 4 – Reset"), c: C.violet, lo: 0, hi: 5, v: pr("r") }, { n: T("Ausgang Pin 3 (gespeichert)", "Sortie (mémorisée)"), c: C.green, lo: 0, hi: 5, v: function(t){ return out(t) * 5; } }],
+      info: [[T("Speicher", "Mémoire"), T("1 Bit (Selbsthaltung)", "1 bit")], [T("Ruhezustand", "Repos"), T("beide Eingänge HIGH – Ausgang bleibt, wie er war", "sortie inchangée")]],
+      live: function(ts){ return { leds: [out(ts % 8)], names: [T("LED (Zustand)", "LED (état)")] }; } }; },
+  wire: [["Pin 8 → +V; Pin 1 und Pin 6 → GND; Pin 7 bleibt frei", "Broche 8 → +V ; 1 et 6 → GND ; 7 libre"], ["Pin 2 über 10 kΩ an +V und über Taster „Set“ nach GND", "Broche 2 : 10 kΩ vers +V, bouton Set vers GND"], ["Pin 4 über 10 kΩ an +V und über Taster „Reset“ nach GND", "Broche 4 : 10 kΩ vers +V, bouton Reset vers GND"], ["Pin 5 → 10 nF → GND; Pin 3 → 330 Ω → LED → GND", "Broche 5 → 10 nF ; sortie → 330 Ω → LED"]],
+  notes: [["Das ist dieselbe Idee wie bei einer Alarmanlage mit Selbsthaltung: einmal ausgelöst, bleibt sie an, bis jemand Reset drückt.", "Même principe qu’une alarme à verrouillage."], ["Entprellte Taster sind hier nicht nötig – der 555 reagiert nur auf die erste Flanke.", "Pas besoin d’anti-rebond."]] };
+PROJ.k_schmitt = { t: ["Schmitt-Trigger mit dem 555 (Hysterese)", "Trigger de Schmitt avec le 555 (hystérésis)"], flow: ["Langsame Eingangsspannung", "Pin 2 + 6 zusammen", "Schwellen 1/3 und 2/3", "Sauberer Ausgang"], ics: ["ne555"],
+  opts: [{ k: "u", l: ["Versorgung", "Alimentation"], o: [["5", "5 V"], ["9", "9 V"], ["12", "12 V"]], def: "9" }],
+  d: ["Verbindet man die Eingänge Trigger (Pin 2) und Threshold (Pin 6), wird der 555 zum Schmitt-Trigger: Der Ausgang schaltet auf LOW, sobald die Eingangsspannung 2/3 der Versorgung übersteigt, und erst wieder auf HIGH, wenn sie unter 1/3 fällt. Dazwischen (Hysterese!) ändert sich nichts – langsames, verrauschtes Eingangssignal wird so zu einem sauberen Rechteck.", "Pins 2 et 6 reliées : le 555 devient un trigger de Schmitt. Sortie BAS au-dessus de 2/3 U, HAUT sous 1/3 U."],
+  build: function(P){ var U = parseFloat(P.u) || 9, per = 10;
+    function ui(t){ var x = (t % per) / (per / 2); return U * (x < 1 ? x : 2 - x); }
+    function out(t){ var x = t % per; return x < per / 3 ? 1 : x < per * 5 / 6 ? 0 : 1; }
+    return { span: 20, speed: 1, warn: [], ch: [{ n: T("Eingang (langsames Dreieck)", "Entrée (triangle lent)"), c: C.amber, lo: 0, hi: 13, v: ui }, { n: T("Schwelle oben = 2/3 U", "Seuil haut"), c: C.violet, lo: 0, hi: 13, v: function(){ return U * 2 / 3; } }, { n: T("Schwelle unten = 1/3 U", "Seuil bas"), c: C.cyan, lo: 0, hi: 13, v: function(){ return U / 3; } },
+      { n: T("Ausgang (invertiert)", "Sortie (inversée)"), c: C.green, lo: 0, hi: 13, v: function(t){ return out(t) * U; } }],
+      info: [[T("Obere Schwelle", "Seuil haut"), fmt(U * 2 / 3, "V")], [T("Untere Schwelle", "Seuil bas"), fmt(U / 3, "V")], [T("Hysterese", "Hystérésis"), fmt(U / 3, "V")]],
+      live: function(ts){ return { leds: [out(ts)], names: [T("LED (Ausgang)", "LED (sortie)")] }; } }; },
+  wire: [["Eingangssignal → Pin 2 UND Pin 6 (beide zusammen)", "Signal → broches 2 ET 6"], ["Pin 8 und Pin 4 → +V; Pin 1 → GND; Pin 5 → 10 nF → GND", "Broches 8 et 4 → +V ; 1 → GND ; 5 → 10 nF"], ["Pin 3 → 330 Ω → LED → GND", "Sortie → 330 Ω → LED"]],
+  notes: [["Der Ausgang ist invertiert: Eingang niedrig = Ausgang HIGH. Mit einem Poti am Eingang wird daraus ein einfacher Dämmerungsschalter.", "Sortie inversée ; avec LDR : interrupteur crépusculaire."], ["Den Eingang nicht über +V oder unter GND treiben – der 555 hat keinen Überspannungsschutz.", "Ne pas dépasser +V ni GND."]] };
+var KICON = { k_lauf: "💡", k_uhr: "🕒", k_zaehl: "🔢", k_daemm: "🌗", k_prell: "🔘", k_sirene: "🚨", k_motor: "⚙️", k_relais: "🔌", k_bau: "🧱", k_ampel: "🚦", k_thermo: "🌡️", k_netz: "🔋", k_wuerfel: "🎲", k_alarm: "🔦", k_wechsel: "🔁", k_verz: "⏳", k_touch: "☝️", k_strom: "🎚️", k_zreg: "🔰", k_bistabil: "🧠", k_schmitt: "📐" };
 function icById(id){ for (var i = 0; i < ICS.length; i++) if (ICS[i].id === id) return ICS[i]; return null; }
 function icOfProj(pid){ for (var i = 0; i < ICS.length; i++) if (ICS[i].proj.indexOf(pid) >= 0) return ICS[i]; return null; }
 
@@ -2004,8 +2038,12 @@ function listPage(){
       a.innerHTML = "<b>" + esc(b[4]) + "</b><span>" + esc(shortT(b[6])) + "</span>"; a.dataset.s = (b[4] + " " + b[5] + " " + PROJ[b[6]].t[0] + " " + b[2]).toLowerCase(); gr.appendChild(a); });
   } else { root.appendChild(el("p", "ic-pd", esc(T("In Projekten arbeiten mehrere Bauteile zusammen. Hier wird nichts gerechnet – jedes Projekt zeigt die fertige Schaltung, erklärt, was sie macht, und das Oszilloskop zeigt den Ablauf.", "Dans les projets, plusieurs composants travaillent ensemble ; pas de calcul, le circuit est expliqué et l’oscilloscope montre le déroulement.")))); projekte();
   }
+  var hitH = el("h2", "ic-h2 ic-hx"), hitG = el("div", "ic-grid"); hitH.hidden = hitG.hidden = true; root.insertBefore(hitG, jw0()); root.insertBefore(hitH, hitG);
+  function jw0(){ return root.querySelector(".ic-jump") || root.querySelector(".ic-hw") || null; }
+  function hay(pid){ var pr = PROJ[pid], h = pr.t[0] + " " + pr.t[1] + " " + (pr.flow || []).join(" ") + " " + pid; icsOf(pid).forEach(function(i){ var d = icById(i); if (d) h += " " + d.id + " " + d.name; }); var nl0 = NL[pid]; if (nl0 && typeof nl0 !== "function") Object.keys(nl0.parts).forEach(function(k){ if (typeof nl0.parts[k] === "string") h += " " + nl0.parts[k]; }); return h.toLowerCase().replace(/[\s\-_]/g, ""); }
   var emp = el("p", "ic-lb", T("Nichts gefunden – versuche z. B. 555 oder Zähler.", "Rien trouvé.")); emp.hidden = true; root.appendChild(emp);
   function filt(){ var q = s.value.trim().toLowerCase(), tot = 0; QUERY = s.value;
+    var qn = q.replace(/[\s\-_]/g, ""), hp = qn.length >= 2 ? Object.keys(PROJ).filter(function(pid){ return hay(pid).indexOf(qn) >= 0; }) : []; hitG.innerHTML = ""; hp.forEach(function(pid){ hitG.appendChild(cardP(pid, KOMBI.indexOf(pid) >= 0 ? "#ffd43b" : "#3de6ff")); }); hitH.hidden = hitG.hidden = !hp.length; hitH.textContent = "🔎 " + T("Alle Schaltungen mit „", "Tous les circuits avec « ") + s.value.trim() + T("“", " »") + " (" + hp.length + ")"; tot += hp.length;
     secs.forEach(function(x){ var n = 0; x[1].childNodes.forEach(function(a){ var ok = !q || a.dataset.s.indexOf(q) >= 0; a.hidden = !ok; if (ok) n++; }); x[0].hidden = x[1].hidden = !n; tot += n; });
     root.querySelectorAll(".ic-hw").forEach(function(hw){ var n = hw.nextElementSibling, any = false; while (n && !n.classList.contains("ic-hw") && n.tagName !== "P"){ if (n.classList.contains("ic-bgrid") && !n.hidden) any = true; n = n.nextElementSibling; } hw.hidden = !any; });
     emp.hidden = !!tot; }
@@ -2639,9 +2677,9 @@ var BAU = (function(){
     function btn(lbl, f){ var b = el("button", "ic-ch", lbl); b.type = "button"; b.onclick = f; bar.appendChild(b); return b; }
     btn("↶ " + T("Zurück", "Annuler"), function(){ if (!undo.length) return; S = JSON.parse(undo.pop()); sel = null; save(); render(); });
     btn("🗑 " + T("Auswahl löschen", "Supprimer"), del);
-    btn("➖", function(){ zoom = Math.max(0.25, zoom - 0.15); fit(); }); btn("⤢ " + T("Alles zeigen", "Tout voir"), function(){ var mx = 700, my = 420; S.parts.forEach(function(p){ mx = Math.max(mx, p.x + 120); my = Math.max(my, p.y + 120); }); zoom = Math.max(0.25, Math.min(1.6, Math.min(wrap.clientWidth / mx, wrap.clientHeight / my))); fit(); wrap.scrollLeft = 0; wrap.scrollTop = 0; }); btn("➕", function(){ zoom = Math.min(2, zoom + 0.15); fit(); });
+    btn("➖", function(){ zoom = Math.max(0.25, zoom - 0.15); fit(); }); btn("⤢ " + T("Alles zeigen", "Tout voir"), function(){ if (!sim){ render(); centerView(true); } else { render(); centerView(false); } }); btn("➕", function(){ zoom = Math.min(2, zoom + 0.15); fit(); });
     var exs = el("select", "bau-ex"); exs.innerHTML = '<option value="">📂 ' + T("Beispiel laden …", "Charger un exemple …") + "</option>" + EXS.map(function(e){ return '<option value="' + e[0] + '">' + esc(e[1]) + "</option>"; }).join(""); bar.appendChild(exs);
-    exs.onchange = function(){ if (!exs.value) return; push(); stopSim(); S = /^(opinv|rc|zener|foto|relais|teiler|emitter)$/.test(exs.value) ? ex3(exs.value) : /^(daemm|ff2|npn)$/.test(exs.value) ? ex2(exs.value) : ex(exs.value); forceAna = /^(teiler|zener|foto|relais)$/.test(exs.value); exs.value = ""; sel = null; save(); render(); };
+    exs.onchange = function(){ if (!exs.value) return; push(); stopSim(); S = /^(opinv|rc|zener|foto|relais|teiler|emitter)$/.test(exs.value) ? ex3(exs.value) : /^(daemm|ff2|npn)$/.test(exs.value) ? ex2(exs.value) : ex(exs.value); forceAna = /^(teiler|zener|foto|relais)$/.test(exs.value); exs.value = ""; sel = null; save(); render(); centerView(true); };
     btn("🧹 " + T("Neu (leer)", "Nouveau"), function(){ push(); stopSim(); S = { parts: [], wires: [] }; forceAna = false; sel = null; save(); render(); });
     anaBtn = btn("⚡ " + T("Analog-Modus", "Mode analogique"), function(){ forceAna = !forceAna; anaBtn.classList.toggle("on", forceAna || hasAna()); if (sim){ stopSim(); startSim(); } });
     btn("🔧 " + T("Fehler einbauen", "Insérer une panne"), injectFault);
@@ -2669,8 +2707,17 @@ var BAU = (function(){
     bodeCv = el("canvas", "bau-scope"); bodeCv.hidden = true; bodeCv.style.height = "300px"; rc.appendChild(bodeCv); bodeInfo = el("p", "ic-lb"); rc.appendChild(bodeInfo);
     rc.appendChild(el("h3", "ic-h3", T("Meldungen", "Messages"))); msgBox = el("div", "bau-msg"); rc.appendChild(msgBox);
     rc.appendChild(el("p", "ic-lb", T("Farben der Drähte während der Simulation: rot = HIGH, blau = LOW, grau = offen/unbestimmt, orange blinkend = Kurzschluss. Pin-Punkte: rot = Versorgung, grau = GND, orange = Eingang, türkis = Ausgang.", "Couleurs : rouge = HAUT, bleu = BAS, gris = indéfini, orange = court-circuit.") + " " + T("Im Analog-Modus zeigt die Farbe der Drähte die Spannung: rot = positiv, blau = null oder negativ – und ein Klick auf einen Pin zeigt den genauen Wert.", "En mode analogique la couleur indique la tension : un clic sur une broche donne la valeur.")));
-    fit(); stopSim(); events(); }
-  function fit(){ var w = 1400 / zoom * zoom; svg.setAttribute("viewBox", "0 0 1200 760"); svg.style.width = Math.round(1200 * zoom) + "px"; svg.style.height = Math.round(760 * zoom) + "px"; }
+    fit(); stopSim(); events(); render(); centerView(true); }
+  var VW = 1200, VH = 760;
+  function fit(){ VW = Math.max(1200, Math.ceil((wrap.clientWidth - 4) / zoom)); VH = Math.max(760, Math.ceil((wrap.clientHeight - 4) / zoom)); svg.setAttribute("viewBox", "0 0 " + VW + " " + VH); svg.style.width = Math.round(VW * zoom) + "px"; svg.style.height = Math.round(VH * zoom) + "px"; }
+  /* Schaltung mittig und möglichst ganz sichtbar anzeigen */
+  function centerView(shift){ if (!svg || !wrap || !S || !S.parts.length) return; var bx1 = 1e9, by1 = 1e9, bx2 = -1e9, by2 = -1e9;
+    svg.querySelectorAll(".pt").forEach(function(g){ try { var b = g.getBBox(); bx1 = Math.min(bx1, b.x); by1 = Math.min(by1, b.y); bx2 = Math.max(bx2, b.x + b.width); by2 = Math.max(by2, b.y + b.height); } catch(e){} });
+    if (bx1 > bx2) return; var bw = bx2 - bx1 + 70, bh = by2 - by1 + 70;
+    zoom = Math.max(.3, Math.min(window.innerWidth < 760 ? 1 : 1.5, Math.min((wrap.clientWidth - 4) / bw, (wrap.clientHeight - 4) / bh))); fit();
+    if (shift){ var dx = Math.round((VW / 2 - (bx1 + bx2) / 2) / G) * G, dy = Math.round((VH / 2 - (by1 + by2) / 2) / G) * G;
+      if (dx || dy){ S.parts.forEach(function(p){ p.x += dx; p.y += dy; }); S.wires.forEach(function(w){ (w.pts || []).forEach(function(q){ q[0] += dx; q[1] += dy; }); }); save(); render(); } }
+    wrap.scrollLeft = Math.max(0, (VW * zoom - wrap.clientWidth) / 2); wrap.scrollTop = Math.max(0, (VH * zoom - wrap.clientHeight) / 2); }
   function place(t, ic){ var x = (wrap.scrollLeft + wrap.clientWidth / 2) / zoom - 40 + (S.parts.length % 5) * 20, y = (wrap.scrollTop + wrap.clientHeight / 2) / zoom - 60 + (S.parts.length % 5) * 20; addPart(t, ic, Math.max(60, x), Math.max(60, y)); }
   function pt(ev){ var m = svg.getScreenCTM(); if (!m) return [0, 0]; var p = svg.createSVGPoint(); p.x = ev.clientX; p.y = ev.clientY; p = p.matrixTransform(m.inverse()); return [p.x, p.y]; }
   function events(){
