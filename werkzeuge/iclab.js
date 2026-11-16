@@ -65,6 +65,11 @@ function dip(ic){
     P.forEach(function(p, i){ var x = 70 + i * 40, nm = p.split(":")[0], t = p.split(":")[1]; s += '<rect x="' + (x - 4) + '" y="78" width="8" height="38" fill="' + pinColor(t) + '"/><text x="' + x + '" y="134" text-anchor="middle" font-size="12" fill="currentColor">' + (i + 1) + "</text><text x=\"" + x + '" y="148" text-anchor="middle" font-size="11" fill="currentColor" font-weight="700">' + esc(nm) + "</text>"; });
     return s + '<text x="110" y="62" text-anchor="middle" font-size="13" font-weight="800" fill="#e8fff3">' + esc(ic.name) + "</text></svg>";
   }
+  if (/TO-92/.test(ic.pkg || "") || (n <= 3 && ic.pkg !== "TO-220" && !/DIP|SOIC/.test(ic.pkg || ""))){
+    var s3 = '<svg viewBox="0 0 220 150" class="dipsvg"><path d="M70 74V46a40 40 0 0 1 80 0V74Z" fill="#262c36" stroke="#59657a" stroke-width="1.5"/><path d="M78 74V48a32 32 0 0 1 64 0V74" fill="none" stroke="#3a4352"/>';
+    P.forEach(function(p, i){ var x = 85 + i * 25, nm = p.split(":")[0], t = p.split(":")[1]; s3 += '<rect x="' + (x - 3) + '" y="74" width="6" height="44" fill="' + pinColor(t) + '"/><text x="' + x + '" y="132" text-anchor="middle" font-size="12" fill="currentColor">' + (i + 1) + "</text><text x=\"" + x + '" y="147" text-anchor="middle" font-size="11" font-weight="700" fill="currentColor">' + esc(nm) + "</text>"; });
+    return s3 + '<text x="110" y="62" text-anchor="middle" font-size="13" font-weight="800" fill="#e8fff3">' + esc(shn(ic.name)) + "</text></svg>";
+  }
   var half = n / 2, rowH = 22, H = half * rowH + 20, W = 260, s2 = '<svg viewBox="0 0 ' + W + " " + H + '" class="dipsvg"><rect x="86" y="6" width="88" height="' + (H - 12) + '" rx="8" fill="#262c36" stroke="#59657a"/><path d="M118 6 a12 12 0 0 0 24 0" fill="#0e1218"/>';
   for (var i = 0; i < n; i++){
     var left = i < half, row = left ? i : n - 1 - i, y = 18 + row * rowH, nm = P[i].split(":")[0], t = P[i].split(":")[1];
@@ -1524,7 +1529,7 @@ function schem2(A, L0){
     if (!net.anon && net.members.length !== mem.length) net.members.forEach(function(r){ if (!TP[r] && L[r.split(".")[0]]) miss.push(r); });
     if (manual[net.name]){ manual[net.name].forEach(function(pl){ for (var i = 1; i < pl.length; i++) addSeg(pl[i - 1][0], pl[i - 1][1], pl[i][0], pl[i][1], net.id); }); return; }
     var railW = false;
-    if (net.rail && mem.length === 2 && !L.nowire){ var ta = TP[mem[0]], tb = TP[mem[1]], bc = 1e9;
+    if (net.rail && mem.length === 2 && L.wirerail){ var ta = TP[mem[0]], tb = TP[mem[1]], bc = 1e9;
       [[ta.x, tb.y], [tb.x, ta.y]].forEach(function(k){ var c0 = segCost(tb.x, tb.y, k[0], k[1], net.id) + segCost(k[0], k[1], ta.x, ta.y, net.id) + dirPen(tb, k[0] === tb.x && k[1] === tb.y ? ta.x : k[0], k[0] === tb.x && k[1] === tb.y ? ta.y : k[1]) + dirPen(ta, k[0] === ta.x && k[1] === ta.y ? tb.x : k[0], k[0] === ta.x && k[1] === ta.y ? tb.y : k[1]); if (c0 < bc) bc = c0; });
       railW = bc < 520 && Math.abs(ta.x - tb.x) + Math.abs(ta.y - tb.y) < 330; }
     if (net.rail && !railW){ var rs = ""; mem.forEach(function(r){ rs += rail(TP[r], net.rail); }); if (rs) (wiresByNet[net.id] = wiresByNet[net.id] || []).rs = rs, railSvg += '<g class="pn" data-net="' + net.id + '">' + rs + "</g>"; return; }
@@ -1791,7 +1796,7 @@ var ICS = [
   { id: "a4988", name: "A4988-Modul", pkg: "Modul 16", cat: "drive", k: ["Schrittmotortreiber mit Mikroschritten", "Driver pas à pas avec micropas"], pins: ["EN:i", "MS1:i", "MS2:i", "MS3:i", "RST:i", "SLP:i", "STEP:i", "DIR:i", "GND:g", "VDD:v", "1B:o", "1A:o", "2A:o", "2B:o", "GND2:g", "VMOT:v"], facts: [["Motor", "Moteur", "8…35 V, bis 2 A je Spule (mit Kühlung)"], ["Mikroschritte", "Micropas", "bis 1/16"], ["Verwandt", "Parent", "DRV8825 (bis 1/32)"]], proj: ["a4988"] }
 ];
 var RECH = { ne555a: "timer555", ne555m: "timer555", ne556: "timer555", cd4060: "timer555", k_lauf: "timer555", k_relais: "timer555", k_ampel: "timer555", k_thermo: "opamp/cmp", k_netz: "regler", k_sirene: "timer555", k_motor: "timer555", lm358: "opamp/nin", lm324: "opamp/cmp", tl072: "opamp/nin", ad620: "opamp/sub", lm393: "opamp/cmp", lm339: "opamp/cmp", k_daemm: "opamp/cmp", op_inv: "opamp/inv", op_non: "opamp/nin", op_fol: "opamp/fol", op_add: "opamp/sum", op_sub: "opamp/sub", op_int: "opamp/int", op_dif: "opamp/dif", op_komp: "opamp/cmp", op_tia: "opamp/tia", op_sk: "opamp/lp", hc14: "opamp/sch", cd4093: "opamp/sch", lm317: "regler", lm337: "regler", lm7805: "regler", lm1117: "regler", led: "led", rc_hp: "filter", rc_bp: "filter", hc00: "logik", adder: "logik", hc283: "logik", tl431: "teiler", lm35: "teiler", lm339b: "teiler" };
-var KOMBI = ["k_lauf", "k_uhr", "k_zaehl", "k_daemm", "k_prell", "k_sirene", "k_motor", "k_relais", "k_ampel", "k_thermo", "k_netz", "k_wuerfel", "k_alarm", "k_wechsel", "k_verz", "k_touch", "k_strom", "k_zreg", "k_bistabil", "k_schmitt"];
+var KOMBI = ["k_lauf", "k_uhr", "k_zaehl", "k_daemm", "k_prell", "k_sirene", "k_motor", "k_relais", "k_ampel", "k_thermo", "k_netz", "k_wuerfel", "k_alarm", "k_wechsel", "k_verz", "k_touch", "k_strom", "k_zreg"];
 
 /* ---- Weitere Projekte ---- */
 PROJ.k_wuerfel = { t: ["Elektronischer Würfel: 555 → CD4017 (÷6) → 6 LEDs", "Dé électronique : 555 → CD4017 (÷6) → 6 LED"], flow: ["Taster", "NE555 (schnell)", "CD4017 zählt 0…5", "LED 1…6"], ics: ["ne555", "cd4017"],
@@ -2060,7 +2065,8 @@ function circuitPage(pid){
   side.appendChild(el("h1", "ic-h1", T("Verdrahtung", "Câblage")));
   ics.forEach(function(ic){ side.appendChild(el("p", "ic-lb", "<b>" + esc(ic.name) + "</b> – " + esc(T(ic.k[0], ic.k[1])))); var pn = el("div", "ic-pin"); pn.innerHTML = dip(ic); side.appendChild(pn); var dl = el("a", "ic-act2", "📖 " + T("Alle Daten zu ", "Toutes les données : ") + esc(ic.name.split(" / ")[0])); dl.href = "index.html#/s/" + LINK[ic.id]; side.appendChild(dl); });
   side.appendChild(el("div", "ic-leg", '<span style="--c:#ff6b6b">+V</span><span style="--c:#8aa0b8">GND</span><span style="--c:#ffb000">' + T("Eingang", "Entrée") + '</span><span style="--c:#3de6ff">' + T("Ausgang", "Sortie") + "</span>"));
-  side.appendChild(el("p", "ic-lb", T("Ansicht von oben, Kerbe oben: Pin 1 links oben, dann gegen den Uhrzeigersinn.", "Vue de dessus, encoche en haut : broche 1 en haut à gauche.")));
+  var sipT = ics.length && ics.every(function(i){ return i.pkg === "TO-220" || /TO-92/.test(i.pkg || ""); });
+  side.appendChild(el("p", "ic-lb", sipT ? T("Ansicht auf die beschriftete Vorderseite, Beine nach unten: Pin 1 links.", "Vue de face (côté inscrit), broches vers le bas : broche 1 à gauche.") : T("Ansicht von oben, Kerbe oben: Pin 1 links oben, dann gegen den Uhrzeigersinn.", "Vue de dessus, encoche en haut : broche 1 en haut à gauche.")));
   var key = (location.hash.split("/")[2] || ""), bb = null; ALLB.forEach(function(b){ if (!bb && b[6] === pid && (b[7] === key || b[8].split("/")[1] === key)) bb = b; });
   if (bb && ics.every(function(i){ return i.name.split(" / ")[0] !== bb[4]; })){ var bn = el("div", "ic-bnr", "🔎 " + esc(T("Du kommst von", "Tu viens de")) + " <b>" + esc(bb[4]) + "</b> – " + esc(T("diese Schaltung gilt für die ganze Bauteil-Familie. ", "ce circuit vaut pour toute la famille. ")) + '<a href="index.html#/s/' + esc(bb[8]) + '">' + esc(T("Steckbrief von ", "Fiche de ")) + esc(bb[4]) + "</a>"); main.appendChild(bn); }
   if (pid === "opamp" && ics[0]){ var oi = ics[0], pn = function(n){ for (var q = 0; q < oi.pins.length; q++) if (oi.pins[q].split(":")[0] === n) return q + 1; return "?"; }, n8 = oi.pins.length, txt;
@@ -2068,9 +2074,11 @@ function circuitPage(pid){
     else if (n8 === 8) txt = T("Doppel-Opamp (Standard-Belegung wie LM358): Verstärker 1 = OUT Pin 1, IN− Pin 2, IN+ Pin 3 · Verstärker 2 = IN+ Pin 5, IN− Pin 6, OUT Pin 7 · V+ = Pin 8, V− bzw. GND = Pin 4.", "Double ampli (brochage standard) : 1/2/3 et 7/6/5, V+ 8, V− 4.");
     else txt = T("Vierfach-Opamp (Standard-Belegung wie LM324): Verstärker 1 = Pin 1/2/3, 2 = 7/6/5, 3 = 8/9/10, 4 = 14/13/12 (OUT/IN−/IN+) · V+ = Pin 4, V− bzw. GND = Pin 11.", "Quadruple ampli : V+ 4, V− 11.");
     main.appendChild(el("div", "ic-bnr", "📌 <b>" + esc(oi.name) + "</b> – " + esc(txt) + " " + esc(T("Die Beschaltungen unten (Widerstände, Formeln) gelten für jeden Operationsverstärker.", "Les montages ci-dessous valent pour tout ampli op.")))); }
-  var ids = {}; ics.forEach(function(i){ ids[i.id] = 1; }); var more = []; Object.keys(PROJ).forEach(function(p){ if (p !== pid && icsOf(p).some(function(i){ return ids[i]; })) more.push(p); });
-  if (more.length){ var mb = el("div", "ic-more2"); mb.appendChild(el("h3", "ic-h3", "➕ " + T("Weitere Schaltungen mit ", "Autres circuits avec ") + esc(ics.map(function(i){ return i.name.split(" / ")[0]; }).join(" + ")) + " (" + more.length + ")")); var mc = el("div", "ic-chips"); more.forEach(function(p){ var a = el("a", "ic-ch", esc(shortT(p))); a.href = "#p/" + p; mc.appendChild(a); }); mb.appendChild(mc); main.appendChild(mb); }
-  var host = el("div"); main.appendChild(host); renderProject(host, pid, ics.map(function(i){ return i.id; }));
+  var G555 = [["ne555a", T("Astabil (Blinker)", "Astable (clignotant)")], ["ne555m", T("Monostabil (Zeitglied)", "Monostable (temporisation)")], ["k_bistabil", T("Bistabil (Speicher)", "Bistable (mémoire)")], ["k_schmitt", T("Schmitt-Trigger", "Trigger de Schmitt")]], isG = G555.some(function(g){ return g[0] === pid; });
+  if (isG){ var gb = el("div", "ic-more2"); gb.appendChild(el("h3", "ic-h3", "🔧 " + T("Grundschaltungen des NE555", "Montages de base du NE555"))); var gc = el("div", "ic-chips"); G555.forEach(function(g){ var a = el("a", "ic-ch" + (g[0] === pid ? " on" : ""), esc(g[1])); a.href = "#p/" + g[0]; gc.appendChild(a); }); gb.appendChild(gc); main.appendChild(gb); }
+  var ids = {}; ics.forEach(function(i){ ids[i.id] = 1; }); var more = []; Object.keys(PROJ).forEach(function(p){ if (p !== pid && icsOf(p).some(function(i){ return ids[i]; }) && !(isG && G555.some(function(g){ return g[0] === p; }))) more.push(p); });
+  var mb = null; if (more.length){ mb = el("div", "ic-more2"); mb.appendChild(el("h3", "ic-h3", "➕ " + (isG ? T("Projekte mit ", "Projets avec ") : T("Weitere Schaltungen mit ", "Autres circuits avec ")) + esc(ics.map(function(i){ return i.name.split(" / ")[0]; }).join(" + ")) + " (" + more.length + ")")); var mc = el("div", "ic-chips"); more.forEach(function(p){ var a = el("a", "ic-ch", esc(shortT(p))); a.href = "#p/" + p; mc.appendChild(a); }); mb.appendChild(mc); if (!isG) main.appendChild(mb); }
+  var host = el("div"); main.appendChild(host); renderProject(host, pid, ics.map(function(i){ return i.id; })); if (isG && mb) main.appendChild(mb);
 }
 /* ================= Werkstatt: eigene Schaltung bauen (Editor + Logik-Simulation) ================= */
 var BAU = (function(){
