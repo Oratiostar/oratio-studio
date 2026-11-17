@@ -106,9 +106,9 @@ body.aurora.ds-glas:not(.sl) .hero h1,body.aurora.ds-glas:not(.sl) .thead h1,bod
 @media (max-width:480px){header .bar{padding-left:8px;padding-right:8px}header .seg{border-width:1.5px}header .seg button{font-size:11px;padding:3px 4px;gap:2px}header .lg{font-size:17.5px}header .lg .lgO{width:25px;height:25px}header .logo{gap:4px}}
 
 /* ===== Tech Studio (body.sl): grüne Welt, vier Stufen ===== */
-body.sl.ds-glas{background:radial-gradient(55vmax 45vmax at 8% 6%,rgba(190,255,70,.95),transparent 62%),radial-gradient(50vmax 42vmax at 95% 12%,rgba(40,210,230,.85),transparent 62%),radial-gradient(55vmax 45vmax at 88% 94%,rgba(60,130,255,.7),transparent 62%),radial-gradient(45vmax 40vmax at 6% 92%,rgba(255,225,60,.7),transparent 62%),#3fa83a}
-:root[data-theme="dark"] body.sl.ds-glas{background:radial-gradient(55vmax 45vmax at 8% 6%,rgba(40,170,60,.75),transparent 62%),radial-gradient(50vmax 42vmax at 95% 12%,rgba(0,140,170,.65),transparent 62%),radial-gradient(55vmax 45vmax at 88% 94%,rgba(60,50,200,.6),transparent 62%),radial-gradient(45vmax 40vmax at 6% 92%,rgba(20,120,60,.7),transparent 62%),#0b1a14}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.sl.ds-glas{background:radial-gradient(55vmax 45vmax at 8% 6%,rgba(40,170,60,.75),transparent 62%),radial-gradient(50vmax 42vmax at 95% 12%,rgba(0,140,170,.65),transparent 62%),radial-gradient(55vmax 45vmax at 88% 94%,rgba(60,50,200,.6),transparent 62%),radial-gradient(45vmax 40vmax at 6% 92%,rgba(20,120,60,.7),transparent 62%),#0b1a14}}
+body.sl.ds-glas{--sb1:rgba(190,255,70,.95);--sb2:rgba(40,210,230,.85);--sb3:rgba(60,130,255,.7);--sb4:rgba(255,225,60,.7);--sbb:#3fa83a;background:radial-gradient(55vmax 45vmax at 8% 6%,var(--sb1),transparent 62%),radial-gradient(50vmax 42vmax at 95% 12%,var(--sb2),transparent 62%),radial-gradient(55vmax 45vmax at 88% 94%,var(--sb3),transparent 62%),radial-gradient(45vmax 40vmax at 6% 92%,var(--sb4),transparent 62%),var(--sbb)}
+:root[data-theme="dark"] body.sl.ds-glas{--sb1:rgba(40,170,60,.75);--sb2:rgba(0,140,170,.65);--sb3:rgba(60,50,200,.6);--sb4:rgba(20,120,60,.7);--sbb:#0b1a14}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.sl.ds-glas{--sb1:rgba(40,170,60,.75);--sb2:rgba(0,140,170,.65);--sb3:rgba(60,50,200,.6);--sb4:rgba(20,120,60,.7);--sbb:#0b1a14}}
 body.sl.ds-glas{background-attachment:fixed}
 body.sl.ds-glas .weg a,body.sl.ds-glas .quick,body.sl.ds-glas .quick a,body.sl.ds-glas .sc,body.sl.ds-glas details.gr,body.sl.ds-glas .slmain,body.sl.ds-glas .slnav a,body.sl.ds-glas .treffer a,body.sl.ds-glas .in,body.sl.ds-glas #sq,body.sl.ds-glas .crumb,body.sl.ds-glas .kat:not(.on),body.sl.ds-glas .card,body.sl.ds-glas .seg{
   background:linear-gradient(180deg,var(--g-top),var(--g-bot))!important;border:1px solid var(--g-edge)!important;color:var(--g-fg);
@@ -128,30 +128,35 @@ body.sl.ds-matt .sc{background:var(--sgl)}
 
 /* ===== Mehr Glas (Stufe 44): klarer, mit Lichtkante, Tiefe und buntem Untergrund ===== */
 :root{
-  --g-top:rgba(255,255,255,.46);--g-bot:rgba(255,255,255,.18);--g-rim:rgba(255,255,255,.95);--g-shine:#fff;
+  --g-top:rgba(255,255,255,.40);--g-bot:rgba(255,255,255,.14);--g-rim:rgba(255,255,255,.95);--g-shine:#fff;
   --g-edge:rgba(20,50,110,.22);--g-fg:#05080f;--g-hover:rgba(255,255,255,.55);--g-sel:rgba(255,255,255,.7);
   --g-shadow:inset 0 1.5px 0 rgba(255,255,255,1),inset 0 -14px 22px -14px rgba(255,255,255,.7),inset 0 0 20px rgba(255,255,255,.28),0 16px 32px -14px rgba(30,60,140,.55),0 2px 4px rgba(30,60,140,.16);
-  --g-blur:blur(14px) saturate(1.8) brightness(1.06)}
+  --g-blur:blur(5px) saturate(1.7) brightness(1.05)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --g-top:rgba(255,255,255,.26);--g-bot:rgba(16,20,38,.34);--g-rim:rgba(255,255,255,.5);--g-shine:rgba(255,255,255,.95);
   --g-edge:rgba(0,0,0,.5);--g-fg:#fff;--g-hover:rgba(255,255,255,.16);--g-sel:rgba(255,255,255,.28);
   --g-shadow:inset 0 1.5px 0 rgba(255,255,255,.65),inset 0 -14px 22px -14px rgba(255,255,255,.22),inset 0 0 22px rgba(255,255,255,.07),0 16px 34px -12px rgba(0,0,0,.85),0 2px 4px rgba(0,0,0,.45);
-  --g-blur:blur(16px) saturate(1.6) brightness(1.1)}}
+  --g-blur:blur(6px) saturate(1.5) brightness(1.08)}}
 :root[data-theme="dark"]{
   --g-top:rgba(255,255,255,.26);--g-bot:rgba(16,20,38,.34);--g-rim:rgba(255,255,255,.5);--g-shine:rgba(255,255,255,.95);
   --g-edge:rgba(0,0,0,.5);--g-fg:#fff;--g-hover:rgba(255,255,255,.16);--g-sel:rgba(255,255,255,.28);
   --g-shadow:inset 0 1.5px 0 rgba(255,255,255,.65),inset 0 -14px 22px -14px rgba(255,255,255,.22),inset 0 0 22px rgba(255,255,255,.07),0 16px 34px -12px rgba(0,0,0,.85),0 2px 4px rgba(0,0,0,.45);
-  --g-blur:blur(16px) saturate(1.6) brightness(1.1)}
+  --g-blur:blur(6px) saturate(1.5) brightness(1.08)}
 /* Matt: Tag = schwarze Schrift auf Weiß, Nacht = weiße Schrift auf Dunkelgrau (wie im Control Center) */
 body.ds-matt{--g-fg:#0b0f17;--g-top:#fbfbfd;--g-bot:#f1f2f6;--g-edge:#c9cfdb;--g-shadow:0 2px 0 rgba(20,40,80,.10),0 6px 14px -8px rgba(20,40,80,.25);--g-blur:none}
 :root[data-theme="dark"] body.ds-matt{--g-fg:#fff;--g-top:#2e2e32;--g-bot:#26262a;--g-edge:#43434a;--g-shadow:0 2px 0 rgba(0,0,0,.4),0 8px 16px -8px rgba(0,0,0,.65)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.ds-matt{--g-fg:#fff;--g-top:#2e2e32;--g-bot:#26262a;--g-edge:#43434a;--g-shadow:0 2px 0 rgba(0,0,0,.4),0 8px 16px -8px rgba(0,0,0,.65)}}
-/* Untergrund mit Kanten: scharfe Farbscheiben, durch die das Glas sichtbar bricht */
-body.aurora:not(.sl):not(.ds-matt)::after,body.sl.ds-glas::after{content:"";position:fixed;inset:-6%;z-index:-1;pointer-events:none;
-  background:radial-gradient(circle at 18% 22%,#ff4f9a 0 8.5vmax,transparent calc(8.5vmax + 1px)),radial-gradient(circle at 82% 30%,#ffc42a 0 11vmax,transparent calc(11vmax + 1px)),radial-gradient(circle at 70% 78%,#22d3a6 0 9.5vmax,transparent calc(9.5vmax + 1px)),radial-gradient(circle at 26% 82%,#4a7cff 0 12vmax,transparent calc(12vmax + 1px)),radial-gradient(circle at 52% 52%,#a24bff 0 6vmax,transparent calc(6vmax + 1px));
-  opacity:.75;animation:scheibenDrift 38s ease-in-out infinite alternate}
-:root[data-theme="dark"] body.aurora:not(.sl):not(.ds-matt)::after,:root[data-theme="dark"] body.sl.ds-glas::after{opacity:.55}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.aurora:not(.sl):not(.ds-matt)::after,:root:not([data-theme="light"]) body.sl.ds-glas::after{opacity:.55}}
-@keyframes scheibenDrift{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(-3%,3%,0) scale(1.05)}}
-@media (prefers-reduced-motion:reduce){body.aurora::after,body.sl::after{animation:none!important}}
+/* Untergrund mit Facetten (kein Rundes): scharfe Kanten, durch die das Glas sichtbar bricht */
+body.aurora:not(.sl):not(.ds-matt)::after,body.sl.ds-glas::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1400' height='900' viewBox='0 0 1400 900' preserveAspectRatio='none'><polygon points='0,0 520,0 240,380' fill='%23fff' fill-opacity='.30'/><polygon points='520,0 1100,0 800,300' fill='%23000' fill-opacity='.10'/><polygon points='1100,0 1400,0 1400,420 1000,260' fill='%23fff' fill-opacity='.26'/><polygon points='0,380 240,380 0,900' fill='%23000' fill-opacity='.12'/><polygon points='240,380 760,300 520,700' fill='%23fff' fill-opacity='.24'/><polygon points='760,300 1180,260 1060,640' fill='%23000' fill-opacity='.12'/><polygon points='1180,260 1400,420 1400,900 1060,640' fill='%23fff' fill-opacity='.20'/><polygon points='0,900 520,700 700,900' fill='%23fff' fill-opacity='.28'/><polygon points='520,700 1060,640 700,900' fill='%23000' fill-opacity='.14'/><polygon points='700,900 1060,640 1400,900' fill='%23fff' fill-opacity='.18'/><polygon points='240,380 520,0 760,300' fill='%23000' fill-opacity='.08'/></svg>") center/cover no-repeat}
+:root[data-theme="dark"] body.aurora:not(.sl):not(.ds-matt)::after,:root[data-theme="dark"] body.sl.ds-glas::after{opacity:.6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.aurora:not(.sl):not(.ds-matt)::after,:root:not([data-theme="light"]) body.sl.ds-glas::after{opacity:.6}}
 .glass::before,.gbtn::before,.btn:not(.go):not(.on):not(.gbtn)::before{background:linear-gradient(180deg,color-mix(in srgb,var(--g-shine) 45%,transparent),transparent)}
+
+/* Farbwähler (🎨 neben Glas/Matt) */
+.dsg .ocbtn{padding:3px 8px!important}
+.ocpop{position:fixed;z-index:1000;padding:12px 14px;border-radius:18px;min-width:210px;color:var(--g-fg)}
+.ocpop b{display:block;font-size:13px;margin-bottom:8px}
+.ocg{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.ocsw{width:32px;height:32px;border-radius:50%;border:2px solid rgba(255,255,255,.9);background:var(--sw);cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,.3);padding:0}
+.ocsw.on{outline:3px solid var(--g-fg);outline-offset:2px}

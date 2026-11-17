@@ -2207,7 +2207,8 @@ var BAU = (function(){
 
   /* --- Seite --- */
   var S = null, sel = null, wiring = null, sim = null, undo = [], svg, wrap, msgBox, propBox, scopeCv, simBtn, zoom = window.innerWidth < 760 ? 0.7 : 1.25;
-  function save(){ try { localStorage.setItem("iclab_bau", JSON.stringify(S)); } catch(e){} }
+  var curEx = null, resBtn = null;
+  function save(){ try { localStorage.setItem("iclab_bau", JSON.stringify(S)); if (curEx) localStorage.setItem("iclab_bau_ex", curEx); else localStorage.removeItem("iclab_bau_ex"); } catch(e){} if (resBtn) resBtn.hidden = !curEx; }
   function snap(v){ return Math.round(v / G) * G; }
   function nid(t){ var p = PFX[t] || t, n = 1; while (S.parts.some(function(q){ return q.id === p + n; })) n++; return p + n; }
   function push(){ undo.push(JSON.stringify(S)); if (undo.length > 60) undo.shift(); }
@@ -2367,8 +2368,12 @@ var BAU = (function(){
     S.parts.forEach(function(p){ if (p.t === "TG"){ var g2 = svg.querySelector('[data-p="' + p.id + '"]'); if (g2) g2.setAttribute("data-on", sim.clk[p.id] ? "1" : "0"); } });
     beep(buzz); msgs(warn); }
   var AU = null; function beep(on){ try { if (on && !AU){ var ac = new (window.AudioContext || window.webkitAudioContext)(), o = ac.createOscillator(), g = ac.createGain(); o.type = "square"; o.frequency.value = 2300; g.gain.value = .03; o.connect(g); g.connect(ac.destination); o.start(); AU = { ac: ac }; } else if (!on && AU){ AU.ac.close(); AU = null; } } catch(e){ AU = null; } }
+  /* Offene Anschlüsse: jedes Bauteil (außer ICs – die prüft die Simulation selbst) braucht an jedem Pin einen Draht, sonst wird nichts Falsches als „richtig" gemeldet */
+  function loose(){ var used = {}, out = []; S.wires.forEach(function(w){ used[w.a] = 1; used[w.b] = 1; });
+    S.parts.forEach(function(p){ if (p.t === "ic") return; terms(p).forEach(function(t){ if (!used[t.k]) out.push(p.id + ": " + T("Anschluss " + t.k.split(".")[1] + " ist mit nichts verbunden – so kann die Schaltung nicht vollständig arbeiten.", "la borne " + t.k.split(".")[1] + " n’est reliée à rien – le circuit ne peut pas fonctionner complètement.")); }); });
+    return out; }
   function msgs(warn){ if (!msgBox) return; if (!sim){ msgBox.innerHTML = '<p class="ic-lb">' + T("▶ Starte die Simulation, um zu sehen, ob alles richtig verdrahtet ist.", "▶ Lance la simulation pour vérifier le câblage.") + "</p>"; return; }
-    var u = []; (warn || []).forEach(function(w){ if (u.indexOf(w) < 0) u.push(w); }); var h = "";
+    var u = []; loose().concat(warn || []).forEach(function(w){ if (u.indexOf(w) < 0) u.push(w); }); var h = "";
     if (!S.parts.length) h = "<p>" + T("Noch leer – füge links Bauteile hinzu.", "Vide – ajoute des composants.") + "</p>";
     else if (u.length) h = '<ul class="bw">' + u.slice(0, 12).map(function(w){ return "<li>⚠️ " + esc(w) + "</li>"; }).join("") + "</ul>";
     else h = '<p class="bok">✅ ' + (sim.ana ? T("Die Schaltung läuft. Klicke auf einen Pin, um die Spannung dort zu messen.", "Le circuit fonctionne. Clique une broche pour mesurer.") : T("Alles richtig verdrahtet – die Schaltung läuft.", "Câblage correct – le circuit fonctionne.")) + "</p>";
@@ -2633,7 +2638,7 @@ var BAU = (function(){
     function pin(u, X, Y, n, k){ var h = n / 2; return k <= h ? [X - 20, Y + 20 * k] : [X + 140, Y + 20 * (n - k + 1)]; }
     function gnd(id, X, Y){ var g = a("GND", X, Y + 40); w(g + ".1", id); } function vcc(id, X, Y){ var v = a("V", X, Y - 40); w(v + ".1", id); }
     if (name === "led"){ var v = a("V", 100, 80), s = a("TA", 200, 120), r = a("R", 320, 120, { v: 330 }), d = a("LED", 440, 120, { c: "#ff4d4d" }), g = a("GND", 520, 180); w(v + ".1", s + ".1"); w(s + ".2", r + ".1"); w(r + ".2", d + ".1"); w(d + ".2", g + ".1"); }
-    function chainR(id, y, x0, col){ var rr = a("R", x0 + 30, y, { v: 330 }), dd = a("LED", x0 + 130, y, { c: col }), g2 = a("GND", x0 + 180, y + 40); w(rr + ".2", dd + ".1"); w(dd + ".2", g2 + ".1"); return rr; }
+    function chainR(id, y, x0, col){ var rr = a("R", x0 + 30, y, { v: 330 }), dd = a("LED", x0 + 130, y, { c: col }), g2 = a("GND", x0 + 180, y + 30); w(rr + ".2", dd + ".1"); w(dd + ".2", g2 + ".1"); return rr; }
     if (name === "nand"){ var u = a("ic", 400, 100, { ic: "hc00" });
       var vn = a("V", 460, 40); w(vn + ".1", u + ".14"); var gn = a("GND", 460, 340); w(u + ".7", gn + ".1");
       [4, 5, 9, 10, 12, 13].reduce(function(pv, k){ w(u + "." + pv, u + "." + k); return k; }); var gu = a("GND", 370, 310); w(gu + ".1", u + ".13");
@@ -2648,7 +2653,7 @@ var BAU = (function(){
       var TK = a("TK", 600, 70, { ch: 0 }); w(TK + ".1", t5 + ".3"); }
     if (name === "lauf"){ var u2 = a("ic", 400, 80, { ic: "cd4017" }), tg = a("TG", 300, 100, { f: 2 });
       var vv = a("V", 460, 20); w(vv + ".1", u2 + ".16"); var gg = a("GND", 460, 360); w(u2 + ".8", gg + ".1"); w(u2 + ".13", u2 + ".15"); var gr = a("GND", 370, 190); w(gr + ".1", u2 + ".15"); w(tg + ".1", u2 + ".14");
-      [3, 2, 4, 7, 10].forEach(function(pin, i){ var yp = 100 + 20 * i, yr = 100 + 50 * i, xm = 600 - 10 * i, rr = chainR(null, yr, 590, ["#ff4d4d", "#ffd43b", "#6dffb0", "#4dabf7", "#ff4d4d"][i]); w(u2 + "." + pin, rr + ".1", i ? [[xm, yp], [xm, yr]] : []); });
+      [3, 2, 4, 7, 10].forEach(function(pin, i){ var yp = 100 + 20 * i, yr = 100 + 60 * i, xm = 600 - 10 * i, rr = chainR(null, yr, 590, ["#ff4d4d", "#ffd43b", "#6dffb0", "#4dabf7", "#ff4d4d"][i]); w(u2 + "." + pin, rr + ".1", i ? [[xm, yp], [xm, yr]] : []); });
       var tk1 = a("TK", 330, 160, { ch: 0 }); w(tk1 + ".1", tg + ".1", [[270, 160], [270, 130], [350, 130], [350, 100]]); var tk2 = a("TK", 680, 40, { ch: 1 }); w(tk2 + ".1", u2 + ".3", [[560, 40], [560, 100]]); }
     if (name === "zaehl"){ var z = a("ic", 300, 140, { ic: "hc193" }), dc = a("ic", 560, 100, { ic: "cd4511" }), az = a("AZ", 860, 100);
       var vz = a("V", 360, 80); w(vz + ".1", z + ".16"); var gz = a("GND", 360, 380); w(z + ".8", gz + ".1");
@@ -2679,7 +2684,7 @@ var BAU = (function(){
     root.innerHTML = ""; document.title = T("Werkstatt – eigene Schaltung bauen", "Atelier – construire son circuit") + " – Oratio Tech Studio";
     root.appendChild(el("div", "crumb", '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › <a href="#">' + T("Schaltungen", "Circuits") + "</a> › " + T("Werkstatt", "Atelier")));
     root.appendChild(el("div", "ic-hero", '<div class="ic-k">' + T("WERKSTATT", "ATELIER") + "</div><h1>" + T("Eigene Schaltung bauen und simulieren", "Construis et simule ton circuit") + "</h1><p>" + T("Wie in LTspice, nur einfacher: ICs und Bauteile aus der Liste holen, frei verschieben, Pins mit Drähten verbinden. Die Simulation läuft nur, wenn alles richtig verdrahtet ist – sonst sagt sie dir, was fehlt.", "Comme LTspice, en plus simple : place, relie, simule. La simulation indique ce qui manque.") + "</p>"));
-    try { S = JSON.parse(localStorage.getItem("iclab_bau")); } catch(e){ S = null; } if (!S || !S.parts) S = ex("led"); var hx = (decodeURIComponent(location.hash.replace(/^#/, "")).split("/")[1] || ""); if (/^(opinv|rc|zener|foto|relais|teiler|emitter)$/.test(hx)){ S = ex3(hx); forceAna = true; save(); }
+    try { S = JSON.parse(localStorage.getItem("iclab_bau")); curEx = localStorage.getItem("iclab_bau_ex") || null; } catch(e){ S = null; } if (!S || !S.parts){ S = ex("led"); curEx = "led"; } var hx = (decodeURIComponent(location.hash.replace(/^#/, "")).split("/")[1] || ""); if (/^(opinv|rc|zener|foto|relais|teiler|emitter)$/.test(hx)){ S = ex3(hx); forceAna = true; curEx = hx; save(); }
     var bar = el("div", "bau-bar"); root.appendChild(bar);
     simBtn = el("button", "ic-ch bau-run"); simBtn.type = "button"; simBtn.onclick = function(){ if (sim) stopSim(); else startSim(); }; bar.appendChild(simBtn);
     function btn(lbl, f){ var b = el("button", "ic-ch", lbl); b.type = "button"; b.onclick = f; bar.appendChild(b); return b; }
@@ -2687,8 +2692,10 @@ var BAU = (function(){
     btn("🗑 " + T("Auswahl löschen", "Supprimer"), del);
     btn("➖", function(){ zoom = Math.max(0.25, zoom - 0.15); fit(); }); btn("⤢ " + T("Alles zeigen", "Tout voir"), function(){ if (!sim){ render(); centerView(true); } else { render(); centerView(false); } }); btn("➕", function(){ zoom = Math.min(2, zoom + 0.15); fit(); });
     var exs = el("select", "bau-ex"); exs.innerHTML = '<option value="">📂 ' + T("Beispiel laden …", "Charger un exemple …") + "</option>" + EXS.map(function(e){ return '<option value="' + e[0] + '">' + esc(e[1]) + "</option>"; }).join(""); bar.appendChild(exs);
-    exs.onchange = function(){ if (!exs.value) return; push(); stopSim(); S = /^(opinv|rc|zener|foto|relais|teiler|emitter)$/.test(exs.value) ? ex3(exs.value) : /^(daemm|ff2|npn)$/.test(exs.value) ? ex2(exs.value) : ex(exs.value); forceAna = /^(teiler|zener|foto|relais)$/.test(exs.value); exs.value = ""; sel = null; save(); render(); centerView(true); };
-    btn("🧹 " + T("Neu (leer)", "Nouveau"), function(){ push(); stopSim(); S = { parts: [], wires: [] }; forceAna = false; sel = null; save(); render(); });
+    function ladeBsp(n){ push(); stopSim(); S = /^(opinv|rc|zener|foto|relais|teiler|emitter)$/.test(n) ? ex3(n) : /^(daemm|ff2|npn)$/.test(n) ? ex2(n) : ex(n); forceAna = /^(teiler|zener|foto|relais)$/.test(n); curEx = n; sel = null; wiring = null; fault = null; if (faultBox) faultBox.hidden = true; save(); render(); centerView(true); }
+    exs.onchange = function(){ var n = exs.value; if (!n) return; exs.value = ""; ladeBsp(n); };
+    resBtn = btn("↺ " + T("Zurücksetzen", "Réinitialiser"), function(){ if (curEx) ladeBsp(curEx); }); resBtn.title = T("Das geladene Beispiel wieder so herstellen, wie es war", "Remettre l’exemple chargé dans son état d’origine"); resBtn.hidden = !curEx;
+    btn("🧹 " + T("Neu (leer)", "Nouveau"), function(){ push(); stopSim(); S = { parts: [], wires: [] }; forceAna = false; curEx = null; sel = null; save(); render(); });
     anaBtn = btn("⚡ " + T("Analog-Modus", "Mode analogique"), function(){ forceAna = !forceAna; anaBtn.classList.toggle("on", forceAna || hasAna()); if (sim){ stopSim(); startSim(); } });
     btn("🔧 " + T("Fehler einbauen", "Insérer une panne"), injectFault);
     btn("📋 " + T("Stückliste", "Nomenclature"), bomShow);
