@@ -13,39 +13,70 @@
 <link rel="icon" href="logo-place.png">
 <link rel="apple-touch-icon" href="logo-place.png">
 <link rel="stylesheet" href="werkzeuge/wz.css">
+<link rel="stylesheet" href="werkzeuge/glass.css">
 <style>
-.mhero{position:relative;overflow:hidden;border-radius:22px;padding:26px 22px;margin:6px 0 16px;color:#fff;box-shadow:var(--shadow);
-  background:linear-gradient(135deg,rgba(7,76,150,.94),rgba(24,140,220,.9)),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cpath d='M28 0L56 28L28 56L0 28Z' fill='%23fff' fill-opacity='.14'/%3E%3C/svg%3E")}
+.mhero{position:relative;overflow:hidden;border-radius:24px;padding:24px 20px;margin:6px 0 14px;color:#fff;box-shadow:var(--shadow);
+  background:radial-gradient(500px 220px at 85% 10%,rgba(255,214,102,.55),transparent 60%),linear-gradient(135deg,#0a4a9a,#1c8fe0 55%,#19c9b8)}
 .mhero h1{margin:0 0 6px;font-size:clamp(28px,6vw,44px);line-height:1.1;color:#fff}
 .mhero p{margin:0;max-width:640px;padding-right:58px;font-size:clamp(15px,2.4vw,18px);line-height:1.5}
-.mhero .kind{position:absolute;right:14px;bottom:8px;font-size:clamp(54px,12vw,96px);opacity:.9;line-height:1}
-.mstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:0 0 16px}
-.mstats>div{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:10px 12px;text-align:center;box-shadow:var(--shadow)}
-.mstats b{display:block;font-size:24px;color:var(--acc);font-variant-numeric:tabular-nums}
-.mstats small{color:var(--muted);font-size:13px;line-height:1.3;display:block}
-.mnav{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;gap:6px;margin:0 0 12px;position:sticky;top:0;z-index:5;background:var(--bg);padding:6px 0}
-.mnav a{border:2px solid var(--line);background:var(--card);color:var(--fg);border-radius:99px;padding:5px 12px;font-size:14px;font-weight:700;text-decoration:none;white-space:nowrap}
-@media (hover:hover){.mnav a:hover{border-color:var(--acc)}}
-.msec{margin:0 0 20px;scroll-margin-top:60px}
-.msec>h2{display:flex;gap:10px;align-items:center;margin:0 0 4px;font-size:clamp(21px,4vw,27px)}
-.msec>h2 i{font-style:normal;display:inline-grid;place-items:center;width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#2e86ff,#19c9b8);font-size:22px;box-shadow:0 2px 0 rgba(0,0,0,.15)}
-.msec>.in1{color:var(--muted);margin:0 0 10px;max-width:760px;line-height:1.5}
-.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
-.mc{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:13px 14px;box-shadow:var(--shadow);min-width:0}
-.mc h3{margin:0 0 5px;font-size:17px;line-height:1.25}
-.mc p{margin:0;line-height:1.55;font-size:15px}
-.mc .tag{display:inline-block;margin-top:8px;padding:2px 9px;border-radius:99px;background:var(--soft);color:var(--muted);font-size:12.5px;font-weight:700}
+.mhero .kind{position:absolute;right:14px;bottom:8px;font-size:clamp(54px,12vw,96px);opacity:.95;line-height:1}
+.mstats{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 0 14px;padding:2px 2px 8px}
+.mstats::-webkit-scrollbar{display:none}
+.mstats>div{flex:0 0 auto;min-width:112px;padding:8px 12px;text-align:center;border-radius:16px}
+.mstats b{display:block;font-size:19px;color:var(--acclink,var(--acc));font-variant-numeric:tabular-nums;white-space:nowrap}
+.mstats small{color:var(--muted);font-size:12px;line-height:1.25;display:block;max-width:150px}
+.msuche{margin:0 0 6px;max-width:none;width:100%;border-radius:999px;padding-left:16px}
+.mcount{color:var(--muted);font-size:13px;margin:0 0 10px;padding-left:4px}
+/* Menü: farbige Glas-Kacheln */
+.mmenu{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px;margin:0 0 16px}
+.mmenu .gbtn{flex-direction:column;gap:3px;padding:12px 6px 10px;border-radius:20px;min-height:92px;text-align:center;font-size:13px;line-height:1.2;border:1px solid var(--g-edge)}
+.mmenu .gbtn{hyphens:auto;-webkit-hyphens:auto;overflow-wrap:anywhere;font-size:12.5px;padding-left:4px;padding-right:4px}
+.mmenu .gbtn .e{font-size:30px;line-height:1}
+.mmenu .gbtn small{font-weight:600;font-size:11px;opacity:.75}
+.mmenu .gbtn.on small{opacity:.95}
+.mmenu .gbtn.on{transform:scale(1.04)}
+/* Abschnitt */
+.mpanel{scroll-margin-top:8px}
+.mban{display:flex;gap:12px;align-items:center;border-radius:22px;padding:14px 16px;margin:0 0 12px;color:#fff;
+  background:radial-gradient(260px 120px at 100% 0,rgba(255,255,255,.35),transparent 70%),linear-gradient(135deg,var(--gc),color-mix(in srgb,var(--gc) 55%,#000));box-shadow:var(--shadow)}
+.mban .e{font-size:38px;line-height:1;flex:none}
+.mban h2{margin:0;font-size:clamp(20px,4.5vw,26px);color:#fff;line-height:1.15}
+.mban p{margin:3px 0 0;font-size:14px;line-height:1.4;opacity:.95}
+.mtools{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 0 12px;padding:2px 2px 8px;align-items:center}
+.mtools::-webkit-scrollbar{display:none}
+.mtools .gbtn{flex:0 0 auto}
+.mtools .sp{flex:1}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px;align-items:start}
+.mc{position:relative;background:linear-gradient(180deg,color-mix(in srgb,var(--gc,var(--acc)) 10%,var(--card)),var(--card) 60%);border:1px solid var(--line);border-left:6px solid var(--gc,var(--acc));border-radius:18px;padding:0;box-shadow:var(--shadow);min-width:0;overflow:hidden}
+.mc>button.mh{all:unset;box-sizing:border-box;display:flex;gap:10px;align-items:flex-start;width:100%;padding:12px 12px 12px 14px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mc>button.mh:focus-visible{outline:2px solid var(--gc,var(--acc));outline-offset:-2px;border-radius:12px}
+.mc .mi{flex:1;min-width:0}
+.mc h3{margin:0;font-size:16.5px;line-height:1.25}
+.mc .pv{margin:4px 0 0;color:var(--muted);font-size:14px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mc.open .pv{display:none}
+.mc .tag{display:inline-block;margin-top:7px;padding:2px 10px;border-radius:99px;background:color-mix(in srgb,var(--gc,var(--acc)) 18%,transparent);color:var(--fg);font-size:12px;font-weight:800}
+.mc .chev{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--gc,var(--acc)) 20%,transparent);font-size:12px;transition:transform .18s}
+.mc.open .chev{transform:rotate(180deg)}
+.mc .mb{display:none;padding:0 14px 12px 14px}
+.mc.open .mb{display:block}
+.mc .mb p{margin:0;line-height:1.55;font-size:15px}
+.mc ul.ml{margin:6px 0 0;padding-left:20px}.mc ul.ml li{margin:3px 0;line-height:1.5;font-size:15px}.mc p+p,.mc p+ul{margin-top:8px}
+.mc .mfav{all:unset;position:absolute;right:46px;top:11px;width:28px;height:28px;display:grid;place-items:center;font-size:18px;cursor:pointer;opacity:.5;border-radius:50%}
+.mc .mfav.on{opacity:1}
+.mc .sec-b{display:inline-block;font-size:12px;font-weight:800;margin-right:6px}
+.mc h3{padding-right:34px}
 .mc.big{grid-column:1/-1}
-.mt{width:100%;border-collapse:collapse;font-size:15px}.mt td{padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top}.mt td:first-child{font-weight:800;white-space:nowrap;color:var(--acc)}
-.mc ul.ml{margin:6px 0 0;padding-left:20px}.mc ul.ml li{margin:3px 0;line-height:1.5;font-size:15px}.mc p+p,.mc p+ul{margin-top:8px}.mcount{color:var(--muted);font-size:13.5px;margin:0 0 10px}
-.mq .q{font-weight:800;margin:0 0 8px;font-size:17px}.mq .opts{display:grid;gap:8px}.mq button.o{text-align:left;border:2px solid var(--line);background:var(--card);color:var(--fg);border-radius:12px;padding:9px 12px;font:inherit;font-weight:600;cursor:pointer}
-@media (hover:hover){.mq button.o:hover:not(:disabled){border-color:var(--acc)}}
+.mt{width:100%;border-collapse:collapse;font-size:15px}.mt td{padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:top}.mt td:first-child{font-weight:800;white-space:nowrap;color:var(--acclink,var(--acc))}
+.mpanel .mc.pane{border-left-width:1px;padding:14px}
+.mq .q{font-weight:800;margin:0 0 8px;font-size:17px}.mq .opts{display:grid;gap:8px}.mq button.o{text-align:left;border:1px solid var(--g-edge);color:var(--g-fg);border-radius:14px;padding:10px 14px;font:inherit;font-weight:600;cursor:pointer;min-height:44px}
+.mq button.o{justify-content:flex-start;border-radius:14px;text-align:left}
 .mq button.o.ok{background:#bdf0c8;border-color:#35a853;color:#0d3d1a}.mq button.o.no{background:#ffd0d0;border-color:#d44;color:#4a0b0b}
 .mq .ex{margin:10px 0 0;color:var(--muted);line-height:1.45}
-.mq .bar{height:8px;border-radius:9px;background:var(--soft);overflow:hidden;margin:0 0 12px}.mq .bar i{display:block;height:100%;background:var(--acc);transition:width .25s}
-.msuche{margin:0 0 12px;max-width:520px}
+.mq .bar{height:8px;border-radius:9px;background:var(--soft);overflow:hidden;margin:0 0 12px}.mq .bar i{display:block;height:100%;background:var(--gc,var(--acc));transition:width .25s}
+.mempty{color:var(--muted);padding:18px 6px;text-align:center}
 .mfoot{color:var(--muted);font-size:13.5px;margin:18px 0 6px;line-height:1.5}
 [hidden]{display:none!important}
+
 </style>
 </head>
 <body>
@@ -3476,47 +3507,112 @@ function para(t){
   if (ul) out += '<ul class="ml">' + ul + "</ul>";
   return out;
 }
+var COL = {plan:"#ff7a59",viertel:"#8e6bff",sehen:"#2e86ff",museen:"#e0559b",natur:"#2fb96b",biergaerten:"#f5a524",essen:"#e8643c",wiesn:"#e11d48",kalender:"#14b8a6",technik:"#6366f1",kultur:"#c026d3",sport:"#16a34a",geschichte:"#a16207",mythen:"#0ea5e9",ausflug:"#0d9488",alltag:"#64748b",dialekt:"#0f766e",quiz:"#7c3aed",fav:"#f43f5e"};
 var main = $("#mm"), nCards = SEC.reduce(function(n, s){ return n + s.c.length; }, 0);
-var navH = SEC.map(function(s){ return '<a href="#' + s.id + '">' + s.emo + " " + e(T(s.t)) + "</a>"; }).join("") + '<a href="#dialekt">🗣️ ' + (fr ? "Bavarois" : "Bairisch") + '</a><a href="#quiz">🎯 Quiz</a>';
+var SPEC = [
+  {id:"dialekt", emo:"🗣️", t:[ "Bairisch", "Bavarois" ], i:["Ein paar Wörter, die du in München garantiert hörst.","Quelques mots que tu entendras à Munich."], n:DIA.length},
+  {id:"quiz", emo:"🎯", t:["Quiz","Quiz"], i:["10 zufällige Fragen aus " + QZ.length + " – wie viel weißt du über München?","10 questions tirées au hasard parmi " + QZ.length + " – combien en sais-tu ?"], n:QZ.length}
+];
+var ALL = SEC.concat(SPEC), BYID = {}; ALL.forEach(function(s){ BYID[s.id] = s; });
+var FAV = []; try { FAV = JSON.parse(localStorage.getItem("mu_fav") || "[]"); } catch (x) {}
+function favSave(){ try { localStorage.setItem("mu_fav", JSON.stringify(FAV)); } catch (x) {} }
+function key(s, i){ return s.id + ":" + i; }
+var cur = "plan", tagSel = "", q = [];
+
 var h = '<div class="crumb"><a href="index.html">Oratio Place</a> › <a href="index.html#/lifestyle">Lifestyle</a> › ' + (fr ? "Munich" : "München") + '</div>';
 h += '<section class="mhero"><h1>' + (fr ? "Munich – ma ville" : "München – meine Stadt") + '</h1><p>' + (fr
-  ? "Tout sur Munich vu par un Munichois : quartiers, monuments, musées, Biergärten, Wiesn, cuisine, technique, culture, histoire, excursions, vie quotidienne, bavarois et un quiz."
-  : "Alles über München – als Münchner erzählt: Viertel, Sehenswertes, Museen, Biergärten, Wiesn, Essen, Technik, Kultur, Geschichte, Ausflüge, Alltag, Bairisch und ein Quiz.") + '</p><span class="kind" aria-hidden="true">🥨</span></section>';
-h += '<div class="mstats">' + STATS.map(function(s){ return "<div><b>" + e(s[0]) + "</b><small>" + e(T(s[1])) + "</small></div>"; }).join("") + "</div>";
-h += '<input id="msu" class="in msuche" type="search" autocomplete="off" placeholder="' + (fr ? "Chercher à Munich … (ex. Isar, bière, Ohm)" : "In München suchen … (z. B. Isar, Bier, Ohm)") + '">';
-h += '<p class="mcount" id="mcnt">' + nCards + (fr ? " infos dans " : " Infos in ") + (SEC.length + 2) + (fr ? " sections" : " Abschnitten") + "</p>";
-h += '<nav class="mnav" id="mnav">' + navH + "</nav>";
-SEC.forEach(function(s){
-  h += '<section class="msec" id="' + s.id + '"><h2><i>' + s.emo + "</i>" + e(T(s.t)) + '</h2><p class="in1">' + e(T(s.i)) + '</p><div class="mgrid">';
-  s.c.forEach(function(c){
-    h += '<article class="mc" data-t="' + e((c.t[0] + " " + c.t[1] + " " + c.p[0] + " " + c.p[1]).toLowerCase()) + '"><h3>' + e(T(c.t)) + "</h3>" + para(T(c.p)) + '<span class="tag">' + e(T(c.g)) + "</span></article>";
-  });
-  h += "</div></section>";
-});
-h += '<section class="msec" id="dialekt"><h2><i>🗣️</i>' + (fr ? "Bavarois de poche" : "Bairisch für die Hosentasche") + '</h2><p class="in1">' + (fr ? "Quelques mots que tu entendras à Munich." : "Ein paar Wörter, die du in München garantiert hörst.") + '</p><div class="mc big" data-t="bairisch dialekt servus"><table class="mt">' + DIA.map(function(d){ return "<tr><td>" + e(d[0]) + "</td><td>" + e(fr ? d[2] : d[1]) + "</td></tr>"; }).join("") + "</table></div></section>";
-h += '<section class="msec" id="quiz"><h2><i>🎯</i>' + (fr ? "Quiz sur Munich" : "München-Quiz") + '</h2><p class="in1">' + (fr ? "10 questions tirées au hasard parmi " : "10 zufällige Fragen aus ") + QZ.length + (fr ? " – combien en sais-tu ?" : " – wie viel weißt du über München?") + '</p><div class="mc mq" id="mq"></div></section>';
+  ? "Choisis un thème : quartiers, monuments, musées, Biergärten, Wiesn, cuisine, technique, histoire, excursions, bavarois et un quiz."
+  : "Wähl ein Thema: Viertel, Sehenswertes, Museen, Biergärten, Wiesn, Essen, Technik, Geschichte, Ausflüge, Bairisch und ein Quiz.") + '</p><span class="kind" aria-hidden="true">🥨</span></section>';
+h += '<div class="mstats">' + STATS.map(function(s){ return '<div class="glass"><b>' + e(s[0]) + "</b><small>" + e(T(s[1])) + "</small></div>"; }).join("") + "</div>";
+h += '<input id="msu" class="in msuche" type="search" autocomplete="off" placeholder="' + (fr ? "🔍 Chercher à Munich … (ex. Isar, bière, Ohm)" : "🔍 In München suchen … (z. B. Isar, Bier, Ohm)") + '">';
+h += '<p class="mcount" id="mcnt"></p>';
+h += '<nav class="mmenu" id="mmenu" aria-label="' + (fr ? "Thèmes" : "Themen") + '"></nav>';
+h += '<section class="mpanel" id="mpanel"></section>';
 h += '<p class="mfoot">' + (fr ? "Remarque : j’ai écrit ces informations à partir de mes connaissances. Les horaires, prix et dates peuvent changer – vérifie avant de partir." : "Hinweis: Die Infos habe ich nach bestem Wissen zusammengetragen. Öffnungszeiten, Preise und Termine können sich ändern – vor dem Besuch kurz nachschauen.") + "</p>";
 main.innerHTML = h;
 
-/* Suche */
-$("#msu").addEventListener("input", function(ev){
-  var w = ev.target.value.toLowerCase().split(/\s+/).filter(Boolean), total = 0;
-  main.querySelectorAll(".msec").forEach(function(sec){ var n = 0; sec.querySelectorAll(".mc[data-t]").forEach(function(c){ var ok = !w.length || w.every(function(t){ return c.dataset.t.indexOf(t) >= 0; }); c.hidden = !ok; if (ok) n++; }); total += n; if (sec.querySelector(".mc[data-t]")) sec.hidden = !!w.length && !n; });
-  $("#mcnt").textContent = w.length ? total + (fr ? " résultats" : " Treffer") : nCards + (fr ? " infos dans " : " Infos in ") + (SEC.length + 2) + (fr ? " sections" : " Abschnitten");
+function menu(){
+  var m = '';
+  ALL.concat([{id:"fav", emo:"⭐", t:["Favoriten","Favoris"], n:FAV.length}]).forEach(function(s){
+    var n = s.n != null ? s.n : (s.c ? s.c.length : 0);
+    m += '<button type="button" class="gbtn' + (!q.length && cur === s.id ? " on" : "") + '" data-id="' + s.id + '" style="--gc:' + COL[s.id] + '"><span class="e">' + s.emo + "</span><span" + (T(s.t).length > 14 ? ' style="font-size:11px"' : "") + ">" + e(T(s.t)) + "</span><small>" + (s.id === "quiz" ? "10" : n) + "</small></button>";
+  });
+  $("#mmenu").innerHTML = m;
+}
+function card(s, c, i, withSec){
+  var k = key(s, i), isF = FAV.indexOf(k) >= 0;
+  return '<article class="mc" style="--gc:' + COL[s.id] + '" data-k="' + k + '" data-t="' + e((c.t[0] + " " + c.t[1] + " " + c.p[0] + " " + c.p[1] + " " + c.g[0]).toLowerCase()) + '">'
+    + '<button type="button" class="mh" aria-expanded="false"><span class="mi">' + (withSec ? '<span class="sec-b">' + s.emo + " " + e(T(s.t)) + "</span>" : "") + "<h3>" + e(T(c.t)) + '</h3><p class="pv">' + e(T(c.p).replace(/\n?• /g, " · ").replace(/^ · /, "")) + '</p><span class="tag">' + e(T(c.g)) + '</span></span><span class="chev">▼</span></button>'
+    + '<button type="button" class="mfav' + (isF ? " on" : "") + '" aria-label="' + (fr ? "Favori" : "Favorit") + '">' + (isF ? "⭐" : "☆") + "</button>"
+    + '<div class="mb">' + para(T(c.p)) + "</div></article>";
+}
+function panel(){
+  var P = $("#mpanel"), s, html = "";
+  if (q.length){
+    var hits = [];
+    SEC.forEach(function(S){ S.c.forEach(function(c, i){ var t = (c.t[0] + " " + c.t[1] + " " + c.p[0] + " " + c.p[1] + " " + c.g[0]).toLowerCase(); if (q.every(function(w){ return t.indexOf(w) >= 0; })) hits.push(card(S, c, i, true)); }); });
+    $("#mcnt").textContent = hits.length + (fr ? " résultats" : " Treffer");
+    P.innerHTML = hits.length ? '<div class="mgrid">' + hits.join("") + "</div>" : '<p class="mempty">🤷 ' + (fr ? "Rien trouvé – essaie un autre mot." : "Nichts gefunden – probier ein anderes Wort.") + "</p>";
+    return;
+  }
+  $("#mcnt").textContent = nCards + (fr ? " infos dans " : " Infos in ") + (ALL.length) + (fr ? " thèmes" : " Themen");
+  if (cur === "fav"){
+    var list = [];
+    SEC.forEach(function(S){ S.c.forEach(function(c, i){ if (FAV.indexOf(key(S, i)) >= 0) list.push(card(S, c, i, true)); }); });
+    html = '<div class="mban" style="--gc:' + COL.fav + '"><span class="e">⭐</span><div><h2>' + (fr ? "Mes favoris" : "Meine Favoriten") + '</h2><p>' + (fr ? "Touche ☆ sur une carte pour la garder ici." : "Tippe bei einer Karte auf ☆, dann steht sie hier.") + "</p></div></div>";
+    html += list.length ? '<div class="mgrid">' + list.join("") + "</div>" : '<p class="mempty">☆ ' + (fr ? "Pas encore de favoris." : "Noch keine Favoriten.") + "</p>";
+    P.innerHTML = html; return;
+  }
+  s = BYID[cur];
+  html = '<div class="mban" style="--gc:' + COL[s.id] + '"><span class="e">' + s.emo + '</span><div><h2>' + e(T(s.t)) + "</h2><p>" + e(T(s.i)) + "</p></div></div>";
+  if (s.id === "dialekt"){
+    html += '<div class="mc pane" style="--gc:' + COL.dialekt + '"><table class="mt">' + DIA.map(function(d){ return "<tr><td>" + e(d[0]) + "</td><td>" + e(T(d[1])) + "</td></tr>"; }).join("") + "</table></div>";
+  } else if (s.id === "quiz"){
+    html += '<div class="mc pane mq" id="mq" style="--gc:' + COL.quiz + '"></div>';
+  } else {
+    var tags = [], seen = {};
+    s.c.forEach(function(c){ var g = T(c.g); if (!seen[g]){ seen[g] = 1; tags.push(g); } });
+    if (tags.length > 1) html += '<div class="mtools"><button type="button" class="gbtn sm' + (!tagSel ? " on" : "") + '" data-tag="" style="--gc:' + COL[s.id] + '">' + (fr ? "Tout" : "Alle") + "</button>" + tags.map(function(g){ return '<button type="button" class="gbtn sm' + (tagSel === g ? " on" : "") + '" data-tag="' + e(g) + '" style="--gc:' + COL[s.id] + '">' + e(g) + "</button>"; }).join("") + '<span class="sp"></span><button type="button" class="gbtn sm" id="mall" style="--gc:' + COL[s.id] + '">' + (fr ? "Tout ouvrir" : "Alle aufklappen") + "</button></div>";
+    else html += '<div class="mtools"><span class="sp"></span><button type="button" class="gbtn sm" id="mall" style="--gc:' + COL[s.id] + '">' + (fr ? "Tout ouvrir" : "Alle aufklappen") + "</button></div>";
+    html += '<div class="mgrid">' + s.c.map(function(c, i){ return !tagSel || T(c.g) === tagSel ? card(s, c, i, false) : ""; }).join("") + "</div>";
+  }
+  P.innerHTML = html;
+  if (s.id === "quiz") startQuiz($("#mq"));
+}
+function go(id, scroll){
+  cur = id; tagSel = ""; q = []; $("#msu").value = ""; menu(); panel();
+  try { history.replaceState(null, "", "#" + id); } catch (x) {}
+  if (scroll) $("#mpanel").scrollIntoView({behavior:"smooth", block:"start"});
+}
+main.addEventListener("click", function(ev){
+  var b = ev.target.closest("button"); if (!b) return;
+  if (b.closest("#mmenu")) return go(b.dataset.id, true);
+  if (b.dataset.tag !== undefined && b.classList.contains("gbtn")){ tagSel = b.dataset.tag; return panel(); }
+  if (b.id === "mall"){ var cs = main.querySelectorAll("#mpanel .mc[data-k]"), open = !b.dataset.o; cs.forEach(function(c){ c.classList.toggle("open", open); c.querySelector(".mh").setAttribute("aria-expanded", open); }); b.dataset.o = open ? "1" : ""; b.textContent = open ? (fr ? "Tout fermer" : "Alle zuklappen") : (fr ? "Tout ouvrir" : "Alle aufklappen"); return; }
+  var c = b.closest(".mc[data-k]"); if (!c) return;
+  if (b.classList.contains("mfav")){
+    var k = c.dataset.k, ix = FAV.indexOf(k); if (ix >= 0) FAV.splice(ix, 1); else FAV.push(k); favSave();
+    if (cur === "fav" && !q.length){ panel(); } else { b.classList.toggle("on", ix < 0); b.textContent = ix < 0 ? "⭐" : "☆"; }
+    return menu();
+  }
+  if (b.classList.contains("mh")){ var o = c.classList.toggle("open"); b.setAttribute("aria-expanded", o); }
 });
+$("#msu").addEventListener("input", function(ev){ q = ev.target.value.toLowerCase().split(/\s+/).filter(Boolean); menu(); panel(); });
+var hsh = (location.hash || "").slice(1); if (BYID[hsh] || hsh === "fav") cur = hsh;
+menu(); panel();
 
 /* Quiz: 10 zufällige Fragen */
-(function(){
-  var box = $("#mq"), i = 0, pts = 0, set = [];
+function startQuiz(box){
+  var i = 0, pts = 0, set = [];
   function neu(){ set = QZ.slice().sort(function(){ return Math.random() - .5; }).slice(0, 10); i = 0; pts = 0; show(); }
   function show(){
     if (i >= set.length){ box.innerHTML = '<p class="q">' + (fr ? "Résultat : " : "Ergebnis: ") + pts + " / " + set.length + '</p><p class="ex">' + (pts >= 9 ? (fr ? "Un vrai Munichois !" : "Echter Münchner!") : pts >= 5 ? (fr ? "Pas mal – servus !" : "Nicht schlecht – Servus!") : (fr ? "Il faut revenir à Munich !" : "Da hilft nur: nochmal nach München!")) + '</p><button class="btn go" type="button" id="mqr">' + (fr ? "Rejouer" : "Nochmal") + "</button>"; $("#mqr").onclick = neu; return; }
-    var q = set[i]; box.innerHTML = '<div class="bar"><i style="width:' + (i / set.length * 100) + '%"></i></div><p class="q">' + (i + 1) + ". " + e(T(q[0])) + '</p><div class="opts">' + q[1][0].map(function(o, k){ return '<button type="button" class="o" data-k="' + k + '">' + e(fr ? q[1][1][k] : o) + "</button>"; }).join("") + '</div><p class="ex" hidden></p>';
+    var q = set[i]; box.innerHTML = '<div class="bar"><i style="width:' + (i / set.length * 100) + '%"></i></div><p class="q">' + (i + 1) + ". " + e(T(q[0])) + '</p><div class="opts">' + q[1][0].map(function(o, k){ return '<button type="button" class="o gbtn" data-k="' + k + '">' + e(fr ? q[1][1][k] : o) + "</button>"; }).join("") + '</div><p class="ex" hidden></p>';
     box.querySelectorAll("button.o").forEach(function(b){ b.onclick = function(){ var k = +b.dataset.k; box.querySelectorAll("button.o").forEach(function(x){ x.disabled = true; if (+x.dataset.k === q[2]) x.classList.add("ok"); }); if (k === q[2]) pts++; else b.classList.add("no"); var ex = box.querySelector(".ex"); ex.hidden = false; ex.textContent = T(q[3]);
       var nx = document.createElement("button"); nx.type = "button"; nx.className = "btn go"; nx.style.marginTop = "10px"; nx.textContent = i + 1 >= set.length ? (fr ? "Résultat" : "Ergebnis") : (fr ? "Suivant" : "Weiter"); nx.onclick = function(){ i++; show(); }; box.appendChild(nx); }; });
   }
   neu();
-})();
+}
 })();
 WZ.kopf("muenchen");
 document.documentElement.lang = WZ.lang === "fr" ? "fr" : "de";

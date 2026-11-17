@@ -1,0 +1,56 @@
+/* Oratio Glas – milchiger Glas-Effekt (Look aus dem Oratio Control Center).
+   Klassen: .glass (Fläche/Kachel) · .gbtn (Glas-Knopf) · .gbtn.on (gewählt, wächst leicht) · --gc = Farbton (optional) */
+:root{
+  --g-top:rgba(255,255,255,.78);--g-bot:rgba(255,255,255,.40);--g-rim:rgba(255,255,255,.95);--g-shine:rgba(255,255,255,1);
+  --g-edge:rgba(60,100,150,.26);--g-fg:#1d2b44;--g-hover:rgba(255,255,255,.35);--g-sel:rgba(255,255,255,.55);
+  --g-shadow:0 6px 18px -8px rgba(30,70,120,.40),0 1px 3px rgba(30,70,120,.12);--g-blur:blur(16px) saturate(1.7);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --g-top:rgba(255,255,255,.17);--g-bot:rgba(255,255,255,.06);--g-rim:rgba(255,255,255,.38);--g-shine:rgba(255,255,255,.75);
+  --g-edge:rgba(0,0,0,.35);--g-fg:#eef3fb;--g-hover:rgba(255,255,255,.10);--g-sel:rgba(255,255,255,.20);
+  --g-shadow:0 8px 22px -10px rgba(0,0,0,.65),0 1px 3px rgba(0,0,0,.35)}}
+:root[data-theme="dark"]{
+  --g-top:rgba(255,255,255,.17);--g-bot:rgba(255,255,255,.06);--g-rim:rgba(255,255,255,.38);--g-shine:rgba(255,255,255,.75);
+  --g-edge:rgba(0,0,0,.35);--g-fg:#eef3fb;--g-hover:rgba(255,255,255,.10);--g-sel:rgba(255,255,255,.20);
+  --g-shadow:0 8px 22px -10px rgba(0,0,0,.65),0 1px 3px rgba(0,0,0,.35)}
+
+.glass,.gbtn,.btn:not(.go):not(.on):not(.gbtn){
+  position:relative;isolation:isolate;color:var(--g-fg);
+  --g-bg:radial-gradient(120px 90px at var(--mx,50%) var(--my,0%),var(--g-hover),transparent 70%),
+    linear-gradient(180deg,color-mix(in srgb,var(--gc,transparent) 30%,var(--g-top)),color-mix(in srgb,var(--gc,transparent) 15%,var(--g-bot)));
+  background:var(--g-bg);
+  border:1px solid var(--g-edge);
+  box-shadow:inset 0 0 0 1px var(--g-rim),var(--g-shadow);
+  -webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);
+}
+/* feine Glanzkante oben (Liquid-Glass): heller Strich + milchiger Schimmer */
+.glass::before,.gbtn::before,.btn:not(.go):not(.on):not(.gbtn)::before{
+  content:"";position:absolute;left:6%;right:6%;top:1px;height:46%;border-radius:inherit;pointer-events:none;z-index:-1;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--g-shine) 38%,transparent),transparent);
+  border-top:1.2px solid var(--g-shine);border-radius:999px 999px 40% 40%/ 60% 60% 40% 40%;
+}
+.glass::before{border-radius:18px 18px 40% 40%/18px 18px 30% 30%}
+.gbtn{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:40px;padding:8px 16px;border-radius:999px;
+  font:700 14.5px/1.2 system-ui,-apple-system,"Segoe UI",sans-serif;cursor:pointer;text-decoration:none;
+  transition:transform .14s ease,box-shadow .14s ease,filter .14s ease;-webkit-tap-highlight-color:transparent;
+}
+.glass{border-radius:20px}
+@media (hover:hover){.gbtn:hover,.glass.hov:hover{transform:translateY(-1px) scale(1.03);filter:brightness(1.04)}}
+.gbtn:active{transform:scale(.97)}
+.gbtn.on{
+  transform:scale(1.05);
+  background:linear-gradient(180deg,color-mix(in srgb,var(--gc,var(--acc,#27a3df)) 70%,var(--g-top)),color-mix(in srgb,var(--gc,var(--acc,#27a3df)) 50%,var(--g-bot)));
+  color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.28);
+  box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.85),0 8px 20px -8px color-mix(in srgb,var(--gc,var(--acc,#27a3df)) 80%,#000);
+}
+.gbtn:focus-visible{outline:2px solid var(--gc,var(--acc,#27a3df));outline-offset:2px}
+.gbtn.sm{min-height:32px;padding:4px 12px;font-size:13px}
+.gbtn[disabled]{opacity:.45;cursor:default;transform:none}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .glass,.gbtn{background:linear-gradient(180deg,color-mix(in srgb,var(--gc,transparent) 30%,var(--card,#fff)),var(--card,#fff))}}
+@media (prefers-reduced-motion:reduce){.gbtn,.glass{transition:none}}
+
+/* vorhandene .btn im ganzen System: Glas-Kapsel (Auswahl .on und Hauptknopf .go bleiben farbig) */
+.btn:not(.go):not(.on):not(.gbtn){border-radius:999px;border:1px solid var(--g-edge);color:var(--g-fg);transition:transform .14s ease,box-shadow .14s ease}
+@media (hover:hover){.btn:not(.go):not(.on):not(.gbtn):not(:disabled):hover{background:var(--g-bg);border-color:var(--g-edge);transform:translateY(-1px) scale(1.03)}}

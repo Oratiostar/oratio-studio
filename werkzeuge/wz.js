@@ -234,3 +234,6 @@ window.WZ = {
   warte: function(){ return new Promise(function(r){ setTimeout(r, 0); }); },
   skript: function(src){ return new Promise(function(ok, err){ var s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = function(){ err(new Error("Konnte " + src + " nicht laden")); }; document.head.appendChild(s); }); }
 };
+
+/* Oratio Glas: Glanz folgt dem Finger */
+(function(){ var s = document.createElement("script"); s.src = "werkzeuge/glass.js"; document.head.appendChild(s); })();
