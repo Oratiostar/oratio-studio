@@ -237,4 +237,4 @@ window.WZ = {
 };
 
 /* Oratio Glas: Glanz folgt dem Finger */
-(function(){ var s = document.createElement("script"); s.src = "werkzeuge/glass.js"; document.head.appendChild(s); })();
+(function(){ var s = document.createElement("script"); s.src = "werkzeuge/glass.js?v=42"; document.head.appendChild(s); })();

@@ -19,7 +19,7 @@
 <meta name="twitter:image" content="https://oratioplace.com/vorschau.png">
 <link rel="icon" href="logo-place.png">
 <link rel="apple-touch-icon" href="logo-place.png">
-<link rel="stylesheet" href="werkzeuge/glass.css">
+<link rel="stylesheet" href="werkzeuge/glass.css?v=42">
 <style>
 @font-face{font-family:"Inter";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/Inter-Regular.woff) format("woff")}
 @font-face{font-family:"Inter";font-weight:600;font-style:normal;font-display:swap;src:url(fonts/Inter-SemiBold.woff) format("woff")}
@@ -861,7 +861,7 @@ function startseite(){
   const rest = (INDEX.welten || []).map(w => w.id).filter(id => !used.has(id));
   if (rest.length) BER[3].sec.push({ n: Tx("Weitere","Autres"), t: "", w: rest });
   const chips = '<div class="kats" role="tablist">'+['<button class="kat" data-k="alle">'+esc(U("katAlle"))+'</button>'].concat(BER.map(b => '<button class="kat" data-k="'+b.id+'">'+b.ic+' '+esc(b.n)+'</button>')).join("")+'</div>';
-  const quick = '<div class="weg"><a href="kurs.html"><b>📚 '+esc(Tx("Lernen","Apprendre"))+'</b><span>'+esc(Tx("Geführter Kurs von Null: Oratio Kursland","Cours guidé depuis zéro : Oratio Kursland"))+'</span></a><a href="#/studio" class="hier"><b>🔎 '+esc(Tx("Nachschlagen","Consulter"))+'</b><span>'+esc(Tx("Du bist hier: Oratio Tech Studio","Tu es ici : Oratio Tech Studio"))+'</span></a><a href="ic-lab.html"><b>🛠️ '+esc(Tx("Selbst bauen","Construire"))+'</b><span>'+esc(Tx("Schaltungen: Bauteile und ICs verdrahten, mit Schaltplan und Oszilloskop","Circuits : câbler composants et CI, avec schéma et oscilloscope"))+'</span></a></div>'+
+  const quick = '<div class="weg"><a href="kurs.html"><b>📚 '+esc(Tx("Lernen","Apprendre"))+'</b><span>'+esc(Tx("Geführter Kurs von Null: Oratio Kursland","Cours guidé depuis zéro : Oratio Kursland"))+'</span></a><a href="#/studio" class="hier"><b>🔎 '+esc(Tx("Nachschlagen","Consulter"))+'</b><span>'+esc(Tx("Du bist hier: Oratio Tech Studio","Tu es ici : Oratio Tech Studio"))+'</span></a><a href="ic-lab.html#bau"><b>🧪 '+esc(Tx("Ausprobieren","Essayer"))+'</b><span>'+esc(Tx("Selbst bauen: Bauteile und ICs verdrahten, mit Oszilloskop","Construire soi-même : câbler composants et CI, avec oscilloscope"))+'</span></a></div>'+
     '<div class="quick"><b>'+esc(Tx("Ich will …","Je veux …"))+'</b>'+
     '<a href="#/w/halbleiter">🔎 '+esc(Tx("ein Bauteil nachschlagen","chercher un composant"))+'</a>'+
     '<a href="ic-lab.html">🧩 '+esc(Tx("einen IC verstehen & ausprobieren","comprendre et tester un CI"))+'</a>'+
@@ -1143,6 +1143,6 @@ async function frLaden(){ if (LANG === "fr" && FR === null) { try { FR = await h
   catch(e){ app.innerHTML = '<p>Daten konnten nicht geladen werden. Bitte die Seite über einen Webserver öffnen (nicht direkt als Datei).</p>'; }
 })();
 </script>
-<script src="werkzeuge/glass.js"></script>
+<script src="werkzeuge/glass.js?v=42"></script>
 </body>
 </html>

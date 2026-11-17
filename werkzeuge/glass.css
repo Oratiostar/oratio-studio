@@ -104,3 +104,24 @@ body.aurora.ds-glas:not(.sl) #q::placeholder,body.aurora.ds-glas:not(.sl) .in::p
 /* weiße Titel auf farbigen Flächen bleiben weiß */
 body.aurora.ds-glas:not(.sl) .hero h1,body.aurora.ds-glas:not(.sl) .thead h1,body.aurora.ds-glas:not(.sl) .vhero h1,body.aurora.ds-glas:not(.sl) .mega h2{color:#fff}
 @media (max-width:480px){header .bar{padding-left:8px;padding-right:8px}header .seg{border-width:1.5px}header .seg button{font-size:11px;padding:3px 4px;gap:2px}header .lg{font-size:17.5px}header .lg .lgO{width:25px;height:25px}header .logo{gap:4px}}
+
+/* ===== Tech Studio (body.sl): grüne Welt, vier Stufen ===== */
+body.sl.ds-glas{background:radial-gradient(55vmax 45vmax at 8% 6%,rgba(190,255,70,.95),transparent 62%),radial-gradient(50vmax 42vmax at 95% 12%,rgba(40,210,230,.85),transparent 62%),radial-gradient(55vmax 45vmax at 88% 94%,rgba(60,130,255,.7),transparent 62%),radial-gradient(45vmax 40vmax at 6% 92%,rgba(255,225,60,.7),transparent 62%),#3fa83a}
+:root[data-theme="dark"] body.sl.ds-glas{background:radial-gradient(55vmax 45vmax at 8% 6%,rgba(40,170,60,.75),transparent 62%),radial-gradient(50vmax 42vmax at 95% 12%,rgba(0,140,170,.65),transparent 62%),radial-gradient(55vmax 45vmax at 88% 94%,rgba(60,50,200,.6),transparent 62%),radial-gradient(45vmax 40vmax at 6% 92%,rgba(20,120,60,.7),transparent 62%),#0b1a14}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.sl.ds-glas{background:radial-gradient(55vmax 45vmax at 8% 6%,rgba(40,170,60,.75),transparent 62%),radial-gradient(50vmax 42vmax at 95% 12%,rgba(0,140,170,.65),transparent 62%),radial-gradient(55vmax 45vmax at 88% 94%,rgba(60,50,200,.6),transparent 62%),radial-gradient(45vmax 40vmax at 6% 92%,rgba(20,120,60,.7),transparent 62%),#0b1a14}}
+body.sl.ds-glas{background-attachment:fixed}
+body.sl.ds-glas .weg a,body.sl.ds-glas .quick,body.sl.ds-glas .quick a,body.sl.ds-glas .sc,body.sl.ds-glas details.gr,body.sl.ds-glas .slmain,body.sl.ds-glas .slnav a,body.sl.ds-glas .treffer a,body.sl.ds-glas .in,body.sl.ds-glas #sq,body.sl.ds-glas .crumb,body.sl.ds-glas .kat:not(.on),body.sl.ds-glas .card,body.sl.ds-glas .seg{
+  background:linear-gradient(180deg,var(--g-top),var(--g-bot))!important;border:1px solid var(--g-edge)!important;color:var(--g-fg);
+  box-shadow:inset 0 0 0 1px var(--g-rim),var(--g-shadow)!important;-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur)}
+body.sl.ds-glas .quick a{box-shadow:inset 0 0 0 1px var(--g-rim)!important}
+body.sl.ds-glas .weg a.hier{box-shadow:inset 0 0 0 2px rgba(39,163,223,.9),var(--g-shadow)!important}
+body.sl.ds-glas .weg a span,body.sl.ds-glas .sc p{color:color-mix(in srgb,var(--g-fg) 68%,transparent)}
+body.sl.ds-glas .sc .sbad{background:color-mix(in srgb,var(--g-fg) 8%,#fff);box-shadow:inset 0 0 0 1px var(--g-rim),0 4px 8px -3px rgba(0,0,0,.4)}
+body.sl.ds-glas .sc .sh{box-shadow:inset 0 -1px 0 rgba(255,255,255,.3)}
+body.sl.ds-glas .crumb a{color:var(--g-fg);text-decoration:underline}
+body.sl.ds-glas #sq::placeholder,body.sl.ds-glas .in::placeholder{color:color-mix(in srgb,var(--g-fg) 55%,transparent)}
+/* Matt: alles fest und flach */
+body.sl.ds-matt{background:var(--sg2)}
+body.sl.ds-matt .weg a,body.sl.ds-matt .quick,body.sl.ds-matt .sc,body.sl.ds-matt details.gr,body.sl.ds-matt .slmain,body.sl.ds-matt .treffer a,body.sl.ds-matt .in,body.sl.ds-matt #sq,body.sl.ds-matt .card{
+  -webkit-backdrop-filter:none;backdrop-filter:none;border:2px solid var(--g-edge)!important;box-shadow:0 4px 0 rgba(0,0,0,.28)!important}
+body.sl.ds-matt .sc{background:var(--sgl)}
