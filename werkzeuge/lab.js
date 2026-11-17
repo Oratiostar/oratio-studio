@@ -562,7 +562,7 @@ MODS.watch = { show: function(b){
   left.appendChild(el("p", "lmut", L("466 × 466 Pixel, gezeichnet nur aus Kreisen, Bögen, Linien und Rechtecken – genau wie die Formen im Formen-PDF. Zeigerwinkel: 30° pro Stunde, 6° pro Minute und Sekunde.", "466 × 466 pixels, dessiné uniquement avec des cercles, arcs, lignes et rectangles – comme les formes du PDF. Angles : 30° par heure, 6° par minute et seconde.")));
   right.innerHTML = "<h2>" + L("Zifferblatt gestalten", "Personnaliser le cadran") + "</h2>";
   var ch = el("div", "fchips"); ch.style.marginBottom = "12px";
-  [["klassik", L("Klassik", "Classique")], ["neon", "Neon"], ["minimal", "Minimal"], ["digital", "Digital"]].forEach(function(f){ var x = el("button", "lbtn" + (WO.face === f[0] ? " on" : ""), f[1]); x.onclick = function(){ WO.face = f[0]; st("watch", WO); ch.querySelectorAll("button").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); }; ch.appendChild(x); });
+  [["klassik", L("Klassik", "Classique")], ["neon", "Neon"], ["minimal", "Minimal"], ["digital", "Digital"], ["casio", L("Retro-LCD", "LCD rétro")]].forEach(function(f){ var x = el("button", "lbtn" + (WO.face === f[0] ? " on" : ""), f[1]); x.onclick = function(){ WO.face = f[0]; st("watch", WO); ch.querySelectorAll("button").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); }; ch.appendChild(x); });
   right.appendChild(ch);
   var op = el("div", "wopt");
   function col(lbl, key){ var l = el("label", "", "<span>" + lbl + "</span>"), i = el("input"); i.type = "color"; i.value = WO[key]; i.oninput = function(){ WO[key] = i.value; st("watch", WO); }; l.appendChild(i); op.appendChild(l); }
@@ -584,6 +584,67 @@ MODS.watch = { show: function(b){
   MODS.watch.t = true;
   (function loop(){ if (!MODS.watch.t || !cv.isConnected) return; drawWatch(ctx); requestAnimationFrame(loop); })();
 }, stop: function(){ MODS.watch.t = false; } };
+var RLG = { "0": "01110,10001,10011,10101,11001,10001,01110", "1": "00100,01100,00100,00100,00100,00100,01110", "2": "01110,10001,00001,00010,00100,01000,11111", "3": "11110,00001,00001,01110,00001,00001,11110", "4": "00010,00110,01010,10010,11111,00010,00010", "5": "11111,10000,11110,00001,00001,10001,01110", "6": "00110,01000,10000,11110,10001,10001,01110", "7": "11111,00001,00010,00100,01000,01000,01000", "8": "01110,10001,10001,01110,10001,10001,01110", "9": "01110,10001,10001,01111,00001,00010,01100", "-": "00000,00000,00000,11111,00000,00000,00000",
+  A: "01110,10001,10001,11111,10001,10001,10001", D: "11110,10001,10001,10001,10001,10001,11110", E: "11111,10000,10000,11110,10000,10000,11111", F: "11111,10000,10000,11110,10000,10000,10000", I: "01110,00100,00100,00100,00100,00100,01110", J: "00111,00010,00010,00010,00010,10010,01100", L: "10000,10000,10000,10000,10000,10000,11111", M: "10001,11011,10101,10101,10001,10001,10001", N: "10001,11001,10101,10011,10001,10001,10001", O: "01110,10001,10001,10001,10001,10001,01110", R: "11110,10001,10001,11110,10100,10010,10001", S: "01111,10000,10000,01110,00001,00001,11110", U: "10001,10001,10001,10001,10001,10001,01110", V: "10001,10001,10001,10001,10001,01010,00100" };
+function rlText(c, t, cx, cy, px){
+  var w = t.length * 6 * px - px, x0 = cx - w / 2, y0 = cy - 3.5 * px;
+  for (var i = 0; i < t.length; i++){ var g = RLG[t.charAt(i)]; if (!g) continue; var rows = g.split(",");
+    for (var r = 0; r < 7; r++) for (var q = 0; q < 5; q++) if (rows[r].charAt(q) === "1") c.fillRect(x0 + (i * 6 + q) * px, y0 + r * px, px * .86, px * .86); }
+}
+function drawRetroLcd(c, now, C){
+  var blue = "#2b64e6", yel = "#e8c84a", red = "#e0453d", wh = WO.hand || "#f2f5ff", cfg = SEGV.classic18, i, p;
+  c.fillStyle = WO.bg; c.fillRect(0, 0, 466, 466);
+  function oct(x0, y0, x1, y1, ch){ c.beginPath(); c.moveTo(x0 + ch, y0); c.lineTo(x1 - ch, y0); c.lineTo(x1, y0 + ch); c.lineTo(x1, y1 - ch); c.lineTo(x1 - ch, y1); c.lineTo(x0 + ch, y1); c.lineTo(x0, y1 - ch); c.lineTo(x0, y0 + ch); c.closePath(); }
+  c.lineJoin = "round";
+  oct(46, 54, 420, 412, 58); c.strokeStyle = blue; c.lineWidth = 6; c.stroke();
+  oct(56, 64, 410, 402, 52); c.strokeStyle = "#d3dcf5"; c.lineWidth = 1.6; c.stroke();
+  c.textAlign = "center"; c.textBaseline = "middle";
+  c.fillStyle = wh; c.font = "800 17px Inter,system-ui,sans-serif"; c.textAlign = "left"; c.fillText("ORATIO", 108, 92);
+  c.fillStyle = WO.acc || yel; c.font = "800 15px Inter,system-ui,sans-serif"; c.textAlign = "right"; c.fillText(L("STEP TRACKER", "STEP TRACKER"), 360, 92);
+  c.textAlign = "center"; c.fillStyle = blue; c.font = "italic 900 19px Inter,system-ui,sans-serif"; c.fillText("ILLUMINATOR", 233, 114);
+  c.beginPath(); c.moveTo(140, 114); c.lineTo(154, 107); c.lineTo(154, 121); c.closePath(); c.fill();
+  c.beginPath(); c.moveTo(326, 114); c.lineTo(312, 107); c.lineTo(312, 121); c.closePath(); c.fill();
+  c.fillStyle = wh; c.font = "800 14px Inter,system-ui,sans-serif";
+  c.save(); c.translate(76, 186); c.rotate(Math.PI / 2); c.fillText("ADJUST", 0, 0); c.restore();
+  c.save(); c.translate(76, 266); c.rotate(Math.PI / 2); c.fillText("MODE", 0, 0); c.restore();
+  c.save(); c.translate(392, 182); c.rotate(-Math.PI / 2); c.fillText("LIGHT", 0, 0); c.restore();
+  c.save(); c.translate(392, 262); c.rotate(-Math.PI / 2); c.fillText("SEARCH", 0, 0); c.restore();
+  c.fillStyle = red; [[82, 134], [78, 308], [388, 138], [390, 308]].forEach(function(d){ c.beginPath(); c.arc(d[0], d[1], 4.6, 0, 7); c.fill(); });
+  c.fillStyle = red; c.font = "800 15px Inter,system-ui,sans-serif"; c.textAlign = "right"; c.fillText("WATER", 190, 339); c.textAlign = "left"; c.fillText("RESIST", 280, 339);
+  c.lineWidth = 2.2; c.strokeStyle = red; c.beginPath(); c.moveTo(206, 326); c.lineTo(262, 326); c.quadraticCurveTo(272, 326, 270, 336); c.lineTo(266, 346); c.quadraticCurveTo(264, 350, 258, 350); c.lineTo(204, 350); c.quadraticCurveTo(198, 350, 200, 344); c.lineTo(202, 332); c.quadraticCurveTo(203, 326, 210, 326); c.stroke();
+  c.textAlign = "center"; c.font = "italic 900 17px Inter,system-ui,sans-serif"; c.fillText("WR", 235, 339);
+  c.strokeStyle = "#a9bdf0"; c.lineWidth = 2; c.beginPath(); c.moveTo(98, 360); c.lineTo(368, 360); c.stroke();
+  c.fillStyle = yel; c.font = "800 15px Inter,system-ui,sans-serif"; c.fillText("Bluetooth", 233, 380);
+  // LCD
+  var x0 = 98, y0 = 133, x1 = 368, y1 = 313;
+  function rr(x, y, w, h, r){ c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+  rr(x0 - 6, y0 - 6, x1 - x0 + 12, y1 - y0 + 12, 14); c.fillStyle = "#e4e7ee"; c.fill();
+  rr(x0 - 3.5, y0 - 3.5, x1 - x0 + 7, y1 - y0 + 7, 12); c.fillStyle = "#0b0d12"; c.fill();
+  rr(x0, y0, x1 - x0, y1 - y0, 9); var lg = c.createLinearGradient(0, y0, 0, y1); lg.addColorStop(0, "#cfd1c9"); lg.addColorStop(1, "#b9bbb1"); c.fillStyle = lg; c.fill();
+  c.save(); rr(x0, y0, x1 - x0, y1 - y0, 9); c.clip();
+  c.fillStyle = "#1a1c1a"; c.fillRect(x0, y0 + 38, x1 - x0, 1.8); c.fillRect(x0, y0 + 88, x1 - x0, 1.8);
+  // Zeile 1: PS, Balken, 100
+  c.strokeStyle = "#141614"; c.lineWidth = 1.6; c.strokeRect(x0 + 10, y0 + 9, 20, 17);
+  c.fillStyle = "#141614"; c.font = "800 10px Inter,system-ui,sans-serif"; c.textAlign = "center"; c.fillText("PS", x0 + 20, y0 + 18);
+  var lit = Math.round(24 * WO.lvl / 100); if (WO.bat) for (i = 0; i < 24; i++){ c.globalAlpha = i < lit ? 1 : .09; c.fillStyle = "#141614"; c.fillRect(x0 + 40 + i * 6.7, y0 + 9, 4.2, 17); } c.globalAlpha = 1;
+  c.fillStyle = "#141614"; c.font = "800 13px Inter,system-ui,sans-serif"; c.textAlign = "right"; c.fillText("100", x1 - 10, y0 + 18);
+  // Zeile 2: Datum (Punktmatrix)
+  var dn = fr ? ["DIM", "LUN", "MAR", "MER", "JEU", "VEN", "SAM"] : ["SO", "MO", "DI", "MI", "DO", "FR", "SA"], z2 = function(n, sp){ return (n < 10 ? (sp ? " " : "0") : "") + n; };
+  c.fillStyle = "#141614"; c.font = "800 9px Inter,system-ui,sans-serif"; c.textAlign = "center"; c.fillText("MUTE", x0 + 175, y0 + 46);
+  if (WO.date) rlText(c, dn[now.getDay()] + " " + z2(now.getFullYear() % 100, false) + "-" + z2(now.getMonth() + 1, true) + "-" + z2(now.getDate(), false), (x0 + x1) / 2, y0 + 66, 2.5);
+  // Zeile 3: Uhrzeit mit eigener 7-Segment-Schrift
+  var hh = now.getHours(), mi = now.getMinutes(), ss = now.getSeconds(), main = (hh < 10 ? " " : "") + hh + ":" + z2(mi, false), data = segData(main), sd = segData(z2(ss, false));
+  function digits(dat, n, tx, ty, k){
+    c.save(); c.translate(tx, ty); c.scale(k, k);
+    for (var d = 0; d < n; d++){ var o = segHit(d), P = segPaths(o.ox, o.oy, cfg);
+      P.forEach(function(pp, sI){ c.globalAlpha = (dat[d] >> sI) & 1 ? 1 : cfg.off; c.fillStyle = "#0b0c0b"; c.fill(pp); });
+      if (n === 4 && d === 1){ var on = (dat[1] & 0x80) ? 1 : cfg.off; c.globalAlpha = on; c.fillStyle = "#0b0c0b"; c.beginPath(); c.arc(o.ox + 120, o.oy + 70, 8.5, 0, 7); c.fill(); c.beginPath(); c.arc(o.ox + 120, o.oy + 150, 8.5, 0, 7); c.fill(); } }
+    c.restore(); c.globalAlpha = 1; }
+  var k1 = .37, k2 = .2;
+  digits(data, 4, x0 + 12 - 14 * k1, y0 + 100 - 8 * k1, k1);
+  if (WO.sec) digits(sd, 2, x1 - 12 - 2 * 124 * k2 + 10 * k2, y0 + 100 + 8 * k1 + 194 * k1 - 194 * k2 - 8 * k1, k2);
+  c.restore();
+}
 function drawWatch(c){
   var C = 233, now = new Date(), ms = now.getMilliseconds(), s = now.getSeconds() + ms / 1000, m = now.getMinutes() + s / 60, h = (now.getHours() % 12) + m / 60;
   c.setTransform(2, 0, 0, 2, 0, 0); c.clearRect(0, 0, 466, 466);
@@ -592,6 +653,7 @@ function drawWatch(c){
   var g = c.createRadialGradient(C, C - 60, 20, C, C, C); g.addColorStop(0, "rgba(255,255,255,.07)"); g.addColorStop(1, "rgba(0,0,0,.35)"); c.fillStyle = g; c.fillRect(0, 0, 466, 466);
   function pol(r, deg){ var a = deg * Math.PI / 180; return [C + Math.sin(a) * r, C - Math.cos(a) * r]; }
   var f = WO.face, i, p, q;
+  if (f === "casio") { drawRetroLcd(c, now, C); c.restore(); return; }
   if (WO.bat) {
     c.lineCap = "round"; c.lineWidth = 7; c.strokeStyle = "rgba(255,255,255,.15)";
     c.beginPath(); c.arc(C, C, 196, (150 - 90) * Math.PI / 180, (210 - 90) * Math.PI / 180); c.stroke();
