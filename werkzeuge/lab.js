@@ -562,7 +562,7 @@ MODS.watch = { show: function(b){
   left.appendChild(el("p", "lmut", L("466 × 466 Pixel, gezeichnet nur aus Kreisen, Bögen, Linien und Rechtecken – genau wie die Formen im Formen-PDF. Zeigerwinkel: 30° pro Stunde, 6° pro Minute und Sekunde.", "466 × 466 pixels, dessiné uniquement avec des cercles, arcs, lignes et rectangles – comme les formes du PDF. Angles : 30° par heure, 6° par minute et seconde.")));
   right.innerHTML = "<h2>" + L("Zifferblatt gestalten", "Personnaliser le cadran") + "</h2>";
   var ch = el("div", "fchips"); ch.style.marginBottom = "12px";
-  [["klassik", L("Klassik", "Classique")], ["neon", "Neon"], ["minimal", "Minimal"], ["digital", "Digital"], ["casio", L("Retro-LCD 1", "LCD rétro 1")], ["casio2", L("Retro-LCD 2", "LCD rétro 2")], ["casio3", L("Retro-LCD 3", "LCD rétro 3")], ["casio4", L("Retro-LCD 4", "LCD rétro 4")], ["casio5", L("Retro-LCD 5", "LCD rétro 5")]].forEach(function(f){ var x = el("button", "lbtn" + (WO.face === f[0] ? " on" : ""), f[1]); x.onclick = function(){ WO.face = f[0]; st("watch", WO); ch.querySelectorAll("button").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); }; ch.appendChild(x); });
+  [["klassik", L("Klassik", "Classique")], ["neon", "Neon"], ["minimal", "Minimal"], ["digital", "Digital"], ["casio", L("Retro-LCD 1", "LCD rétro 1")], ["casio2", L("Retro-LCD 2", "LCD rétro 2")], ["casio3", L("Retro-LCD 3", "LCD rétro 3")], ["casio4", L("Retro-LCD 4", "LCD rétro 4")], ["casio5", L("Retro-LCD 5", "LCD rétro 5")], ["casio6", L("Retro-LCD 6", "LCD rétro 6")]].forEach(function(f){ var x = el("button", "lbtn" + (WO.face === f[0] ? " on" : ""), f[1]); x.onclick = function(){ WO.face = f[0]; st("watch", WO); ch.querySelectorAll("button").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); }; ch.appendChild(x); });
   right.appendChild(ch);
   var op = el("div", "wopt");
   function col(lbl, key){ var l = el("label", "", "<span>" + lbl + "</span>"), i = el("input"); i.type = "color"; i.value = WO[key]; i.oninput = function(){ WO[key] = i.value; st("watch", WO); }; l.appendChild(i); op.appendChild(l); }
@@ -592,14 +592,15 @@ function rlText(c, t, cx, cy, px, py){
     for (var r = 0; r < 7; r++) for (var q = 0; q < 5; q++) if (rows[r].charAt(q) === "1") c.fillRect(x0 + (i * 6 + q) * px, y0 + r * py, px * .9, py * .9); }
 }
 var RLV = {
-  casio:  { lcd: ["#c9c9bd", "#b6b7ab"], gold: "#dcc57e", blue: "#2a52b8", red: "#d24a50", ghost: .05, h12: 0, p: 1, mute: 0, dst: 1, bars: 2, bell: 1, ps: 1 },
-  casio2: { lcd: ["#d7d5c8", "#c3c2b4"], gold: "#e6cf98", blue: "#2c58b4", red: "#d9565a", ghost: .05, h12: 1, p: 1, mute: 2, dst: 1, bars: 2, bell: 2, ps: 0 },
-  casio3: { lcd: ["#dcdbd2", "#cbcabe"], gold: "#ecc93c", blue: "#2358d6", red: "#e04b4b", ghost: .06, h12: 0, p: 0, mute: 2, dst: 2, bars: 0, bell: 0, ps: 2 },
-  casio4: { lcd: ["#d3d3c6", "#bfc0b2"], gold: "#e8cc6a", blue: "#2a5cc8", red: "#dc5058", ghost: .07, h12: 1, p: 1, mute: 2, dst: 2, bars: 2, bell: 2, ps: 2 },
-  casio5: { lcd: ["#c4cab8", "#b0b7a4"], gold: "#e0c46c", blue: "#2850b4", red: "#d44c52", ghost: .12, h12: 0, p: 1, mute: 2, dst: 2, bars: 2, bell: 2, ps: 2 }
+  casio:  { cfg: "classic18", lcd: ["#c9c9bd", "#b6b7ab"], gold: "#dcc57e", blue: "#2a52b8", red: "#d24a50", ghost: .06, h12: 0, p: 0, mute: 0, dst: 1, bars: 2, bell: 0, ps: 1, bt: 1 },
+  casio2: { cfg: "classic18", lcd: ["#d7d5c8", "#c3c2b4"], gold: "#e6cf98", blue: "#2c58b4", red: "#d9565a", ghost: .06, h12: 1, p: 0, mute: 2, dst: 1, bars: 2, bell: 2, ps: 0, bt: 1 },
+  casio3: { cfg: "classic17", lcd: ["#dcdbd2", "#cbcabe"], gold: "#ecc93c", blue: "#2358d6", red: "#e04b4b", ghost: .07, h12: 0, p: 0, mute: 2, dst: 2, bars: 0, bell: 0, ps: 2, bt: 0 },
+  casio4: { cfg: "classic2", lcd: ["#d3d3c6", "#bfc0b2"], gold: "#e8cc6a", blue: "#2a5cc8", red: "#dc5058", ghost: .08, h12: 1, p: 0, mute: 2, dst: 2, bars: 2, bell: 2, ps: 2, bt: 0 },
+  casio5: { cfg: "classic3", lcd: ["#c4cab8", "#b0b7a4"], gold: "#e0c46c", blue: "#2850b4", red: "#d44c52", ghost: .09, h12: 0, p: 0, mute: 2, dst: 2, bars: 2, bell: 2, ps: 2, bt: 1 },
+  casio6: { cfg: "classic16", lcd: ["#cfd0c4", "#babbad"], gold: "#e2c870", blue: "#2c5ac0", red: "#da4e54", ghost: .1, h12: 1, p: 0, mute: 2, dst: 1, bars: 2, bell: 2, ps: 1, bt: 0 }
 };
 function drawRetroLcd(c, now, C, V){
-  var blue = V.blue, gold = V.gold, red = V.red, wh = "#f4f6fb", ink = "#15171a", cfg = SEGV.classic18, i, F = "'Arial Black','Helvetica Neue',Arial,Inter,sans-serif", FC = "Arial,'Helvetica Neue',Inter,sans-serif";
+  var blue = V.blue, gold = V.gold, red = V.red, wh = "#f4f6fb", ink = "#15171a", cfg = SEGV[V.cfg || "classic18"], i, F = "'Arial Black','Helvetica Neue',Arial,Inter,sans-serif", FC = "Arial,'Helvetica Neue',Inter,sans-serif";
   c.fillStyle = WO.bg; c.fillRect(0, 0, 466, 466);
   function oct(x0, y0, x1, y1, ch, r){ var P = [[x0 + ch, y0], [x1 - ch, y0], [x1, y0 + ch], [x1, y1 - ch], [x1 - ch, y1], [x0 + ch, y1], [x0, y1 - ch], [x0, y0 + ch]]; c.beginPath(); c.moveTo((P[7][0] + P[0][0]) / 2, (P[7][1] + P[0][1]) / 2); for (var k = 0; k < 8; k++){ var n = P[(k + 1) % 8]; c.arcTo(P[k][0], P[k][1], (P[k][0] + n[0]) / 2, (P[k][1] + n[1]) / 2, r); } c.closePath(); }
   oct(46, 63, 413, 397, 46, 20); c.strokeStyle = blue; c.lineWidth = 5; c.stroke();
@@ -617,7 +618,7 @@ function drawRetroLcd(c, now, C, V){
   c.lineWidth = 2.2; c.strokeStyle = red; c.beginPath(); c.moveTo(204, 323); c.lineTo(250, 323); c.quadraticCurveTo(260, 323, 258, 332); c.lineTo(256, 341); c.quadraticCurveTo(255, 348, 247, 348); c.lineTo(209, 348); c.quadraticCurveTo(198, 348, 200, 340); c.lineTo(202, 330); c.quadraticCurveTo(203, 323, 212, 323); c.stroke();
   T("WR", 229, 336, "italic 900 17px " + F, red, 1, 32, 0);
   c.strokeStyle = "#b9c9ee"; c.lineWidth = 2.2; c.beginPath(); c.moveTo(90, 354); c.lineTo(361, 354); c.stroke();
-  T("Bluetooth", 229, 370, "bold 14px " + FC, gold, .78, 60, 0);
+  T("Bluetooth", 229, 370, V.bt ? "900 15px " + F : "bold 14.5px " + FC, gold, V.bt ? .66 : .74, 60, V.bt ? .3 : 0);
   var x0 = 94, y0 = 134, x1 = 360, y1 = 316;
   function rr(x, y, w, h, r){ c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
   rr(x0 - 3, y0 - 3, x1 - x0 + 6, y1 - y0 + 6, 20); c.fillStyle = "#34363a"; c.fill();
@@ -625,19 +626,19 @@ function drawRetroLcd(c, now, C, V){
   c.save(); rr(x0, y0, x1 - x0, y1 - y0, 17); c.clip();
   c.fillStyle = "#3a3c3a"; c.fillRect(x0, y0 + 28, x1 - x0, 1.5); c.fillRect(x0, y0 + 89, x1 - x0, 1.5);
   c.fillStyle = ink; c.strokeStyle = ink;
-  if (V.ps){ c.globalAlpha = .35; c.lineWidth = 1.2; c.strokeRect(110.5, 143.5, 17, 11); c.font = "bold 7.5px " + FC; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText("PS", 119, 149.5); c.globalAlpha = 1; }
+  if (true){ c.globalAlpha = V.ps === 2 ? .9 : .14; c.lineWidth = 1.2; c.strokeRect(110.5, 143.5, 17, 11); c.font = "bold 7.5px " + FC; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText("PS", 119, 149.5); c.globalAlpha = 1; }
   c.font = "bold 10px " + FC; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText("0", 135, 148);
   var lit = Math.round(24 * WO.lvl / 100); if (WO.bat) for (i = 0; i < 24; i++){ c.globalAlpha = i < lit ? 1 : .09; c.fillRect(145 + i * 5.7, 142, 3.5, 13); } c.globalAlpha = 1;
   c.fillText("100", 325, 148);
   var dn = fr ? ["DIM", "LUN", "MAR", "MER", "JEU", "VEN", "SAM"] : ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"], p2 = function(n){ return (n < 10 ? "0" : "") + n; }, sp = function(n){ return (n < 10 ? " " : "") + n; };
-  function al(v, base){ return v === 2 ? 1 : v === 1 ? (base || .1) : 0; }
+  function al(v){ return v === 2 ? 1 : .14; }
   var jan = new Date(now.getFullYear(), 0, 1).getTimezoneOffset(), jul = new Date(now.getFullYear(), 6, 1).getTimezoneOffset(), isDst = jan !== jul && now.getTimezoneOffset() === Math.min(jan, jul), pm = now.getHours() >= 12;
   c.font = "bold 9.5px " + FC; c.textAlign = "center"; c.textBaseline = "middle";
   c.globalAlpha = al(V.mute); c.fillText("MUTE", 262, 174);
-  c.globalAlpha = V.dst === 2 || isDst ? 1 : al(V.dst); c.fillText("DST", 318, 238);
-  c.globalAlpha = V.h12 ? (pm ? 1 : al(V.p)) : al(V.p ? 1 : 0); c.font = "bold 10px " + FC; c.fillText("P", 115, 254);
+  c.globalAlpha = V.dst === 2 || isDst ? 1 : .14; c.fillText("DST", 318, 238);
+  c.globalAlpha = V.p === 2 || (V.h12 && pm) ? 1 : .14; c.font = "bold 10px " + FC; c.fillText("P", 115, 254);
   c.globalAlpha = al(V.bars); for (i = 0; i < 4; i++) c.fillRect(302 + i * 4.4, 258 - (5 + i), 2.2, 5 + i);
-  c.globalAlpha = al(V.bell); c.beginPath(); c.moveTo(329, 259); c.quadraticCurveTo(329, 248.5, 334.5, 248.5); c.quadraticCurveTo(340, 248.5, 340, 259); c.closePath(); c.fill(); c.fillRect(327.5, 258, 14, 1.8); c.beginPath(); c.arc(334.5, 262, 1.7, 0, 7); c.fill(); c.fillRect(333.7, 245.5, 1.6, 3);
+  c.globalAlpha = al(V.bell); c.lineWidth = 1.5; c.lineJoin = "round"; c.beginPath(); c.moveTo(327.5, 259.5); c.lineTo(329.5, 259.5); c.quadraticCurveTo(330.5, 257, 330.5, 254); c.quadraticCurveTo(330.5, 248.8, 334.5, 248.8); c.quadraticCurveTo(338.5, 248.8, 338.5, 254); c.quadraticCurveTo(338.5, 257, 339.5, 259.5); c.lineTo(341.5, 259.5); c.stroke(); c.beginPath(); c.arc(334.5, 262, 1.5, 0, 7); c.fill(); c.fillRect(333.8, 245.8, 1.5, 3);
   c.globalAlpha = 1;
   // Datum: Wochentag Punktmatrix, Zahlen in Segmentschrift
   if (WO.date){
