@@ -922,9 +922,9 @@ async function seitenansicht(wid, sid){
   app.innerHTML = h+'</section></div>'; app.style.setProperty("--wc", wc); window.scrollTo(0,0);
   const act = app.querySelector(".slnav a.act"); if (act && act.scrollIntoView) { try { act.scrollIntoView({block:"nearest", inline:"center"}); } catch(e){} }
 }
-let EXTRA = null;
-const WNAME = {de:["Deutschkurs","Cours d’allemand"], xm:["Weihnachtswelt","Monde de Noël"], rz:["Rezepte","Recettes"]};
-const WFARBE = {de:"linear-gradient(135deg,#ff9f1a,#ff3b8a 50%,#7a4dff)", xm:"linear-gradient(135deg,#c4162b,#e08a2c)", rz:"linear-gradient(135deg,#e08a2c,#1d7a47)"};
+let EXTRA = null, ALLES = null;
+const WNAME = {de:["Deutschkurs","Cours d’allemand"], xm:["Weihnachtswelt","Monde de Noël"], rz:["Rezepte","Recettes"], mu:["München","Munich"], ic:["IC-Labor","Labo de CI"], sch:["Schaltung","Circuit"], kurs:["Kursland","Kursland"], fz:["Französischkurs","Cours de français"], pin:["Pinout","Brochage"], lab:["Oratio Lab","Oratio Lab"], desk:["Oratio Desk","Oratio Desk"], welt:["Bereich","Espace"]};
+const WFARBE = {de:"linear-gradient(135deg,#ff9f1a,#ff3b8a 50%,#7a4dff)", xm:"linear-gradient(135deg,#c4162b,#e08a2c)", rz:"linear-gradient(135deg,#e08a2c,#1d7a47)", mu:"linear-gradient(135deg,#0a6ec8,#e8f0ff 140%)", ic:"linear-gradient(135deg,#1f9d55,#19c9b8)", sch:"linear-gradient(135deg,#19c9b8,#7a4dff)", kurs:"linear-gradient(135deg,#3b6fe0,#19b8c9)", fz:"linear-gradient(135deg,#2e5bff,#e0384f)", pin:"linear-gradient(135deg,#c4358f,#7a4dff)", lab:"linear-gradient(135deg,#7a4dff,#19c9b8)", desk:"linear-gradient(135deg,#374151,#6b7280)", welt:"linear-gradient(135deg,#e0703a,#7a4dff)"};
 /* ---- Intelligente Suche: Umlaute, Tippfehler, Verwandtes, Werkzeuge ---- */
 const WTOOLS = [
  ["datei-werkstatt.html#merge","➕","PDF zusammenfügen","Fusionner des PDF","Mehrere PDFs zu einer Datei verbinden, Seiten sortieren, drehen oder löschen.","Fusionner plusieurs PDF en un seul fichier.","pdf zusammenfuegen vereinen verbinden mergen kombinieren fusionner join combine"],
@@ -1004,6 +1004,7 @@ async function sucheVorbereiten(){
   if (DOCS) return;
   if (!SUCHE) SUCHE = await holen("daten/suche.json");
   if (!EXTRA) { try { EXTRA = await holen("daten/suche-extra.json"); } catch(e){ EXTRA = []; } }
+  if (!ALLES) { try { ALLES = await holen("daten/suche-alles.json"); } catch(e){ ALLES = []; } }
   DOCS = [];
   for (const [wid, sid, text] of SUCHE){
     const w = weltInfo(wid); const s = w && w.seiten.find(p => p.id === sid); if (!s) continue;
@@ -1011,6 +1012,8 @@ async function sucheVorbereiten(){
   }
   for (const [k, lv, href, t1, t2, s1, s2, text] of EXTRA)
     DOCS.push({s:(k==="de"?"de":"xm"),t:nrm(t1+" "+t2), k:nrm(s1+" "+s2), b:nrm(text), w:1, mk:()=>({chip:(WNAME[k]||[k,k])[LANG==="fr"?1:0]+(lv?" · "+lv:""), bg:WFARBE[k]||"#555", light:false, titel:LANG==="fr"?t2:t1, kurz:LANG==="fr"?s2:s1, href})});
+  for (const [k, lv, href, t1, t2, s1, s2, text] of ALLES)
+    DOCS.push({s:"alles",t:nrm(t1+" "+t2), k:nrm(s1+" "+s2), b:nrm(text), w:k==="welt"?2:1, mk:()=>({chip:(WNAME[k]||[k,k])[LANG==="fr"?1:0], bg:WFARBE[k]||"#555", light:false, titel:LANG==="fr"?t2:t1, kurz:LANG==="fr"?s2:s1, href})});
   for (const [href, sym, t1, t2, s1, s2, kw] of WTOOLS)
     DOCS.push({s:"wz",t:nrm(t1+" "+t2), k:nrm(s1+" "+s2), b:nrm(kw), kw:nrm(kw), w:3, mk:()=>({chip:U("werkzeug"), bg:"linear-gradient(135deg,#e0703a,#e0527a)", light:false, titel:sym+" "+(LANG==="fr"?t2:t1), kurz:LANG==="fr"?s2:s1, href})});
   VOCAB = new Set(); const rx=/[a-z0-9]{4,}/g;

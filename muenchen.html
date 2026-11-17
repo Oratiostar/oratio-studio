@@ -74,6 +74,32 @@
 .mq .bar{height:8px;border-radius:9px;background:var(--soft);overflow:hidden;margin:0 0 12px}.mq .bar i{display:block;height:100%;background:var(--gc,var(--acc));transition:width .25s}
 .mempty{color:var(--muted);padding:18px 6px;text-align:center}
 .mfoot{color:var(--muted);font-size:13.5px;margin:18px 0 6px;line-height:1.5}
+/* Heute / Zufall / Tagesgenerator / Bairisch-Training */
+.mtoday{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:0 0 14px}
+.mtoday>div{border-radius:20px;padding:12px 14px;min-width:0}
+.mtoday small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;opacity:.75}
+.mtoday b{display:block;font-size:17px;line-height:1.25;margin:3px 0 2px;overflow-wrap:anywhere}
+.mtoday p{margin:0;font-size:13.5px;line-height:1.4;opacity:.9}
+.mtoday .gbtn{margin-top:8px;padding:6px 12px;border-radius:99px;font-size:13px;min-height:0}
+.mrow{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.mrow .gbtn{padding:8px 14px;border-radius:99px;font-size:14px}
+.mgen{border-radius:20px;padding:14px;margin:0 0 14px}
+.mgen h3{margin:0 0 8px;font-size:17px}
+.mgen .opt{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 8px;align-items:center}
+.mgen .opt span{font-size:13px;font-weight:800;opacity:.8;margin-right:2px}
+.mgen .gbtn{padding:6px 12px;border-radius:99px;font-size:13.5px;min-height:0}
+.mstop{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line)}
+.mstop .tm{flex:none;width:74px;font-size:12px;font-weight:800;opacity:.75;padding-top:3px}
+.mstop .tx{flex:1;min-width:0}
+.mstop .tx b{display:block;font-size:15.5px;line-height:1.25}
+.mstop .tx small{display:block;opacity:.8;font-size:12.5px;line-height:1.4;margin-top:2px}
+.mstop .bt{flex:none;display:flex;gap:6px}
+.mstop .bt button{all:unset;cursor:pointer;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--gc,var(--acc)) 20%,transparent);font-size:16px;-webkit-tap-highlight-color:transparent}
+.mdt .w{font-size:26px;font-weight:900;margin:2px 0 6px}
+.mdt .opts{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.mdt button.o{justify-content:flex-start;border-radius:14px;text-align:left;padding:10px 12px;border:1px solid var(--g-edge);min-height:0;font-size:14px;line-height:1.3}
+.mdt button.o.ok{background:#bdf0c8;border-color:#35a853;color:#0d3d1a}.mdt button.o.no{background:#ffd0d0;border-color:#d44;color:#4a0b0b}
+.mdt .sc{font-size:13px;opacity:.8;margin:8px 0 0}
 [hidden]{display:none!important}
 
 </style>
@@ -3523,6 +3549,7 @@ h += '<section class="mhero"><h1>' + (fr ? "Munich – ma ville" : "München –
   ? "Choisis un thème : quartiers, monuments, musées, Biergärten, Wiesn, cuisine, technique, histoire, excursions, bavarois et un quiz."
   : "Wähl ein Thema: Viertel, Sehenswertes, Museen, Biergärten, Wiesn, Essen, Technik, Geschichte, Ausflüge, Bairisch und ein Quiz.") + '</p><span class="kind" aria-hidden="true">🥨</span></section>';
 h += '<div class="mstats">' + STATS.map(function(s){ return '<div class="glass"><b>' + e(s[0]) + "</b><small>" + e(T(s[1])) + "</small></div>"; }).join("") + "</div>";
+h += '<div class="mtoday" id="mtoday"></div>';
 h += '<input id="msu" class="in msuche" type="search" autocomplete="off" placeholder="' + (fr ? "🔍 Chercher à Munich … (ex. Isar, bière, Ohm)" : "🔍 In München suchen … (z. B. Isar, Bier, Ohm)") + '">';
 h += '<p class="mcount" id="mcnt"></p>';
 h += '<nav class="mmenu" id="mmenu" aria-label="' + (fr ? "Thèmes" : "Themen") + '"></nav>';
@@ -3559,13 +3586,14 @@ function panel(){
     var list = [];
     SEC.forEach(function(S){ S.c.forEach(function(c, i){ if (FAV.indexOf(key(S, i)) >= 0) list.push(card(S, c, i, true)); }); });
     html = '<div class="mban" style="--gc:' + COL.fav + '"><span class="e">⭐</span><div><h2>' + (fr ? "Mes favoris" : "Meine Favoriten") + '</h2><p>' + (fr ? "Touche ☆ sur une carte pour la garder ici." : "Tippe bei einer Karte auf ☆, dann steht sie hier.") + "</p></div></div>";
+    if (list.length) html += '<div class="mrow"><button type="button" class="gbtn" id="mcopy" style="--gc:' + COL.fav + '">📋 ' + (fr ? "Copier la liste" : "Liste kopieren") + '</button></div>';
     html += list.length ? '<div class="mgrid">' + list.join("") + "</div>" : '<p class="mempty">☆ ' + (fr ? "Pas encore de favoris." : "Noch keine Favoriten.") + "</p>";
     P.innerHTML = html; return;
   }
   s = BYID[cur];
   html = '<div class="mban" style="--gc:' + COL[s.id] + '"><span class="e">' + s.emo + '</span><div><h2>' + e(T(s.t)) + "</h2><p>" + e(T(s.i)) + "</p></div></div>";
   if (s.id === "dialekt"){
-    html += '<div class="mc pane" style="--gc:' + COL.dialekt + '"><table class="mt">' + DIA.map(function(d){ return "<tr><td>" + e(d[0]) + "</td><td>" + e(T(d[1])) + "</td></tr>"; }).join("") + "</table></div>";
+    html += '<div class="mc pane" style="--gc:' + COL.dialekt + '"><table class="mt">' + DIA.map(function(d){ return "<tr><td>" + e(d[0]) + "</td><td>" + e(fr ? d[2] : d[1]) + "</td></tr>"; }).join("") + "</table></div>";
   } else if (s.id === "quiz"){
     html += '<div class="mc pane mq" id="mq" style="--gc:' + COL.quiz + '"></div>';
   } else {
@@ -3575,8 +3603,12 @@ function panel(){
     else html += '<div class="mtools"><span class="sp"></span><button type="button" class="gbtn sm" id="mall" style="--gc:' + COL[s.id] + '">' + (fr ? "Tout ouvrir" : "Alle aufklappen") + "</button></div>";
     html += '<div class="mgrid">' + s.c.map(function(c, i){ return !tagSel || T(c.g) === tagSel ? card(s, c, i, false) : ""; }).join("") + "</div>";
   }
+  if (s.id === "plan") html = html.replace('<div class="mgrid">', '<div class="mc pane mgen glass" id="mgen" style="--gc:' + COL.plan + '"></div><div class="mgrid">');
+  if (s.id === "dialekt") html = html.replace('<div class="mc pane"', '<div class="mc pane mdt glass" id="mdt" style="--gc:' + COL.dialekt + '"></div><div class="mc pane"');
   P.innerHTML = html;
   if (s.id === "quiz") startQuiz($("#mq"));
+  if (s.id === "plan") tagGen($("#mgen"));
+  if (s.id === "dialekt") baiTrainer($("#mdt"));
 }
 function go(id, scroll){
   cur = id; tagSel = ""; q = []; $("#msu").value = ""; menu(); panel();
@@ -3587,6 +3619,8 @@ main.addEventListener("click", function(ev){
   var b = ev.target.closest("button"); if (!b) return;
   if (b.closest("#mmenu")) return go(b.dataset.id, true);
   if (b.dataset.tag !== undefined && b.classList.contains("gbtn")){ tagSel = b.dataset.tag; return panel(); }
+  if (b.id === "mcopy"){ var tx = []; SEC.forEach(function(S){ S.c.forEach(function(c, i){ if (FAV.indexOf(key(S, i)) >= 0) tx.push("• " + T(c.t) + " (" + T(S.t) + ")"); }); }); var txt = (fr ? "Mes favoris à Munich :\n" : "Meine München-Favoriten:\n") + tx.join("\n"); var done = function(){ b.textContent = "✓ " + (fr ? "Copié" : "Kopiert"); }; try { navigator.clipboard.writeText(txt).then(done, function(){ window.prompt("", txt); }); } catch (x2) { window.prompt("", txt); } return; }
+  if (b.dataset.act){ return heuteAct(b.dataset.act, b.dataset.k); }
   if (b.id === "mall"){ var cs = main.querySelectorAll("#mpanel .mc[data-k]"), open = !b.dataset.o; cs.forEach(function(c){ c.classList.toggle("open", open); c.querySelector(".mh").setAttribute("aria-expanded", open); }); b.dataset.o = open ? "1" : ""; b.textContent = open ? (fr ? "Tout fermer" : "Alle zuklappen") : (fr ? "Tout ouvrir" : "Alle aufklappen"); return; }
   var c = b.closest(".mc[data-k]"); if (!c) return;
   if (b.classList.contains("mfav")){
@@ -3599,6 +3633,80 @@ main.addEventListener("click", function(ev){
 $("#msu").addEventListener("input", function(ev){ q = ev.target.value.toLowerCase().split(/\s+/).filter(Boolean); menu(); panel(); });
 var hsh = (location.hash || "").slice(1); if (BYID[hsh] || hsh === "fav") cur = hsh;
 menu(); panel();
+
+/* Heute in München: Tipp, Wort, Zufall */
+function allCards(){ var l = []; SEC.forEach(function(S){ S.c.forEach(function(c, i){ l.push([S, c, i]); }); }); return l; }
+function openCard(k){
+  var sid = k.split(":")[0]; go(sid, false);
+  var el = main.querySelector('.mc[data-k="' + k + '"]'); if (!el) return;
+  el.classList.add("open"); el.querySelector(".mh").setAttribute("aria-expanded", "true"); el.scrollIntoView({behavior:"smooth", block:"center"});
+}
+function heuteAct(a, k){
+  if (a === "open") return openCard(k);
+  if (a === "rand"){ var L = allCards(), r = L[Math.floor(Math.random() * L.length)]; return openCard(key(r[0], r[2])); }
+  if (a === "month"){ var m = new Date().getMonth(), ix = m < 2 ? 0 : m < 4 ? 1 : m < 6 ? 2 : m < 8 ? 3 : m < 10 ? 4 : 5; return openCard("kalender:" + ix); }
+}
+function heute(){
+  var d = Math.floor(Date.now() / 864e5), L = allCards(), r = L[d % L.length], w = DIA[d % DIA.length];
+  var mon = (fr ? ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"] : ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"])[new Date().getMonth()];
+  $("#mtoday").innerHTML =
+    '<div class="glass"><small>💡 ' + (fr ? "Astuce du jour" : "Tipp des Tages") + '</small><b>' + e(T(r[1].t)) + '</b><p>' + e(T(r[0].t)) + '</p><button type="button" class="gbtn" data-act="open" data-k="' + key(r[0], r[2]) + '" style="--gc:' + COL[r[0].id] + '">' + (fr ? "Ouvrir" : "Öffnen") + '</button></div>'
+    + '<div class="glass"><small>🗣️ ' + (fr ? "Mot bavarois du jour" : "Bairisches Wort des Tages") + '</small><b>' + e(w[0]) + '</b><p>' + e(fr ? w[2] : w[1]) + '</p></div>'
+    + '<div class="glass"><small>🎲 ' + (fr ? "Envie de découvrir ?" : "Lust zu entdecken?") + '</small><button type="button" class="gbtn" data-act="rand" style="--gc:' + COL.sehen + '">🎲 ' + (fr ? "Surprends-moi" : "Überrasch mich") + '</button> <button type="button" class="gbtn" data-act="month" style="--gc:' + COL.kalender + '">📅 ' + (fr ? "Ce mois-ci : " : "Dieser Monat: ") + e(mon) + '</button></div>';
+}
+heute();
+
+/* Tag zusammenstellen (im Abschnitt Tagespläne) */
+function tagGen(box){
+  var wet = "sonne", len = 4, st = [];
+  var PL = {sonne:[["natur","sehen"],["essen"],["viertel","sehen","natur"],["biergaerten"]], regen:[["museen"],["essen"],["kultur","museen","sehen"],["essen","kultur"]]};
+  var TM = fr ? ["Matin","Midi","Après-midi","Soir"] : ["Vormittag","Mittag","Nachmittag","Abend"];
+  function pick(slot, not){
+    var secs = PL[wet][slot], tries = 0, S, c, i;
+    do { var id = secs[Math.floor(Math.random() * secs.length)]; S = BYID[id]; i = Math.floor(Math.random() * S.c.length); tries++; } while (not.indexOf(key(S, i)) >= 0 && tries < 30);
+    return [S, i];
+  }
+  function neu(){ st = []; var slots = len === 4 ? [0,1,2,3] : [2,3]; var used = []; slots.forEach(function(sl){ var p = pick(sl, used); used.push(key(p[0], p[1])); st.push({sl:sl, S:p[0], i:p[1]}); }); show(); }
+  function show(){
+    var h = '<h3>🎲 ' + (fr ? "Compose ta journée" : "Stell dir deinen Tag zusammen") + '</h3>'
+      + '<div class="opt"><span>' + (fr ? "Météo" : "Wetter") + '</span><button type="button" class="gbtn' + (wet === "sonne" ? " on" : "") + '" data-w="sonne" style="--gc:#f5a524">☀️ ' + (fr ? "Soleil" : "Sonne") + '</button><button type="button" class="gbtn' + (wet === "regen" ? " on" : "") + '" data-w="regen" style="--gc:#2e86ff">🌧️ ' + (fr ? "Pluie" : "Regen") + '</button></div>'
+      + '<div class="opt"><span>' + (fr ? "Durée" : "Dauer") + '</span><button type="button" class="gbtn' + (len === 2 ? " on" : "") + '" data-l="2" style="--gc:#14b8a6">' + (fr ? "Demi-journée" : "Halber Tag") + '</button><button type="button" class="gbtn' + (len === 4 ? " on" : "") + '" data-l="4" style="--gc:#14b8a6">' + (fr ? "Journée entière" : "Ganzer Tag") + '</button></div>';
+    st.forEach(function(x, n){ var c = x.S.c[x.i]; h += '<div class="mstop" style="--gc:' + COL[x.S.id] + '"><div class="tm">' + TM[x.sl] + '</div><div class="tx"><b>' + x.S.emo + " " + e(T(c.t)) + '</b><small>' + e(T(x.S.t)) + " · " + e(T(c.g)) + '</small></div><div class="bt"><button type="button" data-re="' + n + '" aria-label="' + (fr ? "Autre idée" : "Andere Idee") + '">🔀</button><button type="button" data-op="' + n + '" aria-label="' + (fr ? "Ouvrir" : "Öffnen") + '">📖</button></div></div>'; });
+    h += '<div class="opt" style="margin-top:10px"><button type="button" class="gbtn" data-all="1" style="--gc:' + COL.fav + '">⭐ ' + (fr ? "Garder tout en favoris" : "Alles als Favoriten merken") + '</button><button type="button" class="gbtn" data-new="1" style="--gc:' + COL.plan + '">🎲 ' + (fr ? "Nouvelle journée" : "Neu würfeln") + '</button></div>';
+    box.innerHTML = h;
+  }
+  box.onclick = function(ev){
+    var b = ev.target.closest("button"); if (!b) return; ev.stopPropagation();
+    if (b.dataset.w){ wet = b.dataset.w; return neu(); }
+    if (b.dataset.l){ len = +b.dataset.l; return neu(); }
+    if (b.dataset.new) return neu();
+    if (b.dataset.re){ var n = +b.dataset.re, used = st.map(function(x){ return key(x.S, x.i); }), p = pick(st[n].sl, used); st[n].S = p[0]; st[n].i = p[1]; return show(); }
+    if (b.dataset.op){ var x = st[+b.dataset.op]; return openCard(key(x.S, x.i)); }
+    if (b.dataset.all){ st.forEach(function(x){ var k = key(x.S, x.i); if (FAV.indexOf(k) < 0) FAV.push(k); }); favSave(); menu(); b.textContent = "✓ " + (fr ? "Ajouté aux favoris" : "In den Favoriten"); }
+  };
+  neu();
+}
+
+/* Bairisch üben */
+function baiTrainer(box){
+  var pts = 0, n = 0, rnd = 0;
+  var best = 0; try { best = +localStorage.getItem("mu_bai") || 0; } catch (x) {}
+  function frage(){
+    var w = DIA[Math.floor(Math.random() * DIA.length)], opts = [w];
+    while (opts.length < 4){ var o = DIA[Math.floor(Math.random() * DIA.length)]; if (opts.indexOf(o) < 0 && o[1] !== w[1]) opts.push(o); }
+    opts.sort(function(){ return Math.random() - .5; });
+    box.innerHTML = '<h3>🎯 ' + (fr ? "Entraîne-toi au bavarois" : "Bairisch üben") + '</h3><p>' + (fr ? "Que veut dire :" : "Was heißt:") + '</p><div class="w">' + e(w[0]) + '</div><div class="opts">' + opts.map(function(o, k){ return '<button type="button" class="o gbtn" data-k="' + k + '">' + e(fr ? o[2] : o[1]) + "</button>"; }).join("") + '</div><p class="sc">' + (fr ? "Score : " : "Punkte: ") + pts + " / " + n + (best ? " · " + (fr ? "Record : " : "Rekord: ") + best : "") + "</p>";
+    box.querySelectorAll("button.o").forEach(function(b){ b.onclick = function(){
+      var ok = opts[+b.dataset.k] === w; n++; if (ok) pts++;
+      box.querySelectorAll("button.o").forEach(function(x){ x.disabled = true; if (opts[+x.dataset.k] === w) x.classList.add("ok"); });
+      if (!ok) b.classList.add("no");
+      if (pts > best){ best = pts; try { localStorage.setItem("mu_bai", best); } catch (y) {} }
+      box.querySelector(".sc").textContent = (fr ? "Score : " : "Punkte: ") + pts + " / " + n + " · " + (fr ? "Record : " : "Rekord: ") + best;
+      var nx = document.createElement("button"); nx.type = "button"; nx.className = "btn go"; nx.style.marginTop = "10px"; nx.textContent = fr ? "Suivant" : "Weiter"; nx.onclick = frage; box.appendChild(nx);
+    }; });
+  }
+  frage();
+}
 
 /* Quiz: 10 zufällige Fragen */
 function startQuiz(box){
