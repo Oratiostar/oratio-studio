@@ -757,7 +757,7 @@ function werkzeugseite(){
 }
 function lifestyleseite(){
   document.title = "Oratio Lifestyle"; brand("lifestyle");
-  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("lifestyle"))+'</div><h1>'+esc(U("lifestyle"))+'</h1><p class="sub">'+esc(U("lifeT"))+'</p><p class="platz">'+esc(U("bald"))+'</p>';
+  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("lifestyle"))+'</div><h1>'+esc(U("lifestyle"))+'</h1><p class="sub">'+esc(U("lifeT"))+'</p><a class="card" href="muenchen.html" style="display:flex;gap:14px;align-items:center;text-decoration:none;color:inherit;max-width:640px;margin:14px 0;padding:14px 16px;border-radius:18px;border:2px solid var(--line);background:linear-gradient(135deg,rgba(24,140,220,.14),rgba(25,201,184,.12))"><span style="flex:none;font-size:40px;line-height:1">🥨</span><span><b style="display:block;font-size:20px">'+(LANG==="fr"?"Munich – ma ville":"München – meine Stadt")+'</b><span style="display:block;color:var(--muted);line-height:1.45;margin-top:3px">'+(LANG==="fr"?"Monuments, Isar, Wiesn, Biergärten, histoire de la technique, bavarois, excursions et quiz – tout sur Munich.":"Sehenswürdigkeiten, Isar, Wiesn, Biergärten, Technik-Geschichte, Bairisch, Ausflüge und Quiz – alles über München.")+'</span></span></a><p class="platz">'+esc(U("bald"))+'</p>';
 }
 function deutschseite(){
   document.title = U("deN")+" – Oratio Place"; brand("deutsch");

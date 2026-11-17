@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>München erleben – Oratio Place</title>
+<meta name="description" content="Alles über München als Münchner: Sehenswürdigkeiten, Isar und Englischer Garten, Wiesn, Biergärten, Essen, Technik-Geschichte, Bairisch, Ausflüge und ein Quiz.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Oratio Place">
+<meta property="og:title" content="München erleben – Oratio Place">
+<meta property="og:description" content="Alles über München als Münchner: Sehenswürdigkeiten, Isar und Englischer Garten, Wiesn, Biergärten, Essen, Technik-Geschichte, Bairisch, Ausflüge und ein Quiz.">
+<meta property="og:url" content="https://oratioplace.com/muenchen.html">
+<link rel="icon" href="logo-place.png">
+<link rel="apple-touch-icon" href="logo-place.png">
+<link rel="stylesheet" href="werkzeuge/wz.css">
+<style>
+.mhero{position:relative;overflow:hidden;border-radius:22px;padding:26px 22px;margin:6px 0 16px;color:#fff;box-shadow:var(--shadow);
+  background:linear-gradient(135deg,rgba(7,76,150,.94),rgba(24,140,220,.9)),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cpath d='M28 0L56 28L28 56L0 28Z' fill='%23fff' fill-opacity='.14'/%3E%3C/svg%3E")}
+.mhero h1{margin:0 0 6px;font-size:clamp(28px,6vw,44px);line-height:1.1;color:#fff}
+.mhero p{margin:0;max-width:640px;padding-right:58px;font-size:clamp(15px,2.4vw,18px);line-height:1.5}
+.mhero .kind{position:absolute;right:14px;bottom:8px;font-size:clamp(54px,12vw,96px);opacity:.9;line-height:1}
+.mstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:0 0 16px}
+.mstats>div{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:10px 12px;text-align:center;box-shadow:var(--shadow)}
+.mstats b{display:block;font-size:24px;color:var(--acc);font-variant-numeric:tabular-nums}
+.mstats small{color:var(--muted);font-size:13px;line-height:1.3;display:block}
+.mnav{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;gap:6px;margin:0 0 12px;position:sticky;top:0;z-index:5;background:var(--bg);padding:6px 0}
+.mnav a{border:2px solid var(--line);background:var(--card);color:var(--fg);border-radius:99px;padding:5px 12px;font-size:14px;font-weight:700;text-decoration:none;white-space:nowrap}
+@media (hover:hover){.mnav a:hover{border-color:var(--acc)}}
+.msec{margin:0 0 20px;scroll-margin-top:60px}
+.msec>h2{display:flex;gap:10px;align-items:center;margin:0 0 4px;font-size:clamp(21px,4vw,27px)}
+.msec>h2 i{font-style:normal;display:inline-grid;place-items:center;width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#2e86ff,#19c9b8);font-size:22px;box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.msec>.in1{color:var(--muted);margin:0 0 10px;max-width:760px;line-height:1.5}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.mc{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:13px 14px;box-shadow:var(--shadow);min-width:0}
+.mc h3{margin:0 0 5px;font-size:17px;line-height:1.25}
+.mc p{margin:0;line-height:1.55;font-size:15px}
+.mc .tag{display:inline-block;margin-top:8px;padding:2px 9px;border-radius:99px;background:var(--soft);color:var(--muted);font-size:12.5px;font-weight:700}
+.mc.big{grid-column:1/-1}
+.mt{width:100%;border-collapse:collapse;font-size:15px}.mt td{padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top}.mt td:first-child{font-weight:800;white-space:nowrap;color:var(--acc)}
+.mq .q{font-weight:800;margin:0 0 8px;font-size:17px}.mq .opts{display:grid;gap:8px}.mq button.o{text-align:left;border:2px solid var(--line);background:var(--card);color:var(--fg);border-radius:12px;padding:9px 12px;font:inherit;font-weight:600;cursor:pointer}
+@media (hover:hover){.mq button.o:hover:not(:disabled){border-color:var(--acc)}}
+.mq button.o.ok{background:#bdf0c8;border-color:#35a853;color:#0d3d1a}.mq button.o.no{background:#ffd0d0;border-color:#d44;color:#4a0b0b}
+.mq .ex{margin:10px 0 0;color:var(--muted);line-height:1.45}
+.mq .bar{height:8px;border-radius:9px;background:var(--soft);overflow:hidden;margin:0 0 12px}.mq .bar i{display:block;height:100%;background:var(--acc);transition:width .25s}
+.msuche{margin:0 0 12px;max-width:520px}
+.mfoot{color:var(--muted);font-size:13.5px;margin:18px 0 6px;line-height:1.5}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main id="mm"></main>
+<script src="werkzeuge/wz.js"></script>
+<script>
+(function(){
+var fr = WZ.lang === "fr", $ = function(s, r){ return (r || document).querySelector(s); };
+function e(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+function T(a){ return fr ? a[1] : a[0]; }
+
+/* ===== Inhalte: [Deutsch, Französisch] ===== */
+var STATS = [
+  ["1158", ["Stadtgründung","Fondation de la ville"]],
+  ["≈ 1,5 Mio.", ["Einwohner – drittgrößte Stadt Deutschlands","habitants – 3ᵉ ville d’Allemagne"]],
+  ["99 m", ["Frauenkirche-Türme: so hoch darf (fast) alles bleiben","tours de la Frauenkirche : la hauteur de référence"]],
+  ["291 m", ["Olympiaturm","Tour olympique"]],
+  ["≈ 375 ha", ["Englischer Garten – größer als der Central Park","Jardin anglais – plus grand que Central Park"]],
+  ["≈ 520 m", ["über dem Meer – Alpen in Sichtweite","d’altitude – les Alpes en vue"]]
+];
+
+var SEC = [
+ {id:"sehen", emo:"🏛️", t:["Sehenswürdigkeiten","À voir"], i:["Die Klassiker, die man als Münchner trotzdem immer wieder gern zeigt.","Les classiques que même les Munichois aiment montrer encore et encore."], c:[
+  [["Marienplatz & Neues Rathaus","Marienplatz & Nouvel hôtel de ville"],["Das Herz der Stadt. Das neugotische Neue Rathaus (1867–1909) hat ein Glockenspiel mit 43 Glocken und 32 lebensgroßen Figuren – um 11 und 12 Uhr, von März bis Oktober auch um 17 Uhr. Dazu die Mariensäule von 1638.","Le cœur de la ville. Le Nouvel hôtel de ville néogothique (1867–1909) abrite un carillon de 43 cloches et 32 figures grandeur nature – à 11 h et 12 h, de mars à octobre aussi à 17 h. Plus la colonne de Marie de 1638."],"Zentrum"],
+  [["Frauenkirche","Frauenkirche"],["Wahrzeichen mit den zwei Zwiebeltürmen (rund 99 m). Im Eingang liegt der „Teufelstritt“: ein dunkler Fußabdruck im Boden. Der Legende nach hat der Teufel hier gestampft. 2004 entschieden die Münchner per Bürgerentscheid, dass keine Gebäude höher als diese Türme werden.","Emblème aux deux tours à bulbes (env. 99 m). Dans l’entrée se trouve le « pas du diable » : une empreinte noire dans le sol. Selon la légende, le diable y a frappé du pied. En 2004, les Munichois ont décidé par référendum qu’aucun bâtiment ne dépasserait ces tours."],"Wahrzeichen"],
+  [["Alter Peter","Alter Peter"],["Die Peterskirche: etwa 300 Stufen hinauf auf den Turm – und du hast bei Föhn einen Blick bis zu den Alpen.","L’église Saint-Pierre : environ 300 marches jusqu’en haut – et par temps de foehn, vue jusqu’aux Alpes."],"Aussicht"],
+  [["Viktualienmarkt","Viktualienmarkt"],["Seit 1807 der Markt mitten in der Stadt: Obst, Käse, Fisch, Gewürze, Blumen – und der Biergarten unter Kastanien mit wechselnden Brauereien. Am Rand: der Brunnen für Karl Valentin und Liesl Karlstadt.","Le marché au cœur de la ville depuis 1807 : fruits, fromages, poissons, épices, fleurs – et la brasserie en plein air sous les marronniers. Sur le côté : la fontaine dédiée à Karl Valentin et Liesl Karlstadt."],"Markt"],
+  [["Residenz","Résidence royale"],["Das größte Stadtschloss Deutschlands: ab 1385 über Jahrhunderte gewachsen, mit Schatzkammer, Antiquarium und dem Cuvilliés-Theater. Vor dem Eingang: die Löwen – wer sie anfasst, hat Glück.","Le plus grand palais urbain d’Allemagne : agrandi pendant des siècles à partir de 1385, avec trésor, Antiquarium et théâtre Cuvilliés. Devant l’entrée : les lions – les toucher porte bonheur."],"Geschichte"],
+  [["Schloss Nymphenburg","Château de Nymphenburg"],["Die Sommerresidenz der Wittelsbacher (Baubeginn 1664) mit riesigem Park, Kanälen, Badenburg und der berühmten Schönheitengalerie von König Ludwig I.","Résidence d’été des Wittelsbach (construction dès 1664) avec un immense parc, des canaux, la Badenburg et la célèbre galerie des beautés de Louis Iᵉʳ."],"Schloss"],
+  [["Olympiapark & Olympiaturm","Parc olympique & Tour olympique"],["Für die Spiele 1972 gebaut: das berühmte Zeltdach (Frei Otto, Behnisch) und der 291 m hohe Turm mit Drehrestaurant. Heute Konzerte, Eislaufen, Sommerrodeln, Klettern auf dem Dach – und ein Erinnerungsort für die Opfer des Anschlags 1972.","Construit pour les Jeux de 1972 : le célèbre toit-tente (Frei Otto, Behnisch) et la tour de 291 m avec restaurant panoramique. Aujourd’hui concerts, patinage, luge d’été, escalade sur le toit – et un lieu de mémoire pour les victimes de l’attentat de 1972."],"Olympia"],
+  [["Kunstareal","Quartier des musées"],["Die drei Pinakotheken (Alte, Neue, Moderne), das Lenbachhaus mit dem „Blauen Reiter“ (Kandinsky, Marc), das Museum Brandhorst und die Glyptothek – eine der dichtesten Museumsmeilen Europas.","Les trois Pinacothèques (ancienne, nouvelle, moderne), le Lenbachhaus avec le « Cavalier bleu » (Kandinsky, Marc), le Museum Brandhorst et la Glyptothèque – l’un des quartiers de musées les plus denses d’Europe."],"Kunst"],
+  [["BMW Welt & Museum","BMW Welt & musée"],["Der „Vierzylinder“ (Museum 1973) und die geschwungene BMW Welt (2007) neben dem Olympiapark: Autos, Motorräder und Architektur zum Staunen.","Le « quatre-cylindres » (musée, 1973) et la BMW Welt aux courbes audacieuses (2007) à côté du parc olympique : voitures, motos et architecture impressionnante."],"Technik"],
+  [["Allianz Arena","Allianz Arena"],["Seit 2005 die Heimat des FC Bayern (gegründet 1900): rund 75.000 Plätze, die Hülle aus Folienkissen leuchtet rot, blau oder weiß.","Depuis 2005, le stade du FC Bayern (fondé en 1900) : environ 75 000 places, l’enveloppe en coussins translucides s’illumine en rouge, bleu ou blanc."],"Fußball"]
+ ]},
+ {id:"natur", emo:"🌊", t:["Isar, Parks & Natur","Isar, parcs & nature"], i:["Münchner sind draußen, sobald die Sonne scheint – und die Stadt macht es einem leicht.","Les Munichois sont dehors dès que le soleil brille – et la ville s’y prête."], c:[
+  [["Englischer Garten","Jardin anglais"],["1789 angelegt, rund 375 Hektar – größer als der Central Park in New York. Monopteros mit Blick auf die Skyline, Kleinhesseloher See zum Rudern, der Chinesische Turm mit Biergarten (ca. 7.000 Plätze) und: mehrere Wiesen, auf denen man (ja, wirklich) nackt in der Sonne liegen darf.","Aménagé en 1789, environ 375 hectares – plus grand que Central Park à New York. Monopteros avec vue sur la ville, lac de Kleinhesselohe pour ramer, Tour chinoise avec brasserie en plein air (env. 7 000 places) et : plusieurs prairies où l’on peut (vraiment) bronzer nu."],"Park"],
+  [["Eisbach-Welle","Vague de l’Eisbach"],["Am Rand des Englischen Gartens steht seit den 1970ern eine stehende Welle – mitten in der Stadt wird gesurft, das ganze Jahr, auch im Winter. Zuschauen darf jeder, aufs Brett nur Geübte: die Strömung ist gefährlich.","Au bord du Jardin anglais, une vague stationnaire existe depuis les années 1970 – on surfe en pleine ville, toute l’année, même en hiver. Tout le monde peut regarder, mais seuls les experts montent sur la planche : le courant est dangereux."],"Surfen"],
+  [["Isar & Flaucher","Isar & Flaucher"],["Die Isar wurde zurückgebaut, damit sie wieder wild fließen darf. An den Kiesbänken wird gegrillt, gebadet und Musik gemacht. Der Flaucher im Süden ist der Sommer-Treffpunkt.","L’Isar a été renaturée pour retrouver son cours sauvage. Sur les bancs de gravier, on grille, on se baigne et on fait de la musique. Le Flaucher au sud est le lieu de rendez-vous de l’été."],"Sommer"],
+  [["Hirschgarten","Hirschgarten"],["Ein Park mit echten Hirschen und einer der größten Biergärten der Welt – rund 8.000 Plätze.","Un parc avec de vrais cerfs et l’une des plus grandes brasseries en plein air du monde – environ 8 000 places."],"Biergarten"],
+  [["Westpark, Luitpoldpark, Olympiaberg","Westpark, Luitpoldpark, Olympiaberg"],["Der Olympiaberg ist aus Trümmern des Zweiten Weltkriegs aufgeschüttet – im Winter Rodeln, im Sommer Sonnenuntergang mit Alpenblick.","La colline olympique a été érigée avec les gravats de la Seconde Guerre mondiale – luge en hiver, coucher de soleil avec vue sur les Alpes en été."],"Aussicht"],
+  [["Die Alpen vor der Haustür","Les Alpes à la porte"],["Bei Föhn (warmer Fallwind) sieht man die Berge zum Greifen nah. Wandern, Skifahren und Seen sind in 45 bis 90 Minuten erreichbar – die Zugspitze (2.962 m, höchster Berg Deutschlands) mit dem Zug in etwa 1,5 Stunden bis Garmisch.","Par foehn (vent chaud et descendant), les montagnes semblent toutes proches. Randonnée, ski et lacs à 45–90 minutes – la Zugspitze (2 962 m, plus haut sommet d’Allemagne) à environ 1 h 30 en train jusqu’à Garmisch."],"Berge"]
+ ]},
+ {id:"essen", emo:"🍺", t:["Essen, Bier & Biergärten","Cuisine, bière & Biergärten"], i:["Brotzeit, Weißwurst und eine Maß – aber es gibt Regeln.","Brotzeit, Weißwurst et une chope – mais il y a des règles."], c:[
+  [["Weißwurst-Regel","La règle de la Weißwurst"],["Weißwürste isst man traditionell nur vormittags – „nicht das Zwölfuhrläuten hören“. Mit süßem Senf und Brezn, die Haut wird gezuzelt oder abgezogen. Erfunden wurde sie der Legende nach 1857 am Marienplatz.","On mange traditionnellement la Weißwurst le matin – « sans entendre sonner midi ». Avec moutarde douce et bretzel ; on la suce ou on retire la peau. Selon la légende, elle a été inventée en 1857 sur la Marienplatz."],"Klassiker"],
+  [["Biergarten-Recht","Le droit des Biergärten"],["Seit 1812 ist es erlaubt, die eigene Brotzeit mitzubringen – nur Getränke kauft man dort. Tischtuch drauf, Radi, Obatzda, Brezn, Leberkäs: so geht München.","Depuis 1812, on peut apporter son propre repas – seules les boissons s’achètent sur place. Nappe sur la table, radis, Obatzda, bretzel, Leberkäs : c’est ça, Munich."],"Tradition"],
+  [["Die sechs Wiesn-Brauereien","Les six brasseries de la Wiesn"],["Augustiner, Hacker-Pschorr, Hofbräu, Löwenbräu, Paulaner und Spaten. Nur Münchner Brauereien dürfen auf dem Oktoberfest ausschenken. Dazu Weißbier-Klassiker wie Franziskaner und Schneider.","Augustiner, Hacker-Pschorr, Hofbräu, Löwenbräu, Paulaner et Spaten. Seules les brasseries de Munich peuvent servir à l’Oktoberfest. Plus des classiques de bière blanche comme Franziskaner et Schneider."],"Bier"],
+  [["Hofbräuhaus","Hofbräuhaus"],["Gegründet 1589 als herzogliche Brauerei. Heute Touristenmagnet mit Blasmusik – die Münchner gehen lieber in den Augustiner-Keller oder zu den Wirtshäusern im Viertel.","Fondé en 1589 comme brasserie ducale. Aujourd’hui un aimant à touristes avec fanfare – les Munichois préfèrent l’Augustiner-Keller ou les auberges de quartier."],"Haus"],
+  [["Schmankerl-Liste","Liste de spécialités"],["Schweinsbraten mit Knödel, Schweinshaxe, Leberkässemmel, Obatzda, Radi, Kaiserschmarrn, Dampfnudel, Auszogne, Fischsemmel, Spezi (Cola-Orange) und Radler.","Rôti de porc avec boulettes, jarret de porc, Leberkässemmel, Obatzda, radis, Kaiserschmarrn, Dampfnudel, Auszogne, sandwich au poisson, Spezi (cola-orange) et Radler."],"Probieren"],
+  [["Starkbierzeit","Saison de la bière forte"],["Vor Ostern gibt es in Fastenzeit das Starkbier – am berühmtesten ist der „Salvator“ vom Nockherberg mit dem Derblecken (Politiker-Kabarett).","Avant Pâques, pendant le carême, on boit la bière forte – le plus célèbre est le « Salvator » du Nockherberg avec le Derblecken (cabaret politique)."],"Frühjahr"]
+ ]},
+ {id:"wiesn", emo:"🎡", t:["Oktoberfest (Wiesn)","Oktoberfest (Wiesn)"], i:["Das größte Volksfest der Welt – und für Münchner ein ganz eigener Kalender.","La plus grande fête populaire du monde – et pour les Munichois un calendrier à part."], c:[
+  [["Ursprung 1810","Origine en 1810"],["Es begann als Hochzeitsfest von Kronprinz Ludwig und Therese – die Wiese heißt deshalb Theresienwiese. Das erste Pferderennen war am 17. Oktober 1810.","Tout a commencé par le mariage du prince héritier Louis et de Thérèse – d’où le nom Theresienwiese. La première course de chevaux a eu lieu le 17 octobre 1810."],"Geschichte"],
+  [["Zahlen","Chiffres"],["Rund 16 bis 18 Tage, Ende am ersten Sonntag im Oktober, jedes Jahr etwa 6 bis 7 Millionen Gäste, die Maß hat einen Liter. Der Wiesn-Anstich mit „O’zapft is!“ durch den Oberbürgermeister startet das Fest.","Environ 16 à 18 jours, fin le premier dimanche d’octobre, chaque année environ 6 à 7 millions de visiteurs ; la chope contient un litre. Le coup d’envoi « O’zapft is ! » est donné par le maire."],"Fakten"],
+  [["Bavaria","Bavaria"],["Die 18 m hohe Bronzestatue über der Theresienwiese ist innen hohl – im Kopf gibt es Aussichtsplätze.","La statue de bronze de 18 m au-dessus de la Theresienwiese est creuse – la tête abrite des places d’observation."],"Ruhmeshalle"],
+  [["Wiesn-Tipps","Conseils Wiesn"],["Unter der Woche und vormittags ist es entspannter. Tracht ist üblich, aber kein Muss. Die Reservierung im Zelt ist heiß begehrt – die Wiesn-Wirte haben ihre eigenen Regeln. Und: Die „Oide Wiesn“ ist die ruhigere, traditionelle Ecke.","En semaine et le matin, c’est plus calme. Le costume traditionnel est courant mais pas obligatoire. Les réservations sous tente sont très recherchées. Et : la « Oide Wiesn » est le coin plus calme et traditionnel."],"Tipps"]
+ ]},
+ {id:"technik", emo:"⚡", t:["Technik & Wissenschaft","Technique & science"], i:["Für Elektroniker ist München ein Pilgerort.","Pour un électronicien, Munich est un lieu de pèlerinage."], c:[
+  [["Deutsches Museum","Deutsches Museum"],["1903 von Oskar von Miller gegründet, auf der Museumsinsel in der Isar – eines der größten Wissenschafts- und Technikmuseen der Welt. Es gibt ein nachgebautes Bergwerk, Schiffe, Flugzeuge, Physik, Elektrizität, Chemie, Musikinstrumente und Computer. Man braucht mehrere Tage, nicht Stunden.","Fondé en 1903 par Oskar von Miller sur l’île des musées dans l’Isar – l’un des plus grands musées de science et technique au monde. Mine reconstituée, bateaux, avions, physique, électricité, chimie, instruments de musique et ordinateurs. Il faut plusieurs jours, pas quelques heures."],"Muss man sehen"],
+  [["1882: Strom über 57 km","1882 : le courant sur 57 km"],["Bei der Internationalen Elektrizitätsausstellung im Münchner Glaspalast (1882) wurde zum ersten Mal elektrische Energie über eine weite Strecke übertragen: von Miesbach nach München, rund 57 km – Idee von Marcel Deprez, organisiert von Oskar von Miller.","Lors de l’Exposition internationale d’électricité au Glaspalast de Munich (1882), de l’énergie électrique a été transmise pour la première fois sur une longue distance : de Miesbach à Munich, environ 57 km – idée de Marcel Deprez, organisée par Oskar von Miller."],"Strom"],
+  [["Georg Simon Ohm","Georg Simon Ohm"],["Der Mann hinter dem Ohmschen Gesetz war ab 1849 Professor in München und starb hier 1854. Sein Grab liegt auf dem Alten Südlichen Friedhof.","L’homme derrière la loi d’Ohm a été professeur à Munich dès 1849 et y est mort en 1854. Sa tombe se trouve au Alter Südfriedhof."],"Ohm"],
+  [["Joseph von Fraunhofer","Joseph von Fraunhofer"],["Er entdeckte die dunklen Linien im Sonnenspektrum und baute die besten Linsen seiner Zeit; die Fraunhofer-Gesellschaft hat ihre Zentrale in München.","Il a découvert les raies sombres du spectre solaire et construit les meilleures lentilles de son temps ; la Fraunhofer-Gesellschaft a son siège à Munich."],"Optik"],
+  [["Firmen mit Münchner Wurzeln","Entreprises munichoises"],["Siemens (Konzernzentrale in München), Rohde & Schwarz (Sitz in München – Messtechnik!), BMW, MAN, Airbus-Standorte, Infineon in Neubiberg am Stadtrand und viele Start-ups. Dazu die TU München und die LMU.","Siemens (siège à Munich), Rohde & Schwarz (siège à Munich – instruments de mesure !), BMW, MAN, sites d’Airbus, Infineon à Neubiberg en périphérie et beaucoup de start-ups. Plus la TU München et la LMU."],"Industrie"],
+  [["U-Bahn als Kunst","Le métro comme art"],["Seit 1971 fährt die U-Bahn – und viele Stationen sind gestaltet: Candidplatz, Westfriedhof, Georg-Brauchle-Ring, Olympia-Einkaufszentrum und mehr. Ein Ausflug mit Fahrkarte statt Eintritt.","Le métro circule depuis 1971 – et beaucoup de stations sont décorées : Candidplatz, Westfriedhof, Georg-Brauchle-Ring, Olympia-Einkaufszentrum et d’autres. Une excursion avec un ticket plutôt qu’un billet d’entrée."],"Tipp"]
+ ]},
+ {id:"sport", emo:"⚽", t:["Sport & Kultur","Sport & culture"], i:["Von Mia san mia bis Oper.","De « Mia san mia » à l’opéra."], c:[
+  [["FC Bayern & 1860","FC Bayern & 1860"],["Der FC Bayern München (1900) ist Rekordmeister, die Löwen vom TSV 1860 (1860) sind die Traditionsmannschaft der Stadt. Die Stadt ist geteilt: Rot oder Blau.","Le FC Bayern Munich (1900) est le recordman de titres, les « Lions » du TSV 1860 (1860) sont le club de tradition. La ville est partagée : rouge ou bleu."],"Fußball"],
+  [["Oper & Theater","Opéra & théâtre"],["Die Bayerische Staatsoper am Max-Joseph-Platz, die Münchner Philharmoniker im Gasteig HP8, das Gärtnerplatztheater und die Kammerspiele – dazu Karl Valentin als Münchner Kabarett-Legende.","L’Opéra d’État de Bavière sur la Max-Joseph-Platz, la Philharmonie de Munich au Gasteig HP8, le Gärtnerplatztheater et les Kammerspiele – et Karl Valentin, légende du cabaret munichois."],"Bühne"],
+  [["Film","Cinéma"],["Die Bavaria Film Studios in Geiselgasteig: hier entstanden unter anderem „Das Boot“ und „Die unendliche Geschichte“. Man kann das Gelände besichtigen.","Les studios Bavaria Film à Geiselgasteig : c’est là que furent tournés notamment « Das Boot » et « L’Histoire sans fin ». Le site se visite."],"Kino"],
+  [["Feste im Jahr","Fêtes de l’année"],["Starkbierzeit, Frühlingsfest, Auer Dult (dreimal im Jahr), Tollwood im Sommer und Winter, Kocherlball (im Juli morgens um 6 Uhr tanzen am Chinesischen Turm), Wiesn im Herbst, Christkindlmarkt ab Ende November am Marienplatz.","Starkbierzeit, Frühlingsfest, Auer Dult (trois fois par an), Tollwood en été et en hiver, Kocherlball (en juillet, danse à 6 h du matin à la Tour chinoise), Wiesn en automne, marché de Noël dès fin novembre sur la Marienplatz."],"Kalender"]
+ ]},
+ {id:"geschichte", emo:"📜", t:["Geschichte","Histoire"], i:["Von den Mönchen bis zur Millionenstadt.","Des moines à la métropole."], c:[
+  [["1158 – „Bei den Mönchen“","1158 – « Chez les moines »"],["Heinrich der Löwe verlegte die Salzstraße über die Isar. Der Name München kommt von „bei den Mönchen“ – daher das Münchner Kindl im Stadtwappen.","Henri le Lion détourna la route du sel par l’Isar. Le nom Munich vient de « chez les moines » – d’où le Münchner Kindl dans les armoiries."],"Anfang"],
+  [["Wittelsbacher","Les Wittelsbach"],["Ab 1180 regierten die Wittelsbacher in Bayern bis 1918 – über 700 Jahre. 1806 wurde München Hauptstadt des Königreichs Bayern. Ludwig I. machte die Stadt zu „Isar-Athen“ mit Ludwigstraße, Glyptothek und Pinakotheken.","Les Wittelsbach ont régné en Bavière de 1180 à 1918 – plus de 700 ans. En 1806, Munich est devenue capitale du royaume de Bavière. Louis Iᵉʳ en a fait une « Athènes de l’Isar » avec la Ludwigstraße, la Glyptothèque et les Pinacothèques."],"Königreich"],
+  [["Dunkles Kapitel","Chapitre sombre"],["München war in der NS-Zeit Ausgangsort der Bewegung. Heute erinnern das NS-Dokumentationszentrum (eröffnet 2015), die KZ-Gedenkstätte Dachau und die Weiße Rose an der Universität (Geschwister Scholl, 1943) – ein Ort zum Nachdenken.","À l’époque nazie, Munich fut le berceau du mouvement. Aujourd’hui, le centre de documentation NS (ouvert en 2015), le mémorial de Dachau et la Rose blanche à l’université (Hans et Sophie Scholl, 1943) invitent au souvenir."],"Erinnern"],
+  [["Nach 1945","Après 1945"],["Wiederaufbau, ab 1957 Millionenstadt, 1972 Olympia, seit den 1970ern U- und S-Bahn. München wurde zum Technik- und Medienstandort – und zu einer der teuersten Städte Deutschlands.","Reconstruction, ville millionnaire dès 1957, Jeux olympiques en 1972, métro et RER depuis les années 1970. Munich est devenue un pôle technologique et médiatique – et l’une des villes les plus chères d’Allemagne."],"Neuzeit"]
+ ]},
+ {id:"ausflug", emo:"🚆", t:["Ausflüge","Excursions"], i:["Von München aus erreichst du in kurzer Zeit fast alles.","Depuis Munich, presque tout est vite accessible."], c:[
+  [["Seen","Lacs"],["Starnberger See (ca. 25 km), Ammersee, Tegernsee, Schliersee, Chiemsee. Mit S-Bahn oder BOB oft direkt vom Hauptbahnhof.","Lac de Starnberg (env. 25 km), Ammersee, Tegernsee, Schliersee, Chiemsee. En S-Bahn ou BOB, souvent directement depuis la gare centrale."],"1 Std."],
+  [["Neuschwanstein & Linderhof","Neuschwanstein & Linderhof"],["Die Märchenschlösser von König Ludwig II. – rund 120 km entfernt. Früh losfahren, vorher reservieren.","Les châteaux de conte de fées de Louis II – à environ 120 km. Partir tôt, réserver avant."],"Tagestour"],
+  [["Zugspitze & Garmisch","Zugspitze & Garmisch"],["Deutschlands höchster Gipfel (2.962 m): mit Zahnradbahn und Seilbahn. Dazu Partnachklamm und Eibsee.","Plus haut sommet d’Allemagne (2 962 m) : accessible en train à crémaillère et téléphérique. Plus la gorge de la Partnach et le lac Eibsee."],"Berg"],
+  [["Dachau, Freising, Salzburg","Dachau, Freising, Salzbourg"],["Dachau (Gedenkstätte und Altstadt), Freising mit Weihenstephan (älteste Brauerei der Welt, sagen die Bayern), Salzburg in etwa 1,5 Stunden mit dem Zug.","Dachau (mémorial et vieille ville), Freising avec Weihenstephan (plus ancienne brasserie du monde, disent les Bavarois), Salzbourg à environ 1 h 30 en train."],"Städte"],
+  [["Bayern-Ticket","Bayern-Ticket"],["Für Regionalzüge in Bayern – mit mehreren Personen besonders günstig. Preise ändern sich, vorher bei der Bahn nachschauen.","Pour les trains régionaux en Bavière – très avantageux à plusieurs. Les prix changent, vérifier avant auprès de la compagnie ferroviaire."],"Tipp"]
+ ]},
+ {id:"alltag", emo:"🧭", t:["Alltag in München","Le quotidien à Munich"], i:["Was man als Münchner wissen sollte.","Ce qu’un Munichois doit savoir."], c:[
+  [["Öffis","Transports"],["U-Bahn, S-Bahn, Tram, Bus – alles im MVV-Verbund mit Zonen. Die S-Bahn-Stammstrecke ist das Nadelöhr; eine zweite Stammstrecke ist im Bau. Wer pendelt: Verspätungen einplanen.","Métro, S-Bahn, tram, bus – tout dans le réseau MVV avec zones. Le tronçon central de la S-Bahn est le goulot d’étranglement ; un deuxième tronçon est en construction. Pour les navetteurs : prévoir des retards."],"MVV"],
+  [["Wetter & Föhn","Météo & foehn"],["Der Föhn bringt warme Luft von den Alpen und klare Sicht – manche Münchner sagen, er macht Kopfschmerzen. Im Winter gibt es Schnee nur manchmal, im Sommer sind 30 °C normal.","Le foehn apporte de l’air chaud des Alpes et une vue dégagée – certains Munichois disent qu’il donne mal à la tête. En hiver, il neige parfois ; en été, 30 °C est normal."],"Klima"],
+  [["Wohnen","Logement"],["Eine der teuersten Städte Deutschlands bei den Mieten. Viele ziehen in den Speckgürtel (Dachau, Freising, Fürstenfeldbruck) und pendeln.","L’une des villes les plus chères d’Allemagne pour les loyers. Beaucoup s’installent en périphérie (Dachau, Freising, Fürstenfeldbruck) et font la navette."],"Realität"],
+  [["Mit dem Rad","À vélo"],["Viele Radwege, besonders an der Isar entlang. Der Flughafen liegt rund 28 km nordöstlich, die S-Bahn fährt in etwa 40 Minuten.","Beaucoup de pistes cyclables, surtout le long de l’Isar. L’aéroport est à environ 28 km au nord-est, la S-Bahn met environ 40 minutes."],"Fahrrad"]
+ ]}
+];
+
+var DIA = [
+  ["Servus","Salut / Au revoir – passt immer","Salut / Au revoir – toujours valable"],
+  ["Grüß Gott","Guten Tag","Bonjour"],
+  ["Pfüat di","Tschüss","Salut"],
+  ["Mei","Oh / na ja / ach (Universalwort)","Oh / bof / ah (mot universel)"],
+  ["Semmel · Breze","Brötchen · Laugenbrezel","petit pain · bretzel"],
+  ["Maß","ein Liter Bier","un litre de bière"],
+  ["Spezi","Cola-Orangenlimonade","cola-orange"],
+  ["Radler","Bier mit Zitronenlimonade","bière avec limonade"],
+  ["Wiesn","das Oktoberfest","l’Oktoberfest"],
+  ["Brotzeit","kalte Mahlzeit, Jause","repas froid, casse-croûte"],
+  ["Grantler","jemand, der gern grantelt","quelqu’un qui aime ronchonner"],
+  ["Ois klar","alles klar","tout est clair"],
+  ["Habe die Ehre","förmliche Begrüßung","salutation formelle"],
+  ["Mia san mia","Wir sind wir (Bayern-Selbstbewusstsein)","Nous sommes nous (fierté bavaroise)"]
+];
+
+var QZ = [
+  [["In welchem Jahr wird München erstmals genannt (Stadtgründung)?","En quelle année Munich est-elle fondée (première mention) ?"],["1158","1806","1957"],0,["1158 – Heinrich der Löwe.","1158 – Henri le Lion."]],
+  [["Was ist die Maß beim Oktoberfest?","Qu’est-ce qu’une « Maß » à l’Oktoberfest ?"],["Eine halbe Wurst","Ein Liter Bier","Ein Tanz"],1,["Ein Liter Bier.","Un litre de bière."]],
+  [["Wo wird mitten in der Stadt gesurft?","Où surfe-t-on en pleine ville ?"],["Eisbach","Starnberger See","Olympiasee"],0,["Die Eisbach-Welle am Englischen Garten.","La vague de l’Eisbach au Jardin anglais."]],
+  [["Wer erfand 1882 die Stromübertragung Miesbach–München mit?","Qui a participé en 1882 à la transmission d’électricité Miesbach–Munich ?"],["Marcel Deprez & Oskar von Miller","Thomas Edison","Nikola Tesla"],0,["Deprez (Idee) und Oskar von Miller (Organisation).","Deprez (idée) et Oskar von Miller (organisation)."]],
+  [["Wie hoch ist der Olympiaturm ungefähr?","Quelle est la hauteur approximative de la Tour olympique ?"],["191 m","291 m","391 m"],1,["Rund 291 m.","Environ 291 m."]],
+  [["Wann isst man traditionell Weißwurst?","Quand mange-t-on traditionnellement la Weißwurst ?"],["Nachts","Vormittags","Nur im Winter"],1,["Am Vormittag – vor dem Zwölfuhrläuten.","Le matin – avant les cloches de midi."]],
+  [["Welcher Physiker liegt auf dem Alten Südfriedhof?","Quel physicien repose à l’Alter Südfriedhof ?"],["Ohm","Newton","Edison"],0,["Georg Simon Ohm (gest. 1854 in München).","Georg Simon Ohm (mort à Munich en 1854)."]],
+  [["Die höchste Spitze in Deutschland ist …","Le plus haut sommet d’Allemagne est …"],["Brocken","Zugspitze","Feldberg"],1,["Die Zugspitze, 2.962 m.","La Zugspitze, 2 962 m."]]
+];
+
+var TAG = {"Zentrum":"Centre","Wahrzeichen":"Emblème","Aussicht":"Vue","Markt":"Marché","Geschichte":"Histoire","Schloss":"Château","Olympia":"Olympia","Kunst":"Art","Technik":"Technique","Fußball":"Football","Park":"Parc","Surfen":"Surf","Sommer":"Été","Biergarten":"Biergarten","Berge":"Montagne","Klassiker":"Classique","Tradition":"Tradition","Bier":"Bière","Haus":"Maison","Probieren":"À goûter","Frühjahr":"Printemps","Fakten":"Faits","Ruhmeshalle":"Hall de la gloire","Tipps":"Conseils","Muss man sehen":"À voir absolument","Strom":"Électricité","Ohm":"Ohm","Optik":"Optique","Industrie":"Industrie","Tipp":"Astuce","Bühne":"Scène","Kino":"Cinéma","Kalender":"Calendrier","Anfang":"Début","Königreich":"Royaume","Erinnern":"Mémoire","Neuzeit":"Époque moderne","1 Std.":"1 h","Tagestour":"Excursion d’une journée","Berg":"Montagne","Städte":"Villes","MVV":"MVV","Klima":"Climat","Realität":"Réalité","Fahrrad":"Vélo"};
+/* ===== Aufbau ===== */
+var main = $("#mm");
+var navH = SEC.map(function(s){ return '<a href="#' + s.id + '">' + s.emo + " " + e(T(s.t)) + "</a>"; }).join("") + '<a href="#dialekt">🗣️ ' + (fr ? "Bavarois" : "Bairisch") + '</a><a href="#quiz">🎯 Quiz</a>';
+var h = '<div class="crumb"><a href="index.html">Oratio Place</a> › <a href="index.html#/lifestyle">Lifestyle</a> › ' + (fr ? "Munich" : "München") + '</div>';
+h += '<section class="mhero"><h1>' + (fr ? "Munich – ma ville" : "München – meine Stadt") + '</h1><p>' + (fr
+  ? "Tout sur Munich vu par un Munichois : monuments, Isar et Jardin anglais, Wiesn, Biergärten, cuisine, histoire de la technique, bavarois, excursions et un quiz."
+  : "Alles über München – als Münchner erzählt: Sehenswertes, Isar und Englischer Garten, Wiesn, Biergärten, Essen, Technik-Geschichte, Bairisch, Ausflüge und ein Quiz.") + '</p><span class="kind" aria-hidden="true">🥨</span></section>';
+h += '<div class="mstats">' + STATS.map(function(s){ return "<div><b>" + e(s[0]) + "</b><small>" + e(T(s[1])) + "</small></div>"; }).join("") + "</div>";
+h += '<input id="msu" class="in msuche" type="search" autocomplete="off" placeholder="' + (fr ? "Chercher à Munich … (ex. Isar, bière, Ohm)" : "In München suchen … (z. B. Isar, Bier, Ohm)") + '">';
+h += '<nav class="mnav" id="mnav">' + navH + "</nav>";
+SEC.forEach(function(s){
+  h += '<section class="msec" id="' + s.id + '"><h2><i>' + s.emo + "</i>" + e(T(s.t)) + '</h2><p class="in1">' + e(T(s.i)) + '</p><div class="mgrid">';
+  s.c.forEach(function(c){ var tx = fr ? c[2][1] : c[2][0];
+    h += '<article class="mc" data-t="' + e((c[0][0] + " " + c[0][1] + " " + c[1][0] + " " + c[1][1]).toLowerCase()) + '"><h3>' + e(T(c[0])) + "</h3><p>" + e(fr ? c[1][1] : c[1][0]) + '</p><span class="tag">' + e(fr ? (TAG[c[2]] || c[2]) : c[2]) + "</span></article>"; });
+  h += "</div></section>";
+});
+h += '<section class="msec" id="dialekt"><h2><i>🗣️</i>' + (fr ? "Bavarois de poche" : "Bairisch für die Hosentasche") + '</h2><p class="in1">' + (fr ? "Quelques mots que tu entendras à Munich." : "Ein paar Wörter, die du in München garantiert hörst.") + '</p><div class="mc big"><table class="mt">' + DIA.map(function(d){ return "<tr><td>" + e(d[0]) + "</td><td>" + e(fr ? d[2] : d[1]) + "</td></tr>"; }).join("") + "</table></div></section>";
+h += '<section class="msec" id="quiz"><h2><i>🎯</i>' + (fr ? "Quiz sur Munich" : "München-Quiz") + '</h2><p class="in1">' + (fr ? "8 questions – combien en sais-tu ?" : "8 Fragen – wie viel weißt du über München?") + '</p><div class="mc mq" id="mq"></div></section>';
+h += '<p class="mfoot">' + (fr ? "Remarque : j’ai écrit ces informations à partir de mes connaissances. Les horaires, prix et dates peuvent changer – vérifie avant de partir." : "Hinweis: Die Infos habe ich nach bestem Wissen zusammengetragen. Öffnungszeiten, Preise und Termine können sich ändern – vor dem Besuch kurz nachschauen.") + "</p>";
+main.innerHTML = h;
+
+/* Suche */
+$("#msu").addEventListener("input", function(ev){
+  var w = ev.target.value.toLowerCase().split(/\s+/).filter(Boolean);
+  main.querySelectorAll(".msec").forEach(function(sec){ var n = 0; sec.querySelectorAll(".mc[data-t]").forEach(function(c){ var ok = !w.length || w.every(function(t){ return c.dataset.t.indexOf(t) >= 0; }); c.hidden = !ok; if (ok) n++; }); if (sec.querySelector(".mc[data-t]")) sec.hidden = !!w.length && !n; });
+});
+
+/* Quiz */
+(function(){
+  var box = $("#mq"), i = 0, pts = 0;
+  function show(){
+    if (i >= QZ.length){ box.innerHTML = '<p class="q">' + (fr ? "Résultat : " : "Ergebnis: ") + pts + " / " + QZ.length + '</p><p class="ex">' + (pts >= 7 ? (fr ? "Un vrai Munichois !" : "Echter Münchner!") : pts >= 4 ? (fr ? "Pas mal – servus !" : "Nicht schlecht – Servus!") : (fr ? "Il faut revenir à Munich !" : "Da hilft nur: nochmal nach München!")) + '</p><button class="btn go" type="button" id="mqr">' + (fr ? "Rejouer" : "Nochmal") + "</button>"; $("#mqr").onclick = function(){ i = 0; pts = 0; show(); }; return; }
+    var q = QZ[i]; box.innerHTML = '<div class="bar"><i style="width:' + (i / QZ.length * 100) + '%"></i></div><p class="q">' + (i + 1) + ". " + e(T(q[0])) + '</p><div class="opts">' + q[1].map(function(o, k){ return '<button type="button" class="o" data-k="' + k + '">' + e(o) + "</button>"; }).join("") + '</div><p class="ex" hidden></p>';
+    box.querySelectorAll("button.o").forEach(function(b){ b.onclick = function(){ var k = +b.dataset.k; box.querySelectorAll("button.o").forEach(function(x){ x.disabled = true; if (+x.dataset.k === q[2]) x.classList.add("ok"); }); if (k === q[2]) pts++; else b.classList.add("no"); var ex = box.querySelector(".ex"); ex.hidden = false; ex.textContent = T(q[3]);
+      var nx = document.createElement("button"); nx.type = "button"; nx.className = "btn go"; nx.style.marginTop = "10px"; nx.textContent = i + 1 >= QZ.length ? (fr ? "Résultat" : "Ergebnis") : (fr ? "Suivant" : "Weiter"); nx.onclick = function(){ i++; show(); }; box.appendChild(nx); }; });
+  }
+  show();
+})();
+})();
+WZ.kopf("muenchen");
+document.documentElement.lang = WZ.lang === "fr" ? "fr" : "de";
+document.title = WZ.lang === "fr" ? "Munich – Oratio Place" : "München erleben – Oratio Place";
+</script>
+</body>
+</html>
