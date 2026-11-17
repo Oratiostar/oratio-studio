@@ -343,5 +343,6 @@ function start(){
   window.addEventListener("hashchange", () => zeige(location.hash.slice(1)));
   zeige(location.hash.slice(1));
 }
-window.DateiWerkstatt = { start, TOOLS };
+// Tür für weitere Werkzeuge: eigene Datei (z. B. medien.js) nach datei.js laden und mit DateiWerkstatt.tool({ id, titel, sym, farbe, text, build(sec){…} }) anmelden.
+window.DateiWerkstatt = { start, TOOLS, tool, Liste, Ausgabe, wrapRun, fehler, esc, G, toBlob, readAB };
 })();

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Datei-Werkstatt – Oratio</title>
-<meta name="description" content="Datei-Werkstatt: PDF zusammenfügen, teilen, komprimieren, PDF in Word und Word in PDF umwandeln, Bilder verkleinern, ZIP packen. Alles im Browser, ohne Upload.">
+<meta name="description" content="Datei-Werkstatt: PDF zusammenfügen, teilen, komprimieren, PDF in Word und Word in PDF umwandeln, Bilder verkleinern, Videos (auch iPhone-MOV) verkleinern und umwandeln, Ton und Standbilder aus Videos holen, ZIP packen. Alles im Browser, ohne Upload.">
 <link rel="icon" href="icon.png">
 <link rel="stylesheet" href="werkzeuge/wz.css">
 <style>
@@ -45,7 +45,7 @@
 <body>
 <main>
 <h1>Datei-Werkstatt</h1>
-<p class="sub">PDFs zusammenfügen, teilen und verkleinern, PDF ↔ Word, PDF ↔ Bilder, Fotos verkleinern, ZIP packen. Alles läuft in deinem Browser – deine Dateien werden <b>nicht hochgeladen</b> und bleiben auf deinem Gerät.</p>
+<p class="sub">PDFs zusammenfügen, teilen und verkleinern, PDF ↔ Word, PDF ↔ Bilder, Fotos verkleinern, Videos (auch iPhone-MOV) verkleinern und umwandeln, Ton und Bilder aus Videos holen, ZIP packen. Alles läuft in deinem Browser – deine Dateien werden <b>nicht hochgeladen</b> und bleiben auf deinem Gerät.</p>
 <div class="tgrid" id="toolgrid"></div>
 <div id="toolhost"></div>
 </main>
@@ -55,6 +55,7 @@
 <script src="werkzeuge/lib/pdf-lib.min.js"></script>
 <script src="werkzeuge/docx.js"></script>
 <script src="werkzeuge/datei.js"></script>
+<script src="werkzeuge/medien.js"></script>
 <script>WZ.kopf("datei"); DateiWerkstatt.start();</script>
 </body>
 </html>
