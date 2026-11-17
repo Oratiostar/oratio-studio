@@ -125,3 +125,33 @@ body.sl.ds-matt{background:var(--sg2)}
 body.sl.ds-matt .weg a,body.sl.ds-matt .quick,body.sl.ds-matt .sc,body.sl.ds-matt details.gr,body.sl.ds-matt .slmain,body.sl.ds-matt .treffer a,body.sl.ds-matt .in,body.sl.ds-matt #sq,body.sl.ds-matt .card{
   -webkit-backdrop-filter:none;backdrop-filter:none;border:2px solid var(--g-edge)!important;box-shadow:0 4px 0 rgba(0,0,0,.28)!important}
 body.sl.ds-matt .sc{background:var(--sgl)}
+
+/* ===== Mehr Glas (Stufe 44): klarer, mit Lichtkante, Tiefe und buntem Untergrund ===== */
+:root{
+  --g-top:rgba(255,255,255,.46);--g-bot:rgba(255,255,255,.18);--g-rim:rgba(255,255,255,.95);--g-shine:#fff;
+  --g-edge:rgba(20,50,110,.22);--g-fg:#05080f;--g-hover:rgba(255,255,255,.55);--g-sel:rgba(255,255,255,.7);
+  --g-shadow:inset 0 1.5px 0 rgba(255,255,255,1),inset 0 -14px 22px -14px rgba(255,255,255,.7),inset 0 0 20px rgba(255,255,255,.28),0 16px 32px -14px rgba(30,60,140,.55),0 2px 4px rgba(30,60,140,.16);
+  --g-blur:blur(14px) saturate(1.8) brightness(1.06)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --g-top:rgba(255,255,255,.26);--g-bot:rgba(16,20,38,.34);--g-rim:rgba(255,255,255,.5);--g-shine:rgba(255,255,255,.95);
+  --g-edge:rgba(0,0,0,.5);--g-fg:#fff;--g-hover:rgba(255,255,255,.16);--g-sel:rgba(255,255,255,.28);
+  --g-shadow:inset 0 1.5px 0 rgba(255,255,255,.65),inset 0 -14px 22px -14px rgba(255,255,255,.22),inset 0 0 22px rgba(255,255,255,.07),0 16px 34px -12px rgba(0,0,0,.85),0 2px 4px rgba(0,0,0,.45);
+  --g-blur:blur(16px) saturate(1.6) brightness(1.1)}}
+:root[data-theme="dark"]{
+  --g-top:rgba(255,255,255,.26);--g-bot:rgba(16,20,38,.34);--g-rim:rgba(255,255,255,.5);--g-shine:rgba(255,255,255,.95);
+  --g-edge:rgba(0,0,0,.5);--g-fg:#fff;--g-hover:rgba(255,255,255,.16);--g-sel:rgba(255,255,255,.28);
+  --g-shadow:inset 0 1.5px 0 rgba(255,255,255,.65),inset 0 -14px 22px -14px rgba(255,255,255,.22),inset 0 0 22px rgba(255,255,255,.07),0 16px 34px -12px rgba(0,0,0,.85),0 2px 4px rgba(0,0,0,.45);
+  --g-blur:blur(16px) saturate(1.6) brightness(1.1)}
+/* Matt: Tag = schwarze Schrift auf Weiß, Nacht = weiße Schrift auf Dunkelgrau (wie im Control Center) */
+body.ds-matt{--g-fg:#0b0f17;--g-top:#fbfbfd;--g-bot:#f1f2f6;--g-edge:#c9cfdb;--g-shadow:0 2px 0 rgba(20,40,80,.10),0 6px 14px -8px rgba(20,40,80,.25);--g-blur:none}
+:root[data-theme="dark"] body.ds-matt{--g-fg:#fff;--g-top:#2e2e32;--g-bot:#26262a;--g-edge:#43434a;--g-shadow:0 2px 0 rgba(0,0,0,.4),0 8px 16px -8px rgba(0,0,0,.65)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.ds-matt{--g-fg:#fff;--g-top:#2e2e32;--g-bot:#26262a;--g-edge:#43434a;--g-shadow:0 2px 0 rgba(0,0,0,.4),0 8px 16px -8px rgba(0,0,0,.65)}}
+/* Untergrund mit Kanten: scharfe Farbscheiben, durch die das Glas sichtbar bricht */
+body.aurora:not(.sl):not(.ds-matt)::after,body.sl.ds-glas::after{content:"";position:fixed;inset:-6%;z-index:-1;pointer-events:none;
+  background:radial-gradient(circle at 18% 22%,#ff4f9a 0 8.5vmax,transparent calc(8.5vmax + 1px)),radial-gradient(circle at 82% 30%,#ffc42a 0 11vmax,transparent calc(11vmax + 1px)),radial-gradient(circle at 70% 78%,#22d3a6 0 9.5vmax,transparent calc(9.5vmax + 1px)),radial-gradient(circle at 26% 82%,#4a7cff 0 12vmax,transparent calc(12vmax + 1px)),radial-gradient(circle at 52% 52%,#a24bff 0 6vmax,transparent calc(6vmax + 1px));
+  opacity:.75;animation:scheibenDrift 38s ease-in-out infinite alternate}
+:root[data-theme="dark"] body.aurora:not(.sl):not(.ds-matt)::after,:root[data-theme="dark"] body.sl.ds-glas::after{opacity:.55}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.aurora:not(.sl):not(.ds-matt)::after,:root:not([data-theme="light"]) body.sl.ds-glas::after{opacity:.55}}
+@keyframes scheibenDrift{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(-3%,3%,0) scale(1.05)}}
+@media (prefers-reduced-motion:reduce){body.aurora::after,body.sl::after{animation:none!important}}
+.glass::before,.gbtn::before,.btn:not(.go):not(.on):not(.gbtn)::before{background:linear-gradient(180deg,color-mix(in srgb,var(--g-shine) 45%,transparent),transparent)}
