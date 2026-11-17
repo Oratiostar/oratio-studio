@@ -326,12 +326,13 @@ tool({ id: "zip", titel: "ZIP packen & entpacken", sym: "📦", farbe: "#5b7fe0"
 }});
 
 // ------------------------------------------------------------------ Aufbau der Seite
-function start(){
+function start(o){
+  o = o || {}; const LIST = TOOLS.filter(o.filter || (t => !t.gruppe));
   const grid = $("#toolgrid"), host = $("#toolhost");
   const secs = {};
-  grid.innerHTML = TOOLS.map(t => '<a class="tcard" href="#' + t.id + '" data-id="' + t.id + '"><span class="ts" style="background:' + t.farbe + '">' + t.sym + '</span><span><b>' + esc(t.titel) + '</b><small>' + esc(t.text) + '</small></span></a>').join("");
+  grid.innerHTML = o.gitter ? o.gitter(LIST) : LIST.map(t => '<a class="tcard" href="#' + t.id + '" data-id="' + t.id + '"><span class="ts" style="background:' + t.farbe + '">' + t.sym + '</span><span><b>' + esc(t.titel) + '</b><small>' + esc(t.text) + '</small></span></a>').join("");
   function zeige(id){
-    const t = TOOLS.find(x => x.id === id);
+    const t = LIST.find(x => x.id === id);
     grid.querySelectorAll(".tcard").forEach(a => a.classList.toggle("on", a.dataset.id === id));
     host.innerHTML = "";
     if (!t) { host.innerHTML = '<p class="muted">Wähle oben ein Werkzeug. Deine Dateien bleiben die ganze Zeit auf deinem Gerät.</p>'; return; }

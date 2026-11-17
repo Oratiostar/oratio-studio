@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Medien-Werkstatt – Oratio</title>
+<meta name="description" content="Medien-Werkstatt: Videos (auch iPhone-MOV) verkleinern und umwandeln, GIF und Standbilder, Ton und Musik schneiden, Songs verbinden, BPM und Tonart bestimmen, Tongenerator. Alles im Browser, ohne Upload.">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="werkzeuge/wz.css">
+<link rel="stylesheet" href="werkzeuge/werkstatt.css">
+<style>
+.mhero{position:relative;overflow:hidden;border-radius:24px;padding:22px 20px;margin:6px 0 14px;color:#fff;box-shadow:var(--shadow);background:radial-gradient(420px 200px at 90% 0,rgba(255,214,102,.5),transparent 60%),linear-gradient(135deg,#6a2bd9,#d9453b 60%,#f0902b)}
+.mhero h1{margin:0 0 6px;color:#fff;font-size:clamp(26px,6vw,40px);line-height:1.1}
+.mhero p{margin:0;max-width:620px;padding-right:64px;font-size:clamp(14.5px,2.3vw,17px);line-height:1.45}
+.mhero .kind{position:absolute;right:14px;bottom:8px;font-size:clamp(50px,11vw,84px);line-height:1}
+#smart{display:block;padding:16px;margin:0 0 6px;text-align:center;cursor:pointer;--gc:#7a52d6;border-radius:22px}
+#smart b{display:block;font-size:16.5px}#smart small{color:var(--muted);font-size:13.5px}
+#smart.over{outline:3px dashed var(--acc);outline-offset:3px}
+#vor{margin:0 0 14px}
+#vor .glass{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 12px;border-radius:18px;--gc:#2fb96b}
+#vor .fn{flex:1 1 160px;min-width:0;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#vor .sug{display:flex;gap:6px;flex-wrap:wrap;width:100%}
+.gh{display:flex;gap:8px;align-items:center;margin:16px 0 8px;font-size:19px}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin:0 0 6px}
+.tcard{border:1px solid var(--g-edge);display:flex;flex-direction:column;gap:6px;align-items:flex-start;text-decoration:none;color:var(--g-fg);padding:12px 12px 11px;border-radius:20px;min-height:132px}
+.tcard .ts{width:44px;height:44px;font-size:22px;border-radius:14px}
+.tcard b{display:block;font-size:15px;line-height:1.2}
+.tcard small{display:block;color:inherit;opacity:.72;font-size:12.5px;line-height:1.3}
+.tcard.on{transform:scale(1.03);box-shadow:inset 0 0 0 2px #fff,0 8px 20px -8px var(--gc)}
+.tcard.on{background:linear-gradient(180deg,var(--gc),color-mix(in srgb,var(--gc) 68%,#000));color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.tcard.on small{opacity:.95}
+.tcard.on small{opacity:.9}
+</style>
+</head>
+<body>
+<main>
+<section class="mhero"><h1>Medien-Werkstatt</h1><p>Videos verkleinern, GIFs und Standbilder machen, Musik schneiden, Songs verbinden, BPM und Tonart bestimmen. Alles läuft in deinem Browser – deine Dateien werden <b>nicht hochgeladen</b>.</p><span class="kind" aria-hidden="true">🎬</span></section>
+<label class="glass hov" id="smart"><b>🪄 Datei hier ablegen oder tippen</b><small>Video oder Musik – ich schlage dir passende Werkzeuge vor.</small><input type="file" id="sf" hidden accept="video/*,audio/*,.mov,.mp4,.m4v,.mkv,.webm,.3gp,.mp3,.m4a,.wav,.aac,.flac,.ogg,.opus"></label>
+<div id="vor" hidden></div>
+<div class="tgrid" id="toolgrid"></div>
+<div id="toolhost"></div>
+</main>
+<script src="werkzeuge/wz.js"></script>
+<script src="werkzeuge/fr.js"></script>
+<script src="werkzeuge/lib/jszip.min.js"></script>
+<script src="werkzeuge/datei.js"></script>
+<script src="werkzeuge/medien.js"></script>
+<script src="werkzeuge/musik.js"></script>
+<script>
+(function(){
+  var OM = window.OratioMedien, $ = function(s){ return document.querySelector(s); };
+  var GR = [{ id: "video", t: "🎬 Video" }, { id: "musik", t: "🎵 Musik & Ton" }];
+  function gitter(list){
+    return GR.map(function(g){
+      var l = list.filter(function(t){ return t.gruppe === g.id; }); if (!l.length) return "";
+      return '<h2 class="gh" style="grid-column:1/-1;margin-bottom:0">' + g.t + '</h2>' + l.map(function(t){
+        return '<a class="tcard glass hov" href="#' + t.id + '" data-id="' + t.id + '" style="--gc:' + t.farbe + '"><span class="ts" style="background:' + t.farbe + '">' + t.sym + '</span><b>' + DateiWerkstatt.esc(t.titel) + '</b><small>' + DateiWerkstatt.esc(t.kurz || t.text) + '</small></a>'; }).join("");
+    }).join("");
+  }
+  // Smart-Ablage: Datei erkennen, passende Werkzeuge vorschlagen
+  var VID = /\.(mov|mp4|m4v|mkv|webm|3gp)$/i, AUD = /\.(mp3|m4a|wav|aac|flac|ogg|opus)$/i;
+  var VORSCHLAG = { video: [["video", "Verkleinern"], ["gif", "Als GIF"], ["vidbild", "Bilder holen"], ["audio", "Ton schneiden"], ["analyse", "BPM & Tonart"]], audio: [["audio", "Schneiden & umwandeln"], ["analyse", "BPM & Tonart"], ["join", "Songs verbinden"]] };
+  function nimm(f){
+    if (!f) return; var art = /^video\//.test(f.type) || VID.test(f.name) ? "video" : /^audio\//.test(f.type) || AUD.test(f.name) ? "audio" : null;
+    var v = $("#vor"); if (!art){ v.hidden = false; v.innerHTML = '<p class="status bad">Das ist weder Video noch Audio.</p>'; return; }
+    OM.heft = { file: f, art: art }; v.hidden = false;
+    v.innerHTML = '<div class="glass"><span>' + (art === "video" ? "🎞️" : "🎵") + '</span><span class="fn" title="' + DateiWerkstatt.esc(f.name) + '">' + DateiWerkstatt.esc(f.name) + '</span><span class="muted">' + DateiWerkstatt.G(f.size) + '</span><button type="button" class="btn sm" id="vx">✕</button>' +
+      '<div class="sug">' + VORSCHLAG[art].map(function(s){ return '<a class="btn sm" href="#' + s[0] + '" data-s="' + s[0] + '">' + s[1] + '</a>'; }).join("") + '</div></div>';
+    $("#vx").onclick = function(){ OM.heft = null; v.hidden = true; v.innerHTML = ""; };
+    v.querySelectorAll("[data-s]").forEach(function(a){ a.onclick = function(){ if (location.hash.slice(1) === a.dataset.s) setTimeout(function(){ window.dispatchEvent(new Event("hashchange")); }, 0); }; });
+    if (location.hash.slice(1) && OM.heft) window.dispatchEvent(new Event("hashchange"));
+  }
+  $("#sf").onchange = function(e){ nimm(e.target.files[0]); e.target.value = ""; };
+  var sm = $("#smart");
+  ["dragenter", "dragover"].forEach(function(t){ document.addEventListener(t, function(e){ if (e.dataTransfer && [].indexOf.call(e.dataTransfer.types || [], "Files") >= 0){ e.preventDefault(); sm.classList.add("over"); } }); });
+  document.addEventListener("dragleave", function(e){ if (!e.relatedTarget) sm.classList.remove("over"); });
+  document.addEventListener("drop", function(e){ if (e.dataTransfer && e.dataTransfer.files.length && !e.target.closest(".drop")){ e.preventDefault(); sm.classList.remove("over"); nimm(e.dataTransfer.files[0]); } });
+  WZ.kopf("medien"); DateiWerkstatt.start({ filter: function(t){ return !!t.gruppe; }, gitter: gitter });
+})();
+</script>
+</body>
+</html>
