@@ -562,7 +562,7 @@ MODS.watch = { show: function(b){
   left.appendChild(el("p", "lmut", L("466 × 466 Pixel, gezeichnet nur aus Kreisen, Bögen, Linien und Rechtecken – genau wie die Formen im Formen-PDF. Zeigerwinkel: 30° pro Stunde, 6° pro Minute und Sekunde.", "466 × 466 pixels, dessiné uniquement avec des cercles, arcs, lignes et rectangles – comme les formes du PDF. Angles : 30° par heure, 6° par minute et seconde.")));
   right.innerHTML = "<h2>" + L("Zifferblatt gestalten", "Personnaliser le cadran") + "</h2>";
   var ch = el("div", "fchips"); ch.style.marginBottom = "12px";
-  [["klassik", L("Klassik", "Classique")], ["neon", "Neon"], ["minimal", "Minimal"], ["digital", "Digital"], ["casio", L("Retro-LCD", "LCD rétro")]].forEach(function(f){ var x = el("button", "lbtn" + (WO.face === f[0] ? " on" : ""), f[1]); x.onclick = function(){ WO.face = f[0]; st("watch", WO); ch.querySelectorAll("button").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); }; ch.appendChild(x); });
+  [["klassik", L("Klassik", "Classique")], ["neon", "Neon"], ["minimal", "Minimal"], ["digital", "Digital"], ["casio", L("Retro-LCD 1", "LCD rétro 1")], ["casio2", L("Retro-LCD 2", "LCD rétro 2")], ["casio3", L("Retro-LCD 3", "LCD rétro 3")]].forEach(function(f){ var x = el("button", "lbtn" + (WO.face === f[0] ? " on" : ""), f[1]); x.onclick = function(){ WO.face = f[0]; st("watch", WO); ch.querySelectorAll("button").forEach(function(y){ y.classList.remove("on"); }); x.classList.add("on"); }; ch.appendChild(x); });
   right.appendChild(ch);
   var op = el("div", "wopt");
   function col(lbl, key){ var l = el("label", "", "<span>" + lbl + "</span>"), i = el("input"); i.type = "color"; i.value = WO[key]; i.oninput = function(){ WO[key] = i.value; st("watch", WO); }; l.appendChild(i); op.appendChild(l); }
@@ -591,51 +591,56 @@ function rlText(c, t, cx, cy, px){
   for (var i = 0; i < t.length; i++){ var g = RLG[t.charAt(i)]; if (!g) continue; var rows = g.split(",");
     for (var r = 0; r < 7; r++) for (var q = 0; q < 5; q++) if (rows[r].charAt(q) === "1") c.fillRect(x0 + (i * 6 + q) * px, y0 + r * px, px * .86, px * .86); }
 }
-function drawRetroLcd(c, now, C){
-  var blue = "#2358d6", gold = "#ecc93c", red = "#e04b4b", wh = "#f4f6fb", ink = "#14161a", cfg = SEGV.classic18, i, F = "Inter,system-ui,sans-serif";
+var RLV = {
+  casio:  { nm: "Foto-Uhr", lcd: ["#c9c9bd", "#b6b7ab"], gold: "#dcc57e", blue: "#2a52b8", red: "#d24a50", ghost: .05, mute: 0, p: 0, dst: 1, bars: 1, bell: 0, ps: 1 },
+  casio2: { nm: "Amazon-Uhr", lcd: ["#d7d5c8", "#c3c2b4"], gold: "#e6cf98", blue: "#2c58b4", red: "#d9565a", ghost: .05, mute: 1, p: 1, dst: 0, bars: 1, bell: 1, ps: 0 },
+  casio3: { nm: "Schwarze Rund-Uhr", lcd: ["#dcdbd2", "#cbcabe"], gold: "#ecc93c", blue: "#2358d6", red: "#e04b4b", ghost: .06, mute: 1, p: 0, dst: 1, bars: 0, bell: 0, ps: 1 }
+};
+function drawRetroLcd(c, now, C, V){
+  var blue = V.blue, gold = V.gold, red = V.red, wh = "#f4f6fb", ink = "#15171a", cfg = SEGV.classic18, i, F = "'Arial Black','Helvetica Neue',Arial,Inter,sans-serif", FC = "Arial,'Helvetica Neue',Inter,sans-serif";
   c.fillStyle = WO.bg; c.fillRect(0, 0, 466, 466);
   function oct(x0, y0, x1, y1, ch, r){ var P = [[x0 + ch, y0], [x1 - ch, y0], [x1, y0 + ch], [x1, y1 - ch], [x1 - ch, y1], [x0 + ch, y1], [x0, y1 - ch], [x0, y0 + ch]]; c.beginPath(); c.moveTo((P[7][0] + P[0][0]) / 2, (P[7][1] + P[0][1]) / 2); for (var k = 0; k < 8; k++){ var n = P[(k + 1) % 8]; c.arcTo(P[k][0], P[k][1], (P[k][0] + n[0]) / 2, (P[k][1] + n[1]) / 2, r); } c.closePath(); }
   oct(46, 63, 413, 397, 46, 20); c.strokeStyle = blue; c.lineWidth = 5; c.stroke();
   oct(54, 71, 405, 389, 42, 16); c.strokeStyle = wh; c.lineWidth = 1.6; c.stroke();
-  c.textBaseline = "middle"; c.textAlign = "center";
-  c.fillStyle = wh; c.font = "900 19px " + F; c.fillText("ORATIO", 160, 91, 84);
-  c.fillStyle = gold; c.font = "900 14px " + F; c.fillText("STEP TRACKER", 288, 96, 121);
-  c.fillStyle = blue; c.font = "italic 900 17px " + F; c.fillText("ILLUMINATOR", 235, 118, 142);
-  c.beginPath(); c.moveTo(143, 118); c.lineTo(163, 111); c.lineTo(163, 125); c.closePath(); c.fill();
+  function T(t, x, y, font, col, sx, w, ls){ c.save(); c.translate(x, y); c.scale(sx || 1, 1); c.font = font; c.fillStyle = col; c.letterSpacing = (ls || 0) + "px"; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(t, 0, 0, w ? w / (sx || 1) : undefined); c.restore(); }
+  T("ORATIO", 160, 91, "900 19px " + F, wh, 1, 84, .5);
+  T("STEP TRACKER", 288, 96, "900 13.5px " + F, gold, 1, 121, .6);
+  T("ILLUMINATOR", 235, 118, "italic 900 16.5px " + F, blue, 1, 142, .4);
+  c.fillStyle = blue; c.beginPath(); c.moveTo(143, 118); c.lineTo(163, 111); c.lineTo(163, 125); c.closePath(); c.fill();
   c.beginPath(); c.moveTo(327, 118); c.lineTo(307, 111); c.lineTo(307, 125); c.closePath(); c.fill();
-  c.fillStyle = wh; c.font = "900 12.5px " + F;
-  c.save(); c.translate(74, 221); c.rotate(Math.PI / 2); c.fillText("ADJUST MODE", 0, 0, 134); c.restore();
-  c.save(); c.translate(379, 221); c.rotate(-Math.PI / 2); c.fillText("SEARCH LIGHT", 0, 0, 134); c.restore();
+  c.save(); c.translate(74, 221); c.rotate(Math.PI / 2); T("ADJUST MODE", 0, 0, "900 12.5px " + F, wh, 1, 134, .6); c.restore();
+  c.save(); c.translate(379, 221); c.rotate(-Math.PI / 2); T("SEARCH LIGHT", 0, 0, "900 12.5px " + F, wh, 1, 134, .6); c.restore();
   c.fillStyle = red; [[73, 141], [71, 302], [379, 146], [379, 305]].forEach(function(d){ c.beginPath(); c.arc(d[0], d[1], 4.6, 0, 7); c.fill(); });
-  c.font = "900 14px " + F; c.fillText("WATER", 153, 336, 62); c.fillText("RESIST", 301, 336, 64);
+  T("WATER", 153, 336, "900 13.5px " + F, red, 1, 62, .8); T("RESIST", 301, 336, "900 13.5px " + F, red, 1, 64, .8);
   c.lineWidth = 2.2; c.strokeStyle = red; c.beginPath(); c.moveTo(204, 323); c.lineTo(250, 323); c.quadraticCurveTo(260, 323, 258, 332); c.lineTo(256, 341); c.quadraticCurveTo(255, 348, 247, 348); c.lineTo(209, 348); c.quadraticCurveTo(198, 348, 200, 340); c.lineTo(202, 330); c.quadraticCurveTo(203, 323, 212, 323); c.stroke();
-  c.font = "italic 900 17px " + F; c.fillText("WR", 229, 336, 32);
+  T("WR", 229, 336, "italic 900 17px " + F, red, 1, 32, 0);
   c.strokeStyle = "#b9c9ee"; c.lineWidth = 2.2; c.beginPath(); c.moveTo(90, 354); c.lineTo(361, 354); c.stroke();
-  c.fillStyle = gold; c.font = "800 13px " + F; c.fillText("Bluetooth", 229, 370, 60);
-  // LCD
+  T("Bluetooth", 229, 370, "bold 14px " + FC, gold, .78, 60, 0);
   var x0 = 94, y0 = 134, x1 = 360, y1 = 316;
   function rr(x, y, w, h, r){ c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
   rr(x0 - 3, y0 - 3, x1 - x0 + 6, y1 - y0 + 6, 20); c.fillStyle = "#34363a"; c.fill();
-  rr(x0, y0, x1 - x0, y1 - y0, 17); var lg = c.createLinearGradient(0, y0, 0, y1); lg.addColorStop(0, "#d9d8cf"); lg.addColorStop(1, "#c8c7bb"); c.fillStyle = lg; c.fill();
+  rr(x0, y0, x1 - x0, y1 - y0, 17); var lg = c.createLinearGradient(0, y0, 0, y1); lg.addColorStop(0, V.lcd[0]); lg.addColorStop(1, V.lcd[1]); c.fillStyle = lg; c.fill();
   c.save(); rr(x0, y0, x1 - x0, y1 - y0, 17); c.clip();
-  c.fillStyle = "#3a3c3a"; c.fillRect(x0, y0 + 27, x1 - x0, 1.5); c.fillRect(x0, y0 + 85, x1 - x0, 1.5);
+  c.fillStyle = "#3a3c3a"; c.fillRect(x0, y0 + 28, x1 - x0, 1.5); c.fillRect(x0, y0 + 89, x1 - x0, 1.5);
   c.fillStyle = ink; c.strokeStyle = ink;
-  c.lineWidth = 1.3; c.strokeRect(111.5, 143.5, 18, 11); c.font = "800 8px " + F; c.textAlign = "center"; c.fillText("PS", 120.5, 149.5);
-  var lit = Math.round(24 * WO.lvl / 100); if (WO.bat) for (i = 0; i < 24; i++){ c.globalAlpha = i < lit ? 1 : .09; c.fillRect(143 + i * 5.85, 142, 3.5, 13); } c.globalAlpha = 1;
-  c.font = "800 11px " + F; c.textAlign = "center"; c.fillText("100", 332, 148);
-  var dn = fr ? ["DIM", "LUN", "MAR", "MER", "JEU", "VEN", "SAM"] : ["SON", "MON", "DIE", "MIT", "DON", "FRE", "SAM"], p2 = function(n){ return (n < 10 ? "0" : "") + n; }, sp = function(n){ return (n < 10 ? " " : "") + n; };
-  if (WO.date){ c.font = "800 9.5px " + F; c.fillText("MUTE", 261, 173);
-    rlText(c, dn[now.getDay()] + " " + p2(now.getFullYear() % 100) + "-" + sp(now.getMonth() + 1) + "-" + p2(now.getDate()), 229.5, 196, 3.3); }
-  c.font = "800 9.5px " + F; c.fillText("DST", 318, 235);
-  var hh = now.getHours(), data = segData((hh < 10 ? " " : "") + hh + ":" + p2(now.getMinutes())), sd = segData(p2(now.getSeconds()));
-  function digits(dat, n, left, bottom, k){
-    c.save(); c.translate(left - 14 * k, bottom - 202 * k); c.scale(k, k);
-    for (var d = 0; d < n; d++){ var o = segHit(d), P = segPaths(o.ox, o.oy, cfg);
-      P.forEach(function(pp, sI){ c.globalAlpha = (dat[d] >> sI) & 1 ? 1 : cfg.off; c.fillStyle = ink; c.fill(pp); });
-      if (n === 4 && d === 1){ c.globalAlpha = (dat[1] & 0x80) ? 1 : cfg.off; c.beginPath(); c.arc(o.ox + 120, o.oy + 70, 8.5, 0, 7); c.fill(); c.beginPath(); c.arc(o.ox + 120, o.oy + 150, 8.5, 0, 7); c.fill(); } }
-    c.restore(); c.globalAlpha = 1; }
-  digits(data, 4, 139, 301, .29);
-  if (WO.sec) digits(sd, 2, 292, 301, .18);
+  if (V.ps){ c.globalAlpha = .35; c.lineWidth = 1.2; c.strokeRect(110.5, 143.5, 17, 11); c.font = "bold 7.5px " + FC; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText("PS", 119, 149.5); c.globalAlpha = 1; }
+  c.font = "bold 10px " + FC; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText("0", 135, 148);
+  var lit = Math.round(24 * WO.lvl / 100); if (WO.bat) for (i = 0; i < 24; i++){ c.globalAlpha = i < lit ? 1 : .09; c.fillRect(145 + i * 5.7, 142, 3.5, 13); } c.globalAlpha = 1;
+  c.fillText("100", 325, 148);
+  var dn = fr ? ["DIM", "LUN", "MAR", "MER", "JEU", "VEN", "SAM"] : ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"], p2 = function(n){ return (n < 10 ? "0" : "") + n; }, sp = function(n){ return (n < 10 ? " " : "") + n; };
+  if (V.mute && WO.date){ c.font = "bold 9.5px " + FC; c.fillText("MUTE", 262, 174); }
+  if (WO.date) rlText(c, dn[now.getDay()] + "'" + p2(now.getFullYear() % 100) + "-" + sp(now.getMonth() + 1) + "-" + sp(now.getDate()), 227, 198, 3.3);
+  if (V.dst){ c.font = "bold 9.5px " + FC; c.fillText("DST", 318, 241); }
+  if (V.p && now.getHours() >= 12){ c.font = "bold 10px " + FC; c.fillText("P", 115, 254); }
+  if (V.bars) for (i = 0; i < 4; i++) c.fillRect(303 + i * 4.4, 253 - (V.bell ? 0 : -2), 2.6, 7);
+  if (V.bell){ c.beginPath(); c.moveTo(329, 259); c.quadraticCurveTo(329, 249, 334.5, 249); c.quadraticCurveTo(340, 249, 340, 259); c.closePath(); c.fill(); c.fillRect(327.5, 258, 14, 1.8); c.beginPath(); c.arc(334.5, 262, 1.6, 0, 7); c.fill(); }
+  var hh = now.getHours(), mi = now.getMinutes(), ss = now.getSeconds(), k1 = .3, k2 = .19, bot = 301, pit1 = 124 * k1, pit2 = 124 * k2;
+  var segs = segData((hh < 10 ? " " : "") + hh + ":" + p2(mi)), sd = segData(p2(ss));
+  function dig(mask, left, k){ var P = segPaths(14, 8, cfg); c.save(); c.translate(left - 14 * k, bot - 202 * k); c.scale(k, k); P.forEach(function(pp, sI){ c.globalAlpha = (mask >> sI) & 1 ? 1 : V.ghost; c.fillStyle = ink; c.fill(pp); }); c.restore(); c.globalAlpha = 1; }
+  dig(segs[0], 119, k1); dig(segs[1], 156.5, k1);
+  dig(segs[2], 211, k1); dig(segs[3], 248.5, k1);
+  c.fillStyle = ink; [267.5, 289.5].forEach(function(y){ c.fillRect(196, y - 3, 6, 6); });
+  if (WO.sec){ dig(sd[0], 290, k2); dig(sd[1], 290 + pit2, k2); }
   c.restore();
 }
 function drawWatch(c){
@@ -646,7 +651,7 @@ function drawWatch(c){
   var g = c.createRadialGradient(C, C - 60, 20, C, C, C); g.addColorStop(0, "rgba(255,255,255,.07)"); g.addColorStop(1, "rgba(0,0,0,.35)"); c.fillStyle = g; c.fillRect(0, 0, 466, 466);
   function pol(r, deg){ var a = deg * Math.PI / 180; return [C + Math.sin(a) * r, C - Math.cos(a) * r]; }
   var f = WO.face, i, p, q;
-  if (f === "casio") { drawRetroLcd(c, now, C); c.restore(); return; }
+  if (RLV[f]) { drawRetroLcd(c, now, C, RLV[f]); c.restore(); return; }
   if (WO.bat) {
     c.lineCap = "round"; c.lineWidth = 7; c.strokeStyle = "rgba(255,255,255,.15)";
     c.beginPath(); c.arc(C, C, 196, (150 - 90) * Math.PI / 180, (210 - 90) * Math.PI / 180); c.stroke();
