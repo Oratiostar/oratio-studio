@@ -1,33 +1,56 @@
-/* Oratio Glas – milchiger Glas-Effekt (Look aus dem Oratio Control Center).
-   Klassen: .glass (Fläche/Kachel) · .gbtn (Glas-Knopf) · .gbtn.on (gewählt, wächst leicht) · --gc = Farbton (optional) */
+/* Oratio Glas – der Look aus dem Oratio Control Center, vier Stufen:
+   Tag·Glas  = milchiges Frostglas über bunter Aurora   Nacht·Glas = dunkles Klarglas über tiefer Aurora
+   Tag·Matt  = helle, feste Flächen                     Nacht·Matt = dunkle, feste Flächen
+   Tag/Nacht kommt vom Hell/Dunkel-Schalter, Glas/Matt vom Glas-Schalter (Kopfleiste).
+   Klassen: .glass (Fläche) · .gbtn (Knopf) · .gbtn.on (gewählt) · --gc = Farbton (optional) · body.aurora = bunter Glas-Hintergrund */
 :root{
-  --g-top:rgba(255,255,255,.78);--g-bot:rgba(255,255,255,.40);--g-rim:rgba(255,255,255,.95);--g-shine:rgba(255,255,255,1);
-  --g-edge:rgba(60,100,150,.26);--g-fg:#1d2b44;--g-hover:rgba(255,255,255,.35);--g-sel:rgba(255,255,255,.55);
-  --g-shadow:0 6px 18px -8px rgba(30,70,120,.40),0 1px 3px rgba(30,70,120,.12);--g-blur:blur(16px) saturate(1.7);
+  /* Tag · Glas (FROST_GLASS) */
+  --g-top:rgba(255,255,255,.58);--g-bot:rgba(255,255,255,.26);--g-rim:rgba(255,255,255,.92);--g-shine:rgba(255,255,255,1);
+  --g-edge:rgba(40,70,120,.20);--g-fg:#14213a;--g-hover:rgba(255,255,255,.55);--g-sel:rgba(255,255,255,.7);
+  --g-shadow:0 10px 28px -12px rgba(30,60,130,.45),0 1px 3px rgba(30,60,130,.14);--g-blur:blur(22px) saturate(1.9);--g-bw:1px;
+  --au1:rgba(80,150,255,.75);--au2:rgba(255,120,190,.65);--au3:rgba(255,200,90,.7);--au4:rgba(60,215,190,.6);--au-base:#eaf1fb;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --g-top:rgba(255,255,255,.17);--g-bot:rgba(255,255,255,.06);--g-rim:rgba(255,255,255,.38);--g-shine:rgba(255,255,255,.75);
-  --g-edge:rgba(0,0,0,.35);--g-fg:#eef3fb;--g-hover:rgba(255,255,255,.10);--g-sel:rgba(255,255,255,.20);
-  --g-shadow:0 8px 22px -10px rgba(0,0,0,.65),0 1px 3px rgba(0,0,0,.35)}}
+  /* Nacht · Glas (CLEAR_THEME) */
+  --g-top:rgba(255,255,255,.20);--g-bot:rgba(255,255,255,.07);--g-rim:rgba(255,255,255,.42);--g-shine:rgba(255,255,255,.85);
+  --g-edge:rgba(0,0,0,.40);--g-fg:#f1f5fc;--g-hover:rgba(255,255,255,.14);--g-sel:rgba(255,255,255,.26);
+  --g-shadow:0 12px 30px -12px rgba(0,0,0,.8),0 1px 3px rgba(0,0,0,.4);
+  --au1:rgba(40,90,255,.55);--au2:rgba(160,50,230,.5);--au3:rgba(0,190,170,.42);--au4:rgba(240,60,140,.42);--au-base:#0a0e1c}}
 :root[data-theme="dark"]{
-  --g-top:rgba(255,255,255,.17);--g-bot:rgba(255,255,255,.06);--g-rim:rgba(255,255,255,.38);--g-shine:rgba(255,255,255,.75);
-  --g-edge:rgba(0,0,0,.35);--g-fg:#eef3fb;--g-hover:rgba(255,255,255,.10);--g-sel:rgba(255,255,255,.20);
-  --g-shadow:0 8px 22px -10px rgba(0,0,0,.65),0 1px 3px rgba(0,0,0,.35)}
+  --g-top:rgba(255,255,255,.20);--g-bot:rgba(255,255,255,.07);--g-rim:rgba(255,255,255,.42);--g-shine:rgba(255,255,255,.85);
+  --g-edge:rgba(0,0,0,.40);--g-fg:#f1f5fc;--g-hover:rgba(255,255,255,.14);--g-sel:rgba(255,255,255,.26);
+  --g-shadow:0 12px 30px -12px rgba(0,0,0,.8),0 1px 3px rgba(0,0,0,.4);
+  --au1:rgba(40,90,255,.55);--au2:rgba(160,50,230,.5);--au3:rgba(0,190,170,.42);--au4:rgba(240,60,140,.42);--au-base:#0a0e1c}
+
+/* Tag · Matt (LIGHT_MATT) und Nacht · Matt (DARK_MATT): feste Flächen, keine Unschärfe, kein Glanz */
+body.ds-matt{--g-top:#ffffff;--g-bot:#f0f3f8;--g-rim:transparent;--g-shine:transparent;--g-edge:#cfd7e4;--g-fg:#14213a;--g-hover:rgba(20,40,80,.05);--g-sel:rgba(20,40,80,.10);--g-shadow:0 2px 0 rgba(20,40,80,.10),0 6px 14px -8px rgba(20,40,80,.25);--g-blur:none}
+:root[data-theme="dark"] body.ds-matt{--g-top:#262d3a;--g-bot:#1d232e;--g-edge:#3a4354;--g-fg:#eef3fb;--g-hover:rgba(255,255,255,.06);--g-sel:rgba(255,255,255,.12);--g-shadow:0 2px 0 rgba(0,0,0,.35),0 8px 16px -8px rgba(0,0,0,.6)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.ds-matt{--g-top:#262d3a;--g-bot:#1d232e;--g-edge:#3a4354;--g-fg:#eef3fb;--g-hover:rgba(255,255,255,.06);--g-sel:rgba(255,255,255,.12);--g-shadow:0 2px 0 rgba(0,0,0,.35),0 8px 16px -8px rgba(0,0,0,.6)}}
+
+/* Aurora: der bunte Untergrund, durch den das Glas schimmert (nur im Glas-Modus, nur auf Seiten mit body.aurora) */
+body.aurora:not(.sl){background:var(--au-base)!important}
+body.aurora:not(.sl)::before{content:"";position:fixed;inset:-12%;z-index:-1;pointer-events:none;
+  background:radial-gradient(48vmax 42vmax at 14% 10%,var(--au1),transparent 62%),radial-gradient(46vmax 40vmax at 88% 16%,var(--au2),transparent 62%),radial-gradient(52vmax 44vmax at 82% 92%,var(--au3),transparent 62%),radial-gradient(44vmax 40vmax at 10% 88%,var(--au4),transparent 62%);
+  animation:auroraDrift 46s ease-in-out infinite alternate}
+@keyframes auroraDrift{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(2.5%,-2%,0) scale(1.06)}100%{transform:translate3d(-2%,2.5%,0) scale(1.02)}}
+body.aurora.ds-matt{background:var(--bg,#eef2f7)!important}
+body.aurora.ds-matt:not(.sl)::before{display:none}
+@media (prefers-reduced-motion:reduce){body.aurora:not(.sl)::before{animation:none}}
 
 .glass,.gbtn,.btn:not(.go):not(.on):not(.gbtn){
   position:relative;isolation:isolate;color:var(--g-fg);
-  --g-bg:radial-gradient(120px 90px at var(--mx,50%) var(--my,0%),var(--g-hover),transparent 70%),
-    linear-gradient(180deg,color-mix(in srgb,var(--gc,transparent) 30%,var(--g-top)),color-mix(in srgb,var(--gc,transparent) 15%,var(--g-bot)));
+  --g-bg:radial-gradient(130px 100px at var(--mx,50%) var(--my,0%),var(--g-hover),transparent 70%),
+    linear-gradient(180deg,color-mix(in srgb,var(--gc,transparent) 26%,var(--g-top)),color-mix(in srgb,var(--gc,transparent) 12%,var(--g-bot)));
   background:var(--g-bg);
   border:var(--g-bw,1px) solid var(--g-edge);
   box-shadow:inset 0 0 0 1px var(--g-rim),var(--g-shadow);
   -webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);
 }
-/* feine Glanzkante oben (Liquid-Glass): heller Strich + milchiger Schimmer */
+/* Glanzkante oben (Liquid-Glass): heller Strich + milchiger Schimmer */
 .glass::before,.gbtn::before,.btn:not(.go):not(.on):not(.gbtn)::before{
-  content:"";position:absolute;left:3%;right:3%;top:1px;height:42%;border-radius:inherit;pointer-events:none;z-index:-1;
-  background:linear-gradient(180deg,color-mix(in srgb,var(--g-shine) 28%,transparent),transparent);
-  border-top:1.2px solid var(--g-shine);border-radius:999px 999px 40% 40%/ 60% 60% 40% 40%;
+  content:"";position:absolute;left:3%;right:3%;top:1px;height:42%;pointer-events:none;z-index:-1;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--g-shine) 30%,transparent),transparent);
+  border-top:1.2px solid var(--g-shine);border-radius:999px 999px 40% 40%/60% 60% 40% 40%;
 }
 .glass::before{border-radius:18px 18px 40% 40%/18px 18px 30% 30%}
 .gbtn{
@@ -36,36 +59,48 @@
   transition:transform .14s ease,box-shadow .14s ease,filter .14s ease;-webkit-tap-highlight-color:transparent;
 }
 .glass{border-radius:20px}
-@media (hover:hover){.gbtn:hover,.glass.hov:hover{transform:translateY(-1px) scale(1.03);filter:brightness(1.04)}}
+@media (hover:hover){.gbtn:hover,.glass.hov:hover{transform:translateY(-2px) scale(1.03);filter:brightness(1.05)}}
 .gbtn:active{transform:scale(.97)}
 .gbtn.on{
   transform:scale(1.05);
-  background:linear-gradient(180deg,color-mix(in srgb,var(--gc,var(--acc,#27a3df)) 70%,var(--g-top)),color-mix(in srgb,var(--gc,var(--acc,#27a3df)) 50%,var(--g-bot)));
-  color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.28);
-  box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.85),0 8px 20px -8px color-mix(in srgb,var(--gc,var(--acc,#27a3df)) 80%,#000);
+  background:linear-gradient(180deg,color-mix(in srgb,var(--gc,var(--acc,#27a3df)) 80%,#fff),var(--gc,var(--acc,#27a3df)));
+  color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3);
+  box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.8),0 10px 22px -8px color-mix(in srgb,var(--gc,var(--acc,#27a3df)) 85%,#000);
 }
 .gbtn:focus-visible{outline:2px solid var(--gc,var(--acc,#27a3df));outline-offset:2px}
 .gbtn.sm{min-height:32px;padding:4px 12px;font-size:13px}
 .gbtn[disabled]{opacity:.45;cursor:default;transform:none}
+body.ds-matt .glass::before,body.ds-matt .gbtn::before,body.ds-matt .btn::before{display:none}
+body.ds-matt .gbtn.on{box-shadow:0 3px 0 rgba(0,0,0,.3)}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   .glass,.gbtn{background:linear-gradient(180deg,color-mix(in srgb,var(--gc,transparent) 30%,var(--card,#fff)),var(--card,#fff))}}
 @media (prefers-reduced-motion:reduce){.gbtn,.glass{transition:none}}
 
-/* vorhandene .btn im ganzen System: Glas-Kapsel (Auswahl .on und Hauptknopf .go bleiben farbig) */
-.btn:not(.go):not(.on):not(.gbtn){border-radius:999px;border:var(--g-bw,1px) solid var(--g-edge);color:var(--g-fg);transition:transform .14s ease,box-shadow .14s ease}
+/* alle normalen Knöpfe im System: Glas-Kapsel (Auswahl .on und Hauptknopf .go bleiben farbig) */
+.btn:not(.go):not(.on):not(.gbtn){border-radius:999px;transition:transform .14s ease,box-shadow .14s ease}
 @media (hover:hover){.btn:not(.go):not(.on):not(.gbtn):not(:disabled):hover{background:var(--g-bg);border-color:var(--g-edge);transform:translateY(-1px) scale(1.03)}}
 
-/* Design-Schalter (Kopfleiste): Glas · Schwarz · Weiß – gilt für das ganze System.
-   Glas = milchig und durchsichtig (Standard) · Weiß = mattes Weiß mit weißem Rand · Schwarz = mattes Weiß/Dunkel mit schwarzem Rand und fester Kante */
-body.ds-weiss{--g-top:#fff;--g-bot:#f1f5fa;--g-rim:transparent;--g-edge:rgba(255,255,255,.95);--g-blur:none;--g-shine:transparent;--g-hover:rgba(0,0,0,.03);--g-shadow:0 3px 8px -2px rgba(20,50,90,.28)}
-body.ds-schwarz{--g-top:#fff;--g-bot:#eef3f8;--g-rim:transparent;--g-edge:#2a1740;--g-bw:2px;--g-blur:none;--g-shine:transparent;--g-hover:rgba(0,0,0,.03);--g-shadow:0 3px 0 rgba(42,23,64,.45)}
-:root[data-theme="dark"] body.ds-weiss{--g-top:#2d384c;--g-bot:#232d3e;--g-edge:rgba(255,255,255,.4);--g-fg:#eef3fb}
-:root[data-theme="dark"] body.ds-schwarz{--g-top:#2d384c;--g-bot:#232d3e;--g-edge:#05070c;--g-fg:#eef3fb}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) body.ds-weiss{--g-top:#2d384c;--g-bot:#232d3e;--g-edge:rgba(255,255,255,.4);--g-fg:#eef3fb}
-  :root:not([data-theme="light"]) body.ds-schwarz{--g-top:#2d384c;--g-bot:#232d3e;--g-edge:#05070c;--g-fg:#eef3fb}}
-body.ds-weiss .glass::before,body.ds-weiss .gbtn::before,body.ds-schwarz .glass::before,body.ds-schwarz .gbtn::before{display:none}
-body.ds-weiss .gbtn.on,body.ds-schwarz .gbtn.on{box-shadow:0 3px 0 rgba(0,0,0,.3)}
-/* Schalter selbst */
+/* Karten und Kopfleiste folgen dem Modus (auf Seiten mit Aurora) */
+body.aurora.ds-glas:not(.sl) .card,body.aurora.ds-glas:not(.sl) .toolcard,body.aurora.ds-glas:not(.sl) .org-bar,body.aurora.ds-glas:not(.sl) .frow.res,body.aurora.ds-glas:not(.sl) .seg,body.aurora.ds-glas:not(.sl) #q,body.aurora.ds-glas:not(.sl) .in,body.aurora.ds-glas:not(.sl) .wzk:not(.x){
+  background:linear-gradient(180deg,var(--g-top),var(--g-bot));border:1px solid var(--g-edge);
+  box-shadow:inset 0 0 0 1px var(--g-rim),var(--g-shadow);-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);color:var(--g-fg)}
+body.aurora.ds-glas:not(.sl) header{background:linear-gradient(180deg,var(--g-top),var(--g-bot));-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);border-bottom:1px solid var(--g-edge);box-shadow:inset 0 -1px 0 var(--g-rim)}
+body.aurora.ds-glas:not(.sl) .muted,body.aurora.ds-glas:not(.sl) .sub{color:color-mix(in srgb,var(--g-fg) 70%,transparent)}
+body.aurora.ds-glas:not(.sl) h1{color:var(--g-fg)}
+
+/* Schalter Glas · Matt (Kopfleiste) */
 .dsg button{gap:4px}.dsg button span{display:inline}
 @media (max-width:560px){.dsg button span{display:none}}
+
+/* Matt: feste Flächen statt Frost */
+body.aurora.ds-matt:not(.sl) .card,body.aurora.ds-matt:not(.sl) .seg,body.aurora.ds-matt:not(.sl) #q,body.aurora.ds-matt:not(.sl) .in{background:linear-gradient(180deg,var(--g-top),var(--g-bot));border:1px solid var(--g-edge);box-shadow:var(--g-shadow);color:var(--g-fg)}
+body.aurora:not(.sl) .seg button.on{background:linear-gradient(135deg,#2e86ff,#8a4dff);color:#fff}
+body.aurora:not(.sl) .seg{overflow:hidden}
+body.aurora.ds-glas:not(.sl) .seg button:not(.on){color:var(--g-fg)}
+body.aurora.ds-glas:not(.sl) #q::placeholder,body.aurora.ds-glas:not(.sl) .in::placeholder{color:color-mix(in srgb,var(--g-fg) 55%,transparent)}
+
+/* Kopfleiste auf dem Handy: eine Zeile */
+@media (max-width:480px){header .bar{gap:6px}header .lg{font-size:19px}header .lg .lgO{width:28px;height:28px}header .seg button{padding:3px 5px}}
+/* weiße Titel auf farbigen Flächen bleiben weiß */
+body.aurora.ds-glas:not(.sl) .hero h1,body.aurora.ds-glas:not(.sl) .thead h1,body.aurora.ds-glas:not(.sl) .vhero h1,body.aurora.ds-glas:not(.sl) .mega h2{color:#fff}
+@media (max-width:480px){header .bar{padding-left:8px;padding-right:8px}header .seg{border-width:1.5px}header .seg button{font-size:11px;padding:3px 4px;gap:2px}header .lg{font-size:17.5px}header .lg .lgO{width:25px;height:25px}header .logo{gap:4px}}

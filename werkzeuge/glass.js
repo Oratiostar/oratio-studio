@@ -1,12 +1,13 @@
-/* Oratio Glas: (1) der Glanz folgt dem Finger/der Maus, (2) Design-Schalter Glas · Schwarz · Weiß für das ganze System.
+/* Oratio Glas: (1) der Glanz folgt dem Finger/der Maus, (2) Glas/Matt-Schalter für das ganze System (Tag/Nacht kommt vom Hell/Dunkel-Schalter).
    Schalter einbauen: ein Element mit  data-design-switch  anlegen (z. B. <div class="seg" data-design-switch></div>) – es füllt sich selbst. */
 (function(){
-  var MODI = ["glas", "schwarz", "weiss"], EMO = { glas: "🫧", schwarz: "⬛", weiss: "⬜" };
-  var NAME = { de: { glas: "Glas", schwarz: "Schwarz", weiss: "Weiß", t: "Design" }, fr: { glas: "Verre", schwarz: "Noir", weiss: "Blanc", t: "Style" } };
+  var MODI = ["glas", "matt"], EMO = { glas: "🫧", matt: "◼" };
+  var NAME = { de: { glas: "Glas", matt: "Matt", t: "Oberfläche" }, fr: { glas: "Verre", matt: "Mat", t: "Surface" } };
   var DS = "glas"; try { DS = localStorage.getItem("ds") || "glas"; } catch (e) {}
+  if (DS === "schwarz" || DS === "weiss") DS = "matt"; /* alte Werte */
   if (MODI.indexOf(DS) < 0) DS = "glas";
   function lang(){ var l = null; try { l = localStorage.getItem("lang"); } catch (e) {} return l || ((navigator.language || "").indexOf("fr") === 0 ? "fr" : "de"); }
-  function anwenden(){ [document.documentElement, document.body].forEach(function(el){ if (!el) return; MODI.forEach(function(m){ el.classList.remove("ds-" + m); }); el.classList.add("ds-" + DS); }); }
+  function anwenden(){ if (document.body && !document.body.classList.contains("noaur")) document.body.classList.add("aurora"); [document.documentElement, document.body].forEach(function(el){ if (!el) return; MODI.forEach(function(m){ el.classList.remove("ds-" + m); }); el.classList.add("ds-" + DS); }); }
   function fuellen(){
     var N = NAME[lang() === "fr" ? "fr" : "de"];
     document.querySelectorAll("[data-design-switch]").forEach(function(box){

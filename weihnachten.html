@@ -188,6 +188,33 @@ body{background:radial-gradient(circle at 8% 0%,rgba(230,57,70,.16),transparent 
   .plrow button{display:none}
   .plsec{break-inside:avoid;border:none}
 }
+
+/* ---------- Weihnachtswelt: tiefe Festfarben, Glas/Matt ---------- */
+body{background:var(--bg)}
+:root{--au1:rgba(230,40,60,.72);--au2:rgba(30,170,90,.6);--au3:rgba(255,196,40,.7);--au4:rgba(70,150,255,.55);--au-base:#fbeff0}
+:root[data-theme="dark"]{--au1:rgba(190,20,45,.6);--au2:rgba(10,120,70,.55);--au3:rgba(230,160,20,.38);--au4:rgba(30,60,170,.5);--au-base:#0b0a16}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--au1:rgba(190,20,45,.6);--au2:rgba(10,120,70,.55);--au3:rgba(230,160,20,.38);--au4:rgba(30,60,170,.5);--au-base:#0b0a16}}
+body.ds-matt{background:var(--bg)!important}
+.hero{box-shadow:0 22px 48px -18px rgba(200,20,50,.7),0 0 0 2px rgba(255,214,102,.75),0 0 40px -6px rgba(255,200,70,.5)}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 0 0 2px rgba(255,255,255,.28),inset 0 -60px 80px -50px rgba(0,0,0,.5)}
+.hero-z span{background:linear-gradient(180deg,var(--g-top),var(--g-bot));border:1px solid var(--g-edge);color:var(--g-fg);box-shadow:inset 0 0 0 1px var(--g-rim),var(--g-shadow);-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur)}
+.hero-z b{color:var(--g-fg);font-size:17px}
+.gland{box-shadow:0 18px 34px -16px var(--c1,#c4162b),0 0 0 1.5px rgba(255,214,102,.7)}
+.gh2 span{box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.7),0 8px 16px -6px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+/* Kacheln: satte Verläufe mit Glanzkante */
+.xcard{isolation:isolate;min-height:150px;border:0;color:#fff;background:linear-gradient(145deg,var(--c1),color-mix(in srgb,var(--c2) 55%,var(--c1)) 70%,color-mix(in srgb,var(--c2) 80%,#000));box-shadow:0 16px 28px -14px var(--c1),inset 0 0 0 1.5px rgba(255,255,255,.45)}
+.xcard::before{content:"";position:absolute;left:4%;right:4%;top:1px;height:38%;z-index:-1;border-radius:999px 999px 50% 50%/70% 70% 30% 30%;background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,0));border-top:1.2px solid rgba(255,255,255,.9)}
+.xcard::after{right:-30px;top:auto;bottom:-44px;width:150px;height:150px;z-index:-1;background:radial-gradient(circle,rgba(255,255,255,.28),transparent 68%)}
+.xcard .xs{background:rgba(255,255,255,.24);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.7),0 8px 16px -8px rgba(0,0,0,.45);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.xcard b{font-size:18px;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+.xcard .xd{color:rgba(255,255,255,.95);font-weight:600;text-shadow:0 1px 6px rgba(0,0,0,.3)}
+@media (hover:hover){.xcard:hover{border:0;box-shadow:0 22px 36px -14px var(--c1),inset 0 0 0 1.5px rgba(255,255,255,.8);transform:translateY(-5px) scale(1.015)}}
+body.ds-matt .xcard::before,body.ds-matt .xcard::after{display:none}
+body.ds-matt .xcard{box-shadow:0 4px 0 color-mix(in srgb,var(--c1) 50%,#000),inset 0 0 0 1px rgba(255,255,255,.25)}
+body.ds-matt .xcard .xs,body.ds-matt .gh2 span,body.ds-matt .hero-z span{-webkit-backdrop-filter:none;backdrop-filter:none}
+body.ds-matt .hero{box-shadow:0 5px 0 #8a1020,0 0 0 2px #ffd666}
+.thead{box-shadow:0 18px 34px -16px var(--c1),inset 0 0 0 1.5px rgba(255,255,255,.45)}
+body.ds-matt .thead{box-shadow:0 5px 0 color-mix(in srgb,var(--c1) 50%,#000)}
 </style>
 </head>
 <body>

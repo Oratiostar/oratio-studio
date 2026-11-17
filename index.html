@@ -268,16 +268,16 @@ body.slocal #q{display:none}
 .ribwrap{margin:12px 0 14px}
 .ribwrap .ribbon{font-size:22px;padding:4px 48px}
 .sc{height:158px}.sc p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-right:12px}
-/* Design: Weiß */
-body.ds-weiss .sc{border:2px solid rgba(255,255,255,.85);box-shadow:0 3px 8px rgba(0,40,0,.28)}
-body.ds-weiss details.gr,body.ds-weiss .in,body.ds-weiss .treffer a{border-color:rgba(255,255,255,.85)}
-body.ds-weiss .kat{border:1.5px solid rgba(255,255,255,.8);box-shadow:0 3px 0 rgba(0,0,0,.18)}
+/* Design: Matt (feste Flächen) */
+body.ds-matt .sc{border:2px solid rgba(255,255,255,.85);box-shadow:0 3px 8px rgba(0,40,0,.28)}
+body.ds-matt details.gr,body.ds-matt .in,body.ds-matt .treffer a{border-color:rgba(255,255,255,.85)}
+body.ds-matt .kat{border:1.5px solid rgba(255,255,255,.8);box-shadow:0 3px 0 rgba(0,0,0,.18)}
 /* Design: Glas (wie im Original) */
 body.ds-glas .sc{border:1px solid rgba(255,255,255,.45);background:color-mix(in srgb,var(--sgl) 82%,transparent);-webkit-backdrop-filter:blur(8px) saturate(1.2);backdrop-filter:blur(8px) saturate(1.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.65),0 6px 14px -6px rgba(0,50,0,.5)}
 body.ds-glas details.gr,body.ds-glas .treffer a,body.ds-glas .in{border:1px solid rgba(255,255,255,.5);background:color-mix(in srgb,var(--sgl) 82%,transparent);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 5px 12px -6px rgba(0,50,0,.5)}
 body.ds-glas .kat{border:1px solid rgba(255,255,255,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 3px 6px -2px rgba(0,0,0,.3)}
 body.ds-glas .slmain{background:color-mix(in srgb,var(--sgl) 86%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 22px -10px rgba(0,50,0,.5);border:1px solid rgba(255,255,255,.5)}
-body.ds-weiss .welt{border-color:rgba(255,255,255,.92)}body.ds-schwarz .welt{border-color:#2a1740;box-shadow:0 4px 0 rgba(42,23,64,.5)}
+
 body.ds-glas .sc .sbad{box-shadow:0 2px 4px rgba(0,0,0,.2)}
 @media (max-width:560px){#sbar em{display:none}#sq{width:100%;order:3}#sbar .sx{display:none}#sbar{gap:8px}.ribwrap .ribbon{font-size:18px;padding:4px 28px}.botb{width:58px;height:62px}.botx{font-size:12.5px}}
 
@@ -357,6 +357,51 @@ body.home{overflow-x:hidden}body.home main{overflow-x:clip}
 .wzk .wzs{font-size:28px;line-height:1}.wzk b{font-size:16px}.wzk small{opacity:.8;line-height:1.4}
 .wzg[hidden]{display:none!important}@media (min-width:1000px){.wzg.wzbig{grid-template-columns:repeat(4,1fr)}}.wzk.gross{padding:20px;background:linear-gradient(135deg,rgba(255,154,60,.22),rgba(238,79,126,.2) 60%,rgba(107,79,224,.2))}.wzk.gross .wzs{font-size:40px}.wzk.gross b{font-size:19px}
 @media (hover:hover){.wzk:hover{transform:translateY(-3px)}}
+
+/* ===== Werkzeuge & Lifestyle: kräftige Welten ===== */
+.vhero{position:relative;overflow:hidden;border-radius:26px;padding:26px 22px 24px;margin:6px 0 20px;color:#fff;isolation:isolate;box-shadow:0 18px 40px -18px var(--ha,#ee4f7e),inset 0 0 0 1.5px rgba(255,255,255,.5)}
+.vhero::before{content:"";position:absolute;inset:0;z-index:-2;background:var(--hbg)}
+.vhero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(60% 90% at 90% 0%,rgba(255,255,255,.35),transparent 60%),repeating-linear-gradient(135deg,rgba(255,255,255,.07) 0 14px,transparent 14px 28px)}
+.vhero h1{margin:0;font-size:clamp(30px,8vw,46px);line-height:1.02;letter-spacing:-.5px;color:#fff;text-shadow:0 3px 14px rgba(0,0,0,.28)}
+.vhero p{margin:8px 0 0;max-width:46ch;font-weight:600;color:rgba(255,255,255,.95);text-shadow:0 1px 8px rgba(0,0,0,.25)}
+.vhero .vbig{position:absolute;right:-6px;top:-10px;font-size:112px;line-height:1;opacity:.95;filter:drop-shadow(0 10px 14px rgba(0,0,0,.3));transform:rotate(-10deg);z-index:-1;animation:vwip 6s ease-in-out infinite alternate}
+@keyframes vwip{to{transform:rotate(6deg) translateY(8px)}}
+.vchips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.vchips span{padding:6px 12px;border-radius:999px;font-weight:800;font-size:12.5px;color:#fff;background:rgba(255,255,255,.22);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.vh2{display:flex;align-items:center;gap:10px;margin:26px 2px 12px;font-size:12.5px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.vh2 i{font-style:normal;display:inline-grid;place-items:center;width:30px;height:30px;border-radius:10px;font-size:16px;letter-spacing:0;background:linear-gradient(135deg,var(--a),var(--b));box-shadow:0 6px 14px -6px var(--a)}
+.vh2 span{background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.vh2::after{content:"";flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--a),transparent);opacity:.5}
+.vgrid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
+.vk{position:relative;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;gap:5px;min-height:176px;padding:18px 18px 16px;border-radius:24px;text-decoration:none;color:#fff;background:linear-gradient(140deg,var(--a),var(--b) 58%,var(--c,var(--b)));box-shadow:0 16px 30px -16px var(--a),inset 0 0 0 1.5px rgba(255,255,255,.45);transition:transform .18s ease,box-shadow .18s ease}
+.vk::before{content:"";position:absolute;left:4%;right:4%;top:1px;height:40%;z-index:-1;border-radius:999px 999px 50% 50%/70% 70% 30% 30%;background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,0));border-top:1.2px solid rgba(255,255,255,.9)}
+.vk::after{content:"";position:absolute;right:-30px;bottom:-40px;width:150px;height:150px;border-radius:50%;z-index:-1;background:radial-gradient(circle,rgba(255,255,255,.3),transparent 68%)}
+.vk .vs{width:58px;height:58px;display:grid;place-items:center;font-size:32px;border-radius:18px;background:rgba(255,255,255,.24);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.7),0 8px 16px -8px rgba(0,0,0,.4);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.vk b{font-size:19px;letter-spacing:-.2px;margin-top:6px;text-shadow:0 2px 8px rgba(0,0,0,.25)}
+.vk small{font-size:13.5px;line-height:1.42;font-weight:600;color:rgba(255,255,255,.95);text-shadow:0 1px 6px rgba(0,0,0,.25);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.vk .vgo{position:absolute;right:14px;top:14px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:900;background:rgba(255,255,255,.26);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.7)}
+.vk.wide{grid-column:1/-1;min-height:150px}
+@media (hover:hover){.vk:hover{transform:translateY(-4px) scale(1.012);box-shadow:0 22px 38px -16px var(--a),inset 0 0 0 1.5px rgba(255,255,255,.7)}}
+body.ds-matt .vk::before,body.ds-matt .vhero::after{display:none}
+body.ds-matt .vk{box-shadow:0 4px 0 color-mix(in srgb,var(--a) 55%,#000),inset 0 0 0 1px rgba(255,255,255,.25)}
+body.ds-matt .vhero{box-shadow:0 5px 0 color-mix(in srgb,var(--ha,#ee4f7e) 55%,#000)}
+body.ds-matt .vk .vs,body.ds-matt .vchips span,body.ds-matt .vk .vgo{-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
+.vq{display:flex;align-items:center;gap:10px;max-width:640px;margin:0 0 6px}
+.vq input{flex:1;min-width:0;border-radius:999px!important;padding:12px 18px!important;font-size:16px}
+/* München-Karte */
+.mega{position:relative;overflow:hidden;isolation:isolate;display:block;text-decoration:none;color:#fff;border-radius:28px;padding:22px 20px 18px;margin:0 0 22px;background:linear-gradient(135deg,#0a6fd0,#12b8e6 52%,#19c9a8);box-shadow:0 20px 44px -18px #0a6fd0,inset 0 0 0 1.5px rgba(255,255,255,.5)}
+.mega::before{content:"";position:absolute;inset:0;z-index:-1;background:repeating-conic-gradient(from 45deg at 50% 50%,rgba(255,255,255,.14) 0 25%,transparent 0 50%) 0 0/46px 46px,radial-gradient(70% 100% at 100% 0%,rgba(255,255,255,.35),transparent 60%)}
+.mega .mt{display:flex;align-items:center;gap:14px}.mega .me{font-size:62px;line-height:1;filter:drop-shadow(0 8px 10px rgba(0,0,0,.3))}
+.mega h2{margin:0;font-size:clamp(26px,7vw,36px);letter-spacing:-.4px;color:#fff;text-shadow:0 3px 12px rgba(0,0,0,.28)}
+.mega p{margin:4px 0 0;font-weight:600;line-height:1.45;color:rgba(255,255,255,.96);text-shadow:0 1px 6px rgba(0,0,0,.25)}
+.mega .mp{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.mega .mp span{padding:7px 13px;border-radius:999px;font-weight:800;font-size:13.5px;background:rgba(255,255,255,.24);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6)}
+.mega .mgo{display:inline-block;margin-top:16px;padding:9px 18px;border-radius:999px;font-weight:900;font-size:13px;background:#fff;color:#0a6fd0;box-shadow:0 6px 14px -6px rgba(0,0,0,.4)}
+@media (hover:hover){.mega:hover{transform:translateY(-3px)}}.mega{transition:transform .18s}
+.soon{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.soon div{padding:16px 14px;border-radius:20px;text-align:center;font-weight:800;color:var(--fg);border:2px dashed color-mix(in srgb,var(--a) 70%,transparent);background:color-mix(in srgb,var(--a) 10%,transparent)}
+.soon div i{display:block;font-style:normal;font-size:30px;margin-bottom:4px;filter:grayscale(.2)}.soon small{display:block;font-weight:600;color:var(--muted);margin-top:2px}
+@media (max-width:480px){.bar{gap:6px}.lg{font-size:19px}.lg .lgO{width:28px;height:28px}.lg i{margin-left:.2em}.seg button{padding:3px 5px}#q{order:9;flex:1 1 100%;max-width:none}.sp{flex:1 1 0}}
 </style>
 </head>
 <body>
@@ -745,20 +790,38 @@ function placeseite(){
 }
 function werkzeugseite(){
   document.title = U("wzName")+" – Oratio Place"; brand("wz");
+  const fr = LANG === "fr", Tx = (d, f) => fr ? f : d;
   const nEl = x => !x[0].startsWith("elektro.html") && !x[0].startsWith("pc-check.html"), fin = WTOOLS.slice(-6).filter(nEl), alle = WTOOLS.slice(0,-6).filter(nEl);
-  const kachel = (x, gross) => { const [href,sym,t1,t2,s1,s2,kw] = x; return '<a class="wzk'+(gross?" gross":"")+'" href="'+esc(href)+'" data-t="'+esc(nrm(t1+" "+t2+" "+s1+" "+s2+" "+kw))+'"><span class="wzs">'+sym+'</span><b>'+esc(LANG==="fr"?t2:t1)+'</b><small>'+esc(LANG==="fr"?s2:s1)+'</small></a>'; };
-  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("wzName"))+'</div><h1>🧰 '+esc(U("wzName"))+'</h1><p class="sub">'+esc(U("wzSub"))+'</p>'
-    + '<input id="wzq" class="in" type="search" autocomplete="off" placeholder="'+esc(U("wzSuche"))+'" style="margin:6px 0 18px;max-width:560px">'
-    + '<div class="wzg wzbig" id="wzmain">'+fin.map(x => kachel(x,true)).join("")+'</div>'
-    + '<div class="wzg" id="wzres" hidden>'+alle.concat(fin).map(x => kachel(x,false)).join("")+'</div><p class="platz" id="wzk" hidden>'+esc(U("wzKein"))+'</p>';
+  const FARBE = { "datei-werkstatt.html":["#1f6bff","#12b8e6","#19c9a8"], "medien-werkstatt.html":["#ff3b5c","#ff8a1a","#8a2be2"], "icon-werkstatt.html":["#ff3fa4","#ff8a3d","#ffc21a"], "alltag.html":["#0fb59b","#2fd36b","#b6e23a"], "desk.html":["#6a3cff","#2e86ff","#12c2e9"] };
+  const fk = x => FARBE[x[0]] || ["#6a3cff","#ee4f7e","#ff9a3c"];
+  const kachel = (x, wide) => { const [href,sym,t1,t2,s1,s2,kw] = x, c = fk(x); return '<a class="vk'+(wide?" wide":"")+'" style="--a:'+c[0]+';--b:'+c[1]+';--c:'+c[2]+'" href="'+esc(href)+'" data-t="'+esc(nrm(t1+" "+t2+" "+s1+" "+s2+" "+kw))+'"><span class="vs">'+sym+'</span><b>'+esc(fr?t2:t1)+'</b><small>'+esc(fr?s2:s1)+'</small><span class="vgo" aria-hidden="true">→</span></a>'; };
+  const G = [
+    { ic:"📦", a:"#1f6bff", b:"#19c9a8", n:Tx("Dateien & Medien","Fichiers & médias"), w:["datei-werkstatt.html","medien-werkstatt.html","icon-werkstatt.html"] },
+    { ic:"🛠️", a:"#6a3cff", b:"#0fb59b", n:Tx("Alltag & Schreibtisch","Quotidien & bureau"), w:["alltag.html","desk.html"] } ];
+  const gruppe = g => { const t = g.w.map(h => fin.find(x => x[0] === h)).filter(Boolean); return t.length ? '<div class="vh2" style="--a:'+g.a+';--b:'+g.b+'"><i>'+g.ic+'</i><span>'+esc(g.n)+'</span></div><div class="vgrid">'+t.map(x => kachel(x)).join("")+'</div>' : ""; };
+  const rest = fin.filter(x => !G.some(g => g.w.includes(x[0])));
+  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("wzName"))+'</div>'
+    + '<div class="vhero" style="--hbg:linear-gradient(130deg,#ff8a1a,#ee4f7e 48%,#6a3cff);--ha:#ee4f7e"><span class="vbig" aria-hidden="true">🧰</span><h1>'+esc(U("wzName"))+'</h1><p>'+esc(U("wzSub"))+'</p><div class="vchips"><span>⚡ '+Tx("direkt im Browser","directement dans le navigateur")+'</span><span>🔒 '+Tx("ohne Upload","sans envoi")+'</span><span>🧩 '+fin.length+' '+Tx("Werkstätten","ateliers")+'</span></div></div>'
+    + '<div class="vq"><input id="wzq" class="in" type="search" autocomplete="off" placeholder="'+esc(U("wzSuche"))+'"></div>'
+    + '<div id="wzmain">'+G.map(gruppe).join("")+(rest.length ? '<div class="vgrid" style="margin-top:14px">'+rest.map(x => kachel(x)).join("")+'</div>' : "")+'</div>'
+    + '<div class="vgrid" id="wzres" hidden style="margin-top:14px">'+alle.concat(fin).map(x => kachel(x,false)).join("")+'</div><p class="platz" id="wzk" hidden>'+esc(U("wzKein"))+'</p>';
   $("#wzq").addEventListener("input", e => { const w = nrm(e.target.value).split(/\s+/).filter(Boolean); let n = 0;
     $("#wzmain").hidden = w.length > 0; $("#wzres").hidden = w.length === 0;
-    app.querySelectorAll("#wzres .wzk").forEach(a => { const ok = w.length > 0 && w.every(t => a.dataset.t.includes(t)); a.style.display = ok ? "" : "none"; if (ok) n++; });
+    app.querySelectorAll("#wzres .vk").forEach(a => { const ok = w.length > 0 && w.every(t => a.dataset.t.includes(t)); a.style.display = ok ? "" : "none"; if (ok) n++; });
     $("#wzk").hidden = w.length === 0 || n > 0; });
 }
 function lifestyleseite(){
   document.title = "Oratio Lifestyle"; brand("lifestyle");
-  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("lifestyle"))+'</div><h1>'+esc(U("lifestyle"))+'</h1><p class="sub">'+esc(U("lifeT"))+'</p><a class="card" href="muenchen.html" style="display:flex;gap:14px;align-items:center;text-decoration:none;color:inherit;max-width:640px;margin:14px 0;padding:14px 16px;border-radius:18px;border:2px solid var(--line);background:linear-gradient(135deg,rgba(24,140,220,.14),rgba(25,201,184,.12))"><span style="flex:none;font-size:40px;line-height:1">🥨</span><span><b style="display:block;font-size:20px">'+(LANG==="fr"?"Munich – ma ville":"München – meine Stadt")+'</b><span style="display:block;color:var(--muted);line-height:1.45;margin-top:3px">'+(LANG==="fr"?"Monuments, Isar, Wiesn, Biergärten, histoire de la technique, bavarois, excursions et quiz – tout sur Munich.":"Sehenswürdigkeiten, Isar, Wiesn, Biergärten, Technik-Geschichte, Bairisch, Ausflüge und Quiz – alles über München.")+'</span></span></a><p class="platz">'+esc(U("bald"))+'</p>';
+  const fr = LANG === "fr", Tx = (d, f) => fr ? f : d;
+  const pills = [["sehen","🏛️",Tx("Sehenswertes","À voir")],["natur","🌳",Tx("Isar & Natur","Isar & nature")],["biergaerten","🍺",Tx("Biergärten","Biergärten")],["wiesn","🎡",Tx("Wiesn","Wiesn")],["technik","⚙️",Tx("Technik-Geschichte","Histoire techn.")],["dialekt","🗣️",Tx("Bairisch","Bavarois")],["ausflug","🏔️",Tx("Ausflüge","Excursions")],["quiz","🎯","Quiz"]];
+  app.innerHTML = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › '+esc(U("lifestyle"))+'</div>'
+    + '<div class="vhero" style="--hbg:linear-gradient(130deg,#ff3fa4,#ff8a1a 55%,#ffc21a);--ha:#ff5a5a"><span class="vbig" aria-hidden="true">🌿</span><h1>'+esc(U("lifestyle"))+'</h1><p>'+esc(U("lifeT"))+'</p><div class="vchips"><span>📍 '+Tx("Städte zum Entdecken","Villes à découvrir")+'</span><span>🥨 '+Tx("Genuss","Plaisirs")+'</span><span>🎒 '+Tx("Freizeit","Loisirs")+'</span></div></div>'
+    + '<a class="mega" href="muenchen.html"><div class="mt"><span class="me">🥨</span><div><h2>'+Tx("München – meine Stadt","Munich – ma ville")+'</h2></div></div>'
+    + '<p>'+Tx("Sehenswürdigkeiten, Isar, Wiesn, Biergärten, Technik-Geschichte, Bairisch, Ausflüge und Quiz – alles über München.","Monuments, Isar, Wiesn, Biergärten, histoire de la technique, bavarois, excursions et quiz – tout sur Munich.")+'</p>'
+    + '<div class="mp">'+pills.map(p => '<span data-go="muenchen.html#'+p[0]+'">'+p[1]+' '+esc(p[2])+'</span>').join("")+'</div><span class="mgo">'+Tx("München öffnen","Ouvrir Munich")+' →</span></a>'
+    + '<div class="vh2" style="--a:#ff3fa4;--b:#ffc21a"><i>✨</i><span>'+Tx("Bald dabei","Bientôt")+'</span></div>'
+    + '<div class="soon" style="--a:#ff3fa4"><div style="--a:#ff3fa4"><i>🍳</i>'+Tx("Genuss","Plaisirs")+'<small>'+Tx("in Planung","en préparation")+'</small></div><div style="--a:#ff8a1a"><i>🧳</i>'+Tx("Reisen","Voyages")+'<small>'+Tx("in Planung","en préparation")+'</small></div><div style="--a:#19c9a8"><i>🌱</i>'+Tx("Freizeit","Loisirs")+'<small>'+Tx("in Planung","en préparation")+'</small></div></div>';
+  app.querySelectorAll(".mega .mp span").forEach(sp => sp.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); location.href = sp.dataset.go; }));
 }
 function deutschseite(){
   document.title = U("deN")+" – Oratio Place"; brand("deutsch");
