@@ -19,7 +19,7 @@
   --g-bg:radial-gradient(120px 90px at var(--mx,50%) var(--my,0%),var(--g-hover),transparent 70%),
     linear-gradient(180deg,color-mix(in srgb,var(--gc,transparent) 30%,var(--g-top)),color-mix(in srgb,var(--gc,transparent) 15%,var(--g-bot)));
   background:var(--g-bg);
-  border:1px solid var(--g-edge);
+  border:var(--g-bw,1px) solid var(--g-edge);
   box-shadow:inset 0 0 0 1px var(--g-rim),var(--g-shadow);
   -webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);
 }
@@ -52,5 +52,20 @@
 @media (prefers-reduced-motion:reduce){.gbtn,.glass{transition:none}}
 
 /* vorhandene .btn im ganzen System: Glas-Kapsel (Auswahl .on und Hauptknopf .go bleiben farbig) */
-.btn:not(.go):not(.on):not(.gbtn){border-radius:999px;border:1px solid var(--g-edge);color:var(--g-fg);transition:transform .14s ease,box-shadow .14s ease}
+.btn:not(.go):not(.on):not(.gbtn){border-radius:999px;border:var(--g-bw,1px) solid var(--g-edge);color:var(--g-fg);transition:transform .14s ease,box-shadow .14s ease}
 @media (hover:hover){.btn:not(.go):not(.on):not(.gbtn):not(:disabled):hover{background:var(--g-bg);border-color:var(--g-edge);transform:translateY(-1px) scale(1.03)}}
+
+/* Design-Schalter (Kopfleiste): Glas · Schwarz · Weiß – gilt für das ganze System.
+   Glas = milchig und durchsichtig (Standard) · Weiß = mattes Weiß mit weißem Rand · Schwarz = mattes Weiß/Dunkel mit schwarzem Rand und fester Kante */
+body.ds-weiss{--g-top:#fff;--g-bot:#f1f5fa;--g-rim:transparent;--g-edge:rgba(255,255,255,.95);--g-blur:none;--g-shine:transparent;--g-hover:rgba(0,0,0,.03);--g-shadow:0 3px 8px -2px rgba(20,50,90,.28)}
+body.ds-schwarz{--g-top:#fff;--g-bot:#eef3f8;--g-rim:transparent;--g-edge:#2a1740;--g-bw:2px;--g-blur:none;--g-shine:transparent;--g-hover:rgba(0,0,0,.03);--g-shadow:0 3px 0 rgba(42,23,64,.45)}
+:root[data-theme="dark"] body.ds-weiss{--g-top:#2d384c;--g-bot:#232d3e;--g-edge:rgba(255,255,255,.4);--g-fg:#eef3fb}
+:root[data-theme="dark"] body.ds-schwarz{--g-top:#2d384c;--g-bot:#232d3e;--g-edge:#05070c;--g-fg:#eef3fb}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) body.ds-weiss{--g-top:#2d384c;--g-bot:#232d3e;--g-edge:rgba(255,255,255,.4);--g-fg:#eef3fb}
+  :root:not([data-theme="light"]) body.ds-schwarz{--g-top:#2d384c;--g-bot:#232d3e;--g-edge:#05070c;--g-fg:#eef3fb}}
+body.ds-weiss .glass::before,body.ds-weiss .gbtn::before,body.ds-schwarz .glass::before,body.ds-schwarz .gbtn::before{display:none}
+body.ds-weiss .gbtn.on,body.ds-schwarz .gbtn.on{box-shadow:0 3px 0 rgba(0,0,0,.3)}
+/* Schalter selbst */
+.dsg button{gap:4px}.dsg button span{display:inline}
+@media (max-width:560px){.dsg button span{display:none}}

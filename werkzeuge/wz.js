@@ -176,7 +176,7 @@ window.WZ = {
     var pinT = aktiv === "pinout"; if (pinT) aktiv = "elektro";
     var h = document.createElement("header");
     h.innerHTML = '<div class="bar"><a class="logo" href="index.html"><span class="lg"><svg class="lgO" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14.5" fill="none" stroke="#ffc21a" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(11 20 20)"/><circle cx="20" cy="20" r="14.5" fill="none" stroke="#ff5fa8" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(96 20 20)"/><circle cx="20" cy="20" r="14.5" fill="none" stroke="#2e86ff" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(181 20 20)"/><circle cx="20" cy="20" r="14.5" fill="none" stroke="#ff4b3a" stroke-width="6.5" stroke-dasharray="21 91.1" transform="rotate(266 20 20)"/></svg><b>ratio</b><i>Place</i></span></a>' +
-      '<span class="sp"></span><div class="seg" id="wzLang" role="group" aria-label="Sprache / Langue"></div> <div class="seg" id="wzTheme" role="group" aria-label="Hell / Dunkel"></div></div>';
+      '<span class="sp"></span><div class="seg" id="wzLang" role="group" aria-label="Sprache / Langue"></div> <div class="seg" id="wzTheme" role="group" aria-label="Hell / Dunkel"></div> <div class="seg" id="wzDesign" data-design-switch></div></div>';
     document.body.insertBefore(h, document.body.firstChild);
     if (aktiv === "xmas" || aktiv === "deutsch") {
       var sc = aktiv === "xmas" ? "xm" : "de", fr = WZ.lang === "fr", wb = document.createElement("div"), inp;
@@ -221,6 +221,7 @@ window.WZ = {
     var f = document.createElement("footer");
     f.innerHTML = 'Alles läuft in deinem Browser – deine Dateien werden nicht hochgeladen. · Hobbyprojekt, ohne Gewähr. · <a href="impressum.html">Impressum &amp; Datenschutz</a>';
     document.body.appendChild(f);
+    if (window.OratioGlas) OratioGlas.fuellen();
     WZ.uebersetze();
     WZ.selects();
     WZ.farbfelder();
