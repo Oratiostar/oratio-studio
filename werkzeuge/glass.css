@@ -128,29 +128,24 @@ body.sl.ds-matt .sc{background:var(--sgl)}
 
 /* ===== Mehr Glas (Stufe 44): klarer, mit Lichtkante, Tiefe und buntem Untergrund ===== */
 :root{
-  --g-top:rgba(255,255,255,.40);--g-bot:rgba(255,255,255,.14);--g-rim:rgba(255,255,255,.95);--g-shine:#fff;
+  --g-top:rgba(255,255,255,.30);--g-bot:rgba(255,255,255,.08);--g-rim:rgba(255,255,255,.95);--g-shine:#fff;
   --g-edge:rgba(20,50,110,.22);--g-fg:#05080f;--g-hover:rgba(255,255,255,.55);--g-sel:rgba(255,255,255,.7);
   --g-shadow:inset 0 1.5px 0 rgba(255,255,255,1),inset 0 -14px 22px -14px rgba(255,255,255,.7),inset 0 0 20px rgba(255,255,255,.28),0 16px 32px -14px rgba(30,60,140,.55),0 2px 4px rgba(30,60,140,.16);
-  --g-blur:blur(5px) saturate(1.7) brightness(1.05)}
+  --g-blur:blur(2px) saturate(1.5)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --g-top:rgba(255,255,255,.26);--g-bot:rgba(16,20,38,.34);--g-rim:rgba(255,255,255,.5);--g-shine:rgba(255,255,255,.95);
+  --g-top:rgba(255,255,255,.20);--g-bot:rgba(16,20,38,.20);--g-rim:rgba(255,255,255,.5);--g-shine:rgba(255,255,255,.95);
   --g-edge:rgba(0,0,0,.5);--g-fg:#fff;--g-hover:rgba(255,255,255,.16);--g-sel:rgba(255,255,255,.28);
   --g-shadow:inset 0 1.5px 0 rgba(255,255,255,.65),inset 0 -14px 22px -14px rgba(255,255,255,.22),inset 0 0 22px rgba(255,255,255,.07),0 16px 34px -12px rgba(0,0,0,.85),0 2px 4px rgba(0,0,0,.45);
-  --g-blur:blur(6px) saturate(1.5) brightness(1.08)}}
+  --g-blur:blur(2px) saturate(1.4)}}
 :root[data-theme="dark"]{
-  --g-top:rgba(255,255,255,.26);--g-bot:rgba(16,20,38,.34);--g-rim:rgba(255,255,255,.5);--g-shine:rgba(255,255,255,.95);
+  --g-top:rgba(255,255,255,.20);--g-bot:rgba(16,20,38,.20);--g-rim:rgba(255,255,255,.5);--g-shine:rgba(255,255,255,.95);
   --g-edge:rgba(0,0,0,.5);--g-fg:#fff;--g-hover:rgba(255,255,255,.16);--g-sel:rgba(255,255,255,.28);
   --g-shadow:inset 0 1.5px 0 rgba(255,255,255,.65),inset 0 -14px 22px -14px rgba(255,255,255,.22),inset 0 0 22px rgba(255,255,255,.07),0 16px 34px -12px rgba(0,0,0,.85),0 2px 4px rgba(0,0,0,.45);
-  --g-blur:blur(6px) saturate(1.5) brightness(1.08)}
+  --g-blur:blur(2px) saturate(1.4)}
 /* Matt: Tag = schwarze Schrift auf Weiß, Nacht = weiße Schrift auf Dunkelgrau (wie im Control Center) */
 body.ds-matt{--g-fg:#0b0f17;--g-top:#fbfbfd;--g-bot:#f1f2f6;--g-edge:#c9cfdb;--g-shadow:0 2px 0 rgba(20,40,80,.10),0 6px 14px -8px rgba(20,40,80,.25);--g-blur:none}
 :root[data-theme="dark"] body.ds-matt{--g-fg:#fff;--g-top:#2e2e32;--g-bot:#26262a;--g-edge:#43434a;--g-shadow:0 2px 0 rgba(0,0,0,.4),0 8px 16px -8px rgba(0,0,0,.65)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.ds-matt{--g-fg:#fff;--g-top:#2e2e32;--g-bot:#26262a;--g-edge:#43434a;--g-shadow:0 2px 0 rgba(0,0,0,.4),0 8px 16px -8px rgba(0,0,0,.65)}}
-/* Untergrund mit Facetten (kein Rundes): scharfe Kanten, durch die das Glas sichtbar bricht */
-body.aurora:not(.sl):not(.ds-matt)::after,body.sl.ds-glas::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
-  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1400' height='900' viewBox='0 0 1400 900' preserveAspectRatio='none'><polygon points='0,0 520,0 240,380' fill='%23fff' fill-opacity='.30'/><polygon points='520,0 1100,0 800,300' fill='%23000' fill-opacity='.10'/><polygon points='1100,0 1400,0 1400,420 1000,260' fill='%23fff' fill-opacity='.26'/><polygon points='0,380 240,380 0,900' fill='%23000' fill-opacity='.12'/><polygon points='240,380 760,300 520,700' fill='%23fff' fill-opacity='.24'/><polygon points='760,300 1180,260 1060,640' fill='%23000' fill-opacity='.12'/><polygon points='1180,260 1400,420 1400,900 1060,640' fill='%23fff' fill-opacity='.20'/><polygon points='0,900 520,700 700,900' fill='%23fff' fill-opacity='.28'/><polygon points='520,700 1060,640 700,900' fill='%23000' fill-opacity='.14'/><polygon points='700,900 1060,640 1400,900' fill='%23fff' fill-opacity='.18'/><polygon points='240,380 520,0 760,300' fill='%23000' fill-opacity='.08'/></svg>") center/cover no-repeat}
-:root[data-theme="dark"] body.aurora:not(.sl):not(.ds-matt)::after,:root[data-theme="dark"] body.sl.ds-glas::after{opacity:.6}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.aurora:not(.sl):not(.ds-matt)::after,:root:not([data-theme="light"]) body.sl.ds-glas::after{opacity:.6}}
 .glass::before,.gbtn::before,.btn:not(.go):not(.on):not(.gbtn)::before{background:linear-gradient(180deg,color-mix(in srgb,var(--g-shine) 45%,transparent),transparent)}
 
 /* Farbwähler (🎨 neben Glas/Matt) */
