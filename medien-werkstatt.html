@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Medien-Werkstatt – Oratio</title>
-<meta name="description" content="Medien-Werkstatt: Videos (auch iPhone-MOV) verkleinern und umwandeln, GIF und Standbilder, Ton und Musik schneiden, Songs verbinden, BPM und Tonart bestimmen, Tongenerator. Alles im Browser, ohne Upload.">
+<meta name="description" content="Medien-Werkstatt: Videos (auch iPhone-MOV) verkleinern oder in andere Formate umwandeln, GIF und Standbilder, Audio komprimieren, umwandeln und schneiden, Songs verbinden, BPM und Tonart bestimmen, Tongenerator. Alles im Browser, ohne Upload.">
 <link rel="icon" href="icon.png">
 <link rel="stylesheet" href="werkzeuge/wz.css">
 <link rel="stylesheet" href="werkzeuge/werkstatt.css">
@@ -34,18 +34,18 @@
 </head>
 <body>
 <main>
-<section class="mhero"><h1>Medien-Werkstatt</h1><p>Videos verkleinern, GIFs und Standbilder machen, Musik schneiden, Songs verbinden, BPM und Tonart bestimmen. Alles läuft in deinem Browser – deine Dateien werden <b>nicht hochgeladen</b>.</p><span class="kind" aria-hidden="true">🎬</span></section>
+<section class="mhero"><h1>Medien-Werkstatt</h1><p>Videos und Audio verkleinern oder in andere Formate umwandeln, GIFs und Standbilder machen, Musik schneiden, Songs verbinden, BPM und Tonart bestimmen. Alles läuft in deinem Browser – deine Dateien werden <b>nicht hochgeladen</b>.</p><span class="kind" aria-hidden="true">🎬</span></section>
 <label class="glass hov" id="smart"><b>🪄 Datei hier ablegen oder tippen</b><small>Video oder Musik – ich schlage dir passende Werkzeuge vor.</small><input type="file" id="sf" hidden accept="video/*,audio/*,.mov,.mp4,.m4v,.mkv,.webm,.3gp,.mp3,.m4a,.wav,.aac,.flac,.ogg,.opus"></label>
 <div id="vor" hidden></div>
 <div class="tgrid" id="toolgrid"></div>
 <div id="toolhost"></div>
 </main>
 <script src="werkzeuge/wz.js"></script>
-<script src="werkzeuge/fr.js"></script>
+<script src="werkzeuge/fr.js?v=49"></script>
 <script src="werkzeuge/lib/jszip.min.js"></script>
-<script src="werkzeuge/datei.js"></script>
-<script src="werkzeuge/medien.js"></script>
-<script src="werkzeuge/musik.js"></script>
+<script src="werkzeuge/datei.js?v=49"></script>
+<script src="werkzeuge/medien.js?v=49"></script>
+<script src="werkzeuge/musik.js?v=49"></script>
 <script>
 (function(){
   var OM = window.OratioMedien, $ = function(s){ return document.querySelector(s); };
@@ -59,7 +59,7 @@
   }
   // Smart-Ablage: Datei erkennen, passende Werkzeuge vorschlagen
   var VID = /\.(mov|mp4|m4v|mkv|webm|3gp)$/i, AUD = /\.(mp3|m4a|wav|aac|flac|ogg|opus)$/i;
-  var VORSCHLAG = { video: [["video", "Verkleinern"], ["gif", "Als GIF"], ["vidbild", "Bilder holen"], ["audio", "Ton schneiden"], ["analyse", "BPM & Tonart"]], audio: [["audio", "Schneiden & umwandeln"], ["analyse", "BPM & Tonart"], ["join", "Songs verbinden"]] };
+  var VORSCHLAG = { video: [["video", "Verkleinern"], ["vidformat", "Umwandeln"], ["gif", "Als GIF"], ["vidbild", "Bilder holen"], ["audio", "Ton schneiden"], ["analyse", "BPM & Tonart"]], audio: [["audiokomp", "Komprimieren"], ["audioformat", "Umwandeln"], ["audio", "Schneiden"], ["analyse", "BPM & Tonart"], ["join", "Songs verbinden"]] };
   function nimm(f){
     if (!f) return; var art = /^video\//.test(f.type) || VID.test(f.name) ? "video" : /^audio\//.test(f.type) || AUD.test(f.name) ? "audio" : null;
     var v = $("#vor"); if (!art){ v.hidden = false; v.innerHTML = '<p class="status bad">Das ist weder Video noch Audio.</p>'; return; }

@@ -21,11 +21,16 @@ const gerade = n => Math.max(2, Math.round(n / 2) * 2);
 // Welche Ausgabeformate kann dieser Browser aufnehmen?
 const VIDEO_FORMATE = [
   { id: "mp4", name: "MP4 (H.264) – läuft überall", ext: "mp4", mimes: ["video/mp4;codecs=avc1.640028,mp4a.40.2", "video/mp4;codecs=avc1.42E01E,mp4a.40.2", "video/mp4;codecs=avc1,mp4a.40.2", "video/mp4"] },
-  { id: "webm", name: "WebM (VP9) – oft kleiner", ext: "webm", mimes: ["video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus", "video/webm;codecs=av1,opus", "video/webm"] }
+  { id: "hevc", name: "MP4 (H.265/HEVC) – klein, nicht überall", ext: "mp4", mimes: ["video/mp4;codecs=hvc1,mp4a.40.2", "video/mp4;codecs=hev1,mp4a.40.2", "video/mp4;codecs=hvc1"] },
+  { id: "webm", name: "WebM (VP9) – oft kleiner", ext: "webm", mimes: ["video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus", "video/webm;codecs=av1,opus", "video/webm"] },
+  { id: "av1", name: "WebM (AV1) – sehr klein, modern", ext: "webm", mimes: ["video/webm;codecs=av1,opus", "video/webm;codecs=av01,opus"] },
+  { id: "vp8", name: "WebM (VP8) – alt, sehr kompatibel", ext: "webm", mimes: ["video/webm;codecs=vp8,opus"] },
+  { id: "mkv", name: "MKV (Matroska)", ext: "mkv", mimes: ["video/x-matroska;codecs=avc1,opus", "video/x-matroska;codecs=avc1", "video/x-matroska"] }
 ];
 const AUDIO_FORMATE = [
   { id: "m4a", name: "M4A (AAC) – klein", ext: "m4a", mimes: ["audio/mp4;codecs=mp4a.40.2", "audio/mp4"] },
-  { id: "webm", name: "WebM (Opus) – klein", ext: "webm", mimes: ["audio/webm;codecs=opus", "audio/webm"] }
+  { id: "webm", name: "WebM (Opus) – klein", ext: "webm", mimes: ["audio/webm;codecs=opus", "audio/webm"] },
+  { id: "ogg", name: "OGG (Opus) – offen, klein", ext: "ogg", mimes: ["audio/ogg;codecs=opus"] }
 ];
 function formate(liste){
   if (!HAT_MR) return [];
@@ -125,9 +130,7 @@ Object.assign(OM, { formate, pruefe, aufnehmen, wav, zeit, warteAuf, sperre, Ein
 
 // ------------------------------------------------------------------ 1) Video verkleinern & umwandeln
 const ZIELE = [["Discord", 8], ["WhatsApp", 16], ["E-Mail", 25], ["50 MB", 50], ["100 MB", 100]];
-DW.tool({ id: "video", gruppe: "video", titel: "Video verkleinern & umwandeln", sym: "🎬", farbe: "#d9453b",
-  text: "Große Videos (auch iPhone-MOV) kleiner machen und als MP4 oder WebM speichern – mit Zielgröße, Qualität, Tempo, Zuschneiden, Drehen und Ton an/aus.",
-  build(sec){
+function videoBau(sec, umw){
     const fm = formate(VIDEO_FORMATE);
     if (!fm.length) { sec.innerHTML = '<p class="status bad">Dieser Browser kann keine Videos aufnehmen. Bitte Chrome, Edge, Firefox oder Safari (neu) benutzen.</p>'; return; }
     sec.innerHTML =
@@ -145,14 +148,15 @@ DW.tool({ id: "video", gruppe: "video", titel: "Video verkleinern & umwandeln", 
       '<label class="chk"><input type="checkbox" id="ton" checked> Ton behalten</label><label class="chk"><input type="checkbox" id="sp"> Spiegeln (links ↔ rechts)</label>' +
       '<p class="muted" id="schaetz" style="margin:8px 0"></p><p class="muted" id="tipp" style="margin:0 0 8px;font-size:13px"></p>' +
       '<p class="muted" style="font-size:13px;margin:0 0 6px">Das Umwandeln läuft in Echtzeit: es dauert so lange wie das Video. Lass den Tab offen und den Bildschirm an – ich halte ihn wach, wenn dein Gerät das erlaubt.</p>' +
-      '<div class="row"><button class="btn go" id="go" disabled>Umwandeln</button><button class="btn" id="stop" hidden>Abbrechen</button></div></div><div class="ausgabe"></div>';
+      '<div class="row"><button class="btn go" id="go" disabled>' + (umw ? "Umwandeln" : "Verkleinern") + '</button><button class="btn" id="stop" hidden>Abbrechen</button></div></div><div class="ausgabe"></div>';
+    if (umw){ const hide = el => { if (el) { el.hidden = true; el.style.display = "none"; } }; hide($("#pre", sec).previousElementSibling); hide($("#pre", sec)); hide($("#zielbox", sec)); hide($("#grw", sec)); hide($("#fps", sec).parentNode); hide($("#tp", sec).parentNode); hide($("#qrg", sec)); hide($("#t0", sec).parentNode); hide($("#t1", sec).parentNode); }
     const out = Ausgabe($(".ausgabe", sec)); let q = null, abbruch = { flag: false }, modus = "mittel";
     const li = Eingabe($(".liste", sec), { accept: "video/*,.mov,.mp4,.m4v,.webm,.mkv,.3gp", multiple: false, titel: "Video hier ablegen (z. B. iPhone-MOV)", meldung: out.say, sortieren: false,
       onChange: async it => {
         out.leer(); $("#opt", sec).hidden = true; $("#info", sec).hidden = true; $("#go", sec).disabled = true; if (q) { URL.revokeObjectURL(q.url); q = null; } if (!it.length) return;
         try { out.say("Lese Video …"); q = await pruefe(it[0].file); out.say(""); q.bps = it[0].file.size * 8 / q.dauer;
           const inf = $("#info", sec); inf.hidden = false; inf.innerHTML = '<b>' + esc(it[0].file.name) + '</b><br>' + q.w + '×' + q.h + ' · ' + zeit(q.dauer) + ' · ' + G(it[0].file.size) + ' · ca. ' + (q.bps / 1e6).toFixed(1).replace(".", ",") + ' Mbit/s';
-          $("#opt", sec).hidden = false; $("#go", sec).disabled = false; schnittSetzen(sec, q.dauer); preset("mittel");
+          $("#opt", sec).hidden = false; $("#go", sec).disabled = false; schnittSetzen(sec, q.dauer); if (umw){ $("#gr", sec).value = 0; $("#fps", sec).value = 30; $("#q", sec).value = 9; modus = "mittel"; upd(); } else preset("mittel");
         } catch (e) { fehler(out, e); } } });
     const PRE = { klein: { gr: 480, fps: 30, q: 3 }, mittel: { gr: 720, fps: 30, q: 5 }, hoch: { gr: 1080, fps: 30, q: 8 } };
     function preset(p){ modus = p; const o = PRE[p];
@@ -170,12 +174,12 @@ DW.tool({ id: "video", gruppe: "video", titel: "Video verkleinern & umwandeln", 
         for (const k of [1080, 720, 480, 360, 240, 144]){ [w, h] = groesse(k); if (k === 144 || vbr / (w * h * fps) >= 0.06) break; }
         if (vbr / (w * h * fps) < 0.035) hinweis = "Für diese Größe ist das Video lang. Es wird stark komprimiert – das Bild kann unscharf werden.";
         vbr = Math.min(vbr, 40e6);
-      } else { [w, h] = groesse(+$("#gr", sec).value); const qq = +$("#q", sec).value, bpp = 0.03 + (qq - 1) * 0.0175; vbr = Math.min(40e6, Math.round(w * h * fps * bpp)); }
+      } else { [w, h] = groesse(+$("#gr", sec).value); const qq = +$("#q", sec).value, bpp = 0.03 + (qq - 1) * 0.0175; vbr = Math.min(40e6, Math.round(w * h * fps * bpp)); if (umw) vbr = Math.min(vbr, Math.max(2e6, Math.round(q.bps || 4e6))); }
       return { w, h, rot, fps, tp, vbr, abr, sc, dauerAus, hinweis, schaetz: (vbr + abr) * dauerAus / 8 };
     }
     function upd(){ $("#qO", sec).textContent = ["", "sehr klein", "sehr klein", "klein", "klein", "mittel", "gut", "gut", "sehr gut", "sehr gut", "maximal"][+$("#q", sec).value];
-      if (!q) return; const z = ziel(), alt = li.items[0] && li.items[0].file.size; $("#schaetz", sec).innerHTML = 'Ergebnis: <b>' + z.w + '×' + z.h + '</b> · ' + zeit(z.dauerAus) + ' · ca. <b>' + G(z.schaetz) + '</b>' + (alt && z.schaetz >= alt ? ' <span class="muted">(größer als das Original – wähle kleiner oder weniger Qualität)</span>' : "");
-      let t = z.hinweis; if (!t && q.bps < z.vbr * .8) t = "Tipp: Das Video ist schon stärker komprimiert als dein Ziel. Eine höhere Qualität macht es nur größer, nicht besser."; if (!t && q.w * q.h > 3e6 && q.dauer > 600) t = "Tipp: Das Video ist lang – das Umwandeln braucht entsprechend lange."; $("#tipp", sec).textContent = t; }
+      if (!q) return; const z = ziel(), alt = li.items[0] && li.items[0].file.size; $("#schaetz", sec).innerHTML = 'Ergebnis: <b>' + z.w + '×' + z.h + '</b> · ' + zeit(z.dauerAus) + ' · ca. <b>' + G(z.schaetz) + '</b>' + (!umw && alt && z.schaetz >= alt ? ' <span class="muted">(größer als das Original – wähle kleiner oder weniger Qualität)</span>' : "");
+      let t = z.hinweis; if (!umw && !t && q.bps < z.vbr * .8) t = "Tipp: Das Video ist schon stärker komprimiert als dein Ziel. Eine höhere Qualität macht es nur größer, nicht besser."; if (!t && q.w * q.h > 3e6 && q.dauer > 600) t = "Tipp: Das Video ist lang – das Umwandeln braucht entsprechend lange."; $("#tipp", sec).textContent = t; }
     sec.addEventListener("input", upd); sec.addEventListener("change", upd);
     $("#stop", sec).onclick = () => { abbruch.flag = true; };
     wrapRun($("#go", sec), async () => {
@@ -185,10 +189,16 @@ DW.tool({ id: "video", gruppe: "video", titel: "Video verkleinern & umwandeln", 
       try {
         const blob = await aufnehmen({ url: q.url, w: z.w, h: z.h, fps: z.fps, mime: f.mime, vbr: z.vbr, abr: z.abr, ton: $("#ton", sec).checked, tempo: z.tp, start: z.sc.start, ende: z.sc.ende, drehen: z.rot, spiegeln: $("#sp", sec).checked, fortschritt: p => out.prog(p), abbruch });
         if (!blob.size) throw new Error("Es ist nichts herausgekommen. Probier ein anderes Format.");
-        out.prog(null); out.add(WZ.sauber(file.name) + "_klein." + f.ext, blob, z.w + "×" + z.h + " · " + G(file.size) + " → " + G(blob.size) + (blob.size < file.size ? " (−" + Math.round((1 - blob.size / file.size) * 100) + " %)" : ""));
-        out.say(blob.size < file.size ? "Fertig." : "Fertig – aber größer als das Original. Wähle eine kleinere Größe oder weniger Qualität.", blob.size < file.size ? "ok" : "bad");
+        out.prog(null); out.add(WZ.sauber(file.name) + (umw ? "_umgewandelt." : "_klein.") + f.ext, blob, z.w + "×" + z.h + " · " + G(file.size) + " → " + G(blob.size) + (!umw && blob.size < file.size ? " (−" + Math.round((1 - blob.size / file.size) * 100) + " %)" : ""));
+        out.say(umw || blob.size < file.size ? "Fertig." : "Fertig – aber größer als das Original. Wähle eine kleinere Größe oder weniger Qualität.", umw || blob.size < file.size ? "ok" : "bad");
       } catch (e) { fehler(out, e); } finally { document.removeEventListener("visibilitychange", vis); $("#stop", sec).hidden = true; } });
-  } });
+}
+DW.tool({ id: "video", gruppe: "video", titel: "Video verkleinern", sym: "🎬", farbe: "#d9453b",
+  text: "Große Videos (auch iPhone-MOV) kleiner machen – mit Zielgröße (z. B. für WhatsApp), Qualität, Größe, Tempo, Zuschneiden, Drehen und Ton an/aus. Für ein anderes Format: „Video umwandeln“.",
+  build(sec){ videoBau(sec, false); } });
+DW.tool({ id: "vidformat", gruppe: "video", titel: "Video umwandeln", sym: "🔁", farbe: "#b8372f",
+  text: "Das Format wechseln: MOV, MP4, WebM und mehr (je nach Browser: H.265, AV1, MKV) – Größe und Bildrate bleiben, die Qualität wird nicht absichtlich gesenkt.",
+  build(sec){ videoBau(sec, true); } });
 
 // ------------------------------------------------------------------ 2) Video → GIF
 function medianCut(zaehler, n){ // zaehler: Uint32Array(32768) Häufigkeit je 5-Bit-Farbe → Palette (n Farben)

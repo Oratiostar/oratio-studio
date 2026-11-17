@@ -127,8 +127,8 @@ function Welle(box, buf, o){
 }
 
 // ------------------------------------------------------------------ 1) Audio schneiden & umwandeln
-DW.tool({ id: "audio", gruppe: "musik", titel: "Audio schneiden & umwandeln", sym: "✂️", farbe: "#7a52d6",
-  text: "Songs, Sprachmemos oder den Ton eines Videos mit Wellenform schneiden, lauter machen, ein- und ausblenden – als WAV, M4A, WebM oder iPhone-Klingelton.",
+DW.tool({ id: "audio", gruppe: "musik", titel: "Audio schneiden & bearbeiten", sym: "✂️", farbe: "#7a52d6",
+  text: "Songs, Sprachmemos oder den Ton eines Videos mit Wellenform schneiden, lauter machen, ein- und ausblenden, Stille abschneiden.",
   build(sec){
     const fm = formate(AUDIO_FORMATE);
     sec.innerHTML = '<div class="liste"></div><div class="org-bar" id="info" hidden></div><div id="opt" hidden>' +
@@ -171,6 +171,60 @@ DW.tool({ id: "audio", gruppe: "musik", titel: "Audio schneiden & umwandeln", sy
         out.say(r.warnung || "Fertig.", r.warnung ? "bad" : "ok");
       } catch (x) { fehler(out, x); } finally { $("#stop", sec).hidden = true; } });
   } });
+
+// ------------------------------------------------------------------ 1b) Audio komprimieren  /  1c) Audio umwandeln
+function aiff(buf){
+  const kan = buf.numberOfChannels, n = buf.length, sr = buf.sampleRate, daten = n * kan * 2, ab = new ArrayBuffer(54 + daten), dv = new DataView(ab);
+  const t = (o, s) => { for (let i = 0; i < s.length; i++) dv.setUint8(o + i, s.charCodeAt(i)); };
+  t(0, "FORM"); dv.setUint32(4, 46 + daten); t(8, "AIFF"); t(12, "COMM"); dv.setUint32(16, 18); dv.setUint16(20, kan); dv.setUint32(22, n); dv.setUint16(26, 16);
+  let ex = 0, m = sr; while (m >= 2){ m /= 2; ex++; } // 80-Bit-Extended der Abtastrate
+  dv.setUint16(28, 16383 + ex); dv.setUint32(30, Math.floor(sr * Math.pow(2, 31 - ex)) >>> 0); dv.setUint32(34, 0);
+  t(38, "SSND"); dv.setUint32(42, 8 + daten); dv.setUint32(46, 0); dv.setUint32(50, 0);
+  const ch = []; for (let c = 0; c < kan; c++) ch.push(buf.getChannelData(c));
+  let o = 54; for (let i = 0; i < n; i++) for (let c = 0; c < kan; c++){ const x = Math.max(-1, Math.min(1, ch[c][i])); dv.setInt16(o, x < 0 ? x * 0x8000 : x * 0x7fff); o += 2; }
+  return new Blob([ab], { type: "audio/aiff" });
+}
+function audioEinfach(sec, umw){
+  const fm = formate(AUDIO_FORMATE);
+  const opt = umw
+    ? '<option value="wav">WAV (verlustfrei)</option><option value="aiff">AIFF (verlustfrei, Apple/Studio)</option>' + fm.map(f => '<option value="' + f.id + '">' + esc(f.name) + '</option>').join("") + (fm.some(f => f.id === "m4a") ? '<option value="m4r">M4R – iPhone-Klingelton (max. 40 s)</option>' : "")
+    : fm.map(f => '<option value="' + f.id + '">' + esc(f.name) + '</option>').join("");
+  if (!umw && !fm.length) { sec.innerHTML = '<p class="status bad">Dieser Browser kann keinen komprimierten Ton speichern. Bitte Chrome, Edge, Firefox oder Safari (neu) benutzen.</p>'; return; }
+  sec.innerHTML = '<div class="liste"></div><div class="org-bar" id="info" hidden></div><div id="opt" hidden><div class="cols2"><div><label class="l">' + (umw ? "Umwandeln in" : "Speichern als") + '</label><select class="in" id="fm">' + opt + '</select></div>' +
+    (umw ? '<div id="wbr"><label class="l">Qualität (M4A, WebM, OGG)</label><select class="in" id="br"><option value="128000">128 kbit/s</option><option value="192000" selected>192 kbit/s</option><option value="256000">256 kbit/s (sehr gut)</option></select></div>'
+         : '<div><label class="l">Ziel</label><select class="in" id="br"><option value="32000">Sprache winzig – 32 kbit/s, Mono</option><option value="64000" selected>Sprache/Podcast – 64 kbit/s</option><option value="96000">Klein – 96 kbit/s</option><option value="128000">Musik gut – 128 kbit/s</option><option value="192000">Musik sehr gut – 192 kbit/s</option></select></div><div><label class="l">Kanäle</label><select class="in" id="ka"><option value="auto">Automatisch (Mono bei Sprache)</option><option value="0">Wie Original</option><option value="1">Immer Mono</option></select></div>') + '</div>' +
+    '<p class="muted" id="hinw" style="font-size:13px;margin:8px 0"></p><div class="row"><button class="btn go" id="go" disabled>' + (umw ? "Umwandeln" : "Komprimieren") + '</button><button class="btn" id="stop" hidden>Abbrechen</button></div></div><div class="ausgabe"></div>';
+  const out = Ausgabe($(".ausgabe", sec)); let buf = null, abbruch = { flag: false };
+  const li = Eingabe($(".liste", sec), { accept: AKZEPT, multiple: false, titel: "Audio oder Video hier ablegen", meldung: out.say, sortieren: false,
+    onChange: async it => { out.leer(); buf = null; $("#opt", sec).hidden = true; $("#info", sec).hidden = true; $("#go", sec).disabled = true; if (!it.length) return;
+      try { out.say("Lese und entschlüssele … (große Dateien dauern etwas)"); buf = await dekodieren(it[0].file); out.say("");
+        const inf = $("#info", sec); inf.hidden = false; inf.innerHTML = '<b>' + esc(it[0].file.name) + '</b><br>' + zeit(buf.duration) + ' · ' + (buf.numberOfChannels === 1 ? "Mono" : "Stereo") + ' · ' + Math.round(buf.sampleRate / 100) / 10 + ' kHz · ' + G(it[0].file.size);
+        $("#opt", sec).hidden = false; $("#go", sec).disabled = false; upd(); } catch (e) { fehler(out, e); } } });
+  function upd(){ if (!buf) return; const art = $("#fm", sec).value, abr = +$("#br", sec).value, lossless = art === "wav" || art === "aiff";
+    if (umw){ $("#wbr", sec).hidden = lossless; const m = art === "m4r" ? Math.min(40, buf.duration) : buf.duration;
+      $("#hinw", sec).textContent = (lossless ? "Wird sofort berechnet. " : "Dieses Format läuft in Echtzeit: es dauert so lange wie das Stück. Tab offen lassen. ") + "Ergebnis ca. " + G(lossless ? m * buf.sampleRate * buf.numberOfChannels * 2 : m * abr / 8) + "." + (art === "m4r" ? " Klingelton: nur die ersten 40 s. Die Datei in iTunes/Musik auf den Mac ziehen." : ""); }
+    else { const f = $("#fm", sec).value; $("#hinw", sec).textContent = "Dieses Format läuft in Echtzeit: es dauert so lange wie das Stück (" + zeit(buf.duration) + "). Tab offen lassen. Ergebnis ca. " + G(buf.duration * abr / 8) + " statt " + G(li.items[0].file.size) + "."; } }
+  sec.addEventListener("input", upd); sec.addEventListener("change", upd);
+  $("#stop", sec).onclick = () => { abbruch.flag = true; };
+  wrapRun($("#go", sec), async () => {
+    if (!buf) return; out.leer(); abbruch = { flag: false }; const file = li.items[0].file, name = WZ.sauber(file.name), art = $("#fm", sec).value, abr = +$("#br", sec).value;
+    try {
+      let mono = false; if (!umw){ const k = $("#ka", sec).value; mono = k === "1" || (k === "auto" && abr <= 64000); }
+      let ende = buf.duration; if (art === "m4r") ende = Math.min(40, ende);
+      out.say("Rechne …"); await WZ.warte(); const r = await rendern(buf, { start: 0, ende, mono, sr: 0, db: 0 });
+      if (art === "wav" || art === "aiff"){ const blob = art === "wav" ? wav(r.buf) : aiff(r.buf); out.add(name + "." + art, blob, zeit(ende) + " · " + G(file.size) + " → " + G(blob.size)); }
+      else { const f = fm.find(x => x.id === (art === "m4r" ? "m4a" : art)); $("#stop", sec).hidden = false; out.say("Nehme auf … Tab offen lassen."); out.prog(0);
+        const blob = await aufnehmenBuffer(r.buf, f.mime, abr, p => out.prog(p), abbruch); out.prog(null);
+        out.add(name + (umw ? "" : "_klein") + "." + (art === "m4r" ? "m4r" : f.ext), blob, zeit(ende) + " · " + G(file.size) + " → " + G(blob.size) + (!umw && blob.size < file.size ? " (−" + Math.round((1 - blob.size / file.size) * 100) + " %)" : "")); }
+      out.say("Fertig.", "ok");
+    } catch (x) { fehler(out, x); } finally { $("#stop", sec).hidden = true; } });
+}
+DW.tool({ id: "audiokomp", gruppe: "musik", titel: "Audio komprimieren", sym: "🗜️", farbe: "#8a4fd0",
+  text: "Songs, Sprachmemos oder den Ton eines Videos kleiner machen – du wählst die Qualität, ich zeige die erwartete Größe. Für ein anderes Format: „Audio umwandeln“.",
+  build(sec){ audioEinfach(sec, false); } });
+DW.tool({ id: "audioformat", gruppe: "musik", titel: "Audio umwandeln", sym: "🔁", farbe: "#5b3fc4",
+  text: "Das Format wechseln: WAV, AIFF, M4A, WebM, OGG oder iPhone-Klingelton (M4R) – aus Musik, Sprachmemos oder dem Ton eines Videos.",
+  build(sec){ audioEinfach(sec, true); } });
 
 // ------------------------------------------------------------------ 2) Songs verbinden mit Überblendung
 DW.tool({ id: "join", gruppe: "musik", titel: "Songs verbinden & überblenden", sym: "🔗", farbe: "#c0398c",

@@ -295,19 +295,76 @@ tool({ id: "stamp", titel: "Seitenzahlen & Wasserzeichen", sym: "🔖", farbe: "
     out.say("Fertig.", "ok"); out.zipKnopf("PDFs.zip"); });
 }});
 
-// ---- 10: Bilder verkleinern & umwandeln
-tool({ id: "bilder", titel: "Bilder verkleinern & umwandeln", sym: "📷", farbe: "#e0527a", text: "Fotos kleiner machen und in JPG, PNG oder WebP umwandeln – viele auf einmal.", build(sec){
-  sec.innerHTML = '<div class="liste"></div><div class="cols2"><div><label class="l">Format</label><select class="in" id="fm"><option value="jpg">JPG (Fotos, klein)</option><option value="webp">WebP (noch kleiner)</option><option value="png">PNG (verlustfrei, Transparenz)</option></select></div><div><label class="l">Größe (längste Seite)</label><select class="in" id="mx"><option value="0">Nicht verändern</option><option value="3840">3840 px (4K)</option><option value="2560">2560 px</option><option value="1920" selected>1920 px (Full-HD)</option><option value="1280">1280 px</option><option value="800">800 px (Web/Mail)</option><option value="400">400 px (Vorschau)</option></select></div></div>' +
-    '<div class="rg" id="qrow"><span>Qualität</span><input type="range" id="q" min="30" max="100" value="80"><output id="qO"></output></div><button class="btn go" id="go" style="margin-top:8px" disabled>Umwandeln</button><div class="ausgabe"></div>';
+// ---- 10: Bilder verkleinern  (und 10b: Bilder umwandeln – eigenes Werkzeug)
+async function bildLaden(file, mx){ // → Canvas (längste Seite höchstens mx, sanft verkleinert)
+  const bmp = await createImageBitmap(file, { imageOrientation: "from-image" }); let w = bmp.width, h = bmp.height;
+  if (mx && Math.max(w, h) > mx) { const f = mx / Math.max(w, h); w = Math.max(1, Math.round(w * f)); h = Math.max(1, Math.round(h * f)); }
+  let cur = bmp, cw = bmp.width, ch = bmp.height; while (cw * .5 > w && ch * .5 > h) { const nw = Math.round(cw / 2), nh = Math.round(ch / 2); const t = document.createElement("canvas"); t.width = nw; t.height = nh; const tc = t.getContext("2d"); tc.imageSmoothingQuality = "high"; tc.drawImage(cur, 0, 0, nw, nh); cur = t; cw = nw; ch = nh; }
+  const c = document.createElement("canvas"); c.width = w; c.height = h; const x = c.getContext("2d"); x.imageSmoothingQuality = "high"; x.drawImage(cur, 0, 0, w, h); return c;
+}
+function weissUnter(c){ const d = document.createElement("canvas"); d.width = c.width; d.height = c.height; const x = d.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, d.width, d.height); x.drawImage(c, 0, 0); return d; }
+const u16 = n => [n & 255, (n >> 8) & 255], u32 = n => [n & 255, (n >> 8) & 255, (n >> 16) & 255, (n >>> 24) & 255];
+function bmpBlob(c){ const w = c.width, h = c.height, row = (w * 3 + 3) & ~3, size = 54 + row * h; const buf = new Uint8Array(size);
+  buf.set([66, 77, ...u32(size), 0, 0, 0, 0, ...u32(54), ...u32(40), ...u32(w), ...u32(h), ...u16(1), ...u16(24), 0, 0, 0, 0, ...u32(row * h), 19, 11, 0, 0, 19, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  const d = weissUnter(c).getContext("2d").getImageData(0, 0, w, h).data; for (let y = 0; y < h; y++) { let o = 54 + (h - 1 - y) * row; for (let x = 0; x < w; x++) { const i = (y * w + x) * 4; buf[o++] = d[i + 2]; buf[o++] = d[i + 1]; buf[o++] = d[i]; } }
+  return new Blob([buf], { type: "image/bmp" }); }
+function tiffBlob(c){ const w = c.width, h = c.height, n = 9, ifd = 8, bpsOff = ifd + 2 + n * 12 + 4, dat = bpsOff + 6, size = dat + w * h * 3; const buf = new Uint8Array(size), dv = new DataView(buf.buffer);
+  buf.set([73, 73, 42, 0, 8, 0, 0, 0]); dv.setUint16(ifd, n, true); let p = ifd + 2;
+  const ent = (tag, typ, cnt, val) => { dv.setUint16(p, tag, true); dv.setUint16(p + 2, typ, true); dv.setUint32(p + 4, cnt, true); if (typ === 3 && cnt === 1) dv.setUint16(p + 8, val, true); else dv.setUint32(p + 8, val, true); p += 12; };
+  ent(256, 4, 1, w); ent(257, 4, 1, h); ent(258, 3, 3, bpsOff); ent(259, 3, 1, 1); ent(262, 3, 1, 2); ent(273, 4, 1, dat); ent(277, 3, 1, 3); ent(278, 4, 1, h); ent(279, 4, 1, w * h * 3); dv.setUint32(p, 0, true);
+  dv.setUint16(bpsOff, 8, true); dv.setUint16(bpsOff + 2, 8, true); dv.setUint16(bpsOff + 4, 8, true);
+  const d = weissUnter(c).getContext("2d").getImageData(0, 0, w, h).data; let o = dat; for (let i = 0; i < w * h; i++) { buf[o++] = d[i * 4]; buf[o++] = d[i * 4 + 1]; buf[o++] = d[i * 4 + 2]; }
+  return new Blob([buf], { type: "image/tiff" }); }
+function gifBlob(c){ const w = c.width, h = c.height, d = weissUnter(c).getContext("2d").getImageData(0, 0, w, h).data;
+  const lv = [7, 7, 3], f = new Float32Array(w * h * 3); for (let i = 0; i < w * h; i++) { f[i * 3] = d[i * 4]; f[i * 3 + 1] = d[i * 4 + 1]; f[i * 3 + 2] = d[i * 4 + 2]; }
+  const idx = new Uint8Array(w * h);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const i = y * w + x, q = [0, 0, 0], r = [0, 0, 0];
+    for (let k = 0; k < 3; k++) { const v = Math.max(0, Math.min(255, f[i * 3 + k])); q[k] = Math.round(v / 255 * lv[k]); r[k] = f[i * 3 + k] - q[k] / lv[k] * 255; }
+    idx[i] = (q[0] << 5) | (q[1] << 2) | q[2];
+    for (let k = 0; k < 3; k++) { if (x + 1 < w) f[(i + 1) * 3 + k] += r[k] * 7 / 16; if (y + 1 < h) { if (x > 0) f[(i + w - 1) * 3 + k] += r[k] * 3 / 16; f[(i + w) * 3 + k] += r[k] * 5 / 16; if (x + 1 < w) f[(i + w + 1) * 3 + k] += r[k] / 16; } } }
+  const out = [71, 73, 70, 56, 57, 97, ...u16(w), ...u16(h), 0xF7, 0, 0]; for (let i = 0; i < 256; i++) out.push(Math.round((i >> 5) / 7 * 255), Math.round(((i >> 2) & 7) / 7 * 255), Math.round((i & 3) / 3 * 255));
+  out.push(0x2C, 0, 0, 0, 0, ...u16(w), ...u16(h), 0, 8);
+  const bytes = []; let dict = new Map(), next = 258, size = 9, cur = 0, nb = 0, blk = [];
+  const put = code => { cur |= code << nb; nb += size; while (nb >= 8) { blk.push(cur & 255); cur >>= 8; nb -= 8; if (blk.length === 255) { bytes.push(255, ...blk); blk = []; } } };
+  put(256); let pre = idx[0];
+  for (let i = 1; i < idx.length; i++) { const k = pre * 256 + idx[i], v = dict.get(k); if (v !== undefined) pre = v; else { put(pre); if (next < 4096) { dict.set(k, next++); if (next > (1 << size) && size < 12) size++; } else { put(256); dict = new Map(); next = 258; size = 9; } pre = idx[i]; } }
+  put(pre); put(257); if (nb > 0) { blk.push(cur & 255); } if (blk.length) bytes.push(blk.length, ...blk); bytes.push(0, 0x3B);
+  return new Blob([new Uint8Array(out), new Uint8Array(bytes)], { type: "image/gif" }); }
+async function icoBlob(c, groessen){ const imgs = []; for (const s of groessen) { const k = document.createElement("canvas"); k.width = k.height = s; const x = k.getContext("2d"); x.imageSmoothingQuality = "high"; const f = Math.min(s / c.width, s / c.height), w = c.width * f, h = c.height * f; x.drawImage(c, (s - w) / 2, (s - h) / 2, w, h); imgs.push(new Uint8Array(await (await toBlob(k, "image/png")).arrayBuffer())); }
+  const head = [0, 0, 1, 0, ...u16(groessen.length)]; let off = 6 + 16 * groessen.length; const dir = [];
+  groessen.forEach((s, i) => { dir.push(s >= 256 ? 0 : s, s >= 256 ? 0 : s, 0, 0, ...u16(1), ...u16(32), ...u32(imgs[i].length), ...u32(off)); off += imgs[i].length; });
+  return new Blob([new Uint8Array([...head, ...dir]), ...imgs], { type: "image/x-icon" }); }
+
+tool({ id: "bilder", titel: "Bilder verkleinern", sym: "📷", farbe: "#e0527a", text: "Fotos kleiner machen (Größe und Qualität) – viele auf einmal, mit Vorher/Nachher-Größe. Zum Wechseln des Formats gibt es „Bilder umwandeln“.", build(sec){
+  sec.innerHTML = '<div class="liste"></div><div class="cols2"><div><label class="l">Größe (längste Seite)</label><select class="in" id="mx"><option value="0">Nicht verändern</option><option value="3840">3840 px (4K)</option><option value="2560">2560 px</option><option value="1920" selected>1920 px (Full-HD)</option><option value="1280">1280 px</option><option value="800">800 px (Web/Mail)</option><option value="400">400 px (Vorschau)</option></select></div>' +
+    '<div><label class="l">Speichern als</label><select class="in" id="fm"><option value="same">Wie das Original (JPG bleibt JPG, PNG bleibt PNG)</option><option value="webp">WebP (meist am kleinsten)</option><option value="jpg">JPG</option></select></div></div>' +
+    '<div class="rg" id="qrow"><span>Qualität</span><input type="range" id="q" min="30" max="100" value="80"><output id="qO"></output></div><p class="muted" style="font-size:13px;margin:4px 0 0">PNG bleibt verlustfrei – dort spart nur eine kleinere Größe Platz. Kleiner machen heißt nicht „Format ändern“: dafür nimm „Bilder umwandeln“.</p><button class="btn go" id="go" style="margin-top:8px" disabled>Verkleinern</button><div class="ausgabe"></div>';
   const out = Ausgabe($(".ausgabe", sec)); const li = Liste($(".liste", sec), { accept: "image/*", titel: "Bilder hier ablegen (viele möglich)", meldung: out.say, sortieren: false, onChange: it => $("#go", sec).disabled = !it.length });
-  const upd = () => { $("#qO", sec).textContent = $("#q", sec).value + " %"; $("#qrow", sec).hidden = $("#fm", sec).value === "png"; }; sec.addEventListener("input", upd); upd();
-  wrapRun($("#go", sec), async () => { out.leer(); const fm = $("#fm", sec).value, mx = +$("#mx", sec).value, q = +$("#q", sec).value / 100; let n = 0, vor = 0, nach = 0;
-    for (const it of li.items) { try { const bmp = await createImageBitmap(it.file, { imageOrientation: "from-image" }); let w = bmp.width, h = bmp.height; if (mx && Math.max(w, h) > mx) { const f = mx / Math.max(w, h); w = Math.max(1, Math.round(w * f)); h = Math.max(1, Math.round(h * f)); }
-        let cur = bmp, cw = bmp.width, ch = bmp.height; while (cw * .5 > w && ch * .5 > h) { const nw = Math.round(cw / 2), nh = Math.round(ch / 2); const t = document.createElement("canvas"); t.width = nw; t.height = nh; const tc = t.getContext("2d"); tc.imageSmoothingQuality = "high"; tc.drawImage(cur, 0, 0, nw, nh); cur = t; cw = nw; ch = nh; }
-        const c = document.createElement("canvas"); c.width = w; c.height = h; const x = c.getContext("2d"); if (fm === "jpg") { x.fillStyle = "#fff"; x.fillRect(0, 0, w, h); } x.imageSmoothingQuality = "high"; x.drawImage(cur, 0, 0, w, h);
-        const type = fm === "jpg" ? "image/jpeg" : fm === "webp" ? "image/webp" : "image/png"; const b = await toBlob(c, type, q); if (!b || (fm === "webp" && b.type !== "image/webp")) throw new Error("Dieser Browser kann kein WebP – bitte JPG oder PNG wählen.");
-        vor += it.file.size; nach += b.size; out.add(WZ.sauber(it.file.name) + "." + fm, b, w + "×" + h + " · " + G(it.file.size) + " → " + G(b.size)); } catch (e) { out.add(it.file.name + " (Fehler)", new Blob([]), e.message); } n++; out.prog(n / li.items.length); await WZ.warte(); }
+  const upd = () => { $("#qO", sec).textContent = $("#q", sec).value + " %"; }; sec.addEventListener("input", upd); upd();
+  wrapRun($("#go", sec), async () => { out.leer(); const fm0 = $("#fm", sec).value, mx = +$("#mx", sec).value, q = +$("#q", sec).value / 100; let n = 0, vor = 0, nach = 0;
+    for (const it of li.items) { try { const nm = it.file.name.toLowerCase(), alt = it.file.type;
+        const fm = fm0 !== "same" ? fm0 : (/png/.test(alt) || /\.png$/.test(nm)) ? "png" : (/webp/.test(alt) || /\.webp$/.test(nm)) ? "webp" : "jpg";
+        let c = await bildLaden(it.file, mx); if (fm === "jpg") c = weissUnter(c);
+        const type = fm === "jpg" ? "image/jpeg" : fm === "webp" ? "image/webp" : "image/png"; let b = await toBlob(c, type, q); if (!b || (fm === "webp" && b.type !== "image/webp")) throw new Error("Dieser Browser kann kein WebP – bitte JPG wählen.");
+        let hinweis = ""; if (b.size >= it.file.size && !(mx && Math.max(c.width, c.height) < mx)) { hinweis = " · war schon klein – Original behalten"; b = it.file; }
+        vor += it.file.size; nach += b.size; out.add(WZ.sauber(it.file.name) + "_klein." + (b === it.file ? (it.file.name.split(".").pop().toLowerCase()) : fm), b, c.width + "×" + c.height + " · " + G(it.file.size) + " → " + G(b.size) + hinweis); } catch (e) { out.add(it.file.name + " (Fehler)", new Blob([]), e.message); } n++; out.prog(n / li.items.length); await WZ.warte(); }
     out.say(n + " Bild(er) · gesamt " + G(vor) + " → " + G(nach) + (vor > nach ? " (−" + Math.round((1 - nach / vor) * 100) + " %)" : ""), "ok"); out.prog(null); out.zipKnopf("Bilder.zip"); });
+}});
+
+tool({ id: "bildformat", titel: "Bilder umwandeln", sym: "🔁", farbe: "#c0398c", text: "Das Format wechseln: JPG, PNG, WebP, AVIF, GIF, BMP, TIFF oder Windows-Icon (ICO) – viele Bilder auf einmal, Größe bleibt wie sie ist.", build(sec){
+  const avif = (() => { try { const c = document.createElement("canvas"); c.width = c.height = 1; return c.toDataURL("image/avif").indexOf("image/avif") > 4; } catch (e) { return false; } })();
+  sec.innerHTML = '<div class="liste"></div><div class="cols2"><div><label class="l">Umwandeln in</label><select class="in" id="fm"><option value="png">PNG (verlustfrei, Transparenz)</option><option value="jpg">JPG (Fotos)</option><option value="webp">WebP (Web, klein)</option>' + (avif ? '<option value="avif">AVIF (sehr klein, modern)</option>' : "") + '<option value="gif">GIF (256 Farben)</option><option value="bmp">BMP (Windows-Bitmap)</option><option value="tiff">TIFF (Druck, groß)</option><option value="ico">ICO (Windows-Icon, 16–256 px)</option></select></div>' +
+    '<div id="qw"><label class="l">Qualität</label><div class="rg" style="margin:0"><input type="range" id="q" min="30" max="100" value="90"><output id="qO"></output></div></div></div>' +
+    '<p class="muted" id="hn" style="font-size:13px;margin:6px 0 0"></p><button class="btn go" id="go" style="margin-top:8px" disabled>Umwandeln</button><div class="ausgabe"></div>';
+  const out = Ausgabe($(".ausgabe", sec)); const li = Liste($(".liste", sec), { accept: "image/*,.bmp,.ico,.gif,.webp,.avif,.svg", titel: "Bilder hier ablegen (viele möglich)", meldung: out.say, sortieren: false, onChange: it => $("#go", sec).disabled = !it.length });
+  const HN = { png: "PNG behält Transparenz und ist verlustfrei.", jpg: "JPG hat keine Transparenz – durchsichtige Stellen werden weiß.", webp: "WebP unterstützt Transparenz und ist klein.", avif: "AVIF ist sehr klein; ältere Programme öffnen es noch nicht.", gif: "GIF kennt nur 256 Farben (Fotos sehen gröber aus) und hat hier keine Transparenz. Sehr große Bilder werden auf 2000 px verkleinert.", bmp: "BMP ist unkomprimiert und deshalb groß.", tiff: "TIFF ist unkomprimiert und deshalb sehr groß – gut für Druck und Archiv.", ico: "Es entsteht ein Icon mit den Größen 16, 32, 48, 64, 128 und 256 px. Quadratische Bilder passen am besten." };
+  const upd = () => { const f = $("#fm", sec).value; $("#qO", sec).textContent = $("#q", sec).value + " %"; $("#qw", sec).hidden = !/^(jpg|webp|avif)$/.test(f); $("#hn", sec).textContent = HN[f]; }; sec.addEventListener("input", upd); sec.addEventListener("change", upd); upd();
+  wrapRun($("#go", sec), async () => { out.leer(); const fm = $("#fm", sec).value, q = +$("#q", sec).value / 100; let n = 0;
+    for (const it of li.items) { try { let c = await bildLaden(it.file, fm === "gif" ? 2000 : fm === "ico" ? 512 : 0), b;
+        if (fm === "jpg") b = await toBlob(weissUnter(c), "image/jpeg", q); else if (fm === "png") b = await toBlob(c, "image/png"); else if (fm === "webp" || fm === "avif") { b = await toBlob(c, "image/" + fm, q); if (!b || b.type !== "image/" + fm) throw new Error("Dieser Browser kann kein " + fm.toUpperCase() + " – bitte PNG oder JPG wählen."); }
+        else if (fm === "bmp") b = bmpBlob(c); else if (fm === "tiff") b = tiffBlob(c); else if (fm === "gif") b = gifBlob(c); else b = await icoBlob(c, [16, 32, 48, 64, 128, 256]);
+        out.add(WZ.sauber(it.file.name) + "." + (fm === "jpg" ? "jpg" : fm === "tiff" ? "tif" : fm), b, (fm === "ico" ? "6 Größen" : c.width + "×" + c.height) + " · " + G(it.file.size) + " → " + G(b.size)); } catch (e) { out.add(it.file.name + " (Fehler)", new Blob([]), e.message); } n++; out.prog(n / li.items.length); await WZ.warte(); }
+    out.say(n + " Bild(er) umgewandelt.", "ok"); out.prog(null); out.zipKnopf("Bilder.zip"); });
 }});
 
 // ---- 11: ZIP
