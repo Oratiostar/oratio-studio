@@ -592,57 +592,50 @@ function rlText(c, t, cx, cy, px){
     for (var r = 0; r < 7; r++) for (var q = 0; q < 5; q++) if (rows[r].charAt(q) === "1") c.fillRect(x0 + (i * 6 + q) * px, y0 + r * px, px * .86, px * .86); }
 }
 function drawRetroLcd(c, now, C){
-  var blue = "#2a5fc4", gold = "#e6cf9a", red = "#cf4650", wh = "#f4f6fb", ink = "#121412", cfg = SEGV.classic18, i, F = "Inter,system-ui,sans-serif";
+  var blue = "#2358d6", gold = "#ecc93c", red = "#e04b4b", wh = "#f4f6fb", ink = "#14161a", cfg = SEGV.classic18, i, F = "Inter,system-ui,sans-serif";
   c.fillStyle = WO.bg; c.fillRect(0, 0, 466, 466);
   function oct(x0, y0, x1, y1, ch, r){ var P = [[x0 + ch, y0], [x1 - ch, y0], [x1, y0 + ch], [x1, y1 - ch], [x1 - ch, y1], [x0 + ch, y1], [x0, y1 - ch], [x0, y0 + ch]]; c.beginPath(); c.moveTo((P[7][0] + P[0][0]) / 2, (P[7][1] + P[0][1]) / 2); for (var k = 0; k < 8; k++){ var n = P[(k + 1) % 8]; c.arcTo(P[k][0], P[k][1], (P[k][0] + n[0]) / 2, (P[k][1] + n[1]) / 2, r); } c.closePath(); }
-  oct(38, 66, 428, 404, 62, 22); c.strokeStyle = blue; c.lineWidth = 6; c.stroke();
-  oct(48, 76, 418, 394, 56, 18); c.strokeStyle = wh; c.lineWidth = 1.8; c.stroke();
-  c.textBaseline = "middle"; c.textAlign = "left";
-  c.fillStyle = wh; c.font = "900 24px " + F; c.fillText("ORATIO", 96, 103);
-  c.fillStyle = gold; c.font = "900 15px " + F; c.textAlign = "right"; c.fillText("STEP TRACKER", 372, 104);
-  c.fillStyle = blue; c.textAlign = "center"; c.font = "italic 900 19px " + F; c.fillText("ILLUMINATOR", 233, 130, 150);
-  c.beginPath(); c.moveTo(142, 130); c.lineTo(161, 121); c.lineTo(161, 139); c.closePath(); c.fill();
-  c.beginPath(); c.moveTo(324, 130); c.lineTo(305, 121); c.lineTo(305, 139); c.closePath(); c.fill();
-  c.fillStyle = wh; c.font = "900 13px " + F; c.letterSpacing = "1px";
-  c.save(); c.translate(63, 234); c.rotate(Math.PI / 2); c.fillText("ADJUST MODE", 0, 0, 124); c.restore();
-  c.save(); c.translate(403, 234); c.rotate(-Math.PI / 2); c.fillText("SEARCH LIGHT", 0, 0, 124); c.restore();
-  c.letterSpacing = "0px";
-  c.fillStyle = red; [[63, 160], [63, 310], [403, 160], [403, 310]].forEach(function(d){ c.beginPath(); c.arc(d[0], d[1], 5, 0, 7); c.fill(); });
-  c.font = "900 15px " + F; c.letterSpacing = "1.5px"; c.textAlign = "right"; c.fillText("WATER", 190, 340); c.textAlign = "left"; c.fillText("RESIST", 278, 340); c.letterSpacing = "0px";
-  c.lineWidth = 2.4; c.strokeStyle = red; c.beginPath(); c.moveTo(201, 328); c.lineTo(262, 328); c.quadraticCurveTo(272, 328, 270, 338); c.lineTo(267, 346); c.quadraticCurveTo(265, 352, 258, 352); c.lineTo(205, 352); c.quadraticCurveTo(197, 352, 199, 344); c.lineTo(202, 334); c.quadraticCurveTo(203, 328, 210, 328); c.stroke();
-  c.textAlign = "center"; c.font = "italic 900 18px " + F; c.fillText("WR", 234, 341);
-  c.strokeStyle = "#aab4c8"; c.lineWidth = 2.4; c.beginPath(); c.moveTo(96, 360); c.lineTo(370, 360); c.stroke();
-  c.fillStyle = gold; c.font = "800 15px " + F; c.fillText("Bluetooth", 233, 376);
+  oct(46, 63, 413, 397, 46, 20); c.strokeStyle = blue; c.lineWidth = 5; c.stroke();
+  oct(54, 71, 405, 389, 42, 16); c.strokeStyle = wh; c.lineWidth = 1.6; c.stroke();
+  c.textBaseline = "middle"; c.textAlign = "center";
+  c.fillStyle = wh; c.font = "900 19px " + F; c.fillText("ORATIO", 160, 91, 84);
+  c.fillStyle = gold; c.font = "900 14px " + F; c.fillText("STEP TRACKER", 288, 96, 121);
+  c.fillStyle = blue; c.font = "italic 900 17px " + F; c.fillText("ILLUMINATOR", 235, 118, 142);
+  c.beginPath(); c.moveTo(143, 118); c.lineTo(163, 111); c.lineTo(163, 125); c.closePath(); c.fill();
+  c.beginPath(); c.moveTo(327, 118); c.lineTo(307, 111); c.lineTo(307, 125); c.closePath(); c.fill();
+  c.fillStyle = wh; c.font = "900 12.5px " + F;
+  c.save(); c.translate(74, 221); c.rotate(Math.PI / 2); c.fillText("ADJUST MODE", 0, 0, 134); c.restore();
+  c.save(); c.translate(379, 221); c.rotate(-Math.PI / 2); c.fillText("SEARCH LIGHT", 0, 0, 134); c.restore();
+  c.fillStyle = red; [[73, 141], [71, 302], [379, 146], [379, 305]].forEach(function(d){ c.beginPath(); c.arc(d[0], d[1], 4.6, 0, 7); c.fill(); });
+  c.font = "900 14px " + F; c.fillText("WATER", 153, 336, 62); c.fillText("RESIST", 301, 336, 64);
+  c.lineWidth = 2.2; c.strokeStyle = red; c.beginPath(); c.moveTo(204, 323); c.lineTo(250, 323); c.quadraticCurveTo(260, 323, 258, 332); c.lineTo(256, 341); c.quadraticCurveTo(255, 348, 247, 348); c.lineTo(209, 348); c.quadraticCurveTo(198, 348, 200, 340); c.lineTo(202, 330); c.quadraticCurveTo(203, 323, 212, 323); c.stroke();
+  c.font = "italic 900 17px " + F; c.fillText("WR", 229, 336, 32);
+  c.strokeStyle = "#b9c9ee"; c.lineWidth = 2.2; c.beginPath(); c.moveTo(90, 354); c.lineTo(361, 354); c.stroke();
+  c.fillStyle = gold; c.font = "800 13px " + F; c.fillText("Bluetooth", 229, 370, 60);
   // LCD
-  var x0 = 82, y0 = 151, x1 = 384, y1 = 321;
+  var x0 = 94, y0 = 134, x1 = 360, y1 = 316;
   function rr(x, y, w, h, r){ c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
-  rr(x0 - 3, y0 - 3, x1 - x0 + 6, y1 - y0 + 6, 10); c.fillStyle = "#3a3c40"; c.fill();
-  rr(x0, y0, x1 - x0, y1 - y0, 8); var lg = c.createLinearGradient(0, y0, 0, y1); lg.addColorStop(0, "#d2d1c6"); lg.addColorStop(1, "#bdbcb0"); c.fillStyle = lg; c.fill();
-  c.save(); rr(x0, y0, x1 - x0, y1 - y0, 8); c.clip();
-  c.fillStyle = "#2a2c2a"; c.fillRect(x0, y0 + 26, x1 - x0, 1.6); c.fillRect(x0, y0 + 83, x1 - x0, 1.6);
-  // Zeile 1: 0 | Balken | 100
-  c.fillStyle = ink; c.font = "800 11px " + F; c.textAlign = "center"; c.fillText("0", x0 + 18, y0 + 14);
-  var lit = Math.round(24 * WO.lvl / 100); if (WO.bat) for (i = 0; i < 24; i++){ c.globalAlpha = i < lit ? 1 : .09; c.fillRect(x0 + 30 + i * 6.9, y0 + 6, 4.3, 16); } c.globalAlpha = 1;
-  c.textAlign = "right"; c.fillText("100", x1 - 12, y0 + 14);
-  // Zeile 2: MUTE + Datum
-  var dn = fr ? ["DIM", "LUN", "MAR", "MER", "JEU", "VEN", "SAM"] : ["SO ", "MO ", "DI ", "MI ", "DO ", "FR ", "SA "], p2 = function(n){ return (n < 10 ? "0" : "") + n; }, sp = function(n){ return (n < 10 ? " " : "") + n; };
-  if (WO.date){ c.textAlign = "center"; c.font = "800 9.5px " + F; c.fillText("MUTE", x0 + 200, y0 + 34);
-    rlText(c, dn[now.getDay()] + "'" + p2(now.getFullYear() % 100) + "-" + sp(now.getMonth() + 1) + "-" + p2(now.getDate()), (x0 + x1) / 2, y0 + 58, 3); }
-  // Zeile 3: P, Uhrzeit, Sekunden, Symbole
-  var hh = now.getHours(), h12 = hh % 12 || 12, data = segData((h12 < 10 ? " " : "") + h12 + ":" + p2(now.getMinutes())), sd = segData(p2(now.getSeconds()));
-  c.textAlign = "left"; c.font = "800 12px " + F; if (hh >= 12) c.fillText("P", x0 + 12, y0 + 104);
-  function digits(dat, n, tx, ty, k){
-    c.save(); c.translate(tx, ty); c.scale(k, k);
+  rr(x0 - 3, y0 - 3, x1 - x0 + 6, y1 - y0 + 6, 20); c.fillStyle = "#34363a"; c.fill();
+  rr(x0, y0, x1 - x0, y1 - y0, 17); var lg = c.createLinearGradient(0, y0, 0, y1); lg.addColorStop(0, "#d9d8cf"); lg.addColorStop(1, "#c8c7bb"); c.fillStyle = lg; c.fill();
+  c.save(); rr(x0, y0, x1 - x0, y1 - y0, 17); c.clip();
+  c.fillStyle = "#3a3c3a"; c.fillRect(x0, y0 + 27, x1 - x0, 1.5); c.fillRect(x0, y0 + 85, x1 - x0, 1.5);
+  c.fillStyle = ink; c.strokeStyle = ink;
+  c.lineWidth = 1.3; c.strokeRect(111.5, 143.5, 18, 11); c.font = "800 8px " + F; c.textAlign = "center"; c.fillText("PS", 120.5, 149.5);
+  var lit = Math.round(24 * WO.lvl / 100); if (WO.bat) for (i = 0; i < 24; i++){ c.globalAlpha = i < lit ? 1 : .09; c.fillRect(143 + i * 5.85, 142, 3.5, 13); } c.globalAlpha = 1;
+  c.font = "800 11px " + F; c.textAlign = "center"; c.fillText("100", 332, 148);
+  var dn = fr ? ["DIM", "LUN", "MAR", "MER", "JEU", "VEN", "SAM"] : ["SON", "MON", "DIE", "MIT", "DON", "FRE", "SAM"], p2 = function(n){ return (n < 10 ? "0" : "") + n; }, sp = function(n){ return (n < 10 ? " " : "") + n; };
+  if (WO.date){ c.font = "800 9.5px " + F; c.fillText("MUTE", 261, 173);
+    rlText(c, dn[now.getDay()] + " " + p2(now.getFullYear() % 100) + "-" + sp(now.getMonth() + 1) + "-" + p2(now.getDate()), 229.5, 196, 3.3); }
+  c.font = "800 9.5px " + F; c.fillText("DST", 318, 235);
+  var hh = now.getHours(), data = segData((hh < 10 ? " " : "") + hh + ":" + p2(now.getMinutes())), sd = segData(p2(now.getSeconds()));
+  function digits(dat, n, left, bottom, k){
+    c.save(); c.translate(left - 14 * k, bottom - 202 * k); c.scale(k, k);
     for (var d = 0; d < n; d++){ var o = segHit(d), P = segPaths(o.ox, o.oy, cfg);
       P.forEach(function(pp, sI){ c.globalAlpha = (dat[d] >> sI) & 1 ? 1 : cfg.off; c.fillStyle = ink; c.fill(pp); });
       if (n === 4 && d === 1){ c.globalAlpha = (dat[1] & 0x80) ? 1 : cfg.off; c.beginPath(); c.arc(o.ox + 120, o.oy + 70, 8.5, 0, 7); c.fill(); c.beginPath(); c.arc(o.ox + 120, o.oy + 150, 8.5, 0, 7); c.fill(); } }
     c.restore(); c.globalAlpha = 1; }
-  var k1 = .375, k2 = .23, base = y0 + 164;
-  digits(data, 4, x0 + 30 - 14 * k1, base - 202 * k1, k1);
-  if (WO.sec) digits(sd, 2, x1 - 10 - (2 * 124 - 14) * k2 - 14 * k2 + 14 * k2 - 14 * k2, base - 202 * k2, k2);
-  // Symbole oben rechts: Signal + Glocke
-  c.fillStyle = ink; for (i = 0; i < 4; i++) c.fillRect(x1 - 66 + i * 4.6, y0 + 99 - i * 1.4, 3, 6 + i * 1.4);
-  c.beginPath(); c.moveTo(x1 - 36, y0 + 106); c.quadraticCurveTo(x1 - 36, y0 + 92, x1 - 29, y0 + 92); c.quadraticCurveTo(x1 - 22, y0 + 92, x1 - 22, y0 + 106); c.closePath(); c.fill(); c.fillRect(x1 - 38, y0 + 105, 18, 2); c.beginPath(); c.arc(x1 - 29, y0 + 109, 2, 0, 7); c.fill();
+  digits(data, 4, 139, 301, .29);
+  if (WO.sec) digits(sd, 2, 292, 301, .18);
   c.restore();
 }
 function drawWatch(c){
