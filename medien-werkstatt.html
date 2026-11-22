@@ -4,10 +4,28 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Medien-Werkstatt – Oratio</title>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Oratio Place">
+<meta property="og:title" content="Medien-Werkstatt – Oratio">
+<meta property="og:description" content="Medien-Werkstatt: Videos (auch iPhone-MOV) verkleinern oder in andere Formate umwandeln, GIF und Standbilder, Audio komprimieren, umwandeln und schneiden, Songs verbinden, BPM und Tonart bestimmen, Tongenerator. Alles im Browser, ohne Upload.">
+<meta property="og:url" content="https://oratioplace.com/medien-werkstatt.html">
+<meta property="og:image" content="https://oratioplace.com/bilder/werkzeuge.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Medien-Werkstatt – Oratio">
+<meta name="twitter:description" content="Medien-Werkstatt: Videos (auch iPhone-MOV) verkleinern oder in andere Formate umwandeln, GIF und Standbilder, Audio komprimieren, umwandeln und schneiden, Songs verbinden, BPM und Tonart bestimmen, Tongenerator. Alles im Browser, ohne Upload.">
+<meta name="twitter:image" content="https://oratioplace.com/bilder/werkzeuge.jpg">
+<link rel="canonical" href="https://oratioplace.com/medien-werkstatt.html">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b1220">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Oratio">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="Medien-Werkstatt: Videos (auch iPhone-MOV) verkleinern oder in andere Formate umwandeln, GIF und Standbilder, Audio komprimieren, umwandeln und schneiden, Songs verbinden, BPM und Tonart bestimmen, Tongenerator. Alles im Browser, ohne Upload.">
 <link rel="icon" href="icon.png">
-<link rel="stylesheet" href="werkzeuge/wz.css">
-<link rel="stylesheet" href="werkzeuge/werkstatt.css">
+<link rel="stylesheet" href="werkzeuge/wz.css?v=50">
+<link rel="stylesheet" href="werkzeuge/werkstatt.css?v=50">
 <style>
 .mhero{position:relative;overflow:hidden;border-radius:24px;padding:22px 20px;margin:6px 0 14px;color:#fff;box-shadow:var(--shadow);background:radial-gradient(420px 200px at 90% 0,rgba(255,214,102,.5),transparent 60%),linear-gradient(135deg,#6a2bd9,#d9453b 60%,#f0902b)}
 .mhero h1{margin:0 0 6px;color:#fff;font-size:clamp(26px,6vw,40px);line-height:1.1}
@@ -40,12 +58,12 @@
 <div class="tgrid" id="toolgrid"></div>
 <div id="toolhost"></div>
 </main>
-<script src="werkzeuge/wz.js"></script>
-<script src="werkzeuge/fr.js?v=49"></script>
-<script src="werkzeuge/lib/jszip.min.js"></script>
-<script src="werkzeuge/datei.js?v=49"></script>
-<script src="werkzeuge/medien.js?v=49"></script>
-<script src="werkzeuge/musik.js?v=49"></script>
+<script src="werkzeuge/wz.js?v=50"></script>
+<script src="werkzeuge/fr.js?v=50"></script>
+<script src="werkzeuge/lib/jszip.min.js?v=50"></script>
+<script src="werkzeuge/datei.js?v=50"></script>
+<script src="werkzeuge/medien.js?v=50"></script>
+<script src="werkzeuge/musik.js?v=50"></script>
 <script>
 (function(){
   var OM = window.OratioMedien, $ = function(s){ return document.querySelector(s); };
@@ -78,5 +96,6 @@
   WZ.kopf("medien"); DateiWerkstatt.start({ filter: function(t){ return !!t.gruppe; }, gitter: gitter });
 })();
 </script>
+<script>if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script>
 </body>
 </html>

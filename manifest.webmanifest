@@ -1,0 +1,21 @@
+{
+  "name": "Oratio Place",
+  "short_name": "Oratio",
+  "description": "Technik, Lifestyle, München, Sprachkurse und Werkzeuge – alles an einem Ort. / Tout au même endroit.",
+  "lang": "de",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "Tech Studio / Outils", "url": "./index.html#/studio", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]},
+    {"name": "München", "url": "./muenchen.html", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]},
+    {"name": "Sprachkurse / Cours", "url": "./sprachkurse.html", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]}
+  ]
+}

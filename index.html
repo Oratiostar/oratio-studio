@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Oratio Place</title>
+<link rel="canonical" href="https://oratioplace.com/">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b1220">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Oratio">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="Oratio Place: Technik-Nachschlagewerk, Weihnachtswelt, Lifestyle und Deutschkurs – alles an einem Ort.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Oratio Place">
@@ -18,8 +26,7 @@
 <meta name="twitter:description" content="Oratio Place: Technik-Nachschlagewerk, Weihnachtswelt, Lifestyle und Deutschkurs – alles an einem Ort.">
 <meta name="twitter:image" content="https://oratioplace.com/vorschau.png">
 <link rel="icon" href="logo-place.png">
-<link rel="apple-touch-icon" href="logo-place.png">
-<link rel="stylesheet" href="werkzeuge/glass.css?v=48">
+<link rel="stylesheet" href="werkzeuge/glass.css?v=50">
 <style>
 @font-face{font-family:"Inter";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/Inter-Regular.woff) format("woff")}
 @font-face{font-family:"Inter";font-weight:600;font-style:normal;font-display:swap;src:url(fonts/Inter-SemiBold.woff) format("woff")}
@@ -1150,6 +1157,7 @@ async function frLaden(){ if (LANG === "fr" && FR === null) { try { FR = await h
   catch(e){ app.innerHTML = '<p>Daten konnten nicht geladen werden. Bitte die Seite über einen Webserver öffnen (nicht direkt als Datei).</p>'; }
 })();
 </script>
-<script src="werkzeuge/glass.js?v=48"></script>
+<script src="werkzeuge/glass.js?v=50"></script>
+<script>if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script>
 </body>
 </html>

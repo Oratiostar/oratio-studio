@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Deutschkurs – Oratio Place</title>
+<link rel="canonical" href="https://oratioplace.com/deutsch.html">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b1220">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Oratio">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="Kostenloser Deutschkurs von A1 bis C1 für Französischsprachige: Erklärungen, Tabellen, Beispiele zum Anhören, Übungen und ein Nachschlage-Bereich. Cours d'allemand gratuit de A1 à C1.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Oratio Place">
@@ -13,8 +21,7 @@
 <meta property="og:image" content="https://oratioplace.com/vorschau.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="logo-place.png">
-<link rel="apple-touch-icon" href="logo-place.png">
-<link rel="stylesheet" href="werkzeuge/wz.css">
+<link rel="stylesheet" href="werkzeuge/wz.css?v=50">
 <style>
 header{border-bottom:0!important;position:sticky}header::after{content:"";display:block;height:5px;background:linear-gradient(90deg,#111 0 33.3%,#dd0000 0 66.6%,#ffce00 0)}
 body{background:linear-gradient(180deg,#fff3d6,#ffe3f0 40%,#e3ecff)!important;background-attachment:fixed}
@@ -106,28 +113,29 @@ mark{background:color-mix(in srgb,var(--acc2) 55%,transparent);color:inherit;pad
 </head>
 <body>
 <main id="de"></main>
-<script src="werkzeuge/wz.js"></script>
-<script src="werkzeuge/de_engine.js"></script>
-<script src="werkzeuge/de_a1.js"></script>
-<script src="werkzeuge/de_a1b.js"></script>
-<script src="werkzeuge/de_a2.js"></script>
-<script src="werkzeuge/de_a2b.js"></script>
-<script src="werkzeuge/de_b1.js"></script>
-<script src="werkzeuge/de_b1b.js"></script>
-<script src="werkzeuge/de_b2.js"></script>
-<script src="werkzeuge/de_b2b.js"></script>
-<script src="werkzeuge/de_c1.js"></script>
-<script src="werkzeuge/de_ref.js"></script>
-<script src="werkzeuge/de_ref2.js"></script>
-<script src="werkzeuge/de_g1.js"></script>
-<script src="werkzeuge/de_g2.js"></script>
-<script src="werkzeuge/de_g3.js"></script>
-<script src="werkzeuge/de_g4.js"></script>
-<script src="werkzeuge/de_g5.js"></script>
+<script src="werkzeuge/wz.js?v=50"></script>
+<script src="werkzeuge/de_engine.js?v=50"></script>
+<script src="werkzeuge/de_a1.js?v=50"></script>
+<script src="werkzeuge/de_a1b.js?v=50"></script>
+<script src="werkzeuge/de_a2.js?v=50"></script>
+<script src="werkzeuge/de_a2b.js?v=50"></script>
+<script src="werkzeuge/de_b1.js?v=50"></script>
+<script src="werkzeuge/de_b1b.js?v=50"></script>
+<script src="werkzeuge/de_b2.js?v=50"></script>
+<script src="werkzeuge/de_b2b.js?v=50"></script>
+<script src="werkzeuge/de_c1.js?v=50"></script>
+<script src="werkzeuge/de_ref.js?v=50"></script>
+<script src="werkzeuge/de_ref2.js?v=50"></script>
+<script src="werkzeuge/de_g1.js?v=50"></script>
+<script src="werkzeuge/de_g2.js?v=50"></script>
+<script src="werkzeuge/de_g3.js?v=50"></script>
+<script src="werkzeuge/de_g4.js?v=50"></script>
+<script src="werkzeuge/de_g5.js?v=50"></script>
 <script>
 WZ.kopf("deutsch");
 document.documentElement.lang = WZ.lang === "fr" ? "fr" : "de";
 DE.start();
 </script>
+<script>if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script>
 </body>
 </html>

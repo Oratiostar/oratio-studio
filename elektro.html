@@ -4,10 +4,28 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Elektronik-Rechner – Oratio</title>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Oratio Place">
+<meta property="og:title" content="Elektronik-Rechner – Oratio">
+<meta property="og:description" content="Elektronik-Rechner: Widerstands-Farbcode, Ohmsches Gesetz, LED-Vorwiderstand, Spannungsteiler, Operationsverstärker, Filter, 555-Timer und Logik. Alles im Browser.">
+<meta property="og:url" content="https://oratioplace.com/elektro.html">
+<meta property="og:image" content="https://oratioplace.com/bilder/tech.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Elektronik-Rechner – Oratio">
+<meta name="twitter:description" content="Elektronik-Rechner: Widerstands-Farbcode, Ohmsches Gesetz, LED-Vorwiderstand, Spannungsteiler, Operationsverstärker, Filter, 555-Timer und Logik. Alles im Browser.">
+<meta name="twitter:image" content="https://oratioplace.com/bilder/tech.jpg">
+<link rel="canonical" href="https://oratioplace.com/elektro.html">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b1220">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Oratio">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="Elektronik-Rechner: Widerstands-Farbcode, Ohmsches Gesetz, LED-Vorwiderstand, Spannungsteiler, Operationsverstärker, Filter, 555-Timer und Logik. Alles im Browser.">
 <link rel="icon" href="icon.png">
-<link rel="stylesheet" href="werkzeuge/wz.css">
-<link rel="stylesheet" href="werkzeuge/tools.css">
+<link rel="stylesheet" href="werkzeuge/wz.css?v=50">
+<link rel="stylesheet" href="werkzeuge/tools.css?v=50">
 </head>
 <body>
 <main>
@@ -16,9 +34,10 @@
 <div class="tgrid" id="toolgrid"></div>
 <div id="toolhost"></div>
 </main>
-<script src="werkzeuge/wz.js"></script>
-<script src="werkzeuge/fr.js"></script>
-<script src="werkzeuge/elektro.js"></script>
+<script src="werkzeuge/wz.js?v=50"></script>
+<script src="werkzeuge/fr.js?v=50"></script>
+<script src="werkzeuge/elektro.js?v=50"></script>
 <script>WZ.kopf("elektro"); Elektro.start();</script>
+<script>if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script>
 </body>
 </html>

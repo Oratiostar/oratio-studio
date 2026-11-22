@@ -4,15 +4,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>München erleben – Oratio Place</title>
-<meta name="description" content="Alles über München als Münchner: Sehenswürdigkeiten, Isar und Englischer Garten, Wiesn, Biergärten, Essen, Technik-Geschichte, Bairisch, Ausflüge und ein Quiz.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Oratio Place">
 <meta property="og:title" content="München erleben – Oratio Place">
 <meta property="og:description" content="Alles über München als Münchner: Sehenswürdigkeiten, Isar und Englischer Garten, Wiesn, Biergärten, Essen, Technik-Geschichte, Bairisch, Ausflüge und ein Quiz.">
 <meta property="og:url" content="https://oratioplace.com/muenchen.html">
+<meta property="og:image" content="https://oratioplace.com/bilder/lifestyle.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="München erleben – Oratio Place">
+<meta name="twitter:description" content="Alles über München als Münchner: Sehenswürdigkeiten, Isar und Englischer Garten, Wiesn, Biergärten, Essen, Technik-Geschichte, Bairisch, Ausflüge und ein Quiz.">
+<meta name="twitter:image" content="https://oratioplace.com/bilder/lifestyle.jpg">
+<link rel="canonical" href="https://oratioplace.com/muenchen.html">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b1220">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Oratio">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="description" content="Alles über München als Münchner: Sehenswürdigkeiten, Isar und Englischer Garten, Wiesn, Biergärten, Essen, Technik-Geschichte, Bairisch, Ausflüge und ein Quiz.">
 <link rel="icon" href="logo-place.png">
-<link rel="apple-touch-icon" href="logo-place.png">
-<link rel="stylesheet" href="werkzeuge/wz.css">
+<link rel="stylesheet" href="werkzeuge/wz.css?v=50">
 <style>
 .mhero{position:relative;overflow:hidden;border-radius:24px;padding:24px 20px;margin:6px 0 14px;color:#fff;box-shadow:var(--shadow);
   background:radial-gradient(500px 220px at 85% 10%,rgba(255,214,102,.55),transparent 60%),linear-gradient(135deg,#0a4a9a,#1c8fe0 55%,#19c9b8)}
@@ -106,7 +118,7 @@
 </head>
 <body>
 <main id="mm"></main>
-<script src="werkzeuge/wz.js"></script>
+<script src="werkzeuge/wz.js?v=50"></script>
 <script>
 (function(){
 var fr = WZ.lang === "fr", $ = function(s, r){ return (r || document).querySelector(s); };
@@ -3725,5 +3737,6 @@ WZ.kopf("muenchen");
 document.documentElement.lang = WZ.lang === "fr" ? "fr" : "de";
 document.title = WZ.lang === "fr" ? "Munich – Oratio Place" : "München erleben – Oratio Place";
 </script>
+<script>if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script>
 </body>
 </html>

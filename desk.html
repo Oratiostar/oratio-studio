@@ -4,10 +4,28 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Oratio Desk – Oratio</title>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Oratio Place">
+<meta property="og:title" content="Oratio Desk – Oratio">
+<meta property="og:description" content="Oratio Desk: dein persönlicher Schreibtisch im Browser mit Uhr, Notizen, Aufgaben, Pomodoro, Kalender, Rechner, Gewohnheiten und mehr. Alles bleibt auf deinem Gerät.">
+<meta property="og:url" content="https://oratioplace.com/desk.html">
+<meta property="og:image" content="https://oratioplace.com/bilder/werkzeuge.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Oratio Desk – Oratio">
+<meta name="twitter:description" content="Oratio Desk: dein persönlicher Schreibtisch im Browser mit Uhr, Notizen, Aufgaben, Pomodoro, Kalender, Rechner, Gewohnheiten und mehr. Alles bleibt auf deinem Gerät.">
+<meta name="twitter:image" content="https://oratioplace.com/bilder/werkzeuge.jpg">
+<link rel="canonical" href="https://oratioplace.com/desk.html">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b1220">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Oratio">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="Oratio Desk: dein persönlicher Schreibtisch im Browser mit Uhr, Notizen, Aufgaben, Pomodoro, Kalender, Rechner, Gewohnheiten und mehr. Alles bleibt auf deinem Gerät.">
 <link rel="icon" href="icon.png">
-<link rel="stylesheet" href="werkzeuge/wz.css">
-<link rel="stylesheet" href="werkzeuge/tools.css">
+<link rel="stylesheet" href="werkzeuge/wz.css?v=50">
+<link rel="stylesheet" href="werkzeuge/tools.css?v=50">
 <style>
 .dsk{--tbg:rgba(255,255,255,.2);--tfg:#fff;--tmut:rgba(255,255,255,.72);--tline:rgba(255,255,255,.38);--tsoft:rgba(255,255,255,.2);--gap:12px;position:relative;border-radius:28px;overflow:hidden;margin:8px 0 18px;min-height:calc(100vh - 230px);min-height:calc(100svh - 230px);box-shadow:0 14px 40px rgba(10,25,70,.28);isolation:isolate}
 .dsk[data-stil=hell]{--tbg:rgba(255,255,255,.9);--tfg:#1c2030;--tmut:#6a7285;--tline:rgba(20,30,60,.12);--tsoft:rgba(20,30,70,.08)}
@@ -208,12 +226,13 @@ body.dkopen{overflow:hidden}
 <p class="sub">Dein persönlicher Schreibtisch im Browser: Widgets wählen, anordnen, Hintergrund ändern. Alles bleibt in <b>deinem Browser</b> gespeichert – nichts wird gesendet.</p>
 <div id="dkHost"></div>
 </main>
-<script src="werkzeuge/wz.js"></script>
-<script src="werkzeuge/fr.js"></script>
-<script src="werkzeuge/desk.js"></script>
-<script src="werkzeuge/desk_w.js"></script>
-<script src="werkzeuge/desk_t.js"></script>
-<script src="werkzeuge/desk_c.js"></script>
+<script src="werkzeuge/wz.js?v=50"></script>
+<script src="werkzeuge/fr.js?v=50"></script>
+<script src="werkzeuge/desk.js?v=50"></script>
+<script src="werkzeuge/desk_w.js?v=50"></script>
+<script src="werkzeuge/desk_t.js?v=50"></script>
+<script src="werkzeuge/desk_c.js?v=50"></script>
 <script>WZ.kopf("desk"); Desk.start();</script>
+<script>if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script>
 </body>
 </html>

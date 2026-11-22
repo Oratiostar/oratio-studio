@@ -4,13 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sprachkurse – Oratio Place</title>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sprachkurse – Oratio Place">
+<meta name="twitter:description" content="Kostenlose Sprachkurse von A1 bis C1: Deutsch für Französischsprachige und Französisch für Deutschsprachige. Cours de langues gratuits.">
+<meta name="twitter:image" content="https://oratioplace.com/bilder/deutsch.jpg">
+<link rel="canonical" href="https://oratioplace.com/sprachkurse.html">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b1220">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Oratio">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="Kostenlose Sprachkurse von A1 bis C1: Deutsch für Französischsprachige und Französisch für Deutschsprachige. Cours de langues gratuits.">
 <meta property="og:title" content="Sprachkurse – Oratio Place">
 <meta property="og:url" content="https://oratioplace.com/sprachkurse.html">
 <meta property="og:image" content="https://oratioplace.com/vorschau.png">
 <link rel="icon" href="logo-place.png">
-<link rel="apple-touch-icon" href="logo-place.png">
-<link rel="stylesheet" href="werkzeuge/wz.css">
+<link rel="stylesheet" href="werkzeuge/wz.css?v=50">
 <style>
 body{background:linear-gradient(180deg,#e8f0ff,#fff1f4 55%,#fff6dc)!important;background-attachment:fixed}
 :root[data-theme="dark"] body{background:#14192b!important}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body{background:#14192b!important}}
@@ -33,7 +44,7 @@ body{background:linear-gradient(180deg,#e8f0ff,#fff1f4 55%,#fff6dc)!important;ba
 </head>
 <body>
 <main id="hub" data-nt></main>
-<script src="werkzeuge/wz.js"></script>
+<script src="werkzeuge/wz.js?v=50"></script>
 <script>
 WZ.kopf("sprachkurse");
 (function(){
@@ -53,5 +64,6 @@ document.getElementById("hub").innerHTML =
  '</div><div class="info"><b>' + L("Tipp:", "Astuce :") + '</b> ' + L("Die Vorlesefunktion (🔊) nutzt die Stimmen deines Geräts. Wenn eine Sprache nicht vorgelesen wird, installiere in den Geräteeinstellungen eine Sprachausgabe für Deutsch bzw. Französisch.", "La lecture audio (🔊) utilise les voix de ton appareil. Si une langue n’est pas lue, installe dans les réglages de l’appareil une voix pour l’allemand ou le français.") + '</div>';
 })();
 </script>
+<script>if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script>
 </body>
 </html>

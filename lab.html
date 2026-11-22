@@ -4,6 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Oratio Lab – Oratio Place</title>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Oratio Lab – Oratio Place">
+<meta name="twitter:description" content="Oratio Lab: Schaltungs-Simulator, Oratio Watch im Browser, LED-Matrix-Maler, Terminal-Trainer und Mini-Spiele – live im Browser, kostenlos, ohne Anmeldung.">
+<meta name="twitter:image" content="https://oratioplace.com/bilder/lab.jpg">
+<link rel="canonical" href="https://oratioplace.com/lab.html">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b1220">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Oratio">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="Oratio Lab: Schaltungs-Simulator, Oratio Watch im Browser, LED-Matrix-Maler, Terminal-Trainer und Mini-Spiele – live im Browser, kostenlos, ohne Anmeldung.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Oratio Place">
@@ -12,18 +24,18 @@
 <meta property="og:url" content="https://oratioplace.com/lab.html">
 <meta property="og:image" content="https://oratioplace.com/bilder/lab.jpg">
 <link rel="icon" href="logo-place.png">
-<link rel="apple-touch-icon" href="logo-place.png">
-<link rel="stylesheet" href="werkzeuge/wz.css">
-<link rel="stylesheet" href="werkzeuge/lab.css">
+<link rel="stylesheet" href="werkzeuge/wz.css?v=50">
+<link rel="stylesheet" href="werkzeuge/lab.css?v=50">
 </head>
 <body class="lab">
 <main id="lab"></main>
-<script src="werkzeuge/wz.js"></script>
-<script src="werkzeuge/lab.js"></script>
+<script src="werkzeuge/wz.js?v=50"></script>
+<script src="werkzeuge/lab.js?v=50"></script>
 <script>
 WZ.kopf("lab");
 document.documentElement.lang = WZ.lang === "fr" ? "fr" : "de";
 LAB.start();
 </script>
+<script>if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script>
 </body>
 </html>

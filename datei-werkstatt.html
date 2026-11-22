@@ -4,10 +4,28 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Datei-Werkstatt – Oratio</title>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Oratio Place">
+<meta property="og:title" content="Datei-Werkstatt – Oratio">
+<meta property="og:description" content="Datei-Werkstatt: PDF zusammenfügen, teilen, komprimieren, PDF in Word und Word in PDF umwandeln, Bilder verkleinern, Bilder in andere Formate umwandeln (JPG, PNG, WebP, GIF, BMP, TIFF, ICO), ZIP packen. Alles im Browser, ohne Upload.">
+<meta property="og:url" content="https://oratioplace.com/datei-werkstatt.html">
+<meta property="og:image" content="https://oratioplace.com/bilder/werkzeuge.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Datei-Werkstatt – Oratio">
+<meta name="twitter:description" content="Datei-Werkstatt: PDF zusammenfügen, teilen, komprimieren, PDF in Word und Word in PDF umwandeln, Bilder verkleinern, Bilder in andere Formate umwandeln (JPG, PNG, WebP, GIF, BMP, TIFF, ICO), ZIP packen. Alles im Browser, ohne Upload.">
+<meta name="twitter:image" content="https://oratioplace.com/bilder/werkzeuge.jpg">
+<link rel="canonical" href="https://oratioplace.com/datei-werkstatt.html">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b1220">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Oratio">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="Datei-Werkstatt: PDF zusammenfügen, teilen, komprimieren, PDF in Word und Word in PDF umwandeln, Bilder verkleinern, Bilder in andere Formate umwandeln (JPG, PNG, WebP, GIF, BMP, TIFF, ICO), ZIP packen. Alles im Browser, ohne Upload.">
 <link rel="icon" href="icon.png">
-<link rel="stylesheet" href="werkzeuge/wz.css">
-<link rel="stylesheet" href="werkzeuge/werkstatt.css">
+<link rel="stylesheet" href="werkzeuge/wz.css?v=50">
+<link rel="stylesheet" href="werkzeuge/werkstatt.css?v=50">
 <style>
 .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:0 0 18px}
 .tcard{display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:inherit;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:12px;box-shadow:var(--shadow);transition:transform .12s,border-color .12s}
@@ -25,12 +43,13 @@
 <div class="tgrid" id="toolgrid"></div>
 <div id="toolhost"></div>
 </main>
-<script src="werkzeuge/wz.js"></script>
-<script src="werkzeuge/fr.js?v=49"></script>
-<script src="werkzeuge/lib/jszip.min.js"></script>
-<script src="werkzeuge/lib/pdf-lib.min.js"></script>
-<script src="werkzeuge/docx.js"></script>
-<script src="werkzeuge/datei.js?v=49"></script>
+<script src="werkzeuge/wz.js?v=50"></script>
+<script src="werkzeuge/fr.js?v=50"></script>
+<script src="werkzeuge/lib/jszip.min.js?v=50"></script>
+<script src="werkzeuge/lib/pdf-lib.min.js?v=50"></script>
+<script src="werkzeuge/docx.js?v=50"></script>
+<script src="werkzeuge/datei.js?v=50"></script>
 <script>WZ.kopf("datei"); DateiWerkstatt.start();</script>
+<script>if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script>
 </body>
 </html>

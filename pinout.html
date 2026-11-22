@@ -4,10 +4,28 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Board-Pinouts – Oratio</title>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Oratio Place">
+<meta property="og:title" content="Board-Pinouts – Oratio">
+<meta property="og:description" content="Pinouts zum Antippen: Raspberry Pi (40 Pin), Pico, Arduino Uno, Nano, ESP32 und D1 mini – mit Funktionen, Grenzwerten und Code-Beispiel.">
+<meta property="og:url" content="https://oratioplace.com/pinout.html">
+<meta property="og:image" content="https://oratioplace.com/bilder/tech.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Board-Pinouts – Oratio">
+<meta name="twitter:description" content="Pinouts zum Antippen: Raspberry Pi (40 Pin), Pico, Arduino Uno, Nano, ESP32 und D1 mini – mit Funktionen, Grenzwerten und Code-Beispiel.">
+<meta name="twitter:image" content="https://oratioplace.com/bilder/tech.jpg">
+<link rel="canonical" href="https://oratioplace.com/pinout.html">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b1220">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Oratio">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="Pinouts zum Antippen: Raspberry Pi (40 Pin), Pico, Arduino Uno, Nano, ESP32 und D1 mini – mit Funktionen, Grenzwerten und Code-Beispiel.">
 <link rel="icon" href="icon.png">
-<link rel="stylesheet" href="werkzeuge/wz.css">
-<link rel="stylesheet" href="werkzeuge/tools.css">
+<link rel="stylesheet" href="werkzeuge/wz.css?v=50">
+<link rel="stylesheet" href="werkzeuge/tools.css?v=50">
 </head>
 <body>
 <main>
@@ -15,9 +33,10 @@
 <p class="sub">Alle Pins zum Antippen: Raspberry Pi, Pico, Arduino Uno und Nano, ESP32, D1 mini. Mit Funktion, Strom- und Spannungsgrenzen und einem Test-Beispiel. Alles läuft in deinem Browser.</p>
 <section class="card toolcard"><div id="pohost"></div></section>
 </main>
-<script src="werkzeuge/wz.js"></script>
-<script src="werkzeuge/fr.js"></script>
-<script src="werkzeuge/pinout.js"></script>
+<script src="werkzeuge/wz.js?v=50"></script>
+<script src="werkzeuge/fr.js?v=50"></script>
+<script src="werkzeuge/pinout.js?v=50"></script>
 <script>WZ.kopf("pinout"); Pinout.start();</script>
+<script>if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script>
 </body>
 </html>

@@ -4,10 +4,28 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>PC-Check – Oratio Tech Studio</title>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Oratio Place">
+<meta property="og:title" content="PC-Check – Oratio Tech Studio">
+<meta property="og:description" content="PC-Check: Prüfe in Prozent, ob CPU, Grafikkarte, Mainboard, RAM, SSD, Netzteil und Kühler zusammenpassen. Mit Engpass-Matrix, Teile-Datenbank und Ratgeber.">
+<meta property="og:url" content="https://oratioplace.com/pc-check.html">
+<meta property="og:image" content="https://oratioplace.com/bilder/werkzeuge.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PC-Check – Oratio Tech Studio">
+<meta name="twitter:description" content="PC-Check: Prüfe in Prozent, ob CPU, Grafikkarte, Mainboard, RAM, SSD, Netzteil und Kühler zusammenpassen. Mit Engpass-Matrix, Teile-Datenbank und Ratgeber.">
+<meta name="twitter:image" content="https://oratioplace.com/bilder/werkzeuge.jpg">
+<link rel="canonical" href="https://oratioplace.com/pc-check.html">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b1220">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Oratio">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="PC-Check: Prüfe in Prozent, ob CPU, Grafikkarte, Mainboard, RAM, SSD, Netzteil und Kühler zusammenpassen. Mit Engpass-Matrix, Teile-Datenbank und Ratgeber.">
 <link rel="icon" href="icon.png">
-<link rel="stylesheet" href="werkzeuge/wz.css">
-<link rel="stylesheet" href="werkzeuge/tools.css">
+<link rel="stylesheet" href="werkzeuge/wz.css?v=50">
+<link rel="stylesheet" href="werkzeuge/tools.css?v=50">
 <style>
 /* ===== PC-Check "Prüfstand": dunkler Hardware-Look mit RGB-Akzent ===== */
 .opc{
@@ -510,8 +528,8 @@ body.sl .opc.glass .opc-tab[aria-selected="true"]{background:linear-gradient(135
   <p class="disc" id="opc-disc"></p>
 </div>
 </main>
-<script src="werkzeuge/wz.js"></script>
-<script src="werkzeuge/fr.js"></script>
+<script src="werkzeuge/wz.js?v=50"></script>
+<script src="werkzeuge/fr.js?v=50"></script>
 <script>WZ.kopf("pccheck");
 (function(){var fr=WZ.lang==="fr";document.getElementById("opc-crumb").innerHTML='<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › PC-Check'})();</script>
 <script>
@@ -2046,5 +2064,6 @@ function init(){
 init();
 })();
 </script>
+<script>if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script>
 </body>
 </html>
