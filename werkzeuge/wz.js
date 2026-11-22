@@ -153,7 +153,7 @@ window.WZ = {
         var p = n.parentNode; if (p && (skip[p.nodeName] || (p.classList && p.classList.contains("fn")))) return;
         var v = n.nodeValue, w = WZ.t(v); if (w !== v) n.nodeValue = w;
       } else if (n.nodeType === 1) {
-        if (skip[n.nodeName] || n.hasAttribute("data-nt")) return;
+        if (n.hasAttribute("data-nt") || (skip[n.nodeName] && n.nodeName !== "TEXTAREA")) { if (n.nodeName === "TEXTAREA" && n.hasAttribute("placeholder")) { var pv = n.getAttribute("placeholder"), pw = WZ.t(pv); if (pw !== pv) n.setAttribute("placeholder", pw); } return; }
         ["placeholder","title","aria-label","alt"].forEach(function(a){ if (n.hasAttribute(a)) { var v = n.getAttribute(a), w = WZ.t(v); if (w !== v) n.setAttribute(a, w); } });
         for (var c = n.firstChild; c; c = c.nextSibling) knoten(c);
       }

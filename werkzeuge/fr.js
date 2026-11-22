@@ -172,5 +172,14 @@ Object.assign(window.WZ_FR, {
 "WAV (verlustfrei)":"WAV (sans perte)","AIFF (verlustfrei, Apple/Studio)":"AIFF (sans perte, Apple/studio)","Qualität (M4A, WebM, OGG)":"Qualité (M4A, WebM, OGG)","Sprache winzig – 32 kbit/s, Mono":"Voix minuscule – 32 kbit/s, mono","Sprache/Podcast – 64 kbit/s":"Voix/podcast – 64 kbit/s","Klein – 96 kbit/s":"Petit – 96 kbit/s","Musik gut – 128 kbit/s":"Musique bonne – 128 kbit/s","Musik sehr gut – 192 kbit/s":"Musique très bonne – 192 kbit/s","Ziel":"Objectif","Automatisch (Mono bei Sprache)":"Automatique (mono pour la voix)","Immer Mono":"Toujours mono",
 "Dieses Format läuft in Echtzeit: es dauert so lange wie das Stück (":"Ce format s’enregistre en temps réel : cela dure aussi longtemps que le morceau (","Wird sofort berechnet. ":"Calculé immédiatement. ","Ergebnis ca. ":"Résultat env. "," statt ":" au lieu de ",
 "Dieser Browser kann keinen komprimierten Ton speichern. Bitte Chrome, Edge, Firefox oder Safari (neu) benutzen.":"Ce navigateur ne peut pas enregistrer de son compressé. Utilise Chrome, Edge, Firefox ou Safari (récent).",
-"Umwandeln":"Convertir","Nicht verändern":"Ne pas modifier"
+"Umwandeln":"Convertir","Nicht verändern":"Ne pas modifier",
+"PDFs zusammenfügen, teilen und verkleinern, PDF ↔ Word, PDF ↔ Bilder, Fotos verkleinern und umwandeln, ZIP packen. Alles läuft in deinem Browser – deine Dateien werden ":"Fusionner, diviser et réduire des PDF, PDF ↔ Word, PDF ↔ images, réduire et convertir des photos, créer des ZIP. Tout se passe dans ton navigateur – tes fichiers ne sont ",
+" und bleiben auf deinem Gerät.":" et restent sur ton appareil.",
+"Videos und Audio verkleinern oder in andere Formate umwandeln, GIFs und Standbilder machen, Musik schneiden, Songs verbinden, BPM und Tonart bestimmen. Alles läuft in deinem Browser – deine Dateien werden ":"Réduire des vidéos et de l’audio ou les convertir dans d’autres formats, créer des GIF et des images fixes, couper de la musique, assembler des morceaux, trouver le BPM et la tonalité. Tout se passe dans ton navigateur – tes fichiers ne sont ",
+"QR-Code, Passwort, Umrechner, Rechner, Text, Bild, Zufall, Zeit und Farbe. Alles läuft in deinem Browser – nichts wird ":"Code QR, mot de passe, convertisseur, calculatrice, texte, image, hasard, temps et couleur. Tout se passe dans ton navigateur – rien n’est ",
+"hochgeladen, gesendet oder gespeichert":"envoyé, transmis ou enregistré",
+"Graustufen (macht noch kleiner)":"Niveaux de gris (encore plus léger)",
+"ein Bild zurück":"une image en arrière",
+"ein Bild vor":"une image en avant",
+"Ein Finger verschiebt das Bild oder scrollt die Seite":"Un doigt déplace l’image ou fait défiler la page"
 });
