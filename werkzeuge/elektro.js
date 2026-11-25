@@ -240,7 +240,7 @@ function kombiTool(host){
 function filterTool(host){
   let m = "rc";
   host.innerHTML = SAFE() + '<div class="tabs" id="fTab"></div><div class="cols2"><div id="fIn"></div><div id="fOut"></div></div>';
-  ["hp", "bp"].forEach(k => { const w = OPW[k]; if (!w) return; host.insertAdjacentHTML("beforeend", '<details class="opw2"><summary>📖 ' + (k === "hp" ? T("RC-Hochpass: Erklärung und Hinweise", "Passe-haut RC : explication") : T("RC-Bandpass: Erklärung und Hinweise", "Passe-bande RC : explication")) + '</summary><p>' + esc(T(w.d[0], w.d[1])) + '</p><ul>' + w.forms.map(f => '<li><code>' + esc(f) + '</code></li>').join("") + w.notes.map(n => '<li>' + esc(T(n[0], n[1])) + '</li>').join("") + '</ul></details>'); });
+  ["hp", "bp"].forEach(k => { const w = OPW[k]; if (!w) return; host.insertAdjacentHTML("beforeend", '<details class="opw2"><summary>📖 ' + (k === "hp" ? T("RC-Hochpass: Erklärung und Hinweise", "Passe-haut RC : explication") : T("RC-Bandpass: Erklärung und Hinweise", "Passe-bande RC : explication")) + '</summary><p>' + esc(T(w.d[0], w.d[1])) + '</p><ul>' + w.forms.map(f => f.indexOf("=") < 0 && /[a-zäöü]{3,}/.test(f) ? '<li>' + esc(WZ.t(f)) + '</li>' : '<li><code>' + esc(f) + '</code></li>').join("") + w.notes.map(n => '<li>' + esc(T(n[0], n[1])) + '</li>').join("") + '</ul></details>'); });
   function maske(){
     $("#fTab", host).innerHTML = [["rc", T("RC-Filter (Bode)", "Filtre RC (Bode)")], ["lade", T("Kondensator laden", "Charge du condensateur")], ["lc", T("LC-Schwingkreis", "Circuit LC")]].map(t => '<button class="btn sm' + (t[0] === m ? " on" : "") + '" data-m="' + t[0] + '">' + t[1] + '</button>').join("");
     $$("#fTab button", host).forEach(b => b.onclick = () => { m = b.dataset.m; maske(); });
@@ -531,7 +531,7 @@ function opampTool(host, t0){
     $("#op_k", host).value = sg.k;
     auf(host, t.p.map(p => "op_" + p[0]).concat(["op_k", "op_A", "op_f", "op_off", "op_vs"]), neu);
     $("#opPlay", host).onclick = () => { play = !play; $("#opPlay", host).textContent = (play ? "⏸ " + T("Anhalten", "Pause") : "▶ " + T("Abspielen", "Lecture")); };
-    $("#opInfo", host).innerHTML = '<b>' + esc(t.name) + ':</b> ' + esc(t.info) + '<br><code style="font-size:15px">' + esc(t.formel) + '</code>' + (OPW[t.id] ? '<details class="opw2" open><summary>📖 ' + T("Erklärung, Formeln und Hinweise", "Explication, formules et conseils") + '</summary><p>' + esc(T(OPW[t.id].d[0], OPW[t.id].d[1])) + '</p>' + (OPW[t.id].forms.length ? '<ul>' + OPW[t.id].forms.map(f => '<li><code>' + esc(f) + '</code></li>').join("") + '</ul>' : '') + (OPW[t.id].notes.length ? '<ul>' + OPW[t.id].notes.map(n => '<li>' + esc(T(n[0], n[1])) + '</li>').join("") + '</ul>' : '') + '</details>' : '') + (WIKI[t.id] ? '<br><a href="index.html#/s/' + WIKI[t.id] + '">📖 ' + T("Hintergrund, Anwendungen und Hinweise", "Contexte, applications et conseils") + '</a>' : '') + '<br><a href="index.html#/s/bt_analog/opamp">🔧 ' + T("Grundwissen und Opamp-Typen (Bauteile)", "Bases et types d’ampli op (composants)") + '</a>';
+    $("#opInfo", host).innerHTML = '<b>' + esc(t.name) + ':</b> ' + esc(t.info) + '<br><code style="font-size:15px">' + esc(t.formel) + '</code>' + (OPW[t.id] ? '<details class="opw2" open><summary>📖 ' + T("Erklärung, Formeln und Hinweise", "Explication, formules et conseils") + '</summary><p>' + esc(T(OPW[t.id].d[0], OPW[t.id].d[1])) + '</p>' + (OPW[t.id].forms.length ? '<ul>' + OPW[t.id].forms.map(f => f.indexOf("=") < 0 && /[a-zäöü]{3,}/.test(f) ? '<li>' + esc(WZ.t(f)) + '</li>' : '<li><code>' + esc(f) + '</code></li>').join("") + '</ul>' : '') + (OPW[t.id].notes.length ? '<ul>' + OPW[t.id].notes.map(n => '<li>' + esc(T(n[0], n[1])) + '</li>').join("") + '</ul>' : '') + '</details>' : '') + (WIKI[t.id] ? '<br><a href="index.html#/s/' + WIKI[t.id] + '">📖 ' + T("Hintergrund, Anwendungen und Hinweise", "Contexte, applications et conseils") + '</a>' : '') + '<br><a href="index.html#/s/bt_analog/opamp">🔧 ' + T("Grundwissen und Opamp-Typen (Bauteile)", "Bases et types d’ampli op (composants)") + '</a>';
     const dr = t.draw(), tms = dr.match(/<circle class="tm"[^>]*\/>/g) || [];
     $("#opSvg", host).innerHTML = '<svg class="opsvg" viewBox="' + (t.vb || "-40 -8 440 212") + '" role="img" aria-label="' + esc(t.name) + '">' + dr.replace(/<circle class="tm"[^>]*\/>/g, "") + tms.join("") + '</svg>';
     neu();
@@ -591,6 +591,268 @@ function opampTool(host, t0){
   maske(); raf = requestAnimationFrame(loop);
 }
 
+/* ====================================================================== 11. Akku-Laufzeit (ESP32 & Co.) */
+function akkuTool(host){
+  const PRE_ = [["esp32s", "ESP32: Deep-Sleep, alle 10 min messen", "ESP32 : deep sleep, mesure toutes les 10 min", 80, 5, 10, 600, 2000],
+    ["esp32d", "ESP32 dauernd mit WLAN (ohne Schlafmodus)", "ESP32 en continu avec Wi-Fi", 160, 0, 160, 1, 2000],
+    ["uno", "Arduino Uno dauernd", "Arduino Uno en continu", 45, 0, 45, 1, 2000],
+    ["pico", "Raspberry Pi Pico: alle 60 s aufwachen", "Pico : réveil toutes les 60 s", 25, 1, 1000, 60, 2000],
+    ["watch", "Smartwatch-Display (AMOLED) 1 h am Tag aktiv", "Montre (AMOLED) 1 h par jour", 60, 120, 120, 86400, 400]];
+  host.innerHTML = SAFE() + '<label class="l">' + T("Schnellwahl", "Choix rapide") + '</label><select class="in" id="aP"><option value="">–</option>' + PRE_.map(q => '<option value="' + q[0] + '">' + esc(T(q[1], q[2])) + '</option>').join("") + '</select>' +
+    '<div class="cols2"><div>' + eingabe(host, "aC", T("Akku-Kapazität (mAh)", "Capacité de la batterie (mAh)"), "", "2000") + eingabe(host, "aI", T("Strom, wenn aktiv (mA)", "Courant en activité (mA)"), "", "80") + eingabe(host, "aT", T("Aktiv-Dauer pro Zyklus (s)", "Durée d’activité par cycle (s)"), "", "5") +
+    eingabe(host, "aS", T("Strom im Schlaf (µA)", "Courant en veille (µA)"), "", "10") + eingabe(host, "aZ", T("Zyklus alle … Sekunden", "Un cycle toutes les … s"), "", "600") + eingabe(host, "aN", T("Nutzbarer Anteil (%)", "Part utilisable (%)"), "", "80") + '</div><div id="aO"></div></div>';
+  const dauer = h => { if (!isFinite(h)) return "–"; const d = h / 24; if (d >= 730) return (d / 365).toLocaleString(loc(), { maximumFractionDigits: 1 }) + " " + T("Jahre", "ans"); if (d >= 2) return Math.round(d).toLocaleString(loc()) + " " + T("Tage", "jours"); return h.toLocaleString(loc(), { maximumFractionDigits: 1 }) + " h"; };
+  function rech(){
+    const C = num($("#aC", host).value), Ia = num($("#aI", host).value), ta = num($("#aT", host).value), Is = num($("#aS", host).value) / 1000, Z = num($("#aZ", host).value), nu = num($("#aN", host).value) / 100, o = $("#aO", host);
+    if (![C, Ia, ta, Is, Z, nu].every(isFinite) || C <= 0 || Z <= 0 || ta < 0 || nu <= 0) { o.innerHTML = ""; return; }
+    const act = Math.min(ta, Z), duty = act / Z, Iavg = Ia * duty + Is * (1 - duty), h = C * nu / Iavg, hAlways = C * nu / Ia, perDay = Iavg * 24;
+    const share = (Ia * duty) / Iavg * 100;
+    o.innerHTML = '<div class="stats"><div><b>' + esc(dauer(h)) + '</b><small>' + T("Laufzeit", "Autonomie") + '</small></div><div><b>' + esc(fmtSI(Iavg / 1000, "A", 3)) + '</b><small>' + T("Ø Strom", "courant moyen") + '</small></div><div><b>' + perDay.toLocaleString(loc(), { maximumFractionDigits: 1 }) + ' mAh</b><small>' + T("pro Tag", "par jour") + '</small></div></div>' +
+      '<p class="resbox">' + T("Das Gerät ist nur <b>" + (duty * 100).toLocaleString(loc(), { maximumFractionDigits: 2 }) + " %</b> der Zeit wach, braucht davon aber <b>" + Math.round(share) + " %</b> der Energie. Ohne Schlafmodus (dauernd aktiv) hielte der Akku nur <b>" + dauer(hAlways) + "</b>.", "L’appareil n’est éveillé que <b>" + (duty * 100).toLocaleString(loc(), { maximumFractionDigits: 2 }) + " %</b> du temps, mais consomme <b>" + Math.round(share) + " %</b> de l’énergie. Sans veille, la batterie ne tiendrait que <b>" + dauer(hAlways) + "</b>.") + '</p>' +
+      (Is * 1000 > 200 ? '<p class="hint">' + T("Tipp: Der Schlafstrom ist hoch. Beim ESP32 sind ohne Dev-Board ca. 10 µA möglich – Spannungsregler und USB-Chip auf Dev-Boards fressen oft 1–5 mA!", "Astuce : le courant de veille est élevé. Un ESP32 seul peut descendre à ~10 µA, mais régulateur et puce USB des cartes de dev consomment souvent 1–5 mA !") + '</p>' : '') +
+      '<p class="hint">' + T("Rechnung: Ø Strom = Aktivstrom · Aktivanteil + Schlafstrom · Schlafanteil. „Nutzbar“ berücksichtigt, dass man einen Akku nie ganz leer zieht und er altert.", "Calcul : courant moyen = courant actif · part active + courant de veille · part de veille. « Utilisable » tient compte du fait qu’on ne vide jamais complètement une batterie.") + '</p>';
+  }
+  $("#aP", host).onchange = e => { const q = PRE_.find(x => x[0] === e.target.value); if (!q) return; $("#aI", host).value = q[3]; $("#aT", host).value = q[4] || 1; $("#aS", host).value = q[5] > q[3] ? q[3] : q[5]; $("#aZ", host).value = q[6]; $("#aC", host).value = q[7]; if (q[0] === "esp32d" || q[0] === "uno") { $("#aT", host).value = 1; $("#aS", host).value = q[3] * 1000; } rech(); };
+  auf(host, ["aC", "aI", "aT", "aS", "aZ", "aN"], rech); rech();
+}
+
+/* ====================================================================== 12. Bauteil-Code lesen (SMD) */
+function codeTool(host){
+  let m = "r";
+  host.innerHTML = SAFE() + '<div class="tabs t2" id="cTab"></div><div class="cols2"><div id="cIn"></div><div id="cOut"></div></div>';
+  const E96v = String(E.E96).split(/[\s,]+/).map(Number), ML = { Z: 0.001, Y: 0.01, R: 0.01, X: 0.1, S: 0.1, A: 1, B: 10, H: 10, C: 100, D: 1e3, E: 1e4, F: 1e5 };
+  function dekR(c){
+    c = c.trim().toUpperCase().replace(/\s+/g, "").replace(/Ω|OHM/g, "");
+    let m1;
+    if ((m1 = /^(\d{2})([A-Z])$/.exec(c)) && ML[m1[2]] !== undefined && +m1[1] >= 1 && +m1[1] <= 96) { const base = Math.round(E96v[+m1[1] - 1] * 100); return { v: base * ML[m1[2]], art: "EIA-96 (1 %)", wie: T("Zahl " + m1[1] + " = " + base + " aus der E96-Reihe, Buchstabe " + m1[2] + " = ×" + ML[m1[2]], "Nombre " + m1[1] + " = " + base + " de la série E96, lettre " + m1[2] + " = ×" + ML[m1[2]]) }; }
+    if ((m1 = /^(\d*)R(\d+)$/.exec(c))) return { v: parseFloat((m1[1] || "0") + "." + m1[2]), art: T("Schreibweise mit R", "Notation avec R"), wie: T("R steht für das Komma, Einheit Ω", "R remplace la virgule, unité Ω") };
+    if ((m1 = /^(\d+)([KM])(\d*)$/.exec(c))) return { v: parseFloat(m1[1] + "." + (m1[3] || "0")) * (m1[2] === "K" ? 1e3 : 1e6), art: T("Schreibweise mit Komma-Buchstabe", "Notation avec lettre décimale"), wie: T("Der Buchstabe ersetzt das Komma: R = Ω, K = kΩ, M = MΩ", "La lettre remplace la virgule : R = Ω, K = kΩ, M = MΩ") };
+    if ((m1 = /^(\d{2,3})(\d)$/.exec(c))) { const dg = m1[1], e = +m1[2]; return { v: parseInt(dg, 10) * Math.pow(10, e), art: dg.length === 3 ? T("4 Ziffern (1 %)", "4 chiffres (1 %)") : T("3 Ziffern (5 %)", "3 chiffres (5 %)"), wie: T(dg + " mit " + e + " Nullen dahinter", dg + " suivi de " + e + " zéros") }; }
+    return null;
+  }
+  function dekC(c){
+    c = c.trim().replace(/\s+/g, "").replace(/µ/g, "u"); let tol = "", tm = /^(.*\d|.*[pnuPNU]\d*)([BCDFGJKMZ])$/i.exec(c);
+    const TOL = { B: "±0,1 pF", C: "±0,25 pF", D: "±0,5 pF", F: "±1 %", G: "±2 %", J: "±5 %", K: "±10 %", M: "±20 %", Z: "+80/−20 %" };
+    if (tm && /\d/.test(tm[1])) { tol = TOL[tm[2].toUpperCase()]; c = tm[1]; }
+    let m1, v = null, wie = "";
+    if ((m1 = /^(\d*)([pnuPNU])(\d*)$/.exec(c)) && (m1[1] || m1[3])) { const f = { p: 1e-12, n: 1e-9, u: 1e-6 }[m1[2].toLowerCase()]; v = parseFloat((m1[1] || "0") + "." + (m1[3] || "0")) * f; wie = T("Der Buchstabe ersetzt das Komma (p = pF, n = nF, µ = µF)", "La lettre remplace la virgule (p = pF, n = nF, µ = µF)"); }
+    else if ((m1 = /^(\d{2})(\d)$/.exec(c))) { const e = +m1[2]; v = parseInt(m1[1], 10) * (e === 9 ? 0.1 : Math.pow(10, e)) * 1e-12; wie = T(m1[1] + " mit " + e + " Nullen in pF" + (e === 9 ? " (9 = ×0,1)" : ""), m1[1] + " suivi de " + e + " zéros, en pF"); }
+    else if ((m1 = /^(\d{1,2})$/.exec(c))) { v = parseInt(m1[1], 10) * 1e-12; wie = T("Zwei Ziffern ohne Zusatz = direkt Pikofarad", "Deux chiffres seuls = picofarads"); }
+    else return null;
+    return { v: v, art: tol ? T("Toleranz ", "Tolérance ") + tol : "", wie: wie };
+  }
+  function dekL(c){
+    c = c.trim().toUpperCase().replace(/\s+/g, "").replace(/µH|UH/g, ""); let m1;
+    if ((m1 = /^(\d*)R(\d+)$/.exec(c))) return { v: parseFloat((m1[1] || "0") + "." + m1[2]) * 1e-6, art: "", wie: T("R ist das Komma, Einheit µH", "R est la virgule, unité µH") };
+    if ((m1 = /^(\d{2})(\d)$/.exec(c))) return { v: parseInt(m1[1], 10) * Math.pow(10, +m1[2]) * 1e-6, art: "", wie: T(m1[1] + " mit " + m1[2] + " Nullen, Einheit µH (101 = 100 µH)", m1[1] + " suivi de " + m1[2] + " zéros, unité µH") };
+    return null;
+  }
+  function maske(){
+    $("#cTab", host).innerHTML = [["r", T("Widerstand", "Résistance")], ["c", T("Kondensator", "Condensateur")], ["l", T("Spule", "Bobine")]].map(t => '<button class="btn' + (t[0] === m ? " on" : "") + '" data-m="' + t[0] + '">' + t[1] + '</button>').join("");
+    $$("#cTab button", host).forEach(b => b.onclick = () => { m = b.dataset.m; maske(); });
+    const ph = { r: "103, 4R7, 01C, 4K7", c: "104, 4n7, 22J, p47", l: "101, 4R7, R47" }[m];
+    $("#cIn", host).innerHTML = eingabe(host, "cE", T("Aufdruck / Code", "Inscription / code"), ph, { r: "103", c: "104", l: "101" }[m]) +
+      '<p class="hint">' + ({ r: T("Beispiele: 103 = 10 kΩ · 4R7 = 4,7 Ω · 1002 = 10 kΩ · 01C = 10 kΩ (EIA-96)", "Exemples : 103 = 10 kΩ · 4R7 = 4,7 Ω · 1002 = 10 kΩ · 01C = 10 kΩ (EIA-96)"), c: T("Beispiele: 104 = 100 nF · 473 = 47 nF · 4n7 = 4,7 nF · 479 = 4,7 pF · 224K = 220 nF ±10 %", "Exemples : 104 = 100 nF · 473 = 47 nF · 4n7 = 4,7 nF · 479 = 4,7 pF · 224K = 220 nF ±10 %"), l: T("Beispiele: 101 = 100 µH · 4R7 = 4,7 µH · 102 = 1 mH", "Exemples : 101 = 100 µH · 4R7 = 4,7 µH · 102 = 1 mH") }[m]) + '</p>';
+    auf(host, ["cE"], rech); rech();
+  }
+  function rech(){
+    const c = $("#cE", host).value, o = $("#cOut", host); if (!c.trim()) { o.innerHTML = ""; return; }
+    const r = m === "r" ? dekR(c) : m === "c" ? dekC(c) : dekL(c);
+    if (!r || !isFinite(r.v)) { o.innerHTML = '<p class="warn">' + T("Diesen Code kenne ich nicht. Prüfe die Zeichen (O ≠ 0).", "Code inconnu. Vérifie les caractères (O ≠ 0).") + '</p>'; return; }
+    const unit = m === "r" ? "Ω" : m === "c" ? "F" : "H", mm = m === "l" ? r.v : r.v;
+    let ser = "";
+    if (m === "r") { const n = nearestE(r.v, "E12", "near"), n2 = nearestE(r.v, "E24", "near"), n3 = nearestE(r.v, "E96", "near"); ser = Math.abs(n - r.v) / r.v < 1e-3 ? "E12" : Math.abs(n2 - r.v) / r.v < 1e-3 ? "E24" : Math.abs(n3 - r.v) / r.v < 1e-3 ? "E96" : ""; }
+    o.innerHTML = '<div class="stats"><div><b>' + esc(fmtSI(mm, unit, 4)) + '</b><small>' + esc(T("Wert", "Valeur")) + '</small></div>' + (r.art ? '<div><b>' + esc(r.art) + '</b><small>' + esc(T("Art", "Type")) + '</small></div>' : '') + (ser ? '<div><b>' + ser + '</b><small>' + esc(T("Normreihe", "Série")) + '</small></div>' : '') + '</div><p class="hint">' + esc(r.wie) + '</p>';
+  }
+  maske();
+}
+
+/* ====================================================================== 13. Kabel & Leiterbahn */
+function kabelTool(host){
+  let m = "k";
+  host.innerHTML = SAFE() + '<div class="tabs t2" id="kTab"></div><div class="cols2"><div id="kIn"></div><div id="kOut"></div></div>';
+  const QS = [0.14, 0.25, 0.34, 0.5, 0.75, 1, 1.5, 2.5, 4, 6], RHO = 0.0172;
+  function maske(){
+    $("#kTab", host).innerHTML = [["k", T("Kabel: Spannungsabfall", "Câble : chute de tension")], ["p", T("Leiterbahn (Platine)", "Piste de circuit")]].map(t => '<button class="btn' + (t[0] === m ? " on" : "") + '" data-m="' + t[0] + '">' + t[1] + '</button>').join("");
+    $$("#kTab button", host).forEach(b => b.onclick = () => { m = b.dataset.m; maske(); });
+    $("#kIn", host).innerHTML = m === "k"
+      ? '<label class="l">' + T("Querschnitt (mm²)", "Section (mm²)") + '</label><select class="in" id="kQ">' + QS.map(q => '<option' + (q === 0.5 ? " selected" : "") + '>' + String(q).replace(".", ",") + '</option>').join("") + '</select>' + eingabe(host, "kL", T("Länge einfach (m)", "Longueur simple (m)"), "", "3") + eingabe(host, "kI", T("Strom (A)", "Courant (A)"), "", "2") + eingabe(host, "kU", T("Versorgung (V)", "Alimentation (V)"), "", "12")
+      : eingabe(host, "pI", T("Strom (A)", "Courant (A)"), "", "1") + eingabe(host, "pT", T("Erlaubte Erwärmung (°C)", "Échauffement admis (°C)"), "", "10") + '<label class="l">' + T("Kupferdicke", "Épaisseur du cuivre") + '</label><select class="in" id="pD"><option value="17.5">17,5 µm (½ oz)</option><option value="35" selected>35 µm (1 oz, Standard)</option><option value="70">70 µm (2 oz)</option></select><label class="l">' + T("Lage", "Couche") + '</label><select class="in" id="pA"><option value="e">' + T("außen", "extérieure") + '</option><option value="i">' + T("innen", "intérieure") + '</option></select>' + eingabe(host, "pL", T("Länge der Bahn (mm)", "Longueur de piste (mm)"), "", "100");
+    auf(host, ["kQ", "kL", "kI", "kU", "pI", "pT", "pD", "pA", "pL"], rech); rech();
+  }
+  function rech(){
+    const o = $("#kOut", host);
+    if (m === "k") {
+      const q = num($("#kQ", host).value.replace(",", ".")), L = num($("#kL", host).value), I = num($("#kI", host).value), U = num($("#kU", host).value);
+      if (![q, L, I, U].every(isFinite) || q <= 0 || L <= 0) { o.innerHTML = ""; return; }
+      const R = RHO * 2 * L / q, dU = R * I, pr = dU / U * 100, P = dU * I;
+      const need = RHO * 2 * L * I / (0.03 * U);
+      o.innerHTML = '<div class="stats"><div><b>' + esc(fmtSI(dU, "V", 3)) + '</b><small>' + T("Spannungsabfall", "chute de tension") + '</small></div><div><b>' + pr.toLocaleString(loc(), { maximumFractionDigits: 1 }) + ' %</b><small>' + T("von der Versorgung", "de l’alimentation") + '</small></div><div><b>' + esc(fmtSI(P, "W", 3)) + '</b><small>' + T("Verlust im Kabel", "perte dans le câble") + '</small></div></div>' +
+        '<p class="resbox">' + (pr > 5 ? T("Das ist zu viel (über 5 %): das Gerät bekommt nur " + fmtSI(U - dU, "V", 3) + ". ", "C’est trop (plus de 5 %) : l’appareil ne reçoit que " + fmtSI(U - dU, "V", 3) + ". ") : "") + T("Für höchstens 3 % Abfall brauchst du mindestens <b>" + need.toLocaleString(loc(), { maximumFractionDigits: 2 }) + " mm²</b> – nimm den nächstgrößeren Standard-Querschnitt.", "Pour 3 % de chute au maximum, il faut au moins <b>" + need.toLocaleString(loc(), { maximumFractionDigits: 2 }) + " mm²</b> – prends la section standard supérieure.") + '</p>' +
+        '<p class="hint">' + T("Hin- und Rückleiter sind eingerechnet (Kupfer, 20 °C). Für Geräteverdrahtung gilt grob: 0,5 mm² bis ca. 3–6 A, 1 mm² bis ca. 8–10 A, 2,5 mm² bis ca. 16 A – bei Netzspannung (230 V) gelten strengere Regeln, dort nur mit Fachkenntnis arbeiten.", "Aller et retour sont inclus (cuivre, 20 °C). Câblage d’appareil : 0,5 mm² jusqu’à ~3–6 A, 1 mm² jusqu’à ~8–10 A, 2,5 mm² jusqu’à ~16 A – sur le secteur (230 V), règles plus strictes : seulement avec les connaissances nécessaires.") + '</p>';
+    } else {
+      const I = num($("#pI", host).value), dT = num($("#pT", host).value), th = num($("#pD", host).value), k = $("#pA", host).value === "e" ? 0.048 : 0.024, L = num($("#pL", host).value);
+      if (![I, dT, th].every(isFinite) || I <= 0 || dT <= 0) { o.innerHTML = ""; return; }
+      const area = Math.pow(I / (k * Math.pow(dT, 0.44)), 1 / 0.725), thMil = th / 25.4, wMil = area / thMil, w = wMil * 0.0254;
+      const Rr = isFinite(L) && L > 0 ? RHO * 1e-6 * (L * 1e-3) / ((w * 1e-3) * (th * 1e-6)) : null;
+      o.innerHTML = '<div class="stats"><div><b>' + w.toLocaleString(loc(), { maximumFractionDigits: 2 }) + ' mm</b><small>' + T("Mindest-Breite", "largeur minimale") + '</small></div>' + (Rr != null ? '<div><b>' + esc(fmtSI(Rr, "Ω", 3)) + '</b><small>' + T("Widerstand der Bahn", "résistance de la piste") + '</small></div><div><b>' + esc(fmtSI(Rr * I, "V", 3)) + '</b><small>' + T("Abfall bei " + I + " A", "chute à " + I + " A") + '</small></div>' : '') + '</div>' +
+        '<p class="resbox">' + T("Für <b>" + I + " A</b> bei höchstens " + dT + " °C Erwärmung: mindestens <b>" + w.toLocaleString(loc(), { maximumFractionDigits: 2 }) + " mm</b> breit – am besten großzügig mehr (Faktor 2).", "Pour <b>" + I + " A</b> avec " + dT + " °C d’échauffement max. : au moins <b>" + w.toLocaleString(loc(), { maximumFractionDigits: 2 }) + " mm</b> de large – mieux vaut prévoir le double.") + '</p>' +
+        '<p class="hint">' + T("Formel nach IPC-2221 (Näherung für Kupfer). Innenlagen können nur halb so viel Strom wie außen. Bei Netzspannung zusätzlich Kriechstrecken beachten.", "Formule IPC-2221 (approximation pour le cuivre). Les couches internes supportent la moitié du courant. Sur le secteur, respecter aussi les distances de fuite.") + '</p>';
+    }
+  }
+  maske();
+}
+
+/* ====================================================================== 14. ADC, PWM & Baudrate */
+function adcTool(host){
+  let m = "a";
+  host.innerHTML = SAFE() + '<div class="tabs t3" id="dTab"></div><div class="cols2"><div id="dIn"></div><div id="dOut"></div></div>';
+  function maske(){
+    $("#dTab", host).innerHTML = [["a", "ADC"], ["p", "PWM"], ["b", T("Baudrate", "Débit en bauds")]].map(t => '<button class="btn' + (t[0] === m ? " on" : "") + '" data-m="' + t[0] + '">' + t[1] + '</button>').join("");
+    $$("#dTab button", host).forEach(b => b.onclick = () => { m = b.dataset.m; maske(); });
+    $("#dIn", host).innerHTML = m === "a"
+      ? '<label class="l">' + T("Chip", "Puce") + '</label><select class="in" id="dC"><option value="10|5">Arduino Uno (10 Bit, 5 V)</option><option value="12|3.3" selected>ESP32 (12 Bit, 3,3 V)</option><option value="12|3.3">Raspberry Pi Pico (12 Bit, 3,3 V)</option><option value="16|3.3">ADS1115 (16 Bit)</option><option value="8|5">8 Bit, 5 V</option></select>' + eingabe(host, "dB", T("Auflösung (Bit)", "Résolution (bits)"), "", "12") + eingabe(host, "dV", T("Referenzspannung (V)", "Tension de référence (V)"), "", "3,3") + eingabe(host, "dR", T("Rohwert (0 …)", "Valeur brute (0 …)"), "", "2048") + eingabe(host, "dR1", T("Vorwiderstand R1 des Teilers (optional)", "R1 du diviseur (facultatif)"), "", "") + eingabe(host, "dR2", T("R2 nach Masse (optional)", "R2 vers la masse (facultatif)"), "", "")
+      : m === "p"
+      ? eingabe(host, "pC", T("Timer-Takt (MHz)", "Horloge du timer (MHz)"), "", "80") + eingabe(host, "pF", T("Gewünschte PWM-Frequenz (Hz)", "Fréquence PWM souhaitée (Hz)"), "", "5000") + eingabe(host, "pB", T("Auflösung (Bit)", "Résolution (bits)"), "", "8") + eingabe(host, "pD", T("Tastgrad (%)", "Rapport cyclique (%)"), "", "25") + eingabe(host, "pU", T("Pegel (V)", "Niveau (V)"), "", "3,3")
+      : eingabe(host, "bC", T("CPU-Takt (MHz)", "Horloge CPU (MHz)"), "", "16") + eingabe(host, "bB", T("Gewünschte Baudrate", "Débit souhaité"), "", "115200") + '<p class="hint">' + T("Für AVR (Arduino Uno, Nano) mit USART. ESP32 und Pico haben Bruchteils-Teiler und sind fast immer exakt.", "Pour AVR (Arduino Uno, Nano) avec USART. ESP32 et Pico ont des diviseurs fractionnaires et sont presque toujours exacts.") + '</p>';
+    if (m === "a") $("#dC", host).onchange = e => { const q = e.target.value.split("|"); $("#dB", host).value = q[0]; $("#dV", host).value = q[1].replace(".", ","); $("#dR", host).value = String(Math.pow(2, +q[0]) / 2); rech(); };
+    auf(host, ["dB", "dV", "dR", "dR1", "dR2", "pC", "pF", "pB", "pD", "pU", "bC", "bB"], rech); rech();
+  }
+  function rech(){
+    const o = $("#dOut", host); let h = "";
+    if (m === "a") {
+      const b = num($("#dB", host).value), Vr = num($("#dV", host).value), raw = num($("#dR", host).value), r1 = num($("#dR1", host).value), r2 = num($("#dR2", host).value);
+      if (![b, Vr, raw].every(isFinite) || b < 1 || Vr <= 0) { o.innerHTML = ""; return; }
+      const N = Math.pow(2, b), lsb = Vr / N, Vin = raw * lsb, teil = isFinite(r1) && isFinite(r2) && r1 >= 0 && r2 > 0 ? (r1 + r2) / r2 : null;
+      h = '<div class="stats"><div><b>' + esc(fmtSI(Vin, "V", 4)) + '</b><small>' + T("Spannung am Pin", "tension sur la broche") + '</small></div><div><b>' + esc(fmtSI(lsb, "V", 3)) + '</b><small>' + T("pro Stufe (LSB)", "par pas (LSB)") + '</small></div><div><b>' + N.toLocaleString(loc()) + '</b><small>' + T("Stufen", "niveaux") + '</small></div></div>' + (teil ? '<p class="resbox">' + T("Mit dem Teiler (÷" + teil.toLocaleString(loc(), { maximumFractionDigits: 3 }) + ") liegt am Messpunkt: <b>" + fmtSI(Vin * teil, "V", 4) + "</b>. Größte messbare Spannung: " + fmtSI(Vr * teil, "V", 3) + ".", "Avec le diviseur (÷" + teil.toLocaleString(loc(), { maximumFractionDigits: 3 }) + "), le point de mesure est à : <b>" + fmtSI(Vin * teil, "V", 4) + "</b>. Tension max. mesurable : " + fmtSI(Vr * teil, "V", 3) + ".") + '</p>' : '') +
+        '<p class="hint">' + T("Rohwert → Spannung = Rohwert · Uref / 2^Bit. Der ESP32-ADC ist nicht linear (unten und oben ungenau) – für genaue Messwerte kalibrieren oder einen ADS1115 benutzen.", "Valeur brute → tension = valeur · Uref / 2^bits. L’ADC de l’ESP32 n’est pas linéaire (imprécis en bas et en haut) – calibrer ou utiliser un ADS1115.") + '</p>';
+    } else if (m === "p") {
+      const fc = num($("#pC", host).value) * 1e6, f = num($("#pF", host).value), b = num($("#pB", host).value), d = num($("#pD", host).value), V = num($("#pU", host).value);
+      if (![fc, f, b, d].every(isFinite) || f <= 0 || fc <= 0) { o.innerHTML = ""; return; }
+      const maxB = Math.floor(Math.log2(fc / f)), steps = Math.pow(2, b), val = Math.round(d / 100 * (steps - 1)), fmax = fc / steps;
+      h = '<div class="stats"><div><b>' + maxB + ' Bit</b><small>' + T("max. Auflösung bei " + fmtSI(f, "Hz", 3), "résolution max. à " + fmtSI(f, "Hz", 3)) + '</small></div><div><b>' + val + ' / ' + (steps - 1) + '</b><small>' + T("Zählwert für " + d + " %", "valeur pour " + d + " %") + '</small></div>' + (isFinite(V) ? '<div><b>' + esc(fmtSI(V * d / 100, "V", 3)) + '</b><small>' + T("Ø-Spannung", "tension moyenne") + '</small></div>' : '') + '</div>' +
+        '<p class="resbox">' + (b > maxB ? T("Bei " + b + " Bit schafft der Timer höchstens <b>" + fmtSI(fmax, "Hz", 3) + "</b>. Nimm weniger Bit oder eine niedrigere Frequenz.", "Avec " + b + " bits, le timer atteint au plus <b>" + fmtSI(fmax, "Hz", 3) + "</b>. Prends moins de bits ou une fréquence plus basse.") : T("Passt: " + b + " Bit bei " + fmtSI(f, "Hz", 3) + " geht (Limit " + fmtSI(fmax, "Hz", 3) + ").", "OK : " + b + " bits à " + fmtSI(f, "Hz", 3) + " est possible (limite " + fmtSI(fmax, "Hz", 3) + ").")) + '</p>' +
+        '<p class="hint">' + T("Faustregel: Auflösung (Bit) = log₂(Timer-Takt / PWM-Frequenz). ESP32: 80 MHz-Takt, z. B. 5 kHz → 13 Bit. LEDs: 1–5 kHz, Servos: 50 Hz, Lüfter: 25 kHz (unhörbar).", "Règle : résolution (bits) = log₂(horloge / fréquence PWM). ESP32 : horloge 80 MHz, p. ex. 5 kHz → 13 bits. LED : 1–5 kHz, servos : 50 Hz, ventilateurs : 25 kHz (inaudible).") + '</p>';
+    } else {
+      const fc = num($("#bC", host).value) * 1e6, bd = num($("#bB", host).value);
+      if (![fc, bd].every(isFinite) || fc <= 0 || bd <= 0) { o.innerHTML = ""; return; }
+      const row = (div, nm) => { const ub = Math.max(0, Math.round(fc / (div * bd)) - 1), real = fc / (div * (ub + 1)), err = (real - bd) / bd * 100; return '<tr><td>' + nm + '</td><td>' + ub + '</td><td>' + Math.round(real).toLocaleString(loc()) + '</td><td style="color:' + (Math.abs(err) > 2 ? "#d93b3b" : "#1f9d55") + ';font-weight:700">' + err.toLocaleString(loc(), { maximumFractionDigits: 2, signDisplay: "always" }) + ' %</td></tr>'; };
+      const e1 = Math.abs((fc / (16 * (Math.max(0, Math.round(fc / (16 * bd)) - 1) + 1)) - bd) / bd * 100), e2 = Math.abs((fc / (8 * (Math.max(0, Math.round(fc / (8 * bd)) - 1) + 1)) - bd) / bd * 100);
+      h = '<table class="tbl"><tr><th>' + T("Modus", "Mode") + '</th><th>UBRR</th><th>' + T("echte Baudrate", "débit réel") + '</th><th>' + T("Fehler", "erreur") + '</th></tr>' + row(16, "normal") + row(8, "U2X (×2)") + '</table>' +
+        '<p class="resbox">' + (Math.min(e1, e2) <= 2 ? T("Gut: mit " + (e1 <= e2 ? "dem normalen Modus" : "U2X") + " ist der Fehler unter 2 % – so geht die serielle Verbindung stabil.", "Bien : avec " + (e1 <= e2 ? "le mode normal" : "U2X") + ", l’erreur est inférieure à 2 % – la liaison série est stable.") : T("Der Fehler ist über 2 % – das gibt Übertragungsfehler. Anderen Quarz (z. B. 18,432 MHz) oder niedrigere Baudrate wählen.", "L’erreur dépasse 2 % – erreurs de transmission. Change de quartz (p. ex. 18,432 MHz) ou de débit.")) + '</p>' +
+        '<p class="hint">' + T("Formel: UBRR = Takt / (16 · Baud) − 1. Fehler unter 2 % gelten als sicher. Beide Seiten (Sender und Empfänger) müssen zusammen passen.", "Formule : UBRR = horloge / (16 · bauds) − 1. Une erreur sous 2 % est sûre. Émetteur et récepteur doivent concorder.") + '</p>';
+    }
+    o.innerHTML = h;
+  }
+  maske();
+}
+
+/* ====================================================================== 15. Pin-Planer */
+function pinplanTool(host){
+  const B = {
+    esp32: { n: "ESP32 DevKit", v: 3.3, pre: "GPIO", i2c: ["21", "22"], spi: ["23", "19", "18"], cs: ["5", "4", "16", "17"], uart: ["17", "16"], dig: ["25", "26", "27", "14", "13", "32", "33", "4", "16", "17", "5"], ana: ["34", "35", "32", "33", "36", "39"],
+      tips: [["GPIO 6–11 hängen am Flash-Speicher – nie benutzen. GPIO 0, 2, 12, 15 sind Boot-Pins und werden hier bewusst vermieden.", "GPIO 6–11 sont reliés à la flash – ne jamais les utiliser. GPIO 0, 2, 12, 15 sont des broches de démarrage, évitées ici."], ["Analogwerte nur an ADC1 (GPIO 32–39): ADC2 geht nicht, solange WLAN läuft.", "Entrées analogiques seulement sur ADC1 (GPIO 32–39) : l’ADC2 ne marche pas avec le Wi-Fi."], ["GPIO 34–39 sind nur Eingänge und haben keinen Pull-up.", "GPIO 34–39 sont des entrées seulement, sans pull-up."]] },
+    uno: { n: "Arduino Uno / Nano", v: 5, pre: "D", i2c: ["A4", "A5"], spi: ["11", "12", "13"], cs: ["10", "9", "8"], uart: ["3", "2"], soft: true, dig: ["2", "3", "4", "5", "6", "7", "8", "9"], ana: ["A0", "A1", "A2", "A3"],
+      tips: [["Pin 0 und 1 sind die USB-Schnittstelle – frei lassen, sonst klappt das Hochladen nicht.", "Les broches 0 et 1 sont l’USB – à laisser libres, sinon le téléversement échoue."], ["Das GPS läuft hier über SoftwareSerial (Pin 3 = TX zum Modul, Pin 2 = RX vom Modul).", "Le GPS passe par SoftwareSerial (broche 3 = TX vers le module, 2 = RX depuis le module)."]] },
+    pico: { n: "Raspberry Pi Pico", v: 3.3, pre: "GP", i2c: ["4", "5"], spi: ["19", "16", "18"], cs: ["17", "20", "21"], uart: ["0", "1"], dig: ["2", "3", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "22"], ana: ["26", "27", "28"],
+      tips: [["Alle Pins sind 3,3 V und nicht 5-V-tolerant. Analog nur an GP26–28 (ADC0–2).", "Toutes les broches sont en 3,3 V, non tolérantes 5 V. Analogique seulement sur GP26–28 (ADC0–2)."], ["Fast jeder Pin kann PWM – auch Servo und Buzzer.", "Presque toutes les broches font du PWM – servo et buzzer inclus."]] },
+    pi: { n: "Raspberry Pi (40 Pin)", v: 3.3, pre: "GPIO", i2c: ["2", "3"], spi: ["10", "9", "11"], cs: ["8", "7"], uart: ["14", "15"], dig: ["17", "27", "22", "23", "24", "25", "5", "6", "13", "19", "26", "16", "20", "21"], ana: [],
+      tips: [["Zahlen sind BCM-Nummern (GPIO), nicht die Pin-Position 1–40 – siehe Pinout-Seite.", "Les nombres sont des numéros BCM (GPIO), pas la position 1–40 – voir la page Pinout."], ["Der Pi hat keinen Analog-Eingang: nimm einen ADS1115 (I²C) oder MCP3008 (SPI).", "Le Pi n’a pas d’entrée analogique : prends un ADS1115 (I²C) ou un MCP3008 (SPI)."]] }
+  };
+  const D = [
+    ["oled", "🖥️", "OLED SSD1306", "OLED SSD1306", "i2c", "0x3C", [], null],
+    ["bme", "🌡️", "BME280 / BMP280 (Druck, Temperatur)", "BME280 / BMP280 (pression, température)", "i2c", "0x76", [], null],
+    ["rtc", "🕒", "Echtzeituhr DS3231", "Horloge temps réel DS3231", "i2c", "0x68", [], null],
+    ["mpu", "🧭", "Lagesensor MPU6050", "Capteur de mouvement MPU6050", "i2c", "0x68", [], null],
+    ["lcd", "🔤", "LCD 1602 mit I²C-Adapter", "LCD 1602 avec adaptateur I²C", "i2c", "0x27", [], ["Braucht meist 5 V Versorgung (Pegel am I²C ok, Adapter hat Pull-ups).", "Alimentation 5 V en général (le niveau I²C passe)."]],
+    ["ads", "📈", "ADS1115 (16-Bit-Analog über I²C)", "ADS1115 (analogique 16 bits en I²C)", "i2c", "0x48", [], null],
+    ["sd", "💾", "SD-Karten-Modul", "Module carte SD", "spi", "", [["CS", "cs"]], ["Reine 5-V-Module an 3,3-V-Boards brauchen einen Pegelwandler.", "Les modules 5 V seuls exigent un convertisseur de niveau sur les cartes 3,3 V."]],
+    ["tft", "📺", "TFT-Display ST7789 / ILI9341", "Écran TFT ST7789 / ILI9341", "spi", "", [["CS", "cs"], ["DC", "out"], ["RST", "out"]], null],
+    ["rfid", "💳", "RFID RC522", "RFID RC522", "spi", "", [["SDA/CS", "cs"], ["RST", "out"]], ["Der RC522 verträgt nur 3,3 V – nie an 5 V!", "Le RC522 n’accepte que 3,3 V – jamais 5 V !"]],
+    ["dht", "💧", "DHT22 / DHT11 (Feuchte)", "DHT22 / DHT11 (humidité)", "", "", [["DATA", "out"]], null],
+    ["hcsr", "📏", "Ultraschall HC-SR04", "Ultrason HC-SR04", "", "", [["TRIG", "out"], ["ECHO", "in"]], ["Echo liefert 5 V – bei 3,3-V-Boards Spannungsteiler (1 kΩ + 2 kΩ) davor.", "Echo sort 5 V – sur cartes 3,3 V, ajoute un diviseur (1 kΩ + 2 kΩ)."]],
+    ["pir", "🚶", "PIR-Bewegungsmelder", "Détecteur PIR", "", "", [["OUT", "in"]], null],
+    ["btn", "🔘", "Taster", "Bouton", "", "", [["Taster", "in"]], ["Taster gegen GND und im Code INPUT_PULLUP nutzen – kein extra Widerstand.", "Bouton vers GND et INPUT_PULLUP dans le code – pas de résistance."]],
+    ["led", "💡", "LED (mit Vorwiderstand)", "LED (avec résistance)", "", "", [["LED", "out"]], null],
+    ["relay", "🔌", "Relais-Modul", "Module relais", "", "", [["IN", "out"]], ["Modul braucht meist 5 V (VIN/USB) – Signal vom 3,3-V-Pin reicht oft. Netzspannung nur mit Fachkenntnis!", "Le module veut 5 V – le signal 3,3 V suffit souvent. Secteur seulement avec les connaissances nécessaires !"]],
+    ["buzz", "🔔", "Buzzer", "Buzzer", "", "", [["BUZZER", "out"]], null],
+    ["servo", "🦾", "Servo", "Servomoteur", "", "", [["SIGNAL", "out"]], ["Servo nie über den Board-Pin versorgen: eigene 5 V (Masse verbinden).", "Ne jamais alimenter le servo par la carte : 5 V séparés (masses reliées)."]],
+    ["ws", "🌈", "WS2812 / NeoPixel-Streifen", "Ruban WS2812 / NeoPixel", "", "", [["DIN", "out"]], ["Datenleitung braucht eigentlich 5 V – bei 3,3-V-Boards Pegelwandler oder 330 Ω und kurzes Kabel.", "La ligne de données veut 5 V – convertisseur de niveau ou 330 Ω et câble court sur cartes 3,3 V."]],
+    ["pot", "🎚️", "Poti / Lichtsensor / Bodenfeuchte", "Potentiomètre / photorésistance / humidité", "", "", [["SIGNAL", "ana"]], null],
+    ["gps", "🛰️", "GPS-Modul (NEO-6M)", "Module GPS (NEO-6M)", "uart", "", [], null]
+  ];
+  const q = {}; D.forEach(d => q[d[0]] = 0);
+  q.oled = 1; q.dht = 1; q.btn = 1;
+  const stor = (() => { try { return JSON.parse(localStorage.getItem("elektro_pinplan") || "null"); } catch (e) { return null; } })();
+  let board = stor && B[stor.b] ? stor.b : "esp32"; if (stor && stor.q) Object.keys(stor.q).forEach(k => { if (k in q) q[k] = Math.max(0, Math.min(6, +stor.q[k] || 0)); });
+  host.innerHTML = SAFE() + '<label class="l">' + T("Dein Board", "Ta carte") + '</label><select class="in" id="ppB">' + Object.keys(B).map(k => '<option value="' + k + '"' + (k === board ? " selected" : "") + '>' + B[k].n + '</option>').join("") + '</select>' +
+    '<label class="l">' + T("Was willst du anschließen?", "Que veux-tu brancher ?") + '</label><div id="ppD" class="pp-grid"></div><div id="ppO"></div>';
+  const st = document.createElement("style"); st.textContent = ".pp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}.pp-d{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:6px 8px;background:var(--card)}.pp-d.on{border-color:var(--link);box-shadow:0 0 0 2px rgba(31,111,184,.15)}.pp-d span.t{flex:1;font-size:14px;line-height:1.25}.pp-d button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--soft);font:700 18px/1 system-ui;color:var(--fg);cursor:pointer}.pp-d b{min-width:16px;text-align:center}.pp-pre{white-space:pre-wrap;word-break:break-all;background:#0f1722;color:#d7f5e5;border-radius:12px;padding:10px 12px;font:12.5px/1.5 ui-monospace,Menlo,monospace;margin:6px 0}.pp-bus{display:inline-block;font-size:11px;font-weight:800;border-radius:6px;padding:1px 6px;background:var(--soft);margin-left:4px}"; host.appendChild(st);
+  const lab = (b, p) => { const w = B[b]; return /^A\d/.test(p) ? p : (w.pre === "D" ? "D" : w.pre) + p; };
+  function plan(){
+    const b = B[board], used = new Set(), rows = [], warn = [], defs = [];
+    const take = (pool, extra) => { for (const p of pool) if (!used.has(p)) { used.add(p); return p; } return null; };
+    const add = (dev, sig, pin, note) => { rows.push([dev, sig, pin, note || ""]); };
+    const nm = d => T(d[2], d[3]);
+    const act = D.filter(d => q[d[0]] > 0);
+    const needI2C = act.some(d => d[4] === "i2c"), needSPI = act.some(d => d[4] === "spi"), needU = act.some(d => d[4] === "uart");
+    const DEF = (n, p) => defs.push([n, p]);
+    if (needI2C) { b.i2c.forEach(p => used.add(p)); }
+    if (needSPI) { b.spi.forEach(p => used.add(p)); }
+    if (needU) { b.uart.forEach(p => used.add(p)); }
+    const addrs = {};
+    act.forEach(d => {
+      const n = q[d[0]];
+      if (d[4] === "i2c") {
+        add(nm(d), "SDA / SCL", lab(board, b.i2c[0]) + " / " + lab(board, b.i2c[1]), T("gemeinsamer I²C-Bus · Adresse " + d[5], "bus I²C commun · adresse " + d[5]));
+        (addrs[d[5]] = addrs[d[5]] || []).push(nm(d));
+      }
+    });
+    if (needI2C) { DEF("I2C_SDA", b.i2c[0]); DEF("I2C_SCL", b.i2c[1]); }
+    Object.keys(addrs).forEach(a => { if (addrs[a].length > 1) warn.push(T("Gleiche I²C-Adresse " + a + ": " + addrs[a].join(" und ") + ". Eins davon braucht eine andere Adresse (Lötbrücke) oder einen zweiten Bus.", "Même adresse I²C " + a + " : " + addrs[a].join(" et ") + ". L’un doit changer d’adresse (pont de soudure) ou aller sur un second bus.")); });
+    if (needSPI) { DEF("SPI_MOSI", b.spi[0]); DEF("SPI_MISO", b.spi[1]); DEF("SPI_SCK", b.spi[2]); }
+    if (needU) { DEF("GPS_TX_ZUM_MODUL", b.uart[0]); DEF("GPS_RX_VOM_MODUL", b.uart[1]); }
+    const csPool = b.cs.slice();
+    act.forEach(d => {
+      const nn = q[d[0]];
+      if (d[4] === "uart") { add(nm(d), "TX → RX / RX ← TX", lab(board, b.uart[0]) + " / " + lab(board, b.uart[1]), b.soft ? T("SoftwareSerial", "SoftwareSerial") : "UART"); return; }
+      for (let k = 1; k <= (d[4] ? 1 : nn); k++) {
+        const suf = !d[4] && nn > 1 ? " " + k : "";
+        d[6].forEach(sg => {
+          let pin = null, pool;
+          if (sg[1] === "cs") pool = csPool.concat(b.dig); else if (sg[1] === "ana") pool = b.ana; else if (sg[1] === "in") pool = b.dig; else pool = b.dig;
+          pin = take(pool);
+          const key = (d[0] + (suf ? k : "") + "_" + sg[0]).toUpperCase().replace(/[^A-Z0-9]/g, "_");
+          if (!pin) { add(nm(d) + suf, sg[0], "–", T("kein freier Pin mehr!", "plus de broche libre !")); warn.push(T("Für " + nm(d) + suf + " (" + sg[0] + ") ist kein passender Pin mehr frei.", "Plus de broche libre pour " + nm(d) + suf + " (" + sg[0] + ")."));
+            if (sg[1] === "ana" && !b.ana.length) warn.push(T("Dieses Board hat keinen Analog-Eingang – nimm einen ADS1115 (I²C).", "Cette carte n’a pas d’entrée analogique – utilise un ADS1115 (I²C).")); return; }
+          const note = sg[1] === "ana" ? T("Analog-Eingang", "entrée analogique") : sg[1] === "in" ? T("Eingang", "entrée") : sg[1] === "cs" ? T("Chip-Select (eigene Leitung)", "Chip-Select (ligne propre)") : T("Ausgang", "sortie");
+          add(nm(d) + suf, sg[0], lab(board, pin), note); DEF(key, pin);
+        });
+      }
+    });
+    if (board === "esp32" && act.some(d => d[0] === "pot")) warn.push(T("Analogwerte liegen auf ADC1 – das funktioniert auch mit WLAN.", "Les valeurs analogiques sont sur l’ADC1 – compatible avec le Wi-Fi."));
+    act.forEach(d => { if (d[7] && (b.v < 5 || d[0] === "lcd")) warn.push(nm(d) + ": " + T(d[7][0], d[7][1])); });
+    if (b.v >= 5 && act.some(d => d[0] === "rfid")) warn.push(T("RC522: verträgt nur 3,3 V an den Datenleitungen – am Uno Pegelwandler benutzen.", "RC522 : lignes de données en 3,3 V seulement – utilise un convertisseur de niveau sur l’Uno."));
+    b.tips.forEach(t => warn.push("💡 " + T(t[0], t[1])));
+    const out = $("#ppO", host);
+    if (!act.length) { out.innerHTML = '<p class="hint">' + T("Wähle oben mindestens ein Teil.", "Choisis au moins une pièce ci-dessus.") + '</p>'; return; }
+    const pre = defs.map(x => "#define " + x[0] + " " + x[1]).join("\n");
+    out.innerHTML = '<h3 style="margin:14px 0 6px">' + T("Dein Pin-Plan", "Ton plan de broches") + '</h3><div style="overflow-x:auto"><table class="tbl"><tr><th>' + T("Teil", "Pièce") + '</th><th>' + T("Signal", "Signal") + '</th><th>' + T("Pin", "Broche") + '</th><th>' + T("Hinweis", "Remarque") + '</th></tr>' +
+      rows.map(r => '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td><td><b>' + esc(r[2]) + '</b></td><td>' + esc(r[3]) + '</td></tr>').join("") + '</table></div>' +
+      '<p class="resbox">' + T("Versorgung: " + b.v + " V Logik. Alle Teile brauchen außerdem GND – verbinde die Massen miteinander.", "Logique " + b.v + " V. Toutes les pièces ont aussi besoin de GND – relie les masses.") + '</p>' +
+      '<h3 style="margin:14px 0 6px">⚠️ ' + T("Hinweise", "Remarques") + '</h3><ul class="hint" style="margin:0;padding-left:20px">' + warn.map(w => '<li>' + esc(w) + '</li>').join("") + '</ul>' +
+      '<h3 style="margin:14px 0 6px">' + (board === "pi" ? T("Pin-Nummern für deinen Code (BCM)", "Numéros de broches pour ton code (BCM)") : T("Für deinen Code (Arduino-IDE)", "Pour ton code (IDE Arduino)")) + '</h3><div class="pp-pre" id="ppC">' + esc(pre) + '</div><button class="btn sm" id="ppK">' + T("Kopieren", "Copier") + '</button>';
+    $("#ppK", host).onclick = e => { try { navigator.clipboard.writeText(pre).then(() => { e.target.textContent = T("Kopiert ✓", "Copié ✓"); }); } catch (er) { const r = document.createRange(); r.selectNodeContents($("#ppC", host)); const sl = getSelection(); sl.removeAllRanges(); sl.addRange(r); } };
+    try { localStorage.setItem("elektro_pinplan", JSON.stringify({ b: board, q: q })); } catch (e) {}
+  }
+  function liste(){
+    $("#ppD", host).innerHTML = D.map(d => '<div class="pp-d' + (q[d[0]] ? " on" : "") + '"><span style="font-size:22px">' + d[1] + '</span><span class="t">' + esc(T(d[2], d[3])) + (d[4] ? '<span class="pp-bus">' + (d[4] === "i2c" ? "I²C" : d[4] === "spi" ? "SPI" : "UART") + '</span>' : '') + '</span><button type="button" data-k="' + d[0] + '" data-d="-1" aria-label="−">−</button><b>' + q[d[0]] + '</b><button type="button" data-k="' + d[0] + '" data-d="1" aria-label="+">+</button></div>').join("");
+    $$("#ppD button", host).forEach(bt => bt.onclick = () => { const k = bt.dataset.k, d = D.find(x => x[0] === k), mx = d[4] ? 1 : 6; q[k] = Math.max(0, Math.min(mx, q[k] + +bt.dataset.d)); liste(); plan(); });
+  }
+  $("#ppB", host).onchange = e => { board = e.target.value; plan(); };
+  liste(); plan();
+}
+
 /* ====================================================================== Rahmen */
 const TOOLS = [
   ["farbcode", "🌈", "#e0527a", T("Widerstands-Farbcode", "Code couleur des résistances"), T("Ringe antippen oder Wert eingeben – 4, 5 und 6 Ringe, mit Toleranz.", "Touche les anneaux ou saisis une valeur – 4, 5 et 6 anneaux, avec tolérance."), resTool],
@@ -602,6 +864,11 @@ const TOOLS = [
   ["filter", "〰️", "#8a4dff", T("Filter & Schwingkreis", "Filtres et circuit LC"), T("RC-Filter mit Bode-Diagramm, Kondensator laden, LC-Resonanz.", "Filtre RC avec diagramme de Bode, charge de condensateur, résonance LC."), filterTool],
   ["timer555", "⏲️", "#c4452c", T("555-Timer", "Timer 555"), T("Blinker (astabil) und Impuls (monostabil) berechnen, mit Pinbelegung.", "Calculer clignotant (astable) et impulsion (monostable), avec brochage."), timerTool],
   ["regler", "🔋", "#2f9e44", T("Spannungsregler", "Régulateurs de tension"), T("LM317 einstellen (R1/R2, E24) und Verlustleistung eines Linearreglers samt Erwärmung.", "Régler le LM317 (R1/R2, E24) et calculer pertes et échauffement d’un régulateur linéaire."), reglerTool],
+  ["akku", "🔋", "#e8590c", T("Akku-Laufzeit", "Autonomie de batterie"), T("Wie lange hält dein ESP32-Projekt am Akku? Mit Schlafmodus und Vergleich.", "Combien de temps ton projet ESP32 tient sur batterie ? Avec veille et comparaison."), akkuTool],
+  ["bauteilcode", "🔎", "#d6336c", T("Bauteil-Code lesen", "Lire un code de composant"), T("SMD-Widerstände (103, 4R7, 01C), Kondensatoren (104, 4n7) und Spulen entschlüsseln.", "Décoder résistances CMS (103, 4R7, 01C), condensateurs (104, 4n7) et bobines."), codeTool],
+  ["kabel", "🪢", "#868e96", T("Kabel & Leiterbahn", "Câble et piste"), T("Spannungsabfall im Kabel, nötiger Querschnitt und Leiterbahnbreite für die Platine.", "Chute de tension, section nécessaire et largeur de piste pour le circuit imprimé."), kabelTool],
+  ["adc", "📟", "#0c8599", T("ADC, PWM & Baudrate", "ADC, PWM et débit en bauds"), T("Rohwert in Volt, PWM-Auflösung für ESP32 und der Baudraten-Fehler beim Arduino.", "Valeur brute en volts, résolution PWM de l’ESP32 et erreur de débit sur Arduino."), adcTool],
+  ["pinplan", "🧭", "#5f3dc4", T("Pin-Planer", "Planificateur de broches"), T("Wähle Board und Bauteile – du bekommst freie Pins, I²C-Adress-Check, Warnungen und fertige #define-Zeilen.", "Choisis carte et pièces – broches libres, test d’adresses I²C, avertissements et lignes #define prêtes."), pinplanTool],
   ["logik", "🔢", "#6a4fd8", T("Logik & Zahlensysteme", "Logique et numération"), T("Wahrheitstabelle für jeden Ausdruck, 74xx-Gatter, Binär/Hex/Dezimal.", "Table de vérité pour toute expression, portes 74xx, binaire/hexa/décimal."), logikTool],
 ];
 window.Elektro = { opamp: function(h, t){ opampTool(h, t); }, start: function(){

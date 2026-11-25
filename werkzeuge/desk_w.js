@@ -113,6 +113,42 @@ Desk.reg("wasser", { name: () => T("Wasser", "Eau"), sym: "💧", col: "#32ade6"
     el.onclick = e => { const b = e.target.closest("[data-d]"); if (b) { w.n = Math.max(0, w.n + +b.dataset.d); Desk.save(); c.refresh(); } }; },
   tick(el, c){ if (Desk.data().water && Desk.data().water.day !== heute()) c.refresh(); } });
 
+
+/* ================= Arbeitszeit ================= */
+const zt = () => { const D = Desk.data(); if (!D.zeit) D.zeit = { ziel: 6.5, log: [], run: null, last: "" }; return D.zeit; };
+const zMs = (e) => (e.e || Date.now()) - e.s;
+const zTag = (k) => zt().log.filter(e => ymd(new Date(e.s)) === k).reduce((a, e) => a + zMs(e), 0) + (zt().run && ymd(new Date(zt().run.s)) === k ? Date.now() - zt().run.s : 0);
+const zH = ms => { const m = Math.round(ms / 60000); return Math.floor(m / 60) + ":" + pad(m % 60) + " h"; };
+const zDez = ms => (ms / 36e5).toLocaleString(loc(), { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+function zStop(){ const z = zt(); if (!z.run) return; const e = { s: z.run.s, e: Date.now(), n: z.run.n }; if (e.e - e.s >= 30000) z.log.push(e); z.run = null; Desk.save(); }
+Desk.reg("zeit", { name: () => T("Arbeitszeit", "Temps de travail"), sym: "⏱️", col: "#0f9d8a", order: 19, sizes: [[2, 1], [2, 2], [4, 2]], info: () => T("Start/Stopp mit Projekt, Tagesziel (z. B. 6,5 h) und Wochenübersicht.", "Démarrer/arrêter avec projet, objectif du jour et vue de la semaine."),
+  tile(el, c){ const z = zt(), tot = zTag(heute()), pct = Math.min(100, tot / (z.ziel * 36e5) * 100), r = 22, U2 = 2 * Math.PI * r;
+    el.innerHTML = '<div class="zt"><svg viewBox="0 0 56 56" class="zr"><circle cx="28" cy="28" r="' + r + '" fill="none" stroke="rgba(127,127,127,.28)" stroke-width="6"/><circle cx="28" cy="28" r="' + r + '" fill="none" stroke="' + (pct >= 100 ? "#30d158" : "#0f9d8a") + '" stroke-width="6" stroke-linecap="round" stroke-dasharray="' + (U2 * pct / 100) + " " + U2 + '" transform="rotate(-90 28 28)"/></svg><div class="zi"><b>' + zH(tot) + '</b><small>' + esc(T("Ziel ", "Objectif ") + z.ziel.toLocaleString(loc()) + " h") + '</small>' + (c.size[1] > 1 ? '<small class="zl">' + (z.run ? "⏺ " + esc(z.run.n || T("läuft", "en cours")) : esc(T("noch ", "reste ") + zH(Math.max(0, z.ziel * 36e5 - tot)))) + '</small>' : '') + '</div><button class="zb' + (z.run ? " on" : "") + '" data-z="1" aria-label="' + esc(z.run ? T("Stopp", "Stop") : T("Start", "Démarrer")) + '">' + (z.run ? "⏹" : "▶") + '</button></div>';
+    el.onclick = e => { const b = e.target.closest("[data-z]"); if (!b) return; e.stopPropagation(); if (z.run) zStop(); else { z.run = { s: Date.now(), n: z.last || "" }; Desk.save(); } c.refresh(); }; },
+  tick(el, c){ if (zt().run) c.refresh(); },
+  app: { title: () => T("Arbeitszeit", "Temps de travail"), mount(el, c){
+    const z = zt();
+    el.innerHTML = '<div class="zapp"><div class="zrow"><input class="in" id="zN" maxlength="50" placeholder="' + esc(T("Projekt / Tätigkeit (optional)", "Projet / tâche (facultatif)")) + '"><button class="btn go" id="zG"></button></div><p class="zbig" id="zBig"></p>' +
+      '<div class="zrow"><label>' + esc(T("Tagesziel (Stunden)", "Objectif du jour (heures)")) + '<input class="in" id="zZ" inputmode="decimal" value="' + String(z.ziel).replace(".", ",") + '" style="width:90px"></label><button class="btn" id="zM">＋ ' + esc(T("Eintrag von Hand", "Entrée manuelle")) + '</button><button class="btn" id="zX">⬇ CSV</button></div>' +
+      '<h3 class="zh">' + esc(T("Diese Woche", "Cette semaine")) + '</h3><div id="zW"></div><h3 class="zh">' + esc(T("Heute", "Aujourd’hui")) + '</h3><div id="zL"></div></div>';
+    const mon = () => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return d; };
+    function z_(){
+      const t = heute(), tot = zTag(t); $("#zG", el).textContent = z.run ? "⏹ " + T("Stopp", "Stop") : "▶ " + T("Start", "Démarrer"); $("#zN", el).value = z.run ? z.run.n || "" : $("#zN", el).value;
+      $("#zBig", el).innerHTML = '<b>' + zH(tot) + '</b> <small>(' + zDez(tot) + ' h)</small>' + (z.run ? ' <span class="zrun">⏺ ' + esc(T("läuft seit ", "depuis ")) + new Date(z.run.s).toLocaleTimeString(loc(), { hour: "2-digit", minute: "2-digit" }) + '</span>' : "");
+      const m0 = mon(); let wsum = 0, h = ""; const WKd = WK();
+      for (let i = 0; i < 7; i++) { const d = addTage(m0, i), k = ymd(d), ms = zTag(k); wsum += ms; const p = Math.min(100, ms / (z.ziel * 36e5) * 100);
+        h += '<div class="zwr' + (k === t ? " heute" : "") + '"><span>' + esc(WKd[i]) + '</span><span class="zbar"><i style="width:' + p + '%;background:' + (ms >= z.ziel * 36e5 ? "#30d158" : "#0f9d8a") + '"></i></span><b>' + (ms ? zH(ms) : "–") + '</b></div>'; }
+      $("#zW", el).innerHTML = h + '<p class="zsum">' + esc(T("Woche gesamt: ", "Total de la semaine : ")) + '<b>' + zH(wsum) + '</b> (' + zDez(wsum) + ' h)</p>';
+      const L = z.log.filter(e => ymd(new Date(e.s)) === t).sort((a, b) => b.s - a.s);
+      $("#zL", el).innerHTML = (z.run ? '<div class="zlr"><span>⏺ ' + esc(z.run.n || "") + '</span><b>' + zH(Date.now() - z.run.s) + '</b></div>' : "") + (L.length ? L.map(e => '<div class="zlr"><span>' + new Date(e.s).toLocaleTimeString(loc(), { hour: "2-digit", minute: "2-digit" }) + "–" + new Date(e.e).toLocaleTimeString(loc(), { hour: "2-digit", minute: "2-digit" }) + (e.n ? " · " + esc(e.n) : "") + '</span><b>' + zH(zMs(e)) + '</b><button class="mn2" data-x="' + e.s + '" aria-label="' + esc(T("Löschen", "Supprimer")) + '">✕</button></div>').join("") : (z.run ? "" : '<p class="leer">' + esc(T("Noch nichts erfasst.", "Rien d’enregistré.")) + '</p>'));
+    }
+    $("#zG", el).onclick = () => { if (z.run) zStop(); else { z.last = $("#zN", el).value.trim(); z.run = { s: Date.now(), n: z.last }; Desk.save(); } z_(); };
+    $("#zZ", el).onchange = e => { const v = parseFloat(String(e.target.value).replace(",", ".")); if (v > 0 && v <= 24) { z.ziel = v; Desk.save(); } e.target.value = String(z.ziel).replace(".", ","); z_(); };
+    $("#zM", el).onclick = () => { const a = prompt(T("Dauer in Stunden (z. B. 1,5) für heute:", "Durée en heures (p. ex. 1,5) pour aujourd’hui :"), "1"); const v = a ? parseFloat(a.replace(",", ".")) : 0; if (v > 0 && v < 24) { const e = Date.now() - v * 36e5; z.log.push({ s: e, e: Date.now(), n: $("#zN", el).value.trim() }); Desk.save(); z_(); } };
+    $("#zX", el).onclick = () => { const rows = ["Datum;Start;Ende;Dauer_h;Notiz"].concat(z.log.slice().sort((a, b) => a.s - b.s).map(e => { const a = new Date(e.s), b = new Date(e.e); return [ymd(a), a.toTimeString().slice(0, 5), b.toTimeString().slice(0, 5), (zMs(e) / 36e5).toFixed(2).replace(".", ","), '"' + (e.n || "").replace(/"/g, "'") + '"'].join(";"); })); const bl = new Blob(["﻿" + rows.join("\r\n")], { type: "text/csv" }), a = document.createElement("a"); a.href = URL.createObjectURL(bl); a.download = "arbeitszeit.csv"; document.body.appendChild(a); a.click(); a.remove(); };
+    el.addEventListener("click", e => { const x = e.target.closest("[data-x]"); if (x) { z.log = z.log.filter(q => String(q.s) !== x.dataset.x); Desk.save(); z_(); } });
+    const iv = setInterval(() => { if (!el.isConnected) clearInterval(iv); else z_(); }, 15000); z_(); } } });
+
 /* ================= Links ================= */
 const links = () => (Desk.data().links = Desk.data().links || [{ n: "Oratio Place", u: "https://oratioplace.com" }]);
 Desk.reg("links", { name: () => T("Lesezeichen", "Favoris"), sym: "🔖", col: "#5e5ce6", order: 22, sizes: [[2, 2], [4, 2]], info: () => T("Deine wichtigsten Seiten mit einem Klick.", "Tes sites préférés en un clic."),

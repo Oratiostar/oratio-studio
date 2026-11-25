@@ -170,3 +170,11 @@
 
 .bau-bom{display:block}.bau-bom .ic-ch{margin:8px 8px 0 0}.bau-bt{border-collapse:collapse;margin:6px 0;font-size:13px}.bau-bt th,.bau-bt td{padding:3px 12px 3px 0;text-align:left;border-bottom:1px solid rgba(0,0,0,.1)}.bau-bom{overflow-x:auto}
 .bau-svg .pt-RL .ry-c{display:none}.bau-svg .pt-RL[data-on="1"] .ry-c{display:inline}.bau-svg .pt-RL[data-on="1"] .ry-o{display:none}
+
+/* Oszilloskop-Messwerte */
+.ic-meas{background:#07110f;border-top:1px solid #1d4a3f;padding:8px 10px 10px;color:#cfeee0;font:600 12px Inter,system-ui,sans-serif}
+.ic-mh{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin-bottom:6px}.ic-mh b{font-size:13px;color:#6dffb0}.ic-mt{flex:1 1 140px;opacity:.65;font-weight:500}
+.ic-mb{border:1px solid #2b6b5a;background:#0c1f1a;color:#bff5dc;border-radius:999px;padding:4px 10px;font:700 11px Inter,system-ui,sans-serif;cursor:pointer}
+.ic-mr{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;padding:5px 0 5px 8px;border-left:3px solid var(--mc,#3de6ff);margin:3px 0;background:rgba(255,255,255,.025);border-radius:0 8px 8px 0}
+.ic-mr>b{flex:1 1 100%;font-size:12px;color:var(--mc,#3de6ff)}.ic-mv{white-space:nowrap}.ic-mv i{font-style:normal;opacity:.6;margin-right:4px;font-weight:500}
+.ic-cr{border-left-color:#fff;background:rgba(255,255,255,.05)}.ic-cr>b{flex:none;margin-right:4px}

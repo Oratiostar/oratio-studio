@@ -121,3 +121,10 @@
   .lxs:nth-child(even){margin-left:14px;width:calc(100% - 14px)}
 }
 @media (prefers-reduced-motion:reduce){.lxbad,.lx.quake,.lxs.burnt,.lxt.gl{animation:none}}
+
+/* Klang-Labor */
+.kl{display:grid;gap:10px}.kl-tabs{display:flex;gap:8px}.kl-tabs button{flex:1;border:1px solid var(--line);background:var(--soft);color:var(--fg);border-radius:12px;padding:10px;font:700 14px inherit;font-family:inherit;cursor:pointer}.kl-tabs button.on{background:linear-gradient(135deg,var(--lacc),var(--lacc2));color:#fff;border-color:transparent}
+.kl-read{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.kl-read>div{background:#07110f;border:1px solid #1d4a3f;border-radius:12px;padding:8px 10px;color:#cfeee0}.kl-read small{display:block;opacity:.65;font-size:12px}.kl-read b{font-size:clamp(18px,5vw,26px);color:#6dffb0}
+.kl-tune{position:relative;height:14px;border-radius:99px;background:linear-gradient(90deg,#d9534f,#ffb000 35%,#2fe38a 48%,#2fe38a 52%,#ffb000 65%,#d9534f);opacity:.9}.kl-tune span{position:absolute;top:-3px;width:6px;height:20px;border-radius:3px;background:#fff;box-shadow:0 0 0 2px #0008;transform:translateX(-50%);left:50%;transition:left .1s}
+.kl-cv{width:100%;height:170px;display:block;border-radius:14px;border:1px solid #1d4a3f;background:#050a0a}
+.kl-ctl{display:grid;gap:8px}.kl-ctl input[type=range]{width:100%}.kl-w,.kl-q{display:flex;flex-wrap:wrap;gap:6px}.kl-msg{margin:0;font-weight:600}.kl-hint{margin:0;font-size:14px;opacity:.85}

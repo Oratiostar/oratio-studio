@@ -1,4 +1,4 @@
-@import url("glass.css?v=50");
+@import url("glass.css?v=52");
 @font-face{font-family:"Inter";font-weight:400;font-display:swap;src:url(../fonts/Inter-Regular.woff) format("woff")}
 @font-face{font-family:"Inter";font-weight:600;font-display:swap;src:url(../fonts/Inter-SemiBold.woff) format("woff")}
 @font-face{font-family:"Inter";font-weight:700 800;font-display:swap;src:url(../fonts/Inter-Bold.woff) format("woff")}
@@ -44,7 +44,7 @@ label.l{display:block;font-weight:700;font-size:14px;margin:12px 0 4px}
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:14px}
 .muted{color:var(--muted)}
-.hint{font-size:14px;color:var(--muted);margin:8px 0 0}
+.hint{font-size:14px;color:color-mix(in srgb,var(--fg) 80%,transparent);margin:8px 0 0}
 .warn{border:2px dashed #e8a02e;border-radius:12px;padding:8px 12px;margin:10px 0;font-size:14px}
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .tabs .btn{flex:1 1 auto;text-align:center}

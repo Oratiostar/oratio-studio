@@ -14,7 +14,7 @@ function fmt(v, u, dig){
   if (!isFinite(v)) return "–"; if (v === 0) return "0 " + (u || "");
   var Ls = [[1e9, "G"], [1e6, "M"], [1e3, "k"], [1, ""], [1e-3, "m"], [1e-6, "µ"], [1e-9, "n"], [1e-12, "p"]], a = Math.abs(v), s = Ls[Ls.length - 1];
   for (var i = 0; i < Ls.length; i++) if (a >= Ls[i][0] * 0.9995){ s = Ls[i]; break; }
-  return String(parseFloat((v / s[0]).toPrecision(dig || 3))).replace(".", fr ? "," : ".") + " " + s[1] + (u || "");
+  return String(parseFloat((v / s[0]).toPrecision(dig || 3))).replace(".", ",") + " " + s[1] + (u || "");
 }
 var C = { amber: "#ffb000", cyan: "#3de6ff", green: "#6dffb0", pink: "#ff3d9a", lime: "#b6ff3d", violet: "#b58cff", red: "#ff6b6b", white: "#e8fff3" };
 var LINK = { ne5532: "bt_analog/analog_ne5532", mcp6002: "bt_analog/analog_mcp6002", lm741: "bt_analog/analog_lm741", tl071: "bt_analog/analog_tl071", tl074: "bt_analog/analog_tl074", ne555: "bt_analog/analog_ne555", hc14: "bt_ic/logik_74hc14", cd4060: "bt_ic/speicher_4060", hc00: "bt_ic/logik_7400", hc74: "bt_ic/speicher_7474", cd4017: "bt_ic/speicher_4017", hc160: "bt_ic/speicher_74160", hc595: "bt_ic/speicher_74595", hc138: "bt_ic/decoder_74138", cd4511: "bt_ic/decoder_4511", lm358: "bt_analog/analog_lm358", lm393: "bt_analog/analog_lm393", lm317: "halbleiter/bauteile_lm317", cd4093: "bt_ic/logik_4093", cd4040: "bt_ic/speicher_4040", hc165: "bt_ic/speicher_74165", lm7805: "halbleiter/bauteile_lm7805", lm386: "bt_analog/analog_lm386", bc337: "halbleiter/bauteile_bc337", uln2003: "halbleiter/bauteile_uln2003", l293d: "halbleiter/bauteile_l293d", pc817: "halbleiter/bauteile_pc817", lm324: "bt_analog/analog_lm324", cd4051: "bt_ic/decoder_4051", cd4066: "bt_ic/decoder_4066", hc193: "bt_ic/speicher_74193", cd4013: "bt_ic/speicher_4013", hc164: "bt_ic/speicher_74164", max232: "bt_ic/decoder_max232", mcp3008: "bt_ic/decoder_mcp3008", tl431: "halbleiter/bauteile_tl431", icl7660: "halbleiter/analog_icl7660", lm35: "bt_analog/analog_lm35", irlz44n: "halbleiter/bauteile_irlz44n", d1n4007: "halbleiter/bauteile_1n4007", zd: "halbleiter/bauteile_zener", hc245: "bt_ic/decoder_74245", hc573: "bt_ic/speicher_74573", cd4094: "bt_ic/speicher_4094", cd4020: "bt_ic/speicher_4020", cd4046: "bt_ic/decoder_4046", lm339: "bt_analog/analog_lm339", tl072: "bt_analog/analog_tl072", ne556: "bt_analog/analog_ne556", lm337: "halbleiter/bauteile_lm337", lm1117: "halbleiter/bauteile_lm1117", bc557: "halbleiter/bauteile_bc557", irf9540: "halbleiter/bauteile_irf9540", led5: "halbleiter/led", ad620: "bt_analog/analog_ad620", dac0808: "bt_ic/decoder_dac0808", hc283: "bt_ic/decoder_74283", ds1307: "bt_ic/module_ds1307", eeprom24: "bt_ic/module_24lc256", max485: "bt_ic/module_max485", moc3021: "halbleiter/bauteile_moc3021", tsop: "halbleiter/bauteile_tsop4838", a4988: "halbleiter/bauteile_a4988" };
@@ -54,6 +54,83 @@ function scope(cv, chs, span, cur, tl){
   if (cur != null){ c.strokeStyle = "rgba(255,255,255,.75)"; c.setLineDash([4, 3]); c.beginPath(); c.moveTo(cur * (W - 46) + .5, 0); c.lineTo(cur * (W - 46) + .5, H - 22); c.stroke(); c.setLineDash([]); }
   c.fillStyle = "rgba(200,255,225,.75)"; c.textAlign = "right"; c.font = "600 11px Inter,system-ui,sans-serif";
   c.fillText(tl ? tl(span / 10) : fmt(span / 10, "s", 2) + " / DIV", W - 6, H - 8); c.textAlign = "left"; c.fillText("0", 6, H - 8);
+  oszMess(cv, chs, span, cur, tl, W, H, c);
+}
+
+/* ---------- Oszilloskop: automatische Messwerte, Messlinien A/B, PNG ---------- */
+function oszWert(ch, span, u){ return ch.a ? ch.a[Math.min(ch.a.length - 1, Math.round(u * (ch.a.length - 1)))] : ch.v(u * span); }
+function oszStat(a, span){
+  var n = a.length - 1, mn = 1e99, mx = -1e99, sum = 0, sq2 = 0, i;
+  for (i = 0; i <= n; i++){ var v = a[i]; if (v < mn) mn = v; if (v > mx) mx = v; sum += v; sq2 += v * v; }
+  var vpp = mx - mn, mid = (mn + mx) / 2, ed = [];
+  if (vpp > 1e-6 * Math.max(1, Math.abs(mx), Math.abs(mn)) && vpp > 1e-9) for (i = 1; i <= n; i++) if (a[i - 1] < mid && a[i] >= mid) ed.push((i - 1 + (mid - a[i - 1]) / (a[i] - a[i - 1])) / n * span);
+  var r = { mn: mn, mx: mx, vpp: vpp, avg: sum / (n + 1), rms: Math.sqrt(sq2 / (n + 1)), f: null, T: null, duty: null };
+  if (ed.length >= 2){
+    r.T = (ed[ed.length - 1] - ed[0]) / (ed.length - 1); r.f = 1 / r.T;
+    var i0 = Math.round(ed[0] / span * n), i1 = Math.round(ed[ed.length - 1] / span * n), hi = 0;
+    for (i = i0; i < i1; i++) if (a[i] >= mid) hi++;
+    r.duty = i1 > i0 ? hi / (i1 - i0) : null;
+  }
+  return r;
+}
+function oszMess(cv, chs, span, cur, tl, W, H, c){
+  var os = cv._osz || (cv._osz = { a: null, b: null, act: null });
+  cv._oszArgs = [chs, span, cur, tl];
+  var Wp = W - 46;
+  [["a", "A", "#ffffff"], ["b", "B", "#ffd24a"]].forEach(function(q){
+    var x = os[q[0]]; if (x == null) return;
+    c.save(); c.strokeStyle = q[2]; c.fillStyle = q[2]; c.lineWidth = 1.5; c.beginPath(); c.moveTo(Math.round(x * Wp) + .5, 0); c.lineTo(Math.round(x * Wp) + .5, H - 22); c.stroke();
+    c.font = "800 12px Inter,system-ui,sans-serif"; c.textAlign = "center"; c.fillStyle = "#050a0a"; c.fillRect(x * Wp - 8, H - 22, 16, 16); c.fillStyle = q[2]; c.fillText(q[1], x * Wp, H - 9); c.restore();
+  });
+  if (!cv._oszInit){
+    cv._oszInit = true; cv.style.touchAction = "pan-y"; cv.style.cursor = "crosshair";
+    var pos = function(e){ var r = cv.getBoundingClientRect(), w = (cv.clientWidth || r.width) - 46; return Math.max(0, Math.min(1, (e.clientX - r.left) / w)); };
+    var redo = function(){ var A = cv._oszArgs; scope(cv, A[0], A[1], A[2], A[3]); };
+    cv.addEventListener("pointerdown", function(e){
+      var o = cv._osz, x = pos(e);
+      if (o.a == null) o.act = "a"; else if (o.b == null) o.act = "b"; else o.act = Math.abs(x - o.a) <= Math.abs(x - o.b) ? "a" : "b";
+      o[o.act] = x; try { cv.setPointerCapture(e.pointerId); } catch(er){} cv._oszDrag = true; redo();
+    });
+    cv.addEventListener("pointermove", function(e){ if (!cv._oszDrag) return; cv._osz[cv._osz.act] = pos(e); redo(); });
+    var up = function(){ cv._oszDrag = false; };
+    cv.addEventListener("pointerup", up); cv.addEventListener("pointercancel", up);
+  }
+  var box = cv.parentNode, pn = cv._oszPanel;
+  if (!pn){
+    pn = cv._oszPanel = el("div", "ic-meas"); box.appendChild(pn);
+    pn.innerHTML = '<div class="ic-mh"><b>📐 ' + T("Messwerte", "Mesures") + '</b><span class="ic-mt">' + T("Tippe ins Bild: Messlinie A, dann B", "Touche l’écran : curseur A, puis B") + '</span><button type="button" class="ic-mb" data-a="clr">' + T("Linien löschen", "Effacer") + '</button><button type="button" class="ic-mb" data-a="png">📷 PNG</button></div><div class="ic-mc"></div><div class="ic-mk"></div>';
+    pn.addEventListener("click", function(e){
+      var b = e.target.closest && e.target.closest("button"); if (!b) return;
+      if (b.dataset.a === "clr"){ cv._osz.a = cv._osz.b = null; var A = cv._oszArgs; scope(cv, A[0], A[1], A[2], A[3]); }
+      else { cv.toBlob(function(bl){ if (!bl) return; var u = URL.createObjectURL(bl), a = document.createElement("a"); a.href = u; a.download = "oratio-oszilloskop.png"; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(u); }, 4000); }); }
+    });
+  }
+  var rows = "", ST = chs.map(function(ch){
+    var n = 800, a = []; for (var i = 0; i <= n; i++) a.push(oszWert(ch, span, i / n));
+    return oszStat(a, span);
+  });
+  chs.forEach(function(ch, k){
+    var m = ST[k], u = ch.u != null ? ch.u : "V", ch2 = function(l, v){ return '<span class="ic-mv"><i>' + l + "</i>" + v + "</span>"; };
+    var dc = m.f == null;
+    rows += '<div class="ic-mr" style="--mc:' + ch.c + '"><b>' + esc(ch.n) + "</b>" + ch2("Vpp", fmt(m.vpp, u, 3)) + ch2("max", fmt(m.mx, u, 3)) + ch2("min", fmt(m.mn, u, 3)) + ch2("Ø", fmt(m.avg, u, 3)) + ch2("eff", fmt(m.rms, u, 3)) +
+      (dc ? ch2("f", m.vpp > 0 ? T("einmalig", "unique") : "DC") : ch2("f", fmt(m.f, "Hz", 3)) + ch2("T", fmt(m.T, "s", 3)) + (m.duty != null ? ch2(T("Tastgrad", "Rapport"), Math.round(m.duty * 100) + " %") : "")) + "</div>";
+  });
+  pn.querySelector(".ic-mc").innerHTML = rows;
+  var os2 = cv._osz, ck = "";
+  if (os2.a != null){
+    ck += '<div class="ic-mr ic-cr"><b style="color:#fff">A</b><span class="ic-mv"><i>t</i>' + fmt(os2.a * span, "s", 3) + "</span>";
+    chs.forEach(function(ch){ ck += '<span class="ic-mv" style="color:' + ch.c + '"><i>' + esc(String(ch.n).split(" ")[0]) + "</i>" + fmt(oszWert(ch, span, os2.a), ch.u != null ? ch.u : "V", 3) + "</span>"; }); ck += "</div>";
+  }
+  if (os2.b != null){
+    ck += '<div class="ic-mr ic-cr"><b style="color:#ffd24a">B</b><span class="ic-mv"><i>t</i>' + fmt(os2.b * span, "s", 3) + "</span>";
+    chs.forEach(function(ch){ ck += '<span class="ic-mv" style="color:' + ch.c + '"><i>' + esc(String(ch.n).split(" ")[0]) + "</i>" + fmt(oszWert(ch, span, os2.b), ch.u != null ? ch.u : "V", 3) + "</span>"; }); ck += "</div>";
+  }
+  if (os2.a != null && os2.b != null){
+    var dt = Math.abs(os2.b - os2.a) * span;
+    ck += '<div class="ic-mr ic-cr"><b>Δ</b><span class="ic-mv"><i>Δt</i>' + fmt(dt, "s", 3) + '</span><span class="ic-mv"><i>1/Δt</i>' + (dt > 0 ? fmt(1 / dt, "Hz", 3) : "–") + "</span>";
+    chs.forEach(function(ch){ var d = oszWert(ch, span, os2.b) - oszWert(ch, span, os2.a); ck += '<span class="ic-mv" style="color:' + ch.c + '"><i>Δ' + esc(String(ch.n).split(" ")[0]) + "</i>" + fmt(d, ch.u != null ? ch.u : "V", 3) + "</span>"; }); ck += "</div>";
+  }
+  pn.querySelector(".ic-mk").innerHTML = ck;
 }
 
 /* ---------- Gehäuse-Zeichnung ---------- */
@@ -125,7 +202,7 @@ PROJ.ne555a = { t: ["555 astabil – Blinker / Rechteck-Oszillator", "555 astabl
     if (k.f > 500e3) w.push(T("Über ca. 500 kHz schafft der NE555 das nicht mehr.", "Au-delà de 500 kHz le NE555 ne suit plus."));
     return { span: ph + 3.1 * k.T, fmain: k.f, warn: w,
       ch: [{ n: "OUT (Pin 3)", c: C.green, lo: 0, hi: V, v: function(t){ return k.out(t, ph) * (V - 1.5); } }, { n: "C (Pin 2/6)", c: C.amber, lo: 0, hi: V, v: function(t){ return k.vc(t, ph); } }],
-      info: [[T("Frequenz", "Fréquence"), fmt(k.f, "Hz")], [T("Periodendauer", "Période"), fmt(k.T, "s")], [T("HIGH-Zeit tH = 0,693·(R1+R2)·C", "Temps haut tH"), fmt(k.tH, "s")], [T("LOW-Zeit tL = 0,693·R2·C", "Temps bas tL"), fmt(k.tL, "s")], [T("Tastverhältnis", "Rapport cyclique"), (k.duty * 100).toFixed(1).replace(".", fr ? "," : ".") + " %"], [T("Schwellen", "Seuils"), fmt(V / 3, "V") + " / " + fmt(2 * V / 3, "V")]],
+      info: [[T("Frequenz", "Fréquence"), fmt(k.f, "Hz")], [T("Periodendauer", "Période"), fmt(k.T, "s")], [T("HIGH-Zeit tH = 0,693·(R1+R2)·C", "Temps haut tH"), fmt(k.tH, "s")], [T("LOW-Zeit tL = 0,693·R2·C", "Temps bas tL"), fmt(k.tL, "s")], [T("Tastverhältnis", "Rapport cyclique"), (k.duty * 100).toFixed(1).replace(".", ",") + " %"], [T("Schwellen", "Seuils"), fmt(V / 3, "V") + " / " + fmt(2 * V / 3, "V")]],
       live: function(ts){ return { leds: [k.out(ts, 0)], names: ["OUT"] }; } }; },
   wire: [["Pin 1 → GND, Pin 8 → +V", "Broche 1 → GND, broche 8 → +V"], ["Pin 4 (RESET) → +V (sonst bleibt der Ausgang aus)", "Broche 4 (RESET) → +V"], ["R1 von +V an Pin 7 (DISCH)", "R1 de +V vers broche 7"], ["R2 von Pin 7 an Pin 6/2 (die beiden zusammen)", "R2 de la broche 7 aux broches 6/2 (reliées)"], ["C von Pin 6/2 nach GND", "C de la broche 6/2 vers GND"], ["Pin 5 (CTRL) über 10 nF nach GND (ruhigere Schwellen)", "Broche 5 via 10 nF vers GND"], ["Pin 3 (OUT) → 330 Ω … 1 kΩ → LED → GND", "Broche 3 → 330 Ω…1 kΩ → LED → GND"]],
   notes: [["Das Tastverhältnis ist immer über 50 % (R1 lädt mit). Für genau 50 %: Diode parallel zu R2 (Anode zum Kondensator) und R1 sehr klein.", "Le rapport cyclique dépasse toujours 50 %."], ["Der bipolare NE555 gibt HIGH nur ca. 1,5 V unter +V aus (CMOS-Typ TLC555/LMC555: fast voll).", "Le NE555 bipolaire sort ≈ +V − 1,5 V."]] };
@@ -229,7 +306,7 @@ PROJ.lm358 = { t: ["Operationsverstärker: invertierend / nicht-invertierend (LM
     var pk = Math.abs(ge) * P.A; if (bias + pk > vmax || bias - pk < vmin) w.push(T("Ausgang übersteuert – das Signal wird oben/unten abgeschnitten (Clipping).", "Sortie saturée – le signal est écrêté."));
     if (2 * Math.PI * P.f * Math.min(pk, vmax - vmin) / 2 > .3e6) w.push(T("Slew-Rate-Grenze des LM358 (0,3 V/µs): bei dieser Frequenz/Amplitude wird die Sinuskurve zum Dreieck.", "Limite de slew-rate du LM358."));
     return { span: span, speed: 1, warn: w, ch: [{ n: "Eingang", c: C.amber, lo: lo, hi: hi, v: vin }, { n: "Ausgang", c: C.green, lo: lo, hi: hi, v: vout }],
-      info: [[T("Verstärkung", "Gain"), g.toFixed(1).replace(".", fr ? "," : ".") + "×  (" + (20 * Math.log10(Math.abs(g))).toFixed(1) + " dB)"], [T("Grenzfrequenz ≈ 1 MHz / |Gain|", "Fréquence de coupure"), fmt(fc, "Hz")], [T("Wirksame Verstärkung bei f", "Gain effectif"), ge.toFixed(1).replace(".", fr ? "," : ".") + "×"], [T("Maximale Ausgangsspannung", "Sortie max."), fmt(vmax, "V")]] }; },
+      info: [[T("Verstärkung", "Gain"), g.toFixed(1).replace(".", ",") + "×  (" + (20 * Math.log10(Math.abs(g))).toFixed(1) + " dB)"], [T("Grenzfrequenz ≈ 1 MHz / |Gain|", "Fréquence de coupure"), fmt(fc, "Hz")], [T("Wirksame Verstärkung bei f", "Gain effectif"), ge.toFixed(1).replace(".", ",") + "×"], [T("Maximale Ausgangsspannung", "Sortie max."), fmt(vmax, "V")]] }; },
   wire: [["Pin 8 → +V, Pin 4 → GND (oder −V bei ±-Versorgung)", "Broche 8 → +V, 4 → GND"], ["Nicht-invertierend: Signal an Pin 3 (IN+); R2 von Pin 1 (Ausgang) an Pin 2 (IN−); R1 von Pin 2 nach GND", "Non inverseur : signal sur 3 ; R2 de 1 vers 2 ; R1 de 2 vers GND"], ["Invertierend: Signal über R1 an Pin 2; R2 von Pin 1 an Pin 2; Pin 3 → GND (bzw. Bias)", "Inverseur : signal via R1 sur 2 ; R2 de 1 vers 2 ; broche 3 → GND"], ["Bei einfacher Versorgung: Bias Vcc/2 mit zwei gleichen Widerständen, Koppelkondensatoren am Ein- und Ausgang", "Alim. simple : polarisation Vcc/2 + condensateurs de liaison"]],
   notes: [["Der LM358 ist ein Single-Supply-Typ: der Eingang darf bis GND, der Ausgang kommt fast bis GND, aber nur bis ca. +V − 1,5 V.", "Le LM358 fonctionne en alimentation simple."], ["Für Audio oder schnelle Signale: TL072 oder NE5532 (mehr Bandbreite, weniger Rauschen).", "Pour l’audio : TL072 ou NE5532."]] };
 
@@ -266,7 +343,7 @@ PROJ.k_uhr = { t: ["Quarzuhr-Baustein: 32,768 kHz → CD4060 → 74HC74 → 1 Hz
   params: [{ k: "ppm", l: ["Quarz-Abweichung", "Écart du quartz"], min: -100, max: 100, def: 20, u: "ppm", int: 1 }],
   build: function(P){ var f0 = 32768 * (1 + P.ppm * 1e-6), f2 = f0 / 16384, f1 = f2 / 2, ph = .15 / f2, span = 4;
     return { span: span, speed: 1, warn: [], ch: [{ n: "CD4060 Q14  (2 Hz)", c: C.amber, lo: 0, hi: 5, v: function(t){ return sq(t, 2, .06, .5) * 5; } }, { n: "74HC74 Q  (1 Hz)", c: C.green, lo: 0, hi: 5, v: function(t){ return (cnt(t, 2, .06) % 2) * 5; } }],
-      info: [[T("Quarz", "Quartz"), fmt(f0, "Hz", 6)], [T("÷ 2¹⁴ = Q14", "÷ 2¹⁴ = Q14"), fmt(f2, "Hz", 6)], [T("÷ 2 = Sekundentakt", "÷ 2 = seconde"), fmt(f1, "Hz", 6)], [T("Ganggenauigkeit", "Précision"), (P.ppm * .0864).toFixed(2).replace(".", fr ? "," : ".") + " s / " + T("Tag", "jour")], [T("pro Monat", "par mois"), (P.ppm * .0864 * 30).toFixed(1).replace(".", fr ? "," : ".") + " s"]],
+      info: [[T("Quarz", "Quartz"), fmt(f0, "Hz", 6)], [T("÷ 2¹⁴ = Q14", "÷ 2¹⁴ = Q14"), fmt(f2, "Hz", 6)], [T("÷ 2 = Sekundentakt", "÷ 2 = seconde"), fmt(f1, "Hz", 6)], [T("Ganggenauigkeit", "Précision"), (P.ppm * .0864).toFixed(2).replace(".", ",") + " s / " + T("Tag", "jour")], [T("pro Monat", "par mois"), (P.ppm * .0864 * 30).toFixed(1).replace(".", ",") + " s"]],
       live: function(ts){ return { leds: [cnt(ts, 2, .06) % 2], names: ["1 Hz"] }; } }; },
   wire: [["CD4060: Pin 16 → +V, Pin 8 → GND, Pin 12 (RESET) → GND", "CD4060 : 16 → +V, 8 → GND, 12 → GND"], ["Quarz zwischen Pin 11 und Pin 10; 22 pF von Pin 11 und Pin 10 nach GND; 10 MΩ zwischen Pin 11 und Pin 9", "Quartz entre 11 et 10 ; 22 pF ; 10 MΩ entre 11 et 9"], ["Q14 (Pin 3) → CLK (Pin 3) des 74HC74", "Q14 (3) → CLK du 74HC74"], ["74HC74: /Q (Pin 6) → D (Pin 2); /PR (4) und /CLR (1) → +V; Q (Pin 5) = 1 Hz → LED", "74HC74 : /Q → D ; Q = 1 Hz"]],
   notes: [["Ein 20-ppm-Quarz geht rund 1,7 s pro Tag falsch. Genauer: temperaturkompensierte Module (DS3231, ±2 ppm).", "Un quartz à 20 ppm dérive d’environ 1,7 s par jour."]] };
@@ -305,7 +382,7 @@ PROJ.k_daemm.build = function(P){
     var R = 10e3 * Math.pow(10 / lx, .8), v = 5 * 10e3 / (10e3 + R); vx.push(v);
     if (on === null) on = v < P.ref ? 1 : 0; var n = on; if (v < P.ref - P.h / 2) n = 1; else if (v > P.ref + P.h / 2) n = 0; if (n !== on) sw++; on = n; lamp.push(on * 5); }
   var k = Math.round(P.t / 24 * (N - 1)), hh = Math.floor(P.t), mm = Math.round((P.t - hh) * 60);
-  return { span: 24, cur: P.t / 24, tl: function(d){ return d.toFixed(1).replace(".", fr ? "," : ".") + " h / DIV"; }, speed: 1, warn: [],
+  return { span: 24, cur: P.t / 24, tl: function(d){ return d.toFixed(1).replace(".", ",") + " h / DIV"; }, speed: 1, warn: [],
     ch: [{ n: "Helligkeit (lg Lux)", c: C.amber, lo: -1, hi: 3, u: "", a: ll }, { n: "Knoten X (LDR-Teiler)", c: C.cyan, lo: 0, hi: 5, a: vx }, { n: "Vref = " + fmt(P.ref, "V") + "  ± Δ/2", c: C.violet, lo: 0, hi: 5, v: function(t){ return P.ref; } }, { n: "Lampe", c: C.green, lo: 0, hi: 5, a: lamp }],
     info: [[T("Uhrzeit", "Heure"), (hh < 10 ? "0" : "") + hh + ":" + (mm < 10 ? "0" : "") + mm + (lux[k] > 100 ? "  ☀️" : lux[k] > 8 ? "  ⛅" : "  🌙")], [T("Helligkeit", "Luminosité"), (lux[k] < 10 ? lux[k].toFixed(1) : Math.round(lux[k])) + " lx"], [T("Spannung am Knoten X", "Tension nœud X"), fmt(vx[k], "V")], [T("Lampe", "Lampe"), lamp[k] > 0 ? "💡 AN" : "aus"], [T("Schaltvorgänge pro Tag", "Commutations par jour"), String(sw) + (sw > 4 ? T("  (zu viele – mehr Hysterese!)", "  (trop – plus d’hystérésis)") : "")]],
     live: function(){ return { leds: [lamp[k] > 0], names: ["Lampe"] }; } }; };
@@ -414,7 +491,7 @@ PROJ.npn = { t: ["Transistor als Schalter (BC337)", "Transistor en commutation (
     if (Ib > .016) w.push(T("Basisstrom über 16 mA – zu viel für einen Pi-Pin.", "Courant de base au-delà de 16 mA – trop pour une broche de Pi."));
     if (Is > .8) w.push(T("Über 800 mA: zu viel für den BC337, nimm einen MOSFET (z. B. IRLZ44N).", "Au-delà de 800 mA : prendre un MOSFET."));
     return { span: 3.2 / f, fmain: f, warn: w, ch: [{ n: "Eingang", c: C.amber, lo: 0, hi: 12, v: function(t){ return sq(t, f, .25 / f, .5) * Vi; } }, { n: "Kollektor", c: C.green, lo: 0, hi: 12, v: function(t){ return sq(t, f, .25 / f, .5) ? Vce : 12; } }],
-      info: [[T("Basisstrom", "Courant de base"), fmt(Ib, "A")], [T("Laststrom", "Courant de charge"), fmt(Ic, "A")], [T("Reserve (hFE·Ib / Laststrom)", "Marge (hFE·Ib / charge)"), (100 * Ib / Is).toFixed(1).replace(".", fr ? "," : ".") + "×"], [T("Verlust im Transistor (ein)", "Pertes dans le transistor"), fmt(Vce * Ic, "W")]],
+      info: [[T("Basisstrom", "Courant de base"), fmt(Ib, "A")], [T("Laststrom", "Courant de charge"), fmt(Ic, "A")], [T("Reserve (hFE·Ib / Laststrom)", "Marge (hFE·Ib / charge)"), (100 * Ib / Is).toFixed(1).replace(".", ",") + "×"], [T("Verlust im Transistor (ein)", "Pertes dans le transistor"), fmt(Vce * Ic, "W")]],
       live: function(ts){ return { leds: [sq(ts, f, 0, .5)], names: [T("Last", "Charge")] }; } }; },
   wire: [["Emitter → GND (gemeinsame Masse mit dem Mikrocontroller)", "Émetteur → GND (masse commune)"], ["Pin → Basiswiderstand → Basis", "Broche → résistance de base → base"], ["Last zwischen +12 V und Kollektor", "Charge entre +12 V et collecteur"], ["Bei Relais oder Motor: Freilaufdiode 1N4007 parallel zur Last, Kathode an +12 V", "Relais ou moteur : diode de roue libre 1N4007, cathode au +12 V"]],
   notes: [["Faustregel: Basisstrom = Laststrom / 10 … 20, dann schaltet er sicher durch.", "Règle : courant de base = courant de charge / 10 … 20."]] };
@@ -587,7 +664,7 @@ PROJ.lm35 = { t: ["Temperatur messen (LM35)", "Mesurer la température (LM35)"],
   build: function(P){ var u = P.T * .01, ref = +P.ref, code = Math.min(1023, Math.round(u / ref * 1023)), w = [];
     if (u > ref) w.push(T("Die Spannung liegt über der Referenz – der Messwert bleibt bei 1023 stehen.", "La tension dépasse la référence."));
     return { span: 2, speed: 1, warn: w, ch: [{ n: "Ausgang", c: C.green, lo: 0, hi: 1.1, v: function(t){ return u + .002 * Math.sin(t * 40); } }],
-      info: [[T("Spannung", "Tension"), fmt(u, "V")], [T("Wert am 10-Bit-Eingang", "Valeur sur 10 bits"), String(code)], [T("Auflösung", "Résolution"), (ref / 1023 / .01).toFixed(2).replace(".", fr ? "," : ".") + " °C"]] }; },
+      info: [[T("Spannung", "Tension"), fmt(u, "V")], [T("Wert am 10-Bit-Eingang", "Valeur sur 10 bits"), String(code)], [T("Auflösung", "Résolution"), (ref / 1023 / .01).toFixed(2).replace(".", ",") + " °C"]] }; },
   wire: [["Flache Seite zu dir: links +V (4…30 V), Mitte Ausgang, rechts GND", "Face plate vers toi : gauche +V, milieu sortie, droite GND"], ["Ausgang → Analog-Eingang", "Sortie → entrée analogique"], ["100 nF zwischen +V und GND dicht am Sensor", "100 nF entre +V et GND près du capteur"]],
   notes: [["Der TMP36 arbeitet ähnlich, hat aber 500 mV Versatz und misst deshalb auch unter 0 °C.", "Le TMP36 est similaire avec 500 mV de décalage : il mesure aussi sous 0 °C."]] };
 
@@ -700,7 +777,7 @@ PROJ.tl072 = { t: ["Rauscharmer Vorverstärker (TL072)", "Préamplificateur à f
   build: function(P){ var g = 1 + P.R2 / P.R1, fc = 3e6 / g, ge = g / Math.sqrt(1 + Math.pow(P.f / fc, 2)), vmax = 10.5, w = [];
     if (ge * P.A > vmax) w.push(T("Übersteuert: Der TL072 kommt nur bis etwa 1,5 V an die Versorgung heran.", "Saturation : le TL072 s’arrête à 1,5 V des rails."));
     return { span: 3 / P.f, speed: 1, warn: w, ch: [{ n: "Eingang", c: C.amber, lo: -12, hi: 12, v: function(t){ return sineAt(t, P.f, P.A); } }, { n: "Ausgang", c: C.green, lo: -12, hi: 12, v: function(t){ return clamp(ge * sineAt(t, P.f, P.A), -vmax, vmax); } }],
-      info: [[T("Verstärkung 1 + R2/R1", "Gain 1 + R2/R1"), g.toFixed(1).replace(".", fr ? "," : ".") + "×  (" + (20 * Math.log10(g)).toFixed(1).replace(".", fr ? "," : ".") + " dB)"], [T("Grenzfrequenz ≈ 3 MHz / Verstärkung", "Fréquence de coupure"), fmt(fc, "Hz")], [T("Versorgung", "Alimentation"), "± 12 V"]] }; },
+      info: [[T("Verstärkung 1 + R2/R1", "Gain 1 + R2/R1"), g.toFixed(1).replace(".", ",") + "×  (" + (20 * Math.log10(g)).toFixed(1).replace(".", ",") + " dB)"], [T("Grenzfrequenz ≈ 3 MHz / Verstärkung", "Fréquence de coupure"), fmt(fc, "Hz")], [T("Versorgung", "Alimentation"), "± 12 V"]] }; },
   wire: [["Pin 8 → +12 V, Pin 4 → −12 V", "Broche 8 → +12 V, 4 → −12 V"], ["Signal über 1 µF an Pin 3, 1 MΩ von Pin 3 nach GND", "Signal via 1 µF sur 3, 1 MΩ de 3 vers GND"], ["R2 von Pin 1 an Pin 2, R1 von Pin 2 nach GND", "R2 de 1 vers 2, R1 de 2 vers GND"], ["100 nF direkt an Pin 8 und Pin 4 nach GND", "100 nF sur 8 et 4 vers GND"]],
   notes: [["Der TL072 braucht eine symmetrische Versorgung (mindestens ±5 V). An 5 V allein läuft er schlecht – dann den LM358 oder einen Rail-to-Rail-Typ nehmen.", "Le TL072 exige une alimentation symétrique (au moins ±5 V)."], ["Ohne die 1 MΩ nach GND schwimmt der Eingang und der Ausgang läuft weg.", "Sans 1 MΩ vers la masse, l’entrée dérive."]] };
 
@@ -782,7 +859,7 @@ PROJ.ad620 = { t: ["Instrumentenverstärker für kleine Signale (AD620)", "Ampli
     function cm(t){ return P.Ucm * Math.sin(2 * Math.PI * 50 * t); } function d(t){ return P.Ud * Math.sin(2 * Math.PI * f * t); }
     if (G * P.Ud > 13) w.push(T("Übersteuert: Der Ausgang kommt nur bis etwa ±13,5 V.", "Saturation à ±13,5 V."));
     return { span: .2, speed: 1, warn: w, ch: [{ n: "+IN", c: C.amber, lo: -3, hi: 3, v: function(t){ return cm(t) + d(t) / 2; } }, { n: "−IN", c: C.pink, lo: -3, hi: 3, v: function(t){ return cm(t) - d(t) / 2; } }, { n: T("Ausgang", "Sortie"), c: C.green, lo: -15, hi: 15, v: function(t){ return clamp(G * d(t) + cm(t) * G / 1e5, -13.5, 13.5); } }],
-      info: [[T("Verstärkung G = 1 + 49,4 kΩ / RG", "Gain G = 1 + 49,4 kΩ / RG"), G.toFixed(1).replace(".", fr ? "," : ".") + "×"], [T("Ausgang (Spitze)", "Sortie (crête)"), fmt(Math.min(13.5, G * P.Ud), "V")], [T("Gleichtaktunterdrückung", "Réjection de mode commun"), "≈ 100 dB"]] }; },
+      info: [[T("Verstärkung G = 1 + 49,4 kΩ / RG", "Gain G = 1 + 49,4 kΩ / RG"), G.toFixed(1).replace(".", ",") + "×"], [T("Ausgang (Spitze)", "Sortie (crête)"), fmt(Math.min(13.5, G * P.Ud), "V")], [T("Gleichtaktunterdrückung", "Réjection de mode commun"), "≈ 100 dB"]] }; },
   wire: [["Pin 7 → +12 V, Pin 4 → −12 V, Pin 5 (REF) → GND", "Broche 7 → +12 V, 4 → −12 V, 5 (REF) → GND"], ["RG zwischen Pin 1 und Pin 8", "RG entre 1 et 8"], ["Sensor-Plus an Pin 3 (+IN), Sensor-Minus an Pin 2 (−IN)", "+ du capteur sur 3, − sur 2"], ["Ausgang an Pin 6", "Sortie sur 6"]],
   notes: [["Die 50-Hz-Störung (Netzbrumm) ist auf beiden Eingängen gleich groß und verschwindet deshalb am Ausgang fast vollständig.", "La perturbation à 50 Hz, identique sur les deux entrées, disparaît presque en sortie."], ["Für Wägezellen mit Mikrocontroller ist das HX711-Modul die einfachere Lösung (Verstärker und Wandler in einem).", "Pour les capteurs de poids, le module HX711 est plus simple."]] };
 
@@ -871,7 +948,7 @@ PROJ.a4988 = { t: ["Schrittmotor treiben (A4988 / DRV8825)", "Piloter un moteur 
   build: function(P){ var ms = +P.ms, f = P.f, spr = 200 * ms, rpm = f / spr * 60, w = [];
     if (rpm > 600) w.push(T("Über etwa 600 U/min verlieren die meisten Schrittmotoren Schritte.", "Au-delà de 600 tr/min environ, le moteur perd des pas."));
     return { span: 6 / f, speed: 1, warn: w, ch: [{ n: "STEP", c: C.amber, lo: 0, hi: 5, v: function(t){ return sq(t, f, 0, .5) * 5; } }, { n: "DIR", c: C.pink, lo: 0, hi: 5, v: function(){ return +P.dir * 5; } }, { n: T("Spulenstrom A", "Courant bobine A"), c: C.green, lo: -1.2, hi: 1.2, v: function(t){ return Math.cos(Math.PI / 2 * Math.floor(cnt(t, f, 0)) / ms * (P.dir === "1" ? 1 : -1)); } }],
-      info: [[T("Schritte pro Umdrehung", "Pas par tour"), String(spr)], [T("Drehzahl", "Vitesse"), rpm.toFixed(1).replace(".", fr ? "," : ".") + " U/min"], [T("Winkel je Impuls", "Angle par impulsion"), (1.8 / ms).toFixed(3).replace(".", fr ? "," : ".") + "°"]] }; },
+      info: [[T("Schritte pro Umdrehung", "Pas par tour"), String(spr)], [T("Drehzahl", "Vitesse"), rpm.toFixed(1).replace(".", ",") + " U/min"], [T("Winkel je Impuls", "Angle par impulsion"), (1.8 / ms).toFixed(3).replace(".", ",") + "°"]] }; },
   wire: [["VMOT → 12 V mit 100 µF direkt am Modul, GND daneben", "VMOT → 12 V avec 100 µF sur le module"], ["VDD → 3,3 oder 5 V, GND", "VDD → 3,3 ou 5 V, GND"], ["STEP und DIR an zwei Pins; RST und SLP verbinden; EN → GND", "STEP et DIR sur deux broches ; relier RST et SLP ; EN → GND"], ["MS1, MS2, MS3 wählen die Mikroschritte (alle HIGH = 1/16)", "MS1…MS3 choisissent les micropas"], ["Motor: eine Spule an 1A/1B, die andere an 2A/2B", "Moteur : une bobine sur 1A/1B, l’autre sur 2A/2B"]],
   notes: [["Vor dem Einschalten den Strom am Poti einstellen (Vref). Nie den Motor bei eingeschalteter Spannung abziehen – das zerstört den Treiber.", "Régler le courant (Vref) avant ; ne jamais débrancher le moteur sous tension."], ["Der DRV8825 kann bis 1/32 Schritt und mehr Strom – Pinbelegung fast gleich.", "Le DRV8825 va jusqu’à 1/32 de pas."]] };
 
@@ -892,7 +969,7 @@ PROJ.k_thermo = { t: ["Thermostat: LM35 → LM393 → BC337 → Relais", "Thermo
   build: function(P){ var per = 40; function temp(t){ return 21 + 4 * Math.sin(2 * Math.PI * t / per); }
     function rel(t){ var on = temp(0) < P.Ts, step = per / 400; for (var x = 0; x <= t; x += step){ var v = temp(x); if (on && v > P.Ts + P.H / 2) on = false; else if (!on && v < P.Ts - P.H / 2) on = true; } return on ? 1 : 0; }
     return { span: per * 1.5, speed: 4, warn: [], ch: [{ n: T("Temperatur", "Température"), c: C.amber, lo: 15, hi: 27, u: "°C", v: temp }, { n: T("Sollwert", "Consigne"), c: C.pink, lo: 15, hi: 27, u: "°C", v: function(){ return P.Ts; } }, { n: T("Relais (Heizung)", "Relais (chauffage)"), c: C.green, lo: 0, hi: 1.2, u: "", v: rel }],
-      info: [[T("Spannung am LM35 beim Sollwert", "Tension du LM35 à la consigne"), fmt(P.Ts * .01, "V")], [T("Heizung ein unter", "Chauffage en dessous de"), (P.Ts - P.H / 2).toFixed(2).replace(".", fr ? "," : ".") + " °C"], [T("Heizung aus über", "Arrêt au-dessus de"), (P.Ts + P.H / 2).toFixed(2).replace(".", fr ? "," : ".") + " °C"]],
+      info: [[T("Spannung am LM35 beim Sollwert", "Tension du LM35 à la consigne"), fmt(P.Ts * .01, "V")], [T("Heizung ein unter", "Chauffage en dessous de"), (P.Ts - P.H / 2).toFixed(2).replace(".", ",") + " °C"], [T("Heizung aus über", "Arrêt au-dessus de"), (P.Ts + P.H / 2).toFixed(2).replace(".", ",") + " °C"]],
       live: function(ts){ return { leds: [rel(ts % (per * 1.5))], names: [T("Relais", "Relais")] }; } }; },
   wire: [["LM35: +5 V, Ausgang an LM393 Pin 2 (−IN)", "LM35 : +5 V, sortie vers LM393 broche 2"], ["Sollwert: Poti 10 kΩ mit 47 kΩ in Reihe zwischen +5 V und GND, Schleifer an Pin 3 (+IN) – etwa 0…0,9 V entspricht 0…90 °C", "Consigne : potentiomètre 10 kΩ + 47 kΩ, curseur sur la broche 3"], ["Hysterese: 1 MΩ von Pin 1 (Ausgang) an Pin 3", "Hystérésis : 1 MΩ de la broche 1 vers 3"], ["Pin 1: 4,7 kΩ nach +5 V (offener Kollektor), dann 1 kΩ an die Basis des BC337", "Broche 1 : 4,7 kΩ vers +5 V, puis 1 kΩ vers la base du BC337"], ["Relais-Spule zwischen +5 V und Kollektor, Freilaufdiode 1N4007 parallel (Ring an +5 V); Emitter → GND", "Bobine du relais entre +5 V et collecteur, diode de roue libre ; émetteur → GND"]],
   notes: [["Ist die Temperatur kleiner als der Sollwert, liegt −IN unter +IN – der Ausgang bleibt offen, der Pull-up schaltet den Transistor ein: Heizung an.", "Plus froid que la consigne : sortie ouverte, le pull-up active le transistor."], ["Für eine Kühlung statt Heizung tauscht man einfach die beiden Eingänge.", "Pour refroidir : inverser les deux entrées."], ["Netzspannung nur über ein geprüftes Relaismodul schalten.", "Ne commuter le secteur qu’avec un module relais certifié."]] };
@@ -1018,7 +1095,7 @@ function opBuild(P){
     if (t.cs){ st.v = y; st.y = y; } Y.push(y); uMax = Math.max(uMax, Math.abs(u)); yMax = Math.max(yMax, Math.abs(y)); }
   var m1 = niceMax(uMax * 1.15 || 1), m2 = niceMax(yMax * 1.15 || 1), nt = typeof t.note === "function" ? t.note(q, lim) : t.note, G = t.G ? t.G(q) : null, zin = t.zin ? t.zin(q) : null, info = [];
   info.push([T("Beschaltung", "Montage"), T(t.n[0], t.n[1])]); info.push([T("Formel", "Formule"), t.f]);
-  if (G != null){ info.push([T("Verstärkung", "Gain"), (+G.toPrecision(4)).toString().replace(".", fr ? "," : ".") + " ×  (" + (+(20 * Math.log10(Math.abs(G))).toPrecision(3)).toString().replace(".", fr ? "," : ".") + " dB)"]); }
+  if (G != null){ info.push([T("Verstärkung", "Gain"), (+G.toPrecision(4)).toString().replace(".", ",") + " ×  (" + (+(20 * Math.log10(Math.abs(G))).toPrecision(3)).toString().replace(".", ",") + " dB)"]); }
   if (zin != null) info.push([T("Eingangswiderstand", "Impédance d’entrée"), zin === Infinity ? "≈ ∞" : fmt(zin, "Ω")]);
   info.push([T("Ausgang max.", "Sortie max."), fmt(yMax, "V")]); if (tau) info.push(["τ", fmt(tau, "s")]); if (nt) info.push([T("Hinweis", "Remarque"), T(nt[0], nt[1])]);
   if (real){ info.push([T("Bandbreite (−3 dB)", "Bande passante (−3 dB)"), fmt(fb, "Hz", 3) + " · " + D[2]]); info.push([T("Slew-Rate", "Slew rate"), +(D[1]).toPrecision(2) + " V/µs"]); }
@@ -1911,7 +1988,7 @@ function sliderRow(p, P, onchg){
   var row = el("label", "ic-sl"), nm = el("span", "ic-sn", T(p.l[0], p.l[1])), inp = el("input"), out = el("output", "ic-so"); inp.type = "range"; inp.min = 0; inp.max = 1000; inp.step = 1;
   function toX(v){ var t = p.log ? Math.log(v / p.min) / Math.log(p.max / p.min) : (v - p.min) / (p.max - p.min); return Math.round(clamp(t, 0, 1) * 1000); }
   function toV(x){ var t = x / 1000, v = p.log ? p.min * Math.pow(p.max / p.min, t) : p.min + (p.max - p.min) * t; if (p.e12) v = e12(v); if (p.int) v = Math.round(v); return v; }
-  function show(){ out.textContent = p.u ? fmt(P[p.k], p.u) : (+P[p.k].toFixed(2)).toString().replace(".", fr ? "," : "."); }
+  function show(){ out.textContent = p.u ? fmt(P[p.k], p.u) : (+P[p.k].toFixed(2)).toString().replace(".", ","); }
   inp.value = toX(P[p.k]); show(); inp.oninput = function(){ P[p.k] = toV(+inp.value); show(); onchg(); };
   row.sync = function(){ inp.value = toX(P[p.k]); show(); }; row.setL = function(s){ nm.textContent = s; }; row.appendChild(nm); row.appendChild(inp); row.appendChild(out); row.setV = function(v){ P[p.k] = v; inp.value = toX(v); show(); onchg(); }; return row;
 }
@@ -2083,7 +2160,7 @@ function circuitPage(pid){
 /* ================= Werkstatt: eigene Schaltung bauen (Editor + Logik-Simulation) ================= */
 var BAU = (function(){
   var G = 10, NOTE = {};
-  function fhz(f){ return String(f).replace(".", fr ? "," : ",") + " Hz"; }
+  function fhz(f){ return String(f).replace(".", ",") + " Hz"; }
   function nv(a){ return a == null ? null : 1 - a; }
   function nand(a, b){ return (a === 0 || b === 0) ? 1 : (a === 1 && b === 1) ? 0 : null; }
   function bits(io, names){ var v = 0; for (var i = 0; i < names.length; i++){ var x = io.g(names[i]); if (x == null) return null; v |= x << i; } return v; }
@@ -2518,7 +2595,13 @@ var BAU = (function(){
       x.strokeStyle = CH[ch][0]; x.lineWidth = 2 * k; x.lineJoin = "round"; x.beginPath(); var first = true;
       a.forEach(function(s){ var px = L + (W - L - Rr) * (1 - (t1 - s[0]) / win); if (px < L - 1) return; var py = Y(Math.max(lo, Math.min(hi, s[1]))); if (first){ x.moveTo(px, py); first = false; } else x.lineTo(px, py); }); x.stroke(); x.lineWidth = 1;
       x.fillStyle = "rgba(200,255,225,.7)"; x.font = 10.5 * k + "px Inter,system-ui,sans-serif"; x.textAlign = "left"; x.fillText(fmt(hi, "V", 2), W - Rr + 6 * k, top + 8 * k); x.fillText(fmt(lo, "V", 2), W - Rr + 6 * k, bot); if (lo < 0 && hi > 0) x.fillText("0", W - Rr + 6 * k, Y(0) + 4 * k);
-      var last = a.length ? a[a.length - 1][1] : 0; x.fillStyle = CH[ch][0]; x.fillText(fmt(last, "V", 3), 40 * k, y0 + 14 * k); }); }
+      var last = a.length ? a[a.length - 1][1] : 0; x.fillStyle = CH[ch][0]; x.fillText(fmt(last, "V", 3), 40 * k, y0 + 14 * k);
+      var ms = anaStat(a, t1 - win); if (ms){ var tx = T("Vpp ", "Vcc ") + fmt(ms.vpp, "V", 3) + "  Ø " + fmt(ms.avg, "V", 3) + "  " + T("eff ", "eff ") + fmt(ms.rms, "V", 3) + (ms.f ? "  f " + fmt(ms.f, "Hz", 3) : ""); x.font = "600 " + 10.5 * k + "px Inter,system-ui,sans-serif"; x.textAlign = "right"; x.fillStyle = "rgba(200,255,225,.85)"; x.fillText(tx, W - Rr - 4 * k, y0 + 14 * k); x.textAlign = "left"; } }); }
+  function anaStat(a, tmin){ var v = [], t = []; for (var i = 0; i < a.length; i++) if (a[i][0] >= tmin){ t.push(a[i][0]); v.push(a[i][1]); } if (v.length < 6) return null;
+    var mn = 1e99, mx = -1e99, sm = 0, sq2 = 0; v.forEach(function(q){ if (q < mn) mn = q; if (q > mx) mx = q; sm += q; sq2 += q * q; });
+    var r = { vpp: mx - mn, avg: sm / v.length, rms: Math.sqrt(sq2 / v.length), f: 0 }, mid = (mn + mx) / 2, ed = [];
+    if (r.vpp > 0.02) for (var j = 1; j < v.length; j++) if (v[j - 1] < mid && v[j] >= mid) ed.push(t[j - 1] + (mid - v[j - 1]) / (v[j] - v[j - 1]) * (t[j] - t[j - 1]));
+    if (ed.length >= 3) r.f = (ed.length - 1) / (ed[ed.length - 1] - ed[0]); return r; }
   function vcol(v){ var t = Math.max(-1, Math.min(1, v / 5)); if (t >= 0){ var a = Math.round(40 + 190 * t); return "rgb(" + (60 + Math.round(170 * t)) + "," + (90 - Math.round(40 * t)) + "," + (170 - Math.round(130 * t)) + ")"; } return "rgb(" + (60 + Math.round(40 * -t)) + "," + (90 + Math.round(10 * -t)) + "," + (170 + Math.round(60 * -t)) + ")"; }
   function paintAna(){ var M = sim.ana, warn = []; if (!M) return; if (M.err){ msgs([M.err]); return; }
     var vk = function(k){ return vof(M, M.nd(k)); };

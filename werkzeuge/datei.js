@@ -367,6 +367,49 @@ tool({ id: "bildformat", titel: "Bilder umwandeln", sym: "🔁", farbe: "#c0398c
     out.say(n + " Bild(er) umgewandelt.", "ok"); out.prog(null); out.zipKnopf("Bilder.zip"); });
 }});
 
+// ---- Foto-Datenschutz: zeigt Standort & Kamera-Daten und entfernt sie
+async function exifLesen(file){
+  const r = { make: "", model: "", soft: "", date: "", lat: null, lon: null, alt: null, jpg: false };
+  try {
+    const dv = new DataView(await file.slice(0, 262144).arrayBuffer()); if (dv.getUint16(0) !== 0xFFD8) return r; r.jpg = true;
+    let o = 2;
+    while (o + 4 < dv.byteLength) {
+      const mk = dv.getUint16(o), len = dv.getUint16(o + 2); if (mk === 0xFFDA || mk < 0xFF00) break;
+      if (mk === 0xFFE1 && dv.getUint32(o + 4) === 0x45786966) {
+        const t = o + 10, le = dv.getUint16(t) === 0x4949, u16 = x => dv.getUint16(x, le), u32 = x => dv.getUint32(x, le);
+        const val = (e) => { const ty = u16(e + 2), n = u32(e + 4), sz = { 1: 1, 2: 1, 3: 2, 4: 4, 5: 8, 7: 1 }[ty] || 1, tot = sz * n, vo = tot <= 4 ? e + 8 : t + u32(e + 8);
+          if (ty === 2) { let s2 = ""; for (let i = 0; i < n - 1; i++) { const c = dv.getUint8(vo + i); if (!c) break; s2 += String.fromCharCode(c); } return s2.trim(); }
+          if (ty === 5) { const a = []; for (let i = 0; i < n; i++) { const d = u32(vo + i * 8 + 4); a.push(d ? u32(vo + i * 8) / d : 0); } return a; }
+          if (ty === 3) return u16(vo); if (ty === 4) return u32(vo); if (ty === 1) return dv.getUint8(vo); return null; };
+        const ifd = (off, fn) => { const p0 = t + off, n = u16(p0); for (let i = 0; i < n; i++) fn(u16(p0 + 2 + i * 12), p0 + 2 + i * 12); };
+        let gps = null, exif = null;
+        ifd(u32(t + 4), (tag, e) => { if (tag === 0x010F) r.make = val(e); else if (tag === 0x0110) r.model = val(e); else if (tag === 0x0131) r.soft = val(e); else if (tag === 0x0132) r.date = val(e); else if (tag === 0x8825) gps = u32(e + 8); else if (tag === 0x8769) exif = u32(e + 8); });
+        if (exif != null) ifd(exif, (tag, e) => { if (tag === 0x9003) r.date = val(e) || r.date; });
+        if (gps != null) { let la, lr, lo, lor, al, alr = 0; ifd(gps, (tag, e) => { if (tag === 1) lr = val(e); else if (tag === 2) la = val(e); else if (tag === 3) lor = val(e); else if (tag === 4) lo = val(e); else if (tag === 5) alr = val(e); else if (tag === 6) al = val(e)[0]; });
+          const dec = a => a && a.length >= 3 ? a[0] + a[1] / 60 + a[2] / 3600 : null;
+          if (dec(la) != null && dec(lo) != null) { r.lat = dec(la) * (lr === "S" ? -1 : 1); r.lon = dec(lo) * (lor === "W" ? -1 : 1); } if (al != null) r.alt = al * (alr === 1 ? -1 : 1); }
+        break;
+      }
+      o += 2 + len;
+    }
+  } catch (e) {}
+  return r;
+}
+tool({ id: "exif", titel: "Foto-Datenschutz", sym: "🛡️", farbe: "#0e8f6d", text: "Zeigt, was ein Foto über dich verrät (Standort, Kamera, Zeit) – und entfernt es vor dem Teilen.", build(sec){
+  sec.innerHTML = '<div class="liste"></div><div class="exinfo"></div><button class="btn go" id="go" disabled>Daten entfernen und speichern</button><p class="muted" style="font-size:13px;margin:8px 0 0">Das Foto wird sauber neu gespeichert (JPG, hohe Qualität): ohne Standort, Kamera- und Zeitangaben. Dein Original bleibt unverändert.</p><div class="ausgabe"></div>';
+  const out = Ausgabe($(".ausgabe", sec)), info = $(".exinfo", sec);
+  const li = Liste($(".liste", sec), { accept: "image/*", titel: "Fotos hier ablegen (viele möglich)", meldung: out.say, sortieren: false, onChange: async it => {
+    $("#go", sec).disabled = !it.length; info.innerHTML = ""; let warn = 0;
+    for (const x of it) { const r = await exifLesen(x.file), div = document.createElement("div"); div.className = "res"; div.style.cssText = "display:block;margin:8px 0;padding:10px 12px;border-radius:12px";
+      const rows = []; if (r.lat != null) { warn++; rows.push('<b style="color:#d93b3b">⚠ Standort gefunden:</b> ' + r.lat.toFixed(5) + ", " + r.lon.toFixed(5) + ' · <a target="_blank" rel="noopener" href="https://www.openstreetmap.org/?mlat=' + r.lat + "&mlon=" + r.lon + "#map=16/" + r.lat + "/" + r.lon + '">Auf der Karte ansehen</a>'); }
+      if (r.make || r.model) rows.push("📷 Kamera: " + esc((r.make + " " + r.model).trim())); if (r.date) rows.push("🕒 Aufnahme: " + esc(r.date.replace(/^(\d{4}):(\d\d):(\d\d)/, "$3.$2.$1"))); if (r.soft) rows.push("🧩 Programm: " + esc(r.soft)); if (r.alt != null) rows.push("⛰️ Höhe: " + Math.round(r.alt) + " m");
+      div.innerHTML = '<b>' + esc(x.file.name) + '</b><br>' + (rows.length ? rows.join("<br>") : '<span class="muted">' + (r.jpg ? "Keine Standort- oder Kamera-Daten gefunden – sauber." : "Kein JPG – hier kann ich nichts lesen, beim Speichern wird aber alles entfernt.") + "</span>"); info.appendChild(div); }
+    if (warn) out.say(warn + " Foto(s) verraten den Standort.", "bad"); else out.say(""); } });
+  wrapRun($("#go", sec), async () => { out.leer(); let n = 0;
+    for (const it of li.items) { try { const c = await bildLaden(it.file, 0), b = await toBlob(weissUnter(c), "image/jpeg", .93); out.add(WZ.sauber(it.file.name) + "_sauber.jpg", b, c.width + "×" + c.height + " · " + G(it.file.size) + " → " + G(b.size)); n++; } catch (e) { out.add(it.file.name, null, "Konnte nicht gelesen werden."); } }
+    out.say(n + " Foto(s) bereinigt.", "ok"); out.prog(null); out.zipKnopf("Fotos_sauber.zip"); });
+}});
+
 // ---- 11: ZIP
 tool({ id: "zip", titel: "ZIP packen & entpacken", sym: "📦", farbe: "#5b7fe0", text: "Dateien zu einem ZIP bündeln oder ein ZIP öffnen und einzelne Dateien herausholen.", build(sec){
   sec.innerHTML = '<div class="tabs"><button class="btn on" data-m="pack">Packen</button><button class="btn" data-m="unpack">Entpacken</button></div>' +

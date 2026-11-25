@@ -20,6 +20,7 @@ var TABS = [
   ["disp", "📺", L("Displays", "Écrans")],
   ["matrix", "🟦", L("LED-Matrix", "Matrice LED")],
   ["term", "💻", "Terminal"],
+  ["klang", "🎚️", L("Klang", "Son")],
   ["game", "🎮", L("Spiel", "Jeu")]
 ];
 var MODS = {}, cur = "", root, body;
@@ -31,6 +32,7 @@ var HERO = {
   disp: ["📺", L("Display-Werkstatt", "Atelier d’écrans"), L("Display wählen, darauf schreiben oder zeichnen – der Code entsteht dazu.", "Choisis un écran, écris ou dessine – le code est généré."), "linear-gradient(135deg,#2f7bff,#12c2e9)"],
   matrix: ["🟦", L("LED-Matrix-Maler", "Éditeur de matrice LED"), L("64×32 Pixel malen und als ESP32- oder Pi-Code exportieren.", "Dessine 64×32 pixels et exporte le code ESP32 ou Pi."), "linear-gradient(135deg,#7a3cff,#ff4f9a)"],
   term: ["💻", L("Terminal-Trainer", "Entraîneur de terminal"), L("Linux-Befehle üben – hier kann nichts kaputtgehen.", "Entraîne-toi aux commandes Linux – rien ne peut casser."), "linear-gradient(135deg,#1c2230,#2fe38a)"],
+  klang: ["🎚️", L("Klang-Labor", "Labo sonore"), L("Mikrofon als Oszilloskop, Spektrum, Stimmgerät und ein Signalgenerator.", "Le micro comme oscilloscope, spectre, accordeur et générateur de signaux."), "linear-gradient(135deg,#7a52d6,#12c2e9)"],
   game: ["🎮", L("Mini-Spiele", "Mini-jeux"), L("Memory, Ohm-Quiz, Farbcode und Reaktionstest.", "Mémoire, quiz d’Ohm, code couleur et test de réaction."), "linear-gradient(135deg,#2fe38a,#ffd400)"]
 };
 var heroEl, crumbEl, backEl;
@@ -67,6 +69,7 @@ MODS.start = (function(){
     ["disp", "#3de6ff", L("Display-Werkstatt", "Atelier d’écrans"), L("17 Displays + LED-Matrix, 7 Boards: schreiben, zeichnen – der fertige Code entsteht mit Erklärung zu jeder Zeile.", "17 écrans + matrice LED, 7 cartes : écris, dessine – le code est généré, chaque ligne expliquée."), L("18 Displays", "18 écrans")],
     ["watch", "#6dffb0", "Oratio Watch", L("Das Zifferblatt live gestalten: Farben, Zeiger, Stil. Dieselben Formen wie auf der echten Uhr.", "Crée le cadran en direct : couleurs, aiguilles, style. Les mêmes formes que sur la vraie montre."), "Live"],
     ["term", "#b6ff3d", L("Terminal-Trainer", "Entraîneur de terminal"), L("Ein Übungs-Terminal mit 10 Missionen. Hier kann nichts kaputtgehen.", "Un terminal d’entraînement avec 10 missions. Rien ne peut casser."), L("10 Missionen", "10 missions")],
+    ["klang", "#ff6fb5", L("Klang-Labor", "Labo sonore"), L("Dein Mikrofon wird zum Oszilloskop: Wellen, Spektrum, Tonhöhe – plus Signalgenerator zum Hören.", "Ton micro devient un oscilloscope : ondes, spectre, hauteur – plus un générateur de signaux."), L("Mikrofon", "Micro")],
     ["game", "#b58cff", L("Mini-Spiele", "Mini-jeux"), L("LED-Memory, Ohm-Quiz, Farbcode und Reaktionstest – mit Highscore.", "Mémoire LED, quiz d’Ohm, code couleur et test de réaction – avec records."), "Highscore"]
   ];
   var JOKES = [
@@ -81,7 +84,7 @@ MODS.start = (function(){
   function show(b){
     var wrap = el("div", "lx");
     wrap.innerHTML =
-      '<div class="lxh"><div><div class="lxk">' + L("OSZILLOSKOP · 5 KANÄLE", "OSCILLOSCOPE · 5 CANAUX") + '</div>' +
+      '<div class="lxh"><div><div class="lxk">' + L("OSZILLOSKOP · 6 KANÄLE", "OSCILLOSCOPE · 6 CANAUX") + '</div>' +
       '<h1 class="lxt" data-t="ORATIO LAB">ORATIO LAB</h1>' +
       '<p class="lxs0">' + L("Probieren, bauen, kaputtmachen – ohne Risiko. Alles läuft live in deinem Browser.", "Essayer, construire, casser – sans risque. Tout tourne en direct dans ton navigateur.") + '</p></div>' +
       '<button class="lxbad" type="button">⚠ ' + L("NICHT DRÜCKEN", "NE PAS APPUYER") + '</button></div>' +
@@ -1693,6 +1696,99 @@ var G = { seq: [], pos: 0, busy: false, run: false, ac: null, sub: "mem", alive:
 var GC = ["#ff3b4f", "#2cd86a", "#ffc21a", "#2f8bff"];
 function beep(i){ try { G.ac = G.ac || new (window.AudioContext || window.webkitAudioContext)(); var o = G.ac.createOscillator(), g = G.ac.createGain(); o.frequency.value = [330, 392, 494, 587][i]; o.type = "sine"; g.gain.value = 0.12; o.connect(g); g.connect(G.ac.destination); o.start(); setTimeout(function(){ o.stop(); }, 180); } catch(e){} }
 function best(k){ return sv(k) || 0; }
+
+/* ---------- Klang-Labor: Mikrofon-Oszilloskop, Spektrum, Stimmgerät, Signalgenerator ---------- */
+MODS.klang = (function(){
+  var ac, an, stream, src, osc, gain, raf = 0, mode = "mic", frozen = false, run = false, wave = "sine", freq = 440, vol = .12, tick = 0, hz = -1, tcv, fcv, el_;
+  var NOTES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+  function ensure(){ if (!ac) { var AC = window.AudioContext || window.webkitAudioContext; ac = new AC(); an = ac.createAnalyser(); an.fftSize = 4096; an.smoothingTimeConstant = .6; an.minDecibels = -100; an.maxDecibels = -10; } if (ac.state === "suspended") ac.resume(); }
+  function halt(){
+    run = false; cancelAnimationFrame(raf);
+    try { if (osc) { osc.stop(); osc.disconnect(); } } catch (e) {} osc = null;
+    try { if (gain) gain.disconnect(); } catch (e) {} gain = null;
+    try { if (src) src.disconnect(); } catch (e) {} src = null;
+    if (stream) { stream.getTracks().forEach(function(t){ t.stop(); }); stream = null; }
+  }
+  function fmtHz(f){ return f >= 1000 ? (f / 1000).toFixed(2).replace(".", ",") + " kHz" : f.toFixed(f < 100 ? 1 : 0).replace(".", ",") + " Hz"; }
+  function pitch(buf, sr){
+    var n = buf.length, rms = 0, i, lag; for (i = 0; i < n; i++) rms += buf[i] * buf[i]; rms = Math.sqrt(rms / n); if (rms < .008) return -1;
+    var minL = Math.floor(sr / 2000), maxL = Math.min(Math.floor(sr / 50), n >> 1), r = new Float32Array(maxL + 2), best = -1, bv = 0;
+    for (lag = 0; lag <= maxL + 1; lag++) { var sum = 0; for (i = 0; i < n - lag; i += 1) sum += buf[i] * buf[i + lag]; r[lag] = sum; }
+    var d = minL; while (d < maxL && r[d] > r[d + 1]) d++;
+    for (lag = d; lag <= maxL; lag++) if (r[lag] > bv) { bv = r[lag]; best = lag; }
+    if (best < 0 || bv / r[0] < .55) return -1;
+    var y1 = r[best - 1], y2 = r[best], y3 = r[best + 1], a = (y1 + y3 - 2 * y2) / 2, b = (y3 - y1) / 2, sh = a ? -b / (2 * a) : 0; return sr / (best + (Math.abs(sh) < 1 ? sh : 0));
+  }
+  function grid(c, W, H, nx, ny){ c.fillStyle = "#050a0a"; c.fillRect(0, 0, W, H); c.strokeStyle = "rgba(109,255,176,.12)"; c.lineWidth = 1; c.beginPath(); for (var i = 0; i <= nx; i++) { var x = Math.round(i * W / nx) + .5; c.moveTo(x, 0); c.lineTo(x, H); } for (var j = 0; j <= ny; j++) { var y = Math.round(j * H / ny) + .5; c.moveTo(0, y); c.lineTo(W, y); } c.stroke(); }
+  function size(cv){ var dpr = Math.min(2, window.devicePixelRatio || 1), W = cv.clientWidth || 600, H = cv.clientHeight || 180; if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); } var c = cv.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0); return [c, W, H]; }
+  function draw(){
+    raf = requestAnimationFrame(draw); if (!an || frozen) return;
+    var N = an.fftSize, buf = new Float32Array(N); an.getFloatTimeDomainData(buf); var sr = ac.sampleRate;
+    if ((tick++ % 3) === 0) hz = pitch(buf.subarray(0, 2048), sr);
+    var t = size(tcv), c = t[0], W = t[1], H = t[2]; grid(c, W, H, 10, 4);
+    var st = 1; for (var i = 1; i < N / 2; i++) if (buf[i - 1] < 0 && buf[i] >= 0) { st = i; break; }
+    var win = hz > 0 ? Math.max(128, Math.min(2048, Math.round(sr / hz * 3))) : 1024; win = Math.min(win, N - st - 1);
+    var mx = 0.02; for (i = 0; i < win; i++) mx = Math.max(mx, Math.abs(buf[st + i])); var sc = (H / 2 - 8) / Math.max(mx, .05);
+    c.strokeStyle = "#6dffb0"; c.shadowColor = "#6dffb0"; c.shadowBlur = 6; c.lineWidth = 2; c.lineJoin = "round"; c.beginPath();
+    for (i = 0; i < win; i++) { var x = i / (win - 1) * W, y = H / 2 - buf[st + i] * sc; i ? c.lineTo(x, y) : c.moveTo(x, y); } c.stroke(); c.shadowBlur = 0;
+    c.fillStyle = "rgba(200,255,225,.75)"; c.font = "600 11px Inter,system-ui,sans-serif"; c.textAlign = "right"; c.fillText((win / sr / 10 * 1000).toFixed(2).replace(".", ",") + " ms / DIV", W - 6, H - 6);
+    c.textAlign = "left"; c.fillText(L("Pegel ", "Niveau ") + Math.round(mx * 100) + " %", 6, 14);
+    // Spektrum
+    var fd = new Float32Array(an.frequencyBinCount); an.getFloatFrequencyData(fd); var s2 = size(fcv), c2 = s2[0], W2 = s2[1], H2 = s2[2]; grid(c2, W2, H2, 3, 4);
+    var f0 = 20, f1 = Math.min(20000, sr / 2), lg = Math.log(f1 / f0), bw = sr / N, pk = 0, pv = -999;
+    c2.fillStyle = "rgba(61,230,255,.85)";
+    for (var px = 0; px < W2; px += 2) { var fa = f0 * Math.exp(px / W2 * lg), fb = f0 * Math.exp((px + 2) / W2 * lg), ia = Math.max(1, Math.floor(fa / bw)), ib = Math.max(ia, Math.floor(fb / bw)), v = -120; for (var k = ia; k <= ib; k++) if (fd[k] > v) v = fd[k]; if (v > pv && fa > 40) { pv = v; pk = (fa + fb) / 2; }
+      var h = Math.max(0, (v + 100) / 90) * H2; c2.fillRect(px, H2 - h, 1.6, h); }
+    c2.fillStyle = "rgba(200,255,225,.75)"; c2.font = "600 11px Inter,system-ui,sans-serif"; c2.textAlign = "center";
+    [100, 1000, 10000].forEach(function(f){ if (f < f1) { var x = Math.log(f / f0) / lg * W2; c2.fillText(f >= 1000 ? f / 1000 + " k" : f, Math.min(W2 - 14, Math.max(14, x)), H2 - 6); } });
+    if (pv > -85) { var xp = Math.log(pk / f0) / lg * W2; c2.strokeStyle = "#ffb000"; c2.beginPath(); c2.moveTo(xp, 0); c2.lineTo(xp, H2); c2.stroke(); c2.fillStyle = "#ffb000"; c2.textAlign = xp > W2 - 70 ? "right" : "left"; c2.fillText(fmtHz(pk), xp + (xp > W2 - 70 ? -4 : 4), 14); }
+    // Anzeige
+    var f = hz > 0 ? hz : (mode === "gen" && run ? freq : -1), hzE = el_.querySelector("#klHz"), nE = el_.querySelector("#klNote"), cE = el_.querySelector("#klCent");
+    if (f > 0) { var m = 12 * Math.log2(f / 440) + 69, mr = Math.round(m), cents = Math.round((m - mr) * 100); hzE.textContent = fmtHz(f); nE.textContent = NOTES[((mr % 12) + 12) % 12] + (Math.floor(mr / 12) - 1); cE.textContent = (cents >= 0 ? "+" : "") + cents + " ct"; cE.style.color = Math.abs(cents) <= 5 ? "#6dffb0" : "#ffb000"; el_.querySelector("#klNeedle").style.left = (50 + Math.max(-50, Math.min(50, cents))) + "%"; }
+    else { hzE.textContent = "–"; nE.textContent = "–"; cE.textContent = ""; el_.querySelector("#klNeedle").style.left = "50%"; }
+  }
+  function setGen(){ if (!osc) return; osc.type = wave; osc.frequency.setTargetAtTime(freq, ac.currentTime, .02); gain.gain.setTargetAtTime(vol, ac.currentTime, .02); }
+  function startMic(msg){
+    halt(); ensure(); msg.textContent = L("Frage nach dem Mikrofon …", "Demande d’accès au micro …");
+    navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } }).then(function(s){ stream = s; src = ac.createMediaStreamSource(s); src.connect(an); run = true; msg.textContent = L("Hört zu – nichts wird gespeichert oder gesendet.", "Écoute – rien n’est enregistré ni envoyé."); draw(); })
+      .catch(function(){ msg.textContent = L("Kein Zugriff aufs Mikrofon. Erlaube es in den Einstellungen deines Browsers und lade die Seite neu.", "Pas d’accès au micro. Autorise-le dans les réglages du navigateur et recharge la page."); });
+  }
+  function startGen(msg){
+    halt(); ensure(); osc = ac.createOscillator(); gain = ac.createGain(); gain.gain.value = 0; osc.connect(gain); gain.connect(an); gain.connect(ac.destination); osc.start(); run = true; setGen(); msg.textContent = L("Spielt " + fmtHz(freq) + " – Lautstärke vorsichtig erhöhen!", "Joue " + fmtHz(freq) + " – monte le volume avec prudence !"); draw();
+  }
+  return {
+    show: function(b){
+      el_ = el("div", "kl");
+      el_.innerHTML = '<div class="kl-tabs"><button type="button" data-m="mic" class="on">🎤 ' + L("Mikrofon", "Micro") + '</button><button type="button" data-m="gen">🔊 ' + L("Signalgenerator", "Générateur") + '</button></div>' +
+        '<div class="kl-read"><div><small>' + L("Frequenz", "Fréquence") + '</small><b id="klHz">–</b></div><div><small>' + L("Ton", "Note") + '</small><b id="klNote">–</b></div><div><small>' + L("Abweichung", "Écart") + '</small><b id="klCent"></b></div></div>' +
+        '<div class="kl-tune"><i></i><span id="klNeedle"></span></div>' +
+        '<canvas id="klT" class="kl-cv"></canvas><canvas id="klF" class="kl-cv"></canvas>' +
+        '<div class="kl-ctl" id="klCtl"></div><p class="kl-msg" id="klMsg"></p>' +
+        '<p class="kl-hint">' + L("Oben: Wellenform (Oszilloskop), unten: Spektrum (welche Frequenzen stecken im Ton). Tipp: Halte das Handy an einen Buzzer, Lüfter oder deine Gitarre.", "En haut : forme d’onde (oscilloscope), en bas : spectre (quelles fréquences composent le son). Astuce : approche le téléphone d’un buzzer, d’un ventilateur ou d’une guitare.") + '</p>';
+      b.appendChild(el_); tcv = el_.querySelector("#klT"); fcv = el_.querySelector("#klF");
+      var ctl = el_.querySelector("#klCtl"), msg = el_.querySelector("#klMsg");
+      function panel(){
+        if (mode === "mic") ctl.innerHTML = '<button type="button" class="lbtn pri" id="klGo">' + (run ? "⏹ " + L("Stopp", "Arrêt") : "🎤 " + L("Mikrofon starten", "Démarrer le micro")) + '</button><button type="button" class="lbtn" id="klFz">' + (frozen ? "▶ " + L("Weiter", "Reprendre") : "⏸ " + L("Standbild", "Figer")) + '</button><button type="button" class="lbtn" id="klPng">📷 PNG</button>';
+        else ctl.innerHTML = '<div class="kl-w">' + ["sine", "square", "triangle", "sawtooth"].map(function(w){ return '<button type="button" class="lbtn' + (w === wave ? " pri" : "") + '" data-w="' + w + '">' + { sine: L("Sinus", "Sinus"), square: L("Rechteck", "Carré"), triangle: L("Dreieck", "Triangle"), sawtooth: L("Sägezahn", "Dents de scie") }[w] + '</button>'; }).join("") + '</div>' +
+          '<label>' + L("Frequenz", "Fréquence") + ': <b id="klFv">' + fmtHz(freq) + '</b></label><input type="range" id="klFr" min="0" max="1000" value="' + Math.round(Math.log(freq / 20) / Math.log(1000) * 1000) + '">' +
+          '<div class="kl-q">' + [[110, "A2"], [262, "C4"], [440, "A4"], [1000, "1 kHz"], [2000, "2 kHz"], [4000, "4 kHz"]].map(function(q){ return '<button type="button" class="lbtn" data-f="' + q[0] + '">' + q[1] + '</button>'; }).join("") + '</div>' +
+          '<label>' + L("Lautstärke", "Volume") + ': <b id="klVv">' + Math.round(vol * 100) + ' %</b></label><input type="range" id="klVol" min="0" max="50" value="' + Math.round(vol * 100) + '">' +
+          '<div class="kl-w"><button type="button" class="lbtn pri" id="klGo">' + (run ? "⏹ " + L("Stopp", "Arrêt") : "▶ " + L("Ton abspielen", "Jouer le son")) + '</button><button type="button" class="lbtn" id="klPng">📷 PNG</button></div>';
+        var go = ctl.querySelector("#klGo"); go.onclick = function(){ if (run) { halt(); msg.textContent = ""; } else if (mode === "mic") startMic(msg); else startGen(msg); panel(); };
+        var fz = ctl.querySelector("#klFz"); if (fz) fz.onclick = function(){ frozen = !frozen; panel(); };
+        ctl.querySelector("#klPng").onclick = function(){ var o = document.createElement("canvas"), a = tcv, c2 = fcv; o.width = a.width; o.height = a.height + c2.height; var x = o.getContext("2d"); x.drawImage(a, 0, 0); x.drawImage(c2, 0, a.height); o.toBlob(function(bl){ if (bl) save("oratio-klang.png", bl); }); };
+        ctl.querySelectorAll("[data-w]").forEach(function(x){ x.onclick = function(){ wave = x.dataset.w; setGen(); panel(); }; });
+        ctl.querySelectorAll("[data-f]").forEach(function(x){ x.onclick = function(){ freq = +x.dataset.f; setGen(); panel(); }; });
+        var fr_ = ctl.querySelector("#klFr"); if (fr_) fr_.oninput = function(){ freq = 20 * Math.pow(1000, fr_.value / 1000); ctl.querySelector("#klFv").textContent = fmtHz(freq); setGen(); };
+        var vl = ctl.querySelector("#klVol"); if (vl) vl.oninput = function(){ vol = vl.value / 100; ctl.querySelector("#klVv").textContent = vl.value + " %"; setGen(); };
+      }
+      el_.querySelectorAll(".kl-tabs button").forEach(function(t){ t.onclick = function(){ halt(); frozen = false; mode = t.dataset.m; el_.querySelectorAll(".kl-tabs button").forEach(function(x){ x.classList.toggle("on", x === t); }); msg.textContent = ""; hz = -1; panel(); }; });
+      panel();
+    },
+    stop: function(){ halt(); try { if (ac) ac.close(); } catch (e) {} ac = null; an = null; frozen = false; }
+  };
+})();
+
 MODS.game = { show: function(b){
   G.alive = true;
   var tabs = el("div", "lrow"); tabs.style.marginBottom = "12px";
