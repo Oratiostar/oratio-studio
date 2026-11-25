@@ -201,5 +201,7 @@ Object.assign(window.WZ_FR, {
 "Dämpfung bei fg: −3 dB":"Atténuation à fg : −3 dB",
 "Die Stufen belasten sich: R2 mindestens 10 × R1 wählen.":"Les étages se chargent mutuellement : choisis R2 au moins 10 × R1.",
 "Phase bei fg: +45°":"Phase à fg : +45°",
+"Datei-Hash- und Duplikat-Prüfer":"Vérificateur de hachage et de doublons",
+"Findet identische Dateien über ihren SHA256-Fingerabdruck – mit Oratio-Balken, Duplikatgruppen und Bericht (TXT + CSV).":"Trouve les fichiers identiques grâce à leur empreinte SHA256 – avec barre Oratio, groupes de doublons et rapport (TXT + CSV).",
 "Phase bei fg: −45°":"Phase à fg : −45°"
 });

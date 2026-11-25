@@ -425,6 +425,221 @@ tool({ id: "zip", titel: "ZIP packen & entpacken", sym: "📦", farbe: "#5b7fe0"
       out2.say(files.length + " Datei(en) im ZIP:"); for (const f of files) { const row = document.createElement("div"); row.className = "frow res"; row.innerHTML = '<span class="fn" title="' + esc(f.name) + '">' + esc(f.name) + '</span><span class="muted">' + G(f._data && f._data.uncompressedSize || 0) + '</span><button class="btn sm go">Speichern</button>'; $("button", row).onclick = async () => WZ.speichern(await f.async("blob"), f.name.split("/").pop()); $(".ergebnisse", $(".aus2", sec)).appendChild(row); } } catch (e) { fehler(out2, e); } } });
 }});
 
+// ---- 14: Datei-Hash- und Duplikat-Prüfer (Version 6 aus dem Oratio Control Center – dieselben Funktionen, direkt im Browser)
+(function(){
+const FR = WZ.lang === "fr", T = (d, f) => FR ? f : d;
+const PROGRAM = "Datei-Hash- und Duplikat-Prüfer", AUTHOR = "Oratio Koevi", VERSION = "6", RELEASE = "07.10.2026", ALGO = "SHA256";
+const C = { red: "#ff4f4f", green: "#30c759", yellow: "#e8a800", cyan: "#28aae6", magenta: "#c85adc" };
+// dieselben 30 Regenbogenfarben wie in der .sh / .ps1 / .py (256-Farben-Codes)
+const RAINBOW = [196, 202, 208, 214, 220, 226, 190, 154, 118, 82, 46, 47, 48, 49, 50, 51, 45, 39, 33, 27, 21, 57, 93, 129, 165, 201, 200, 199, 198, 197].map(c => { const lv = [0, 95, 135, 175, 215, 255]; c -= 16; return "rgb(" + lv[Math.floor(c / 36)] + "," + lv[Math.floor(c / 6) % 6] + "," + lv[c % 6] + ")"; });
+const p2 = n => String(n).padStart(2, "0");
+function hSize(n){ n = Math.max(0, Math.floor(n)); const u = ["B", "KiB", "MiB", "GiB", "TiB", "PiB"]; let v = n, i = 0; while (v >= 1024 && i < u.length - 1) { v /= 1024; i++; } if (!i) return n + "B"; const r = Math.round(v * 10) / 10; return (r === Math.floor(r) ? String(r) : r.toFixed(1)) + u[i]; }
+function hDur(s){ s = Math.max(0, Math.floor(s)); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return h ? p2(h) + ":" + p2(m) + ":" + p2(x) : p2(m) + ":" + p2(x); }
+function hDate(ms){ const d = new Date(ms), off = -d.getTimezoneOffset(), a = Math.abs(off); return d.getFullYear() + "-" + p2(d.getMonth() + 1) + "-" + p2(d.getDate()) + " " + p2(d.getHours()) + ":" + p2(d.getMinutes()) + ":" + p2(d.getSeconds()) + "." + String(((ms % 1000) + 1000) % 1000).padStart(3, "0") + "000000 " + (off < 0 ? "-" : "+") + p2(Math.floor(a / 60)) + p2(a % 60); }
+function center(s, w){ const m = w - s.length; if (m <= 0) return s; const l = Math.floor(m / 2) + (m & w & 1); return " ".repeat(l) + s + " ".repeat(m - l); }
+function systemText(){ const ua = navigator.userAgent || "", pl = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "";
+  const br = /Edg\//.test(ua) ? "Edge" : /OPR\//.test(ua) ? "Opera" : /Firefox\//.test(ua) ? "Firefox" : /Chrome\//.test(ua) ? "Chrome" : /Safari\//.test(ua) ? "Safari" : T("Browser", "navigateur");
+  return (/iPhone|iPad/.test(ua) ? "iOS" : /Android/.test(ua) ? "Android" : /Mac/.test(pl) ? "macOS" : /Win/.test(pl) ? "Windows" : /Linux/.test(pl) ? "Linux" : pl || T("unbekannt", "inconnu")) + " | " + br; }
+
+// ---- SHA-256, stückweise (für große Dateien, ohne alles in den Speicher zu laden)
+const SK = [], SH0 = [];
+(function(){ const pr = []; for (let n = 2; pr.length < 64; n++) { let ok = true; for (const q of pr) { if (q * q > n) break; if (n % q === 0) { ok = false; break; } } if (ok) pr.push(n); }
+  const fr = x => Math.floor((x - Math.floor(x)) * 4294967296); pr.forEach(p => SK.push(fr(Math.cbrt(p)))); pr.slice(0, 8).forEach(p => SH0.push(fr(Math.sqrt(p)))); })();
+function Sha256(){
+  const h = Uint32Array.from(SH0), w = new Uint32Array(64), buf = new Uint8Array(64); let blen = 0, total = 0;
+  function block(u, o){
+    for (let i = 0; i < 16; i++) w[i] = ((u[o + 4 * i] << 24) | (u[o + 4 * i + 1] << 16) | (u[o + 4 * i + 2] << 8) | u[o + 4 * i + 3]) >>> 0;
+    for (let i = 16; i < 64; i++) { const a = w[i - 15], c = w[i - 2]; w[i] = (w[i - 16] + (((a >>> 7) | (a << 25)) ^ ((a >>> 18) | (a << 14)) ^ (a >>> 3)) + w[i - 7] + (((c >>> 17) | (c << 15)) ^ ((c >>> 19) | (c << 13)) ^ (c >>> 10))) >>> 0; }
+    let a = h[0], b = h[1], c = h[2], d = h[3], e = h[4], f = h[5], g = h[6], k = h[7];
+    for (let i = 0; i < 64; i++) {
+      const t1 = (k + (((e >>> 6) | (e << 26)) ^ ((e >>> 11) | (e << 21)) ^ ((e >>> 25) | (e << 7))) + ((e & f) ^ (~e & g)) + SK[i] + w[i]) >>> 0;
+      const t2 = ((((a >>> 2) | (a << 30)) ^ ((a >>> 13) | (a << 19)) ^ ((a >>> 22) | (a << 10))) + ((a & b) ^ (a & c) ^ (b & c))) >>> 0;
+      k = g; g = f; f = e; e = (d + t1) >>> 0; d = c; c = b; b = a; a = (t1 + t2) >>> 0; }
+    h[0] = (h[0] + a) >>> 0; h[1] = (h[1] + b) >>> 0; h[2] = (h[2] + c) >>> 0; h[3] = (h[3] + d) >>> 0; h[4] = (h[4] + e) >>> 0; h[5] = (h[5] + f) >>> 0; h[6] = (h[6] + g) >>> 0; h[7] = (h[7] + k) >>> 0; }
+  return {
+    update(u){ total += u.length; let i = 0; if (blen) { while (i < u.length && blen < 64) buf[blen++] = u[i++]; if (blen < 64) return; block(buf, 0); blen = 0; }
+      for (; i + 64 <= u.length; i += 64) block(u, i); while (i < u.length) buf[blen++] = u[i++]; },
+    hex(){ const bits = total * 8, hi = Math.floor(bits / 4294967296) >>> 0, lo = bits >>> 0; buf[blen++] = 0x80;
+      if (blen > 56) { while (blen < 64) buf[blen++] = 0; block(buf, 0); blen = 0; } while (blen < 56) buf[blen++] = 0;
+      buf[56] = hi >>> 24; buf[57] = hi >>> 16 & 255; buf[58] = hi >>> 8 & 255; buf[59] = hi & 255; buf[60] = lo >>> 24; buf[61] = lo >>> 16 & 255; buf[62] = lo >>> 8 & 255; buf[63] = lo & 255; block(buf, 0);
+      return Array.from(h, x => x.toString(16).padStart(8, "0")).join(""); } };
+}
+const toHex = ab => Array.from(new Uint8Array(ab), x => x.toString(16).padStart(2, "0")).join("");
+async function hashFile(f, onBytes, cancelled){
+  if (f.size <= 33554432 && window.crypto && crypto.subtle) { const d = await crypto.subtle.digest("SHA-256", await f.arrayBuffer()); onBytes(f.size); return toHex(d); }
+  const h = Sha256(), CH = 4 * 1024 * 1024;
+  for (let o = 0; o < f.size; o += CH) { if (cancelled()) return null; const ab = await f.slice(o, o + CH).arrayBuffer(); h.update(new Uint8Array(ab)); onBytes(ab.byteLength); await WZ.warte(); }
+  return h.hex();
+}
+window.OratioSha256 = { hashFile, Sha256 };   // zum Testen
+
+// ---- Ordner per Ziehen (Unterordner mitnehmen)
+async function entryFiles(entry, base){
+  if (entry.isFile) { const f = await new Promise((ok, er) => entry.file(ok, er)); return [{ file: f, path: base + f.name }]; }
+  const out = [], rd = entry.createReader(); let batch;
+  do { batch = await new Promise((ok, er) => rd.readEntries(ok, er)); for (const e of batch) out.push(...await entryFiles(e, base + entry.name + "/")); } while (batch.length);
+  return out;
+}
+// ---- Regenbogen-Balken "Oratio Oratio …" (wie im Terminal: bunt und fließend)
+function Balken(box){
+  const cv = document.createElement("canvas"); cv.className = "hc-bar"; box.appendChild(cv); let frac = 0, off = 0, timer = null;
+  function draw(){
+    const dpr = window.devicePixelRatio || 1, W = cv.clientWidth || 300, H = 30; if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = H * dpr; }
+    const x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, W, H);
+    const r = (H - 2) / 2; x.fillStyle = "rgba(128,128,128,.22)"; x.beginPath(); x.moveTo(1 + r, 1); x.lineTo(W - 1 - r, 1); x.arc(W - 1 - r, 1 + r, r, -Math.PI / 2, Math.PI / 2); x.lineTo(1 + r, H - 1); x.arc(1 + r, 1 + r, r, Math.PI / 2, Math.PI * 1.5); x.closePath(); x.fill();
+    x.font = "bold " + Math.round((H - 2) * 0.52) + "px ui-monospace,Menlo,Consolas,monospace"; x.textBaseline = "middle"; const cw = Math.max(1, x.measureText("O").width), pad = r * 0.6, cells = Math.max(1, Math.floor((W - 2 - pad * 2) / cw)), filled = Math.round(cells * frac), word = "Oratio "; let ci = off;
+    for (let k = 0; k < cells; k++) { const px = 1 + pad + k * cw; if (k < filled) { const ch = word[(k + off) % word.length]; if (ch !== " ") { x.fillStyle = RAINBOW[ci % RAINBOW.length]; ci++; x.fillText(ch, px, H / 2 + 1); } } else { x.fillStyle = "rgba(128,128,128,.55)"; x.fillText("·", px, H / 2 + 1); } }
+  }
+  return { set(f){ frac = Math.max(0, Math.min(1, f)); draw(); }, lauf(an){ clearInterval(timer); if (an) timer = setInterval(() => { off++; draw(); }, 90); draw(); } };
+}
+
+tool({ id: "hash", titel: "Datei-Hash- und Duplikat-Prüfer", sym: "🔐", farbe: "#7a4fd6", text: "Findet identische Dateien über ihren SHA256-Fingerabdruck – mit Oratio-Balken, Duplikatgruppen und Bericht (TXT + CSV).", build(sec){
+  const EMPTY = T("Noch keine Dateien oder Ordner ausgewählt.", "Aucun fichier ou dossier sélectionné pour l’instant.") + "<br>" + T("„Dateien +“, „Ordner +“ oder hierher ziehen.", "« Fichiers + », « Dossier + » ou glisse-les ici.");
+  sec.innerHTML =
+    '<div class="hc hc-p1">' +
+      '<p class="hc-soft" data-nt>' + esc(T("Version " + VERSION + "  ·  Entwickelt von " + AUTHOR + "  ·  Stand " + RELEASE, "Version " + VERSION + "  ·  Développé par " + AUTHOR + "  ·  Version du " + RELEASE)) + '<br>' + esc(T("System: ", "Système : ") + systemText()) + '</p>' +
+      '<div class="row"><button class="btn" id="hcF" data-nt>' + esc(T("Dateien +", "Fichiers +")) + '</button><button class="btn" id="hcD" data-nt>' + esc(T("Ordner +", "Dossier +")) + '</button></div>' +
+      '<div class="drop" id="hcDrop"><b data-nt>' + esc(T("Dateien oder Ordner hierher ziehen", "Glisse des fichiers ou des dossiers ici")) + '</b><span data-nt>' + esc(T("oder tippen, um Dateien zu wählen", "ou touche pour choisir des fichiers")) + '</span></div>' +
+      '<input type="file" id="hcIF" multiple hidden><input type="file" id="hcID" webkitdirectory multiple hidden>' +
+      '<div class="hc-list" id="hcList"></div><div class="hc-notice" id="hcNote" hidden></div><div class="hc-status" id="hcStat"></div>' +
+      '<div class="row" style="margin-top:8px"><button class="btn sm" id="hcRm" data-nt>' + esc(T("Entfernen", "Retirer")) + '</button><button class="btn sm" id="hcClr" data-nt>' + esc(T("Alles leeren", "Tout vider")) + '</button><span class="sp"></span><button class="btn go" id="hcGo" data-nt>' + esc(T("Prüfung starten", "Lancer la vérification")) + '</button></div>' +
+      '<p class="hc-soft" data-nt style="margin-top:8px;font-size:12px">' + esc(T("Ordner werden einschließlich aller Unterordner durchsucht. Deine Dateien bleiben auf deinem Gerät.", "Les dossiers sont analysés avec tous leurs sous-dossiers. Tes fichiers restent sur ton appareil.")) + '</p>' +
+    '</div>' +
+    '<div class="hc hc-p2" hidden><div class="hc-title" id="hcRT" data-nt style="color:' + C.cyan + '"></div><div class="hc-log" id="hcLog"></div><div class="hc-found" id="hcFound" data-nt></div>' +
+      '<div class="hc-barrow"><div id="hcBar" style="flex:1;min-width:0"></div><b class="hc-pct" id="hcPct" data-nt style="color:' + C.yellow + '">  0%</b></div>' +
+      '<div class="hc-line" id="hcFile" data-nt></div><div class="hc-line hc-soft" id="hcStats" data-nt></div>' +
+      '<div class="row" style="margin-top:8px"><span class="sp"></span><button class="btn" id="hcCancel" data-nt>' + esc(T("Abbrechen", "Annuler")) + '</button></div></div>' +
+    '<div class="hc hc-p3" hidden><div class="hc-title" id="hcResT" data-nt></div><div class="hc-tree" id="hcTree"></div><div class="hc-sum" id="hcSum"></div>' +
+      '<div class="row" style="margin-top:10px"><button class="btn" id="hcAgain" data-nt>' + esc(T("Nochmal prüfen", "Revérifier")) + '</button><button class="btn" id="hcNew" data-nt>' + esc(T("Neue Prüfung", "Nouvelle vérification")) + '</button><span class="sp"></span><button class="btn go" id="hcSave" data-nt>' + esc(T("Bericht speichern (TXT + CSV)", "Enregistrer le rapport (TXT + CSV)")) + '</button></div></div>';
+  const q = s => $(s, sec), pages = [q(".hc-p1"), q(".hc-p2"), q(".hc-p3")];
+  const showPage = i => pages.forEach((p, k) => p.hidden = k !== i);
+  const bar = Balken(q("#hcBar"));
+  let sel = [], marked = new Set(), job = null, res = null;
+
+  // ----- Seite 1: Auswahl
+  const say = t => { const n = q("#hcNote"); n.textContent = t || ""; n.hidden = !t; };
+  function refresh(){
+    let nf = 0, nd = 0; const L = q("#hcList");
+    L.innerHTML = sel.length ? sel.map((s, i) => { const dir = s.kind === "folder"; dir ? nd++ : nf++;
+      return '<div class="hc-item' + (marked.has(i) ? " on" : "") + '" data-i="' + i + '"><span class="hc-kind" style="' + (dir ? "color:" + C.magenta : "") + '" data-nt>' + (dir ? T("ORDNER", "DOSSIER") : T("DATEI", "FICHIER")) + '</span><span class="hc-nm" data-nt><b>' + esc(s.name) + '</b><small>' + esc(s.path) + (dir ? " · " + s.files.length + " " + T("Datei(en)", "fichier(s)") : " · " + hSize(s.files[0].file.size)) + '</small></span></div>'; }).join("")
+      : '<div class="hc-empty" style="color:' + C.yellow + '">' + EMPTY + '</div>';
+    q("#hcStat").textContent = T("Auswahl: " + sel.length + " Einträge   |   Dateien: " + nf + "   |   Ordner: " + nd, "Sélection : " + sel.length + " entrées   |   Fichiers : " + nf + "   |   Dossiers : " + nd);
+    ["#hcRm", "#hcClr", "#hcGo"].forEach(s => q(s).disabled = !sel.length);
+  }
+  const keyOf = s => s.kind + "|" + s.path + "|" + (s.kind === "file" ? s.files[0].file.size + "|" + s.files[0].file.lastModified : s.files.length);
+  function addEntry(s){ if (sel.some(x => keyOf(x) === keyOf(s))) { say(T("Hinweis: Dieser Eintrag ist bereits vorhanden: ", "Remarque : cette entrée existe déjà : ") + s.path); return false; } sel.push(s); return true; }
+  function addFiles(files){ say(""); for (const f of files) addEntry({ kind: "file", name: f.name, path: f.name, files: [{ file: f, path: f.name }] }); refresh(); }
+  function addFolderFromInput(files){ say(""); const by = {}; for (const f of files) { const rel = f.webkitRelativePath || f.name, root = rel.split("/")[0]; (by[root] = by[root] || []).push({ file: f, path: rel }); }
+    for (const root in by) addEntry({ kind: "folder", name: root, path: root, files: by[root] }); refresh(); }
+  q("#hcF").onclick = q("#hcDrop").onclick = () => q("#hcIF").click();
+  q("#hcD").onclick = () => q("#hcID").click();
+  q("#hcIF").onchange = e => { addFiles([...e.target.files]); e.target.value = ""; };
+  q("#hcID").onchange = e => { addFolderFromInput([...e.target.files]); e.target.value = ""; };
+  const drop = q("#hcDrop");
+  ["dragenter", "dragover"].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add("over"); }));
+  ["dragleave", "drop"].forEach(t => drop.addEventListener(t, () => drop.classList.remove("over")));
+  drop.addEventListener("drop", async e => { e.preventDefault(); e.stopPropagation(); const items = [...(e.dataTransfer.items || [])].map(i => i.webkitGetAsEntry && i.webkitGetAsEntry()).filter(Boolean);
+    if (pages[0].hidden) { res = null; showPage(0); }
+    say(""); if (!items.length) { addFiles([...e.dataTransfer.files]); return; }
+    for (const en of items) { try { if (en.isFile) { const f = await new Promise((ok, er) => en.file(ok, er)); addEntry({ kind: "file", name: f.name, path: f.name, files: [{ file: f, path: f.name }] }); } else { const fl = await entryFiles(en, ""); addEntry({ kind: "folder", name: en.name, path: en.name, files: fl }); } } catch (er) { say(T("Konnte nicht gelesen werden: ", "Lecture impossible : ") + en.name); } }
+    refresh(); });
+  q("#hcList").onclick = e => { const it = e.target.closest(".hc-item"); if (!it) return; const i = +it.dataset.i; marked.has(i) ? marked.delete(i) : marked.add(i); it.classList.toggle("on", marked.has(i)); };
+  q("#hcRm").onclick = () => { sel = sel.filter((_, i) => !marked.has(i)); marked.clear(); say(""); refresh(); };
+  q("#hcClr").onclick = () => { if (sel.length && confirm(T("Wirklich alle Einträge löschen?", "Vraiment supprimer toutes les entrées ?"))) { sel = []; marked.clear(); say(""); refresh(); } };
+  q("#hcGo").onclick = () => pruefe();
+
+  // ----- Seite 2: Prüfung läuft
+  function log(kind, text){ const d = document.createElement("div"); d.style.color = kind === "file" ? C.green : kind === "folder" ? C.cyan : C.yellow; d.textContent = text; d.setAttribute("data-nt", ""); const L = q("#hcLog"); L.appendChild(d); L.scrollTop = L.scrollHeight; }
+  q("#hcCancel").onclick = () => { if (job) { job.cancel = true; q("#hcCancel").disabled = true; q("#hcRT").textContent = T("Wird abgebrochen …", "Annulation …"); } };
+  async function pruefe(){
+    if (!sel.length || (job && !job.done)) return;
+    q("#hcLog").innerHTML = ""; ["#hcFound", "#hcFile", "#hcStats"].forEach(s => q(s).textContent = ""); bar.set(0); q("#hcPct").textContent = "  0%";
+    q("#hcRT").textContent = T("Dateien und Ordner einlesen …", "Lecture des fichiers et dossiers …"); q("#hcCancel").disabled = false; showPage(1); bar.lauf(true);
+    const me = job = { cancel: false, done: false };
+    // Dateien sammeln
+    const files = [], seen = new Set(); let invalid = 0, folderErr = 0;
+    const add = it => { const k = it.path + "|" + it.file.size + "|" + it.file.lastModified; if (!seen.has(k)) { seen.add(k); files.push(it); } };
+    for (const s of sel) { if (me.cancel) break; if (s.kind === "file") { log("file", "Datei:  " + s.path); add(s.files[0]); } else { log("folder", "Ordner: " + s.path); s.files.forEach(add); } }
+    const total = files.reduce((a, f) => a + f.file.size, 0);
+    q("#hcFound").textContent = files.length ? T(files.length + " Datei(en) wurden gefunden.   Gesamtgröße: " + hSize(total) + "  |  Vollständige " + ALGO + "-Prüfung", files.length + " fichier(s) trouvé(s).   Taille totale : " + hSize(total) + "  |  Vérification " + ALGO + " complète") : T("Es wurden keine lesbaren Dateien gefunden.", "Aucun fichier lisible n’a été trouvé.");
+    if (files.length) q("#hcRT").textContent = T("Hashes berechnen …", "Calcul des hachages …");
+    const groups = new Map(), errors = []; let processed = 0, ok = 0, last = 0; const t0 = performance.now();
+    async function emit(i, name, force){ const now = performance.now(); if (!force && now - last < 80) return; last = now;
+      const frac = total > 0 ? processed / total : (files.length ? i / files.length : 0), el = (now - t0) / 1000;
+      bar.set(frac); q("#hcPct").textContent = String(Math.floor(frac * 100)).padStart(3, " ") + "%";
+      q("#hcFile").textContent = T("Datei " + i + " von " + files.length + "   |   " + name, "Fichier " + i + " sur " + files.length + "   |   " + name);
+      const speed = el > 0.5 ? processed / el : 0, rest = speed > 0 ? hDur((total - processed) / speed) : "--:--";
+      q("#hcStats").textContent = T("Verarbeitet: " + hSize(processed) + " / " + hSize(total) + "   |   Laufzeit: " + hDur(el) + "   |   Restzeit: " + rest, "Traité : " + hSize(processed) + " / " + hSize(total) + "   |   Durée : " + hDur(el) + "   |   Temps restant : " + rest);
+      await WZ.warte(); }
+    await emit(0, T("Vorbereitung...", "Préparation..."), true);
+    for (let i = 0; i < files.length; i++) {
+      if (me.cancel) break; const it = files[i], f = it.file, name = f.name; await emit(i, name, true);
+      let digest = null, done = 0;
+      try { digest = await hashFile(f, n => { processed += n; done += n; emit(i, name); }, () => me.cancel); }
+      catch (e) { errors.push([it.path, e && e.name === "NotReadableError" ? T("Datei ist nicht lesbar", "Le fichier est illisible") : T(ALGO + "-Hash konnte nicht berechnet werden", "Le hachage " + ALGO + " n’a pas pu être calculé")]); processed += Math.max(0, f.size - done); continue; }
+      if (me.cancel) break; processed += Math.max(0, f.size - done);
+      let g = groups.get(digest); if (!g) { g = { hash: digest, size: f.size, paths: [], dates: [] }; groups.set(digest, g); } g.paths.push(it.path); g.dates.push(hDate(f.lastModified)); ok++; await emit(i + 1, name, true);
+    }
+    const out = { groups: [...groups.values()], errors, file_count: files.length, ok, invalid, folder_errors: folderErr, processed, total, duration: (performance.now() - t0) / 1000, cancelled: me.cancel };
+    me.done = true; bar.lauf(false); zeigeErgebnis(out);
+  }
+
+  // ----- Seite 3: Ergebnis
+  function stat(r){ const dup = r.groups.filter(g => g.paths.length > 1), single = r.groups.filter(g => g.paths.length === 1);
+    return { dup_groups: dup.length, dup_files: dup.reduce((a, g) => a + g.paths.length, 0), extra: dup.reduce((a, g) => a + g.paths.length - 1, 0), single: single.length, reclaim: dup.reduce((a, g) => a + (g.paths.length - 1) * g.size, 0) }; }
+  function zeigeErgebnis(r){
+    res = r; const st = stat(r), t = q("#hcResT"); let txt, col;
+    if (r.cancelled) { txt = T("Prüfung abgebrochen – Ergebnis bis zum Abbruch", "Vérification annulée – résultat jusqu’à l’annulation"); col = C.yellow; }
+    else if (!r.file_count) { txt = T("Es wurden keine lesbaren Dateien gefunden.", "Aucun fichier lisible n’a été trouvé."); col = C.red; }
+    else if (st.dup_groups) { txt = T(st.dup_groups + " Gruppe(n) mit identischen Dateien – " + hSize(st.reclaim) + " möglicherweise freigebbar", st.dup_groups + " groupe(s) de fichiers identiques – " + hSize(st.reclaim) + " potentiellement libérables"); col = C.red; }
+    else { txt = T("Keine identischen Dateien gefunden.", "Aucun fichier identique trouvé."); col = C.green; }
+    t.textContent = txt; t.style.color = col;
+    const dup = r.groups.filter(g => g.paths.length > 1), single = r.groups.filter(g => g.paths.length === 1); let h = "";
+    const cp = (label, val) => '<button class="hc-cp" data-c="' + esc(val) + '" data-nt title="' + esc(label) + '">⧉ ' + esc(label) + '</button>';
+    const row = (p, size, date, hash) => '<div class="hc-r"><span class="hc-rp" data-nt title="' + esc(p) + '">' + esc(p) + '</span><span class="hc-rs" data-nt>' + hSize(size) + '</span><span class="hc-rd" data-nt>' + esc(date.slice(0, 19)) + '</span><span class="hc-rh" data-nt title="' + hash + '">' + hash.slice(0, 12) + '…</span><span class="hc-ra">' + cp(T("Pfad", "Chemin"), p) + cp("Hash", hash) + '</span></div>';
+    const sect = (title, col2, open, inner) => '<details class="hc-sec"' + (open ? " open" : "") + '><summary style="color:' + col2 + '" data-nt>' + esc(title) + '</summary>' + inner + '</details>';
+    let inner = ""; if (!dup.length) inner = '<div class="hc-r" style="color:' + C.green + '" data-nt>' + esc(T("Keine identischen Dateien gefunden.", "Aucun fichier identique trouvé.")) + '</div>';
+    dup.forEach((g, n) => { inner += '<details class="hc-grp"' + (dup.length <= 30 ? " open" : "") + '><summary data-nt><b style="color:' + C.red + '">' + esc(T("Duplikatgruppe " + (n + 1) + "  ·  " + g.paths.length + "×", "Groupe de doublons " + (n + 1) + "  ·  " + g.paths.length + "×")) + '</b> <span class="hc-rs">' + hSize(g.size) + '</span> <span class="hc-rh" title="' + g.hash + '">' + g.hash.slice(0, 12) + '…</span> ' + cp("Hash", g.hash) + '</summary>' + g.paths.map((p, k) => row(p, g.size, g.dates[k], g.hash)).join("") + '</details>'; });
+    h += sect(T("IDENTISCHE DATEIEN  (" + dup.length + " Gruppen)", "FICHIERS IDENTIQUES  (" + dup.length + " groupes)"), C.red, true, inner);
+    h += sect(T("DATEIEN OHNE DUPLIKAT  (" + single.length + ")", "FICHIERS SANS DOUBLON  (" + single.length + ")"), C.green, single.length <= 200, single.map(g => row(g.paths[0], g.size, g.dates[0], g.hash)).join(""));
+    if (r.errors.length) h += sect(T("FEHLER BEI DER HASH-BERECHNUNG  (" + r.errors.length + ")", "ERREURS DE CALCUL DU HACHAGE  (" + r.errors.length + ")"), C.yellow, true, r.errors.map(e => '<div class="hc-r"><span class="hc-rp" data-nt>' + esc(e[0]) + '</span><span style="color:' + C.yellow + '" data-nt>' + esc(e[1]) + '</span></div>').join(""));
+    q("#hcTree").innerHTML = h;
+    const rows = [[T("Eingelesene Dateien", "Fichiers lus"), r.file_count, null], [T("Erfolgreich berechnete Hashes", "Hachages calculés avec succès"), r.ok, C.green], [T("Unterschiedliche Hashwerte", "Valeurs de hachage différentes"), r.groups.length, C.cyan],
+      [T("Gruppen mit identischen Dateien", "Groupes de fichiers identiques"), st.dup_groups, C.red], [T("Dateien in Duplikatgruppen", "Fichiers dans des groupes de doublons"), st.dup_files, C.red], [T("Zusätzliche Duplikatdateien", "Fichiers en double supplémentaires"), st.extra, C.magenta],
+      [T("Dateien ohne Duplikat", "Fichiers sans doublon"), st.single, C.green], [T("Möglicherweise freigebbarer Platz", "Espace potentiellement libérable"), hSize(st.reclaim), C.yellow], [T("Gesamte geprüfte Datenmenge", "Volume total vérifié"), hSize(r.processed), C.cyan],
+      [T("Fehler bei Hashberechnung", "Erreurs de calcul du hachage"), r.errors.length, C.yellow], [T("Ungültige oder unlesbare Pfade", "Chemins invalides ou illisibles"), r.invalid, C.yellow], [T("Ordner-Lesefehler", "Erreurs de lecture de dossier"), r.folder_errors, C.yellow], [T("Gesamtdauer", "Durée totale"), hDur(r.duration), C.cyan]];
+    q("#hcSum").innerHTML = rows.map(x => '<div class="hc-sr" data-nt><span class="hc-soft">' + esc(x[0]) + ':</span> <b' + (x[2] ? ' style="color:' + x[2] + '"' : "") + '>' + esc(String(x[1])) + '</b></div>').join("");
+    q("#hcSave").disabled = !r.groups.length; showPage(2);
+  }
+  q("#hcTree").onclick = e => { const b = e.target.closest(".hc-cp"); if (!b) return; e.preventDefault(); const v = b.dataset.c; const ok = () => { const o = b.textContent; b.textContent = "✓"; setTimeout(() => b.textContent = o, 900); };
+    (navigator.clipboard ? navigator.clipboard.writeText(v) : Promise.reject()).then(ok, () => { const ta = document.createElement("textarea"); ta.value = v; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); ok(); } catch (x) {} ta.remove(); }); };
+  q("#hcAgain").onclick = () => pruefe();
+  q("#hcNew").onclick = () => { sel = []; marked.clear(); res = null; say(""); refresh(); showPage(0); };
+
+  // ----- Bericht (TXT + CSV, im Ordner HashPruefer_<Zeit> als ZIP)
+  function csvZelle(x){ return '"' + String(x).replace(/"/g, '""') + '"'; }
+  async function bericht(){
+    if (!res) return; const r = res, st = stat(r), now = new Date(), stamp = now.getFullYear() + "-" + p2(now.getMonth() + 1) + "-" + p2(now.getDate()) + "_" + p2(now.getHours()) + "-" + p2(now.getMinutes()) + "-" + p2(now.getSeconds()), ordner = "HashPruefer_" + stamp;
+    const csv = ["Hash", "Pfad", "Name", "Groesse_Bytes", "Groesse", "Geaendert", "Anzahl_in_Gruppe"].map(csvZelle).join(";") + "\r\n" +
+      r.groups.map(g => g.paths.map((p, k) => [g.hash, p, p.split("/").pop(), g.size, hSize(g.size), g.dates[k], g.paths.length].map(csvZelle).join(";") + "\r\n").join("")).join("");
+    const line = "=".repeat(60), small = "-".repeat(30), o = [PROGRAM, T("Version: ", "Version : ") + VERSION, T("Stand: ", "Date : ") + RELEASE, T("Entwickelt von: ", "Développé par : ") + AUTHOR,
+      T("Bericht erstellt: ", "Rapport créé : ") + p2(now.getDate()) + "." + p2(now.getMonth() + 1) + "." + now.getFullYear() + " " + p2(now.getHours()) + ":" + p2(now.getMinutes()) + ":" + p2(now.getSeconds()), "",
+      line, center(" " + T("ZUSAMMENFASSUNG", "RÉSUMÉ") + " ", 60), line,
+      T("Eingelesene Dateien: ", "Fichiers lus : ") + r.file_count, T("Erfolgreiche Hashes: ", "Hachages réussis : ") + r.ok, T("Unterschiedliche Hashwerte: ", "Valeurs de hachage différentes : ") + r.groups.length,
+      T("Duplikatgruppen: ", "Groupes de doublons : ") + st.dup_groups, T("Einzeldateien: ", "Fichiers uniques : ") + st.single, T("Freigebbarer Platz: ", "Espace libérable : ") + hSize(st.reclaim), T("Dauer: ", "Durée : ") + hDur(r.duration), ""];
+    let nd = 0, ns = 0;
+    for (const g of r.groups) { let title; if (g.paths.length > 1) { nd++; title = T("DUPLIKATGRUPPE ", "GROUPE DE DOUBLONS ") + nd; } else { ns++; title = T("EINZELDATEI ", "FICHIER UNIQUE ") + ns; }
+      o.push(small, center(" " + title + " ", 30), small, "Hash: " + g.hash, T("Anzahl: ", "Nombre : ") + g.paths.length, T("Dateigroesse: ", "Taille : ") + hSize(g.size));
+      g.paths.forEach((p, k) => o.push(T("Pfad: ", "Chemin : ") + p, T("Geaendert: ", "Modifié : ") + g.dates[k])); o.push(""); }
+    if (r.errors.length) { o.push(line, center(" " + T("FEHLER BEI DER HASH-BERECHNUNG", "ERREURS DE CALCUL DU HACHAGE") + " ", 60), line); for (const e of r.errors) o.push(T("Datei:  ", "Fichier : ") + e[0], T("Fehler: ", "Erreur : ") + e[1], ""); }
+    const z = new JSZip(); z.file(ordner + "/HashBericht.txt", o.join("\n") + "\n"); z.file(ordner + "/HashErgebnisse.csv", "﻿" + csv);
+    WZ.speichern(await z.generateAsync({ type: "blob" }), ordner + ".zip");
+  }
+  q("#hcSave").onclick = bericht;
+  refresh(); showPage(0);
+}});
+})();
+
 // ------------------------------------------------------------------ Aufbau der Seite
 function start(o){
   o = o || {}; const LIST = TOOLS.filter(o.filter || (t => !t.gruppe));
