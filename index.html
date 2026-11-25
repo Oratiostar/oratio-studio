@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="Oratio Place: Technik-Nachschlagewerk, Weihnachtswelt, Lifestyle und Deutschkurs – alles an einem Ort.">
 <meta name="twitter:image" content="https://oratioplace.com/vorschau.png">
 <link rel="icon" href="logo-place.png">
-<link rel="stylesheet" href="werkzeuge/glass.css?v=50">
+<link rel="stylesheet" href="werkzeuge/glass.css?v=52">
 <style>
 @font-face{font-family:"Inter";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/Inter-Regular.woff) format("woff")}
 @font-face{font-family:"Inter";font-weight:600;font-style:normal;font-display:swap;src:url(fonts/Inter-SemiBold.woff) format("woff")}
@@ -843,10 +843,10 @@ function startseite(){
   const weltK = id => { const w = weltInfo(id); return w ? karte("#/w/"+w.id, "", dk(w), '<span class="emo">'+weltSym(w)+'</span>', T(w.name), T(w.untertitel), w.seiten.length+" "+U("seiten")) : ""; };
   const EX = {
     iclab: () => karte("ic-lab.html", "", "#2fbf4a", '<span class="emo">🧰</span>', Tx("Schaltungen","Circuits"), Tx("Jedes Bauteil und jeder IC in einer echten Schaltung: Schaltplan, Erklärung, Oszilloskop – und der Weg zum Rechner","Chaque composant et chaque CI dans un vrai circuit : schéma, explication, oscilloscope – et le lien vers le calculateur"), "80 "+Tx("Schaltungen","circuits")),
-    elab: () => karte("elektro.html", "", "#00b3a4", '<span class="emo">🔌</span>', Tx("Elektronik-Rechner","Calculateurs d’électronique"), Tx("Farbcode, Ohm, LED, Spannungsteiler, Operationsverstärker, Filter, 555, Regler, Logik – zum Rechnen, mit lebendiger Zeichnung","Code couleur, Ohm, LED, diviseur, ampli op, filtres, 555, logique – calculs avec schéma vivant"), "10 "+Tx("Werkzeuge","outils")),
+    elab: () => karte("elektro.html", "", "#00b3a4", '<span class="emo">🔌</span>', Tx("Elektronik-Rechner","Calculateurs d’électronique"), Tx("Farbcode, Ohm, LED, Teiler, Opamp, Filter, 555, Regler, Logik, Akku-Laufzeit, SMD-Code, Kabel, ADC – zum Rechnen, mit lebendiger Zeichnung","Code couleur, Ohm, LED, diviseur, ampli op, filtres, 555, logique, autonomie de batterie, code CMS, câble, ADC – calculs avec schéma vivant"), "10 "+Tx("Werkzeuge","outils")),
     sim: () => karte("lab.html#sim", "", "#ff8a00", '<span class="emo">⚡</span>', Tx("Schaltungs-Simulator","Simulateur de circuits"), Tx("Bauteile frei verdrahten, Strom und Spannung live sehen – Überlast brennt durch (Oratio Lab)","Câbler librement, voir courant et tension en direct (Oratio Lab)"), "Oratio Lab"),
     disp: () => karte("lab.html#disp", "", "#2f7bff", '<span class="emo">📺</span>', Tx("Display-Werkstatt","Atelier d’écrans"), Tx("LCD, OLED, TFT, 7-Segment, LED-Matrix: gestalten und den fertigen Code für Uno, ESP32 oder Pi bekommen (Oratio Lab)","LCD, OLED, TFT, 7 segments, matrice LED : concevoir et obtenir le code (Oratio Lab)"), "Oratio Lab"),
-    lab: () => karte("lab.html", "", "#ff8a00", '<span class="emo">🧪</span>', "Oratio Lab", Tx("Schaltungs-Simulator zum freien Verdrahten, Display-Werkstatt, Terminal, Spiel","Simulateur de circuits, atelier d’écrans, terminal, jeu"), Tx("Experimentierwelt","Monde d’expériences")),
+    lab: () => karte("lab.html", "", "#ff8a00", '<span class="emo">🧪</span>', "Oratio Lab", Tx("Schaltungs-Simulator zum freien Verdrahten, Display-Werkstatt, Klang-Labor, Terminal, Spiel","Simulateur de circuits, atelier d’écrans, labo sonore, terminal, jeu"), Tx("Experimentierwelt","Monde d’expériences")),
     pin: () => karte("pinout.html", "", "#d63b8a", '<span class="emo">📌</span>', Tx("Board-Pinouts","Brochages des cartes"), Tx("Raspberry Pi, Pico, Arduino Uno und Nano, ESP32, D1 mini – jeden Pin antippen: Funktion, Grenzwerte, Test-Beispiel","Raspberry Pi, Pico, Uno, Nano, ESP32, D1 mini – touche chaque broche : fonction, limites, exemple"), "6 "+Tx("Boards","cartes")),
     pc: () => karte("pc-check.html", "", "#ff5a3c", '<span class="emo">🖥️</span>', "PC-Check", Tx("Passt alles zusammen? CPU, GPU, Mainboard, RAM, Netzteil, Kühler – in Prozent","Compatibilité en pourcentage : CPU, GPU, carte mère, RAM, alimentation, ventirad"), Tx("Konfigurator · Matrix · Datenbank","Configurateur · matrice · base"))
   };
@@ -945,6 +945,7 @@ const WTOOLS = [
  ["datei-werkstatt.html#stamp","🔖","Seitenzahlen & Wasserzeichen","Numéros de page et filigrane","Seitenzahlen einfügen, ein Wasserzeichen aufdrucken oder Dateiinfos entfernen.","Ajouter numéros de page, filigrane, effacer les métadonnées.","pdf seitenzahl seitenzahlen nummerieren wasserzeichen stempel metadaten datenschutz"],
  ["datei-werkstatt.html#bilder","📷","Bilder verkleinern","Réduire des images","Fotos kleiner machen (Größe und Qualität) – viele auf einmal, mit Vorher/Nachher-Größe.","Réduire des photos (taille et qualité), beaucoup à la fois.","bild bilder foto fotos verkleinern groesse komprimieren klein kleiner jpg jpeg png webp image picture compress"],
  ["datei-werkstatt.html#bildformat","🔁","Bilder umwandeln","Convertir des images","Das Format wechseln: JPG, PNG, WebP, AVIF, GIF, BMP, TIFF oder ICO.","Changer de format : JPG, PNG, WebP, AVIF, GIF, BMP, TIFF ou ICO.","bild bilder foto umwandeln konvertieren format wechseln jpg jpeg png webp avif gif bmp tiff tif ico icon heic convert image"],
+ ["datei-werkstatt.html#exif","🛡️","Foto-Datenschutz","Confidentialité des photos","Standort, Kamera und Zeit eines Fotos anzeigen und vor dem Teilen entfernen.","Voir et supprimer lieu, appareil et heure d’une photo avant de la partager.","foto datenschutz exif gps standort entfernen privatsphäre metadaten instagram teilen confidentialité lieu métadonnées"],
  ["datei-werkstatt.html#zip","📦","ZIP packen & entpacken","Créer et ouvrir un ZIP","Dateien zu einem ZIP bündeln oder ein ZIP öffnen und einzelne Dateien herausholen.","Regrouper des fichiers en ZIP ou ouvrir un ZIP.","zip packen entpacken archiv rar komprimieren datei dateien auspacken"],
  ["medien-werkstatt.html#video","🎬","Video verkleinern","Réduire une vidéo","Große Videos (auch iPhone-MOV) kleiner machen, mit Zielgröße für WhatsApp, Discord, E-Mail.","Réduire de grosses vidéos (MOV d’iPhone), avec taille cible.","video film mov iphone verkleinern komprimieren klein whatsapp discord zielgroesse tempo zeitlupe drehen zuschneiden compress"],
  ["medien-werkstatt.html#vidformat","🔁","Video umwandeln","Convertir une vidéo","Das Format wechseln: MOV, MP4, WebM, MKV, H.265, AV1 (je nach Browser).","Changer de format : MOV, MP4, WebM, MKV, H.265, AV1 (selon le navigateur).","video film mov mp4 webm mkv hevc h265 h264 av1 vp8 vp9 umwandeln konvertieren format wechseln convert"],
@@ -986,6 +987,12 @@ const WTOOLS = [
  ["elektro.html#normwerte", "🧩", "Reihen- & Parallelschaltung, Normwerte", "Série, parallèle, valeurs normalisées", "Widerstände kombinieren und Wunschwerte aus E12/E24 bauen.", "Combiner des résistances et fabriquer une valeur avec E12/E24.", "reihenschaltung parallelschaltung e12 e24 e96 normwerte widerstand kombinieren kondensator"],
  ["elektro.html#filter", "〰️", "RC-Filter, Laden & LC-Schwingkreis", "Filtre RC, charge et circuit LC", "Grenzfrequenz, Bode-Diagramm, Zeitkonstante, Resonanz.", "Fréquence de coupure, Bode, constante de temps, résonance.", "filter tiefpass hochpass rc grenzfrequenz bode zeitkonstante tau kondensator laden resonanz lc schwingkreis"],
  ["elektro.html#timer555", "⏲️", "555-Timer", "Timer 555", "Blinker und Impuls berechnen, mit Pinbelegung des NE555.", "Calculer clignotant et impulsion, avec brochage du NE555.", "555 ne555 timer blinker astabil monostabil oszillator pwm frequenz tastgrad"],
+ ["lab.html#klang", "🎚️", "Klang-Labor", "Labo sonore", "Mikrofon als Oszilloskop, Spektrum, Stimmgerät und Signalgenerator.", "Micro en oscilloscope, spectre, accordeur et générateur de signaux.", "klang mikrofon oszilloskop spektrum fft stimmgerät frequenz ton note signalgenerator sinus rechteck tuner audio frequenzmesser son micro accordeur"],
+ ["elektro.html#pinplan", "🧭", "Pin-Planer", "Planificateur de broches", "Board und Bauteile wählen – freie Pins, Adress-Check, Warnungen und #define-Zeilen.", "Choisir carte et pièces – broches libres, test d’adresses, avertissements.", "pin planer pins belegung esp32 arduino pico i2c spi adresse konflikt define gpio verkabelung broches"],
+ ["elektro.html#akku", "🔋", "Akku-Laufzeit", "Autonomie de batterie", "Wie lange hält dein ESP32-Projekt am Akku? Mit Schlafmodus.", "Combien de temps ton projet ESP32 tient sur batterie ? Avec veille.", "akku batterie laufzeit esp32 deep sleep schlafmodus mah strom verbrauch lipo autonomie veille"],
+ ["elektro.html#bauteilcode", "🔎", "Bauteil-Code lesen", "Lire un code de composant", "SMD-Widerstände (103, 4R7, 01C), Kondensatoren (104, 4n7) und Spulen entschlüsseln.", "Décoder résistances CMS, condensateurs et bobines.", "smd code 103 104 4r7 eia-96 widerstand kondensator spule aufdruck entschlüsseln cms marquage"],
+ ["elektro.html#kabel", "🪢", "Kabel & Leiterbahn", "Câble et piste", "Spannungsabfall im Kabel, Querschnitt und Leiterbahnbreite (IPC-2221).", "Chute de tension, section et largeur de piste (IPC-2221).", "kabel querschnitt spannungsabfall leiterbahn breite platine ipc-2221 strom câble section piste"],
+ ["elektro.html#adc", "📟", "ADC, PWM & Baudrate", "ADC, PWM et débit en bauds", "Rohwert in Volt, PWM-Auflösung (ESP32) und Baudraten-Fehler (Arduino).", "Valeur brute en volts, résolution PWM et erreur de débit.", "adc analog rohwert pwm auflösung esp32 ledc baudrate uart ubrr arduino fehler bits"],
  ["elektro.html#logik", "🔢", "Logik & Zahlensysteme", "Logique et numération", "Wahrheitstabellen, 74xx-Gatter, Binär/Hex/Dezimal umrechnen.", "Tables de vérité, portes 74xx, binaire/hexa/décimal.", "logik wahrheitstabelle gatter and or nand nor xor 74xx binaer hex dezimal zahlensystem bin dez boolesche algebra"],
  ["pinout.html", "📌", "Board-Pinouts", "Brochages des cartes", "Pinout zum Antippen: Raspberry Pi, Pico, Arduino Uno, Nano, ESP32, D1 mini.", "Brochages à toucher : Raspberry Pi, Pico, Arduino Uno, Nano, ESP32, D1 mini.", "raspberry pi pinout gpio pins header i2c spi uart pwm bcm 40 pin belegung pi5 pi4"],
  ["pc-check.html", "🖥️", "PC-Check", "PC-Check", "Passen CPU, Grafikkarte, Mainboard, RAM, Netzteil und Kühler zusammen? Mit Prozent-Balken, Engpass-Matrix und Teile-Datenbank.", "CPU, GPU, carte mère, RAM, alimentation et ventirad vont-ils ensemble ? Avec barres en pourcentage, matrice des goulots et base de composants.", "pc check computer zusammenbauen konfigurator cpu gpu grafikkarte prozessor mainboard ram netzteil kuehler nvidia amd intel ryzen geforce radeon bottleneck engpass kompatibel kompatibilitaet gaming pc bauen"],
@@ -1157,7 +1164,37 @@ async function frLaden(){ if (LANG === "fr" && FR === null) { try { FR = await h
   catch(e){ app.innerHTML = '<p>Daten konnten nicht geladen werden. Bitte die Seite über einen Webserver öffnen (nicht direkt als Datei).</p>'; }
 })();
 </script>
-<script src="werkzeuge/glass.js?v=50"></script>
+<script src="werkzeuge/glass.js?v=52"></script>
 <script>if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script>
+<style>
+#appHint{position:fixed;left:max(10px,env(safe-area-inset-left,0px));right:max(10px,env(safe-area-inset-right,0px));bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:60;display:none;gap:10px;align-items:center;background:var(--card,#fff);color:var(--fg,#23304a);border:1px solid var(--line,#cfe3f0);border-radius:16px;padding:10px 12px;box-shadow:0 10px 30px rgba(0,0,0,.28);max-width:560px;margin:0 auto;font:600 14px/1.35 Inter,system-ui,sans-serif}
+#appHint.on{display:flex}#appHint img{width:40px;height:40px;border-radius:10px;flex:none}#appHint .tx{flex:1;min-width:0}#appHint .tx small{display:block;font-weight:500;opacity:.8;margin-top:2px}
+#appHint button{border:0;border-radius:999px;padding:8px 12px;font:700 13px Inter,system-ui,sans-serif;cursor:pointer;background:var(--link,#1f6fb8);color:#fff}#appHint button.x{background:transparent;color:inherit;font-size:20px;padding:4px 8px;opacity:.7}
+</style>
+<script>
+(function(){
+  try{
+    var standalone = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone;
+    if (standalone || localStorage.getItem("appHintZu")) return;
+    var ua = navigator.userAgent || "", ios = /iPhone|iPad|iPod/.test(ua), inApp = /Instagram|FBAN|FBAV|Line\//.test(ua), fr = (localStorage.getItem("lang") || ((navigator.language||"").indexOf("fr")===0 ? "fr" : "de")) === "fr", ev = null;
+    var box = document.createElement("div"); box.id = "appHint"; box.setAttribute("role", "region");
+    function T(d, f){ return fr ? f : d; }
+    function show(){
+      var msg, sub = "", btn = "";
+      if (inApp){ msg = T("Tipp: Öffne die Seite im Browser", "Astuce : ouvre le site dans le navigateur"); sub = T("Oben rechts auf ⋯ tippen → „Im Browser öffnen“. Dann kannst du die Seite auf deinen Home-Bildschirm legen.", "Touche ⋯ en haut à droite → « Ouvrir dans le navigateur ». Tu pourras ensuite ajouter le site à ton écran d’accueil."); }
+      else if (ios){ msg = T("Oratio auf den Home-Bildschirm legen", "Ajouter Oratio à l’écran d’accueil"); sub = T("In Safari unten auf Teilen tippen → „Zum Home-Bildschirm“. Dann öffnet sich die Seite mit einem Tipp, auch offline.", "Dans Safari, touche Partager en bas → « Sur l’écran d’accueil ». Le site s’ouvre alors d’un geste, même hors ligne."); }
+      else if (ev){ msg = T("Oratio auf den Home-Bildschirm legen", "Ajouter Oratio à l’écran d’accueil"); sub = T("Die Seite bekommt ein Symbol wie eine App – öffnet auch offline.", "Le site reçoit une icône comme une appli – s’ouvre aussi hors ligne."); btn = '<button type="button" class="in">' + T("Hinzufügen", "Ajouter") + '</button>'; }
+      else return;
+      box.innerHTML = '<img src="icon-192.png" alt=""><div class="tx">' + msg + '<small>' + sub + '</small></div>' + btn + '<button type="button" class="x" aria-label="' + T("Schließen", "Fermer") + '">×</button>';
+      document.body.appendChild(box); box.classList.add("on");
+      box.querySelector(".x").onclick = function(){ box.classList.remove("on"); try{ localStorage.setItem("appHintZu", "1"); }catch(e){} };
+      var b = box.querySelector(".in"); if (b) b.onclick = function(){ ev.prompt(); ev.userChoice.then(function(){ box.classList.remove("on"); }); };
+    }
+    window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); ev = e; });
+    window.addEventListener("appinstalled", function(){ try{ localStorage.setItem("appHintZu", "1"); }catch(e){} box.classList.remove("on"); });
+    setTimeout(show, 6000);
+  }catch(e){}
+})();
+</script>
 </body>
 </html>

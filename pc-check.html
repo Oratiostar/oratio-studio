@@ -24,8 +24,8 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="PC-Check: Prüfe in Prozent, ob CPU, Grafikkarte, Mainboard, RAM, SSD, Netzteil und Kühler zusammenpassen. Mit Engpass-Matrix, Teile-Datenbank und Ratgeber.">
 <link rel="icon" href="icon.png">
-<link rel="stylesheet" href="werkzeuge/wz.css?v=50">
-<link rel="stylesheet" href="werkzeuge/tools.css?v=50">
+<link rel="stylesheet" href="werkzeuge/wz.css?v=52">
+<link rel="stylesheet" href="werkzeuge/tools.css?v=52">
 <style>
 /* ===== PC-Check "Prüfstand": dunkler Hardware-Look mit RGB-Akzent ===== */
 .opc{
@@ -458,7 +458,8 @@ body.sl .opc.glass .opc-tab[aria-selected="true"]{background:linear-gradient(135
             <label class="fld" for="s_cool"><span></span><select id="s_cool"></select></label>
             <label class="fld" for="s_case"><span></span><select id="s_case"></select></label>
           </div>
-          <div class="acts"><button type="button" class="pbtn" id="opc-auto"></button><button type="button" class="pbtn" id="opc-share"></button><span class="cmsg" id="opc-copymsg" role="status"></span></div>
+          <div class="acts"><button type="button" class="pbtn" id="opc-auto"></button><button type="button" class="pbtn" id="opc-det"></button><button type="button" class="pbtn" id="opc-share"></button><span class="cmsg" id="opc-copymsg" role="status"></span></div>
+          <div class="legend" id="opc-detout" role="status" style="margin-top:10px"></div>
         </div>
       </div>
       <div class="panel pres">
@@ -528,8 +529,8 @@ body.sl .opc.glass .opc-tab[aria-selected="true"]{background:linear-gradient(135
   <p class="disc" id="opc-disc"></p>
 </div>
 </main>
-<script src="werkzeuge/wz.js?v=50"></script>
-<script src="werkzeuge/fr.js?v=50"></script>
+<script src="werkzeuge/wz.js?v=52"></script>
+<script src="werkzeuge/fr.js?v=52"></script>
 <script>WZ.kopf("pccheck");
 (function(){var fr=WZ.lang==="fr";document.getElementById("opc-crumb").innerHTML='<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › PC-Check'})();</script>
 <script>
@@ -2062,7 +2063,30 @@ function init(){
   if(!HASHOK)applyPreset(1);else render();showTab(0);
 }
 init();
+/* ---------- Meinen PC erkennen (Grafikkarte, Threads, Bildschirm, Mini-Benchmark) ---------- */
+;(function(){
+  var b=$("#opc-det"); if(!b) return; var fr=LANG==="fr";
+  b.textContent=fr?"🔍 Détecter mon PC":"🔍 Meinen PC erkennen";
+  b.addEventListener("click",function(){
+    var out=$("#opc-detout"),rows=[],r="";
+    try{var c=document.createElement("canvas"),g=c.getContext("webgl")||c.getContext("experimental-webgl");if(g){var e=g.getExtension("WEBGL_debug_renderer_info");r=String(e?g.getParameter(e.UNMASKED_RENDERER_WEBGL):g.getParameter(g.RENDERER))}}catch(x){}
+    var rl=r.toLowerCase(),best=-1,bl=0;
+    GPUS.forEach(function(gp,i){var n=gp[0].replace(/\s*\d+\s*GB$/i,"").toLowerCase();if(n&&rl.indexOf(n)>=0&&n.length>bl){bl=n.length;best=i}});
+    if(best>=0){var sel=$("#s_gpu");sel.value=String(best);sel.dispatchEvent(new Event("change",{bubbles:true}));rows.push("🎮 "+(fr?"Carte graphique reconnue : ":"Grafikkarte erkannt: ")+"<b>"+esc(GPUS[best][0])+"</b> "+(fr?"(déjà choisie ci-dessus)":"(oben schon eingetragen)"))}
+    else rows.push("🎮 "+(fr?"Carte graphique : ":"Grafik: ")+"<b>"+esc(r||(fr?"inconnue":"unbekannt"))+"</b> – "+(fr?"pas dans la liste, choisis-la toi-même.":"nicht in der Liste, wähle sie selbst."));
+    var dpr=window.devicePixelRatio||1;
+    rows.push("🖥️ "+(fr?"Écran : ":"Bildschirm: ")+Math.round(screen.width*dpr)+" × "+Math.round(screen.height*dpr)+" px");
+    if(navigator.hardwareConcurrency)rows.push("🧠 "+(fr?"Threads du processeur : ":"Prozessor-Threads: ")+navigator.hardwareConcurrency);
+    if(navigator.deviceMemory)rows.push("💾 "+(fr?"Mémoire (le navigateur indique au max. 8) : ≥ ":"Arbeitsspeicher (der Browser meldet höchstens 8): ≥ ")+navigator.deviceMemory+" GB");
+    out.innerHTML=rows.join("<br>")+"<br>⏱️ "+(fr?"Mini-test en cours …":"Mini-Test läuft …");
+    setTimeout(function(){var t0=performance.now(),n=0,x=1.0001;while(performance.now()-t0<500){for(var i=0;i<20000;i++){x=Math.sqrt(x*1.0000001+i)%7+1}n+=20000}
+      var sc=Math.round(n/(performance.now()-t0)/100)/10;
+      out.innerHTML=rows.join("<br>")+"<br>⏱️ "+(fr?"Indice de calcul du navigateur : ":"Rechen-Index im Browser: ")+"<b>"+String(sc).replace(".",",")+"</b> "+(fr?"(plus haut = plus rapide ; seulement pour comparer deux appareils)":"(höher = schneller; nur zum Vergleichen zweier Geräte)")+"<br><small>"+(fr?"Un navigateur ne révèle pas tout : le processeur, la carte mère et l’alimentation doivent être choisis à la main.":"Ein Browser verrät nicht alles: Prozessor, Mainboard und Netzteil wählst du selbst.")+"</small>"},60);
+  });
 })();
+
+})();
+
 </script>
 <script>if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script>
 </body>

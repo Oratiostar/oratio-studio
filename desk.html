@@ -24,8 +24,8 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="Oratio Desk: dein persönlicher Schreibtisch im Browser mit Uhr, Notizen, Aufgaben, Pomodoro, Kalender, Rechner, Gewohnheiten und mehr. Alles bleibt auf deinem Gerät.">
 <link rel="icon" href="icon.png">
-<link rel="stylesheet" href="werkzeuge/wz.css?v=50">
-<link rel="stylesheet" href="werkzeuge/tools.css?v=50">
+<link rel="stylesheet" href="werkzeuge/wz.css?v=52">
+<link rel="stylesheet" href="werkzeuge/tools.css?v=52">
 <style>
 .dsk{--tbg:rgba(255,255,255,.2);--tfg:#fff;--tmut:rgba(255,255,255,.72);--tline:rgba(255,255,255,.38);--tsoft:rgba(255,255,255,.2);--gap:12px;position:relative;border-radius:28px;overflow:hidden;margin:8px 0 18px;min-height:calc(100vh - 230px);min-height:calc(100svh - 230px);box-shadow:0 14px 40px rgba(10,25,70,.28);isolation:isolate}
 .dsk[data-stil=hell]{--tbg:rgba(255,255,255,.9);--tfg:#1c2030;--tmut:#6a7285;--tline:rgba(20,30,60,.12);--tsoft:rgba(20,30,70,.08)}
@@ -218,6 +218,9 @@ body.dkopen{overflow:hidden}
 .cdt .cn{min-width:1.6em}
 .cv:not(.big) .cdsp small{display:none}.cv:not(.big) .cdsp{min-height:1.5em}.cv:not(.big) .ck{overflow:hidden}.cv:not(.big) .ck.op{padding:0}
 .cv:not(.big){gap:.15em}.cv:not(.big) .ck4{gap:.2em;overflow:hidden}.cv:not(.big) .cr{font-size:1.5em}.cv:not(.big) .cdsp{min-height:1.3em}
+.zt{display:flex;align-items:center;gap:.45em;height:100%;min-width:0;font-size:.78em}.zr{width:2.7em;height:2.7em;flex:none}.zi{flex:1;min-width:0;line-height:1.2}.zi b{display:block;font-size:1.05em;white-space:nowrap}.zi small{display:block;font-size:.75em;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.zb{width:2.3em;height:2.3em;border-radius:50%;border:0;background:#0f9d8a;color:#fff;font-size:.95em;cursor:pointer;flex:none}.zb.on{background:#d93b3b}
+.zapp{display:grid;gap:10px}.zrow{display:flex;gap:8px;flex-wrap:wrap;align-items:end}.zrow .in{flex:1;min-width:0}.zbig{margin:0;font-size:2em}.zbig small{font-size:.5em;opacity:.7}.zrun{font-size:.45em;color:#d93b3b;font-weight:700}.zh{margin:6px 0 0;font-size:1em}
+.zwr{display:flex;align-items:center;gap:8px;padding:3px 0}.zwr span:first-child{width:2.4em;opacity:.75}.zwr.heute span:first-child{font-weight:800;opacity:1}.zbar{flex:1;height:10px;border-radius:99px;background:rgba(127,127,127,.22);overflow:hidden}.zbar i{display:block;height:100%;border-radius:99px}.zwr b{width:4.5em;text-align:right}.zsum{margin:6px 0 0}.zlr{display:flex;gap:8px;align-items:center;padding:5px 0;border-top:1px solid rgba(127,127,127,.22)}.zlr span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}.mn2{border:0;background:transparent;color:inherit;opacity:.6;cursor:pointer;font-size:14px}
 </style>
 </head>
 <body>
@@ -226,12 +229,12 @@ body.dkopen{overflow:hidden}
 <p class="sub">Dein persönlicher Schreibtisch im Browser: Widgets wählen, anordnen, Hintergrund ändern. Alles bleibt in <b>deinem Browser</b> gespeichert – nichts wird gesendet.</p>
 <div id="dkHost"></div>
 </main>
-<script src="werkzeuge/wz.js?v=50"></script>
-<script src="werkzeuge/fr.js?v=50"></script>
-<script src="werkzeuge/desk.js?v=50"></script>
-<script src="werkzeuge/desk_w.js?v=50"></script>
-<script src="werkzeuge/desk_t.js?v=50"></script>
-<script src="werkzeuge/desk_c.js?v=50"></script>
+<script src="werkzeuge/wz.js?v=52"></script>
+<script src="werkzeuge/fr.js?v=52"></script>
+<script src="werkzeuge/desk.js?v=52"></script>
+<script src="werkzeuge/desk_w.js?v=52"></script>
+<script src="werkzeuge/desk_t.js?v=52"></script>
+<script src="werkzeuge/desk_c.js?v=52"></script>
 <script>WZ.kopf("desk"); Desk.start();</script>
 <script>if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script>
 </body>

@@ -24,7 +24,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="Alltags-Helfer: QR-Code, Passwort-Generator, Umrechner, Rechner, Text-Werkzeuge, Bild zuschneiden, Würfel, Stoppuhr und Farbwähler. Alles im Browser, nichts wird gesendet.">
 <link rel="icon" href="icon.png">
-<link rel="stylesheet" href="werkzeuge/wz.css?v=50">
+<link rel="stylesheet" href="werkzeuge/wz.css?v=52">
 <style>
 .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:0 0 18px}
 .tcard{display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:inherit;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:12px;box-shadow:var(--shadow);transition:transform .12s,border-color .12s}
@@ -66,10 +66,10 @@ canvas{display:block;margin:0 auto}
 <div class="tgrid" id="toolgrid"></div>
 <div id="toolhost"></div>
 </main>
-<script src="werkzeuge/wz.js?v=50"></script>
-<script src="werkzeuge/fr.js?v=50"></script>
-<script src="werkzeuge/lib/qr.js?v=50"></script>
-<script src="werkzeuge/alltag.js?v=50"></script>
+<script src="werkzeuge/wz.js?v=52"></script>
+<script src="werkzeuge/fr.js?v=52"></script>
+<script src="werkzeuge/lib/qr.js?v=52"></script>
+<script src="werkzeuge/alltag.js?v=52"></script>
 <script>WZ.kopf("alltag"); Alltag.start();</script>
 <script>if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script>
 </body>

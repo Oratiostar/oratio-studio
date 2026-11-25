@@ -1,5 +1,5 @@
 /* Oratio Place – Service Worker (Offline-Funktion). Bei Änderungen VERSION erhöhen. */
-const VERSION = 'oratio-50';
+const VERSION = 'oratio-52';
 const CORE = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'logo-place.png', '404.html',
   'werkzeuge/glass.css', 'werkzeuge/glass.js', 'werkzeuge/wz.css', 'werkzeuge/wz.js', 'werkzeuge/fr.js',
   'fonts/Inter-Regular.woff', 'fonts/Inter-SemiBold.woff', 'fonts/Inter-Bold.woff', 'fonts/Poppins-Bold.woff'];
