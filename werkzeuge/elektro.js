@@ -854,6 +854,261 @@ function pinplanTool(host){
 }
 
 /* ====================================================================== Rahmen */
+/* ---------- Elektroinstallation: Schaltungen zum Ausprobieren + Leitung, Sicherung, Abschaltbedingung ---------- */
+function installTool(host){
+  let m = "s", cur = "wechsel", NET = null, timer = null;
+  host.innerHTML = SAFE() + '<div class="tabs t2" id="iTab"></div><div id="iBody"></div>';
+  const KIND = {
+    aus: { n: T("Ausschaltung", "Interrupteur simple (va-et-vient simple)"), h: 230 },
+    serie: { n: T("Serienschaltung", "Montage double allumage"), h: 230 },
+    wechsel: { n: T("Wechselschaltung", "Va-et-vient"), h: 250 },
+    kreuz: { n: T("Kreuzschaltung", "Permutateur (3 points et plus)"), h: 250 },
+    stoss: { n: T("Stromstoßschalter", "Télérupteur"), h: 300 },
+    treppe: { n: T("Treppenlicht-Automat", "Minuterie d’escalier"), h: 300 }
+  };
+  const INFO = {
+    aus: [T("Ein Schalter öffnet oder schließt den Außenleiter (L) zur Lampe. Der Neutralleiter (N) geht direkt an die Lampe.", "Un interrupteur ouvre ou ferme la phase (L) vers la lampe. Le neutre (N) va directement à la lampe."), T("Typisch: Flur, Keller, Abstellraum.", "Typique : couloir, cave, débarras."), T("Leitung: NYM-J 3×1,5 mm² (L, N, PE) zur Lampe; zum Schalter nur L hin und Schaltdraht zurück.", "Câble : NYM-J 3×1,5 mm² (L, N, PE) vers la lampe ; vers l’interrupteur seulement L à l’aller et le fil commuté au retour.")],
+    serie: [T("Ein Gerät mit zwei Wippen schaltet zwei Lampen oder Lampengruppen getrennt – ein gemeinsamer Außenleiter, zwei Schaltdrähte.", "Un appareil à deux bascules commande deux lampes ou groupes séparément – une phase commune, deux fils commutés."), T("Typisch: Deckenlicht mit zwei Lampengruppen, Wand- und Deckenlampe.", "Typique : plafonnier à deux groupes, applique et plafonnier."), T("Leitung zum Schalter: NYM-J 4×1,5 mm² (L, zwei Schaltdrähte, PE) – oder 5×1,5, wenn auch N dort gebraucht wird.", "Câble vers l’interrupteur : NYM-J 4×1,5 mm² (L, deux fils commutés, PE) – ou 5×1,5 si le neutre est aussi nécessaire.")],
+    wechsel: [T("Von zwei Stellen aus ein- und ausschalten. Zwischen den beiden Wechselschaltern laufen zwei Schaltdrähte („Rückleiter“); egal wie ein Schalter steht – der andere kann immer umschalten.", "Allumer et éteindre depuis deux endroits. Entre les deux va-et-vient courent deux fils (« navettes ») ; quelle que soit la position d’un interrupteur, l’autre peut toujours commuter."), T("Typisch: Flur (Anfang/Ende), Schlafzimmer (Tür/Bett), Treppe.", "Typique : couloir (début/fin), chambre (porte/lit), escalier."), T("Zwischen den Schaltern: NYM-J 3×1,5 mm² (2 Schaltdrähte + PE); L kommt zum ersten Schalter, vom zweiten geht es zur Lampe.", "Entre les interrupteurs : NYM-J 3×1,5 mm² (2 fils navette + PE) ; L arrive au premier interrupteur, du second on va à la lampe.")],
+    kreuz: [T("Von drei oder mehr Stellen schalten: zwei Wechselschalter außen, dazwischen beliebig viele Kreuzschalter. Der Kreuzschalter vertauscht die beiden Schaltdrähte oder lässt sie durchlaufen.", "Commander depuis trois endroits ou plus : deux va-et-vient aux extrémités, entre eux autant de permutateurs que voulu. Le permutateur croise les deux fils ou les laisse passer."), T("Typisch: lange Flure, Treppenhäuser mit mehreren Etagen, große Räume mit mehreren Türen.", "Typique : longs couloirs, cages d’escalier, grandes pièces à plusieurs portes."), T("Zwischen allen Schaltern je NYM-J 3×1,5 mm² (2 Schaltdrähte + PE).", "Entre tous les interrupteurs : NYM-J 3×1,5 mm² (2 fils navette + PE).")],
+    stoss: [T("Jeder Tastendruck an einem beliebigen Taster schaltet das Stromstoßrelais um (Ein → Aus → Ein …). Die Taster liegen parallel – so viele wie du willst, nur eine dünne Steuerleitung.", "Chaque appui sur n’importe quel bouton fait basculer le télérupteur (marche → arrêt …). Les boutons sont en parallèle – autant que tu veux, avec un simple câble de commande."), T("Typisch: viele Schaltstellen, auch für mehrere Lampen oder große Lasten (Relais im Verteiler).", "Typique : beaucoup de points de commande, plusieurs lampes ou charges importantes (relais dans le tableau)."), T("Taster-Steuerleitung 3×1,5 mm² oder J-Y(St)Y; das Relais sitzt im Verteiler und schaltet die Last.", "Câble de commande 3×1,5 mm² ou J-Y(St)Y ; le relais se trouve dans le tableau et commute la charge.")],
+    treppe: [T("Ein Druck auf einen Taster startet das Zeitrelais: Das Licht bleibt für die eingestellte Zeit an und geht von selbst wieder aus. Hier der Einfachheit halber 6 Sekunden (echt: ca. 30 s bis 10 min).", "Un appui sur un bouton lance la minuterie : la lumière reste allumée le temps réglé puis s’éteint toute seule. Ici 6 secondes pour la démonstration (réel : ~30 s à 10 min)."), T("Typisch: Treppenhaus, Keller, Hausflur – nie wieder vergessenes Licht.", "Typique : cage d’escalier, cave, hall – plus de lumière oubliée."), T("Beleuchtete Taster brauchen oft N am Taster (Glimmlampe) – Taster-Leitung dann 4×1,5 mm². Zeitrelais sitzt im Verteiler.", "Les boutons lumineux demandent souvent le neutre – câble 4×1,5 mm². La minuterie se trouve dans le tableau.")]
+  };
+  const SYS = { 1: { U: 230, f: 1 }, 3: { U: 400, f: Math.sqrt(3) } };
+  const IZ = { 1.5: 16.5, 2.5: 23, 4: 30, 6: 38, 10: 52, 16: 69 };    // typische Belastbarkeit (Verlegeart B2, 2 belastete Adern, 30 °C)
+  const LSN = [6, 10, 13, 16, 20, 25, 32, 40, 50, 63];
+
+  /* ---- Netz-Aufbau pro Schaltung: Knoten, Drähte, Schalter, Lampen ---- */
+  function bau(k){
+    const N = { nodes: {}, wires: [], sw: [], lamps: [], coils: [], k, st: {}, txt: [], H: KIND[k].h };
+    const w = (a, b, pts) => N.wires.push({ a, b, pts });
+    const H = N.H, yL = 22, yN = H - 22;
+    N.rail = { yL, yN };
+    const lamp = (id, a, x, y, lab) => { N.lamps.push({ id, a, x, y, lab }); };
+    if (k === "aus") {
+      w("L", "a", [[180, yL], [180, 64]]);
+      N.sw.push({ id: "S1", t: "s", a: "a", b: "b", p: [180, 64], q: [180, 108], on: false, lab: "S1" });
+      w("b", "la", [[180, 108], [180, 136]]);
+      lamp("H1", "la", 180, 148, "H1");
+    } else if (k === "serie") {
+      w("L", "a1", [[110, yL], [110, 64]]); w("L", "a2", [[250, yL], [250, 64]]);
+      N.sw.push({ id: "S1a", t: "s", a: "a1", b: "b1", p: [110, 64], q: [110, 108], on: false, lab: "S1" });
+      N.sw.push({ id: "S1b", t: "s", a: "a2", b: "b2", p: [250, 64], q: [250, 108], on: false, lab: "" });
+      w("b1", "la1", [[110, 108], [110, 136]]); w("b2", "la2", [[250, 108], [250, 136]]);
+      lamp("H1", "la1", 110, 148, "H1"); lamp("H2", "la2", 250, 148, "H2");
+      N.box = { x: 82, y: 44, w: 196, h: 84, lab: T("Serienschalter (ein Gerät)", "Interrupteur double (un appareil)") };
+    } else if (k === "wechsel") {
+      w("L", "c1", [[80, yL], [80, 101]]);
+      N.sw.push({ id: "S1", t: "w", c: "c1", u: "u1", d: "d1", pc: [80, 101], pu: [118, 86], pd: [118, 116], st: 0, lab: "S1" });
+      w("u1", "u2", [[118, 86], [242, 86]]); w("d1", "d2", [[118, 116], [242, 116]]);
+      N.sw.push({ id: "S2", t: "w", c: "c2", u: "u2", d: "d2", pc: [280, 101], pu: [242, 86], pd: [242, 116], st: 0, lab: "S2" });
+      w("c2", "la", [[280, 101], [280, 136]]);
+      lamp("H1", "la", 280, 148, "H1");
+    } else if (k === "kreuz") {
+      w("L", "c1", [[60, yL], [60, 101]]);
+      N.sw.push({ id: "S1", t: "w", c: "c1", u: "u1", d: "d1", pc: [60, 101], pu: [94, 86], pd: [94, 116], st: 0, lab: "S1" });
+      w("u1", "ka1", [[94, 86], [150, 86]]); w("d1", "ka2", [[94, 116], [150, 116]]);
+      N.sw.push({ id: "K1", t: "k", a1: "ka1", a2: "ka2", b1: "kb1", b2: "kb2", p1: [150, 86], p2: [150, 116], q1: [206, 86], q2: [206, 116], st: 0, lab: "K1" });
+      w("kb1", "u2", [[206, 86], [262, 86]]); w("kb2", "d2", [[206, 116], [262, 116]]);
+      N.sw.push({ id: "S2", t: "w", c: "c2", u: "u2", d: "d2", pc: [296, 101], pu: [262, 86], pd: [262, 116], st: 0, lab: "S2" });
+      w("c2", "la", [[296, 101], [296, 136]]);
+      lamp("H1", "la", 296, 148, "H1");
+    } else {            // stoss, treppe
+      const tast = [[56, "T1"], [116, "T2"], [176, "T3"]];
+      tast.forEach((t, i) => { w("L", "t" + i + "a", [[t[0], yL], [t[0], 52]]); N.sw.push({ id: "T" + (i + 1), t: "t", a: "t" + i + "a", b: "t" + i + "b", p: [t[0], 52], q: [t[0], 92], lab: t[1] }); w("t" + i + "b", "coil", [[t[0], 92], [t[0], 108]]); });
+      w("coil", "coil", [[56, 108], [176, 108]]);
+      w("coil", "cA", [[116, 108], [116, 122]]);
+      N.coils.push({ id: "R", node: "cA", x: 116, y: 122, w: 76, h: 40, lab: k === "stoss" ? T("Stromstoßrelais", "Télérupteur") : T("Zeitrelais", "Minuterie") });
+      N.coilN = { x: 116, y: 162, to: yN };
+      w("L", "r1", [[280, yL], [280, 58]]);
+      N.sw.push({ id: "R1", t: "r", a: "r1", b: "r2", p: [280, 58], q: [280, 102], lab: "K1" });
+      w("r2", "la", [[280, 102], [280, 150]]);
+      lamp("H1", "la", 280, 162, "H1");
+    }
+    return N;
+  }
+  /* ---- Stromfluss berechnen ---- */
+  function fluss(N){
+    const adj = {}; const add = (a, b) => { (adj[a] = adj[a] || []).push(b); (adj[b] = adj[b] || []).push(a); };
+    N.wires.forEach(x => { if (x.a !== x.b) add(x.a, x.b); });
+    N.sw.forEach(s => {
+      if (s.t === "s" && s.on) add(s.a, s.b);
+      if (s.t === "t" && s.down) add(s.a, s.b);
+      if (s.t === "w") add(s.c, s.st ? s.d : s.u);
+      if (s.t === "k") { if (s.st) { add(s.a1, s.b2); add(s.a2, s.b1); } else { add(s.a1, s.b1); add(s.a2, s.b2); } }
+      if (s.t === "r") { if (N.relay) add(s.a, s.b); }
+    });
+    const hot = new Set(["L"]), q = ["L"];
+    while (q.length) { const n = q.pop(); (adj[n] || []).forEach(x => { if (!hot.has(x)) { hot.add(x); q.push(x); } }); }
+    return hot;
+  }
+  function zeichne(){
+    const N = NET, hot = fluss(N), W = 360, H = N.H, yL = N.rail.yL, yN = N.rail.yN;
+    N.relayOn = false;
+    const col = h => h ? "#ff9f1c" : "#8a94a6", sw = h => h ? 3.4 : 2.4;
+    let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" style="max-width:420px;width:100%;display:block;margin:4px auto;color:var(--fg,#223);touch-action:manipulation" role="img" aria-label="' + esc(KIND[N.k].n) + '"><defs><filter id="iGl" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="3.2"/></filter></defs>';
+    s += '<line x1="14" y1="' + yL + '" x2="346" y2="' + yL + '" stroke="#ff9f1c" stroke-width="4" stroke-linecap="round"/><text x="14" y="' + (yL - 8) + '" font-size="11" font-weight="700" fill="#ff9f1c">L</text>';
+    s += '<line x1="14" y1="' + yN + '" x2="346" y2="' + yN + '" stroke="#3b82f6" stroke-width="4" stroke-linecap="round"/><text x="14" y="' + (yN + 17) + '" font-size="11" font-weight="700" fill="#3b82f6">N</text>';
+    if (N.box) s += '<rect x="' + N.box.x + '" y="' + N.box.y + '" width="' + N.box.w + '" height="' + N.box.h + '" rx="10" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="5 4"/><text x="' + (N.box.x + N.box.w / 2) + '" y="' + (N.box.y + N.box.h + 15) + '" font-size="10" text-anchor="middle" fill="currentColor" fill-opacity=".7">' + esc(N.box.lab) + '</text>';
+    N.wires.forEach(x => { if (x.a === x.b) return; const hh = hot.has(x.a); s += '<polyline points="' + x.pts.map(p => p.join(",")).join(" ") + '" fill="none" stroke="' + col(hh) + '" stroke-width="' + sw(hh) + '" stroke-linejoin="round" stroke-linecap="round"/>'; });
+    N.wires.forEach(x => { if (x.a === x.b && x.a === "coil") { const hh = hot.has("coil"); s += '<polyline points="' + x.pts.map(p => p.join(",")).join(" ") + '" fill="none" stroke="' + col(hh) + '" stroke-width="' + sw(hh) + '"/>'; } });
+    const dot = (p, hh) => '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="3.2" fill="' + col(hh) + '"/>';
+    const lab = (x, y, t, anc) => t ? '<text x="' + x + '" y="' + y + '" font-size="11" font-weight="700" text-anchor="' + (anc || "end") + '" fill="currentColor">' + esc(t) + '</text>' : "";
+    N.sw.forEach(x => {
+      if (x.t === "s" || x.t === "t" || x.t === "r") {
+        const closed = x.t === "s" ? x.on : x.t === "t" ? x.down : N.relay, hh = hot.has(x.a), hh2 = hot.has(x.b);
+        const tipx = closed ? x.q[0] : x.q[0] + 17, tipy = closed ? x.q[1] : x.q[1] - 9;
+        s += '<g data-s="' + x.id + '" style="cursor:pointer"><rect x="' + (x.p[0] - 24) + '" y="' + (x.p[1] - 6) + '" width="48" height="' + (x.q[1] - x.p[1] + 12) + '" fill="transparent"/>' + dot(x.p, hh) + dot(x.q, hh2) + '<line x1="' + x.p[0] + '" y1="' + x.p[1] + '" x2="' + tipx + '" y2="' + tipy + '" stroke="' + col(hh) + '" stroke-width="3" stroke-linecap="round"/>';
+        if (x.t === "t") s += '<line x1="' + (x.p[0] + 9) + '" y1="' + ((x.p[1] + x.q[1]) / 2 - 2) + '" x2="' + (x.p[0] + 9) + '" y2="' + ((x.p[1] + x.q[1]) / 2 - 2) + '" stroke="none"/>';
+        s += '</g>' + lab(x.p[0] - 12, (x.p[1] + x.q[1]) / 2 + 4, x.lab);
+      } else if (x.t === "w") {
+        const tip = x.st ? x.pd : x.pu, hh = hot.has(x.c);
+        s += '<g data-s="' + x.id + '" style="cursor:pointer"><rect x="' + (x.pc[0] - 8) + '" y="' + (x.pu[1] - 14) + '" width="' + (Math.abs(x.pu[0] - x.pc[0]) + 24) + '" height="' + (x.pd[1] - x.pu[1] + 28) + '" fill="transparent"/>' + dot(x.pc, hh) + dot(x.pu, hot.has(x.u)) + dot(x.pd, hot.has(x.d)) + '<line x1="' + x.pc[0] + '" y1="' + x.pc[1] + '" x2="' + tip[0] + '" y2="' + tip[1] + '" stroke="' + col(hh) + '" stroke-width="3" stroke-linecap="round"/></g>' + lab(x.pc[0] + (x.pc[0] < x.pu[0] ? -10 : 10), x.pc[1] - 14, x.lab, x.pc[0] < x.pu[0] ? "end" : "start");
+      } else if (x.t === "k") {
+        const a = hot.has(x.a1), b = hot.has(x.a2), x1 = x.p1[0], x2 = x.q1[0];
+        s += '<g data-s="' + x.id + '" style="cursor:pointer"><rect x="' + (x1 - 6) + '" y="' + (x.p1[1] - 12) + '" width="' + (x2 - x1 + 12) + '" height="' + (x.p2[1] - x.p1[1] + 24) + '" rx="8" fill="currentColor" fill-opacity=".05" stroke="currentColor" stroke-opacity=".35"/>' + dot(x.p1, a) + dot(x.p2, b) + dot(x.q1, hot.has(x.b1)) + dot(x.q2, hot.has(x.b2));
+        const l = (p, q, hh) => '<line x1="' + p[0] + '" y1="' + p[1] + '" x2="' + q[0] + '" y2="' + q[1] + '" stroke="' + col(hh) + '" stroke-width="3" stroke-linecap="round"/>';
+        s += x.st ? l(x.p1, x.q2, a) + l(x.p2, x.q1, b) : l(x.p1, x.q1, a) + l(x.p2, x.q2, b); s += '</g>' + lab((x1 + x2) / 2, x.p1[1] - 18, x.lab, "middle");
+      }
+    });
+    N.coils.forEach(c => {
+      const on = hot.has(c.node), cx = c.x - c.w / 2;
+      s += '<rect x="' + cx + '" y="' + c.y + '" width="' + c.w + '" height="' + c.h + '" rx="6" fill="' + (on ? "#ff9f1c" : "none") + '" fill-opacity="' + (on ? .35 : 0) + '" stroke="' + col(on) + '" stroke-width="2.6"/><text x="' + c.x + '" y="' + (c.y + c.h / 2 + 4) + '" font-size="10" text-anchor="middle" fill="currentColor">' + esc(c.lab) + '</text>';
+      s += '<polyline points="' + c.x + "," + (c.y + c.h) + " " + c.x + "," + N.coilN.to + '" fill="none" stroke="#3b82f6" stroke-width="2.6"/>';
+    });
+    N.lamps.forEach(l => {
+      const on = hot.has(l.a);
+      s += '<polyline points="' + l.x + "," + (l.y + 12) + " " + l.x + "," + yN + '" fill="none" stroke="#3b82f6" stroke-width="2.6"/>';
+      if (on) s += '<circle cx="' + l.x + '" cy="' + l.y + '" r="26" fill="#ffd43b" opacity=".7" filter="url(#iGl)"/>';
+      s += '<circle cx="' + l.x + '" cy="' + l.y + '" r="12" fill="' + (on ? "#ffe066" : "none") + '" stroke="' + (on ? "#e8a800" : "currentColor") + '" stroke-width="2.4"/><path d="M' + (l.x - 8.5) + " " + (l.y - 8.5) + "L" + (l.x + 8.5) + " " + (l.y + 8.5) + "M" + (l.x + 8.5) + " " + (l.y - 8.5) + "L" + (l.x - 8.5) + " " + (l.y + 8.5) + '" stroke="' + (on ? "#9a6b00" : "currentColor") + '" stroke-width="1.8"/>' + lab(l.x + 20, l.y + 4, l.lab, "start");
+    });
+    s += '</svg>';
+    $("#iSvg", host).innerHTML = s;
+    $$("[data-s]", host).forEach(g => {
+      const x = N.sw.find(z => z.id === g.dataset.s);
+      if (x.t === "t") { g.onpointerdown = e => { e.preventDefault(); x.down = true; druck(); }; g.onpointerup = g.onpointerleave = g.onpointercancel = () => { if (x.down) { x.down = false; zeichneNeu(); } }; }
+      else g.onclick = () => { if (x.t === "s") x.on = !x.on; else if (x.t === "w" || x.t === "k") x.st = x.st ? 0 : 1; zeichneNeu(); };
+    });
+    const lit = N.lamps.filter(l => hot.has(l.a)).length;
+    $("#iSta", host).innerHTML = (N.k === "treppe" ? (N.t > 0 ? "⏱ " + T("Licht an – noch ", "Lumière allumée – encore ") + N.t.toFixed(1).replace(".", ",") + " s" : "💤 " + T("Licht aus", "Lumière éteinte")) : lit ? "💡 " + T("Lampe leuchtet", "La lampe est allumée") : "💤 " + T("Lampe aus", "La lampe est éteinte")) + (N.k === "stoss" ? " · " + T("Relais: ", "Relais : ") + (N.relay ? T("an", "enclenché") : T("aus", "déclenché")) : "");
+  }
+  function druck(){
+    const N = NET;
+    if (N.k === "stoss") { if (!N.edge) { N.relay = !N.relay; N.edge = true; } }
+    else if (N.k === "treppe") { N.t = 6; N.relay = true; if (!timer) timer = setInterval(() => { if (!host.isConnected) { clearInterval(timer); timer = null; return; } N.t = Math.max(0, N.t - 0.1); if (N.t <= 0) { N.relay = false; clearInterval(timer); timer = null; } zeichneNeu(true); }, 100); }
+    zeichneNeu();
+  }
+  function zeichneNeu(){ if (NET && !NET.sw.some(x => x.t === "t" && x.down)) NET.edge = false; zeichne(); }
+  function waehle(k){
+    cur = k; NET = bau(k); NET.relay = false; NET.t = 0; if (timer) { clearInterval(timer); timer = null; }
+    $$("#iPick button", host).forEach(b => b.classList.toggle("on", b.dataset.k === k));
+    const I = INFO[k];
+    $("#iInfo", host).innerHTML = '<p class="resbox" style="font-size:16px"><b>' + esc(KIND[k].n) + '</b> – ' + esc(I[0]) + '</p><p class="hint">' + esc(I[1]) + '<br>' + esc(I[2]) + '</p>';
+    zeichne();
+  }
+  function maske(){
+    $("#iTab", host).innerHTML = [["s", T("Schaltungen zum Ausprobieren", "Montages à essayer")], ["a", T("Leitung & Sicherung", "Câble et disjoncteur")]].map(t => '<button class="btn' + (t[0] === m ? " on" : "") + '" data-m="' + t[0] + '">' + t[1] + '</button>').join("");
+    $$("#iTab button", host).forEach(b => b.onclick = () => { m = b.dataset.m; if (timer) { clearInterval(timer); timer = null; } maske(); });
+    if (m === "s") {
+      $("#iBody", host).innerHTML = '<div class="tabs" id="iPick" style="flex-wrap:wrap">' + Object.keys(KIND).map(k => '<button class="btn" data-k="' + k + '">' + esc(KIND[k].n) + '</button>').join("") + '</div><div id="iSta" class="resbox" style="text-align:center;margin:6px 0 0;font-weight:700"></div><div id="iSvg"></div><p class="hint" style="text-align:center;margin:0">' + T("Tippe auf Schalter und Taster. Orange = Außenleiter (L) führt Spannung, blau = Neutralleiter (N).", "Touche interrupteurs et boutons. Orange = phase (L) sous tension, bleu = neutre (N).") + '</p><div id="iInfo"></div><p class="hint">' + T("Vereinfachte Darstellung (der Schutzleiter PE ist nicht gezeichnet). Echte Installationen nur durch eine Elektrofachkraft nach VDE 0100.", "Représentation simplifiée (le conducteur de protection PE n’est pas dessiné). Les vraies installations seulement par un électricien qualifié (normes locales).") + '</p>';
+      $$("#iPick button", host).forEach(b => b.onclick = () => waehle(b.dataset.k)); waehle(cur);
+    } else {
+      $("#iBody", host).innerHTML = '<div class="cols2"><div id="aIn"></div><div id="aOut"></div></div>';
+      $("#aIn", host).innerHTML = '<label class="l">' + T("Netz", "Réseau") + '</label><select class="in" id="aS"><option value="1">' + T("Wechselstrom 230 V (L, N)", "Monophasé 230 V (L, N)") + '</option><option value="3">' + T("Drehstrom 400 V (L1, L2, L3, N)", "Triphasé 400 V (L1, L2, L3, N)") + '</option></select>' + eingabe(host, "aP", T("Leistung des Verbrauchers (W)", "Puissance de l’appareil (W)"), "", "3000") + eingabe(host, "aC", "cos φ", "", "1") + eingabe(host, "aL", T("Leitungslänge einfach (m)", "Longueur simple du câble (m)"), "", "15") + '<label class="l">' + T("Querschnitt (mm², Kupfer)", "Section (mm², cuivre)") + '</label><select class="in" id="aQ">' + Object.keys(IZ).map(q => '<option' + (q === "2.5" ? " selected" : "") + ' value="' + q + '">' + q.replace(".", ",") + '</option>').join("") + '</select><label class="l">' + T("Leitungsschutzschalter (B-Charakteristik)", "Disjoncteur (courbe B)") + '</label><select class="in" id="aN">' + LSN.map(n => '<option' + (n === 16 ? " selected" : "") + '>' + n + '</option>').join("") + '</select>' + eingabe(host, "aZ", T("Netzimpedanz bis zum Verteiler (Ω)", "Impédance du réseau jusqu’au tableau (Ω)"), "", "0,3");
+      auf(host, ["aS", "aP", "aC", "aL", "aQ", "aN", "aZ"], rechA); rechA();
+    }
+  }
+  function rechA(){
+    const sys = SYS[$("#aS", host).value], P = num($("#aP", host).value), c = num($("#aC", host).value) || 1, L = num($("#aL", host).value), q = parseFloat($("#aQ", host).value), In = parseInt($("#aN", host).value, 10), Zn = num($("#aZ", host).value), o = $("#aOut", host);
+    if (![P, L, q].every(isFinite) || P <= 0 || L <= 0 || c <= 0 || c > 1) { o.innerHTML = ""; return; }
+    const U = sys.U, I = P / (sys.f * U * c), need = LSN.find(n => n >= I * 1.0001) || null, Iz = IZ[q], kappa = 56;
+    const dU = (sys.f === 1 ? 2 : sys.f) * L * I * c / (kappa * q), pr = dU / U * 100;
+    const Ia = 5 * In, Zs = (isFinite(Zn) ? Zn : 0) + 2 * 0.0172 * L / q, ZsMax = 230 / Ia, laenge = ((ZsMax - (isFinite(Zn) ? Zn : 0)) * q) / (2 * 0.0172);
+    const ok = (b, t) => '<div style="background:rgba(255,255,255,.88);color:#1a2433;border-radius:10px;padding:6px 10px;margin:4px 0;font-size:14px;line-height:1.4"><b style="color:' + (b ? "#1f8a3a" : "#d62828") + '">' + (b ? "✔" : "✘") + '</b> ' + t + '</div>';
+    const sich = In >= I && In <= Iz;
+    o.innerHTML = '<div class="stats"><div><b>' + I.toLocaleString(loc(), { maximumFractionDigits: 1 }) + ' A</b><small>' + T("Strom", "courant") + '</small></div><div><b>' + (need ? "B" + need : "–") + '</b><small>' + T("kleinster passender LS", "plus petit disjoncteur") + '</small></div><div><b>' + pr.toLocaleString(loc(), { maximumFractionDigits: 2 }) + ' %</b><small>' + T("Spannungsfall", "chute de tension") + '</small></div></div>' +
+      '<div class="resbox" style="font-size:15px">' + ok(In >= I, T("LS B" + In + " ≥ Betriebsstrom", "Disjoncteur B" + In + " ≥ courant d’emploi")) + '' + ok(In <= Iz, T("LS ≤ Belastbarkeit der Leitung (typisch " + Iz.toLocaleString(loc()) + " A bei " + String(q).replace(".", ",") + " mm²)", "Disjoncteur ≤ courant admissible du câble (typique " + Iz.toLocaleString(loc()) + " A pour " + String(q).replace(".", ",") + " mm²)")) + '' + ok(pr <= 3, T("Spannungsfall ≤ 3 % (Wohnbau-Richtwert)", "Chute de tension ≤ 3 % (valeur indicative)")) + '' + ok(Zs <= ZsMax, T("Abschaltbedingung: Zs ≈ " + Zs.toLocaleString(loc(), { maximumFractionDigits: 2 }) + " Ω ≤ " + ZsMax.toLocaleString(loc(), { maximumFractionDigits: 2 }) + " Ω (5 × In)", "Condition de coupure : Zs ≈ " + Zs.toLocaleString(loc(), { maximumFractionDigits: 2 }) + " Ω ≤ " + ZsMax.toLocaleString(loc(), { maximumFractionDigits: 2 }) + " Ω (5 × In)")) + '</div>' +
+      '<p class="hint">' + (sich && pr <= 3 && Zs <= ZsMax ? T("Alles im grünen Bereich – rechnerisch.", "Tout est dans le vert – du moins sur le papier.") : T("Mindestens ein Punkt passt nicht: größeren Querschnitt, kürzere Leitung oder kleineren LS wählen.", "Au moins un point ne convient pas : section plus grande, câble plus court ou disjoncteur plus petit.")) + ' ' + T("Bei dieser Leitung wäre die Abschaltbedingung bis ca. " + Math.max(0, laenge).toLocaleString(loc(), { maximumFractionDigits: 0 }) + " m Länge erfüllt.", "Avec ce câble, la condition de coupure est respectée jusqu’à environ " + Math.max(0, laenge).toLocaleString(loc(), { maximumFractionDigits: 0 }) + " m de longueur.") + '</p>' +
+      '<p class="hint">' + T("Richtwerte: Belastbarkeit für NYM in der Wand (Verlegeart B2, 2 belastete Adern, 30 °C); ein B-LS löst magnetisch bei 3–5 × In aus, gerechnet wird mit 5 × In; Zs hier nur als Widerstand (Kupfer, Hin- und Rückleiter). Sie ersetzt keine Messung und keine Planung nach VDE 0100 – das macht die Elektrofachkraft.", "Valeurs indicatives : courant admissible pour NYM encastré (mode de pose B2, 2 conducteurs chargés, 30 °C) ; un disjoncteur B déclenche magnétiquement à 3–5 × In, on calcule avec 5 × In ; Zs ici seulement en résistance (cuivre, aller-retour). Cela ne remplace ni la mesure ni l’étude selon les normes – c’est le travail de l’électricien.") + '</p>';
+  }
+  maske();
+}
+
+/* ---------- Leiterplatten-Design: Abstände, Impedanz & Differentialpaare, Vias ---------- */
+function pcbTool(host){
+  let m = "a";
+  host.innerHTML = SAFE() + '<div class="tabs t3" id="bTab"></div><div class="cols2"><div id="bIn"></div><div id="bOut"></div></div>';
+  /* IPC-2221 Tabelle 6-1: Mindestabstand zwischen Leitern (mm) je Spannung (Spitzenwert, DC oder AC) */
+  const CL = [[15, [.05, .1, .1, .05, .13, .13, .13]], [30, [.05, .1, .1, .05, .13, .25, .13]], [50, [.1, .6, .6, .13, .13, .4, .13]], [100, [.1, .6, 1.5, .13, .13, .5, .13]], [150, [.2, .6, 3.2, .4, .4, .8, .4]], [170, [.2, 1.25, 3.2, .4, .4, .8, .4]], [250, [.2, 1.25, 6.4, .4, .4, .8, .4]], [300, [.2, 1.25, 12.5, .4, .4, .8, .8]], [500, [.25, 2.5, 12.5, .8, .8, 1.5, .8]]];
+  const KL = [T("innen liegende Lage (B1)", "couche interne (B1)"), T("außen, ohne Lack, bis 3050 m Höhe (B2)", "extérieur, sans vernis, jusqu’à 3050 m (B2)"), T("außen, ohne Lack, über 3050 m (B3)", "extérieur, sans vernis, au-dessus de 3050 m (B3)"), T("außen mit Lötstopplack (B4)", "extérieur avec vernis épargne (B4)"), T("außen, Schutzlack über der Baugruppe (A5)", "extérieur, vernis de protection sur l’assemblage (A5)"), T("Bauteilanschluss, ohne Lack (A6)", "patte de composant, sans vernis (A6)"), T("Bauteilanschluss mit Schutzlack (A7)", "patte de composant avec vernis (A7)")];
+  const IF = [["", T("(eigene Werte)", "(valeurs libres)"), 0, 0], ["usb2", "USB 2.0 High-Speed", 90, 0], ["usb3", "USB 3.x (SuperSpeed)", 85, 0], ["eth", "Ethernet (100/1000BASE-T)", 100, 0], ["hdmi", "HDMI / DisplayPort", 100, 0], ["lvds", "LVDS / MIPI CSI/DSI", 100, 0], ["can", "CAN / RS-485", 120, 0], ["se", T("Einzelleitung, typisch (Takt, SPI, Funk)", "Piste simple typique (horloge, SPI, RF)"), 0, 50]];
+  const RHO = 1.72e-8;
+  function maske(){
+    $("#bTab", host).innerHTML = [["a", T("Abstände", "Distances")], ["z", T("Impedanz & Paare", "Impédance & paires")], ["v", "Via"]].map(t => '<button class="btn' + (t[0] === m ? " on" : "") + '" data-m="' + t[0] + '">' + t[1] + '</button>').join("");
+    $$("#bTab button", host).forEach(b => b.onclick = () => { m = b.dataset.m; maske(); });
+    let h;
+    if (m === "a") h = eingabe(host, "cU", T("Spannung zwischen den Leitern (V, Spitzenwert)", "Tension entre les conducteurs (V, valeur crête)"), "", "50") + '<label class="l">' + T("Lage / Beschichtung", "Couche / revêtement") + '</label><select class="in" id="cK">' + KL.map((k, i) => '<option value="' + i + '"' + (i === 3 ? " selected" : "") + '>' + esc(k) + '</option>').join("") + '</select>';
+    else if (m === "z") h = '<label class="l">' + T("Schnittstelle (setzt Zielwert)", "Interface (fixe la cible)") + '</label><select class="in" id="zI">' + IF.map(x => '<option value="' + x[0] + '">' + esc(x[1]) + '</option>').join("") + '</select><label class="l">' + T("Leitungsart", "Type de ligne") + '</label><select class="in" id="zT"><option value="m">' + T("Microstrip (außen, Massefläche darunter)", "Microstrip (extérieur, plan de masse dessous)") + '</option><option value="s">' + T("Stripline (innen zwischen zwei Masseflächen)", "Stripline (interne entre deux plans de masse)") + '</option></select>' + eingabe(host, "zE", T("Dielektrizitätszahl εr (FR-4: 4,2–4,5)", "Permittivité εr (FR-4 : 4,2–4,5)"), "", "4,3") + eingabe(host, "zH", T("Höhe bis zur Massefläche h (mm)", "Hauteur jusqu’au plan de masse h (mm)"), "", "0,2") + eingabe(host, "zW", T("Leiterbahnbreite w (mm)", "Largeur de piste w (mm)"), "", "0,35") + eingabe(host, "zD", T("Kupferdicke t (mm; 35 µm = 0,035)", "Épaisseur de cuivre t (mm ; 35 µm = 0,035)"), "", "0,035") + eingabe(host, "zS", T("Abstand der beiden Leiter s (mm, nur Paar)", "Écart entre les deux pistes s (mm, paire seulement)"), "", "0,2") + eingabe(host, "zK", T("Erlaubter Laufzeitunterschied (ps)", "Écart de propagation admis (ps)"), "", "50") ;
+    else h = eingabe(host, "vD", T("Bohrdurchmesser fertig (mm)", "Diamètre percé fini (mm)"), "", "0,3") + eingabe(host, "vT", T("Kupferhülse t (µm, Standard ca. 20–25)", "Épaisseur du cuivre t (µm, standard ~20–25)"), "", "25") + eingabe(host, "vH", T("Plattendicke (mm)", "Épaisseur de la carte (mm)"), "", "1,6") + eingabe(host, "vI", T("Strom, den die Verbindung tragen soll (A)", "Courant à faire passer (A)"), "", "3") + eingabe(host, "vK", T("Erlaubte Erwärmung (°C)", "Échauffement admis (°C)"), "", "10");
+    $("#bIn", host).innerHTML = h;
+    if (m === "z") $("#zI", host).onchange = e => { const x = IF.find(z => z[0] === e.target.value); if (x && x[2]) { zielDiff = x[2]; zielSE = 0; } else if (x && x[3]) { zielSE = x[3]; zielDiff = 0; } rech(); };
+    auf(host, ["cU", "cK", "zI", "zT", "zE", "zH", "zW", "zD", "zS", "zK", "vD", "vT", "vH", "vI", "vK"], rech); rech();
+  }
+  let zielDiff = 0, zielSE = 0;
+  /* Impedanzformeln (IPC-2141 / klassische Näherungen) */
+  const mz = (e, h, w, t) => 87 / Math.sqrt(e + 1.41) * Math.log(5.98 * h / (0.8 * w + t));
+  const sz = (e, b, w, t) => 60 / Math.sqrt(e) * Math.log(4 * b / (0.67 * Math.PI * (0.8 * w + t)));
+  const dz = (z0, s, h) => 2 * z0 * (1 - 0.48 * Math.exp(-0.96 * s / h));
+  function breiteFuer(fn, ziel){            // Bisektion: Breite, die den Zielwert ergibt (Z fällt mit w)
+    let lo = 0.02, hi = 8; if (fn(lo) < ziel || fn(hi) > ziel) return NaN;
+    for (let i = 0; i < 60; i++) { const mid = (lo + hi) / 2; if (fn(mid) > ziel) lo = mid; else hi = mid; }
+    return (lo + hi) / 2;
+  }
+  function rech(){
+    const o = $("#bOut", host); const f = (v, n) => v.toLocaleString(loc(), { maximumFractionDigits: n == null ? 2 : n });
+    if (m === "a") {
+      const U = num($("#cU", host).value), k = parseInt($("#cK", host).value, 10);
+      if (!isFinite(U) || U < 0) { o.innerHTML = ""; return; }
+      if (U > 500) { o.innerHTML = '<p class="warn">' + T("Über 500 V gilt die Tabelle nicht mehr (IPC-2221 rechnet dann pro Volt weiter) – und bei Netzspannung zählen vor allem Kriech- und Luftstrecken nach EN 62368-1 / EN 60664-1.", "Au-dessus de 500 V le tableau ne s’applique plus – et sur le secteur ce sont surtout les lignes de fuite et distances d’isolement (EN 62368-1 / EN 60664-1) qui comptent.") + '</p>'; return; }
+      const row = CL.find(r => U <= r[0]), v = row[1][k];
+      o.innerHTML = '<div class="stats"><div><b>' + f(v, 2) + ' mm</b><small>' + T("Mindestabstand", "distance minimale") + '</small></div><div><b>' + f(v / 0.0254, 1) + ' mil</b><small>' + T("in mil (1 mil = 0,0254 mm)", "en mil") + '</small></div><div><b>≤ ' + row[0] + ' V</b><small>' + T("Tabellenstufe", "palier du tableau") + '</small></div></div>' +
+        '<p class="resbox" style="font-size:16px">' + T("Zwischen zwei Leitern mit " + f(U, 0) + " V Differenz: mindestens " + f(v, 2) + " mm (" + KL[k] + ").", "Entre deux conducteurs avec " + f(U, 0) + " V de différence : au moins " + f(v, 2) + " mm (" + KL[k] + ").") + '</p>' +
+        '<p class="hint">' + T("Werte nach IPC-2221, Tabelle 6-1 (Spitzenspannung). Die meisten Hersteller fertigen ohnehin ab ca. 0,1–0,15 mm – für Hobby-Elektronik bis 50 V reicht also der Fertigungsmindestwert. <b>Netzspannung (230 V)</b> braucht deutlich mehr: Kriech- und Luftstrecken, oft Schlitze in der Platte und mehrere Millimeter Abstand zur Kleinspannungsseite – nach EN 62368-1 / EN 60664-1 prüfen und nur mit Fachkenntnis bauen.", "Valeurs selon IPC-2221, tableau 6-1 (tension crête). La plupart des fabricants descendent de toute façon à ~0,1–0,15 mm – pour l’électronique de loisir jusqu’à 50 V le minimum de fabrication suffit. Le <b>secteur (230 V)</b> demande bien plus : lignes de fuite, distances d’isolement, souvent des fentes dans la carte et plusieurs millimètres vers la basse tension – à vérifier selon EN 62368-1 / EN 60664-1 et seulement avec les connaissances nécessaires.") + '</p>';
+    } else if (m === "z") {
+      const e = num($("#zE", host).value), h = num($("#zH", host).value), w = num($("#zW", host).value), t = num($("#zD", host).value), s = num($("#zS", host).value), sk = num($("#zK", host).value), typ = $("#zT", host).value;
+      if (![e, h, w, t].every(isFinite) || e < 1 || h <= 0 || w <= 0 || t < 0) { o.innerHTML = ""; return; }
+      const b = typ === "s" ? 2 * h + t : null;                       // Stripline: h = Abstand Leiter–Masse (je Seite)
+      const z0 = typ === "m" ? mz(e, h, w, t) : sz(e, b, w, t), ee = typ === "m" ? 0.475 * e + 0.67 : e, tpd = 3.3356 * Math.sqrt(ee);   // ps/mm
+      const paar = isFinite(s) && s > 0 ? (typ === "m" ? dz(z0, s, h) : z0 * 2 * (1 - 0.347 * Math.exp(-2.9 * s / (2 * h + t)))) : NaN;
+      const gueltig = typ === "m" ? (w / h >= 0.1 && w / h <= 2.0) : (w / (b - t) < 0.35 && t / b < 0.25);
+      let wz = "";
+      const fn = x => typ === "m" ? mz(e, h, x, t) : sz(e, b, x, t);
+      const zs = zielSE || 50, wSE = breiteFuer(fn, zs);
+      wz = isFinite(wSE) ? '<p class="resbox" style="font-size:15px">' + T("Für " + f(zs, 0) + " Ω brauchst du bei diesem Aufbau etwa <b>" + f(wSE, 3) + " mm</b> Bahnbreite.", "Pour " + f(zs, 0) + " Ω il faut avec cet empilement environ <b>" + f(wSE, 3) + " mm</b> de largeur.") + '</p>' : "";
+      if (zielDiff && isFinite(s) && s > 0 && typ === "m") {
+        const fd = x => dz(mz(e, h, x, t), s, h), wd = breiteFuer(fd, zielDiff);
+        wz += isFinite(wd) ? '<p class="resbox" style="font-size:15px">' + T("Für ein Paar mit " + f(zielDiff, 0) + " Ω differentiell bei s = " + f(s, 2) + " mm: etwa <b>" + f(wd, 3) + " mm</b> Breite je Leiter.", "Pour une paire de " + f(zielDiff, 0) + " Ω différentiel avec s = " + f(s, 2) + " mm : environ <b>" + f(wd, 3) + " mm</b> de largeur par piste.") + '</p>' : "";
+      }
+      const dl = isFinite(sk) && sk > 0 ? sk / tpd : NaN;
+      o.innerHTML = '<div class="stats"><div><b>' + f(z0, 1) + ' Ω</b><small>' + T("Einzelleitung Z0", "piste simple Z0") + '</small></div>' + (isFinite(paar) ? '<div><b>' + f(paar, 1) + ' Ω</b><small>' + T("Paar differentiell", "paire différentielle") + '</small></div>' : '') + '<div><b>' + f(tpd, 1) + ' ps/mm</b><small>' + T("Laufzeit", "temps de propagation") + '</small></div></div>' + wz +
+        (isFinite(dl) ? '<p class="resbox" style="font-size:15px">' + T("Für höchstens " + f(sk, 0) + " ps Laufzeitunterschied dürfen die beiden Leitungen eines Paares höchstens <b>" + f(dl, 2) + " mm</b> verschieden lang sein.", "Pour un écart maximal de " + f(sk, 0) + " ps, les deux pistes d’une paire ne doivent pas différer de plus de <b>" + f(dl, 2) + " mm</b>.") + '</p>' : '') +
+        (gueltig ? '' : '<p class="warn">' + T("Die Formel ist hier ungenau (w/h außerhalb 0,1–2 bei Microstrip bzw. zu breit bei Stripline). Ergebnis nur als grobe Schätzung nehmen.", "La formule est ici imprécise (w/h hors 0,1–2 pour le microstrip ou trop large pour la stripline). Prends le résultat comme estimation grossière.") + '</p>') +
+        '<p class="hint">' + T("Näherungsformeln (IPC-2141): gut für einen ersten Entwurf, nicht für die Fertigung. Dafür den Lagenaufbau-Rechner deines Herstellers nutzen (z. B. JLCPCB, PCBWay, Eurocircuits) – die rechnen mit echtem Prepreg-Aufbau, Lötstopplack und Feldlöser. USB 2.0 braucht 90 Ω differentiell, Ethernet/HDMI 100 Ω, CAN 120 Ω, Funk-/Antennenleitungen 50 Ω.", "Formules approchées (IPC-2141) : bonnes pour une première ébauche, pas pour la fabrication. Utilise pour cela le calculateur d’empilement de ton fabricant (JLCPCB, PCBWay, Eurocircuits…) qui tient compte du prépreg réel, du vernis et d’un solveur de champ. USB 2.0 demande 90 Ω différentiel, Ethernet/HDMI 100 Ω, CAN 120 Ω, lignes RF/antenne 50 Ω.") + '</p>';
+    } else {
+      const d = num($("#vD", host).value), t = num($("#vT", host).value) / 1000, hh = num($("#vH", host).value), I = num($("#vI", host).value), dT = num($("#vK", host).value);
+      if (![d, t, hh, I, dT].every(isFinite) || d <= 0 || t <= 0 || hh <= 0 || I <= 0 || dT <= 0 || t >= d / 2) { o.innerHTML = ""; return; }
+      const A = Math.PI * (d - t) * t;                                 // mm² der Kupferhülse
+      const R = RHO * (hh / 1000) / (A * 1e-6), mil2 = A * 1550, Imax = 0.024 * Math.pow(dT, 0.44) * Math.pow(mil2, 0.725);
+      const L = 5.08 * (hh / 25.4) * (Math.log(4 * hh / d) + 1);
+      const n = Math.max(1, Math.ceil(I / Imax));
+      o.innerHTML = '<div class="stats"><div><b>' + f(R * 1000, 2) + ' mΩ</b><small>' + T("Widerstand pro Via", "résistance par via") + '</small></div><div><b>' + f(Imax, 2) + ' A</b><small>' + T("Strom pro Via", "courant par via") + '</small></div><div><b>' + f(L, 2) + ' nH</b><small>' + T("Induktivität", "inductance") + '</small></div></div>' +
+        '<p class="resbox" style="font-size:16px">' + T("Für " + f(I, 1) + " A brauchst du mindestens <b>" + n + " Via(s)</b> parallel – besser doppelt so viele (Löt- und Fertigungstoleranz). Zusammen: " + f(R * 1000 / n, 2) + " mΩ.", "Pour " + f(I, 1) + " A il faut au moins <b>" + n + " via(s)</b> en parallèle – mieux vaut le double (tolérances). Ensemble : " + f(R * 1000 / n, 2) + " mΩ.") + '</p>' +
+        '<p class="hint">' + T("Kupferhülse: A = π · (d − t) · t, gerechnet wie eine innere Bahn (IPC-2221, k = 0,024; vorsichtig). Induktivität nach der Näherung L ≈ 5,08 · h · [ln(4h/d) + 1] nH (h, d in Zoll). Bei schnellen Signalen und Entkopplung zählt die Induktivität: ein Via ≈ ein Stück Draht – deshalb Massevias dicht an die Pads, nicht weit weg.", "Cuivre du trou : A = π · (d − t) · t, traité comme une piste interne (IPC-2221, k = 0,024 ; prudent). Inductance : L ≈ 5,08 · h · [ln(4h/d) + 1] nH (h, d en pouces). Pour les signaux rapides et le découplage, l’inductance compte : un via ≈ un bout de fil – donc les vias de masse tout près des pastilles.") + '</p>';
+    }
+  }
+  maske();
+}
+
 const TOOLS = [
   ["farbcode", "🌈", "#e0527a", T("Widerstands-Farbcode", "Code couleur des résistances"), T("Ringe antippen oder Wert eingeben – 4, 5 und 6 Ringe, mit Toleranz.", "Touche les anneaux ou saisis une valeur – 4, 5 et 6 anneaux, avec tolérance."), resTool],
   ["ohm", "⚡", "#ff8c1a", T("Ohm & Leistung", "Ohm et puissance"), T("Zwei Werte eingeben, U, I, R und P werden berechnet.", "Saisis deux valeurs : U, I, R et P sont calculés."), ohmTool],
@@ -867,6 +1122,8 @@ const TOOLS = [
   ["akku", "🔋", "#e8590c", T("Akku-Laufzeit", "Autonomie de batterie"), T("Wie lange hält dein ESP32-Projekt am Akku? Mit Schlafmodus und Vergleich.", "Combien de temps ton projet ESP32 tient sur batterie ? Avec veille et comparaison."), akkuTool],
   ["bauteilcode", "🔎", "#d6336c", T("Bauteil-Code lesen", "Lire un code de composant"), T("SMD-Widerstände (103, 4R7, 01C), Kondensatoren (104, 4n7) und Spulen entschlüsseln.", "Décoder résistances CMS (103, 4R7, 01C), condensateurs (104, 4n7) et bobines."), codeTool],
   ["kabel", "🪢", "#868e96", T("Kabel & Leiterbahn", "Câble et piste"), T("Spannungsabfall im Kabel, nötiger Querschnitt und Leiterbahnbreite für die Platine.", "Chute de tension, section nécessaire et largeur de piste pour le circuit imprimé."), kabelTool],
+  ["install", "🏠", "#e8590c", T("Elektroinstallation", "Installation électrique"), T("Schalter ausprobieren (Wechsel-, Kreuz-, Serienschaltung, Stromstoßrelais, Treppenlicht) und Leitung, Sicherung und Abschaltbedingung prüfen.", "Essayer les montages (va-et-vient, permutateur, double allumage, télérupteur, minuterie) et vérifier câble, disjoncteur et condition de coupure."), installTool],
+  ["pcb", "🟩", "#2b8a3e", T("Leiterplatte: Abstand, Impedanz, Via", "Carte : distances, impédance, via"), T("Mindestabstände nach IPC-2221, Impedanz und Differentialpaare mit Längenabgleich, Via-Strom und -Induktivität.", "Distances minimales IPC-2221, impédance et paires différentielles avec ajustement de longueur, courant et inductance des vias."), pcbTool],
   ["adc", "📟", "#0c8599", T("ADC, PWM & Baudrate", "ADC, PWM et débit en bauds"), T("Rohwert in Volt, PWM-Auflösung für ESP32 und der Baudraten-Fehler beim Arduino.", "Valeur brute en volts, résolution PWM de l’ESP32 et erreur de débit sur Arduino."), adcTool],
   ["pinplan", "🧭", "#5f3dc4", T("Pin-Planer", "Planificateur de broches"), T("Wähle Board und Bauteile – du bekommst freie Pins, I²C-Adress-Check, Warnungen und fertige #define-Zeilen.", "Choisis carte et pièces – broches libres, test d’adresses I²C, avertissements et lignes #define prêtes."), pinplanTool],
   ["logik", "🔢", "#6a4fd8", T("Logik & Zahlensysteme", "Logique et numération"), T("Wahrheitstabelle für jeden Ausdruck, 74xx-Gatter, Binär/Hex/Dezimal.", "Table de vérité pour toute expression, portes 74xx, binaire/hexa/décimal."), logikTool],
