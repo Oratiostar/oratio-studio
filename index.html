@@ -933,7 +933,7 @@ function startseite(){
   document.title = "Oratio Tech Studio"; brand("studio");
   const fr = LANG === "fr", Tx = (d, f) => fr ? f : d;
   const dk = w => hexOf(w.farbe);
-  const karte = (href, kat, col, sym, name, sub, n) => '<a class="sc'+(hell(col)?' lt':'')+'" data-k="'+kat+'" href="'+href+'" style="--wc:'+col+'"><div class="sh"><b'+(/\S{14,}/.test(name)?' style="font-size:12.5px;letter-spacing:0"':'')+'>'+esc(name)+'</b></div><div class="sbad">'+sym+'</div><p>'+esc(sub)+'</p><i class="sn">'+esc(n)+'</i></a>';
+  const karte = (href, kat, col, sym, name, sub, n) => '<a class="sc'+(hell(col)?' lt':'')+'" data-k="'+kat+'" href="'+href+'" style="--wc:'+col+'"><div class="sh"><b'+(/[^\s\-\/]{17,}/.test(name)?' style="font-size:13px;letter-spacing:0"':/[^\s\-\/]{14,}/.test(name)?' style="font-size:14px;letter-spacing:0"':'')+'>'+esc(name)+'</b></div><div class="sbad">'+sym+'</div><p>'+esc(sub)+'</p><i class="sn">'+esc(n)+'</i></a>';
   const weltK = id => { const w = weltInfo(id); return w ? karte("#/w/"+w.id, "", dk(w), '<span class="emo">'+weltSym(w)+'</span>', T(w.name), T(w.untertitel), w.seiten.length+" "+U("seiten")) : ""; };
   const EX = {
     iclab: () => karte("ic-lab.html", "", "#2fbf4a", '<span class="emo">🧰</span>', Tx("Schaltungen","Circuits"), Tx("Jedes Bauteil und jeder IC in einer echten Schaltung: Schaltplan, Erklärung, Oszilloskop – und der Weg zum Rechner","Chaque composant et chaque CI dans un vrai circuit : schéma, explication, oscilloscope – et le lien vers le calculateur"), "80 "+Tx("Schaltungen","circuits")),
