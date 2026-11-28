@@ -1132,20 +1132,30 @@ window.Elektro = { opamp: function(h, t){ opampTool(h, t); }, start: function(){
   const grid = $("#toolgrid"), hostEl = $("#toolhost");
   grid.innerHTML = TOOLS.map(t => '<a class="tcard" style="--wc:' + t[2] + '" href="#' + t[0] + '" data-id="' + t[0] + '"><span class="ts" style="background:' + t[2] + '">' + t[1] + '</span><span><b>' + esc(t[3]) + '</b><small>' + esc(t[4]) + '</small></span></a>').join("");
   const crumb = document.querySelector("main .crumb"), crumb0 = crumb ? crumb.innerHTML : "", sub = document.querySelector("main > .sub"), titel0 = T("Elektronik-Rechner", "Calculateurs d’électronique");
+  const ph = document.querySelector("main .ph"), phh = ph && ph.querySelector("h1"), phe = ph && ph.querySelector(".emo"), ph0 = [phh ? phh.textContent : "", phe ? phe.textContent : "", ph ? ph.style.getPropertyValue("--wc") : ""];
+  const EIGEN = { install: ["installation", T("Elektroinstallation", "Installation électrique")], pcb: ["pcb", T("Leiterplatten-Design", "Conception de circuits imprimés")] };
+  function kopfSetzen(t, eg){
+    if (phh) phh.textContent = eg ? t[3] : ph0[0];
+    if (phe) phe.textContent = eg ? t[1] : ph0[1];
+    if (ph) ph.style.setProperty("--wc", eg ? t[2] : ph0[2]);
+    if (crumb && eg) crumb.innerHTML = '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › <a href="index.html#/w/' + eg[0] + '">' + esc(eg[1]) + '</a> › ' + esc(t[3]);
+  }
   function zeigen(){
     if ((location.hash || "") === "#pinout"){ location.replace("pinout.html"); return; }
     const id = (location.hash || "").slice(1).split("/")[0], t = TOOLS.find(x => x[0] === id);
+    const eg = t && EIGEN[t[0]];
+    kopfSetzen(t, eg);
     if (!t){
       grid.style.display = ""; if (sub) sub.style.display = ""; hostEl.innerHTML = "";
       if (crumb) crumb.innerHTML = crumb0;
       document.title = titel0 + " – Oratio"; return;
     }
     grid.style.display = "none"; if (sub) sub.style.display = "none";
-    if (crumb) crumb.innerHTML = crumb0.replace(/ › [^›]*$/, ' › <a href="#">' + titel0 + '</a> › ' + esc(t[3]));
-    hostEl.innerHTML = '<section class="card toolcard" id="' + t[0] + '"><h2><span class="ts" style="background:' + t[2] + '">' + t[1] + '</span> ' + esc(t[3]) + '</h2><div class="tbody"></div></section>';
+    if (crumb && !eg) crumb.innerHTML = crumb0.replace(/ › [^›]*$/, ' › <a href="#">' + titel0 + '</a> › ' + esc(t[3]));
+    hostEl.innerHTML = '<section class="card toolcard" id="' + t[0] + '">' + (eg ? "" : '<h2><span class="ts" style="background:' + t[2] + '">' + t[1] + '</span> ' + esc(t[3]) + '</h2>') + '<div class="tbody"></div></section>';
     try { t[5]($(".tbody", hostEl)); } catch(err){ $(".tbody", hostEl).textContent = err.message; }
     if (window.WZ && WZ.selects) WZ.selects();
-    document.title = t[3] + " – " + titel0 + " – Oratio";
+    document.title = eg ? t[3] + " – " + eg[1] + " – Oratio" : t[3] + " – " + titel0 + " – Oratio";
   }
   window.addEventListener("hashchange", () => { zeigen(); window.scrollTo(0, 0); });
   zeigen();
