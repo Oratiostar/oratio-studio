@@ -433,7 +433,7 @@ const FARBEN = {sonne:"#ffd23f",orange:"#ff8c1a",rot:"#ff4d5e",pink:"#ff7ac8",li
 const SYM = {antenne:"📡",quarz:"💎",optokoppler:"🔌",batterie:"🔋",voltmeter:"🧪",gehaeuse:"📦",lampe:"💡",kondensator:"⚡",npn:"🔺",wechselspannung:"〰️",ntc:"🌡️",stromquelle:"⚙️",led:"💡",schalter:"🎚️",widerstand:"🔧",opamp:"▷",elko:"🔋",amperemeter:"📟",taster:"🔘"};
 const symbol = s => SYM[s] || "◆";
 /* Ein eigenes Symbol pro Welt (jedes nur einmal) */
-const WSYM = {bt:"🧩",grund:"⚡",passiv:"🎛️",halbleiter:"💡",messen:"📏",speicher:"💾",energie:"🔋",mathe:"➗",sensoren:"🌡️",mikro:"🍓",schnittstellen:"🔗",netzwerk:"📡",digital:"🚦",zahlen:"🔢",linux:"🐧",prog:"💻",schalt:"✏️",fehler:"🔍",glossar:"📖",bauteile:"🧩",bt_ic:"🔲",bt_analog:"📈",schaltungen:"🧰",bt_katalog:"📚",bt_module:"🧱",bt_wissen:"🎓",labor:"🧪",konsolen:"🎮",mcu:"🤖",zubehoer:"🔩",handys:"📱",kameras:"📷"};
+const WSYM = {bt:"🧩",grund:"⚡",passiv:"🎛️",halbleiter:"💡",messen:"📏",speicher:"💾",energie:"🔋",mathe:"➗",sensoren:"🌡️",mikro:"🍓",schnittstellen:"🔗",netzwerk:"📡",digital:"🚦",zahlen:"🔢",linux:"🐧",prog:"💻",schalt:"✏️",fehler:"🔍",glossar:"📖",bauteile:"🧩",bt_ic:"🔲",bt_analog:"📈",schaltungen:"🧰",bt_katalog:"📚",bt_module:"🧱",bt_wissen:"🎓",labor:"🧪",konsolen:"🎮",mcu:"🤖",zubehoer:"🔩",handys:"📱",kameras:"📷",installation:"🏠",pcb:"🟩",gta6:"🎮"};
 const weltSym = w => WSYM[w.id] || symbol(w.symbol);
 function zl(c){ const m=/^@(#[0-9a-fA-F]{6})\|(.*)$/.exec(String(c)); return m?'<span class="fpt" style="background:'+m[1]+'"></span>'+md(m[2]):md(c); }
 
@@ -475,7 +475,7 @@ const SCH = {
  knoten:'<path d="M2 12h44M24 2v20"/><circle cx="24" cy="12" r="3" fill="currentColor"/>',
  gehaeuse:'<rect x="9" y="2" width="30" height="20" rx="2"/><path d="M4 6h5M4 12h5M4 18h5M39 6h5M39 12h5M39 18h5"/><circle cx="14" cy="7" r="1.5"/>'
 };
-const WSCH = {bt:"npn",grund:"batterie",passiv:"kondensator",halbleiter:"npn",messen:"voltmeter",speicher:"quarz",energie:"batterie",mathe:"wechselspannung",sensoren:"ntc",mikro:"gehaeuse",schnittstellen:"optokoppler",netzwerk:"antenne",digital:"diode",zahlen:"optokoppler",linux:"schalter",prog:"schalter",schalt:"widerstand",fehler:"voltmeter",glossar:"lampe",bauteile:"optokoppler",bt_ic:"optokoppler",bt_analog:"opamp",schaltungen:"opamp",bt_katalog:"elko",bt_module:"antenne",bt_wissen:"lampe",labor:"amperemeter",konsolen:"taster",mcu:"quarz",zubehoer:"gehaeuse",handys:"antenne",kameras:"antenne"};
+const WSCH = {bt:"npn",grund:"batterie",passiv:"kondensator",halbleiter:"npn",messen:"voltmeter",speicher:"quarz",energie:"batterie",mathe:"wechselspannung",sensoren:"ntc",mikro:"gehaeuse",schnittstellen:"optokoppler",netzwerk:"antenne",digital:"diode",zahlen:"optokoppler",linux:"schalter",prog:"schalter",schalt:"widerstand",fehler:"voltmeter",glossar:"lampe",bauteile:"optokoppler",bt_ic:"optokoppler",bt_analog:"opamp",schaltungen:"opamp",bt_katalog:"elko",bt_module:"antenne",bt_wissen:"lampe",labor:"amperemeter",konsolen:"taster",mcu:"quarz",zubehoer:"gehaeuse",handys:"antenne",kameras:"antenne",installation:"schalter",pcb:"gehaeuse",gta6:"taster"};
 function schSym(key, color, px){ const p = SCH[key]; if (!p) return ""; return '<svg viewBox="0 0 48 24" width="'+(px||56)+'" height="'+((px||56)/2)+'" fill="none" stroke="'+(color||"#333")+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:'+(color||"#333")+'" aria-hidden="true">'+p+'</svg>'; }
 
 const hexOf = f => FARBEN[f] || f || "#ff8c1a";
@@ -747,7 +747,7 @@ const WKAT = {
   schaltungen:["schaltungen","bauteile"], digital:["schaltungen","grundlagen"],
   speicher:["informatik"], netzwerk:["informatik"], schnittstellen:["informatik","schaltungen"], linux:["informatik"], prog:["informatik"], mikro:["informatik","schaltungen"],
   messen:["labor"], fehler:["labor"],
-  konsolen:["geraete"], handys:["geraete"], kameras:["geraete"], mcu:["geraete","schaltungen"], zubehoer:["geraete"]
+  installation:["elektronik"], pcb:["elektronik","bauteile"], gta6:["geraete"], konsolen:["geraete"], handys:["geraete"], kameras:["geraete"], mcu:["geraete","schaltungen"], zubehoer:["geraete"]
 };
 const weltKat = id => WKAT[id] || ["elektronik"];
 let KATWAHL = "alle";
@@ -844,6 +844,7 @@ function startseite(){
   const EX = {
     iclab: () => karte("ic-lab.html", "", "#2fbf4a", '<span class="emo">🧰</span>', Tx("Schaltungen","Circuits"), Tx("Jedes Bauteil und jeder IC in einer echten Schaltung: Schaltplan, Erklärung, Oszilloskop – und der Weg zum Rechner","Chaque composant et chaque CI dans un vrai circuit : schéma, explication, oscilloscope – et le lien vers le calculateur"), "80 "+Tx("Schaltungen","circuits")),
     elab: () => karte("elektro.html", "", "#00b3a4", '<span class="emo">🔌</span>', Tx("Elektronik-Rechner","Calculateurs d’électronique"), Tx("Farbcode, Ohm, LED, Teiler, Opamp, Filter, 555, Regler, Logik, Akku-Laufzeit, SMD-Code, Kabel, ADC – zum Rechnen, mit lebendiger Zeichnung","Code couleur, Ohm, LED, diviseur, ampli op, filtres, 555, logique, autonomie de batterie, code CMS, câble, ADC – calculs avec schéma vivant"), "10 "+Tx("Werkzeuge","outils")),
+    elektro_inst: () => karte("elektro.html#install", "", "#e8590c", '<span class="emo">🏠</span>', Tx("Installation & Leiterplatte","Installation & circuit imprimé"), Tx("Schalter-Simulator, Absicherung, Leiterbahnbreite, Abstand, Impedanz, Via – zum Ausprobieren","Simulateur d’interrupteurs, protection, largeur de piste, distance, impédance, via – à essayer"), Tx("2 Rechner","2 calculateurs")),
     sim: () => karte("lab.html#sim", "", "#ff8a00", '<span class="emo">⚡</span>', Tx("Schaltungs-Simulator","Simulateur de circuits"), Tx("Bauteile frei verdrahten, Strom und Spannung live sehen – Überlast brennt durch (Oratio Lab)","Câbler librement, voir courant et tension en direct (Oratio Lab)"), "Oratio Lab"),
     disp: () => karte("lab.html#disp", "", "#2f7bff", '<span class="emo">📺</span>', Tx("Display-Werkstatt","Atelier d’écrans"), Tx("LCD, OLED, TFT, 7-Segment, LED-Matrix: gestalten und den fertigen Code für Uno, ESP32 oder Pi bekommen (Oratio Lab)","LCD, OLED, TFT, 7 segments, matrice LED : concevoir et obtenir le code (Oratio Lab)"), "Oratio Lab"),
     lab: () => karte("lab.html", "", "#ff8a00", '<span class="emo">🧪</span>', "Oratio Lab", Tx("Schaltungs-Simulator zum freien Verdrahten, Display-Werkstatt, Klang-Labor, Terminal, Spiel","Simulateur de circuits, atelier d’écrans, labo sonore, terminal, jeu"), Tx("Experimentierwelt","Monde d’expériences")),
@@ -854,6 +855,7 @@ function startseite(){
     { id: "elektro", ic: "⚡", c: "#ff8a00", n: Tx("Elektronik","Électronique"), t: Tx("Lernen & Nachschlagen: von Ohm bis zum IC","Apprendre & consulter : de la loi d’Ohm au CI"), sec: [
       { n: Tx("Verstehen","Comprendre"), t: Tx("Strom, Spannung, Mathe, Schaltzeichen und Digitaltechnik – von Null","Courant, tension, maths, symboles et numérique – depuis zéro"), w: ["grund","mathe","schalt","digital"] },
       { n: Tx("Bauteile","Composants"), t: Tx("Jedes Bauteil steht genau einmal: passiv, Halbleiter, Analog-ICs, Logik-ICs, Energie","Chaque composant une seule fois : passifs, semi-conducteurs, CI analogiques, CI logiques, énergie"), w: ["passiv","halbleiter","bt_analog","bt_ic","energie"] },
+      { n: Tx("Praxis & Handwerk","Pratique & métier"), t: Tx("Elektroinstallation im Haus und Leiterplatten-Design – mit Rechner und Simulator","Installation électrique et conception de circuits imprimés – avec calculateur et simulateur"), w: ["installation","pcb"], ex: ["elektro_inst"] },
       { n: Tx("Bauen & Rechnen","Construire & calculer"), t: Tx("Schaltungen mit Schaltplan und Oszilloskop – und der Rechner dazu","Circuits avec schéma et oscilloscope – et le calculateur"), w: [], ex: ["iclab","elab"] } ] },
     { id: "exp", ic: "📏", c: "#27a3df", n: Tx("Messen & Prüfen","Mesurer & tester"), t: Tx("Messgeräte, Werkstatt, Fehlersuche","Appareils, atelier, dépannage"), sec: [
       { n: "", w: ["messen","fehler"] } ] },
@@ -862,7 +864,8 @@ function startseite(){
     { id: "it", ic: "💻", c: "#7a4dff", n: Tx("Informatik & IT","Informatique & IT"), t: Tx("Zahlen, Speicher, Netzwerk, Linux, Code","Nombres, mémoire, réseau, Linux, code"), sec: [
       { n: "", w: ["zahlen","glossar","speicher","netzwerk","linux","prog"] } ] },
     { id: "vergl", ic: "🆚", c: "#16a085", n: Tx("Vergleichen & Entscheiden","Comparer & décider"), t: Tx("Was passt? Was kaufe ich?","Qu’est-ce qui convient ? Quoi acheter ?"), sec: [
-      { n: "", w: ["konsolen","handys","kameras"], ex: ["pc"] } ] }
+      { n: "", w: ["konsolen","handys","kameras"], ex: ["pc"] },
+      { n: Tx("Spiele","Jeux"), t: Tx("GTA 6: Infos, Karte, Tipps – Stand und Quelle immer markiert","GTA 6 : infos, carte, astuces – état et source toujours signalés"), w: ["gta6"] } ] }
   ];
   const used = new Set(["bt_wissen"]); BER.forEach(b => b.sec.forEach(s => s.w.forEach(x => used.add(x))));
   const rest = (INDEX.welten || []).map(w => w.id).filter(id => !used.has(id));
@@ -934,6 +937,8 @@ const WNAME = {de:["Deutschkurs","Cours d’allemand"], xm:["Weihnachtswelt","Mo
 const WFARBE = {de:"linear-gradient(135deg,#ff9f1a,#ff3b8a 50%,#7a4dff)", xm:"linear-gradient(135deg,#c4162b,#e08a2c)", rz:"linear-gradient(135deg,#e08a2c,#1d7a47)", mu:"linear-gradient(135deg,#0a6ec8,#e8f0ff 140%)", ic:"linear-gradient(135deg,#1f9d55,#19c9b8)", sch:"linear-gradient(135deg,#19c9b8,#7a4dff)", kurs:"linear-gradient(135deg,#3b6fe0,#19b8c9)", fz:"linear-gradient(135deg,#2e5bff,#e0384f)", pin:"linear-gradient(135deg,#c4358f,#7a4dff)", lab:"linear-gradient(135deg,#7a4dff,#19c9b8)", desk:"linear-gradient(135deg,#374151,#6b7280)", welt:"linear-gradient(135deg,#e0703a,#7a4dff)"};
 /* ---- Intelligente Suche: Umlaute, Tippfehler, Verwandtes, Werkzeuge ---- */
 const WTOOLS = [
+ ["elektro.html#install","🏠","Elektroinstallation: Schaltungen & Absicherung","Installation électrique : montages et protection","Wechsel-, Kreuz-, Serienschaltung simulieren; Leitung, Sicherung, Abschaltbedingung prüfen.","Simuler va-et-vient, permutateur ; vérifier câble, disjoncteur, coupure.","installation elektro haus schalter wechselschaltung kreuzschaltung serienschaltung steckdose sicherung ls fi rcd querschnitt abschaltbedingung installation électrique va-et-vient"],
+ ["elektro.html#pcb","🟩","Leiterplatte: Bahnbreite, Abstand, Impedanz, Via","Carte : piste, distance, impédance, via","IPC-2221 Strom, Abstände, Microstrip-Impedanz, Differenzpaare, Via-Werte.","Courant IPC-2221, distances, impédance microruban, paires différentielles, vias.","leiterplatte platine pcb leiterbahn breite strom ipc impedanz microstrip differential paar usb via abstand kriechstrecke layout carte circuit imprimé"],
  ["datei-werkstatt.html#merge","➕","PDF zusammenfügen","Fusionner des PDF","Mehrere PDFs zu einer Datei verbinden, Seiten sortieren, drehen oder löschen.","Fusionner plusieurs PDF en un seul fichier.","pdf zusammenfuegen vereinen verbinden mergen kombinieren fusionner join combine"],
  ["datei-werkstatt.html#split","✂️","PDF teilen & sortieren","Diviser et trier un PDF","Seiten auswählen, löschen, drehen, umsortieren – oder jede Seite einzeln speichern.","Choisir, supprimer, pivoter, réordonner des pages.","pdf teilen trennen aufteilen seiten loeschen drehen sortieren extrahieren split diviser"],
  ["datei-werkstatt.html#compress","🗜️","PDF komprimieren","Compresser un PDF","Große PDFs kleiner machen – in drei Stufen, mit Vorher/Nachher-Größe.","Réduire la taille des PDF en trois niveaux.","pdf komprimieren verkleinern kleiner groesse dateigroesse reduzieren compress optimieren"],
