@@ -409,6 +409,66 @@ body.ds-matt .vk .vs,body.ds-matt .vchips span,body.ds-matt .vk .vgo{-webkit-bac
 .soon div{padding:16px 14px;border-radius:20px;text-align:center;font-weight:800;color:var(--fg);border:2px dashed color-mix(in srgb,var(--a) 70%,transparent);background:color-mix(in srgb,var(--a) 10%,transparent)}
 .soon div i{display:block;font-style:normal;font-size:30px;margin-bottom:4px;filter:grayscale(.2)}.soon small{display:block;font-weight:600;color:var(--muted);margin-top:2px}
 @media (max-width:480px){.bar{gap:6px}.lg{font-size:19px}.lg .lgO{width:28px;height:28px}.lg i{margin-left:.2em}.seg button{padding:3px 5px}#q{order:9;flex:1 1 100%;max-width:none}.sp{flex:1 1 0}}
+
+html:root body.aurora.sl.gta.ds-matt,html:root body.sl.gta.ds-matt{background:#14072e linear-gradient(180deg,#14072e 0%,#3b0f5e 34%,#b3166f 66%,#ff7a45 100%) fixed!important}
+/* ===== GTA-6-Look: gilt nur in der Welt "GTA 6" (Sonnenuntergang, Neon, dunkle Karten) ===== */
+body.sl.gta{--gp:#ff2e88;--g-top:rgba(255,140,205,.30);--g-bot:rgba(26,6,50,.80);--g-rim:rgba(255,170,215,.75);--g-edge:rgba(255,46,136,.55);--g-fg:#fff4fb;--g-hover:rgba(255,120,190,.45);--g-sel:rgba(255,160,210,.6);--g-shadow:inset 0 1.5px 0 rgba(255,210,235,.9),inset 0 -14px 22px -14px rgba(255,46,136,.5),0 0 22px rgba(255,46,136,.38),0 14px 30px -12px rgba(0,0,0,.7);--g-blur:blur(8px) saturate(1.6);--go:#ff9a3c;--gy:#ffd23f;--gt:#2de2e6;--gv:#2a0a4a;--gk:rgba(26,8,48,.9);--gx:#fff4fb;--gm:#e9b9dc;--sink:#ffd9ef;--sgl:rgba(26,8,48,.9);--fg:#fff4fb;--muted:#e9b9dc;--line:rgba(255,46,136,.45);--card:rgba(40,12,70,.85);--soft:rgba(255,255,255,.1);--wc:#ff2e88;
+ background:#14072e linear-gradient(180deg,#14072e 0%,#3b0f5e 34%,#b3166f 66%,#ff7a45 100%) fixed;color:var(--fg)}
+body.sl.gta::before{background:
+ radial-gradient(circle at 50% 100%,#ffe36b 0,#ffb13c 6%,rgba(255,86,150,.5) 13%,transparent 28%),
+ url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='520' height='220' viewBox='0 0 520 220'><g fill='%230d0420'><path d='M0 220V186c40-6 70-26 118-26 38 0 62 14 96 14 42 0 62-18 108-18 52 0 78 16 118 16 34 0 58-10 80-12v60z'/><path d='M60 186c-2-40-4-70 6-110l4 1c-8 38-6 70-4 109z'/><path d='M66 78c-24-20-52-16-70-2 22-6 46-4 70 2zM66 78c22-24 52-26 72-14-24-2-48 4-72 14zM66 78c-8-22 4-44 20-56-8 22-10 40-20 56zM66 78c-24 2-44 18-48 38 14-18 30-28 48-38z'/><path d='M420 186c2-34 2-62-6-96l-4 1c6 32 6 60 4 95z'/><path d='M412 92c-22-18-46-16-62-4 20-4 40-2 62 4zM412 92c20-20 46-22 62-10-22-2-42 4-62 10zM412 92c-6-20 4-38 18-50-6 20-8 34-18 50z'/></g></svg>") bottom center/min(560px,100%) auto no-repeat,
+ linear-gradient(180deg,rgba(255,46,136,.0),rgba(255,46,136,0));opacity:1}
+html:root body.sl.gta header{background:linear-gradient(90deg,rgba(20,7,46,.92),rgba(60,12,80,.92));border-bottom:2px solid var(--gp);box-shadow:0 2px 18px rgba(255,46,136,.45)}
+html:root body.sl.gta header,html:root body.sl.gta header a,html:root body.sl.gta header b{color:#fff}
+html:root body.sl.gta .crumb{background:rgba(20,7,46,.78);color:var(--gm);border:1px solid var(--line);box-shadow:0 0 12px rgba(255,46,136,.35)}
+html:root body.sl.gta .crumb a{color:var(--gy)}
+html:root body.sl.gta .ribbon{background:linear-gradient(90deg,var(--gp),var(--go));color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.4);box-shadow:0 0 18px rgba(255,46,136,.6)}
+html:root body.sl.gta .ribbon::after{border-top-color:#7a0a47}
+html:root body.sl.gta #sq::placeholder,html:root body.sl.gta .in::placeholder{color:#e9b9dc!important}
+html:root body.sl.gta .in,html:root body.sl.gta #sq{background:rgba(20,7,46,.8);color:#fff;border:1px solid var(--line)}
+html:root body.sl.gta .ph{background:linear-gradient(90deg,var(--gp),var(--go) 70%,var(--gy));box-shadow:0 0 22px rgba(255,46,136,.55),0 4px 0 rgba(0,0,0,.4)}
+html:root body.sl.gta .ph h1{font-family:"Poppins","Inter",sans-serif;font-style:italic;letter-spacing:.04em;text-shadow:0 2px 0 rgba(60,0,40,.6),0 0 14px rgba(255,255,255,.4)}
+html:root body.sl.gta .phbad{background:#14072e;border-color:var(--gt);box-shadow:0 0 14px var(--gt)}
+html:root body.sl.gta .phsub{background:rgba(20,7,46,.7);color:var(--gm);border:1px solid var(--line)}
+html:root body.sl.gta .phsub em,html:root body.sl.gta .phsub .phw{color:var(--gy)}
+html:root body.sl.gta .slnav a{background:linear-gradient(rgba(60,14,90,.92),rgba(34,8,60,.92));color:#ffe4f4;border-left-color:var(--gp);box-shadow:0 0 0 1px rgba(255,46,136,.35)}
+html:root body.sl.gta .slnav a.act{background:linear-gradient(90deg,var(--gp),var(--go));color:#fff;border-left-color:var(--gy);box-shadow:0 0 16px rgba(255,46,136,.6)}
+html:root body.sl.gta .slmain{background:var(--gk);border:1px solid var(--line);box-shadow:0 0 28px rgba(255,46,136,.28),0 14px 30px -10px rgba(0,0,0,.6);color:var(--gx)}
+body.ds-glas.sl.gta .slmain{background:rgba(22,6,42,.86);-webkit-backdrop-filter:blur(12px) saturate(1.3);backdrop-filter:blur(12px) saturate(1.3);border:1px solid rgba(255,140,200,.55)}
+body.ds-matt.sl.gta .slmain{background:rgb(26,8,48)}
+html:root body.sl.gta .slmain h2.h{color:var(--gy);border-bottom:3px solid var(--gp);font-variant:normal;text-transform:uppercase;font-style:italic;font-family:"Poppins","Inter",sans-serif;letter-spacing:.05em;font-size:18px}
+html:root body.sl.gta .slmain .txt,html:root body.sl.gta .slmain p,html:root body.sl.gta .slmain li{color:var(--gx)}
+html:root body.sl.gta .slmain b,html:root body.sl.gta .slmain strong{color:#fff}
+html:root body.sl.gta .slmain a{color:var(--gt)}
+html:root body.sl.gta .tw{background:rgba(255,255,255,.04);border:1px solid var(--line)}
+html:root body.sl.gta .slmain .tw{border:1px solid rgba(255,46,136,.5);box-shadow:0 0 14px rgba(255,46,136,.22)}
+html:root body.sl.gta .tw .ti{background:linear-gradient(90deg,var(--gp),var(--go));color:#fff}
+html:root body.sl.gta .slmain th{background:linear-gradient(90deg,#8d1b6b,#c2410c);color:#fff}
+html:root body.sl.gta .slmain tbody tr:nth-child(odd) td{background:rgba(255,255,255,.05)}
+html:root body.sl.gta .slmain tbody tr:nth-child(even) td{background:rgba(255,46,136,.09)}
+html:root body.sl.gta .slmain td{border-top:1px solid rgba(255,255,255,.1);color:var(--gx)}
+html:root body.sl.gta .slmain td.b{color:var(--gy)}
+html:root body.sl.gta .hint{background:rgba(255,255,255,.06);border:1px solid var(--line);border-left:7px solid var(--c);color:var(--gx)}
+html:root body.sl.gta .hint b.k{color:var(--c)}
+html:root body.sl.gta .hint.info,html:root body.sl.gta .hint.i{--c:var(--gt)}
+html:root body.sl.gta .hint.warn,html:root body.sl.gta .hint.w{--c:var(--gp)}
+html:root body.sl.gta .hint.tipp,html:root body.sl.gta .hint.t{--c:var(--gy)}
+html:root body.sl.gta .hint.merke,html:root body.sl.gta .hint.m{--c:var(--go)}
+html:root body.sl.gta .tag,html:root body.sl.gta .slmain .tag{background:rgba(255,46,136,.18);color:#ffd9ef;border:1px solid rgba(255,46,136,.5)}
+html:root body.sl.gta .slmain .formel,html:root body.sl.gta .slmain .rech{background:rgba(255,255,255,.06);border:1px solid var(--gt);color:#fff}
+html:root body.sl.gta .slmain .siehe a,html:root body.sl.gta .siehe a{background:rgba(255,46,136,.16);border:1px solid var(--gp);color:#ffe4f4}
+html:root body.sl.gta .schbtn,html:root body.sl.gta .slmain .knopf,html:root body.sl.gta .slmain a.kn{background:linear-gradient(90deg,var(--gp),var(--go));color:#fff}
+html:root body.sl.gta details.gr{background:rgba(26,8,48,.82);border:1px solid var(--line);box-shadow:0 0 18px rgba(255,46,136,.3)}
+html:root body.sl.gta details.gr>summary{color:var(--gy);font-family:"Poppins","Inter",sans-serif;text-transform:uppercase;font-style:italic;letter-spacing:.04em}
+html:root body.sl.gta #wl .liste a{background:linear-gradient(rgba(60,14,90,.9),rgba(34,8,60,.9));border:1px solid rgba(255,46,136,.4);color:#fff}
+html:root body.sl.gta #wl .liste a b{color:#fff}
+html:root body.sl.gta #wl .liste a small{color:var(--gm)}
+html:root body.sl.gta #wl .liste a::after{color:var(--go)}
+body.ds-glas.sl.gta details.gr,body.ds-glas.sl.gta #wl .liste a{background:rgba(26,8,48,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,140,200,.55)}
+html:root body.sl.gta .botx{background:rgba(26,8,48,.9);color:#fff;border:1px solid var(--line)}
+html:root body.sl.gta footer,html:root body.sl.gta footer a{color:#ffe4f4}
+.sc[href="#/w/gta6"]{--wc:#ff2e88;background:linear-gradient(135deg,#2a0a4a,#c2186b 60%,#ff7a45)!important}
+.sc[href="#/w/gta6"] .sh{background:linear-gradient(90deg,#ff2e88,#ff9a3c)!important}
 </style>
 </head>
 <body>
@@ -430,7 +490,7 @@ body.ds-matt .vk .vs,body.ds-matt .vchips span,body.ds-matt .vk .vgo{-webkit-bac
 /* ============================================================ Grundlagen */
 const $ = (s, r) => (r || document).querySelector(s);
 const FARBEN = {sonne:"#ffd23f",orange:"#ff8c1a",rot:"#ff4d5e",pink:"#ff7ac8",lila:"#9b5de5",blau:"#2e86ff",himmel:"#7fd6ff",tuerkis:"#19c9b8",gruen:"#3ddc84",limette:"#b8f04a",creme:"#e6f3fb",braun:"#a8683c",grau:"#8c93a8",weiss:"#ffffff",nacht:"#2a1f5a",tinte:"#2a1740",papier:"#f6fbff",gold:"#ffc61a"};
-const SYM = {antenne:"📡",quarz:"💎",optokoppler:"🔌",batterie:"🔋",voltmeter:"🧪",gehaeuse:"📦",lampe:"💡",kondensator:"⚡",npn:"🔺",wechselspannung:"〰️",ntc:"🌡️",stromquelle:"⚙️",led:"💡",schalter:"🎚️",widerstand:"🔧",opamp:"▷",elko:"🔋",amperemeter:"📟",taster:"🔘"};
+const SYM = {gta_tipp:"🎯",gta_frage:"❓",gta_karte:"🗺️",gta_paar:"💞",gta_buch:"📜",gta_trick:"✨",gta_geld:"💰",gta_polizei:"🚨",gta_check:"✅",gta_geheim:"👽",gta_waffe:"🔫",gta_auto:"🚗",gta_online:"🌐",gta_konsole:"🎮",antenne:"📡",quarz:"💎",optokoppler:"🔌",batterie:"🔋",voltmeter:"🧪",gehaeuse:"📦",lampe:"💡",kondensator:"⚡",npn:"🔺",wechselspannung:"〰️",ntc:"🌡️",stromquelle:"⚙️",led:"💡",schalter:"🎚️",widerstand:"🔧",opamp:"▷",elko:"🔋",amperemeter:"📟",taster:"🔘"};
 const symbol = s => SYM[s] || "◆";
 /* Ein eigenes Symbol pro Welt (jedes nur einmal) */
 const WSYM = {bt:"🧩",grund:"⚡",passiv:"🎛️",halbleiter:"💡",messen:"📏",speicher:"💾",energie:"🔋",mathe:"➗",sensoren:"🌡️",mikro:"🍓",schnittstellen:"🔗",netzwerk:"📡",digital:"🚦",zahlen:"🔢",linux:"🐧",prog:"💻",schalt:"✏️",fehler:"🔍",glossar:"📖",bauteile:"🧩",bt_ic:"🔲",bt_analog:"📈",schaltungen:"🧰",bt_katalog:"📚",bt_module:"🧱",bt_wissen:"🎓",labor:"🧪",konsolen:"🎮",mcu:"🤖",zubehoer:"🔩",handys:"📱",kameras:"📷",installation:"🏠",pcb:"🟩",gta6:"🎮"};
@@ -844,7 +904,6 @@ function startseite(){
   const EX = {
     iclab: () => karte("ic-lab.html", "", "#2fbf4a", '<span class="emo">🧰</span>', Tx("Schaltungen","Circuits"), Tx("Jedes Bauteil und jeder IC in einer echten Schaltung: Schaltplan, Erklärung, Oszilloskop – und der Weg zum Rechner","Chaque composant et chaque CI dans un vrai circuit : schéma, explication, oscilloscope – et le lien vers le calculateur"), "80 "+Tx("Schaltungen","circuits")),
     elab: () => karte("elektro.html", "", "#00b3a4", '<span class="emo">🔌</span>', Tx("Elektronik-Rechner","Calculateurs d’électronique"), Tx("Farbcode, Ohm, LED, Teiler, Opamp, Filter, 555, Regler, Logik, Akku-Laufzeit, SMD-Code, Kabel, ADC – zum Rechnen, mit lebendiger Zeichnung","Code couleur, Ohm, LED, diviseur, ampli op, filtres, 555, logique, autonomie de batterie, code CMS, câble, ADC – calculs avec schéma vivant"), "10 "+Tx("Werkzeuge","outils")),
-    elektro_inst: () => karte("elektro.html#install", "", "#e8590c", '<span class="emo">🏠</span>', Tx("Installation & Leiterplatte","Installation & circuit imprimé"), Tx("Schalter-Simulator, Absicherung, Leiterbahnbreite, Abstand, Impedanz, Via – zum Ausprobieren","Simulateur d’interrupteurs, protection, largeur de piste, distance, impédance, via – à essayer"), Tx("2 Rechner","2 calculateurs")),
     sim: () => karte("lab.html#sim", "", "#ff8a00", '<span class="emo">⚡</span>', Tx("Schaltungs-Simulator","Simulateur de circuits"), Tx("Bauteile frei verdrahten, Strom und Spannung live sehen – Überlast brennt durch (Oratio Lab)","Câbler librement, voir courant et tension en direct (Oratio Lab)"), "Oratio Lab"),
     disp: () => karte("lab.html#disp", "", "#2f7bff", '<span class="emo">📺</span>', Tx("Display-Werkstatt","Atelier d’écrans"), Tx("LCD, OLED, TFT, 7-Segment, LED-Matrix: gestalten und den fertigen Code für Uno, ESP32 oder Pi bekommen (Oratio Lab)","LCD, OLED, TFT, 7 segments, matrice LED : concevoir et obtenir le code (Oratio Lab)"), "Oratio Lab"),
     lab: () => karte("lab.html", "", "#ff8a00", '<span class="emo">🧪</span>', "Oratio Lab", Tx("Schaltungs-Simulator zum freien Verdrahten, Display-Werkstatt, Klang-Labor, Terminal, Spiel","Simulateur de circuits, atelier d’écrans, labo sonore, terminal, jeu"), Tx("Experimentierwelt","Monde d’expériences")),
@@ -855,7 +914,7 @@ function startseite(){
     { id: "elektro", ic: "⚡", c: "#ff8a00", n: Tx("Elektronik","Électronique"), t: Tx("Lernen & Nachschlagen: von Ohm bis zum IC","Apprendre & consulter : de la loi d’Ohm au CI"), sec: [
       { n: Tx("Verstehen","Comprendre"), t: Tx("Strom, Spannung, Mathe, Schaltzeichen und Digitaltechnik – von Null","Courant, tension, maths, symboles et numérique – depuis zéro"), w: ["grund","mathe","schalt","digital"] },
       { n: Tx("Bauteile","Composants"), t: Tx("Jedes Bauteil steht genau einmal: passiv, Halbleiter, Analog-ICs, Logik-ICs, Energie","Chaque composant une seule fois : passifs, semi-conducteurs, CI analogiques, CI logiques, énergie"), w: ["passiv","halbleiter","bt_analog","bt_ic","energie"] },
-      { n: Tx("Praxis & Handwerk","Pratique & métier"), t: Tx("Elektroinstallation im Haus und Leiterplatten-Design – mit Rechner und Simulator","Installation électrique et conception de circuits imprimés – avec calculateur et simulateur"), w: ["installation","pcb"], ex: ["elektro_inst"] },
+      { n: Tx("Praxis & Handwerk","Pratique & métier"), t: Tx("Elektroinstallation im Haus und Leiterplatten-Design – mit Rechner und Simulator","Installation électrique et conception de circuits imprimés – avec calculateur et simulateur"), w: ["installation","pcb"] },
       { n: Tx("Bauen & Rechnen","Construire & calculer"), t: Tx("Schaltungen mit Schaltplan und Oszilloskop – und der Rechner dazu","Circuits avec schéma et oscilloscope – et le calculateur"), w: [], ex: ["iclab","elab"] } ] },
     { id: "exp", ic: "📏", c: "#27a3df", n: Tx("Messen & Prüfen","Mesurer & tester"), t: Tx("Messgeräte, Werkstatt, Fehlersuche","Appareils, atelier, dépannage"), sec: [
       { n: "", w: ["messen","fehler"] } ] },
@@ -1120,6 +1179,7 @@ async function route(){
   document.body.classList.toggle("home", !p.length);
   document.body.classList.toggle("sl", imStudio || p[0]==="q");
   document.body.classList.toggle("slocal", imStudio);
+  document.body.classList.toggle("gta", (p[0]==="w"||p[0]==="s") && p[1]==="gta6");
   sbar(imStudio, p[0]==="qs" ? decodeURIComponent(p.slice(2).join("/")) : p[0]==="qw" ? decodeURIComponent(p.slice(2).join("/")) : null, wsc);
   if (!["w","s"].includes(p[0])) app.style.removeProperty("--wc");
   try {
