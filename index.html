@@ -435,6 +435,39 @@ html:root body.sl .ssec>h3{background:rgba(8,36,22,.68);border-radius:12px;paddi
 html:root body.sl .ssec>h3 em{color:#f2ffe6;font-weight:600}
 html:root body.sl .slmain .phsub em{color:var(--sink);font-weight:700;background:none;padding:0}
 html:root body.sl #sbar .ribbon{background:linear-gradient(#1a86c4,#0e5f94)}
+
+/* ===== Stufe 64: klare Hierarchie (Titel > Untertitel > Beschreibung) und Kontrast OHNE Abdunkeln ===== */
+body.sl{--h1:#0a1a38;--h2:#2f4066;--h3:#4a5a7c;--hb:#ffffff;--ht:rgba(255,255,255,.94)}
+:root[data-theme="dark"] body.sl{--h1:#f4f8ff;--h2:#d3def5;--h3:#aebbd6;--hb:#1b2538;--ht:rgba(27,37,56,.95)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.sl{--h1:#f4f8ff;--h2:#d3def5;--h3:#aebbd6;--hb:#1b2538;--ht:rgba(27,37,56,.95)}}
+/* Bereichs-Banner (Elektronik, Messen & Prüfen …): groß, gefärbt, Großbuchstaben */
+html:root body.sl:not(.gta) .bh{padding:16px 22px 16px 16px;column-gap:16px;border:0!important;border-bottom:7px solid var(--bc)!important;border-radius:20px;background:linear-gradient(100deg,color-mix(in srgb,var(--bc) 34%,var(--hb)),var(--ht) 78%)!important;box-shadow:0 10px 22px -12px rgba(0,30,0,.55)}
+html:root body.sl:not(.gta) .bh .bi{width:60px;height:60px;font-size:32px;background:var(--hb);border:4px solid var(--bc);box-shadow:0 3px 0 rgba(0,0,0,.18)}
+html:root body.sl:not(.gta) .bh b{font-size:clamp(25px,5.4vw,34px);font-weight:900;letter-spacing:.02em;text-transform:uppercase;line-height:1.1;color:var(--h1)!important}
+html:root body.sl:not(.gta) .bh em{font-size:15.5px;font-weight:600;line-height:1.35;color:var(--h2)!important;margin-top:3px}
+/* Abschnitt (Verstehen, Bauteile …): kleine Karte mit farbigem Titel */
+html:root body.sl:not(.gta) .ssec>h3{display:flex;flex-direction:column;gap:3px;width:100%;box-sizing:border-box;background:var(--ht)!important;border:0;border-left:11px solid var(--bc);border-radius:14px;padding:10px 16px 11px;margin:4px 0 12px;font-size:20px;font-weight:900;line-height:1.2;color:color-mix(in srgb,var(--bc) 55%,var(--h1))!important;text-shadow:none;box-shadow:0 4px 12px -6px rgba(0,30,0,.5)}
+html:root body.sl:not(.gta) .ssec>h3 em{font-size:14px;font-weight:500;line-height:1.35;color:var(--h2)!important}
+/* Welt-Seite: Gruppenkopf + Kacheln */
+html:root body.sl:not(.gta) details.gr{background:var(--ht)!important;border:0;border-radius:16px;box-shadow:0 8px 18px -10px rgba(0,30,0,.55);overflow:hidden}
+html:root body.sl:not(.gta) details.gr>summary{padding:13px 18px;font-size:20px;font-weight:900;letter-spacing:.01em;color:var(--h1)!important;background:color-mix(in srgb,var(--wc) 24%,var(--hb))!important;border-bottom:5px solid var(--wc);align-items:center}
+html:root body.sl:not(.gta) details.gr>summary span{min-width:34px;text-align:center;padding:2px 11px;border-radius:99px;background:var(--wk,var(--wc));color:#fff!important;font-size:14px;font-weight:800}
+html:root body.sl:not(.gta) #wl .liste a{background:var(--hb)!important;border:1px solid color-mix(in srgb,var(--wc) 30%,transparent);border-left:9px solid var(--wc);padding:13px 40px 13px 15px;box-shadow:0 3px 0 rgba(0,0,0,.14)}
+html:root body.sl:not(.gta) #wl .liste a b{display:block;font-size:17.5px;font-weight:800;line-height:1.25;color:var(--h1)!important}
+html:root body.sl:not(.gta) #wl .liste a small{display:block;margin-top:7px;padding-top:6px;border-top:1px solid color-mix(in srgb,var(--wc) 32%,transparent);font-size:14px;font-weight:500;line-height:1.4;color:var(--h3)!important;opacity:1}
+/* Seitenkopf: kräftige Farbe, nur so dunkel wie für Kontrast nötig */
+html:root body.sl:not(.gta) .ph:not(.lt),html:root body.sl:not(.gta) .sc:not(.lt) .sh,html:root body.sl:not(.gta) .slnav a.act{background:linear-gradient(var(--wk,var(--wc)),color-mix(in srgb,var(--wk,var(--wc)) 90%,#000))!important}
+html:root body.sl:not(.gta) .slmain th,html:root body.sl:not(.gta) .tw .ti{background:var(--wk,var(--wc))!important;color:#fff}
+html:root body.sl:not(.gta) #app>.phsub em{display:inline-block;background:var(--ht);color:var(--h1);border-left:6px solid var(--wc);padding:5px 12px;border-radius:10px;font-size:15.5px;font-weight:700;line-height:1.35}
+html:root body.sl:not(.gta) .slmain h2.h{font-size:23px;font-weight:900;font-variant:normal;letter-spacing:0;color:var(--h1);border-bottom:4px solid var(--wc);padding-bottom:4px;margin:26px 0 10px}
+html:root body.sl:not(.gta) .slmain>.phsub em{font-size:16px}
+html:root body.sl footer{background:var(--ht);color:var(--h1)}
+html:root body.sl footer a{color:var(--link)}
+:root[data-theme="dark"] body.sl .crumb{color:#e8f0ff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body.sl .crumb{color:#e8f0ff}}
+@media (max-width:560px){html:root body.sl:not(.gta) .bh b{font-size:23px}html:root body.sl:not(.gta) .bh .bi{width:50px;height:50px;font-size:27px}html:root body.sl:not(.gta) details.gr>summary{font-size:18px}}
+html:root body.sl .kat.on{background:linear-gradient(#ffc15a,#ff9a1f);color:#2a1200;border-color:#2a1740}
+.seg button.on{background:linear-gradient(135deg,#1f5fd6,#6b34d6)}
 /* ===== GTA-6-Look v2: Hell = Tag in Vice City, Dunkel = Nacht-Neon. Folgt dem globalen Hell/Dunkel- und Glas/Matt-Schalter ===== */
 body.sl.gta{--gp:#ff2e88;--go:#ff8a2b;--gy:#ffcf3f;--gt:#00a9bd;--gline:rgba(255,46,136,.55);
  --gbg:linear-gradient(180deg,#7fdcff 0%,#ffd3ea 48%,#ffb77a 100%);--gs:rgba(255,255,255,.92);--gs2:rgba(255,244,250,.88);--gx:#2a0a3a;--gm:#6b2d6e;--gh:#b3105f;--gl:#007a88;--gtag:#8a0a4b;--gtagb:rgba(255,46,136,.14);--gnav:#fff;--gnavx:#2a0a3a;
@@ -573,7 +606,8 @@ const WSCH = {bt:"npn",grund:"batterie",passiv:"kondensator",halbleiter:"npn",me
 function schSym(key, color, px){ const p = SCH[key]; if (!p) return ""; return '<svg viewBox="0 0 48 24" width="'+(px||56)+'" height="'+((px||56)/2)+'" fill="none" stroke="'+(color||"#333")+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:'+(color||"#333")+'" aria-hidden="true">'+p+'</svg>'; }
 
 const hexOf = f => FARBEN[f] || f || "#ff8c1a";
-function hell(f){ const h = hexOf(f).replace("#",""); const r=parseInt(h.substr(0,2),16),g=parseInt(h.substr(2,2),16),b=parseInt(h.substr(4,2),16); return (0.299*r+0.587*g+0.114*b) > 190; }
+function wk(f){ const h = hexOf(f).replace("#",""); let c=[0,2,4].map(i=>parseInt(h.substr(i,2),16)); const L=a=>{const l=a.map(v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*l[0]+.7152*l[1]+.0722*l[2]}; for(let k=0;k<40&&1.05/(L(c)+.05)<4.6;k++) c=c.map(v=>Math.round(v*.96)); return "#"+c.map(v=>v.toString(16).padStart(2,"0")).join(""); }
+function hell(f){ const h = hexOf(f).replace("#",""); const c=[0,2,4].map(i=>parseInt(h.substr(i,2),16)); const l=c.map(v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)}); const L=.2126*l[0]+.7152*l[1]+.0722*l[2]; return 1.05/(L+.05) < 4.6 && (L+.05)/0.0674 >= 4.5; }
 function dunkler(f, k){ const h = hexOf(f).replace("#",""); const c=[0,2,4].map(i=>Math.round(parseInt(h.substr(i,2),16)*k)); return "rgb("+c.join(",")+")"; }
 const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 let LANG = "de", FR = null, INDEX = null, SUCHE = null;
@@ -933,7 +967,7 @@ function startseite(){
   document.title = "Oratio Tech Studio"; brand("studio");
   const fr = LANG === "fr", Tx = (d, f) => fr ? f : d;
   const dk = w => hexOf(w.farbe);
-  const karte = (href, kat, col, sym, name, sub, n) => '<a class="sc'+(hell(col)?' lt':'')+'" data-k="'+kat+'" href="'+href+'" style="--wc:'+col+'"><div class="sh"><b'+(/[^\s\-\/]{17,}/.test(name)?' style="font-size:13px;letter-spacing:0"':/[^\s\-\/]{14,}/.test(name)?' style="font-size:14px;letter-spacing:0"':'')+'>'+esc(name)+'</b></div><div class="sbad">'+sym+'</div><p>'+esc(sub)+'</p><i class="sn">'+esc(n)+'</i></a>';
+  const karte = (href, kat, col, sym, name, sub, n) => '<a class="sc'+(hell(col)?' lt':'')+'" data-k="'+kat+'" href="'+href+'" style="--wc:'+col+';--wk:'+wk(col)+'"><div class="sh"><b'+(/[^\s\-\/]{17,}/.test(name)?' style="font-size:13px;letter-spacing:0"':/[^\s\-\/]{14,}/.test(name)?' style="font-size:14px;letter-spacing:0"':'')+'>'+esc(name)+'</b></div><div class="sbad">'+sym+'</div><p>'+esc(sub)+'</p><i class="sn">'+esc(n)+'</i></a>';
   const weltK = id => { const w = weltInfo(id); return w ? karte("#/w/"+w.id, "", dk(w), '<span class="emo">'+weltSym(w)+'</span>', T(w.name), T(w.untertitel), w.seiten.length+" "+U("seiten")) : ""; };
   const EX = {
     iclab: () => karte("ic-lab.html", "", "#2fbf4a", '<span class="emo">🧰</span>', Tx("Schaltungen","Circuits"), Tx("Jedes Bauteil und jeder IC in einer echten Schaltung: Schaltplan, Erklärung, Oszilloskop – und der Weg zum Rechner","Chaque composant et chaque CI dans un vrai circuit : schéma, explication, oscilloscope – et le lien vers le calculateur"), "80 "+Tx("Schaltungen","circuits")),
@@ -985,7 +1019,7 @@ function startseite(){
 function pageHead(w, titel, kurz, sym, kopf){
   const c = hexOf(w.farbe);
   const em = sym ? symbol(sym) : weltSym(w);
-  return '<div class="ph'+(hell(c)?' lt':'')+'" style="--wc:'+c+'"><div class="phbad"><span class="emo">'+em+'</span></div><h1>'+esc(T(titel))+'</h1></div><div class="phsub"><span class="phw">'+esc(T(kopf||w.name))+'</span>'+(kurz?'<em>'+esc(T(kurz))+'</em>':'')+'</div>';
+  return '<div class="ph'+(hell(c)?' lt':'')+'" style="--wc:'+c+';--wk:'+wk(c)+'"><div class="phbad"><span class="emo">'+em+'</span></div><h1>'+esc(T(titel))+'</h1></div><div class="phsub"><span class="phw">'+esc(T(kopf||w.name))+'</span>'+(kurz?'<em>'+esc(T(kurz))+'</em>':'')+'</div>';
 }
 function weltseite(id){
   const w = weltInfo(id); if (!w) return nichts();
@@ -994,10 +1028,10 @@ function weltseite(id){
   const grp = new Map(); w.seiten.forEach(s => { const g = s.gruppe || ""; if(!grp.has(g)) grp.set(g, []); grp.get(g).push(s); });
   const offen = grp.size <= 3 || w.seiten.length <= 120;
   let h = '<div class="crumb"><a href="#/">'+esc(U("place"))+'</a> › <a href="#/studio">'+esc(U("studio"))+'</a> › '+esc(T(w.name))+'</div>'+pageHead(w, w.name, w.untertitel, null, "")+'';
-  h += '<div id="wl" style="--wc:'+c+'">'+[...grp].map(([g, ss]) => (g ? '<details class="gr"'+(offen?" open":"")+'><summary>'+esc(T(g))+'<span>'+ss.length+'</span></summary>' : '<div class="gr plain">')
+  h += '<div id="wl" style="--wc:'+c+';--wk:'+wk(c)+'">'+[...grp].map(([g, ss]) => (g ? '<details class="gr"'+(offen?" open":"")+'><summary>'+esc(T(g))+'<span>'+ss.length+'</span></summary>' : '<div class="gr plain">')
      +'<div class="liste">'+ss.map(s=>'<a href="#/s/'+w.id+'/'+encodeURIComponent(s.id)+'" data-t="'+esc((T(s.titel)+" "+s.titel+" "+T(s.kurz||"")).toLowerCase())+'">'+'<b>'+esc(T(s.titel))+'</b>'+(s.kurz?'<small>'+esc(T(s.kurz))+'</small>':'')+'</a>').join("")+'</div>'+(g?'</details>':'</div>')).join("")+'</div>';
   app.innerHTML = h;
-  app.style.setProperty("--wc", c);
+  app.style.setProperty("--wc", c); app.style.setProperty("--wk", wk(c));
   FILTERFN = v => { const q = v.toLowerCase().trim();
     document.querySelectorAll("#wl details").forEach(d => { let n = 0; d.querySelectorAll("a").forEach(a => { const ok = !q || a.dataset.t.includes(q); a.style.display = ok ? "" : "none"; if(ok) n++; }); d.style.display = n ? "" : "none"; if (q && n) d.open = true; }); };
 }
@@ -1022,7 +1056,7 @@ async function seitenansicht(wid, sid){
     const links = s.siehe.map(x => { const [a,b] = x.includes(":") ? x.split(":") : [wid, x]; const ww = weltInfo(a); const sp = ww && ww.seiten.find(p=>p.id===b); return sp ? '<a href="#/s/'+a+'/'+encodeURIComponent(b)+'">'+esc(T(sp.titel))+'</a>' : ""; }).join("");
     if (links) h += '<h2 class="h">'+U("siehe")+'</h2><div class="siehe">'+links+'</div>';
   }
-  app.innerHTML = h+'</section></div>'; app.style.setProperty("--wc", wc); window.scrollTo(0,0);
+  app.innerHTML = h+'</section></div>'; app.style.setProperty("--wc", wc); app.style.setProperty("--wk", wk(wc)); window.scrollTo(0,0);
   const act = app.querySelector(".slnav a.act"); if (act && act.scrollIntoView) { try { act.scrollIntoView({block:"nearest", inline:"center"}); } catch(e){} }
 }
 let EXTRA = null, ALLES = null;
@@ -1216,7 +1250,7 @@ async function route(){
   document.body.classList.toggle("gta", (p[0]==="w"||p[0]==="s") && p[1]==="gta6");
   if (p[0]==="s" && p[1]==="gta6") document.body.setAttribute("data-gp", p[2]||""); else document.body.removeAttribute("data-gp");
   sbar(imStudio, p[0]==="qs" ? decodeURIComponent(p.slice(2).join("/")) : p[0]==="qw" ? decodeURIComponent(p.slice(2).join("/")) : null, wsc);
-  if (!["w","s"].includes(p[0])) app.style.removeProperty("--wc");
+  if (!["w","s"].includes(p[0])) app.style.removeProperty("--wc"); app.style.removeProperty("--wk");
   try {
     if (!p.length) placeseite();
     else if (p[0] === "studio") startseite();
