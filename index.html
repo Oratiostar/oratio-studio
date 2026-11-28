@@ -527,7 +527,7 @@ const FARBEN = {sonne:"#ffd23f",orange:"#ff8c1a",rot:"#ff4d5e",pink:"#ff7ac8",li
 const SYM = {gta_tipp:"🎯",gta_frage:"❓",gta_karte:"🗺️",gta_paar:"💞",gta_buch:"📜",gta_trick:"✨",gta_geld:"💰",gta_polizei:"🚨",gta_check:"✅",gta_geheim:"👽",gta_waffe:"🔫",gta_auto:"🚗",gta_online:"🌐",gta_konsole:"🎮",antenne:"📡",quarz:"💎",optokoppler:"🔌",batterie:"🔋",voltmeter:"🧪",gehaeuse:"📦",lampe:"💡",kondensator:"⚡",npn:"🔺",wechselspannung:"〰️",ntc:"🌡️",stromquelle:"⚙️",led:"💡",schalter:"🎚️",widerstand:"🔧",opamp:"▷",elko:"🔋",amperemeter:"📟",taster:"🔘"};
 const symbol = s => SYM[s] || "◆";
 /* Ein eigenes Symbol pro Welt (jedes nur einmal) */
-const WSYM = {bt:"🧩",grund:"⚡",passiv:"🎛️",halbleiter:"💡",messen:"📏",speicher:"💾",energie:"🔋",mathe:"➗",sensoren:"🌡️",mikro:"🍓",schnittstellen:"🔗",netzwerk:"📡",digital:"🚦",zahlen:"🔢",linux:"🐧",prog:"💻",schalt:"✏️",fehler:"🔍",glossar:"📖",bauteile:"🧩",bt_ic:"🔲",bt_analog:"📈",schaltungen:"🧰",bt_katalog:"📚",bt_module:"🧱",bt_wissen:"🎓",labor:"🧪",konsolen:"🎮",mcu:"🤖",zubehoer:"🔩",handys:"📱",kameras:"📷",installation:"🏠",pcb:"🟩",gta6:"🎮"};
+const WSYM = {bt:"🧩",grund:"⚡",passiv:"🎛️",halbleiter:"💡",messen:"📏",speicher:"💾",energie:"🔋",mathe:"➗",sensoren:"🌡️",mikro:"⏱️",schnittstellen:"🔗",netzwerk:"📡",digital:"🚦",zahlen:"🔢",linux:"🐧",prog:"💻",schalt:"✏️",fehler:"🔍",glossar:"📖",bauteile:"🧩",bt_ic:"🔲",bt_analog:"📈",schaltungen:"🧰",bt_katalog:"📚",bt_module:"🧱",bt_wissen:"🎓",labor:"🧪",konsolen:"🎮",mcu:"🤖",raspi:"🍓",bt_daten:"🗃️",handys:"📱",kameras:"📷",installation:"🏠",pcb:"🟩",gta6:"🎮"};
 const weltSym = w => WSYM[w.id] || symbol(w.symbol);
 function zl(c){ const m=/^@(#[0-9a-fA-F]{6})\|(.*)$/.exec(String(c)); return m?'<span class="fpt" style="background:'+m[1]+'"></span>'+md(m[2]):md(c); }
 
@@ -569,7 +569,7 @@ const SCH = {
  knoten:'<path d="M2 12h44M24 2v20"/><circle cx="24" cy="12" r="3" fill="currentColor"/>',
  gehaeuse:'<rect x="9" y="2" width="30" height="20" rx="2"/><path d="M4 6h5M4 12h5M4 18h5M39 6h5M39 12h5M39 18h5"/><circle cx="14" cy="7" r="1.5"/>'
 };
-const WSCH = {bt:"npn",grund:"batterie",passiv:"kondensator",halbleiter:"npn",messen:"voltmeter",speicher:"quarz",energie:"batterie",mathe:"wechselspannung",sensoren:"ntc",mikro:"gehaeuse",schnittstellen:"optokoppler",netzwerk:"antenne",digital:"diode",zahlen:"optokoppler",linux:"schalter",prog:"schalter",schalt:"widerstand",fehler:"voltmeter",glossar:"lampe",bauteile:"optokoppler",bt_ic:"optokoppler",bt_analog:"opamp",schaltungen:"opamp",bt_katalog:"elko",bt_module:"antenne",bt_wissen:"lampe",labor:"amperemeter",konsolen:"taster",mcu:"quarz",zubehoer:"gehaeuse",handys:"antenne",kameras:"antenne",installation:"schalter",pcb:"gehaeuse",gta6:"taster"};
+const WSCH = {bt:"npn",grund:"batterie",passiv:"kondensator",halbleiter:"npn",messen:"voltmeter",speicher:"quarz",energie:"batterie",mathe:"wechselspannung",sensoren:"ntc",mikro:"wechselspannung",schnittstellen:"optokoppler",netzwerk:"antenne",digital:"diode",zahlen:"optokoppler",linux:"schalter",prog:"schalter",schalt:"widerstand",fehler:"voltmeter",glossar:"lampe",bauteile:"optokoppler",bt_ic:"optokoppler",bt_analog:"opamp",schaltungen:"opamp",bt_katalog:"elko",bt_module:"antenne",bt_wissen:"lampe",labor:"amperemeter",konsolen:"taster",mcu:"quarz",raspi:"gehaeuse",bt_daten:"stromquelle",handys:"antenne",kameras:"antenne",installation:"schalter",pcb:"gehaeuse",gta6:"taster"};
 function schSym(key, color, px){ const p = SCH[key]; if (!p) return ""; return '<svg viewBox="0 0 48 24" width="'+(px||56)+'" height="'+((px||56)/2)+'" fill="none" stroke="'+(color||"#333")+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:'+(color||"#333")+'" aria-hidden="true">'+p+'</svg>'; }
 
 const hexOf = f => FARBEN[f] || f || "#ff8c1a";
@@ -841,7 +841,7 @@ const WKAT = {
   schaltungen:["schaltungen","bauteile"], digital:["schaltungen","grundlagen"],
   speicher:["informatik"], netzwerk:["informatik"], schnittstellen:["informatik","schaltungen"], linux:["informatik"], prog:["informatik"], mikro:["informatik","schaltungen"],
   messen:["labor"], fehler:["labor"],
-  installation:["elektronik"], pcb:["elektronik","bauteile"], gta6:["geraete"], konsolen:["geraete"], handys:["geraete"], kameras:["geraete"], mcu:["geraete","schaltungen"], zubehoer:["geraete"]
+  installation:["elektronik"], pcb:["elektronik","bauteile"], gta6:["geraete"], konsolen:["geraete"], handys:["geraete"], kameras:["geraete"], mcu:["geraete","schaltungen"], raspi:["geraete"], bt_daten:["bauteile"]
 };
 const weltKat = id => WKAT[id] || ["elektronik"];
 let KATWAHL = "alle";
@@ -947,13 +947,13 @@ function startseite(){
   const BER = [
     { id: "elektro", ic: "⚡", c: "#ff8a00", n: Tx("Elektronik","Électronique"), t: Tx("Lernen & Nachschlagen: von Ohm bis zum IC","Apprendre & consulter : de la loi d’Ohm au CI"), sec: [
       { n: Tx("Verstehen","Comprendre"), t: Tx("Strom, Spannung, Mathe, Schaltzeichen und Digitaltechnik – von Null","Courant, tension, maths, symboles et numérique – depuis zéro"), w: ["grund","mathe","schalt","digital"] },
-      { n: Tx("Bauteile","Composants"), t: Tx("Jedes Bauteil steht genau einmal: passiv, Halbleiter, Analog-ICs, Logik-ICs, Energie","Chaque composant une seule fois : passifs, semi-conducteurs, CI analogiques, CI logiques, énergie"), w: ["passiv","halbleiter","bt_analog","bt_ic","energie"] },
+      { n: Tx("Bauteile","Composants"), t: Tx("Jedes Bauteil steht genau einmal: passiv, Halbleiter, Analog-ICs, Logik-ICs, Daten-ICs, Energie","Chaque composant une seule fois : passifs, semi-conducteurs, CI analogiques, CI logiques, CI de données, énergie"), w: ["passiv","halbleiter","bt_analog","bt_ic","bt_daten","energie"] },
       { n: Tx("Praxis & Handwerk","Pratique & métier"), t: Tx("Elektroinstallation im Haus und Leiterplatten-Design – mit Rechner und Simulator","Installation électrique et conception de circuits imprimés – avec calculateur et simulateur"), w: ["installation","pcb"] },
       { n: Tx("Bauen & Rechnen","Construire & calculer"), t: Tx("Schaltungen mit Schaltplan und Oszilloskop – und der Rechner dazu","Circuits avec schéma et oscilloscope – et le calculateur"), w: [], ex: ["iclab","elab"] } ] },
     { id: "exp", ic: "📏", c: "#27a3df", n: Tx("Messen & Prüfen","Mesurer & tester"), t: Tx("Messgeräte, Werkstatt, Fehlersuche","Appareils, atelier, dépannage"), sec: [
       { n: "", w: ["messen","fehler"] } ] },
     { id: "pi", ic: "🔧", c: "#d63b8a", n: Tx("Pi & Mikrocontroller","Pi & microcontrôleurs"), t: Tx("Bauen: Boards, Sensoren, Busse","Construire : cartes, capteurs, bus"), sec: [
-      { n: "", w: ["mikro","mcu","zubehoer","schnittstellen","bt_module"], ex: ["pin"] } ] },
+      { n: "", w: ["raspi","mcu","mikro","schnittstellen","bt_module"], ex: ["pin"] } ] },
     { id: "it", ic: "💻", c: "#7a4dff", n: Tx("Informatik & IT","Informatique & IT"), t: Tx("Zahlen, Speicher, Netzwerk, Linux, Code","Nombres, mémoire, réseau, Linux, code"), sec: [
       { n: "", w: ["zahlen","glossar","speicher","netzwerk","linux","prog"] } ] },
     { id: "vergl", ic: "🆚", c: "#16a085", n: Tx("Vergleichen & Entscheiden","Comparer & décider"), t: Tx("Was passt? Was kaufe ich?","Qu’est-ce qui convient ? Quoi acheter ?"), sec: [
