@@ -2099,8 +2099,8 @@ function cardP(pid, col){
 }
 var VIEW = sv("view") || "bt";
 function listPage(){
-  stopLive(); document.title = T("Schaltungen", "Circuits") + " – Oratio Tech Studio"; root.innerHTML = "";
-  root.appendChild(el("div", "crumb", '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › ' + T("Schaltungen", "Circuits")));
+  stopLive(); document.title = T("Schaltungen", "Circuits") + " – Oratio Lab"; root.innerHTML = "";
+  root.appendChild(el("div", "crumb", '<a href="index.html">Oratio Place</a> › <a href="lab.html">Oratio Lab</a> › ' + T("Schaltungen", "Circuits")));
   root.appendChild(el("div", "ic-hero", '<div class="ic-k">' + T("LIVE-LABOR", "LABO EN DIRECT") + "</div><h1>" + T("Jedes Bauteil in einer echten Schaltung", "Chaque composant dans un vrai circuit") + "</h1><p>" + T("Wähle ein Bauteil oder eine Schaltung: Schaltplan, Erklärung, Werte zum Drehen und das Oszilloskop zeigen, was passiert. Wo es etwas zu rechnen gibt, führt ein Knopf direkt zum Elektronik-Rechner.", "Choisis un composant ou un circuit : schéma, explication, réglages et oscilloscope. Un bouton mène au calculateur quand il y a des valeurs à calculer.") + "</p>"));
   var s = el("input", "ic-search"); s.type = "search"; s.placeholder = T("Bauteil oder Schaltung suchen, z. B. 555, BC547, 4017, Filter …", "Chercher un composant ou un circuit …"); s.value = QUERY; var tools = el("div", "ic-chips"); tools.appendChild(s); root.appendChild(tools);
   var self = el("a", "ic-self", '<span class="ic-self-i">🛠️</span><span><b>' + T("Selbst bauen", "Construire soi-même") + "</b>" + T("ICs aus der Liste holen, frei platzieren, Pins mit der Maus verdrahten – die Simulation zeigt, ob alles richtig angeschlossen ist.", "Place des CI, relie les broches à la souris – la simulation vérifie le câblage.") + "</span><i>›</i>"); self.href = "#bau"; root.appendChild(self);
@@ -2135,8 +2135,8 @@ function circuitPage(pid){
   var pr = PROJ[pid]; if (!pr) return listPage(); var ics = icsOf(pid).map(icById).filter(Boolean);
   var okey = (location.hash.split("/")[2] || "");
   if (pid === "opamp" && OPK[okey]) ics = [icById(OPK[okey])];
-  document.title = shortT(pid) + " – Schaltungen"; root.innerHTML = "";
-  root.appendChild(el("div", "crumb", '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › <a href="#">' + T("Schaltungen", "Circuits") + "</a> › " + esc(shortT(pid))));
+  document.title = shortT(pid) + " – " + T("Schaltungen", "Circuits") + " – Oratio Lab"; root.innerHTML = "";
+  root.appendChild(el("div", "crumb", '<a href="index.html">Oratio Place</a> › <a href="lab.html">Oratio Lab</a> › <a href="#">' + T("Schaltungen", "Circuits") + "</a> › " + esc(shortT(pid))));
   var wrap = el("div", "ic-two"); root.appendChild(wrap);
   var side = el("aside", "ic-side"); wrap.appendChild(side); var main = el("section", "ic-main"); wrap.appendChild(main);
   side.appendChild(el("h1", "ic-h1", T("Verdrahtung", "Câblage")));
@@ -2764,8 +2764,8 @@ var BAU = (function(){
 
   /* --- Seite aufbauen --- */
   function page(root){
-    root.innerHTML = ""; document.title = T("Werkstatt – eigene Schaltung bauen", "Atelier – construire son circuit") + " – Oratio Tech Studio";
-    root.appendChild(el("div", "crumb", '<a href="index.html">Oratio Place</a> › <a href="index.html#/studio">Oratio Tech Studio</a> › <a href="#">' + T("Schaltungen", "Circuits") + "</a> › " + T("Werkstatt", "Atelier")));
+    root.innerHTML = ""; document.title = T("Werkstatt – eigene Schaltung bauen", "Atelier – construire son circuit") + " – Oratio Lab";
+    root.appendChild(el("div", "crumb", '<a href="index.html">Oratio Place</a> › <a href="lab.html">Oratio Lab</a> › <a href="#">' + T("Schaltungen", "Circuits") + "</a> › " + T("Werkstatt", "Atelier")));
     root.appendChild(el("div", "ic-hero", '<div class="ic-k">' + T("WERKSTATT", "ATELIER") + "</div><h1>" + T("Eigene Schaltung bauen und simulieren", "Construis et simule ton circuit") + "</h1><p>" + T("Wie in LTspice, nur einfacher: ICs und Bauteile aus der Liste holen, frei verschieben, Pins mit Drähten verbinden. Die Simulation läuft nur, wenn alles richtig verdrahtet ist – sonst sagt sie dir, was fehlt.", "Comme LTspice, en plus simple : place, relie, simule. La simulation indique ce qui manque.") + "</p>"));
     try { S = JSON.parse(localStorage.getItem("iclab_bau")); curEx = localStorage.getItem("iclab_bau_ex") || null; } catch(e){ S = null; } if (!S || !S.parts){ S = ex("led"); curEx = "led"; } var hx = (decodeURIComponent(location.hash.replace(/^#/, "")).split("/")[1] || ""); if (/^(opinv|rc|zener|foto|relais|teiler|emitter)$/.test(hx)){ S = ex3(hx); forceAna = true; curEx = hx; save(); }
     var bar = el("div", "bau-bar"); root.appendChild(bar);

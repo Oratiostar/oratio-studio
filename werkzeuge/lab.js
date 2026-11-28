@@ -65,6 +65,7 @@ function route(){
 MODS.start = (function(){
   var raf = 0, tmr = 0, alive = false;
   var CH = [
+    ["ic", "#2fe38a", L("Schaltungen", "Circuits"), L("Jedes Bauteil und jeder IC in einer echten Schaltung: Schaltplan, Erklärung und Oszilloskop – mit Schaltern, Tastern und Reglern zum Selbstprobieren. Dazu die Werkstatt zum Bauen eigener Schaltungen.", "Chaque composant et chaque CI dans un vrai circuit : schéma, explication et oscilloscope – avec interrupteurs, boutons et curseurs à essayer. Plus l’atelier pour construire ses propres circuits."), L("Fertig + Werkstatt", "Prêts + atelier"), "ic-lab.html", 9],
     ["sim", "#ffb000", L("Schaltungs-Simulator", "Simulateur de circuits"), L("Batterie, Widerstand, LED, Schalter, Messgeräte, Transistor. Zu viel Strom? Dann brennt etwas durch.", "Pile, résistance, LED, interrupteur, instruments, transistor. Trop de courant ? Quelque chose grille."), L("Überlast = Rauch", "Surcharge = fumée")],
     ["disp", "#3de6ff", L("Display-Werkstatt", "Atelier d’écrans"), L("17 Displays + LED-Matrix, 7 Boards: schreiben, zeichnen – der fertige Code entsteht mit Erklärung zu jeder Zeile.", "17 écrans + matrice LED, 7 cartes : écris, dessine – le code est généré, chaque ligne expliquée."), L("18 Displays", "18 écrans")],
     ["watch", "#6dffb0", "Oratio Watch", L("Das Zifferblatt live gestalten: Farben, Zeiger, Stil. Dieselben Formen wie auf der echten Uhr.", "Crée le cadran en direct : couleurs, aiguilles, style. Les mêmes formes que sur la vraie montre."), "Live"],
@@ -84,19 +85,19 @@ MODS.start = (function(){
   function show(b){
     var wrap = el("div", "lx");
     wrap.innerHTML =
-      '<div class="lxh"><div><div class="lxk">' + L("OSZILLOSKOP · 6 KANÄLE", "OSCILLOSCOPE · 6 CANAUX") + '</div>' +
+      '<div class="lxh"><div><div class="lxk">' + L("OSZILLOSKOP · 7 KANÄLE", "OSCILLOSCOPE · 7 CANAUX") + '</div>' +
       '<h1 class="lxt" data-t="ORATIO LAB">ORATIO LAB</h1>' +
       '<p class="lxs0">' + L("Probieren, bauen, kaputtmachen – ohne Risiko. Alles läuft live in deinem Browser.", "Essayer, construire, casser – sans risque. Tout tourne en direct dans ton navigateur.") + '</p></div>' +
       '<button class="lxbad" type="button">⚠ ' + L("NICHT DRÜCKEN", "NE PAS APPUYER") + '</button></div>' +
       '<div class="lxscope"><canvas></canvas><span class="lxch">' + L("Wähle einen Kanal – das Signal passt sich an.", "Choisis un canal – le signal s’adapte.") + '</span></div>' +
       '<div class="lxlist"></div>' +
       '<div class="lxst"><span class="lxok">● SYS OK</span><span class="lxmsg"></span></div>' +
-      '<p class="lxfoot">' + L("Alles läuft komplett in deinem Browser – nichts wird hochgeladen.", "Tout tourne entièrement dans ton navigateur – rien n’est envoyé.") + ' · <a href="ic-lab.html" style="color:#6dffb0">Schaltungen</a> · <a href="index.html#/studio" style="color:#6dffb0">Tech Studio</a> · <a href="kurs.html" style="color:#6dffb0">Kursland</a></p>';
+      '<p class="lxfoot">' + L("Alles läuft komplett in deinem Browser – nichts wird hochgeladen.", "Tout tourne entièrement dans ton navigateur – rien n’est envoyé.") + ' · <a href="index.html#/studio" style="color:#6dffb0">Tech Studio</a> · <a href="kurs.html" style="color:#6dffb0">Kursland</a></p>';
     b.appendChild(wrap);
     var list = $(".lxlist", wrap), strips = [], icos = [];
     CH.forEach(function(c, i){
       var a = el("a", "lxs", '<span class="n">CH' + (i + 1) + '</span><span class="ico"><canvas></canvas></span><span class="tx"><b>' + c[2] + '</b><i>' + c[3] + '</i></span><span class="tag">' + c[4] + '</span><span class="go">▶</span><span class="burn"></span>');
-      a.href = "#" + c[0]; a.style.setProperty("--c", c[1]); a.style.setProperty("--o", (i % 2 ? 26 : 0) + "px");
+      a.href = c[5] || "#" + c[0]; a.style.setProperty("--c", c[1]); a.style.setProperty("--o", (i % 2 ? 26 : 0) + "px");
       list.appendChild(a); strips.push(a);
       var cv = $(".ico canvas", a); icos.push(cv);
     });
@@ -119,6 +120,7 @@ MODS.start = (function(){
       a.addEventListener("focus", function(){ setFocus(i); });
       a.addEventListener("pointerdown", function(){ setFocus(i); });
     });
+    function wi(i){ return i === 0 ? 5 : i - 1; }
     function wave(k, x, t){
       switch (k){
         case 0: return Math.sin(x * .045 + t * 3);
@@ -155,8 +157,8 @@ MODS.start = (function(){
     };
     title.onclick = function(){ setFocus((focus + 1) % CH.length); };
 
-    function icon(type, cv, t){
-      var c = cv.getContext("2d"), w = 96, h = 56, col = CH[type][1];
+    function icon(i, cv, t){ var type = CH[i][6] !== undefined ? CH[i][6] : i - 1;
+      var c = cv.getContext("2d"), w = 96, h = 56, col = CH[i][1];
       c.clearRect(0, 0, w, h); c.strokeStyle = col; c.fillStyle = col; c.lineWidth = 2; c.shadowColor = col; c.shadowBlur = 7; c.lineCap = "round";
       var d = new Date();
       if (type === 0){
@@ -204,7 +206,7 @@ MODS.start = (function(){
       var col = CH[focus][1], mid = H / 2, amp = H * .32 * (1 + shock * .5);
       sx.lineWidth = 2.2; sx.strokeStyle = col; sx.shadowColor = col; sx.shadowBlur = 10; sx.beginPath();
       for (var x = 0; x <= W; x += 2){
-        var v = wave(prev, x, t) * (1 - mix) + wave(focus, x, t) * mix;
+        var v = wave(wi(prev), x, t) * (1 - mix) + wave(wi(focus), x, t) * mix;
         if (shock > .05) v += (Math.random() - .5) * shock * 1.3 * (Math.random() < .08 ? 3 : 1);
         v = Math.max(-1.4, Math.min(1.4, v));
         var y = mid - v * amp; x === 0 ? sx.moveTo(x, y) : sx.lineTo(x, y);
